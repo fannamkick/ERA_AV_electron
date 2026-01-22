@@ -83,22 +83,61 @@ export const COMF0_caress: CommandPlugin = {
     const message = generateCaressMessage(safe);
     safe.message(message);
 
-    // SOURCE 계산 - C감각 기반
-    const cSense = safe.getAbility('C감각');
-    const cValueTable = [20, 70, 170, 320, 520, 770];
-    safe.addSource('쾌C', cValueTable[Math.min(cSense, cValueTable.length - 1)] ?? 0);
-
-    // SOURCE 계산 - B감각 기반
-    const bSense = safe.getAbility('B감각');
-    const bValueTable = [10, 40, 100, 190, 310, 460];
-    safe.addSource('쾌B', bValueTable[Math.min(bSense, bValueTable.length - 1)] ?? 0);
-
-    // 욕정 추가
-    safe.addSource('욕정', 50);
-
     // LOSEBASE
     safe.addStaminaCost(5);
     safe.addWillpowerCost(50);
+
+    // SOURCE 초기화
+    safe.addSource('쾌C', 0);
+    safe.addSource('쾌B', 0);
+    safe.addSource('정애', 0);
+    safe.addSource('성행동', 60);
+    safe.addSource('불결', 30);
+    safe.addSource('노출', 100);
+
+    // SOURCE 계산 - C감각 기반
+    const cSense = safe.getAbility('C감각');
+    if (cSense === 0) {
+      safe.addSource('쾌C', 20);
+      safe.addSource('정애', 25);
+    } else if (cSense === 1) {
+      safe.addSource('쾌C', 100);
+      safe.addSource('정애', 50);
+    } else if (cSense === 2) {
+      safe.addSource('쾌C', 500);
+      safe.addSource('정애', 80);
+    } else if (cSense === 3) {
+      safe.addSource('쾌C', 1200);
+      safe.addSource('정애', 100);
+    } else if (cSense === 4) {
+      safe.addSource('쾌C', 2000);
+      safe.addSource('정애', 115);
+    } else {
+      safe.addSource('쾌C', 2800);
+      safe.addSource('정애', 125);
+    }
+
+    // SOURCE 계산 - B감각 기반
+    const bSense = safe.getAbility('B감각');
+    if (bSense === 0) {
+      safe.addSource('쾌B', 15);
+      safe.addSource('정애', 25);
+    } else if (bSense === 1) {
+      safe.addSource('쾌B', 50);
+      safe.addSource('정애', 50);
+    } else if (bSense === 2) {
+      safe.addSource('쾌B', 300);
+      safe.addSource('정애', 80);
+    } else if (bSense === 3) {
+      safe.addSource('쾌B', 700);
+      safe.addSource('정애', 100);
+    } else if (bSense === 4) {
+      safe.addSource('쾌B', 1100);
+      safe.addSource('정애', 115);
+    } else {
+      safe.addSource('쾌B', 1600);
+      safe.addSource('정애', 125);
+    }
 
     // 수간인 경우 조기 종료
     if (safe.hasEquipment('수간')) {
@@ -109,7 +148,7 @@ export const COMF0_caress: CommandPlugin = {
     if (safe.hasPlayerTalent('혀놀림')) {
       safe.multiplySource('쾌C', 1.4);
       safe.multiplySource('쾌B', 1.4);
-      safe.addSource('습득', Math.floor(safe.getSource('쾌C') / 20));
+      safe.addSource('성행동', Math.floor(safe.getSource('쾌C') / 20));
     }
 
     // SOURCE 적용
