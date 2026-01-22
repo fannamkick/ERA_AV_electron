@@ -1,0 +1,176 @@
+﻿;===========================================================
+;キャバクラ絡みのイベント
+;===========================================================
+@C_CLUB_EVENT
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:421 == 1
+		CALL START_C_CLUBEVENT
+	ENDIF
+REND
+;===========================================================
+;イベント開始
+;===========================================================
+@START_C_CLUBEVENT
+IF RAND:8 == 0
+	CALL NOTHING
+ELSEIF RAND:7 == 0
+	CALL NOTHING
+ELSEIF RAND:6 == 0
+	CALL NOTHING
+ELSEIF RAND:5 == 0 && MONEY > 10000
+	CALL EVENT_C_CLUBHALL
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSEIF RAND:4 == 0
+	CALL NOTHING
+ELSEIF RAND:3 == 0 && MONEY > 10000
+	CALL EVENT_C_CLUBHALL
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSEIF RAND:2 == 0
+	CALL NOTHING
+ELSEIF RAND:1 == 0
+	CALL EVENT_C_CLUBAFTER
+ELSE
+	CALL NOTHING
+ENDIF
+
+;===========================================================
+;キャバクラ訪問
+;===========================================================
+@EVENT_C_CLUBHALL
+
+PRINTFORML 휴일을 이용해, %조사처리(NAME:COUNT,"가")% 일하는 캬바쿠라에 왔다……
+PRINTFORM 공교롭게도 %조사처리(CALLNAME:COUNT,"는")% 이미 지명을 받은 모양이라, %CALLNAME:COUNT%의 시간이 날때까지 
+IF EXP:MASTER:109 == 0
+	PRINTFORM 다른 아가씨가 
+ELSEIF EXP:MASTER:109 >= 1 && CFLAG:MASTER:634 == 0
+	PRINTFORM %조사처리(CSTR:MASTER:51,"가")% 
+ELSEIF CFLAG:MASTER:634 == 1
+	PRINTFORM 다른 아가씨가 
+ENDIF
+PRINTFORML %플레이어를()% 상대하겠다고 했다
+IF EXP:MASTER:109 == 0
+	PRINTFORM 동석해준 여자가 내민 명함에는 
+	CALL C_CLUBGIRL_NAMEDECIDE
+	PRINTFORML %CSTR:MASTER:50% %CSTR:MASTER:51%라고 써있었다. 별명이 아니고 진짜 이름이다
+	PRINTFORML 특별회원에게만 주는 명함이라고 한다
+ENDIF
+PRINTFORML 손님에게 술을 따르거나 담배에 불을 붙여주거나 하는, 노출도가 높은 드레스 차림인 %CALLNAME:COUNT%에게 곁눈질을 하며
+PRINTFORM %플레이어는()% 
+IF CFLAG:MASTER:630 == 0
+	PRINTFORM %CSTR:MASTER:51%에게
+ELSE
+	PRINTFORM 아가씨에게 
+ENDIF
+PRINTFORML %CALLNAME:COUNT%의 평판을 물어봤다……
+PRINTFORM 그녀는 다른 아가씨들보다 
+IF TALENT:COUNT:63 == 1
+	PRINTFORM 손님을 정성을 다해 대접하는 
+ELSEIF TALENT:COUNT:205 == 1
+	PRINTFORM 화려홤에 기품까지 갖춘 
+ELSEIF TALENT:COUNT:87 == 1
+	PRINTFORM 남심을 어지럽히는 소악마의 매력을 가진 
+ELSEIF TALENT:COUNT:117
+	PRINTFORM 같이 있으면 치유받는 
+ELSEIF TALENT:COUNT:118
+	PRINTFORM 손님의 푸념을 듣고 격려해주는 
+ELSE
+	PRINTFORM 손님과 진지하게 마주보는 
+ENDIF
+PRINTFORML %조사처리(CALLNAME:COUNT,"는")%, 손님들과 가게에서 평판이 높다고 한다……
+
+PRINTL
+PRINTL 회화경험 +5
+PRINTL 지명경험 +1
+EXP:COUNT:73 += 5
+EXP:COUNT:80 += 1
+EXP:MASTER:109 += 1
+CFLAG:MASTER:630 += RAND:100
+	IF CFLAG:MASTER:630 >= 60 && MONEY >= 500000 && CFLAG:MASTER:634 == 0
+		CALL EVENT_ADD_C_GIRL
+	ENDIF
+;===========================================================
+;캬바레녀と契約する?
+;===========================================================
+@EVENT_ADD_C_GIRL
+
+PRINTW
+	CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF	
+	SETCOLOR 0xDDBBCC
+PRINTFORML 「오너에게 들었는데요…… 손님, 오너 관계자라면서요?」
+PRINTFORML 「그리고 오너가『빚을 빨리 갚고 싶으면 그 녀석한테 상담해봐』라고 하셨는데……」
+PRINTL
+	RESETCOLOR
+	SETFONT ""
+PRINTFORML 슬슬 돌아갈까 하던 %CALLNAME:MASTER%에게, 상대를 해준 %조사처리(CSTR:MASTER:51,"가")% 할 말이 있다고 한다……
+PRINTFORML 들어보니 그녀도 키류 조직에게 막대한 빚을 졌고, 거기서 오너, 그러니까 카논이 %플레이어를()% 소개해줬다고 한다
+PRINTFORML 이 가게에 다닌지 어느정도 된 것 치고는 아직 미숙하지만, 확실히 카논이 소개할 만큼의 가능성은 느껴진다
+PRINTFORML 사무소 경영도 궤도에 올랐고, 여배우를 늘려도 좋을 시기일 것이다……
+PRINTL
+$INPUT_LOOP_C_GIRL
+PRINTFORML %CSTR:MASTER:50% %조사처리(CSTR:MASTER:51,"와")% 계약합니까?
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+INPUT
+IF RESULT == 0
+	PRINTFORML %플레이어는()% 계약하기로 결심하고, %CSTR:MASTER:51%에게 지정한 날에 사무소에 오라고 전했다
+	PRINTFORM 기쁜듯, 그리고 어딘가 안심한듯이 보이는 %조사처리(CSTR:MASTER:51,"는")%, 
+	PRINTFORML %CALLNAME:MASTER%에게 머리를 숙이고 몇번이고 감사를 표했다……
+	PRINTL
+	PRINTFORML 《%CSTR:MASTER:50% %조사처리(CSTR:MASTER:51,"와")% 계약했습니다》
+	ADDCHARA 79
+	CFLAG:MASTER:634 = 1
+	LOADGLOBAL
+	GLOBAL:279 += 1
+	SAVEGLOBAL
+ELSEIF RESULT == 1
+	PRINTFORML %플레이어가()% 잠시 고민한 끝에, 사정이 있어 아직 전속 배우를 늘릴 생각은 없다고 %CSTR:MASTER:51%에게 전하자, 
+	PRINTFORML %조사처리(CSTR:MASTER:51,"는")% 안타까워 하면서도, %CALLNAME:MASTER%에게 미소를 지으며 영업토크를 시작했다……
+ELSE
+	GOTO INPUT_LOOP_C_GIRL
+ENDIF
+
+;=========================================================
+;キャバクラ仕事後イベント
+;文章はロダ1509をほぼそのまま導入。諸々控えめに
+;=========================================================
+@EVENT_C_CLUBAFTER
+LOCAL = RAND:3
+
+PRINTFORM %조사처리(NAME:COUNT,"는")% 캬바쿠라 일을 끝내고, 지명 손님과 애프터를 즐겼다……
+;カラオケ	
+IF LOCAL == 0
+	PRINTFORM 노래방에 들어가 %CALLNAME:COUNT%
+	;歌唱レベル5以上で
+	IF ABL:COUNT:71 >= 5
+		PRINTFORML %조사만처리(CALLNAME:COUNT,"가")% 1곡 부르니, 
+		PRINTFORML 손님은 그녀의 노래소리에 빠져들었다
+		PRINTFORML 결국, 대부분 %조사처리(CALLNAME:COUNT,"가")% 혼자 노래를 불러버렸지만, 
+		PRINTFORML %CALLNAME:COUNT%의 노랫소리를 독점했다, 며 손님은 만족한 모양이다
+		PRINTFORML 가창경험 +{ABL:COUNT:71}
+		EXP:COUNT:71 += ABL:COUNT:71 + 2
+	ELSE
+		PRINTFORML %조사만처리(CALLNAME:COUNT,"는")% 듀엣곡을 중심으로 선곡해, 
+		PRINTFORML 손님과 함께 노래를 불렀다.
+		PRINTFORML 가창경험 +4
+		EXP:COUNT:71 += 4
+	ENDIF
+;食事
+ELSEIF LOCAL == 1
+	PRINTFORML 식당에 들어간 %조사처리(CALLNAME:COUNT,"는")% 맛있는 요리에 활짝 웃음을 짓고, 
+	PRINTFORML 그 모습을 본 손님은 매우 기뻐했다
+	PRINTFORML 회화경험 +4
+	EXP:COUNT:73 += 4
+;ゲームセンター
+ELSEIF LOCAL == 2
+	PRINTFORML 두사람은 오락실에 놀러가, 함께 스티커 사진을 찍거나 댄스게임을 즐겼다.
+	PRINTFORML %조사처리(CALLNAME:COUNT,"와")% 같이 찍은 스티커 사진을 받아든 손님은 매우 기뻐했다.
+	PRINTFORML 피사경험 +2
+	PRINTFORML 무용경험 +2
+	EXP:COUNT:70 += 2
+	EXP:COUNT:72 += 2
+ENDIF

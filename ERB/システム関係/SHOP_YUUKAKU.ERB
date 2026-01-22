@@ -1,0 +1,841 @@
+﻿;===========================================================
+;娼館営業のメイン画面の関数等を管理しています
+;===========================================================
+@YUUKAKU_TOP
+
+$INPUT_LOOP
+
+DRAWLINE
+PRINTL 창관 영업
+PRINTL 《지도 중인 여배우 후보를 일하게 해 포인트를 법니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+;売却可能な奴隷数の確認
+T = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:1 >= 1 && TALENT:COUNT:199 == 0
+		T += 1
+REND
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+IF T >= 1
+	PRINTL  [0] - 은퇴시킨다
+ELSE
+	PRINTL  [-] - －－－－
+ENDIF
+PRINTL  [1] - 성 접대
+IF TIME == 0 && T >= 1
+	PRINTL  [2] - 통상 엽업 변경
+ELSEIF T >= 1
+	PRINTL  [-] -(후반에는 통상 영업 변경 불가)
+ELSE
+	PRINTL  [-] - －－－－
+ENDIF
+IF T >= 1
+	IF FLAG:546 == 0 && TIME == 1
+		PRINTL  [3] - 특수 영업
+	ELSEIF FLAG:546 == 1
+		PRINTL  [3] - 특수 영업
+	ENDIF
+ELSE
+	PRINTL  [-] - －－－－
+ENDIF
+PRINTL  [4] - 시설 확장
+DRAWLINE
+PRINTFORML  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT == 0 && T >= 1
+	CALL CHARA_SALE
+ELSEIF RESULT == 1
+	CALL WORK_RECEPTION
+ELSEIF RESULT == 2 && TIME == 0
+	CALL WORK_NORMAL
+ELSEIF RESULT == 3 && T >= 1
+	CALL WORK_SPECIAL
+ELSEIF RESULT == 4
+	CALL YUUKAKU_LABO
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+;SIF RESULT == 999
+;	GOTO INPUT_LOOP
+
+RETURN 0
+
+;-----------------------------------------------------------
+;接待について
+;-----------------------------------------------------------
+@WORK_RECEPTION
+
+PRINTFORML (현재 공헌도: {EXP:MASTER:90})
+
+;接待可能なキャラの判定
+A = 0
+REPEAT CHARANUM
+	;主人は除外
+	SIF COUNT == 0
+		CONTINUE
+	;労役中だと不可
+	SIF TIME == 1 && CFLAG:COUNT:12 != 0
+		CONTINUE
+	;売却可でないと不可
+	SIF CFLAG:COUNT:1 == 0
+		CONTINUE
+	;체력が500未満だと不可
+	SIF BASE:COUNT:0 < 500
+		CONTINUE
+	;반발각인が付いていると不可
+	SIF MARK:COUNT:3 >= 1
+		CONTINUE
+	;従順と욕망の合計値が8以下だと不可
+	SIF ABL:COUNT:10 + ABL:COUNT:11 < 8
+		CONTINUE
+	;산월・육아 중だと不可
+	SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153	
+		CONTINUE
+	SIF TALENT:COUNT:154
+		CONTINUE
+	;素質【남성】が付いていると不可
+	SIF TALENT:COUNT:122
+		CONTINUE
+
+	A += 1
+REND
+
+IF A == 0
+	PRINTFORML 접대를 할 수 있는 노예가 없습니다
+	WAIT
+	RETURN 999
+ENDIF
+
+$INPUT_LOOP_1
+;以下接待させるかの最終選択
+PRINTFORML 성접대를 하는 턴 동안에는 일절 지도가 불가합니다.
+PRINTFORML 또한, 불리한 조건의 접대도 맡아야합니다.
+PRINTFORML 접대를 준비할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+INPUT
+
+IF RESULT == 0
+	CALL RECEPTION_MAIN
+ELSEIF RESULT == 1
+	RETURN 999
+ELSE
+	GOTO INPUT_LOOP_1
+ENDIF
+
+RETURN 1
+
+;-----------------------------------------------------------
+;通常営業の営業内容を決定します
+;-----------------------------------------------------------
+@WORK_NORMAL
+
+$INPUT_LOOP_0
+
+DRAWLINE
+PRINTL 누구의 영업 상황을 변경하시겠습니까?
+CALL LIFE_LIST_NEW,1
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_0
+ENDIF
+
+;以下営業させられる条件
+;主人だと不可
+IF RESULT == MASTER
+	PRINTL 주인은 일을 할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;売却可でないと不可
+IF CFLAG:RESULT:1 == 0
+	PRINTL 지도가 부족합니다. 일을 시키려면 더 교육시키세요.
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;체력が500未満だと不可
+IF BASE:RESULT:0 < 500
+	PRINTL 쇠약해 일을 할 수 없습니다.
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;반발각인2以上が付いていると不可
+IF MARK:RESULT:3 >= 2
+	PRINTL 반발 감정이 심해 일을 할 수 없습니다.
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;従順と욕망の合計値が6以下だと不可
+B = ABL:RESULT:10
+B += ABL:RESULT:11
+IF B < 6
+	PRINTL 능력이 부족합니다. 일을 시키려면 더 지도하세요
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;산월・육아 중だと不可
+IF CFLAG:RESULT:110 - 2 <= DAY && TALENT:RESULT:153
+	PRINTL 배가 무거워 일이 불가능합니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+IF TALENT:RESULT:154
+	PRINTL 육아 중이라 일이 불가능합니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;素質【남성】が付いていると不可
+;IF TALENT:RESULT:122
+;	PRINTL 残念ながら, 男娼には未対応です
+;	WAIT
+;	GOTO INPUT_LOOP_0
+;ENDIF
+
+TARGET = RESULT
+
+;V使用不可フラグのチェック
+;オトコである
+IF TALENT:122
+	CFLAG:54 = 1
+;정조대着用
+ELSEIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+	CFLAG:54 = 1
+ELSE
+	CFLAG:54 = 0
+ENDIF
+
+;以下営業内容の選択
+
+$INPUT_LOOP_1
+
+DRAWLINE
+PRINTFORML %CALLNAME:TARGET%에게 어떤 통상 영업을 시킵니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;회화영업・봉사영업は条件なしで実行可能
+SIF CFLAG:12 != 0
+	PRINTL  [0] - 시키지 않는다
+PRINTL  [1] - 대화
+PRINTL  [2] - 봉사 접대
+;A영업の条件: A감각が3以上かつ, 굴복각인が2以上で個室拡張済み
+SIF MARK:2 >= 2 && (FLAG:48 & 1) 
+	PRINTL  [3] - A영업
+;V영업の条件: オトコでなく처녀でなくかつ, V감각が3以上または娼婦持ちかつ, 굴복각인2以上で個室拡張済み
+IF TALENT:122 == 0 && MARK:2 >= 2 && (FLAG:48 & 1) 
+	;정조대を付けているとダメ
+	SIF CFLAG:42 != 79 || (CFLAG:40 & 64) == 0
+		PRINTL  [4] - V영업
+ENDIF
+;SM영업の条件: オトコでなく, 기교が3以上かつ, 굴복각인が3以上で, 個室とSMグッズ拡張済み
+IF TALENT:122 == 0 && ABL:12 >=3 && MARK:2 >= 3 && (FLAG:48 & 1) && (FLAG:48 & 2)
+	;정조대を付けているとダメ
+	SIF CFLAG:42 != 79 || (CFLAG:40 & 64) == 0
+		PRINTL  [5] - SM영업	
+ENDIF
+;출장영업の条件: オトコでなく, 단골손님が付いており, 護衛を拡張済み
+IF TALENT:122 == 0 && TALENT:183 == 1 && (FLAG:48 & 4) != 0
+	;정조대を付けているとダメ
+	SIF CFLAG:42 != 79 || (CFLAG:40 & 64) == 0
+		PRINTL  [6] - 출장영업
+ENDIF
+IF CFLAG:12 >= 3
+	IF CFLAG:13
+		PRINTL  [9] - 콘돔을 사용하지 않는다
+	ELSE
+		PRINTL  [9] - 콘돔을 사용한다
+	ENDIF
+ENDIF
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [999] - 돌아간다
+INPUT
+
+IF RESULT == 999
+	GOTO INPUT_LOOP_0
+ELSEIF RESULT == 0
+	PRINTFORML 《%타겟이(1)% 일을 쉬게합니다》
+	WAIT
+	CFLAG:12 = 0
+	CFLAG:13 = 0
+ELSEIF RESULT == 1
+	PRINTFORML 《%타겟을(1)% 지역의 술집에서 대화로 접대하게 합니다》
+	WAIT
+	CFLAG:12 = 1
+	CFLAG:13 = 0
+ELSEIF RESULT == 2
+	IF (FLAG:48 & 32) == 0
+		PRINTFORML 《%NAME:TARGET%에게 봉사로 접대하게 합니다》
+		WAIT
+		CFLAG:12 = 2
+		CFLAG:13 = 0
+	ELSE
+		CALL SOUP_WORK
+	ENDIF
+ELSEIF RESULT == 3 && MARK:2 >= 2 && (FLAG:48 & 1)
+	PRINTFORML 《%타겟이(1)% A로 영업하게 합니다.》
+	WAIT
+	CFLAG:12 = 3
+ELSEIF RESULT == 4 && TALENT:122 == 0 && MARK:2 >= 2 && (FLAG:48 & 1) != 0
+	SIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+		GOTO INPUT_LOOP_1
+	PRINTFORML 《%타겟이(1)% V로 영업하게 합니다》
+	WAIT
+	CFLAG:12 = 4
+ELSEIF RESULT == 5 && TALENT:122 == 0 && ABL:12 >=3 && MARK:2 >= 3 && (FLAG:48 & 1) != 0 && (FLAG:48 & 2) != 0
+	SIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+		GOTO INPUT_LOOP_1
+	PRINTFORML 《%타겟이(1)% SM으로 영업하게 합니다》
+	WAIT
+	CFLAG:12 = 5
+ELSEIF RESULT == 6 && TALENT:122 == 0 && TALENT:183 == 1 && (FLAG:48 & 4) != 0
+	SIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+		GOTO INPUT_LOOP_1
+	PRINTFORML 《%타겟이(1)% 단골손님에게 출장 나갑니다》
+	WAIT
+	CFLAG:12 = 6
+ELSEIF RESULT == 9 && CFLAG:12 >= 3
+	CFLAG:TARGET:13 = 1 - CFLAG:TARGET:13
+	IF CFLAG:TARGET:13
+		PRINTFORML 《콘돔을 사용하도록 했습니다.》
+	ELSE
+		PRINTFORML 《콘돔을 사용하지 않도록 했습니다.》
+	ENDIF
+	WAIT
+	GOTO INPUT_LOOP_1
+ELSE
+	GOTO INPUT_LOOP_1
+ENDIF
+
+TARGET = -1
+
+GOTO INPUT_LOOP_0
+
+@SOUP_WORK
+PRINTL [0]  - 일반 봉사 영업
+PRINTL [1]  - 소프 플레이
+PRINTL [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT == 0
+	PRINTFORML 《%타겟이(1)% 일반 봉사 영업을 합니다》
+	WAIT
+	CFLAG:12 = 2
+	CFLAG:13 = 0
+ELSEIF RESULT == 1
+	PRINTFORML 《%타겟이(1)% 소프 플레이를 합니다》
+	WAIT
+	CFLAG:12 = 7
+	CFLAG:13 = 0
+ELSE 
+	GOTO INPUT_LOOP
+ENDIF
+
+
+;-----------------------------------------------------------
+;特殊営業の営業内容を決定します
+;-----------------------------------------------------------
+@WORK_SPECIAL
+
+;特殊営業フラグ初期化
+FLAG:41 = 0
+;参加可能人数
+M = 0
+
+;特殊営業内容の選択
+
+$INPUT_LOOP_01
+
+DRAWLINE
+PRINTFORML 어떤 특수 영업을 하겠습니까?
+
+SIF (FLAG:48 & 128) != 0
+	PRINTL  [1] - 포장 마차
+SIF (FLAG:48 & 16) != 0 && (FLAG:48 & 8) != 0
+	PRINTL  [2] - 콘서트
+SIF (FLAG:48 & 8) != 0
+	PRINTL  [3] - 스트립쇼
+SIF (FLAG:48 & 8) != 0 && FLAG:546 == 1
+	PRINTL  [4] - 난교 파티
+PRINTL  [9] - 공중 변소 플레이
+PRINTL  [10]- 처녀 경매
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT == 1 && (FLAG:48 & 128) != 0
+	PRINTFORMW 포장 마차에서 노예가 식사를 만들어 팔게합니다. 
+	PRINTFORM 누구를 포장마차로 보내겠습니까?
+	FLAG:41 = 1
+	M = 4
+ELSEIF RESULT == 2 && (FLAG:48 & 8) != 0 && (FLAG:48 & 16) != 0
+	PRINTFORMW 인기 노예를 무대에서 노래를 부르게 하여 입장료를 법니다. 
+	PRINTFORM 콘서트에 누가 참여합니까?
+	FLAG:41 = 2
+	M = 3
+ELSEIF RESULT == 3 && (FLAG:48 & 8) != 0
+	PRINTFORMW 노예의 스트립 쇼로 돈을 법니다. 
+	PRINTFORM 스트립쇼에 누가 참여합니까?
+	FLAG:41 = 3
+	M = 3
+ELSEIF RESULT == 4 && (FLAG:48 & 8) != 0 && FLAG:546 == 1
+	PRINTFORMW 노예와 여러 사람이 어울리는 비밀 파티를 엽니다. 
+	PRINTFORM 누구를 난교파티에 보내겠습니까?
+	FLAG:41 = 4
+	M = 6
+ELSEIF RESULT == 9
+	PRINTFORMW 노예를 공중 변소에 장비합니다. 
+	PRINTFORM 어떤 노예를 변소로 보냅니까?
+	FLAG:41 = 9
+	M = 10
+ELSEIF RESULT == 10
+	PRINTFORMW 처녀의 첫날 밤 권한을 경매합니다. 
+	PRINTFORM 누구의 처녀를 경매합니까?
+	FLAG:41 = 10
+	M = 1
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+CALL WORK_SPECIAL_SELECT
+
+SIF FLAG:42 == 0
+	RESTART
+
+$INPUT_LOOP_02
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	SIF COUNT == 0
+		CONTINUE
+	SIF CFLAG:COUNT:130 != 1
+		CONTINUE
+	TARGET = COUNT
+	PRINTFORM  %NAME:TARGET% / 
+	CALL LIFE_BAR
+REND
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+IF FLAG:41 == 1
+	S = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF ABL:COUNT:73 >= 1
+			S = 1
+	REND
+	IF S
+		PRINTL 이 멤버로 포장 마차를 운영하시겠습니까?
+	ELSE
+		PRINTW 포장마차는 주방 담당으로써 요리 기술 1 이상의 노예가 적어도 한 명 필요합니다.
+		RESTART
+	ENDIF
+ELSEIF FLAG:41 == 2
+	S = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF ABL:COUNT:71 >= 1
+			S = 1
+	REND
+	IF S
+		PRINTL 이 인원으로 콘서트를 열겠습니까?
+	ELSE
+		PRINTW 콘서트에는 리드 보컬로써 가창 기술 1 이상의 인원이 적어도 한명 이상 필요합니다.
+		RESTART
+	ENDIF
+ELSEIF FLAG:41 == 3
+	PRINTL 이 노예를 스트립쇼 시키겠습니까?
+ELSEIF FLAG:41 == 8
+	PRINTL 이 노예를 난교 파티에 보내겠습니까?
+ELSEIF FLAG:41 == 9
+	PRINTL 이 노예를 공중 변소에 보냅니까?
+ELSEIF FLAG:41 == 10
+	PRINTL 이 노예를 처녀 경매합니까?
+ELSE
+	PRINTL 이렇게 특수 접대를 하겠습니까?
+ENDIF
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+INPUT
+IF RESULT == 1
+	RESTART
+ELSEIF RESULT != 0
+	GOTO INPUT_LOOP_02
+ENDIF
+
+;参加キャラから営業フラグ外す。ついでに参加不能フラグの解除とV使用不可フラグのチェック
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == -1
+		CFLAG:COUNT:130 = 0
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	CFLAG:COUNT:12 = 0
+
+	;V使用不可フラグのチェック
+	;オトコである
+	IF TALENT:COUNT:122
+		CFLAG:COUNT:54 = 1
+	;정조대着用
+	ELSEIF CFLAG:COUNT:42 == 79 && (CFLAG:COUNT:40 & 64)
+		CFLAG:COUNT:54 = 1
+	ELSE
+		CFLAG:COUNT:54 = 0
+	ENDIF
+
+REND
+
+;屋台営業
+IF FLAG:41 == 1
+	CALL LUNCH_STALL
+;コンサート
+ELSEIF FLAG:41 == 2
+	CALL CONCERT
+;ストリップショー
+ELSEIF FLAG:41 == 3
+	CALL STRIPTEASE
+;乱交パーティー
+ELSEIF FLAG:41 == 4
+	CALL SEX_ORGY
+;公衆便所プレイ
+ELSEIF FLAG:41 == 9
+	CALL KB_PLAY
+;처녀オークション
+ELSEIF FLAG:41 == 10
+	CALL V_AUCTION
+ENDIF
+
+;-------------------------------------------------
+;特殊営業参加キャラ選択
+;-------------------------------------------------
+@WORK_SPECIAL_SELECT
+;参加人数クリア
+FLAG:42 = 0
+;参加キャラのフラグクリア
+REPEAT CHARANUM
+	CFLAG:COUNT:130 = -1
+REND
+
+$INPUT_LOOP_01
+
+S = 0
+
+SIF M > 1
+	PRINTFORM ({FLAG:42}/{M}명)
+PRINTL 
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;売却可でないと不可
+	SIF CFLAG:COUNT:1 == 0
+		CONTINUE
+	;체력が800未満だと不可
+	SIF BASE:COUNT:0 < 800
+		CONTINUE
+	;반발각인2以上が付いていると不可
+	SIF MARK:COUNT:3 >= 2
+		CONTINUE
+	;従順と욕망の合計値が8以下だと不可
+	SIF ABL:COUNT:10 + ABL:COUNT:11 < 8
+		CONTINUE
+	;산월のキャラは排除
+	SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		CONTINUE
+	;육아 중だと不可
+	SIF TALENT:COUNT:154
+		CONTINUE
+	;午後の場合営業中のキャラは不可
+	SIF TIME == 1 && CFLAG:COUNT:12
+		CONTINUE
+	;ストリップショーなら노출벽2以上必要
+	SIF FLAG:41 == 3 && ABL:COUNT:17 < 2
+		CONTINUE
+	;乱交パーティーなら従順4以上욕망4以上必要
+	SIF FLAG:41 == 4 && (ABL:COUNT:10 < 4 || ABL:COUNT:11 < 4)
+		CONTINUE
+	;公衆便所プレイなら従順4以上욕망4以上노출벽3以上必要
+	SIF FLAG:41 == 9 && (ABL:COUNT:10 < 4 || ABL:COUNT:11 < 4 || ABL:COUNT:17 < 3)
+		CONTINUE
+	;처녀オークションは素質:처녀かつ従順3以上必要で정조대不可
+	SIF FLAG:41 == 10 && ((TALENT:COUNT:0 == 0 || ABL:COUNT:10 < 4) || (CFLAG:COUNT:42 == 79 && (CFLAG:COUNT:40 & 64)))
+		CONTINUE
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	IF CFLAG:COUNT:130 == 1
+		PRINT  (선택된 항목)
+	ELSEIF CFLAG:COUNT:12
+		IF CFLAG:COUNT:12 == 1
+			PRINT <대화 영업중>
+		ELSEIF CFLAG:COUNT:12 == 2 || CFLAG:COUNT:12 == 7
+			PRINT <봉사 영업중>
+		ELSEIF CFLAG:COUNT:12 == 3
+			PRINT <A영업중>
+		ELSEIF CFLAG:COUNT:12 == 4
+			PRINT <V영업중>
+		ELSEIF CFLAG:COUNT:12 == 5
+			PRINT <SM영업중>
+		ELSEIF CFLAG:COUNT:12 == 6
+			PRINT <출장 영업중>
+		ELSE
+			PRINT <영업중>
+		ENDIF
+	ENDIF
+	PRINTL 
+	SIF  CFLAG:COUNT:130 == -1
+		CFLAG:COUNT:130 = 0
+	S += 1
+REND
+SIF S == 0
+	PRINTL  ※이 특수 접대에 참여할 수 있는 노예가 없습니다.
+DRAWLINE
+PRINTFORML  [999] - 선택종료
+
+INPUT
+
+IF RESULT == 999
+	RETURN 1
+ELSEIF RESULT == 0
+	GOTO INPUT_LOOP_01
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_01
+ELSEIF CFLAG:RESULT:130 == -1
+	GOTO INPUT_LOOP_01
+ELSEIF TIME == 1 && CFLAG:RESULT:12
+	PRINTFORML %CALLNAME:RESULT%의 영업은 다음주까지 변경할 수 없습니다.
+	WAIT
+	GOTO INPUT_LOOP_01
+;選べるのはM人まで
+ELSEIF FLAG:42 >= M && CFLAG:RESULT:130 == 0
+	PRINTFORMW 참가할 수 있는 건 {M}명까지 입니다.
+	GOTO INPUT_LOOP_01
+ENDIF
+
+IF CFLAG:RESULT:130 == 0
+	CFLAG:RESULT:130 = 1
+	FLAG:42 += 1
+	SIF M == 1
+		RETURN 1
+ELSEIF CFLAG:RESULT:130 == 1
+	CFLAG:RESULT:130 = 0
+	FLAG:42 -= 1
+ENDIF
+
+GOTO INPUT_LOOP_01
+
+;-----------------------------------------------------------
+;施設拡張についてあれこれ
+;-----------------------------------------------------------
+@YUUKAKU_LABO
+
+$INPUT_LOOP
+
+A = 0
+B = 0
+
+DRAWLINE
+PRINTL 어떤 시설을 확장시키겠습니까?
+PRINTFORML 《운영자금 {MONEY}포인트》(현재 공헌도: {EXP:MASTER:90})
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+SIF (FLAG:48 & 1) == 0
+	PRINTL  [0] - 개인실　　　　　(3000포인트)
+SIF (FLAG:48 & 2) == 0 && EXP:MASTER:90 >= 10
+	PRINTL  [1] - SM용품　　　　(1500포인트)
+SIF (FLAG:48 & 4) == 0 && EXP:MASTER:90 >= 30
+	PRINTL  [2] - 호위　　　　　　(10000포인트)
+SIF (FLAG:48 & 1) != 0 && (FLAG:48 & 32) == 0 && EXP:MASTER:90 >= 50
+	PRINTL  [3] - 목욕실　　　　　(30000포인트)
+SIF (FLAG:48 & 128) == 0 && EXP:MASTER:90 >= 60
+	PRINTL  [4] - 포장마차　　　　(80000포인트)
+SIF (FLAG:48 & 8) == 0 && EXP:MASTER:90 >= 80
+	PRINTL  [5] - 다목적홀　　　　(100000포인트)
+SIF (FLAG:48 & 8) != 0 && (FLAG:48 & 16) == 0 && EXP:MASTER:90 >= 100
+	PRINTL  [6] - 음향설비　　　　(50000포인트)
+SIF (FLAG:48 & 8) != 0 && FLAG:40 < 10 && EXP:MASTER:90 >= 120
+	PRINTL  [7] - 경비원　　　　　(50000포인트)
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [99] - 확장 여부 확인
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT == 99
+	CALL FACILITIES_CHECK
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 0 && (FLAG:48 & 1) == 0
+	A = 3000
+	B = 1
+ELSEIF RESULT == 1 && (FLAG:48 & 2) == 0
+	A = 1500
+	B = 2
+ELSEIF RESULT == 2 && (FLAG:48 & 4) == 0 && EXP:MASTER:90 >= 30
+	A = 10000
+	B = 4
+ELSEIF RESULT == 3 && (FLAG:48 & 1) != 0 && (FLAG:48 & 32) == 0 && EXP:MASTER:90 >= 50
+	A = 30000
+	B = 32
+ELSEIF RESULT == 4 && (FLAG:48 & 128) == 0 && EXP:MASTER:90 >= 60
+	A = 80000
+	B = 128
+ELSEIF RESULT == 5 && (FLAG:48 & 8) == 0 && EXP:MASTER:90 >= 80
+	A = 100000
+	B = 8
+ELSEIF RESULT == 6 && (FLAG:48 & 8) != 0 && (FLAG:48 & 16) == 0 && EXP:MASTER:90 >= 100
+	A = 50000
+	B = 16
+ELSEIF RESULT == 7 && (FLAG:48 & 8) != 0 && FLAG:40 < 10 && EXP:MASTER:90 >= 120
+	A = 50000
+	;ビットでまとめてチェックすることを想定し, 一応これにもビットを割りあてておく
+	B = 64
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+R = RESULT
+
+;助手の中の商売人をチェック
+M = 0
+REPEAT CHARANUM
+	IF TALENT:COUNT:211 && ISASSI:COUNT && ABL:COUNT:15
+		SIF ABL:COUNT:15 > ABL:M:15
+			M = COUNT
+	ENDIF
+REND
+
+IF M
+	A *= 100 - (ABL:M:15 * 5)
+	A /= 100
+	PRINTFORML %NAME:M%의 협상을 통해 가격을 {A}포인트로 흥정했다.
+	WAIT
+ENDIF
+
+IF MONEY < A
+	PRINTL 필요한 포인트가 부족합니다.
+	WAIT
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= A
+FLAG:48 |= B
+
+IF R == 0
+	PRINTL 방음 시설을 갖춘 독방을 추가했습니다.
+	PRINTL 이제 A영업과 V영업이 가능합니다.
+	WAIT
+ELSEIF R == 1
+	PRINTL 각종 SM상품을 입하했습니다.
+	PRINTL 이제 SM영업이 가능합니다.
+	WAIT
+ELSEIF R == 2
+	PRINTL 운전사 겸 호위를 고용했습니다.
+	PRINTL 이제 출장 영업이 가능합니다.
+	WAIT
+ELSEIF R == 3
+	PRINTL 각 별실에 목욕실을 설치했습니다.
+	PRINTL 이제 소프 플레이가 가능합니다.
+	WAIT
+ELSEIF R == 4
+	PRINTFORML 손님에게 식사를 주기 위한 포장마차를 구비했습니다.
+	PRINTL 이제 요리를 판매할 수 있습니다.
+	WAIT
+ELSEIF R == 5
+	PRINTL 다목적 홀을 지었습니다.
+	PRINTL 이제 특별한 영업이 가능합니다.
+	WAIT
+ELSEIF R == 6
+	PRINTL 음향 시설을 갖추었습니다.
+	PRINTL 이제 다양한 쇼가 가능합니다.
+	WAIT
+ELSEIF R == 7
+	FLAG:40 += 1
+	PRINTFORML 전속 경비원을 고용했습니다.(총 {FLAG:40}인)
+	PRINTL 쇼를 할 때 직원의 안전성이 높아집니다.
+	WAIT
+ENDIF
+
+GOTO INPUT_LOOP
+
+@FACILITIES_CHECK
+DRAWLINE
+PRINTL 어느 것을 봅니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+SIF FLAG:48 & 1
+	PRINTL [0] 개인실
+SIF FLAG:48 & 2
+	PRINTL [1] SM상품
+SIF FLAG:48 & 4
+	PRINTL [2] 호위
+SIF FLAG:48 & 32
+	PRINTL [3] 목욕실
+SIF FLAG:48 & 128
+	PRINTL [4] 포장마차
+SIF FLAG:48 & 8
+	PRINTL [5] 다목적 홀
+SIF FLAG:48 & 16
+	PRINTL [6] 음향 설비
+SIF FLAG:48 & 64
+	PRINTFORML [7] 경비원(현재{FLAG:40}/10인)
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL [999] - 돌아간다
+
+$INPUT_LOOP
+INPUT
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT == 0 && FLAG:48 & 1
+	PRINTL ＜개인실＞
+	PRINTL 보다 성적인 서비스를 위해 필요한 방음 시설을 갖춘 독방
+	PRINTL A영업 및 V영업이 가능해진다.
+ELSEIF RESULT == 1 && FLAG:48 & 2
+	PRINTL ＜SM상품＞
+	PRINTL 매니아가 선정한 다양한 SM상품
+	PRINTL SM영업이 가능해진다.
+ELSEIF RESULT == 2 && FLAG:48 & 4
+	PRINTL ＜호위＞
+	PRINTL 직원의 호위겸 운전사
+	PRINTL 출장 영업이 가능해진다.
+ELSEIF RESULT == 3 && FLAG:48 & 32
+	PRINTL ＜목욕실＞
+	PRINTL 각 방마다 추가되는 넓은 목욕탕
+	PRINTL 소프 플레이가 가능해진다.
+ELSEIF RESULT == 4 && FLAG:48 & 128
+	PRINTL ＜포장마차＞
+	PRINTL 노예가 식사를 만들수 있는 포장마차
+	PRINTL 포장 마차가 가능해진다.
+ELSEIF RESULT == 5 && FLAG:48 & 8
+	PRINTL ＜다목적 홀＞
+	PRINTL 다양한 쇼가 가능해지는 넓은 홀
+	PRINTL 특수 영업 메뉴에서 할 수 있는 접대의 종류가 증가
+ELSEIF RESULT == 6 && FLAG:48 & 16
+	PRINTL ＜음향 설비＞
+	PRINTL 홀에 설치하는 다양한 음향 장비
+	PRINTL 콘서트가 가능해진다.
+ELSEIF RESULT == 7 && FLAG:48 & 64
+	PRINTL ＜경비원＞
+	PRINTL 다목적 홀에서 공연 개최시에 배치되는 경비
+	PRINTL 고용 인원에 따라 직원의 안정성이 높아짐(최대 10명)
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+WAIT
+
+RESTART
+

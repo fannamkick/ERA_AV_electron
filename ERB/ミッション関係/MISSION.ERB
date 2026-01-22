@@ -1,0 +1,441 @@
+﻿;=================================================
+; 미션メイン画面
+;=================================================
+@MISSION_MAIN
+#LOCALSIZE 4
+$MISSION_MAIN
+;現在のTARGETとASSIを終了時に差し戻すために変数に記録する処理
+LOCAL:2 = -1
+SIF TARGET >= 0
+	LOCAL:2 = (NO:TARGET - 1)
+LOCAL:3 = -1
+SIF ASSI >= 0
+	LOCAL:3 = NO:ASSI
+;미션受領中かチェック
+LOCAL:1 = 0
+FOR LOCAL, 1, 350
+	SIF PBAND:LOCAL == 1
+		LOCAL:1 = LOCAL
+NEXT
+; 描画処理
+DRAWLINE
+
+PRINTL 미션
+PRINTL 《미션의 수령과 보고 등을 행합니다》
+PRINTL ※ 한 번에 수령할 수 있는 미션은 한 개뿐입니다!
+
+CALL MISSION_HEADER_INFO(LOCAL:1)
+
+SIF LOCAL:1
+	PRINTL  [  0] - 수령중인 미션의 확인・보고
+PRINTL  [  1] - 미션 수령
+;IF EXP:MASTER:90 >= 50
+;	PRINTL  [  2] - 캐릭터별 EX미션
+;	PRINTL  [  3] - 기능・소질별　EX미션
+;ENDIF
+
+DRAWLINE
+PRINTL  [998] - 돌아간다
+
+$INPUT_LOOP
+INPUT
+IF RESULT == 0 && LOCAL:1
+	CALLFORM MISSION_INFO_{LOCAL:1}
+	$INPUT_LOOP_REPORT
+	PRINTFORML 이 미션을 보고하시겠습니까?
+	PRINT [  1] 네
+	PRINTL 　　[  0] 아니오
+	PRINTL [999] - 미션의 달성조건을 표시한다
+	INPUT
+	IF RESULT == 1
+		CALL MISSION_EXEC_REPORT(LOCAL:1)
+	ELSEIF RESULT == 999
+		TRYCCALLFORM MISSION_COND_{LOCAL}
+		CATCH
+			CUSTOMDRAWLINE ‥
+			PRINTL 이 미션은 달성조건의 상세 정보가 존재하지 않습니다
+			CUSTOMDRAWLINE ‥
+		ENDCATCH
+		GOTO INPUT_LOOP_REPORT
+	ENDIF
+	GOTO MISSION_MAIN
+ELSEIF RESULT == 1 && CHARANUM > FLAG:23
+	CLEARLINE 1
+	REUSELASTLINE 사무소의 관리인력을 넘어섰기에 미션을 수령하기 위해선 누군가를 은퇴시켜야 합니다
+	GOTO INPUT_LOOP
+;ELSEIF (RESULT == 2 || RESULT == 3) && EXP:MASTER:90 < 50
+;	CLEARLINE 1
+;	REUSELASTLINE 공헌도가 부족하여 EX미션을 수령할 수 없습니다
+;	GOTO INPUT_LOOP
+ELSEIF RESULT == 1
+	CALL MISSION_LIST(1, 50)
+	GOTO MISSION_MAIN
+;ELSEIF RESULT == 2
+;	CALL MISSION_LIST(51, 300)
+;	GOTO MISSION_MAIN
+;ELSEIF RESULT == 3
+;	CALL MISSION_LIST(301, 350)
+;	GOTO MISSION_MAIN
+ELSEIF RESULT == 998
+	; TARGETとASSIを差し戻す処理
+	IF LOCAL:2 >= 0
+		SIF GETCHARA(LOCAL:2) >= 0
+			TARGET = GETCHARA(LOCAL:2)
+	ENDIF
+	IF LOCAL:3 >= 0
+		SIF GETCHARA(LOCAL:3) >= 0
+			ASSI = GETCHARA(LOCAL:3)
+	ENDIF
+	RETURN
+ELSE
+	CLEARLINE 1
+	REUSELASTLINE 잘못된 입력값입니다
+	GOTO INPUT_LOOP
+ENDIF
+
+;=================================================
+; 日付, 소지금, 공헌도, 受領中미션の表示
+;=================================================
+@MISSION_HEADER_INFO(ARG = 0)
+DRAWLINE
+PRINTFORML {DAY + 1}주차\@ TIME == 0 ? 전반 # 후반 \@
+PRINTFORML 소지금: {MONEY}포인트 공헌도: {EXP:MASTER:90}
+IF ARG
+	CALLFORM MISSION_TITLE_{ARG}
+	TRYCCALLFORM MISSION_CHARA_NO_{ARG}
+		LOCAL = GETCHARA(RESULT)
+		IF LOCAL >= 0
+			PRINTFORML 미션『%RESULTS%』수령 중 (기한까지 앞으로 {CFLAG:LOCAL:25}주)
+		ELSE
+			DEBUGPRINTFORML 경고: 미션 대상인 캐릭터가 존재하지 않습니다
+			PRINTFORML 미션『%RESULTS%』수령 중
+		ENDIF
+	CATCH
+		PRINTFORML 미션『%RESULTS%』수령 중
+	ENDCATCH
+ENDIF
+DRAWLINE
+
+
+;=================================================
+; 미션達成率の表示
+;--------------------------------------------
+; 引数
+;  ARG:0 走査を始めるPBANDの値
+;  ARG:1 走査を終えるPBANDの値
+;  ARG:2 存在する미션の数
+;=================================================
+@MISSION_HEADER_PER(ARG:0, ARG:1, ARG:2)
+#LOCALSIZE 2
+; 達成した미션の集計
+LOCAL:1 = 0
+FOR LOCAL, ARG:0, ARG:1 + 1
+	SIF PBAND:LOCAL > 2
+		LOCAL:1++
+NEXT
+PRINTFORML 미션 소화율 {LOCAL:1 * 100 / ARG:2, 3}％
+DRAWLINE
+
+;=================================================
+; 미션リストの表示
+;--------------------------------------------
+; 引数
+;  ARG:0 走査を始めるPBANDの値
+;  ARG:1 走査を終えるPBANDの値
+;=================================================
+@MISSION_LIST(ARG:0, ARG:1)
+; 変数の定義と初期化
+; LOCAL		一時変数(要素数2)
+; LIST		存在する미션番号を格納する変数(要素数250)
+; PAGE		現在の表示ページ番号を格納する変数 (要素数1)
+; PAGE_END	ページ番号の最大値を格納する変数 (要素数1)
+#LOCALSIZE 2
+#DIM LIST, 250
+#DIM PAGE
+#DIM PAGE_END
+VARSET LIST, -1
+PAGE = 0
+; 미션の存在判定
+LOCAL:1 = 0
+FOR LOCAL, ARG:0, ARG:1 + 1
+	; 미션の存在チェック
+	; 存在する미션タイトルを戻す関数の番号をリスト変数に格納し, 
+	; リストの要素番号を格納するカウンタ変数LOCAL:1をインクリメントする
+	; 存在しない場合は次のループへ移る
+	TRYCCALLFORM MISSION_TITLE_{LOCAL}
+		DEBUGPRINTFORML 리스트 번호 {LOCAL:1}에 미션 번호{LOCAL} %조사처리(RESULTS,"를")% 등록합니다
+		LIST:(LOCAL:1) = LOCAL
+		LOCAL:1++
+	CATCH
+		CONTINUE
+	ENDCATCH
+NEXT
+; ページ終端の計算
+PAGE_END = (LOCAL:1 - 1 < 0 ? 0 # LOCAL:1 - 1) / 10
+; ここからリスト表示処理
+$MISSION_LIST
+; リストヘッダーの表示
+CALL MISSION_HEADER_INFO
+CALL MISSION_HEADER_PER(ARG:0, ARG:1, LOCAL:1)
+; リスト本体の表示
+FOR LOCAL, PAGE * 10, PAGE * 10 + 10
+	; リスト終端ならループ終了
+	SIF LIST:LOCAL < 0
+		BREAK
+	; リスト描画
+	CALLFORM MISSION_VISIBLE_{LIST:LOCAL}
+	IF PBAND:(LIST:LOCAL) == 0 && RESULT == 1
+		; 미션タイトルの取得
+		CALLFORM MISSION_TITLE_{LIST:LOCAL}
+		PRINTFORML [{LOCAL, 3}] - %RESULTS%
+	ELSEIF PBAND:(LIST:LOCAL) == 1
+		; 미션タイトルの取得
+		CALLFORM MISSION_TITLE_{LIST:LOCAL}
+		PRINTFORML [{LOCAL, 3}] - %RESULTS% ○ 수령중인 미션
+	ELSEIF PBAND:(LIST:LOCAL) >= 2
+		IF PBAND:(LIST:LOCAL) == 2
+			LOCALS = ★ 실패
+		ELSEIF PBAND:(LIST:LOCAL) == 3
+			LOCALS = ☆ 성공
+		ELSE
+			LOCALS = ☆ 대성공
+		ENDIF
+		PRINTFORML [ - ] - 완료된 미션 %LOCALS%
+	ELSE
+		PRINTFORML [ - ] - －－－－－
+	ENDIF
+NEXT
+DRAWLINE
+; リストフッターの表示
+IF PAGE > 0
+	PRINT [997] - 이전 페이지　　
+ELSE
+	; PRINTPLAINでボタン化を防止
+	PRINTPLAIN [ - ] - －－－－－　　
+ENDIF
+PRINT [998] - 돌아간다
+IF PAGE < PAGE_END
+	PRINT 　　[999] - 다음 페이지
+ELSE
+	; PRINTPLAINでボタン化を防止
+	PRINTPLAIN 　　[ - ] - －－－－－
+ENDIF
+; ここから入力処理
+$INPUT_LOOP
+INPUT
+; 既に미션を請け負っていて, 
+; なおかつ請け負っている미션ではない場合は弾く
+IF RESULT >= 0 && RESULT < 250 && LIST:RESULT > 0 && LIST:RESULT < 50 && PBAND:(LIST:RESULT) == 0 && CFLAG:MASTER:770 > 0
+	CLEARLINE 1
+	REUSELASTLINE 통상 미션은 한가지만 진행 가능합니다
+	GOTO INPUT_LOOP
+ELSEIF RESULT >= 0 && RESULT < LOCAL:1 && PBAND:(LIST:RESULT) < 2
+	LOCAL = LIST:RESULT
+	CALLFORM MISSION_INFO_{LIST:RESULT}
+	IF PBAND:LOCAL == 0
+		$INPUT_LOOP_RECEIVE
+		PRINTFORML 이 미션을 수령하시겠습니까?
+		PRINT [  1] - 네
+		PRINTL 　　[  0] - 아니오
+		PRINTL [999] - 미션의 달성조건을 표시한다
+		INPUT
+		IF RESULT == 1
+			PBAND:LOCAL = 1
+			CFLAG:MASTER:770++
+			PRINTFORML 미션을 수령했습니다
+			CALLFORM MISSION_RECEIVE_{LOCAL}
+			RETURN
+		ELSEIF RESULT == 999
+			TRYCCALLFORM MISSION_COND_{LOCAL}
+			CATCH
+				CUSTOMDRAWLINE ‥
+				PRINTL 이 미션에는 달성 조건의 상세정보가 존재하지 않습니다
+				CUSTOMDRAWLINE ‥
+			ENDCATCH
+			GOTO INPUT_LOOP_RECEIVE
+		ELSE
+			GOTO MISSION_LIST
+		ENDIF
+	ELSEIF PBAND:LOCAL == 1
+		LOCAL = LIST:RESULT
+		PRINTFORML 이 미션을 보고합니까?
+		PRINT [1] 네
+		PRINTL 　　[0] 아니오
+		$INPUT_LOOP_REPORT
+		INPUT
+		IF RESULT == 1
+			CALL MISSION_EXEC_REPORT(LOCAL)
+			RETURN
+		ELSE
+			GOTO MISSION_LIST
+		ENDIF
+	ENDIF
+ELSEIF RESULT == 997 && PAGE > 0
+	PAGE--
+	GOTO MISSION_LIST
+ELSEIF RESULT == 998
+	RETURN
+ELSEIF RESULT == 999 && PAGE < PAGE_END
+	PAGE++
+	GOTO MISSION_LIST
+ELSE
+	CLEARLINE 1
+	REUSELASTLINE 잘못된 입력값입니다
+	GOTO INPUT_LOOP
+ENDIF
+
+;=================================================
+; 미션報告処理
+;--------------------------------------------
+; 引数
+;  ARG 미션番号
+;=================================================
+@MISSION_EXEC_REPORT(ARG)
+; 미션タイトルの取得
+CALLFORM MISSION_TITLE_{ARG}
+PRINTFORML 미션『%RESULTS%』%조사만처리(RESULTS,"를")% 보고합니다
+PRINTFORMW ………………
+PRINTFORMW …………
+PRINTFORMW ……
+CALLFORM MISSION_CALC_{ARG}
+LOCAL = RESULT
+; PBANDに成否を格納する
+IF LOCAL == 1
+	PBAND:ARG = 3
+ELSEIF LOCAL == 2
+	PBAND:ARG = 4
+ELSE
+	PBAND:ARG = 2
+ENDIF
+; 報酬の処理
+VARSET P, 0
+CALLFORM MISSION_FEE_{ARG}
+IF LOCAL <= 0
+	PRINTL 미션을 실패했습니다……
+	IF P:3 && P:4
+		PRINTFORML 미션 실패의 페널티로서 {P:3}포인트와 {P:4}의 공헌도가 몰수됩니다
+	ELSEIF P:3
+		PRINTFORML 미션 실패의 페널티로서 {P:3}포인트가 몰수됩니다
+	ELSEIF P:4
+		PRINTFORML 미션 실패의 페널티로서 {P:4}의 공헌도가 몰수됩니다
+	ENDIF
+	SIF P:3
+		MONEY = MONEY - P:3 < 0 ? 0 # MONEY - P:3
+	SIF P:4
+		EXP:MASTER:90 = EXP:MASTER:90 - P:4 < 0 ? 0 # EXP:MASTER:90 - P:4
+ELSE
+	PRINTL 미션에 성공했습니다!
+	IF P:1 && P:2
+		PRINTFORML 미션의 보수로서 {P:1}포인트와 공헌도에 {P:2} 가산됩니다
+	ELSEIF P:1
+		PRINTFORML 미션의 보수로서 {P:1}포인트가  가산됩니다
+	ELSEIF P:2
+		PRINTFORML 미션의 보수로서 공헌도에 {P:2} 가산됩니다
+	ENDIF
+	SIF P:1
+		MONEY += P:1
+	SIF P:2
+		EXP:MASTER:90 += P:2
+	SIF P:5
+		FLAG:3 += P:5
+ENDIF
+; 미션報告後の処理
+CFLAG:MASTER:770--
+VARSET TCVAR:TARGET, 0
+CALLFORM MISSION_REPORT_{ARG}(LOCAL)
+
+;=================================================
+; 미션用経験増加処理
+;--------------------------------------------
+; 引数
+;  ARG 増加処理を行うキャラ登録番号
+;--------------------------------------------
+; 備考
+;  増加する経験はTCVARで渡す
+;  要素番号はEXPに合わせる
+;=================================================
+@MISSION_ADD_EXP(ARG)
+; 経験増加処理
+PRINTFORML %NAME:ARG%
+FOR LOCAL, 0, VARSIZE("EXP")
+	IF TCVAR:ARG:LOCAL
+		; 対象が음란なら経験2倍
+		SIF TALENT:ARG:76 == 1
+			TCVAR:ARG:LOCAL *= 2
+		; 経験値の加算処理
+		; 経験名が定義されているのみ加算処理を行う
+		IF STRLENS(EXPNAME:LOCAL) > 0
+			EXP:ARG:LOCAL += TCVAR:ARG:LOCAL
+		ELSE
+			DEBUGPRINTFORML %조사처리(EXP:{(LOCAL)},"는")% 정의되지 않았기에 가속처리를 스킵합니다
+		ENDIF
+		PRINTFORML 　%EXPNAME:LOCAL% + {TCVAR:ARG:LOCAL}
+	ENDIF
+NEXT
+VARSET TCVAR:ARG, 0
+
+;=================================================
+; キャラ呼び出し
+;--------------------------------------------
+; 引数
+;  ARG 미션対象キャラNO(-1で指定しない)
+;=================================================
+@MISSION_LIFELIST_DECIDE(ARG = -1)
+CALL MISSION_LIFELIST(ARG)
+TARGET = RESULT
+PRINTFORML %타겟을(1)% 미션에 참가시킵니다
+
+;=================================================
+; パートナーキャラ呼び出し
+;--------------------------------------------
+; 引数
+;  ARG 미션対象キャラNO(-1で指定しない)
+;=================================================
+@MISSION_LIFELIST_PARTNER(ARG = -1)
+CALL MISSION_LIFELIST(ARG)
+ASSI = RESULT
+PRINTFORML %조수를(1)% 미션에 참가시킵니다
+
+;=================================================
+; キャラ呼び出し共通部
+;--------------------------------------------
+; 引数
+;  ARG 미션対象キャラNO(-1で指定しない)
+;=================================================
+@MISSION_LIFELIST(ARG)
+PRINTL 미션에 참가시킬 캐릭터를 선택해 주십시오
+$CHARA_LIST
+CALL LIFE_LIST_NEW,1
+IF RESULT < 0 || RESULT >= CHARANUM
+	CLEARLINE 1
+	REUSELASTLINE 잘못된 입력값입니다
+	GOTO CHARA_LIST
+ELSEIF ARG > 0 && NO:RESULT != ARG
+	CLEARLINE 1
+	REUSELASTLINE %조사처리(NAME:RESULT,"는")% 미션 대상 캐릭터가 아닙니다
+	GOTO CHARA_LIST
+ENDIF
+RETURN RESULT
+
+;=================================================
+;미션キャラの期日減少
+;=================================================
+@MISSION_DAY
+FOR LOCAL, 0, CHARANUM
+	SIF LOCAL == MASTER
+		CONTINUE
+	IF TALENT:LOCAL:330 == 1
+		CFLAG:LOCAL:25--
+		IF CFLAG:LOCAL:25 <= 0
+			CFLAG:LOCAL:25 = 0
+			DRAWLINE
+			PRINTFORML 미션 한도일을 맞은 캐릭터가 있습니다
+			; 미션を複数受けられるようになるとしたら考え直さないとなあ
+			FOR LOCAL:1, 1, 350
+				SIF PBAND:(LOCAL:1) == 1
+					LOCAL:2 = LOCAL:1
+			NEXT
+			CALL MISSION_EXEC_REPORT(LOCAL:2)
+		ENDIF
+	ENDIF
+NEXT

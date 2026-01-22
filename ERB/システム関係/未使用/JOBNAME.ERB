@@ -1,0 +1,455 @@
+﻿@JOBNAME
+
+	F = 0
+	STR:100 = 
+	
+	IF TALENT:TARGET:452
+		STR:100 += "不良"
+		F &= 1
+	ENDIF
+	IF TALENT:TARGET:223
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "대학생"
+			ELSE
+				;男
+				STR:100 += "대학생"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "女子大生"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:220
+		SIF BASE:TARGET:11 <= 18 && BASE:TARGET:11 >= 15
+			STR:100 += "現役"
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "高●生"
+			ELSE
+				;男
+				STR:100 += "高●生"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "女●高生"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:221
+		SIF BASE:TARGET:11 <= 15 && BASE:TARGET:11 >= 12
+			STR:100 += "現役"
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "中●生"
+			ELSE
+				;男
+				STR:100 += "中●生"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "女子中●生"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:222
+		SIF BASE:TARGET:11 <= 12 && BASE:TARGET:11 >= 6
+			STR:100 += "現役"
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "小●生"
+			ELSE
+				;男
+				STR:100 += "小●生"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "女子小●生"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:206
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "人妻"
+			ELSE
+				;男
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "人妻"
+		ENDIF
+		F += 1
+	ENDIF
+;	IF TALENT:TARGET:224
+;		STR:100 += "우등생"
+;	ENDIF
+;	IF TALENT:TARGET:204
+;		STR:100 += "運動部"
+;	ENDIF
+	IF TALENT:TARGET:210
+		STR:100 += "貧乏"
+		F += 1
+	ENDIF
+;	IF TALENT:TARGET:211
+;		STR:100 += "협상에 능숙함"
+;		F += 1
+;	ENDIF
+	IF TALENT:TARGET:209
+		STR:100 += "야마토 나데시코"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:203
+		STR:100 += "아이돌"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:407
+		IF TALENT:TARGET:122 == 1
+			IF TALENT:TARGET:413 == 1
+				;男の娘
+				STR:100 += "お姫様"
+			ELSE
+				;男
+				STR:100 += "王子様"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "お姫様"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:205
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "お嬢様"
+			ELSE
+				;男
+				STR:100 += "坊ちゃん"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "お嬢様"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:433
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "女医"
+			ELSE
+				;男
+				STR:100 += "医師"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "女医"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:208
+		STR:100 += "セレブ"
+		F += 1
+	ENDIF
+	IF TALENT:422 == 1 && TALENT:203 == 0 && TALENT:432 == 1
+		STR:100 += "レゲエダンサー"
+		F += 1
+	ENDIF
+	IF TALENT:422 == 1 && TALENT:203 == 1 && TALENT:432 == 1
+		STR:100 += "흑갸루の카리스마"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:512
+		STR:100 += "그랜드마스터"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:411
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "간호사"
+			ELSE
+				;男
+				STR:100 += "看護師"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "간호사"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:412
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "教師"
+			ELSE
+				;男
+				STR:100 += "教師"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "女教師"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:417
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "메이드"
+			ELSE
+				;男
+				STR:100 += "執事"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "메이드"
+		ENDIF
+		F += 1
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:506
+		STR:100 += "성우"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:427
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "シスター"
+			ELSE
+				;男
+				IF RAND:3 != 0
+					STR:100 += "神父"
+				ELSE
+					STR:100 += "ブラザー"
+				ENDIF
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "シスター"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:429
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "巫女"
+			ELSE
+				;男
+				STR:100 += "神主"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "巫女"
+		ENDIF
+		F += 1
+
+	ENDIF
+	IF TALENT:TARGET:429
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "婦K?"
+			ELSE
+				;男
+				STR:100 += "警○官"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "婦K"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:402
+		STR:100 += "패션모델"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:206
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413 == 0
+				;男
+				STR:100 += "主夫"
+			ENDIF
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:403 || TALENT:TARGET:404
+		STR:100 += "フリーター"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:511 && TALENT:505 
+		STR:100 += "타천사"
+		F += 1
+	ELSEIF TALENT:TARGET:511
+		STR:100 += "천사"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:508
+		STR:100 += "더치와이프"
+		;女性用もダッチ"ワイフ"なのか
+	ELSEIF TALENT:TARGET:504
+		STR:100 += "안드로이드"
+	ENDIF
+	IF TALENT:TARGET:505
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "인큐버스"
+			ELSE
+				;男
+				STR:100 += "인큐버스"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "서큐버스"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:180
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "업소여성(♂)"
+			ELSE
+				;男
+				STR:100 += "売り専男"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "업소여성"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:181
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "고급창부(♂)"
+			ELSE
+				;男
+				STR:100 += "高級売専男"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "고급창부"
+		ENDIF
+		F += 1
+;	ELSEIF TALENT:TARGET:400
+;		IF TALENT:TARGET:122
+;			IF TALENT:TARGET:413
+;				;男の娘
+;				STR:100 += "AV배우(♂)"
+;			ELSE
+;				;男
+;				STR:100 += "AV男優"
+;			ENDIF
+;		ELSE
+;			;女性
+;			STR:100 += "AV배우"
+;		ENDIF
+;		F += 1
+;	ELSEIF TALENT:TARGET:401
+;		IF TALENT:TARGET:122
+;			IF TALENT:TARGET:413
+;				;男の娘
+;				STR:100 += "인기 AV배우(♂)"
+;			ELSE
+;				;男
+;				STR:100 += "有名AV男優"
+;			ENDIF
+;		ELSE
+;			;女性
+;			STR:100 += "인기 AV배우"
+;		ENDIF
+;		F += 1
+	ENDIF
+	IF TALENT:TARGET:421
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "캬바레녀"
+			ELSE
+				;男
+				STR:100 += "キャスト"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "캬바레녀"
+		ENDIF
+		F += 1
+	ELSEIF TALENT:TARGET:451
+		IF TALENT:TARGET:122
+			IF TALENT:TARGET:413
+				;男の娘
+				STR:100 += "캬바레녀"
+			ELSE
+				;男
+				STR:100 += "キャスト"
+			ENDIF
+		ELSE
+			;女性
+			STR:100 += "캬바레녀"
+		ENDIF
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:513
+		STR:100 += "RB団首領"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:201
+		STR:100 += "프로듀서"
+		F += 1
+	ELSEIF TALENT:TARGET:202
+		STR:100 += "매니저"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:431
+		STR:100 += "ジャーナリスト"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:405
+		STR:100 += "自宅警備員"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:406
+		STR:100 += "코스프레イヤー"
+		F += 1
+	ENDIF
+	IF TALENT:TARGET:517
+		STR:100 += "探偵"
+		F += 1
+	ENDIF
+
+	IF NO:TARGET == 0 || TARGET == 0
+		;あなたのみ男(女)優判定
+		IF TALENT:TARGET:400
+			IF TALENT:TARGET:122
+				IF TALENT:TARGET:413
+					;男の娘
+					STR:100 += "AV배우(♂)"
+				ELSE
+					;男
+					STR:100 += "AV男優"
+				ENDIF
+			ELSE
+				;女性
+				STR:100 += "AV배우"
+			ENDIF
+		F += 1
+		ENDIF
+		;なにか称号がついているか?
+		SIF F > 0
+			STR:100 += "兼"
+
+		STR:100 += "AV감독"
+		F += 1
+	ENDIF
+
+	IF F == 0
+		STR:100 += "フリーター"
+	ENDIF
+
+	RETURN

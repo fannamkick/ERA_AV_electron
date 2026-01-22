@@ -1,0 +1,1078 @@
+﻿;=================================================
+;メインコマンド画面
+;=================================================
+;BEGIN SHOP後に行われる処理
+;SHOW_SHOPでは調教開始, 店や奴隷市場に移動, 
+;休憩・街をうろつく, セーブ/ロード等の処理を行う
+;아이템の購入・売却処理はSHOP_ITEM.ERBにまとめる
+;奴隷の購入・売却処理はSHOP_SLAVE.ERBにまとめる
+
+;=================================================
+;BEGIN SHOP後最初に呼び出される関数
+;=================================================
+@EVENTSHOP
+;一旦購入可能아이템を空に
+REPEAT 100
+	ITEMSALES:COUNT = 0
+REND
+
+BOUGHT = -1
+
+;=================================================
+;関数EVENT SHOP終了後に自動的に呼び出される関数
+;=================================================
+@SHOW_SHOP
+SIF BOUGHT >= 0
+	JUMP ITEM_SHOP
+
+$INPUT_LOOP
+DRAWLINE
+IF DAY:1 >=3 && DAY:1 <= 5
+	DAY:4 = 0
+	PRINT [봄]
+ELSEIF DAY:1 >=6 && DAY:1 <= 8
+	DAY:4 = 1
+	PRINT [여름]
+ELSEIF DAY:1 >= 9 && DAY:1 <= 11
+	DAY:4 = 2
+	PRINT [가을]
+ELSE
+	DAY:4 = 3
+	PRINT [겨울]
+ENDIF
+IF DAY:1 != 0 && DAY:2 != 0
+	PRINTFORM  {DAY:1}월 {DAY:2}주
+ELSE
+	PRINT  ?월 ?일
+ENDIF
+
+
+;曜日の表示
+PRINTFORM   {DAY:3}년째
+
+IF TIME == 0
+	PRINT  전반
+ELSE
+	PRINT  후반
+ENDIF
+PRINTFORM / 시작한지 {DAY+1}주차
+IF FLAG:3 > 0
+	PRINTFORM  (나머지 {FLAG:3 - DAY - 1}주)
+ENDIF
+IF FLAG:201 > 100
+	PRINTFORM  / 지도담당: %NAME:MASTER%
+ELSEIF FLAG:201 >= 1 && FLAG:201 <= 20
+	PRINTFORM  / 지도담당: 
+	CALL PRINT_SPECIAL_MASTERNAME
+ENDIF
+PRINTL 
+PRINTFORM 소지금: {MONEY}포인트
+IF FLAG:4 > 0
+	PRINTFORM / 목표: {FLAG:4}포인트
+	M = MONEY
+	N = FLAG:4
+	SIF M > N
+		M = N
+	BAR M,N,32
+ENDIF
+PRINTL 
+
+PRINT_ITEM
+
+CUSTOMDRAWLINE ･･
+CALL PRINT_OTHERS
+
+;現助手＋元助手のキャラ数の確認
+S = 0
+T = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:1 == 2
+		S += 1
+	SIF CFLAG:COUNT:1 >= 1
+		T += 1
+REND
+
+;調教可能なキャラ数の確認
+E = 0
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	E += 1
+REND
+
+;主人か助手が【비밀지식】を持っているかを確認
+U = 0
+SIF TALENT:MASTER:325
+	U = 1
+;助手全体から【비밀지식】を検索
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF ISASSI:COUNT && TALENT:COUNT:325
+		U = 1
+	ENDIF
+REND
+
+DRAWLINE
+IF E >= 1
+	PRINTFORMLC [100] - 지도한다
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+PRINTFORMLC [101] - 인재 확보
+PRINTFORMLC [102] - 자재 조달
+PRINTL 
+IF E >= 1
+	PRINTFORMLC [103] - 창관 영업
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+PRINTFORMLC [104] - AV촬영(미실장)
+PRINTFORMLC [105] - 아무것도 안한다
+PRINTL 　　
+IF E >= 1 && FLAG:37
+	PRINTFORMLC [108] - 스타일리스트
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+PRINTFORMLC [109] - 방문
+PRINTFORMLC [---] - (미실장)
+PRINTL 　　
+PRINTFORMLC [111] - 능력 표시
+IF CHARANUM > 1
+	PRINTFORMLC [112] - 능력치업
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+IF CHARANUM > 1
+	PRINTFORMLC [113] - 캐릭터 정렬
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+PRINTL 
+IF CHARANUM > 1
+	PRINTFORMLC [115] - 부탁한다
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+IF CHARANUM > 1 && TIME == 0 && FLAG:100 == 1
+	PRINTFORMLC [116] - 기숙사로 간다
+ELSE
+	PRINTFORMLC [---] - －－－－－－－
+ENDIF
+IF FLAG:570 == 1
+	PRINTFORMLC [120] - 미션
+ENDIF
+IF FLAG:5 != 9 && MONEY >= FLAG:4
+	PRINTFORMLC [150] - 엔딩으로
+ENDIF
+PRINTL
+
+
+PRINTFORMLC [200] - 세이브
+PRINTFORMLC [300] - 로드
+PRINTFORMLC [400] - 설정
+PRINTL
+PRINTFORMLC [500] - 실적
+PRINTFORMLC [600] - 정보
+PRINTFORMLC [700] - 여배우명부
+PRINTL
+PRINTFORMLC [750] - TIPS
+PRINTFORMLC [888] - 치트
+PRINTL
+;=================================================
+;関数SHOW_SHOP終了時に入力された
+;0-99(아이템)以外の番号を処理する関数
+;=================================================
+@USERSHOP
+;店にいる場合は買い物中フラグを外す
+IF RESULT == 999 && BOUGHT >= 0
+	CALL CLEAR_SHOP
+	BOUGHT = -1
+ELSEIF BOUGHT >= 0
+	RETURN 0
+ENDIF
+
+;調教可能なキャラ数の確認
+E = 0
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	E += 1
+REND
+
+;主人か助手が【비밀지식】を持っているかを確認
+U = 0
+SIF TALENT:MASTER:325
+	U = 1
+;助手全体から【비밀지식】を検索
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF ISASSI:COUNT && TALENT:COUNT:325
+		U = 1
+	ENDIF
+REND
+
+;調教開始
+IF RESULT == 100 && E >= 1
+	CALL BEFORE_TRAIN
+;奴隷市場
+ELSEIF RESULT == 101
+	CALL CHARA_BUY_NEW
+;	CALL CHARA_BUY
+;아이템ショップ
+ELSEIF RESULT == 102
+	;아이템購入中フラグを立てる
+	BOUGHT = 1
+;娼館営業
+ELSEIF RESULT == 103 && E >= 1
+	CALL YUUKAKU_TOP
+;牧場
+ELSEIF RESULT == 104
+	CALL AV_TOP
+;仕立屋
+ELSEIF RESULT == 108 && E >= 1 && FLAG:37
+	CALL TAILOR_MAIN
+;訪問
+ELSEIF RESULT == 109
+	CALL HOUMON
+;休憩
+ELSEIF RESULT == 105
+	;休憩フラグを立てる
+	FLAG:0 = 1
+	BEGIN TURNEND
+;エンディングへ
+ELSEIF RESULT == 150
+	IF FLAG:5 != 9 && MONEY >= FLAG:4
+		CALL ENDING_CHECK_2
+	ELSE
+		RETURN 0
+	ENDIF
+;能力の表示
+ELSEIF RESULT == 111 && CHARANUM > 0
+	CALL SHOW_CHALADATA
+;能力値アップ
+ELSEIF RESULT == 112 && CHARANUM > 1
+	CALL ABILITY_UP
+;キャラソート
+ELSEIF RESULT == 113 && CHARANUM > 1
+	CALL CHARA_SORT
+;お願いする
+ELSEIF RESULT == 115 && CHARANUM > 1
+	CALL PLEASE_MAIN
+;女子寮
+ELSEIF RESULT == 116 && CHARANUM > 1 && FLAG:100 && TIME == 0
+	CALL LYCEE_MAIN
+ELSEIF RESULT == 120 && FLAG:570 == 1
+	CALL MISSION_MAIN
+;セーブ
+ELSEIF RESULT == 200
+	SAVEGAME
+;ロード
+ELSEIF RESULT == 300
+	LOADGAME
+;コンフィグ
+ELSEIF RESULT == 400
+	CALL SYSTEM_CONFIGURATION
+;実績
+ELSEIF RESULT == 500
+	CALL PRINT_ACHIEVEMENT
+ELSEIF RESULT == 600
+	CALL PRINT_INFORMATION
+ELSEIF RESULT == 700
+	CALL ACTRESS_LIST
+ELSEIF RESULT == 750
+	CALL TIPS_MAIN
+;치트
+ELSEIF RESULT == 888
+	CALL CHEAT_MAIN
+;デバッグ
+ELSEIF RESULT == 8826
+	CALL DEBUG_TOP
+ENDIF
+;
+;=================================================
+;調教開始処理
+;=================================================
+@BEFORE_TRAIN
+
+P = TARGET
+
+$TARGET_LOOP
+CALL CHANGE_TARGET
+SIF RESULT == 0
+	RETURN 0
+
+CALL SELECT_ASSI
+IF RESULT == 0
+	TARGET = P
+	GOTO TARGET_LOOP
+ENDIF
+
+BEGIN TRAIN
+;
+;-------------------------------------------------
+;調教対象選択(eratohoR+ 1.31)
+;-------------------------------------------------
+@CHANGE_TARGET
+$INPUT_LOOP
+
+PRINTL 이번엔 누구를 지도합니까?
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTL 자신은 지도할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;육아 중だとダメ
+ELSEIF TALENT:RESULT:154
+	PRINTL 육아 중인 노예는 지도할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+;산월だとダメ
+ELSEIF CFLAG:RESULT:110 - 2 <= DAY && TALENT:RESULT:153
+	PRINTL 임신중이라 지도할 수 있는 상태가 아닙니다
+	WAIT
+	GOTO INPUT_LOOP
+;瀕死のキャラは排除
+ELSEIF BASE:RESULT:0 < 500
+	PRINTL 쇠약해서 지도할 수 있는 상태가 아닙니다
+	WAIT
+	GOTO INPUT_LOOP
+;営業中だとダメ
+ELSEIF TIME == 1 && CFLAG:RESULT:12 != 0
+	PRINTL 영업이 끝날때까지 지도대상으로 선택할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+;営業中だとダメ
+ELSEIF TIME == 1 && CFLAG:RESULT:401 != 0
+	PRINTL 아르바이트가 끝날때까지 지도대상으로 선택할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+
+ENDIF
+
+SIF RESULT != 0
+	TARGET = RESULT
+SIF TARGET == ASSI
+	ASSI = -1
+
+;営業フラグ外す
+CFLAG:TARGET:12 = 0
+
+RETURN 1
+
+;-------------------------------------------------
+;助手選択
+;-------------------------------------------------
+@SELECT_ASSI
+;助手として参加可能なキャラ数の確認
+S = 0
+REPEAT CHARANUM
+	;0(主人公)とASSI以外は排除は排除
+	SIF COUNT == 0 || CFLAG:COUNT:1 < 2
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	;瀕死のキャラは排除
+	SIF BASE:COUNT:0 < 500
+		CONTINUE
+	;육아 중のキャラは排除
+	SIF TALENT:COUNT:154
+		CONTINUE
+	;산월のキャラは排除
+	SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		CONTINUE
+	;営業中のキャラは排除
+	SIF TIME == 1 && CFLAG:COUNT:12 != 0
+		CONTINUE
+	;今回の調教対象は排除
+	SIF COUNT == TARGET
+		CONTINUE
+;**********改造部分************************************************
+
+	;複数調教フラグが立ってる場合対象者を排除
+	SIF FLAG:1111 && GETBIT(FLAG:1111,COUNT)
+		CONTINUE
+;**********改造ここまで********************************************
+	SIF CFLAG:COUNT:140 == 1
+		CONTINUE
+	;上の処理を抜けてきた助手の数をカウント
+	S += 1
+REND
+;助手候補がいない場合は自動的に助手なし
+IF S < 1
+	ASSI = -1
+	RETURN 1
+ENDIF
+
+$INPUT_LOOP
+PRINTL 누구를 조수로 삼습니까?
+
+DRAWLINE
+PRINTFORML  [0] 조수없음
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTFORM  지도대상: %NAME:TARGET%
+PRINT (체력: 
+A = BASE:TARGET:0
+SIF BASE:TARGET:0 < 0
+	A = 0
+PRINTFORML {A}/{MAXBASE:TARGET:0}) 
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	;0(主人公)とASSI以外は排除
+	SIF COUNT == 0 || CFLAG:COUNT:1 < 2
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	SIF CFLAG:COUNT:140 == 1
+		CONTINUE
+	;瀕死のキャラは排除
+	SIF BASE:COUNT:0 < 500
+		CONTINUE
+	;육아 중のキャラは排除
+	SIF TALENT:COUNT:154
+		CONTINUE
+	;산월のキャラは排除
+	SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		CONTINUE
+	;営業中のキャラは排除
+	SIF TIME == 1 && CFLAG:COUNT:12 != 0
+		CONTINUE
+	;今回の調教対象は排除
+	SIF COUNT == TARGET
+		CONTINUE
+	PRINTFORM  [{COUNT}] %NAME:COUNT%　
+	PRINTL 
+REND
+DRAWLINE
+PRINTFORML  [999] - 돌아간다
+
+INPUT
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT == 0
+	ASSI = -1
+	RETURN 1
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSEIF CFLAG:RESULT:1 < 2
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;瀕死のキャラは排除
+ELSEIF BASE:RESULT:0 < 500
+	PRINTL 쇠약해서 조수를 시킬 수 있는 상태가 아닙니다
+	WAIT
+	GOTO INPUT_LOOP
+;육아 중だとダメ
+ELSEIF TALENT:RESULT:154
+	PRINTL 육아 중인 노예에게 조수를 시킬 수는 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+;산월だとダメ
+ELSEIF CFLAG:RESULT:110 - 2 <= DAY && TALENT:RESULT:153
+	PRINTL 임신 중이라 조수를 시킬 수 있는 상태가 아닙니다
+	WAIT
+	GOTO INPUT_LOOP
+;営業中だとダメ
+ELSEIF TIME == 1 && CFLAG:RESULT:12 != 0
+	PRINTL 오늘의 영업이 끝날 때까지 조수로 선택할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+;調教対象だとダメ
+ELSEIF RESULT == TARGET
+	PRINTL 지도대상으로 선택된 캐릭터는 조수로 선택할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+ENDIF
+
+ASSI = RESULT
+
+;助手経験フラグ立てる
+ISASSI:ASSI = 1
+
+;選んだ助手が前回の調教対象なら調教対象を空に
+SIF ASSI == TARGET
+	TARGET = -1
+
+;営業フラグ外す
+CFLAG:ASSI:12 = 0
+
+RETURN 1
+;
+;-------------------------------------------------
+;능력 확인
+;-------------------------------------------------
+@SHOW_CHALADATA
+$INPUT_LOOP
+
+;캐릭 리스트 표시
+CALL LIFE_LIST_NEW, 2
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;ELSEIF CFLAG:RESULT:140 == 1
+;	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+						;****パラ表示改造追加ここから****
+LOCAL:21 = 0
+						;****パラ表示改造追加ここまで****
+;/////2012/09/23改造部分ここから/////
+$PRINT_LIST
+DRAWLINE
+;/////2012/09/23改造部分ここまで/////
+
+PRINT  
+IF TARGET != MASTER
+	CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+	PRINTFORM %NAME:TARGET%
+ELSE
+	PRINTFORM %NAME:MASTER%
+ENDIF
+IF TARGET > 0
+	SETFONT ""
+	IF TALENT:121 == 0 && TALENT:154 == 0
+		PRINT 　　　
+		IF CFLAG:645 == 1 && TALENT:420 == 0 && TALENT:500 == 0 && TALENT:501 == 0 && TALENT:504 == 0 && TALENT:505 == 0 && TALENT:511 == 0 && TALENT:520 == 0 && TALENT:532 == 0 && TALENT:554 == 0
+			SETCOLOR 0xF58F98 
+			PRINT 
+			CALL HEART_CODE
+			PRINTFORM 위험일
+			PRINT 
+			CALL HEART_CODE
+			RESETCOLOR
+		ELSEIF CFLAG:644 == 3
+			SETCOLOR 0xF58F98 
+			PRINT 
+			CALL HEART_CODE
+			PRINTFORM 생리
+			PRINT 
+			CALL HEART_CODE
+			RESETCOLOR
+		ENDIF
+	ENDIF
+		PRINTL
+	S = 0
+	SETFONT ""
+	CALL ESTIMATE_CHARA
+	SIF S > 0
+		PRINTFORM  [평가액: {S}포인트]
+ENDIF
+
+IF BASE:30 > 0 && TALENT:504 == 0 && TALENT:400 == 1
+	PRINTFORM  [매달 출연료: {BASE:30}포인트]
+ELSEIF BASE:30 > 0 && TALENT:504 == 1 && TALENT:400 == 1
+	PRINTFORM  [매달 전기세: {BASE:30}포인트]
+ENDIF
+PRINTL
+
+IF TARGET != MASTER
+	PRINT
+	IF TALENT:400 == 1
+		PRINTFORM  예명: 
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		PRINTFORML %NICKNAME:TARGET%
+	ENDIF
+ENDIF
+SETFONT ""
+
+PRINTFORM 【성별: 
+IF TALENT:TARGET:122 == 1 || TALENT:TARGET:413 == 1
+	PRINTFORM ♂
+ELSE
+	PRINTFORM ♀
+ENDIF
+PRINTFORM 】
+
+PRINTFORM 【직업:
+CHKFONT "あくびん"
+IF RESULT
+	SETFONT "あくびん"
+ENDIF
+	IF NO:TARGET == NO:MASTER
+		PRINTFORM AV감독
+	ELSEIF TALENT:TARGET:554
+		PRINTFORM 《색욕》LUXURIA
+	ELSEIF TALENT:TARGET:511 && TALENT:505 
+		PRINTFORM 타천사
+	ELSEIF TALENT:422 == 1 && TALENT:203 == 1 && TALENT:432 == 1
+		PRINTFORM 흑갸루의 카리스마
+	ELSEIF TALENT:TARGET:512
+		PRINTFORM 그랜드마스터
+	ELSEIF TALENT:TARGET:511
+		PRINTFORM 천사
+	ELSEIF TALENT:TARGET:513
+		PRINTFORM RB단수령
+	ELSEIF TALENT:TARGET:505
+		PRINTFORM 서큐버스
+	ELSEIF TALENT:TARGET:407
+		PRINTFORM 공주님
+	ELSEIF TALENT:TARGET:181
+		PRINTFORM 고급창부
+	ELSEIF TALENT:TARGET:180
+		PRINTFORM 업소여성
+	ELSEIF TALENT:TARGET:203
+		PRINTFORM 아이돌
+	ELSEIF TALENT:TARGET:402
+		PRINTFORM 패션모델
+	ELSEIF TALENT:TARGET:421
+		PRINTFORM 캬바레녀
+	ELSEIF TALENT:TARGET:411
+		PRINTFORM 간호사
+	ELSEIF TALENT:TARGET:412
+		PRINTFORM 교사
+	ELSEIF TALENT:TARGET:517
+		PRINTFORM 보디가드
+	ELSEIF TALENT:TARGET:433
+		PRINTFORM 여의사
+	ELSEIF TALENT:TARGET:417
+		PRINTFORM 메이드
+	ELSEIF TALENT:TARGET:506
+		PRINTFORM 성우
+	ELSEIF TALENT:TARGET:427 && TALENT:122 == 0
+		PRINTFORM 수녀
+	ELSEIF TALENT:TARGET:427 && TALENT:122 == 1
+		PRINTFORM 수사
+	ELSEIF TALENT:TARGET:429 && TALENT:122 == 0
+		PRINTFORM 여경
+	ELSEIF TALENT:TARGET:429 && TALENT:122 == 1
+		PRINTFORM 경관
+	ELSEIF TALENT:TARGET:223
+		PRINTFORM 대학생
+	ELSEIF TALENT:TARGET:220
+		PRINTFORM 고등학생
+	ELSEIF TALENT:TARGET:221
+		PRINTFORM 중학생
+	ELSEIF TALENT:TARGET:222
+		PRINTFORM 초등학생
+	ELSEIF TALENT:TARGET:206 && TALENT:122 == 0
+		PRINTFORM 주부
+	ELSEIF TALENT:TARGET:206 && TALENT:122 == 1
+		PRINTFORM 주부
+	ELSEIF TALENT:422 == 1 && TALENT:203 == 0 && TALENT:432 == 1
+		PRINTFORM 레게 댄서
+	;バイトかもしれないけど타카기さんは店員で表示させたいので優先度上げ
+	ELSEIF CSTR:90 != ""
+		PRINTFORM %CSTR:90%
+	ELSEIF TALENT:TARGET:403
+		PRINTFORM 프리터
+	ELSEIF TALENT:TARGET:404
+		PRINTFORM 프리터
+	;△ちょっと乱暴な気がする。手入れ対象
+	;↑CSTR:90で直記入すればそちらを読めるようにしたので書いてないやつは多少乱暴でもいいか感
+	ELSE
+		PRINTFORM 프리터
+	ENDIF
+SETFONT ""
+PRINTFORM 】
+
+SIF CFLAG:1 > 0
+	PRINT (売却
+SIF CFLAG:1 == 2
+	PRINT ・助手
+SIF CFLAG:1 > 0
+	PRINT 可)
+IF CFLAG:110 - 2 <= DAY && TALENT:153
+	PRINT [산월]
+ELSEIF  TALENT:153
+	PRINT [임신중]
+ELSEIF TALENT:154
+	PRINT [육아 중]
+ENDIF
+IF CFLAG:12 != 0
+	IF CFLAG:12 == 1
+		PRINT 《회화영업중》
+	ELSEIF CFLAG:12 == 2 || CFLAG:12 == 7
+		PRINT 《봉사영업중》
+	ELSEIF CFLAG:12 == 3
+		PRINT 《A영업중》
+	ELSEIF CFLAG:12 == 4
+		PRINT 《V영업중》
+	ELSEIF CFLAG:12 == 5
+		PRINT 《SM영업중》
+	ELSEIF CFLAG:12 == 6
+		PRINT 《출장영업중》
+	ENDIF
+ENDIF
+
+SIF CFLAG:633 == 1
+	PRINT 《호위있음》
+PRINTL 
+
+IF ABL:10 >= 3
+	PRINTFORM  다니고 있는 곳: 
+	IF CFLAG:684 == 0
+		PRINTFORM 없음
+	ELSE
+		IF CFLAG:680 == 1
+			PRINTFORM 에스테
+			IF ABL:50 == 10
+				PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+			ELSEIF ABL:50 >= 8 && TALENT:515 == 0 && TALENT:518 == 0 && TALENT:509 == 0 && TALENT:519 == 0
+				PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+			ELSEIF ABL:50 >= 5 && TALENT:203 == 0 && TALENT:402 == 0 && TALENT:515 == 0 && TALENT:518 == 0 && TALENT:509 == 0 && TALENT:519 == 0
+					PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+			ENDIF
+		ENDIF
+		IF CFLAG:681 == 1
+			PRINTFORM 체육관
+			IF ABL:51 == 10
+				PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+			ELSEIF ABL:51 >= 5 && TALENT:204 == 0
+				PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+			ELSEIF ABL:51 >= 5 && TALENT:16 == 0 && TALENT:204 == 0
+				PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+			ENDIF
+		ENDIF
+			IF CFLAG:682 == 1
+				PRINTFORM 학원
+				IF ABL:52 == 10
+					PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+				ELSEIF ABL:52 >= 8 && TALENT:224 == 0
+					PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+				ELSEIF ABL:52 >= 5 && TALENT:224 == 0 && TALENT:50 == 0
+					PRINTFORM (이 이상은 효과가 없을 듯 합니다)
+				ENDIF
+			ENDIF
+		ENDIF
+	PRINTL
+ENDIF
+
+
+IF TALENT:330 == 1
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	SETCOLOR 0xFFD700
+	CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+	PRINT 
+	PRINTFORM  ※미션 종료까지: 앞으로 {CFLAG:25}주
+	PRINTL
+	RESETCOLOR
+	SETFONT ""
+ENDIF
+
+SIF ( CFLAG:15 > 0 && TALENT:0 == 0 && TALENT:122 == 0 ) || CFLAG:16 >= 0 || TALENT:2 == 0 || ( ( TALENT:121 == 1 || TALENT:122 == 1 ) && TALENT:1 == 0 ) 
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+IF CFLAG:16 >= 0
+	SETCOLOR 0xF58F98 
+	CALL FIRSTKISS_DETAIL
+	RESETCOLOR
+ENDIF
+
+IF CFLAG:15 > 0 && TALENT:0 == 0 && TALENT:122 == 0
+	SETCOLOR 0xF58F98 
+	CALL LOSTVIRGIN_DETAIL
+	RESETCOLOR
+ENDIF
+
+IF TALENT:2 == 0
+	SETCOLOR 0xF58F98 
+	CALL LOSTANALVIRGIN_DETAIL
+	RESETCOLOR
+ENDIF
+
+IF ( ( TALENT:121 == 1 || TALENT:122 == 1 ) && TALENT:1 == 0 )
+	SETCOLOR 0xF58F98 
+	PRINT 　
+	CALL HEART_CODE
+	PRINT 동정상실　　　: 
+	IF ABL:10 < 3 && NO:TARGET != 0
+		PRINTL 済
+	ELSE
+		PRINTFORML %CSTR:2%
+	ENDIF
+	RESETCOLOR
+ENDIF
+
+SIF TALENT:184 || TALENT:425 || TALENT:153
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+IF TALENT:184
+	SETCOLOR 0xF58F98 
+	PRINT 　
+	CALL HEART_CODE
+	PRINTFORM 남자친구　　　　　: 
+	PRINTFORM %CSTR:7% %CSTR:8%(
+	CALL PRINT_BOYFRIEND
+	PRINTL )
+	RESETCOLOR
+ENDIF
+
+IF TALENT:425
+	SETCOLOR 0xF58F98 
+	PRINT 　
+	CALL HEART_CODE
+	PRINTFORM 단골섹프　　: 
+	PRINTFORML %CSTR:47% %CSTR:48%
+	RESETCOLOR
+ENDIF
+IF TALENT:153 == 1
+	SETCOLOR 0xF58F98 
+	PRINT 　
+	CALL HEART_CODE
+	PRINTFORM 임신중　　　　: 
+	PRINTFORM %CSTR:60%의 아이
+RESETCOLOR
+PRINTL
+ENDIF
+
+
+SETFONT ""
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINT  
+CALL LIFE_BAR
+PRINT  
+CALL VITAL_BAR
+PRINT  
+CALL BEAUTY_BAR
+PRINT
+IF CFLAG:MASTER:694 == 1 && TALENT:430 == 0 && NO:TARGET != (NO:MASTER)
+	CALL NTR_BAR
+ENDIF
+PRINT
+;러브스코프があれば호감도表示
+IF ITEM:37 && TARGET != MASTER
+	PRINT  호감도
+	BAR CFLAG:2,1000,32
+	PRINTFORML ({(CFLAG:2)/10}％)
+ENDIF
+						;****追加ここから****
+SIF TALENT:520
+	CALL MP_BAR
+						;****追加ここまで****
+
+
+IF BASE:10 > 0 && TALENT:TARGET:85 && FLAG:5 != 1
+	D = BASE:10 / 2
+	PRINTFORML  수명: 나머지{D}일
+ENDIF
+						;****パラ表示改造追加ここから****
+CALL SHOW_INFO, LOCAL:21
+;후반の表示をINFO.ERB側に移動しました
+						;****パラ表示改造追加ここまで****
+;/////2012/09/23改造部分ここから/////
+;TARGETをTに退避
+T = TARGET
+
+;前後のキャラボタンを用意する
+PRINTFORMLC \@(LOCAL:21 <= 0) ? %" " * 16% # [1001] 이전 페이지\@
+PRINTLC [999] 리스트로 돌아간다
+						;****相性表示追加ここから****
+PRINTFORMLC \@(LOCAL:21 >= 4 || (TARGET == 0 && LOCAL:21 >= 1)) ? %" " * 16% # [1003] 다음 페이지\@
+						;****相性表示追加ここまで****
+PRINTL
+						;****パラ表示改造追加ここから****
+PRINTFORMLC \@(T <= 0) ? %" " * 16% # [1005] 이전 캐릭터\@
+PRINTLC [1000] 메인 화면으로 돌아간다
+PRINTFORMLC \@(T >= CHARANUM - 1) ? %" " * 16% # [1007] 다음 캐릭터\@
+PRINTL
+						;****パラ表示改造追加ここまで****
+;PRINTFORMLC \@(T <= 0) ?  # %" " * 3% [2000] 紹介文\@
+
+$INPUT_LOOP_01
+INPUT
+IF RESULT == 999
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 1000
+	RETURN 0
+ELSEIF RESULT == 1005 && T > 0
+	TARGET = T - 1
+	DRAWLINE
+	PRINTL
+						;****パラ表示改造追加ここから****
+	SIF TARGET == 0 && LOCAL:21 >= 1
+		LOCAL:21 = 1
+						;****パラ表示改造追加ここまで****
+	GOTO PRINT_LIST
+ELSEIF RESULT == 1007 && T < CHARANUM - 1
+	TARGET = T + 1
+	DRAWLINE
+	PRINTL
+	GOTO PRINT_LIST
+						;****パラ表示改造追加ここから****
+ELSEIF RESULT == 1001 && LOCAL:21 > 0
+	LOCAL:21 = LOCAL:21 - 1
+	DRAWLINE
+	PRINTL
+	GOTO PRINT_LIST
+						;****相性表示追加ここから****
+ELSEIF RESULT == 1003 && (LOCAL:21 < 4 && (TARGET != 0 || LOCAL:21 < 1))
+						;****相性表示追加ここまで****
+	LOCAL:21 = LOCAL:21 + 1
+	DRAWLINE
+	PRINTL
+	GOTO PRINT_LIST
+						;****パラ表示改造追加ここまで****
+;ELSEIF RESULT == 2000 && T > 0
+;	FLAG:9 = NO:T
+;	DRAWLINE
+;	
+;	IF NO:T == 51
+;	;面接時のフラグは消えてしまうので戻る。
+;		PRINTFORMW 書類がどこかに紛れ込んでしまったのか, 面接時の紹介文が見当たらない……
+;		GOTO INPUT_LOOP
+;	ELSEIF NO:T == 85
+;		CALL EXCHARA_MANUAL_1
+;	ELSEIF NO:T == 86
+;		CALL EXCHARA_MANUAL_2
+;	ELSE
+;		CALL CHARA_MANUAL
+;	ENDIF
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+;/////2012/09/23改造部分ここまで/////
+
+GOTO INPUT_LOOP
+
+;-------------------------------------------------
+;能力値アップ
+;-------------------------------------------------
+@ABILITY_UP
+$INPUT_LOOP_0
+
+PRINTL 누구의 능력치를 올립니까?
+CALL LIFE_LIST_NEW,1
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_0
+ELSEIF CFLAG:RESULT:140 == 1
+	GOTO INPUT_LOOP_0
+;臨死中のキャラは排除
+ELSEIF  BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP_0
+;自分は排除
+ELSEIF RESULT == 0
+	PRINTL 자신의 능력을 올릴 수는 없습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+
+LOCAL = TARGET
+TARGET = RESULT
+
+$INPUT_LOOP_1
+						;****ABL表示追加ここから****
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+	PRINTFORM %NAME:TARGET%
+	SETFONT ""
+	S = 0
+	CALL ESTIMATE_CHARA
+	SIF S > 0
+		PRINTFORM  [평가액:{S}포인트]
+
+IF BASE:30 > 0 && TALENT:504 == 0 && TALENT:400 == 1
+	PRINTFORM  [매달 출연료: {BASE:30}포인트]
+ELSEIF BASE:30 > 0 && TALENT:504 == 1 && TALENT:400 == 1
+	PRINTFORM  [매달 전기세: {BASE:30}포인트]
+ENDIF
+PRINTL
+						;****ABL表示追加ここまで****
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+CALL SHOW_INFO_EXP
+CALL SHOW_JUEL
+CALL SHOW_ABLUP_SELECT
+
+INPUT
+
+TRYCCALLFORM ABLUP{RESULT}
+CATCH
+	;반발각인
+	IF RESULT == 99
+		CALL ABLUP99
+	ELSEIF RESULT == 999
+		CALL JUJUN_UP_CHECK
+		CALL YOKUBO_UP_CHECK
+		CALL CHECK_SELLASSIABLE
+		CALL CHECK_SPECIALSKIL
+		TARGET = LOCAL
+		RETURN 1
+						;****ABL表示追加ここから****
+	ELSEIF RESULT == 1001 && TARGET > 1
+		CALL JUJUN_UP_CHECK
+		CALL YOKUBO_UP_CHECK
+		CALL CHECK_SELLASSIABLE
+		CALL CHECK_SPECIALSKIL
+		TARGET -= 1
+	ELSEIF RESULT == 1003 && TARGET < CHARANUM - 1
+		CALL JUJUN_UP_CHECK
+		CALL YOKUBO_UP_CHECK
+		CALL CHECK_SELLASSIABLE
+		CALL CHECK_SPECIALSKIL
+		TARGET += 1
+						;****ABL表示追加ここまで****
+	ELSEIF RESULT == 500
+		CALL AUT_LVUPPER
+	ENDIF
+ENDCATCH
+
+GOTO INPUT_LOOP_1
+
+;---------------------------------------------------------
+;主人公名表示
+;---------------------------------------------------------
+@PRINT_SPECIAL_MASTERNAME
+	PRINTFORM %NAME:MASTER%
+
+;---------------------------------------------------------
+;初体験を奪った主人公
+;---------------------------------------------------------
+@PRINT_LOSTVIRGIN_MASTERNAME
+	CALL PRINT_SPECIAL_MASTERNAME
+
+;---------------------------------------------------------
+;첫 키스を奪った主人公
+;---------------------------------------------------------
+@PRINT_FIRSTKISS_MASTERNAME
+	CALL PRINT_SPECIAL_MASTERNAME
+
+;---------------------------------------------------------
+;ハート表示用
+;---------------------------------------------------------
+@HEART_CODE
+CHKFONT "あくびん"
+IF RESULT
+	SETFONT "あくびん"
+	PRINTFORM %UNICODE(0x2665)%
+ENDIF

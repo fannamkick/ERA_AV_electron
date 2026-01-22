@@ -1,0 +1,751 @@
+﻿;===========================================================
+;公衆便所プレイの処理はここで
+;===========================================================
+;eraIm@s_ver.0.17βdより流用して改造(pawapokya-)
+;===========================================================
+@KB_PLAY
+DRAWLINE
+
+;콘돔使用フラグ外す
+CFLAG:13 = 0
+
+;ローカル変数初期化
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+G = 0
+M = 0
+N = 0
+O = 0
+I = 0
+J = 0
+S = 0
+Q = 0
+R = 0
+X = 0
+
+REPEAT 101
+	T:COUNT = 0
+	U:COUNT = 0
+REND
+
+;調教対象と助手を空に
+TARGET = -1
+ASSI = -1
+;参加人数が一人の場合はTARGETにそのキャラを代入
+IF FLAG:42 == 1
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130
+			TARGET = COUNT
+	REND
+;参加人数が二人の場合は성교경험の高い方をTARGETに, もう一人をASSIに代入
+ELSEIF FLAG:42 == 2
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF TARGET == -1
+			TARGET = COUNT
+		ELSEIF EXP:COUNT:5 > EXP:TARGET:5
+			ASSI = TARGET
+			TARGET = COUNT
+		ELSE
+			ASSI = COUNT
+		ENDIF
+	REND
+;参加人数が3人以上の場合は, 最も성교경험の高い者をTARGETに代入
+ELSEIF FLAG:42 >= 3
+	E = -1
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF E < EXP:COUNT:5
+			TARGET = COUNT
+			E = EXP:COUNT:5
+		ENDIF
+	REND
+	E = 0
+ENDIF
+
+;参加者が2人の場合はキャラ同志の近親チェック
+TFLAG:14 = 0
+IF FLAG:42 == 2
+	PLAYER = ASSI
+	CALL INCEST
+ENDIF
+;近親同士なら年上の方をTARGET, 年下の方をASSIにする
+IF TFLAG:14
+	IF TFLAG:14 == 1
+		X = TARGET
+		TARGET = ASSI
+		ASSI = X
+		TFLAG:14 = 2
+	ELSEIF TFLAG:14 == 3
+		X = TARGET
+		TARGET = ASSI
+		ASSI = X
+		TFLAG:14 = 4
+	ENDIF
+ENDIF
+
+;特殊営業参加キャラの相性をチェック
+CALL WORK_SUB_RELATION
+
+;客の数を計算
+;参加するキャラの人気の最大値に応じて客が来ます
+E = 0
+REPEAT CHARANUM
+	SIF E < EXP:COUNT:91 && CFLAG:COUNT:130
+		E = EXP:COUNT:91
+REND
+C = E / 5
+G = C / 3
+IF C
+	REPEAT C
+		G += RAND:2
+	REND
+ENDIF
+
+;娼館の人気に応じてさらにプラス
+C = (EXP:MASTER:91 / 10)
+IF C
+	REPEAT C
+		G += RAND:2
+	REND
+ENDIF
+
+;参加者が特定の素質を持っていた場合ボーナス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	;인기인
+	SIF TALENT:COUNT:126
+		G += 1
+	;娼婦
+	SIF TALENT:COUNT:180
+		G += 2
+	;傾城
+	SIF TALENT:COUNT:181
+		G += 3
+	;아이돌
+	SIF TALENT:COUNT:203
+		G += 3
+	;아가씨
+	SIF TALENT:COUNT:205
+		G += 3
+	;귀족
+	SIF TALENT:COUNT:208
+		G += 5
+REND
+
+;10人以下だった場合, 10人にします
+SIF G < 10
+	G = 10
+
+CALL WORK_SUB_PRINT_FULLNAME
+PRINTFORML 의 공중변소 플레이를 개시했다……
+PRINTFORML 이번 플레이에는 {G}사람이 모였다
+
+WAIT
+
+IF FLAG:42 == 1 && TARGET > 0
+	PRINTFORM %타겟은()%
+ELSEIF FLAG:42 == 2 && TARGET > 0 && ASSI > 0
+	PRINTFORM %타겟과()% %조수는()%
+ELSEIF FLAG:42 ==3
+	PRINT 3명은 
+ELSE
+	PRINTFORM {FLAG:42}명은 
+ENDIF
+PRINTFORML 움직일 수 없도록 단단히 묶여서, {G}사람의 손님에게 둘러쌓여, 
+;メンバー全員が男性か정조대着用ならV使用なし
+F = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF TALENT:COUNT:122
+		CONTINUE
+	SIF CFLAG:COUNT:42 == 79 && (CFLAG:COUNT:40 & 64)
+		CONTINUE
+	F = 0
+REND
+SIF F == 0
+	PRINT 질과
+PRINTFORMW 아누스를 몇번이고 몇번이고 꿰뚫려서, 정액을 반복해 주입당했다
+PRINTFORM 손님이 나간 %CALLNAME:TARGET%
+SIF FLAG:42 >= 2
+	PRINT 들
+PRINTFORMW 의 몸에서는, 정액이 멈추지 않고 흘러나오고 있다
+
+;처녀상실
+S = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF CFLAG:54
+		CONTINUE
+	IF TALENT:COUNT:0
+		CFLAG:COUNT:50 = 1
+		SIF S == 0
+			PRINTL  
+		SIF S
+			PRINTFORM %LSTR% 
+		PRINTFORM %CALLNAME:COUNT%
+		LSTR = %조사만처리(CALLNAME:COUNT,"와")%
+		S = 1
+	ENDIF
+REND
+IF S
+	PRINTL 의 질에서 흘러나온 정액은, 
+	PRINTW 뺏겨버린 순결을 나타내듯이 붉게 물들어 있다……
+ENDIF
+S = 0
+
+PRINTL 
+
+CALL WORK_SUB_PRINT_MEMBER
+LOCAL:1 = RESULT+2
+IF FLAG:42 >= 2 && FLAG:51 >= 175
+	PRINTFORML %조사만처리(LOCAL:1,"는")% 필사적으로 서로의 이름을 계속 부르고 있지만, 
+ELSE
+	PRINTFORML %조사만처리(LOCAL:1,"는")% 필사적으로 계속 도움을 구하고 있지만, 
+ENDIF
+PRINT 이윽고
+S = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	IF TALENT:COUNT:76 || ABL:COUNT:30 >= 4
+		SIF S
+			PRINTFORM %LSTR% 
+		PRINTFORM %CALLNAME:COUNT%
+		LSTR = %조사만처리(CALLNAME:COUNT,"와")%
+		S = 1
+	ENDIF
+REND
+IF S
+	PRINTL 의 목소리는 음란한 신음으로 변해, 스스로 허리를 흔들기 시작했다……
+ELSE
+	PRINTL 그 목소리는 점차 약해져서, 차례차례 몸 위로 덮쳐오는 군중 아래에
+	PRINTL 싹 지워져 버렸다……
+ENDIF
+S = 0
+
+WAIT
+
+;口上処理
+TFLAG:13 = 116
+X = TARGET
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	TARGET = COUNT
+	CALL SELF_KOJO
+REND
+TARGET = X
+;念のため口上用フラグを空に
+TFLAG:13 = 0
+
+;奴隷のどちらかが음란かつ娼婦かつ마조or노출광or애널광の場合, 공개관장ショーが同時に行われます
+X = TARGET
+TARGET = -1
+IF TALENT:X:76 && (TALENT:X:88 || TALENT:X:89 || TALENT:X:77)
+	IF ASSI > 0
+		IF TALENT:ASSI:76 && (TALENT:ASSI:88 || TALENT:ASSI:89 || TALENT:ASSI:77)
+			CFLAG:X:53 = 1
+			CFLAG:ASSI:53 = 1
+			PRINTFORMW 마지막으로, 한 손님이 가져왔던 관장기로 %조사처리(CALLNAME:X,"과")% %CALLNAME:ASSI%의 아누스에 관장액을 주입했다
+			PRINTFORMW %CALLNAME:X%들은 애타는 소리를 내며, 손님이 지켜보는 가운데, 추잡한 소리를 내며 오물을 분출했다
+			PRINTFORMW 그 모습에 흥분한 손님들은 환호를 지르며 그녀들에게 박수를 보내고 있다
+			PRINTFORML 환성을 지르는 손님들에게 둘러쌓여, %조사처리(CALLNAME:X,"와")% %조수는()% 공허한 눈으로 허공을 바라보고 있다
+			;口上の判定
+			TFLAG:13 = 117
+			TARGET = X
+			CALL SELF_KOJO
+			TARGET = ASSI
+			CALL SELF_KOJO
+			WAIT
+			TARGET = -1
+		ELSE
+			TARGET = X
+		ENDIF
+	ELSE
+		TARGET = X
+	ENDIF
+ELSEIF ASSI > 0
+	SIF TALENT:ASSI:76 && (TALENT:ASSI:88 || TALENT:ASSI:89 || TALENT:ASSI:77)
+		TARGET = ASSI
+ENDIF
+IF TARGET > 1
+	CFLAG:53 = 1
+	PRINTFORMW 마지막으로, 한 손님이 가져왔던 관장기로 %CALLNAME:TARGET%의 아누스에 관장액을 주입했다
+	PRINTFORMW %타겟은()% 참을 수 없는 소리를 내며, 손님이 지켜보는 가운데, 추잡한 소리를 내며 오물을 분출했다
+	PRINTFORMW 그 모습에 흥분한 손님들은 환호를 지르며 그녀들에게 박수를 보내고 있다
+	PRINTFORML 환성을 지르는 손님들에게 둘러쌓여, %타겟은()% 공허한 눈으로 허공을 바라보고 있다
+	;口上の判定
+	TFLAG:13 = 117
+	CALL SELF_KOJO
+	WAIT
+ENDIF
+TARGET = X
+X = 0
+;念のため口上用フラグを空に
+TFLAG:13 = 0
+
+;成否判定
+;客の욕망をチェック, 公衆便所プレイでの値は5です
+A = 0
+B = 0
+C = 0
+
+A = 5
+;客の욕망Aをキャラの욕망の평균値が上回った場合は二倍, 下回った場合は等倍が加算されます
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:11
+REND
+E /= FLAG:42
+
+IF E >= A 
+	B += E * 2
+ELSE
+	B += E
+ENDIF
+E = 0
+
+;参加者全員の技能・素質による修正値を加算
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+
+	;全員の売春中毒を加算
+	B += ABL:COUNT:37
+
+	;성교중독・정액중독は1/2を加算
+	B += (ABL:COUNT:30 / 2) + (ABL:COUNT:31 / 2)
+
+	;봉사기술, 성교기술は1/2を加算
+	B += (ABL:COUNT:13 / 2) + (ABL:COUNT:14 / 2)
+
+	;各素質に応じて加減
+	;처녀だった
+	SIF CFLAG:COUNT:50
+		B += 10
+	;反抗的
+	SIF TALENT:COUNT:11
+		B -= 3
+	;무관심
+	SIF TALENT:COUNT:21
+		B -= 5
+	;감정부족
+	SIF TALENT:COUNT:22
+		B -= 5
+	;억압
+	SIF TALENT:COUNT:32
+		B -= 3
+	;혀놀림
+	SIF TALENT:COUNT:52
+		B += 1
+	;헌신적
+	SIF TALENT:COUNT:63
+		B += 2
+	;쾌감에 솔직
+	SIF TALENT:COUNT:70
+		B += 3
+	;음란
+	SIF TALENT:COUNT:76
+		B += 10
+	;도착적
+	SIF TALENT:COUNT:80
+		B += 3
+	;마조
+	SIF TALENT:COUNT:88
+		B += 5
+	;노출광
+	SIF TALENT:COUNT:89
+		B += 5
+	;매혹
+	SIF TALENT:COUNT:91
+		B += 2
+	;수수께끼의 매력
+	SIF TALENT:COUNT:92
+		B += 5
+	;폭유
+	SIF TALENT:COUNT:114
+		B += 3
+	;거유
+	SIF TALENT:COUNT:110
+		B += 2
+	;빈유をみる
+	;작은체형・유치・미숙함があれば逆にボーナス
+	IF TALENT:COUNT:109
+		IF TALENT:COUNT:100 || TALENT:COUNT:132 || TALENT:COUNT:135
+			B += 2
+		ELSE
+			B -= 2
+		ENDIF
+	ENDIF
+	;절벽をみる
+	;유치・미숙함があれば逆にボーナス
+	IF TALENT:COUNT:116
+		IF TALENT:COUNT:132 || TALENT:COUNT:135
+			B += 3
+		ELSE
+			B -= 3
+		ENDIF
+	ENDIF
+	;인기인
+	SIF TALENT:COUNT:126
+		B += 3
+	;娼婦
+	SIF TALENT:COUNT:180
+		B += 5
+	;傾城
+	SIF TALENT:COUNT:181
+		B += 10
+	;단골손님
+	SIF TALENT:COUNT:183
+		B += 3
+	;공개관장ショー
+	SIF CFLAG:COUNT:53 == 1
+		B += 5
+	
+	;V使用不可キャラ
+	SIF CFLAG:COUNT:54
+		B -= 10
+
+	;광기・붕괴があると満足度激減
+	SIF TALENT:COUNT:123 || TALENT:COUNT:9
+		B /= 5
+	
+REND
+	
+C = 30 + A
+
+;合計が目標値C以上なら大成功, C*3/4以上なら成功, 下回れば失敗
+IF B >= C
+	PRINTFORML 이번 공중변소 플레이로 손님들은 대만족한것 같다
+	A = 4
+ELSEIF B >= C * 3 / 4
+	PRINTFORML 이번 공중변소 플레이로 손님들은 만족한것 같다
+	A = 2
+ELSE
+	PRINTFORML 손님들의 욕망을 채우지 못한것 같다……
+	A = 1
+ENDIF
+
+WAIT
+
+DRAWLINE
+
+PLAYER = TARGET
+;パラメータ変化
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	
+	TARGET = COUNT
+
+	PRINTFORML %NAME:TARGET%의 패러미터가 다음과 같이 변화되었습니다
+
+	;긴박경험
+	T:51 = G / (2 * FLAG:42)
+
+	;부정의 구슬の計算(基礎値は人数ベースで, 従順に応じて減少)
+	M = 15 - ABL:10
+	;부정의 구슬が増加しないという事はない
+	SIF M <= 0
+		M = 1
+	U:100 = G * M
+
+	;プライドが高いと増える
+	SIF TALENT:16
+		TIMES U:100 , 1.50
+	;무관심だと少なくなる
+	SIF TALENT:21
+		TIMES U:100 , 0.90
+	;감정부족と少なくなる
+	SIF TALENT:22
+		TIMES U:100 , 0.90
+	;튀고 싶어함だと少なくなる
+	SIF TALENT:28
+		TIMES U:100 , 0.80
+	;억압だと増える
+	SIF TALENT:32
+		TIMES U:100 , 1.20
+	;해방だと少なくなる
+	SIF TALENT:33
+		TIMES U:100 , 0.80
+	;수줍음だと増える
+	SIF TALENT:35
+		TIMES U:100 , 1.10
+	;노출광だと一気に少なくなる
+	SIF TALENT:89
+		TIMES U:100 , 0.50
+
+	;成否に応じてさらに上下
+	IF A >= 2
+		TIMES U:100 , 0.80
+	ELSE
+		TIMES U:100 , 1.20
+	ENDIF
+
+	BASE:31 -= 15	
+
+	;輪姦によって発生する経験・珠
+	CALL WORK_SP_SEX_02
+
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	X = COUNT
+	CALL WORK_EXP
+	COUNT = X
+
+	;반발각인取得の判定
+	;従順の100倍+100まで許容します
+	O = ABL:10 * 100 + 100
+
+	;반발각인 LV2はLV1の√3倍, LV3は√5倍で獲得
+	I = O
+	TIMES I , 2.23
+	J = O
+	TIMES J , 1.73
+
+	IF MARK:3 != 3 && JUEL:100 > I
+		PRINTL  반발각인 LV3을 습득
+		MARK:3 = 3
+		IF MARK:4 <= 2
+			MARK:4 = 3
+			;従順がLV8以下ならば従順が2LVダウン([감정부족]の場合はダウンなし)
+			IF ABL:10 <= 8 && TALENT:22 == 0
+				ABL:10 -= 2
+				PRINTFORML  그리고 %ABLNAME:10%가 LV%조사처리(ABL:10,"로")% 내려갔다
+			ENDIF
+		ENDIF
+	ELSEIF MARK:3 != 2 && JUEL:100 > J
+		PRINTL  반발각인 LV2를 습득
+		MARK:3 = 2
+		IF MARK:4 <= 1
+			MARK:4 = 2
+			;従順がLV4以下ならば従順が1LVダウン([감정부족]の場合はダウンなし)
+			IF ABL:10 <= 4 && TALENT:22 == 0
+				ABL:10 -= 1
+				PRINTFORML  그리고 %ABLNAME:10%가 LV%조사처리(ABL:10,"로")% 내려갔다
+			ENDIF
+		ENDIF
+	ELSEIF MARK:3 != 1 && JUEL:100 > O
+		PRINTL  반발각인 LV1을 습득
+		MARK:3 = 1
+	ENDIF
+
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	;체력減少の計算
+	LOSEBASE:0 = G * 40
+
+	;처녀상실だとかなり増える
+	SIF CFLAG:50
+		TIMES LOSEBASE:0 , 2.00
+
+	;売春中毒のレベルに応じてちょっとずつ減る
+	IF ABL:37 == 1
+		TIMES LOSEBASE:0 , 0.90
+	ELSEIF ABL:37 == 2
+		TIMES LOSEBASE:0 , 0.80
+	ELSEIF ABL:37 == 3
+		TIMES LOSEBASE:0 , 0.70
+	ELSEIF ABL:37 == 4
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF ABL:37 >= 5
+		TIMES LOSEBASE:0 , 0.50
+	ENDIF
+	
+	;V경험, A경험が一定値以下だった場合체력소비増加
+	SIF EXP:0 <= 200 && CFLAG:54 == 0
+		TIMES LOSEBASE:0 , 1.10
+	SIF EXP:1 <= 200
+		TIMES LOSEBASE:0 , 1.20
+	
+	;공개관장ショーをするとかなり増える
+	SIF CFLAG:53
+		TIMES LOSEBASE:0 , 1.50
+
+	;参加人数に応じて疲労軽減
+	IF FLAG:50
+		LOSEBASE:0 /= FLAG:42
+	ELSEIF FLAG:42 >= 3
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF FLAG:42 >= 2
+		TIMES LOSEBASE:0 , 0.80
+	ENDIF
+
+	;警備員の人数に応じてちょっとずつ減る(最大2割減)
+	LOSEBASE:0 *= 100 - FLAG:40 * 2
+	LOSEBASE:0 /= 100
+	
+	;警備員の人数に応じて即死回避
+	IF LOSEBASE:0 >= BASE:0
+		;警備員の人数*9+9%の確率で체력が1残る(救済フラグを立てる)
+		SIF RAND:100 < (FLAG:40 * 9 + 9)
+		LOSEBASE:0 = BASE:0 - 1
+	ENDIF
+
+	SIF LOSEBASE:0 >= BASE:0
+		LOSEBASE:0 = BASE:0
+
+	PRINT  체력소비　　: 
+	N = BASE:0
+	CALL FIGURE_INDENT
+	PRINTV BASE:0
+	PRINT  - 
+	N = LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTV LOSEBASE:0
+	PRINT  = 
+	N = BASE:0 - LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTVL BASE:0 - LOSEBASE:0
+
+	BASE:0 -= LOSEBASE:0
+
+	PRINT  체력　　　　:
+	BAR BASE:0, MAXBASE:0, 32
+	PRINTFORML ({BASE:0}/{MAXBASE:0})
+
+	;체력が0以下, または500以下だった場合の処理
+	IF BASE:0 <= 0
+		PRINTFORML %타겟은()% {G}번째 손님에게 정액을 주입당하던 도중, 갑자기 움직이지 못하게 됐다
+		PRINTFORML 무슨짓을 해도 반응이 없다……
+		WAIT
+		;キャラの死亡確認
+		CALL CHARADEAD_CHECK
+	ELSEIF BASE:0 <= 500
+		PRINTFORML 체력이 한계에 달했습니다. 쉬게 해주세요
+	ENDIF
+
+	DRAWLINE
+	WAIT
+REND
+TARGET = PLAYER
+
+;売上金を計算します
+Q = 0
+
+;기준액
+V = 2300
+PRINT 기준액 
+PRINTFORML  +{V}
+Q += V
+V = 0
+
+;近親によるボーナス
+IF TFLAG:14 == 2
+	V = 150
+	SIF TALENT:122
+		PRINT 부
+	SIF TALENT:122 == 0
+		PRINT 모
+	SIF TALENT:ASSI:122
+		PRINT 자
+	SIF TALENT:ASSI:122 == 0
+		PRINT 녀
+	PRINT 덮밥
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ELSEIF TFLAG:14 == 4
+	V = 120
+	SIF TALENT:122 && TALENT:ASSI:122
+		PRINT 형제
+	SIF TALENT:122 == 0 && TALENT:ASSI:122 == 0
+		PRINT 자매
+	SIF TALENT:122 ^^ TALENT:ASSI:122
+		PRINT 남매
+	PRINT 덮밥
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;大成功によるボーナス
+IF A >= 3
+	V = 130
+	PRINT 대성공
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;参加者による補正
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	;처녀상실ならば増える
+	IF CFLAG:COUNT:50
+		V = 200
+		PRINTFORM 처녀상실(%CALLNAME:COUNT%)
+		PRINTFORML  ×{V/100}.{V%100}
+		Q *= V
+		Q /= 100
+		V = 0
+	ENDIF
+	;공개관장ショーがあれば増える
+	IF CFLAG:COUNT:53
+		V = 130
+		PRINTFORM 공개배설(%CALLNAME:COUNT%)
+		PRINTFORML  ×{V/100}.{V%100}
+		Q *= V
+		Q /= 100
+		V = 0
+	ENDIF
+	;V使用不可キャラがいると減る
+	IF CFLAG:COUNT:54
+		V = 70
+		IF TALENT:COUNT:122
+			PRINT 남자
+		ELSE
+			PRINT V불가
+		ENDIF
+		PRINTFORM (%CALLNAME:COUNT%)
+		PRINTFORML  ×{V/100}.{V%100}
+		Q *= V
+		Q /= 100
+		V = 0
+	ENDIF
+REND
+
+;共通する獲得資金処理
+CALL WORK_SP_MONEY_CM
+
+PRINTFORML 이번 공중변소 플레이로는 {Q}포인트의 대금으로 {G}명이 이용해서, 
+
+;チケット一枚あたりの金額×客の人数が収入となる
+Q *= G
+
+PRINTFORML 합계 {Q}포인트을 벌었습니다
+MONEY += Q
+
+;처녀상실フラグ, A・V경험判定フラグ, 공개관장ショー実行フラグはここで消す
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	CFLAG:50 = 0
+	CFLAG:51 = 0
+	CFLAG:52 = 0
+	CFLAG:53 = 0
+REND
+
+;特殊営業終了処理
+CALL WORK_SP_AFTER
+
+WAIT
+
+BEGIN TURNEND
+
+RETURN 1
+

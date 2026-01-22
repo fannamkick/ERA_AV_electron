@@ -1,0 +1,1240 @@
+/**
+ * SHOP_SLAVE2.ERB 완전 변환
+ * 원본 로직 100% 보존
+ */
+
+import { TrainingContext } from '../types';
+import { Character } from '../../../types/game';
+
+export async function chara_buy_setting(
+  ctx: TrainingContext,
+  character: Character
+): Promise<void> {
+  if (ctx.flags[5] === 1) {
+    ctx.base[10] = 0;
+  } else if (ctx.flags[5] === 2 || ctx.flags[5] === 9) {
+    ctx.base[10] *= 2;
+  }
+  if (ctx.flags[36]) {
+    if (character.no === 1) {
+      character.cflags[6] = 14;
+    } else if (character.no === 11) {
+      character.cflags[6] = 18;
+    } else if (character.no === 9) {
+      character.cflags[6] = 1;
+    } else if (character.no === 18) {
+      character.cflags[6] = 1;
+    } else if (character.no === 2) {
+      character.cflags[6] = 7;
+    } else if (ctx.talents[125]) {
+      character.cflags[6] = -1;
+    } else if (ctx.base[9] <= 15 && character.no != 5) {
+      character.cflags[6] = 6;
+    } else {
+      character.cflags[6] = 12;
+    }
+  }
+  if (character.no === 51) {
+    await interview_add(ctx, character);
+    ctx.flags[90] += 1;
+    if (ctx.flags[90] < 5) {
+      ctx.flags[1050] = 300;
+    }
+  }
+  await defolt_genitalcall(ctx, character);
+  if (ctx.flags[37]) {
+    await wearing_cloth_all(ctx, character);
+  }
+  if (ctx.global[200] >= 0) {
+    await clearbonus_call(ctx, character);
+  } else {
+    await calc_beauty(ctx, character);
+  }
+}
+
+export async function chara_manual(
+  ctx: TrainingContext,
+  character: Character
+): Promise<void> {
+  // TODO: #DIM CANDIDATE_NUMBER
+  CANDIDATE_NUMBER = character.tflags[ctx.args[0]];
+  ctx.print('여배우 후보 번호 00');
+  if (CANDIDATE_NUMBER < 10) {
+    ctx.print('0');
+  }
+  ctx.printValue(CANDIDATE_NUMBER);
+  ctx.result[1] = 0;
+  if (CANDIDATE_NUMBER === 1) {
+    ctx.showMessage('【미야마 카나데】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「오빠가 힘들어하고 있으니까……내가 어떻게든 해야 돼」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('얌전하고 청초하고 헌신적이라는 삼박자를 골고루 갖춘 감독(=당신)의 여동생');
+    ctx.showMessage('오빠가 힘든 걸 알고, 그런 오빠를 돕기 위해 스스로 AV배우가 되기로 결심했다');
+    ctx.showMessage('어렴풋한 연정을 친오빠에게 품고 있는 탓인지');
+    ctx.showMessage('같은 반의 남자들이 접근하고 있다는 것을 전혀 모르고 있다');
+    ctx.showMessage('하지만 이번 일로 인해 속마음은 마냥 편안하지 않아');
+    ctx.showMessage('사소한 일로 연심이 흔들리게 될지도 모른다……');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 15세　난이도: E　성장도: C　공헌도: B　매각치: B');
+  } else if (CANDIDATE_NUMBER === 2) {
+    ctx.showMessage('【사사키 미노리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「카나데한테 그런 엣찌한 짓을 시킬 바에야, 차라리 나한테 하지?」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('스포츠 만능에 보이시한, 감독(=당신)의 십여년지기 소꿉친구');
+    ctx.showMessage('당신에게 자주 성희롱을 하고 있지만 상당히 순진한 면이 있어서');
+    ctx.showMessage('의외의 반격에는 얼굴을 붉히며 굳어버리는 경우도');
+    ctx.showMessage('여동생 연배인 카나데를 소중히 생각하고 있어서, 그런 그녀가 AV배우가 되려고 결심한');
+    ctx.showMessage('것을 알고, 그저 대타로서 당신에게 AV배우가 되기 위해 나섰다');
+    ctx.showMessage('당신에게 친구 이상의 감정은 없지만, 이성에게 흥미는 있어보인다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: D　성장도: C　공헌도: A　매각치: C');
+  } else if (CANDIDATE_NUMBER === 3) {
+    ctx.showMessage('【쿠루메 사에】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「출연료는 얼마?　아 그래, 그 정도구나~」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('근처의 편의점에서 아르바이트를 하고 있는,「요즘 여자」라는 느낌이 드는 소녀');
+    ctx.showMessage('그다지 유복하지는 않은 것 같으며, 학교를 안 다니고 여러 아르바이트를 뛰고 있다');
+    ctx.showMessage('AV배우가 되면 돈을 벌 수 있다는 단락적인 생각으로 당신(=감독)의 사무소 모집을');
+    ctx.showMessage('인터넷에서 보고 응모했다');
+    ctx.showMessage('잘 생기고 부자라면 연령을 불문하고, 반한 것마냥 쫄래쫄래 따라다닌다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: D　성장도: D　공헌도: B　매각치: D');
+  } else if (CANDIDATE_NUMBER === 4) {
+    ctx.showMessage('【이이노 미키】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「후후……제가 눈에 띌 수 있는 찬스에요!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('대기업의 아가씨로, 당신(=감독)의 반친구');
+    ctx.showMessage('매우 고압적이라 남자를 하인으로밖에 생각하지 않고, 학교에서 남자를 셔틀로 써먹는');
+    ctx.showMessage('모습은 셀 수 없을 정도로 많이 보인다');
+    ctx.showMessage('들리는 소문에 따르면, 평범한 샐러리맨과 결혼한 나이차 큰 언니를 굉장히');
+    ctx.showMessage('우러러보고 있어서, 언니의 말이라면 뭐라도 따르는 솔직한 면도 있는 것 같다');
+    ctx.showMessage('관심받기 좋아하고 자신의 미모에 자신이 있기에, 이번 일을 듣고 입후보해왔다');
+    ctx.showMessage('그러나 일단 분별력은 있어서, 본격적인 행위에는 저항이 있는 모양이다.');
+    ctx.showMessage('또한, 의외로 남자에게 속기 쉬운 성격이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: B　성장도: D　공헌도: C　매각치: B');
+  } else if (CANDIDATE_NUMBER === 5) {
+    ctx.showMessage('【와타라이 키쿄우】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「응……힘낼게. 야한 거 잔뜩 가르쳐줘?」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('다소 노출이 심한 코스프레 차림으로 동영상 사이트에 이른바「춤춰보았다」계 동영상을');
+    ctx.showMessage('올리거나, 이벤트로 약간 야한 코스프레 ROM을 배포하고 있는 연령미상의 넷 아이돌');
+    ctx.showMessage('그러나 그 모습은 과묵하지만 품행 단정하고 성적 우수, 있는 그대로의 자신과는 다른「누군가」');
+    ctx.showMessage('를 강하게 동경하고 있는 연구자 기질의 중●생');
+    ctx.showMessage('당장의 관심사는 남성의 생리현상이며');
+    ctx.showMessage('나이에 맞지 않는 요염한 행동이나 말투로 도발하는 일도 잦다');
+    ctx.showMessage('「우등생이 아닌 자신이 되는 것」과 남성을 가까이서 관찰할 수 있는 것 때문에, SNS에서');
+    ctx.showMessage('지인에게 당신(=감독)의 사무소가 신인 여배우를 모집하고 있다는 것을 알아내고는,');
+    ctx.showMessage('실제 나이를 속이고 응모했다');
+    ctx.showMessage('어디까지나 그녀에게 남자는 관찰 대상 그 이상도 이하도 아니다');
+    ctx.showMessage('따라서 이성에게 꾀이면 쉽게 넘어올 가능성도 있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 14세　난이도: D　성장도: B　공헌도: B　매각치: B');
+  } else if (CANDIDATE_NUMBER === 6) {
+    ctx.showMessage('【칸다 히요리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「당신……미안해요. 저는 약한 여자에요……」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('이이노 미키의 친언니로, 지금은 해외출장을 자주 나가는 샐러리맨과 결혼했고 아이도 있다');
+    ctx.showMessage('친정집과의 불화로 몰래 만날 수밖에 없는 여동생을 매우 소중히 여기고 있다');
+    ctx.showMessage('남편이 자주 집을 비우는 탓인지 달아오른 몸을 주체 못해, 안 되는 것임을 알면서도');
+    ctx.showMessage('생으로의 실전 행위는 엄금한 채 만남계 사이트 등에서 성욕을 발산하던 중');
+    ctx.showMessage('우연히 당신(=감독)의 사무소 직원이 그녀와 알게 되어, 좀 더 효율적으로 발산할 수 있는 장소로서');
+    ctx.showMessage('AV 여배우를 모집하고 있음을 알았던 것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 24세　난이도: C　성장도: D　공헌도: A　매각치: C');
+  } else if (CANDIDATE_NUMBER === 7) {
+    ctx.showMessage('【타타라 히나】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「유나쨩도 참~ ……아, 상냥하게 해 주실 거죠?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('「작은 타타라씨」라고 불리는, XX현에선 유명한 테니스 선수');
+    ctx.showMessage('언니이자 복식 파트너인 유나와의 관계는 레즈비언으로 의심될 정도의 진한 스킨십이 가득하고');
+    ctx.showMessage('또 이른바 「연인 연결」로서 코트에 임하는 모습도 볼 수 있다');
+    ctx.showMessage('히나 쪽이 얌전해서, 폭주하기 십상인 유나를 뒷바라지하는 손해보는 역할을 많이 맡지만');
+    ctx.showMessage('반대로 유나가 이끌어주지 않으면 당황스러워할 정도로 유나에게 의존하고 있다');
+    ctx.showMessage('딱히 이렇다할 훈련은 하고 있지 않지만, 왜인지 노래를 쓸데없이 잘 한다');
+    ctx.showMessage('평범한 연예기획사로 착각한 유나가 프로필을 당신(=감독)의 사무소에 보내는 바람에');
+    ctx.showMessage('여배우 후보에 올랐지만, 언니의 스탑퍼로서 조금씩 현재의 상황을');
+    ctx.showMessage('받아들이고 있는 것 같다');
+    ctx.showMessage('레즈 수준으로 유나와 서로 장난치고 해도, 확실히 남성에게 흥미는 있는 것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: D　성장도: B　공헌도: B　매각치: C');
+  } else if (CANDIDATE_NUMBER === 8) {
+    ctx.showMessage('【타타라 유나】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「에?　아이돌이 아니고 자위돌?　뭐 상관없어, 잘 부탁해♪」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('「큰 타타라씨」라고 불리는, XX현에서 유명한 테니스 선수');
+    ctx.showMessage('여동생이자 복식 파트너인 히나와의 관계는 레즈비언으로 의심될 정도의 진한 스킨십이 가득하고');
+    ctx.showMessage('또 이른바「연인 연결」로서 코트에 임하는 모습도 볼 수 있다');
+    ctx.showMessage('유나 쪽이 활발하고, 종종 폭주하면 히나에게 수습되고 있지만, 내심으론 히나에게');
+    ctx.showMessage('부담을 주지 않으려는 언니다운 면도 가지고 있다');
+    ctx.showMessage('딱히 이렇다할 훈련은 하고 있지 않지만, 왜인지 노래를 쓸데없이 잘 한다');
+    ctx.showMessage('평범한 연예기획사로 착각해서, 프로필을 당신(=감독)의 사무소로 보냈지만,');
+    ctx.showMessage('AV여배우 후보라는 일을「재밌을 것 같다」라는 한마디로 시원스럽게 받아들이고');
+    ctx.showMessage('말았다');
+    ctx.showMessage('레즈 수준으로 유나와 서로 장난치고 해도, 확실히 남성에게 흥미는 있는 것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: E　성장도: B　공헌도: B　매각치: C');
+  } else if (CANDIDATE_NUMBER === 9) {
+    ctx.showMessage('【레이첼・I・파라디수스】(Rachel Invasor Paradisus)');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「곤란해하는 사람에게 손을 내미는 건 당연한 일이잖아요?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('파라디수스 왕국이라는 유럽의 작은 섬나라에서 일본으로 유학온 공주님');
+    ctx.showMessage('일본어가 서투른 건지 성격인지 가끔 말도 안 되는 얼빠진 발언을 반복해 주변 사람들을');
+    ctx.showMessage('당황하게 만드는 것 같다');
+    ctx.showMessage('온화하고 누구에게나 친절하지만 프라이드는 높고');
+    ctx.showMessage('신분에 만족하는 삶을 인정하지 않는 완고한 면도 있다');
+    ctx.print('파라디수스 왕국엔 과학으로는 설명할 수 없는');
+    await hint_chara("신비한 힘", ctx, character);
+    ctx.showMessage('이 있어서');
+    ctx.showMessage('다른 사람을 특별한 도구 없이 치료할 수 있다고 한다');
+    ctx.showMessage('또, 만드는 방법이 수상하지만 효과는 발군인 약을 조제하는 것이 취미로 보인다');
+    ctx.showMessage('당신(=감독)의 처지를 알고 어떻게든 도와주고 싶다는 생각이 앞서 AV배우가');
+    ctx.showMessage('뭐하는 일인지도 제대로 듣지 않고 입후보해왔다');
+    ctx.showMessage('이성에 대한 면역은 별로 없고, 연애에 대한 동경을 안고 있는 것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: C　성장도: D　공헌도: SS　매각치: S');
+    ctx.showMessage('');
+  } else if (CANDIDATE_NUMBER === 10) {
+    ctx.showMessage('【키류 카논】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「앗핫하, 나를 AV배우로 삼겠다는 건가. 당신 재밌는 남자네」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.print('뒷세계에서 절대적인 권력을 가진');
+    await hint_chara("키류 조직의 외동딸", ctx, character);
+    ctx.showMessage('');
+    ctx.showMessage('대쪽 같은 깔끔한 성격으로, 그 나이에 조직의 사내들을 한데 모으는 등');
+    ctx.showMessage('남다른 카리스마를 지니고 있다');
+    ctx.showMessage('또한, 성적도 우수하여 당신(=감독)이 다니는 학교의 학생회장을 맡고 있으며');
+    ctx.showMessage('뛰어난 변론・교섭 기술은 이사회와 혼자서 자웅을 겨룰 수 있을 정도');
+    ctx.showMessage('자신이 내다본 인재를 시험하는 성가신 습관이 있어서, 아무래도 원래부터 신경쓰이던 당신을');
+    ctx.showMessage('이번 일에 말려들게 한 장본인이기도 하다');
+    ctx.showMessage('본인 가라사대「너 정도의 남자라면 여자를 한둘쯤 쉽게 후리고 다니면서');
+    ctx.showMessage('시키는 대로 하게 하는 건 간단하겠네」라는 모양이다');
+    ctx.showMessage('당신에게 협력하기는 하지만, 여배우 후보로서는 꽤 고액의 계약금을 요구하고 있는데,');
+    ctx.showMessage('이것도 당신을 시험하는 의미가 강한 것 같다');
+    ctx.showMessage('아무래도 마음에 둔 사람이 이미 있는 것 같아서 품행도 꽤 단정하기 때문에,');
+    ctx.showMessage('그렇게 쉽게 남성한테 넘어가지 않을, 것이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 18세　난이도: B　성장도: D　공헌도: SS　매각치: D');
+  } else if (CANDIDATE_NUMBER === 11) {
+    ctx.showMessage('【스노 이쿠미】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「AV배우인가ー, 뭐 좋아ー. 재밌을 것 같고ー」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('언제나 체육복 차림으로 이 근처를 어슬렁거리는 무직……이라고 생각되는 소녀');
+    ctx.showMessage('누군가 말을 걸면 귀찮은 듯한 말투로 대답하는 모습이 목격되고 있다');
+    ctx.showMessage('또, 항상 편의점에서 고급 아이스크림을 사거나, 게임 샵에 이른 아침부터 줄 서 있거나 하지만,');
+    ctx.print('어디에서 수입을 얻고 있는지는 아예');
+    await hint_chara("수수께끼", ctx, character);
+    ctx.showMessage('');
+    ctx.showMessage('꾸미는 데 무관심한 탓인지 그다지 눈에는 띄지 않지만, 실은 꽤 예쁜 용모를 하고 있다');
+    ctx.showMessage('어떻게 알았는지, 무슨 이유로 응모했는지 알 수는 없지만');
+    ctx.showMessage('일단 하겠다는 의지는 있는 거 같다');
+    ctx.showMessage('허나, 보낸 이력서는 나이나 쓰리사이즈 이외는 순 엉터리라고밖에 보이지 않아');
+    ctx.showMessage('역시 잘 알 수 없는 소녀다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 19세　난이도: D　성장도: B　공헌도: C　매각치: D');
+  } else if (CANDIDATE_NUMBER === 12) {
+    ctx.showMessage('【고토 미츠키】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「섹스도 하고 돈도 받는다니, 딱 좋은 알바잖아?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('거리의 진료소에서 근무하는, 소문난 미인 간호사');
+    ctx.showMessage('섹스에 대해 매우 적극적이고, 호스트인 남자친구만으로는 만족하지 못해');
+    ctx.showMessage('마음에 드는 입원환자를 자주 잡아먹고 있다');
+    ctx.showMessage('AV 촬영에 대해선 성욕을 발산할 수 있는 가벼운 아르바이트 정도의 느낌이라며');
+    ctx.showMessage('부담없이 신청해왔다');
+    ctx.showMessage('카메라에 찍히는 것에 대해서도 거부감이 적어 즉시전력으로서 기대할 수 있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 23세　난이도: E　성장도: C　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 13) {
+    ctx.showMessage('【사카키 아유무】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「저기……나, 남자인데?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('문무양도・용모단정・성격미인, 삼 박자를 고루 갖춘 흠집 없는 미소녀');
+    ctx.showMessage('');
+    ctx.showMessage('하　지　만　　남　자　다');
+    ctx.showMessage('');
+    ctx.showMessage('고등학교에서는 여자 취급을 당해 아이돌로서 추앙받고 있지만,');
+    ctx.showMessage('본인은 좀 더 남성으로서 주위에 인정받고 싶다고 생각하는 것 같다');
+    ctx.showMessage('거기에 눈독을 들인 사무소 직원이, AV 촬영으로 여성의 기분을 알게 된다면');
+    ctx.showMessage('남자로서의 격이 올라갈 것이라는 영문 모를 이유로 여배우 데뷔에 동의했다');
+    ctx.showMessage('');
+    ctx.showMessage('여배우로서 히트할 수 있을지의 여부는 차치하고, 쇼타 취향의 누님으로부터는');
+    ctx.showMessage('수로서는 최상. 특히 여교사에게는 군침도는 먹잇감으로 보이게 될 것 같다');
+    ctx.showMessage('또한, 와타라이 키쿄우가 친밀한 관찰대상으로서 흥미를 가진 모양이다');
+    ctx.showMessage('남배우로서 기용하는 것도 한 가지 지휘방법일지도 모른다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: D　성장도: C　공헌도: D　매각치: B');
+  } else if (CANDIDATE_NUMBER === 14) {
+    ctx.showMessage('【미츠루 이즈키】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「불결해…… 심판해주겠어!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('전국 대회에서 우승한 경험도 있는 검도부 주장 겸 풍기위원장');
+    ctx.showMessage('저명한 검술가인 아버지를 존경하고, 연약한 남자는 싫다고 공언하기를 꺼리지 않는다');
+    ctx.showMessage('사무라이 같은 말투와 굉장히 강직한 성격 때문에, 학교에서는 그녀를 매우 두려워한다');
+    ctx.showMessage('그러나 여학생에게는 상냥하고 늠름한 미모로「언니」라며 동경하는 후배도 많지만,');
+    ctx.showMessage('본인은 그런 쪽에 관심이 없다');
+    ctx.showMessage('당신(=감독)이 여성을 상품화하고 있다는 소문을 듣고, 회심하게 만들기 위해');
+    ctx.showMessage('당신의 사무소 문을 두드렸다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: 난공불락　성장도: F　공헌도: E　매각치: C');
+  } else if (CANDIDATE_NUMBER === 15) {
+    ctx.showMessage('【히나미 하루노】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「야한 건 안된다고 생각합니다, 하느님께서 보고 계시거든요?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.print('XX현의 제일 오래된');
+    await hint_chara("히나미 신사", ctx, character);
+    ctx.showMessage('의 외동딸로 미야마 카나데의 반친구');
+    ctx.showMessage('그야말로 야마토 나데시코 같은 소녀로 청초한 모습이 반 남자들에게 인기가 많다');
+    ctx.showMessage('그러나 비슷한 나이대의 남성을 어려워한다');
+    ctx.showMessage('하지만 당신(=감독)은 카나데를 통해 알고 있는 까닭에 어렵다는 의식은 하지 않고');
+    ctx.showMessage('있는 모양으로, 허물 없는 분위기로 대화를 나눌 수 있다');
+    ctx.showMessage('어른스럽고 차분한 성격으로 누구에게나 존대를 하지만, 가끔 나이에 걸맞는');
+    ctx.showMessage('장난스러운 모습을 보여주기도 한다');
+    ctx.showMessage('또한, 흥분하면 숨을 쉬기는 하는지 수상할 정도로 긴 말을 내뱉어');
+    ctx.showMessage('후반부는 잘 알아들을 수 없을 때도 있다');
+    ctx.showMessage('친한 친구인 카나데를 소중히 생각하여, 카나데가 여배우가 되자고 결심하고 있단 것을');
+    ctx.showMessage('알게 된 그녀는, 대역이 되겠다는 듯 당신에게 AV 여배우가 되려 나섰다');
+    ctx.showMessage('정조관념은 강하고, 또 이미 마음에 둔 사람이 있는 것인지 남자로부터의 어프로치도 그리');
+    ctx.showMessage('간단히 허용하지 않지만, 카나데의 영향으로 패션 잡지를 읽는 등');
+    ctx.showMessage('영향받기 쉬운 성격인 것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 15세　난이도: E　성장도: C　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 16) {
+    ctx.showMessage('【미사키 에리카】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「흥, 널 위해 나서주겠단 건 아니니깟!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('착각에 의해『거짓 츤데레』라고 말할만한 개성을 가지게 되어, 억지로 거기에 맞춰');
+    ctx.showMessage('대응하려고 하지만, 실제로는 꽤 소녀틱한 미야마 카나데의 반친구');
+    ctx.showMessage('당신(=감독)보다도 연하이지만 서로 반말하는 사이이며, 곧잘 시시한 것으로 말싸움');
+    ctx.showMessage('하는 경우도 많지만, 그 후에 쓸쓸해하는 것을 카나데와 히나미 하루노에게 위로받고');
+    ctx.showMessage('있는 모습을 자주 볼 수 있다');
+    ctx.showMessage('카나데가『에리쨩은 알기 쉬운 애야』라고 말할 정도로');
+    ctx.showMessage('제대로 알아준다면 솔직해져줄지도 모른다');
+    ctx.showMessage('밝고 활발한 무드 메이커이지만, 공부는 서투른 탓인지 통 영문 모를 대답을 할 때가 있고');
+    ctx.showMessage('타고난 재수가 없어 본인과는 무관한 이유로 뭔가 아픈 꼴을 당할 때가 많다');
+    ctx.showMessage('연애관에 대해서도 무진장 소녀틱해서, 거듭 카나데가『알기 쉬운 애』라고 표현할');
+    ctx.showMessage('정도의 솔직함을 가지고 있는 까닭에, 이상한 남자가 꼬이지 않는다면 좋겠지만……');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 15세　난이도: C　성장도: C　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 17) {
+    ctx.showMessage('【미야마 미이】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「섹슈얼한 업무입니까…… 하와와」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('양 팔에 각인된 Multipurpose Interactive Interface의 앞 글자를 따 「미이」라고');
+    ctx.showMessage('명명된 소녀형 안드로이드');
+    ctx.showMessage('안드로이드라서 호적이 없기 때문에 편의상 「미야마 미이」라 자칭하고 있다');
+    ctx.showMessage('인간과 조금도 차이나지 않는 조형에, 완벽한 응답에, 아무리 봐도 오버테크놀로지 덩어리인');
+    ctx.showMessage('그녀지만, 어째서인지 당신(=감독)의 사무소로 보내졌다');
+    ctx.showMessage('보낸 사람의 의도는 알 수 없지만, 피해는 없는데다가 여러가지로 사무소를 도와주고');
+    ctx.showMessage('있으므로 일단 놔두기로 했다');
+    ctx.showMessage('어찌된 영문인지 생식기능까지도 갖추고 있고, 본인 말로는 성행위도 가능하다고 한다');
+    ctx.showMessage('연애감정이라는 개념이 생소한 데다, 사무소의 대표인 당신을 제일순위로 생각하고');
+    ctx.showMessage('있기 때문에, 나쁜 벌레가 달라붙을 염려는 없다고 생각한다');
+    ctx.showMessage('');
+    ctx.showMessage('외견연령: 18세 정도　난이도: F　성장도: A　공헌도: S　매각치: S');
+  } else if (CANDIDATE_NUMBER === 18) {
+    ctx.showMessage('【렌카・록웰】(Renka Rockwell)');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「우와아…… 코스프레 옷이 가득하네요. 이거, 입어도 되나요?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('오타쿠 문화 선호가 심각해서 미국에서 온 혼혈 유학생');
+    ctx.showMessage('부활동은 치어리더부에 소속되어 있으며');
+    ctx.showMessage('작은 몸집이면서도 아메리칸 사이즈의 거유로 뛰고 있는 탓에');
+    ctx.showMessage('같은 운동장에서 부활동 중인 남자 운동부원들의 시선을 사로잡고 있다');
+    ctx.showMessage('솔직한 성격에 긍정적인 성격인, 그야말로 그림으로 그린 것 같은 미국인이지만,');
+    ctx.showMessage('이른바『야오이』물을 좋아하는지, 그녀에게 있어 이상적인 커플링으로서');
+    ctx.showMessage('당신(=감독)과 사카키 아유무의 얽힘을 망상하고 혼자 흥분하는 위험한 면도 있어,');
+    ctx.showMessage('당신과 아유무는 슬쩍 피하고 있었다');
+    ctx.showMessage('그렇다고 여성을 버린 것은 아니고, 연애에 관해선 꽤나 빠져 있는 듯');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 15세　난이도: D　성장도: D　공헌도: D　매각치: C');
+  } else if (CANDIDATE_NUMBER === 19) {
+    ctx.showMessage('【히토미쨩】(더치와이프)');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「………………」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('카논「어이 누구야 더치와이프 따위를 배우 후보에 올린 바보는……');
+    ctx.showMessage('뭐…… 이 녀석은 당신과 여배우 후보의 연습 상대로 쓰면 되겠네.');
+    ctx.showMessage('어, 뭐라고? 뭐, 외견상으론 평범한 여자애……인가 이거, 좀 기분 나쁘지만 말야――');
+    ctx.showMessage('아무튼 전용 충전 도크에 넣을 필요가 있으니까');
+    ctx.showMessage('그러다 치한에게 당할지도 몰라');
+    ctx.showMessage('일단 간단한 감정 프로그램을 구축하고 있는 것 같으니');
+    ctx.showMessage('당신을 따라준다거나 할 것 같은걸');
+    ctx.showMessage('그런데…… 이렇게 기분 나쁜 걸 치한짓 하는 녀석이 불쌍해서 참을 수가 없어……」');
+    ctx.showMessage('');
+    ctx.showMessage('난이도: 없습니다　성장도: 한다곤 말 못함　공헌도: S　매각치: 안 팔림');
+  } else if (CANDIDATE_NUMBER === 20) {
+    ctx.showMessage('【아카바 마리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「내 테크닉이라면 최고인 게 당연하잖아. 당신 보는 눈이 있는걸♪」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('말 그대로의 전형적인 흑갸루');
+    ctx.showMessage('엣찌한 동시에 매우 탐욕스러워, 아르바이트로 레게댄서를 하면서 여러 남자를');
+    ctx.showMessage('번갈아 타면서 사랑 많은 인생을 즐기고 있다');
+    ctx.showMessage('AV업계에 대해서도 흥미진진하여, 스카우트맨이 말을 걸자 쾌히 승낙하여 따라왔다');
+    ctx.showMessage('');
+    ctx.showMessage('좋든 나쁘든 강렬한 임팩트를 갖고 있기 때문에, 순진한 소녀 중에는');
+    ctx.showMessage('그녀와 교제하는 중에 갸루의 길에 발을 들여버리는 아이도 있을지 모른다……');
+    ctx.print('또 그녀는');
+    await hint_chara("악세서리숍", ctx, character);
+    ctx.showMessage('의 단골이라고 한다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 19세　난이도: D　성장도: C　공헌도: D　매각치: C');
+  } else if (CANDIDATE_NUMBER === 21) {
+    ctx.showMessage('【하세가와 미나토】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「괜ー찮아 괜ー찮아, 선생님한테 맡겨줘. 알겠지?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('교사 생활 2년차인 초보교사이자, 카나데의 담임');
+    ctx.showMessage('좋은 성품이 느껴지는 청초한 분위기를 풍기고 있으며, 학생들로부터도 매우 인기가 있다');
+    ctx.showMessage('그 반면 굉장한 도짓코로서, 쉽게 속아버릴법한 사람 좋은 부분도……');
+    ctx.showMessage('면담에서 카나데의 가정 사정을 알게 된 그녀는, 자신이 무엇인가 할 수 있진 않을까 하고 응모하여,');
+    ctx.showMessage('떳떳하게 AV에 출연하여서 사랑하는 학생을 구할 것을 결의한다');
+    ctx.showMessage('');
+    ctx.showMessage('가정적이고 치유되는 성격이라, 창부로서도 적합할지 모른다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 24세　난이도: C　성장도: B　공헌도: C　매각치: B');
+  } else if (CANDIDATE_NUMBER === 22) {
+    ctx.showMessage('【오리베 마나카】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「오빠아ー, 좀 더 마~않이 야한짓 해줄거짓♪」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('원기 폭발・활력 넘치는 요즘 중학생');
+    ctx.showMessage('좋아하는 사람에 대해서는 전력으로 어리광부리는 아이 같은 부분과, 엣찌한 일에 흥미진진해');
+    ctx.showMessage('무의식적으로 남심을 유혹하는 사악한 부분을 겸비하고 있는 것이 매력');
+    ctx.showMessage('빨리 엣찌를 경험하고 싶다고 생각하던 찰나에 스카우트되어, AV업계에 발을 디딘다');
+    ctx.showMessage('');
+    ctx.showMessage('성적 우수하고 딱딱한 성격의 언니에게는 대항심을 품고 있지만, 사실은 매우 사이가 좋다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 13세　 난이도: D　성장도: B　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 23) {
+    ctx.showMessage('【아마미 루이】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「아니 그야 저도 관심 있는데요? 이제 애도 아니고」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('세련되지 않은 스트레이트 롱의 흑발 탓인지, 수수한 인상이 강한 중○생');
+    ctx.showMessage('성격은 나이에 비해 어른스러우며, 성장을 생각하면 상당한 거유가 될 것 같은');
+    ctx.showMessage('스타일을 갖고 있지만, 반친구인 키쿄우보다는 떨어지는 까닭에');
+    ctx.showMessage('수수한 인상에 박차를 가하고 있다');
+    ctx.showMessage('소문이나 유행에 민감해 본인 왈 「돈 될 것에 대해선 후각이 좋다」는 듯 하여,');
+    ctx.showMessage('키쿄우가 슬쩍 보고 있던 당신(=감독) 사무소의 AV 여배우 모집 광고를 보고');
+    ctx.showMessage('어른스러움을 악용해 응모해왔다');
+    ctx.showMessage('남동생이 있는 것 같으며 꽤 돌보기 좋아하는 성격으로');
+    ctx.showMessage('친밀한 그룹 내에선 중재 역을 맡는 모양이다');
+    ctx.showMessage('연애에 관해선 골 빈 성격 탓인지 꽤나 홀려 있고');
+    ctx.showMessage('영향 받기 쉬운 일면도 갖고 있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 14세　 난이도: C　성장도: C　공헌도: D　매각치: B');
+  } else if (CANDIDATE_NUMBER === 24) {
+    ctx.showMessage('【테라모토 유카리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「처음으로 뒷세계인가……라고 해도 앞세계이랑 뒷세계는 뭐가 다른 거야」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('학비를 위해 AV에 계속 출연하고 있는 여대생');
+    ctx.showMessage('AV 여배우로서의 캐릭터에 이렇다 할만한 특징은 없지만, AV 여배우 중에선 차상급');
+    ctx.showMessage('클래스의 외모와, 어느 정도 어브노멀한 시추에이션의 작품에도 출연하는 덕분에');
+    ctx.showMessage('인기는 적당히 높다');
+    ctx.showMessage('여태까지 전속 계약을 하던 메이커가 무너져, 정처 없이 떠돌고 있던 차에 이번 모집');
+    ctx.showMessage('광고를 보고 응모해왔다');
+    ctx.showMessage('연애관은 정상으로, 나름대로 교제해온 사람도 많다');
+    ctx.showMessage('');
+    ctx.resetColor();
+    ctx.showMessage('연령: 21세　 난이도: C　성장도: C　공헌도: B　매각치: C');
+  } else if (CANDIDATE_NUMBER === 25) {
+    ctx.showMessage('【미카미 키요카】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「큰일났네에…… 이대로가면 교회를 닫아야 겠어」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('지역 교회를 운영하고 있는 항상 명랑 쾌활한 여성');
+    ctx.showMessage('때마침 찾아온 불경기로 기부금이 줄어, 결국 갖고 있던 교회를 폐쇄하게 될 것 같던 차에');
+    ctx.showMessage('일파만파처럼, 교회의 토지를 저당잡혀 키류 조직으로부터 선대의 운영자였던 신부가');
+    ctx.showMessage('거액의 빚을 지고 있었던 것이 알려졌다');
+    ctx.showMessage('당연히 기부금이 줄어 운영에서 온갖 문제를 겪고 있는 상황에 돈을 지불하는 대신에');
+    ctx.showMessage('AV에 출연할 것을 권유받게 되었다');
+    ctx.showMessage('그녀가 유일하게 받아들일 수 있었던 조건은, 교리에 반하는 행위인『혼전 성행위의 금지』');
+    ctx.showMessage('뿐이며, 처녀를 지키기만 하면 문제는 없는 까닭에『애널섹스와 오럴섹스라면 OK』');
+    ctx.showMessage('라고 하는 교리의 허점을 이용해 출연하게 된다');
+    ctx.showMessage('교회에 인접한 아동시설에서 고아와 이웃 아이들을 모아');
+    ctx.showMessage('일주일에 몇 번 정도 무료 음악교실을 열고 있으며');
+    ctx.showMessage('해외 성가대에 재적했던 적도 있어 가창력은 발군이다');
+    ctx.showMessage('예전에 이성과 사귄 적이 있어, 그 때 애널섹스는 경험한 적 있지만,');
+    ctx.showMessage('처녀를 지키려는 정도의 신앙심은 있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 27세　 난이도: D　성장도: B　공헌도: D　매각치: C');
+  } else if (CANDIDATE_NUMBER === 26) {
+    ctx.showMessage('【시미즈 사쿠라코】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「후하하하하! 이몸이 바로 RB단의 수령이시다! 리얼충 폭발해라!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.print('거리의 커플들에게 시비를 거는 집단');
+    await hint_chara("「RB단」", ctx, character);
+    ctx.showMessage('의 수령');
+    ctx.showMessage('옛날에는 외국 대학을 월반 졸업할 정도의 신동 소리를 들었지만 지금은 그렇다는');
+    ctx.showMessage('생각이 안 들 정도로 몰락……아니 분명 사쿠라코의 행동은 본인에게는 의미가');
+    ctx.showMessage('있긴 할 거다(by카논)');
+    ctx.showMessage('「우리가 인기없는 것은 커플들 탓이다!」라는 수수께끼의 이론으로 결성된');
+    ctx.showMessage('RB단이 당신(=감독)과 미노리가 나란히 걷고 있는 곳을 습격했을 때 알게됐다');
+    ctx.showMessage('');
+    ctx.showMessage('사실은 일부 계층에게 인기있기는 하지만, 불행할 정도로 거만한 성격과 절벽가슴인');
+    ctx.showMessage('합법로리 체형이 아무래도 이해받지 못하는 것이다.');
+    ctx.showMessage('또, RB단에서는 핀트가 엇나간 연애 세미나가 이루어지고 있으며, 그 세미나의');
+    ctx.showMessage('강사도 맡고 있다');
+    ctx.showMessage('그런 그녀지만 AV에 나오면 평범하게 인기있을 거다, 라는 지인 카논의 꼬드김으로 인해,');
+    ctx.showMessage('AV배우로 나서게 됐다');
+    ctx.showMessage('그러나 근본적인 부분에서 연애불신이고, 일부 계층의 접근이 과도하기 때문에,');
+    ctx.showMessage('진심으로 접근해오는 상대에게는 둔감하다');
+    ctx.showMessage('');
+    ctx.showMessage('RB단의 활동과 병행하여, 해외에서 알게 된「멍한 느낌의 일본인 여자아이」');
+    ctx.showMessage('를 찾고 있는 것 같으므로, 찾아주면 좋을지도 모르겠다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 18세　 난이도: B　성장도: C　공헌도: S　매각치: A');
+  } else if (CANDIDATE_NUMBER === 27) {
+    ctx.showMessage('【토모요시 아야노】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「우후훗, 멋진데요!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('지역 경찰서 교통부에서 일하는 여경');
+    ctx.showMessage('생긴 것도 집안도 아가씨지만 의외로 활동적이고 경찰서에서 높은 실적을 올리고 있다');
+    ctx.showMessage('당신(=감독)이 AV촬영을 하고 있다는 소문을 듣고');
+    ctx.showMessage('독단으로 조사하기 위해 사무소에 나타났지만…');
+    ctx.print('계급은 말단 경찰이지만 뒤에서');
+    await hint_chara("지역 경찰서의 실권을 쥐고 있는", ctx, character);
+    ctx.showMessage('상당한 수완가');
+    ctx.showMessage('일의 파트너인 사쿠라이 프리실라를 매우 좋아해서 몰래 그녀의 몸을 노리고 있다');
+    ctx.showMessage('비디오 촬영이 취미라 잘하면 그녀한테 AV를 찍어달라고 할 수도 있겠다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 20세　난이도: D　성장도: C　공헌도: S　매각치: C');
+  } else if (CANDIDATE_NUMBER === 28) {
+    ctx.showMessage('【사쿠라이 프리실라】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「하우~, 어쩌다 이렇게 된 거야~?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('지역 경찰서 교통부에서 일하는 여경');
+    ctx.showMessage('혼혈계 외모에 솔직하고 활발한 성격으로 지역에서 인기가 많다');
+    ctx.showMessage('당신(=감독)이 불법행위를 하고 있다는 소문을 듣고');
+    ctx.showMessage('독단으로 조사하기 위해 사무소에 나타났지만…');
+    ctx.showMessage('사실 일의 파트너인 토모요시 아야노에게 몸을 노려지고 있으나');
+    ctx.showMessage('아직 눈치채지 못했다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 20세　난이도: A　성장도: C　공헌도: B　매각치: C');
+  } else if (CANDIDATE_NUMBER === 29) {
+    ctx.showMessage('【아오이 하루카】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「주님, 용서해주십시오……」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('미카미 키요카와 같은 교회에서 일하는 수녀');
+    ctx.showMessage('교회계 시설 출신이며, 대학 졸업 후 시설의 후배들에게 도움이 되기 위해 고향으로 돌아왔다');
+    ctx.showMessage('하지만, 시설의 재정상황은 상상 이상으로 빡빡해서, 결국 빚을 갚기 위해');
+    ctx.showMessage('몸을 파는 일을 피할 수 없게 된다');
+    ctx.showMessage('학생 때부터 시설의 아이들을 돌봐 와서 가사 전반이 능숙하고');
+    ctx.showMessage('봉사활동 등으로 인해 근처에서는 인기있는 누님이다');
+    ctx.showMessage('특히 시설의 아이들은 언니처럼 따라주고 있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 22세　난이도: C　성장도: C　공헌도: C 매각치: C');
+  } else if (CANDIDATE_NUMBER === 30) {
+    ctx.showMessage('【후미노 유즈카】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「저, 동물 싫어하시나요?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('지역 상가에 있는『펫숍・후미노』의 간판 여성');
+    ctx.showMessage('고령화가 진행되고 있는 상가에서는 그녀와 같은 어린 소녀는 드물고');
+    ctx.showMessage('거기에『밝고 착한 아이』인 까닭에 상가의 아이돌 같은 취급을 받고 있다');
+    ctx.showMessage('도감에도 실려있지 않은 것 같은 깃털과 날개가 달렸고 넛츠를 좋아하는, 일단 파충류로');
+    ctx.showMessage('분류되는 애완동물『히나』와 학교 외에서는 항상 함께 있을 정도의 동물 애호가');
+    ctx.showMessage('');
+    ctx.showMessage('그녀가 AV 여배우를 지망하게 된 이유는, 교외의 대형 쇼핑센터 안에 펫숍이 생긴');
+    ctx.showMessage('탓인지 매상이 격감한 까닭에, 부모에게 무리를 시키고 싶지 않다고 생각한');
+    ctx.showMessage('그녀는 상가의 뒷배로, 예로부터『키류씨』라고 섬겨지고 있는');
+    ctx.showMessage('키류 카논에게 상담해, 이 일을 소개받은 것이다');
+    ctx.showMessage('거기서 만난 당신(=감독)을 따르게 됐지만, 아무래도 그녀는');
+    ctx.showMessage('예전부터 한눈에 반하기 쉬운 것 같단 말을 카논으로부터 전해듣고 있다');
+    ctx.showMessage('또한, 첫사랑은『곱상한 얼굴에 검정 계열의 코디를 한 강하고 상냥한 연상의 인물』');
+    ctx.showMessage('이었다고 하지만, 전자기기 메이커의 사장 아가씨와 결혼해버린 까닭에');
+    ctx.showMessage('그녀의 첫사랑은 이루어지지 않았다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 14세　난이도: D　성장도: B　공헌도: B　매각치: B');
+  } else if (CANDIDATE_NUMBER === 31) {
+    ctx.showMessage('【시라나미 유카리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「…………뭐야?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('새하얀 머리카락이 인상적인, 선이 가는 미소녀');
+    ctx.showMessage('청초하고 가련한 분위기와는 정반대로, 과묵하고 무기력하며 모든 것에 귀찮아하는, 가시가 있는 성격');
+    ctx.showMessage('선천적으로 몸이 약한 까닭에 학교에 다니지 않고, 집에서 요양 생활을 보내고 있다');
+    ctx.showMessage('그러한 그녀가 AV배우가 되길 희망하는 것은, 자신이 살았던 증거로서 이 세상에');
+    ctx.showMessage('뭔가 남기고 싶은 생각이 있기 때문일지도 모른다…… 촬영에는 완전히 비협조적이지만');
+    ctx.showMessage('어쨌든 네거티브해서 촬영까지는 손이 많이 가지만, 그 반면 비주얼 면에서는 더할 나위 없는');
+    ctx.showMessage('미모를 가진 소녀이다');
+    ctx.showMessage('참고로 하는 것이 없이 TV나 인터넷만 잔뜩 보고 있었던 까닭에, 오타쿠 지식은 풍부');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: A　성장도: D　공헌도: C　매각치: A');
+  } else if (CANDIDATE_NUMBER === 32) {
+    ctx.showMessage('【아이다 엘레나】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「아버님의 병원을 지키기 위해서라면, 저…… 무슨 일이든 할 수 있어요」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('지역 진료소에서 근무하는, 젊은 내과의');
+    await hint_chara(" 간호시설", ctx, character);
+    ctx.showMessage('로 왕진을 다니기도 한다는 모양이다');
+    ctx.showMessage('해외 인턴쉽을 소화해내고, 연령에 어울리지 않게 비상한 솜씨를 가졌다');
+    ctx.showMessage('하지만, 가난한 사람들에게 싼 가격으로 치료를 하고 있는 아버지의 병원을 지키기 위해');
+    ctx.showMessage('AV 촬영에 응모하게 되었다');
+    ctx.showMessage('');
+    ctx.showMessage('항상 모자를 쓰고 있지만, 그 밑에는 개과 동물의 귀가 숨어있다');
+    ctx.showMessage('그녀의 어머니는 고대 켈트족 샤먼의 후예로 알려져 있으며, 그녀의 귀는');
+    ctx.showMessage('고대 정령의 현현이라고 한다.');
+    ctx.showMessage('그리고 그녀 자신도 고대의 비술을 알고 있는 위치・닥터로서의 얼굴을');
+    ctx.showMessage('가지고 있다.');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 23세　난이도: B　성장도: C　공헌도: A　매각치: B');
+  } else if (CANDIDATE_NUMBER === 33) {
+    ctx.showMessage('【아이다 알리사】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「……아버지 병원을 도와주는 거야?　그럼 뭐든지 할게」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('지역 진료소에서 근무하는 신인 간호사로서, 엘레나의 친여동생');
+    ctx.showMessage('무엇이든 해내는 언니에 비해 기억력이 나쁘고, 간호사로서의 솜씨는 조금 모자른다');
+    ctx.showMessage('하지만, 18세로는 보이지 않는 귀여운 소녀 같은 용모로, 노인들로부터는');
+    ctx.showMessage('절대적인 인기를 자랑한다.');
+    ctx.showMessage('과묵하고 무엇을 생각하고 있는지 알기 어렵지만, 감독인 당신을');
+    ctx.showMessage('무너지던 진료소를 구해구는 선인으로 믿고 있으니 지도는 쉬울 것이다');
+    ctx.showMessage('간호사 모자 아래에는 귀여운 늑대귀가 숨어있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 18세　난이도: E　성장도: C　공헌도: C　매각치: B');
+  } else if (CANDIDATE_NUMBER === 34) {
+    ctx.showMessage('【나카지마 하즈키】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「그이를 위해서라면, 엣찌 정도는 참을 수 있어요……!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('지역의 예술 대학에 다니고 있는 스포츠 만능 소녀');
+    ctx.showMessage('실력파 테니스 선수로서 이름을 날리는 한편, 만화가 지망생인 애인과 열애 중');
+    ctx.showMessage('남자친구의 영향으로 살짝 발을 딛은 동인업계에 푹 빠져버렸다');
+    ctx.showMessage('그 매력적인 몸에 눈독 들인 키류 조직이, 남자친구라는 약점을 쥐고 반 강제로');
+    ctx.showMessage('당신(=감독)의 현장에 데리고 왔다');
+    ctx.showMessage('지도에 비협조적이지만, 코스플레이어로서의 지식은 촬영에 유용할지도 모른다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 18세　난이도: B　성장도: C　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 35) {
+    ctx.showMessage('【오리베 나츠미】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「마나카도 참 이런 수상쩍은 곳에 출입하다니……!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('카나데와 같은 반의 반장을 맡고 있는 재원으로서, 마나카의 언니');
+    ctx.showMessage('수상한 스카우트맨을 따라가는 마나카를 봤다는 말을 반친구에게 듣고');
+    ctx.showMessage('그 진위를 확인하기 위해서 사무소를 방문했다');
+    ctx.showMessage('');
+    ctx.showMessage('고지식한 성격으로 성적 행위에 대한 편견을 가지고 있다');
+    ctx.showMessage('하지만 여동생인 마나카에게 매우 약하기 때문에, 그 부분을 찌르면 쉽게 함락될 것이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: B　성장도: A　공헌도: C　매각치: B');
+  } else if (CANDIDATE_NUMBER === 36) {
+    ctx.showMessage('【카와기시 아사히】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「내가 엣찌한 일을 하면, 그이는 구해주는 거겠지?」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('현재 인기 급상승 중인 카나데의 반친구');
+    ctx.showMessage('예전에는 요리를 잘하는 것 외에는 장점이 없는, 매우 수수한 존재감의');
+    ctx.showMessage('소녀였다고 하지만, 남자친구의 관심을 끌기 위해 이미지 체인지하여 그 감춰진');
+    ctx.showMessage('미소녀성이 개화해, 학원의 아이돌 중 한 사람까지 올랐다');
+    ctx.showMessage('그러나, 그 매력에 눈독 들인 키류 조직에 의해,');
+    ctx.showMessage('반강제적으로 당신(=감독)의 현장으로 끌려와버리고 만다');
+    ctx.showMessage('남자친구에 대한 지조를 지키기 위해 필사적으로 느끼지 않으려 하지만, 몸은 매우 민감하다');
+    ctx.showMessage('주위에서의 주목도도 높고, AV 촬영을 납득시킨다면 인기 여배우가 되어줄 것이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: A　성장도: C　공헌도: B　매각치: B');
+  } else if (CANDIDATE_NUMBER === 37) {
+    ctx.showMessage('【아키나 미레이】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「에, 엣찌한 일은 안 된다고 생각해…(두근두근)」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('근처의 대형 병원에서 근무하는 신인 간호사');
+    ctx.showMessage('어투는 조금 남자 같지만 생각을 밀어붙이지 못하는 성격');
+    ctx.showMessage('용모는 상당히 좋을 터이지만, 남친 없는 세월=연령인 사람');
+    ctx.showMessage('사실은 시를 짓는 취미를 가졌지만 부끄럽기 때문에 숨기고 있다.');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 21세　난이도: C　성장도: C　공헌도: C　매각치: A');
+  } else if (CANDIDATE_NUMBER === 38) {
+    ctx.showMessage('【야미자키 린코】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「나의 성기사여, 구원받으라(오늘도 잘 부탁드려요♪)」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('키류 조직의 자회사인 예능 프로덕션에서 최근 데뷔한 신인 아이돌');
+    ctx.showMessage('극도의 중2병을 앓고 있으며, 무대 의상도 본인의 희망에 따라 타천사를 모티프로');
+    ctx.showMessage('삼았다고 하는 매우『안쓰러운』느낌 때문인지, 괴악한 취급을 받고 있다');
+    ctx.showMessage('하지만 말을 치장하곤 있으나, 그 태도는 알기 쉬울 정도로 매우 솔직하다');
+    ctx.showMessage('그 가창력과 댄스는 거칠면서도 소질이 느껴지는 것으로');
+    ctx.showMessage('\'국민적 아이돌 그룹『Colorful Pure Girl』에 대항할 수 있을지도 모른다\'라는');
+    ctx.showMessage('아이돌 비평가의 의견도 있다');
+    ctx.showMessage('그런 그녀가 어째서 AV업계에 흥미를 드러냈는가 하면,');
+    ctx.showMessage('당신(=감독)에 대해…… 그녀의 말을 번역하자면');
+    ctx.showMessage('『이전 사무소에서 봤을 때 운명의 사람이라고 생각했어요♪』라는 것 같다');
+    ctx.showMessage('현역 아이돌이므로 AV 발매에는 세심한 주의를 기울일 필요가 있지만,');
+    ctx.showMessage('그런 뒷공작은 키류 조직이 손을 써둔다, 는 것 같으므로 스스럼 없이 촬영할 수');
+    ctx.showMessage('있을 것이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 14세　난이도: E　성장도: C　공헌도: A　매각치: S');
+  } else if (CANDIDATE_NUMBER === 39) {
+    ctx.showMessage('【코히나타 시오리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「이렇게 된 바엔 어쩔 수 없군요. AV계의 천하를 쥐겠어요!」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('인근의 젊은이들을 상대로 사채꾼 흉내를 내고 있던 중학생');
+    ctx.showMessage('다루고 있던 금액은 적었으나, 가혹한 추심(회수)으로 원한을 살 때가 많았다');
+    ctx.showMessage('격앙된 채무자들에게 둘러싸여 폭행을 당하게 되었지만, 「우연」히 지나가던 카논에게');
+    ctx.showMessage('구해진다');
+    ctx.showMessage('그 뒤에, 지금까지보다 안전하게(=카논의 보호 아래) 고액의 돈벌이로 당신의');
+    ctx.showMessage('사무소를 소개받았다');
+    ctx.showMessage('중○생인 까닭에 몸은 결코 풍만하지 않다');
+    ctx.showMessage('하지만, 담력이 좋고 어른 뺨치는 협상력을 가진 까닭에');
+    ctx.showMessage('사무소의 경영에 도움이 될 것이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 14세　난이도: C　성장도: B　공헌도: B　매각치: B');
+  } else if (CANDIDATE_NUMBER === 40) {
+    ctx.showMessage('【쇼우노 소라】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「응. 나, 토노의 여자친구. 그러니까 토노를 위해 힘낼거야」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('발군의 미모와 스타일을 가지고, 카논에게 필적할 정도로 우수한 성적을 거두고 있는 소녀');
+    ctx.showMessage('본인에게 자각은 없지만, 그 완벽한 재색겸비함 때문에 주변으로부터 우러러지며,');
+    ctx.showMessage('남자들로부터『절벽 위의 꽃』취급을 받고 있었지만,');
+    ctx.showMessage('몇 달 전부터 토노라는 남학생과 사귀기 시작한 듯 하다');
+    ctx.showMessage('고작 몇 개월이라는 기간인데도, 두 사람의 바보 커플상은 학원에서 유명하게 되었으며,');
+    ctx.showMessage('그 때문인지 이전보다 남성들로부터의 인기도 줄어든 것 같다');
+    ctx.showMessage('또한, 이미 토노와 미래를 맹세해 곧 동거를 시작하려 했지만,');
+    ctx.showMessage('학생들이 할 수 있는 정도의 아르바이트로는 택도 없어, 그 계획도 좀처럼 진전되지 않고 있다');
+    ctx.showMessage('');
+    ctx.showMessage('그 사실을 안 카논으로부터 「벌이 좋은 아르바이트」로서 당신(=감독)을 소개받게 되었다');
+    ctx.showMessage('덧붙여, 바보 커플답게 반드시 결혼까지는 서로 순결을 지키자는 다짐을');
+    ctx.showMessage('했다는 것으로 보아, 키스밖엔 경험한 적이 없는 것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('또한, 아르바이트 하던 햄버거 가게에 자주 오는 스노 이쿠미와는 어쩐지 돈독한 사이');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: D　성장도: A　공헌도: C　매각치: B');
+  } else if (CANDIDATE_NUMBER === 41) {
+    ctx.showMessage('【하뉴 리사】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「후훗, 착하다 착해♪」');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('');
+    ctx.showMessage('작은 체형에 동안이라 빈번히 중○생이라 착각될 정도지만');
+    ctx.showMessage('그에 어울리지 않는 거유를 자랑하는 당신(=감독)의 선배이자 키류 카논의 반친구.');
+    ctx.showMessage('느긋한 성격과 독특한 오라로 주위의 분위기를 무의식적으로 포근하게 만들고');
+    ctx.showMessage('말도 잘 통해서인지 여러 사람들에게서 존경을 받고 있다.');
+    ctx.showMessage('또, 딱히 강요를 하는건 아니지만, 올려다보면서 부탁을 받으면 아무도 거절하지 못한다');
+    ctx.showMessage('');
+    ctx.showMessage('학원 부지 구석에 만들어진 사육실에서 기르고 있는 동물들을 돌보고 있으며,');
+    ctx.showMessage('그 먹이값을 벌기 위해 지인의 부모님이 경영하는');
+    ctx.showMessage('웨이트리스 제복에 힘이 들어간 카페에서 아르바이트를 하고 있다.');
+    ctx.showMessage('하지만 아르바이트 만으로는 동물들의 먹이값을 버는 것도 제대로 되지않아 곤란해');
+    ctx.showMessage('하던 차에,『키류 조직의 인간』으로써를 겸해 그녀를 노리고 있던 카논에게');
+    ctx.showMessage('『꽤나 좋은 아르바이트』라는 명목으로, 대우가 좋다며 AV 여배우업을 소개받았다');
+    ctx.showMessage('정조관념이 강한 그녀는 고민에 고민을 거듭했지만, 카논의 화술로 구워삶아진 그녀는');
+    ctx.showMessage('『모두』를 위해 이력서를 카논을 거쳐 건넸다');
+    ctx.showMessage('이 학원에 입학하기까지는 계속 여학교였기때문에 남성에 대해 흥미를 가지고 있지만,');
+    ctx.showMessage('동물을 귀여워해줄것만 같은 상냥한 사람이 아니면 별 느낌이 없다고 한다');
+    ctx.showMessage('');
+    ctx.showMessage('둘 다 애완동물을 좋아하고 단골이라는 관계여서인지, 후미노 유즈카와 특히 사이가 좋은것 같다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: D　성장도: A　공헌도: A　매각치: B');
+  } else if (CANDIDATE_NUMBER === 42) {
+    ctx.showMessage('【후지카와 리에】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「선~배♪　괜찮으면, 어디 놀러가고 싶은데?」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('당신(=감독)이 다니는 학교에 전학을 온 후배, 카나데와는 다른 반');
+    ctx.showMessage('키류 조직 산하의 예능 프로덕션에 소속된 아이돌이지만, 현재 휴업 중');
+    ctx.showMessage('최근엔 야미자키 린코가 같은 사무소에서 데뷔한 일도 있어 지명도는 떨어지는 중');
+    ctx.showMessage('아이돌로써의 재능은 상당하지만, 재능이 꽃을 피우기 전에 휴업을 해버렸다');
+    ctx.showMessage('예능계에 지쳐서이다, 라는 소문도 있다고 한다');
+    ctx.showMessage('');
+    ctx.showMessage('처음 만난건 키류 조직에 인사를 하러갔을때 스쳐지났을 뿐이지만');
+    ctx.showMessage('그녀가 전학을 오게되어 우연히 재회한 뒤로는 직접적으로 호의를 받게 된다');
+    ctx.showMessage('경력을 신경쓰지 않고 사람들 접하는 자세가 호감을 가져다준 모양이다');
+    ctx.showMessage('뭔가 곤란하다면, 언제라도 힘이 되어주겠다고 자처하고 있지만……');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: D　성장도: B　공헌도: D　매각치: B');
+  } else if (CANDIDATE_NUMBER === 43) {
+    ctx.showMessage('【아이바 세리나】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「날 좀 내버려둬, 너 같은 남자하고 친하게 지낼 생각 없어!」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('당신(=감독)반의 반장');
+    ctx.showMessage('당신이 입학전에 장을 보러 나갔다가 미아가 된 카나데……와 함께');
+    ctx.showMessage('미아가 됐을때 만나고, 그 뒤로 같은 반에서 만났다');
+    ctx.showMessage('학원이사의 외동딸이지만, 무슨 사정이 있는지 현재는 자취중이다');
+    ctx.showMessage('항상 당당한 자세가 주위의 인기를 모으지만,');
+    ctx.showMessage('사실 고집이 쎄고 허세를 부리며 감정에 휩쓸리기 쉽고');
+    ctx.showMessage('처음 만났을때는 친절했으나, 이성에게 불신감을 가지고 있는듯');
+    ctx.showMessage('때때로 당신에게 독설을 날린다');
+    ctx.showMessage('자취를 하며 돈이 빈궁한 모양인지');
+    ctx.showMessage('카나데가 마트 특가세일에서 그녀의 모습을 본적이 있다고 한다');
+    ctx.showMessage('그녀의 금전사정을 알아챈 카논이『꽤나 좋은 아르바이트』라며');
+    ctx.showMessage('이 일을 소개받았지만, 남성불신에 자존심도 높아');
+    ctx.showMessage('촬영에 지장이 있을지도 모른다');
+    ctx.showMessage('');
+    ctx.showMessage('참고로 본인은 동물을 별로 안좋아하지만, 봉사활동을 도와준적이 있어');
+    ctx.showMessage('하뉴 리사하고 사이가 좋다고 한다……');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 16세　난이도: A　성장도: B　공헌도: C　매각치: A');
+  } else if (CANDIDATE_NUMBER === 44) {
+    ctx.showMessage('【타카기 사오리】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「저기, 열심히 할테니 잘 부탁드려요」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.print('번화가에 위치한, 미야마 카나데가');
+    await hint_chara("자주가는 부티크", ctx, character);
+    ctx.showMessage('의 점원');
+    ctx.showMessage('고○학생이라고 해도 믿을만한 동안이지만,');
+    ctx.showMessage('때때로 구운 오징어에 사케를 홀짝이는 모습이 목격된다');
+    ctx.showMessage('또 말수가 적고 감정이 표정에 드러나지 않아 무뚝뚝한 사람이라고 착각하기 쉽지만,');
+    ctx.showMessage('머리속에선 항상 썰렁한 아재개그를 생각하고 있는등');
+    ctx.showMessage('겉보기와 달리 내용물은 완전히 아저씨나 마찬가지');
+    ctx.showMessage('그녀의 단골술집『순회』에 우연히 동행한 키류 카논과 마음이 맞아');
+    ctx.showMessage('카논의 감언이설에 완전히 넘어가 AV배우 데뷔를 마음먹게 됐다');
+    ctx.showMessage('');
+    ctx.showMessage('그녀가 결심한 이유엔 지금까지 나름 연애경험을 쌓아왔지만,');
+    ctx.showMessage('항상 선을 넘기 전에 파국을 맞아 키스조차 경험해본적이 없다는 것과');
+    ctx.showMessage('매해 늘어나는 나이의 중압도 관련이 있을지 모른다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 25세　난이도: C　성장도: C　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 45) {
+    ctx.showMessage('【미요시 유카코】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「아무런 장점도 없는 저 같은 사람도, 괜찮은가요……?」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('단것을 너무나 좋아하여 카페코너가 마련된 양과자점');
+    await hint_chara("『돌체・비타』", ctx, character);
+    ctx.showMessage('에서 아르바이트를 하는 고○학생');
+    ctx.showMessage('주목을 모을만한 화려함은 없지만, 온화한 성격과 미소');
+    ctx.showMessage('그리고 유니폼의 미니스커트 밑으로 보이는 포동포동한 허벅지나');
+    ctx.showMessage('작은 몸에 안어울리는 거유가 단골들에게 대인기……지만,');
+    ctx.showMessage('누군가가 보고 있으면 쟁반으로 얼굴을 가려버릴 정도로');
+    ctx.showMessage('중중의 부끄럼쟁이다');
+    ctx.showMessage('속으로는 변신욕망을 가지고 있었는지 당신(=감독)이');
+    ctx.showMessage('『돌체・비타』에서 여배우 후보와 면접을 했을때 흥미를 가졌고');
+    ctx.showMessage('내향적이고 부끄럼쟁이인 성격을 고칠 수 있다면,');
+    ctx.showMessage('그리고 무엇보다『변할 수 있다』면, 하는 마음에 여배우 후보에 입후보했다');
+    ctx.showMessage('그러나 아무리『변하기』위해서라도');
+    ctx.showMessage('선을 넘는 것은 부끄러운 모양이다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 17세　난이도: D　성장도: B　공헌도: C　매각치: C');
+  } else if (CANDIDATE_NUMBER === 46) {
+    ctx.showMessage('【타카나시 오토하】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「저는 그럴 사람이 못 돼요, 어디까지나 도우미랍니다」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.print('키류 조직 관련회사인 예능사무소');
+    await hint_chara("『러브핵・엔터테인먼트』", ctx, character);
+    ctx.showMessage('에서');
+    ctx.showMessage('사무원으로 일하고 있는, 자기도 모르게 얼굴을 비비고 싶어지는');
+    ctx.showMessage('니삭스에 감싸인 포동포동한 허벅지가 매력적인 여성');
+    ctx.showMessage('연령화제에 민감하고, 남친이 있던적이 없던것을 신경쓰고 있는 듯하다');
+    ctx.showMessage('백합망상이 취미로 요즘은 카논과 카나데의 커플링이 마음에 든 것 같다');
+    ctx.showMessage('나이차이가 많이나는 여동생이 키류 조직의 간부이기에');
+    ctx.showMessage('키류조직 관련사업에도 빠삭해 AV여배우가 아니라 어디까지나');
+    ctx.showMessage('『러브핵・엔터테인먼트』의 사무원으로 출장을 나왔지만,');
+    ctx.showMessage('카논과 여동생의 의견을 따라 필요하다면 당신(=감독)의 촬영에 협력해주기로 했다');
+    ctx.showMessage('톱 아이돌에게도 밀리지 않는 가창력을 가졌고');
+    ctx.showMessage('과거 무명으로 잊혀진 아이돌『코토리 아소비』를 닮았다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 28세　난이도: D　성장도: B　공헌도: B　매각치: C');
+  } else if (CANDIDATE_NUMBER === 47) {
+    ctx.showMessage('【미즈모리 유키나】');
+    ctx.setColor(0xDDBBCC);
+    // TODO: CHKFONT "あくびん"
+    if (ctx.result) {
+      // TODO: SETFONT "あくびん"
+    }
+    ctx.showMessage('「당신의 부탁이라면 뭐든지 들어줄 것 같아……」');
+    ctx.showMessage('');
+    // TODO: SETFONT ""
+    ctx.resetColor();
+    ctx.showMessage('XX현에서도 유명한, 취주악 명문인 중고일관 아가씨 학원에 다니는 고○학생');
+    ctx.showMessage('집이 동북의 명가로 어릴적부터 엄격한 교육을 받은, 요즘 보기드문 새장속 아가씨로');
+    ctx.showMessage('지금까지 여학교만 다닌 탓인지 이성에 면역이 없으며');
+    ctx.showMessage('다른 사람을 의심할 줄을 모른다');
+    ctx.showMessage('그런 아가씨가 어쩌다 이 업계에 발을 들였냐하면, 학원의 숙박연수에서');
+    ctx.showMessage('같은 방을 쓰게된『요즘 아이들』의 음담회화에 강제참가한 결과');
+    ctx.showMessage('대화의 내용을 그대로 믿어버려, 간단히 말해');
+    ctx.showMessage('『아가씨의 불장난』이 세간의 상식이라고 착각해버린 것이다');
+    ctx.showMessage('동작 하나하나에 이성을 유혹하는 섹기가 있으나 본인은 자각이 없고');
+    ctx.showMessage('AV여배우로서 높은 소질이 있으며');
+    ctx.showMessage('한번 업계에 빠지면 헤어나오지 못할 것 같은 위태로움도 가지고 있다');
+    ctx.showMessage('');
+    ctx.showMessage('연령: 15세　난이도: E　성장도: C　공헌도: B　매각치: B');
+  } else if (CANDIDATE_NUMBER === 51) {
+    ctx.showMessage('【구인광고】');
+    ctx.showMessage('당신은 키류 조직에 의뢰해, 여배우 후보를 모으기 위한 광고를 해달라고 했다.');
+    ctx.showMessage('당신의 투자이니 비용은 걱정하지 말라고 했지만, 그쪽이 더 무서워보이는 건 기분 탓일까.');
+    ctx.showMessage('당일까지 어떤 인물이 올지 모르니, 고맙기는 한데……');
+    await ctx.wait();
+    await interview(ctx, character);
+    ctx.result[1] = 150;
+  }
+  // Label: LOOP_INTERVIEW
+  ctx.showMessage('');
+  ctx.showMessage(`${flag[CANDIDATE_NUMBER+999]}P로 계약합니까?`);
+  ctx.showMessage('[0] - 네');
+  ctx.showMessage('[1] - 아니오');
+  if (ctx.result[1] === 150) {
+    ctx.showMessage('[8] - 다음 사람');
+  }
+  // Label: INPUT_LOOP
+  await ctx.inputNumber();
+  if (ctx.result === 0) {
+    return 0;
+  } else if (ctx.result === 1) {
+    return 1;
+  } else if (ctx.result[1] === 150 && ctx.result[0] === 8) {
+    ctx.showMessage('');
+    ctx.drawLine();
+    ctx.print('이전 상대가 돌아가고 나서부터,');
+    if (ctx.rand(3) === 2) {
+      ctx.showMessage('별로 시간이 지나지 않아 즉시');
+    } else if (ctx.rand(2) === 1) {
+      ctx.showMessage('몇 분이 지났을까…');
+      ctx.showMessage('커피를 다섯 잔째 입에 댈 무렵이 되자');
+    } else {
+      ctx.print('잠시 기다리자');
+    }
+    await interview_2nd(ctx, character);
+    // GOTO LOOP_INTERVIEW - 구조 변경 필요 (while/break 사용 권장)
+  }
+  // GOTO INPUT_LOOP - 구조 변경 필요 (while/break 사용 권장)
+}
+
+export async function exchara_manual_1(
+  ctx: TrainingContext,
+  character: Character
+): Promise<void> {
+  ctx.showMessage('【히나미 마유】');
+  ctx.setColor(0xDDBBCC);
+  // TODO: CHKFONT "あくびん"
+  if (ctx.result) {
+    // TODO: SETFONT "あくびん"
+  }
+  ctx.showMessage('「과연……현세의 성풍속도 이렇게 바뀌었습니까. 저라도 도움이 될 수 있다면 좋겠습니다만」');
+  // TODO: SETFONT ""
+  ctx.resetColor();
+  ctx.showMessage('');
+  ctx.showMessage('어려 보이지만 그 실체는 어느날 히나미 신사에 강림한 천사');
+  ctx.showMessage('본명은 쓸데없이 길기 때문에 평소에는 편의상【히나미 마유】라고 자칭하며,');
+  ctx.showMessage('와타라이 키쿄우와 같은 중학교에 다니고 있다');
+  ctx.showMessage('마음씨 착한 성격에, 어쨌든 조금 천연끼가 있는데다 현세의 성풍속에 관심이 있는 것인지,');
+  ctx.showMessage('이런 모욕적인「부탁」도 미소지으며 받아들여 줬다');
+  ctx.showMessage('설마 천사를 구슬리는 무모한 짓에 도전하는 자는 없으리라 생각한다');
+  ctx.showMessage('');
+  ctx.showMessage('외견연령: 10대 중반　난이도: F　성장도: SS　공헌도: SS　매각치: SSS');
+}
+
+export async function exchara_manual_2(
+  ctx: TrainingContext,
+  character: Character
+): Promise<void> {
+  ctx.showMessage('【유니스・A・파라디수스】(Eunice Akasha Paradisus)');
+  ctx.setColor(0xDDBBCC);
+  // TODO: CHKFONT "あくびん"
+  if (ctx.result) {
+    // TODO: SETFONT "あくびん"
+  }
+  ctx.showMessage('「나를 누구하고 생각하는 거지? 세계의 정점에 군림하는 유니스님이시라고」');
+  // TODO: SETFONT ""
+  ctx.resetColor();
+  ctx.showMessage('');
+  ctx.showMessage('레이첼의 이복 동생으로 어릴 때부터 어떤 비밀결사의 그랜드 마스터를 맡고 있는 소녀');
+  ctx.showMessage('태어났을 때부터 왕가 사상 최고의 마법 재능을 지니고, 왕가에서 유일하게 만물을 기록한');
+  ctx.showMessage('『아카식 레코드』에 액세스하는데 성공한 천재');
+  ctx.showMessage('그리고 필요한 지식을 필요한 만큼 흡수한 유니스는 스스로 왕가를 떠나');
+  ctx.showMessage('온갖 기이한 경험을 거쳐 지금의 지위를 손에 넣었다');
+  ctx.showMessage('원래는 레이첼처럼 마음 따뜻한 성격이었지만, 모든 것을 알고 나서 성격이 비뚤어졌다');
+  ctx.showMessage('또한, 에너지 섭취의 효율성을 고려해서인지 스스로를 한없이 음마에 가까운 존재로 변모시켰다');
+  ctx.showMessage('');
+  ctx.showMessage('어째서인지 당신(=감독)에게는 호의적이고, AV배우라는 일임에도 불구하고 흔쾌히 승낙했다');
+  ctx.showMessage('연애에는 세계의 모든 것을 파악하고 있기 때문에 관심조차 없다');
+  ctx.showMessage('또한, 시미즈 사쿠라코와 아는 사이지만 캐릭터가 겹친다고 서로 생각하기 때문에 앙숙');
+  ctx.showMessage('');
+  ctx.showMessage('연령: 13세　난이도: D　성장도: SS　공헌도: SS　매각치: SSS');
+}

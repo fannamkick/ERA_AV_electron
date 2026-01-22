@@ -1,0 +1,32 @@
+﻿;===========================================================
+;クリアボーナス: 露出
+;===========================================================
+@CLEARBONUS_HENTAI
+IF TALENT:122 == 0
+	PRINTFORML %타겟이(1)% 노출광인 IF세계로 갈까요?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+		IF RESULT == 0
+			CALL CLEARBONUS_HENTAI_ADDEXP
+		ELSEIF RESULT == 1
+			RETURN 0
+		ELSE
+			GOTO INPUT_LOOP
+		ENDIF
+ENDIF
+
+;===========================================================
+;クリアボーナス: 露出
+;===========================================================
+@CLEARBONUS_HENTAI_ADDEXP
+
+
+LOCAL = TARGET
+$INPUTLOOP_START
+
+PRINTFORMW 《%조사처리(CALLNAME:LOCAL,"는")%【%TALENTNAME:89%】%조사만처리(TALENTNAME:89,"이")% 됐다》
+	TALENT:LOCAL:89 = 1
+	TALENT:LOCAL:35 = 0
+	TALENT:LOCAL:36 = 1

@@ -1,0 +1,210 @@
+﻿;=================================================
+;奴隷購入・売却に関わる関数
+;=================================================
+;大人数対応キャラ購入処理(eratohoTLよりスクリプトを流用し改変)
+;奴隷の連続購入を可能に
+
+;>代わりに購入金額の設定＆処理が煩雑になる諸刃の剣, 素人にはオススメ出来ない
+;>ついでに過去のセーブデータとの互換性もなくなりますし, 見栄えも悪い
+;>あとフラグ1000番台を使うので注意
+;>(TFLAG:0~100は調教関係ない上, 調教開始時にリセットされるので無問題)
+
+;>変更点
+;>TFLAG:200番台を利用してリストの前詰めを実行
+;>購入したキャラが直接加入するように, 購入処理のあたりを変更
+
+
+;=================================================
+;奴隷購入処理メイン関数
+;=================================================
+@CHARA_BUY
+
+X = 0
+
+;TFLAG:100には奴隷リストのページ数を割り振る
+TFLAG:100 = 0
+
+;TFLAG:0~99に通常の아이템購入可能状態を記録し, 一旦아이템購入可能状態を空に
+REPEAT 100
+	TFLAG:COUNT = ITEMSALES:COUNT
+	ITEMSALES:COUNT = 0
+REND
+
+$INPUT_LOOP
+
+CALL CHARA_LIST
+
+;1ページあたりに表示されるキャラは60人
+REPEAT 60
+	A = COUNT + TFLAG:100 * 60 + 200
+	B = TFLAG:A
+	ITEMSALES:B = 1
+REND
+;バグ対策。キャラ上限を超えるとITEMSALES:0が登録されるので
+ITEMSALES:0 = 0
+
+CALL CHARA_BUY_SHOW
+
+INPUT
+IF RESULT == 1
+	SIF TFLAG:100 > 0
+		TFLAG:100 -= 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 9
+	;最大ページ数(3)と比較
+	SIF TFLAG:100 < 3
+		TFLAG:100 += 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 999
+	CALL CHARA_BUY_AFTER
+	RETURN 0
+ENDIF
+
+;[RESULT > 100+**]の**はREPEAT数と同じくキャラ数以上の適当な数値
+SIF RESULT < 100 || RESULT > 100 + 99
+	GOTO INPUT_LOOP
+
+;C = キャラナンバー
+C = RESULT + 1 - 100
+D = RESULT + 1000 - 100
+
+;購入済みor購入不可=フラグ値が0なら再入力
+SIF FLAG:D <= 0
+	GOTO INPUT_LOOP
+
+;一度に所有できる奴隷はEXTRA60人, それ以外は10+(事務所レベル*2)人まで
+IF CHARANUM > FLAG:23
+	PRINTW 《誰かを은퇴させないと, これ以上契約できません》
+	GOTO INPUT_LOOP
+ENDIF
+
+;キャラ解説を入れる
+FLAG:9 = C
+CALL CHARA_MANUAL
+IF FLAG:9 == 0
+	GOTO INPUT_LOOP
+ELSE
+	FLAG:9 = 0
+ENDIF
+
+;フラグ値=売値が소지금より多いなら再入力
+IF MONEY < FLAG:D
+	PRINTW 소지금이 부족합니다
+	GOTO INPUT_LOOP
+ENDIF
+;上記処理を抜けてきた=購入可能で소지금が売値以上
+;소지금の変更
+MONEY -= FLAG:D
+
+;購入したキャラの購入フラグを立てる
+FLAG:D = -1
+
+ADDCHARA C
+
+TARGET = CHARANUM - 1
+
+PRINTFORMW 《《%타겟과(1)% 계약했습니다》 》 
+
+
+;名鑑用の処理
+X = NO:TARGET + 200
+LOADGLOBAL
+GLOBAL:X += 1
+SAVEGLOBAL
+
+;RELATION未設定のキャラとの相性を100(普通)に
+
+;購入時に行われる初期設定
+CALL CHARA_BUY_SETTING
+
+;購入後イベント
+CALL CHARA_BUY_EVENT
+
+GOTO INPUT_LOOP
+;
+;-------------------------------------------------
+;購入可能な奴隷リストの表示
+;-------------------------------------------------
+@CHARA_BUY_SHOW
+DRAWLINE
+PRINTL 女優候補やスタッフのスカウト
+PRINTL 《AV배우やスタッフになってくれるキャラと契約できます》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+
+DRAWLINE
+
+PRINT_SHOPITEM
+
+;2ページ目が変数かぶってバグるのでページをすっとばす
+;どうせ2ページ目には誰もいないため
+;手抜き処理ともいう
+;DRAWLINE
+;PRINT 　page
+;PRINTV TFLAG:100
+;PRINT 　[1] 이전 페이지
+;PRINTC 
+;PRINTC 　[9] 다음 페이지
+;PRINTL 　
+
+DRAWLINE
+
+PRINT [999] - 돌아간다
+PRINTL 
+;
+;-------------------------------------------------
+;奴隷購入後の通常아이템復帰処理
+;-------------------------------------------------
+@CHARA_BUY_AFTER
+
+REPEAT 60
+	A = COUNT + TFLAG:100 * 60 + 100
+	ITEMSALES:A = 0
+REND
+
+REPEAT 200
+	ITEMSALES:COUNT = 0
+REND
+
+REPEAT 100
+	ITEMSALES:COUNT = TFLAG:COUNT
+	TFLAG:COUNT = 0
+REND
+
+RETURN 0
+;
+;-------------------------------------------------
+;TFLAG:2yyに現在購入可能なキャラのリストを作成する処理
+;-------------------------------------------------
+@CHARA_LIST
+F = 0
+REPEAT 100
+	;ITEMSALES:1xxを空に
+	A = COUNT + 100
+	ITEMSALES:A = 0
+	;TFLAG:2xxを空に
+	F = COUNT + 200
+	TFLAG:F = 0
+REND
+
+F = 200
+
+;FLAG:10xxに数値が入ってる(=キャラが存在する)かどうかをチェックし, 
+;TFLAG:2yyに存在するキャラの1xxを隙間なく詰め込む
+REPEAT 100
+	E = COUNT + 1000
+	IF FLAG:E > 0
+		TFLAG:F = E - 1000 + 100
+		F += 1
+	ENDIF
+REND
+
+RETURN 0

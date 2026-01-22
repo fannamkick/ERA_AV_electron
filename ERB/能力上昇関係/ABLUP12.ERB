@@ -1,0 +1,184 @@
+﻿;기교のLvUP処理とその可否判定
+;eratohoA ver1,204のスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;기교のLvUP
+;-------------------------------------------------
+@ABLUP12
+DRAWLINE
+;PRINTL 노예의 기교를 향상시킵니다
+;PRINTL 기교가 늘어나면, 성행위나 봉사할 때 상대를 절정시키기 쉬워집니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;기교はLv10が上限
+IF ABL:12 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+;기교＋화술は16以上にならない
+;ただし[협상에 능숙함]を除く
+ELSEIF ABL:12 + ABL:15 >= 15 && TALENT:211 == 0
+	PRINTFORMW 기교({ABL:12})＋화술({ABL:15})의 상한은 15입니다
+	RETURN 0
+ENDIF
+
+;必要な습득의 구슬
+A = 0
+
+;条件別にOKかダメかを記録する
+;습득의 구슬による可否(I=0:可, I&1:珠不足, I&2:経験不足)
+I = 0
+
+CALL DECIDE_ABLUP12
+
+PRINTFORM [0] - %PALAMNAME:7%의 구슬×{JUEL:7}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+
+PRINTL [100] - 그만둔다
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:12 += 1
+
+IF RESULT == 0
+	JUEL:7 -= A
+ENDIF
+
+PRINTFORML %ABLNAME:12%의 레벨이 %조사처리(ABL:12,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;기교のLvUP可否判定
+;-------------------------------------------------
+@DECIDE_ABLUP12
+;기교はLv10が上限
+SIF ABL:12 >= 10
+	RETURN 0
+;기교＋화술は16以上にならない
+SIF ABL:12 + ABL:15 >= 15 && TALENT:211 == 0
+	RETURN 0
+
+;判定変数を空に
+A = 0
+I = 0
+
+IF ABL:12 == 0
+	A = 1
+ELSEIF ABL:12 == 1
+	A = 25
+ELSEIF ABL:12 == 2
+	A = 200
+ELSEIF ABL:12 == 3
+	A = 3000
+ELSEIF ABL:12 == 4
+	A = 8000
+ELSEIF ABL:12 == 5
+	A = 12000
+ELSEIF ABL:12 == 6
+	A = 16000
+ELSEIF ABL:12 == 7
+	A = 22000
+ELSEIF ABL:12 == 8
+	A = 28000
+ELSEIF ABL:12 == 9
+	A = 35000
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	SIF ABL:12 == 3
+		TIMES A , 1.50
+	SIF ABL:12 == 4
+		TIMES A , 2.00
+	SIF ABL:12 == 5
+		TIMES A , 2.50
+	SIF ABL:12 >= 6
+		TIMES A , 3.00
+ENDIF
+
+;솔직함
+SIF TALENT:13
+	TIMES A , 0.95
+;무관심
+SIF TALENT:21
+	TIMES A , 1.05
+;호기심
+SIF TALENT:23
+	TIMES A , 0.95
+;보수적
+SIF TALENT:24
+	TIMES A , 1.10
+
+;억압
+IF TALENT:32
+	TIMES A , 1.10
+;해방
+ELSEIF TALENT:33
+	TIMES A , 0.90
+ENDIF
+
+;저항
+SIF TALENT:34
+	TIMES A , 1.20
+
+;수줍음
+IF TALENT:35
+	TIMES A , 1.05
+;부끄럼 없음
+ELSEIF TALENT:36
+	TIMES A , 0.95
+ENDIF
+
+;習得早い
+IF TALENT:50
+	TIMES A , 0.80
+;습득느림
+ELSEIF TALENT:51
+	TIMES A , 1.50
+ENDIF
+
+;혀놀림
+SIF TALENT:52
+	TIMES A , 0.95
+;헌신적
+SIF TALENT:63
+	TIMES A , 0.95
+;불결무시
+SIF TALENT:64
+	TIMES A , 0.95
+
+IF TALENT:505
+	TIMES A , 0.01
+ENDIF
+
+;最低でも1個は必要
+SIF A < 1
+	A = 1
+
+;습득의 구슬は足りている?
+SIF JUEL:7 < A
+	I |= 1
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+;
+;
+;

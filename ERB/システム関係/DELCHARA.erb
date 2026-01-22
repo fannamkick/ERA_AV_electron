@@ -1,0 +1,37 @@
+﻿@キャラ削除, ARG
+
+;助手の情報を取得
+N = -1
+SIF ASSI >= 0
+	N = NO:ASSI
+
+;お弁当, 起こす係のフラグ消し
+SIF CFLAG:ARG:671 == 1
+	FLAG:556 = 0
+SIF CFLAG:ARG:60 == 1 
+	CFLAG:MASTER:65 = 0
+
+;キャラ削除
+DELCHARA ARG
+
+;前回の助手・調教対象だった場合はフラグを空に
+SIF FLAG:1 == ARG
+	FLAG:1 = -1
+SIF FLAG:2 == ARG
+	FLAG:2 = -1
+
+;前回の助手・調教対象より前だった場合はフラグを減算
+SIF FLAG:1 > ARG
+	FLAG:1 -= 1
+SIF FLAG:2 > ARG
+	FLAG:2 -= 1
+
+;調教対象を空に
+TARGET = -1
+
+;助手を戻す
+ASSI = -1
+REPEAT CHARANUM
+	SIF NO:COUNT == N
+		ASSI = COUNT
+REND

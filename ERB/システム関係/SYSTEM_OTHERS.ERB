@@ -1,0 +1,22 @@
+﻿;===========================================================
+;위험일判定
+;===========================================================
+@SYSTEM_KIKENBI
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:122 == 1
+		CONTINUE
+	ELSE
+		TARGET = COUNT
+		IF CFLAG:644 == 4
+			CFLAG:645 = 1
+			CFLAG:644 = 0 
+		ELSE
+			CFLAG:645 = 0
+			CFLAG:644 += 1
+		ENDIF
+	ENDIF
+REND
+

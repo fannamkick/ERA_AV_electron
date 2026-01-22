@@ -1,0 +1,316 @@
+﻿;=================================================
+;약물중독関連の関数群
+;=================================================
+;-------------------------------------------------
+;약물중독の発病と回復
+;-------------------------------------------------
+@APHRODISIAC_ADDICT
+;体内미약残留度を7日ごとに1減らす
+IF (DAY + 1) % 7 == 0
+	IF CFLAG:31 > 0
+		CFLAG:31 -= 1
+		SIF CFLAG:31 < 0
+			CFLAG:31 = 0
+	ENDIF
+			
+	;[약물중독]の場合は禁断症状チェックも行う
+	IF TALENT:46
+		IF CFLAG:32
+			CFLAG:32 = 0
+		ELSE
+			CALL PRECIPITATE_WITHDRAWAL
+		ENDIF
+	ENDIF
+ENDIF
+
+;【약물중독】の消失判定
+;体内미약残留度が0になれば[약물중독]消失
+IF CFLAG:31 == 0 && TALENT:46
+	PRINTFORML %CALLNAME:TARGET%의 모습이 바뀌었다……
+	PRINTFORML 체내에서 미약의 효과가 전부 사라져, %타겟은()% 의존증에서 회복했다
+	PRINTFORML %타겟은(1)%【%TALENTNAME:46%】에서 회복했다
+	WAIT
+	TALENT:46 = 0
+ENDIF
+;【약물중독】の取得判定
+;[중독되기쉬움]がなければ体内미약残留度が12以上, あれば9以上で[약물중독]取得
+IF ((TALENT:86 == 0 && CFLAG:31 >= 12) || (TALENT:72 && CFLAG:31 >= 9)) && TALENT:46 == 0
+	PRINTFORML %CALLNAME:TARGET%의 상태가 이상하다……
+	PRINTFORML 미약의 과도한 사용으로, %타겟은()% 중독되어버렸다
+	PRINTFORML %타겟은(1)%【%TALENTNAME:46%】이 됐다
+	WAIT
+	TALENT:46 = 1
+	;中毒になりたてということで, ボーナスとして体内미약残留度を一律15以上に(おめでとう!)
+	SIF CFLAG:31 < 15
+		CFLAG:31 = 15
+ENDIF
+;【광기】の取得判定
+;[중독되기쉬움]がなければ体内미약残留度が40以上, あれば30以上で[광기]取得
+IF (CFLAG:31 >= 40 || (TALENT:72 && CFLAG:31 >= 30)) && TALENT:123 == 0
+	PRINTFORML %CALLNAME:TARGET%의 상태가 이상하다……
+	PRINTFORML %타겟은()% 미약의 과도한 사용으로, 정신이 꺾여버렸다
+	PRINTFORML %타겟은(1)%【%TALENTNAME:123%】에 빠졌다
+	PRINTL 
+	TALENT:123 = 1
+ENDIF
+;【廃人】の取得判定
+;[중독되기쉬움]がなければ体内미약残留度が100以上, あれば75以上で[붕괴]取得
+IF (CFLAG:31 >= 100 || (TALENT:72 && CFLAG:31 >= 75)) && TALENT:9 == 0
+	PRINTFORML %CALLNAME:TARGET%의 상태가 이상하다……
+	PRINTFORML %타겟은()% 미약의 과도한 사용으로, 완전히 폐인이 됐다
+	PRINTFORML %NAME:TARGET%의 정신은【%TALENTNAME:9%】되버렸다
+	PRINTL 
+	TALENT:9 = 1
+ENDIF
+;-------------------------------------------------
+;禁断症状イベント
+;-------------------------------------------------
+@PRECIPITATE_WITHDRAWAL
+;U=[치료][헌신적]持ちによる禁断症状緩和効果
+;V=禁断症状の酷さ
+;W=ステータス悪化の内容(＆ステータス悪化が生じたか否か)
+U = 0
+V = 0
+W = 0
+PRINTFORML %타겟이()% 몸의 이상을 호소해왔다
+PRINTL 약물중독의 금단증상이 발생한 것 같다……
+WAIT
+
+IF ITEM:26
+	$INPUT_LOOP_01
+	PRINTFORML %CALLNAME:TARGET%에게 미약을 줍니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		PRINTFORML %타겟은()% 미약이 든 앰플을 강탈해, 
+		PRINTFORML 곧바로 단번에 삼키고, 살짝 한숨을 내쉬었다
+		WAIT
+		CFLAG:31 += 1
+		ITEM:26 -= 1
+		RETURN 0
+	ELSEIF RESULT != 1
+		GOTO INPUT_LOOP_01
+	ENDIF	
+ENDIF
+
+
+;[치료][헌신적]持ちの人数をカウント
+REPEAT CHARANUM
+	SIF TALENT:COUNT:117
+		U += 1
+	SIF TALENT:COUNT:63
+		U += 1
+REND
+
+;体内미약残留度と[치료][헌신적]持ちによる禁断症状緩和効果に応じてチェック回数決定
+V = (CFLAG:31 / 10) + 1 - U
+IF V < 1
+	V = 1
+ELSEIF V > 10
+	V = 10
+ENDIF
+
+;チェック回数は最低1回~最高10回
+REPEAT V
+	;40%の確率でステータス悪化イベント発生
+	;最高の10回チェックした場合は99.996%の確率で発生する計算
+	IF RAND:100 < 40
+		CALL SUFFER_FROM_WITHDRAWAL
+		BREAK
+	ENDIF
+REND
+
+IF W
+	PRINTFORML 금단증상의 괴로움에 몸부림치던 %CALLNAME:TARGET%였지만
+	PRINTL 날뛰는데 지쳤는지 아니면 증상이 완화된 것인지, 몇시간 뒤, 겨우 얌전해졌다
+	PRINTL 하지만, 본인 뿐만이 아니라 간병하고 있던 옆사람도 완전히 지쳐버렸다……
+	WAIT 
+	PRINTFORML %CALLNAME:TARGET%의 체력과 기력이 줄어들었다
+
+	;とりあえず表示はせずにこっそり減らす方向で
+	MAXBASE:0 -= 50
+	SIF BASE:0 > MAXBASE:0
+		BASE:0 = MAXBASE:0
+	;최대 체력は600まで下がる(それ以下にはならない)
+	SIF MAXBASE:0 < 600
+		MAXBASE:0 = 600
+	
+	MAXBASE:1 -= 50
+	SIF BASE:1 > MAXBASE:1
+		BASE:1 = MAXBASE:1
+	;최대 기력は100まで下がる(それ以下にはならない)
+	SIF MAXBASE:1 < 100
+		MAXBASE:1 = 100
+	
+	BASE:0 -= 500
+	SIF BASE:0 < 1
+		BASE:0 = 1
+
+	;看病していた人もぐったりします
+	REPEAT CHARANUM
+		;[치료][헌신적]持ちは確実に看病している
+		IF TALENT:COUNT:117 || TALENT:COUNT:63
+			BASE:COUNT:0 -= 200
+			SIF BASE:COUNT:0 < 1
+				BASE:COUNT:0 = 1
+		;そうでない場合でも1/3の確率で看病に当たっている
+		ELSEIF RAND:3 == 0
+			BASE:COUNT:0 -= 200
+			SIF BASE:COUNT:0 < 1
+				BASE:COUNT:0 = 1
+		ENDIF
+	REND
+ELSE
+	PRINTFORML 몇 시간후, %CALLNAME:TARGET%의 몸의 떨림이 간신히 멈추었다
+	PRINTL 간병하는 쪽도 진이 다 빠졌지만,
+	PRINTL 이번에는 어떻게든 무사하게 넘어간 모양이다
+	WAIT
+	;でも체력は減る
+	BASE:0 -= 300
+	SIF BASE:0 < 1
+		BASE:0 = 1
+
+	;看病していた人もぐったりします
+	REPEAT CHARANUM
+		;[치료][헌신적]持ちは確実に看病している
+		IF TALENT:COUNT:117 || TALENT:COUNT:63
+			BASE:COUNT:0 -= 100
+			SIF BASE:COUNT:0 < 1
+				BASE:COUNT:0 = 1
+		;そうでない場合でも1/3の確率で看病に当たっている
+		ELSEIF RAND:3 == 0
+			BASE:COUNT:0 -= 100
+			SIF BASE:COUNT:0 < 1
+				BASE:COUNT:0 = 1
+		ENDIF
+	REND
+ENDIF
+PRINTL 
+
+@SUFFER_FROM_WITHDRAWAL
+W = RAND:50 - V + (U * 2)
+
+IF W < 5
+	IF TALENT:9 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_WRECK
+	ELSEIF TALENT:123 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_CRAZY
+	ELSEIF RELATION:0 == 0 || RELATION:0 > 50
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_MISANTHROPIST
+	ELSEIF TALENT:34 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_RESISTER
+	ELSEIF TALENT:26 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_DEPRESSION
+	ELSEIF TALENT:22 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+	ELSE
+		CALL PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+	ENDIF
+ELSEIF W < 10
+	IF TALENT:123 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_CRAZY
+	ELSEIF RELATION:0 == 0 || RELATION:0 > 50
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_MISANTHROPIST
+	ELSEIF TALENT:34 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_RESISTER
+	ELSEIF TALENT:26 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_DEPRESSION
+	ELSEIF TALENT:22 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+	ELSE
+		CALL PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+	ENDIF
+ELSEIF W < 15
+	IF (TALENT:37 == 0 && TALENT:MASTER:120) || (TALENT:38 == 0 && TALENT:MASTER:120 == 0)
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_MISANTHROPIST
+	ELSEIF TALENT:34 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_RESISTER
+	ELSEIF TALENT:26 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_DEPRESSION
+	ELSEIF TALENT:22 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+	ELSE
+		CALL PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+	ENDIF
+ELSEIF W < 20
+	IF TALENT:34 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_RESISTER
+	ELSEIF TALENT:26 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_DEPRESSION
+	ELSEIF TALENT:22 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+	ELSE
+		CALL PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+	ENDIF
+ELSEIF W < 25
+	IF TALENT:26 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_DEPRESSION
+	ELSEIF TALENT:22 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+	ELSE
+		CALL PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+	ENDIF
+ELSEIF W < 30
+	IF TALENT:22 == 0
+		CALL PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+	ELSE
+		CALL PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+	ENDIF
+ELSE
+	PRINTL 
+ENDIF
+PRINTL 
+
+W = 1
+
+
+@PRECIPITATE_WITHDRAWAL_FALL_INTO_DISFAVOR
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 완전히 %플레이어를()% 싫어하게 되어버린 것 같다
+;こっそり호감도をマイナス
+CFLAG:2 -= 200
+
+@PRECIPITATE_WITHDRAWAL_BE_A_ATHYMIA
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 완전히 감정을 잃어버린 것 같다
+PRINTFORMW %타겟은(1)%【%TALENTNAME:22%】을 얻었다
+TALENT:22 = 1
+
+@PRECIPITATE_WITHDRAWAL_BE_A_DEPRESSION
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 완전히 비관적이 되어버린 것 같다
+PRINTFORMW %타겟은(1)%【%TALENTNAME:26%】을 얻었다
+TALENT:26 = 1
+
+@PRECIPITATE_WITHDRAWAL_BE_A_RESISTER
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 완전히 까다로워져버린 것 같다
+PRINTFORMW %타겟은(1)%【%TALENTNAME:34%】을 얻었다
+TALENT:34 = 1
+
+@PRECIPITATE_WITHDRAWAL_BE_A_MISANTHROPIST
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 완전히 %플레이어를()% 싫어하게 되어버린 것 같다
+IF RELATION:0 == 0
+	RELATION:0 = 50
+ELSE
+	RELATION:0 -= 50
+	SIF RELATION:0 < 30
+		RELATION:0 = 30
+ENDIF
+;こっそり호감도もマイナス
+CFLAG:2 -= 200
+
+@PRECIPITATE_WITHDRAWAL_BE_A_CRAZY
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 마음에 영향이 가버린 것 같다
+PRINTFORMW %타겟은(1)%【%TALENTNAME:123%】를 얻었다
+TALENT:123 = 1
+
+@PRECIPITATE_WITHDRAWAL_BE_A_WRECK
+PRINTFORMW %CALLNAME:TARGET%의 모습이 명백히 이상하다……
+PRINTFORMW %타겟은()% 금단증상의 고통 때문에 완전히 폐인이 됐다
+PRINTFORML %NAME:TARGET%의 정신은【%TALENTNAME:9%】되버렸다……
+TALENT:19 = 1
+

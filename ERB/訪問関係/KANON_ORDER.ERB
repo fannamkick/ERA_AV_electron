@@ -1,0 +1,81 @@
+﻿;=================================================
+;비밀 연구소
+;=================================================
+@KANON_ORDER
+
+$INPUT_LOOP
+
+DRAWLINE
+PRINTL 카논에게 의뢰한다
+PRINTL 《뒷세계 관련자를 카논이 준비해줍니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 0] - 나쁜 벌레를 없애달라                (의뢰료:  300000포인트)
+PRINTL  [ 1] - 문신사를 소개받는다                 (의뢰료:  100000포인트)
+;PRINTL  [ 2] - 返済猶予をもらう                   (의뢰료:       0포인트)
+;PRINTL  [ 3] - 融資してもらう                     (의뢰료:       0포인트)
+PRINTL  [ 4] - 호위를 소개받는다                   (의뢰료:  800000포인트)
+IF (CFLAG:MASTER:704 & 1) == 0
+	PRINTL  [ 5] - 초인기 아이돌을「소개」받는다        (의뢰료: 1000000포인트)
+ENDIF
+IF (CFLAG:MASTER:704 & 2) == 0
+	PRINTL  [ 6] - 인기성우를「소개」받는다            (의뢰료: 1000000포인트)
+ENDIF
+
+IF (CFLAG:MASTER:758 & 1) == 0 || (CFLAG:MASTER:758 & 2) == 0 || (CFLAG:MASTER:758 & 4) == 0
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF NO:COUNT == 29
+			IF CFLAG:COUNT:1 >= 1
+				PRINTL  [11] - 시설관련자를「소개」받는다
+			ENDIF
+		ENDIF
+	REND
+ENDIF
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	CALL BOYFRIEND_LOST
+ELSEIF RESULT == 1
+	CALL TATTO
+;ELSEIF RESULT == 2
+;	CALL ADD_LOVE
+;ELSEIF RESULT == 3
+;	CALL ADD_LEWD
+ELSEIF RESULT == 4
+	CALL BODYGUARD
+ELSEIF RESULT == 5
+	IF (CFLAG:MASTER:704 & 1) == 0
+		CALL ADD_IDOL
+	ENDIF
+ELSEIF RESULT == 6
+	IF (CFLAG:MASTER:704 & 2) == 0
+		CALL ADD_VA
+	ENDIF
+ELSEIF RESULT == 11
+	;1+2+4=7
+	IF CFLAG:MASTER:758 != 7
+		CALL ADD_SHISETU
+	ENDIF
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+GOTO INPUT_LOOP
+;

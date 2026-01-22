@@ -1,0 +1,158 @@
+﻿;-------------------------------------------------
+;클리캡
+;道具使用コマンド: 調教対象の클리토리스を클리캡で刺激
+;-------------------------------------------------
+@COM14
+
+IF TEQUIP:90
+	PRINTL 촉수 클리자극
+	SAVESTR:0 = 촉수 클리자극
+ELSE
+	PRINTL 전동 클리캡
+	SAVESTR:0 = 전동 클리캡
+ENDIF
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 10
+LOSEBASE:1 += 80
+
+SOURCE:12 = 120
+SOURCE:14 = 70
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	SOURCE:0 = 200
+ELSEIF ABL:0 == 1
+	SOURCE:0 = 400
+ELSEIF ABL:0 == 2
+	SOURCE:0 = 900
+ELSEIF ABL:0 == 3
+	SOURCE:0 = 1600
+ELSEIF ABL:0 == 4
+	SOURCE:0 = 2400
+ELSE
+	SOURCE:0 = 3000
+ENDIF
+
+						;****슬라임パッチ追加ここから****
+IF ITEM:204 >= 1 && TEQUIP:90 == 0
+	TIMES LOSEBASE:0 , 0.80
+	TIMES LOSEBASE:1 , 0.80
+	TIMES SOURCE:0 , 1.20
+	TIMES SOURCE:12 , 1.20
+	TIMES SOURCE:14 , 0.80
+ENDIF
+						;****슬라임パッチ追加ここまで****
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;레즈경험
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +1
+	EXP:40 += 1
+ENDIF
+
+;-------------------------------------------------
+;클리캡の着脱
+;-------------------------------------------------
+TEQUIP:14 = 1 - TEQUIP:14
+SIF TEQUIP:90
+	T = 0
+
+;-------------------------------------------------
+;汚れ(촉수)
+;-------------------------------------------------
+IF TEQUIP:90 && TEQUIP:14
+	STAIN:3 |= 2
+	STAIN:3 |= 4
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;-------------------------------------------------
+;클리캡장착중
+;-------------------------------------------------
+@EQUIP_COM14
+IF TEQUIP:90
+	PRINTL ＜촉수 클리자극중＞
+ELSE
+	PRINTL ＜클리캡 장착중＞
+ENDIF
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 5
+LOSEBASE:1 += 20
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	A = 40
+ELSEIF ABL:0 == 1
+	A = 120
+ELSEIF ABL:0 == 2
+	A = 250
+ELSEIF ABL:0 == 3
+	A = 450
+ELSEIF ABL:0 == 4
+	A = 600
+ELSE
+	A = 750
+ENDIF
+
+;PALAM:욕정をみる
+IF PALAM:5 < PALAMLV:1
+	TIMES A , 0.80
+ELSEIF PALAM:5 < PALAMLV:2
+	TIMES A , 0.90
+ELSEIF PALAM:5 < PALAMLV:3
+	TIMES A , 1.00
+ELSEIF PALAM:5 < PALAMLV:4
+	TIMES A , 1.10
+ELSEIF PALAM:5 >= PALAMLV:4
+	TIMES A , 1.20
+ENDIF
+
+;ABL:従順をみる
+IF ABL:10 == 0
+	TIMES A , 0.80
+ELSEIF ABL:10 == 1
+	TIMES A , 0.90
+ELSEIF ABL:10 == 2
+	TIMES A , 1.00
+ELSEIF ABL:10 == 3
+	TIMES A , 1.10
+ELSEIF ABL:10 == 4
+	TIMES A , 1.20
+ELSE
+	TIMES A , 1.30
+ENDIF
+
+SOURCE:0 += A
+SOURCE:11 += 50
+SOURCE:12 += 50
+
+						;****슬라임パッチ追加ここから****
+IF ITEM:204 >= 1 && TEQUIP:90 == 0
+	LOSEBASE:0 -= 1
+	LOSEBASE:1 -= 4
+	TIMES SOURCE:0 , 1.20
+	TIMES SOURCE:12 , 1.20
+	TIMES SOURCE:14 , 0.80
+ENDIF
+						;****슬라임パッチ追加ここまで****
+;-------------------------------------------------
+;その他の処理
+;-------------------------------------------------
+SIF TEQUIP:90
+	T += 1
+
+RETURN 1
+;
+;
+;

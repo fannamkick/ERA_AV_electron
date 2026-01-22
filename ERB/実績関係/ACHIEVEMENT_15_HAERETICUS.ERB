@@ -1,0 +1,38 @@
+﻿;===========================================================
+;実績・HAERETICUS
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_15
+RESULTS = HAERETICUS
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_15
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF (NO:COUNT == 9 || NO:COUNT == 96 || NO:COUNT == 209 || NO:COUNT == 86) && TALENT:COUNT:430 == 1
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:15 == 0 && DIFFICULTY_CHECK() && LOCAL >= 4
+	GLOBAL:15 = 1
+RETURN GLOBAL:15
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_15
+; 解説文
+PRINTFORML 이 세계와는 다른 세계에서 온 일족의 자손인 파라디수스 왕가……
+PRINTFORML 레이첼의 마술처럼 이 세계의 법칙과는 동떨어진 힘을 가진 규격외의 존재
+PRINTFORM 이 세계에선『이단자』인 그녀들은 아군으로 만든 것은
+PRINTFORMW %CALLNAME:MASTER%의 미래에 엄청난 이익이 되겠죠
+
+IF FLAG:561 == 0 && FLAG:553 == 1
+	IF GETCHARA(86, 0) >= 0
+		PRINTFORML 《실적 해금 보너스로서 실적「위대한 유니콘」의 보너스 플래그가 리셋됐습니다》
+		FLAG:561 = 1
+		FLAG:553 = 0
+	ENDIF
+ENDIF

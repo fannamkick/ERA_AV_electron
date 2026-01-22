@@ -1,0 +1,162 @@
+/**
+ * 훈련 커맨드 타입 정의 (Train.csv)
+ * 총 105개 커맨드
+ */
+
+/**
+ * 훈련 커맨드 인터페이스
+ * 실제 사용 시 GameData.training.getName(id)로 이름을 가져옴
+ */
+export interface TrainingCommands {
+  // 애무 (0-9)
+  0?: number;   // 애무
+  1?: number;   // 커닐링구스
+  2?: number;   // 애널애무
+  3?: number;   // 자위
+  4?: number;   // 펠라한다
+  5?: number;   // 가슴애무
+  6?: number;   // 키스한다
+  7?: number;   // 조개벌리기
+  8?: number;   // 손가락삽입
+  9?: number;   // 애널핥기
+
+  // 도구사용 (10-19)
+  10?: number;  // 로터
+  11?: number;  // 바이브
+  12?: number;  // E마사지기
+  13?: number;  // 애널바이브
+  14?: number;  // 클리캡
+  15?: number;  // 니플캡
+  16?: number;  // 착유기
+  17?: number;  // 오나홀
+  18?: number;  // 샤워
+  19?: number;  // 애널스틱
+
+  // 섹스 (20-29)
+  20?: number;  // 정상위
+  21?: number;  // 후배위
+  22?: number;  // 대면좌위
+  23?: number;  // 배면좌위
+  24?: number;  // 역강간
+  25?: number;  // 역애널강간
+  26?: number;  // 정상위애널
+  27?: number;  // 후배위애널
+  28?: number;  // 대면좌위애널
+  29?: number;  // 배면좌위애널
+
+  // 봉사 (30-39)
+  30?: number;  // 수음
+  31?: number;  // 펠라치오
+  32?: number;  // 파이즈리
+  33?: number;  // 스마타
+  34?: number;  // 기승위
+  35?: number;  // 거품춤
+  36?: number;  // 기승위애널
+  37?: number;  // 애널봉사
+  38?: number;  // 풋잡
+  39?: number;  // 오나홀애무
+
+  // SM/도구 (40-49)
+  40?: number;  // 스팽킹
+  41?: number;  // 채찍
+  42?: number;  // 바늘
+  43?: number;  // 아이마스크
+  44?: number;  // 밧줄
+  45?: number;  // 볼개그
+  46?: number;  // 관장기+플러그
+  47?: number;  // 본디지 착용
+  48?: number;  // 풋잡한다
+  49?: number;  // 애널전극
+
+  // 약물/촬영 (50-59)
+  50?: number;  // 로션
+  51?: number;  // 프린세스포이즌
+  52?: number;  // 이뇨제
+  53?: number;  // 비디오카메라
+  54?: number;  // 촬영세트변경
+  55?: number;  // 아무것도 안한다
+  56?: number;  // 대화한다
+  57?: number;  // 수치 플레이
+  58?: number;  // 목욕탕 플레이
+  59?: number;  // 코스프레
+
+  // 조수/협력 (60-68)
+  60?: number;  // 조수한테키스
+  61?: number;  // 커닐링구스강제
+  62?: number;  // 조수를 범한다
+  63?: number;  // 조개맞대기
+  65?: number;  // 조수를 범하게 한다
+  66?: number;  // 두개 펠라
+  68?: number;  // 더블 펠라
+
+  // 추가 (71-92)
+  71?: number;  // 더블 파이즈리
+  80?: number;  // 이라마치오
+  81?: number;  // 피스트퍽
+  82?: number;  // 애널피스트
+  83?: number;  // 양구멍피스트
+  85?: number;  // 방뇨
+  87?: number;  // 피어싱
+  88?: number;  // 제모
+  89?: number;  // 수간 플레이
+  90?: number;  // 로터자위
+  91?: number;  // 전동마사지기자위
+  92?: number;  // 유두로터
+
+  // 촉수 (100-110)
+  100?: number; // 촉수생물
+  101?: number; // 촉수 삽입
+  102?: number; // 애널촉수
+  103?: number; // 촉수 클리자극
+  104?: number; // 촉수 유두자극
+  105?: number; // 촉수 착유
+  106?: number; // 촉수 긴박
+  107?: number; // 촉수 관장
+  108?: number; // 촉수 구욕
+  109?: number; // 촉수페니스자극
+  110?: number; // 갈아입히기
+
+  // 기타 (122-180)
+  122?: number; // 투구비비기
+  135?: number; // 안면기승 플레이
+  136?: number; // 칭찬한다
+  137?: number; // 삼각목마
+  140?: number; // 콘돔정음
+  141?: number; // 나이즈리
+  142?: number; // 세로파이즈리
+  143?: number; // 가슴구멍
+  144?: number; // 배빵
+
+  // 슬라임 (150-154)
+  150?: number; // 슬라임 생성
+  151?: number; // 슬라임 질내진입
+  152?: number; // 슬라임 항문진입
+  153?: number; // 슬라임자위
+  154?: number; // 슬라임 구욕
+
+  180?: number; // 구현
+
+  [key: number]: number | undefined;
+}
+
+/**
+ * 훈련 결과 데이터
+ */
+export interface TrainingResult {
+  commandId: number;
+  success: boolean;
+  experienceGained: Record<number, number>;   // exp.csv ID → 획득량
+  parameterChanges: Record<number, number>;   // palam.csv ID → 변화량
+  abilityChanges: Record<number, number>;     // abl.csv ID → 변화량
+  messages: string[];
+}
+
+/**
+ * 훈련 커맨드 실행 컨텍스트
+ */
+export interface TrainingContext {
+  characterId: number;
+  commandId: number;
+  assistantId?: number;
+  itemsUsed?: number[];
+}

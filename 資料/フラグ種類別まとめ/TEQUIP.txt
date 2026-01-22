@@ -1,0 +1,64 @@
+﻿TEQUIPまとめ　　　　　　　　　　最終更新　2010/02/02　
+
+TEQUIP:11 = バイブ装着
+TEQUIP:13 = アナルバイブ装着
+TEQUIP:14 = クリキャップ装着
+TEQUIP:15 = 二プルキャップ装着
+TEQUIP:16 = 搾乳器装着
+TEQUIP:17 = オナホール装着
+TEQUIP:18 = シャワー使用中
+TEQUIP:19 = アナルビーズ使用中
+TEQUIP:21 = しあわせ草
+TEQUIP:22 = 利尿剤
+TEQUIP:35 = マスターがコンドーム装着
+TEQUIP:36 = 助手がコンドーム装着
+TEQUIP:37 = 調教対象がコンドーム装着
+TEQUIP:43 = アイマスク装着
+TEQUIP:44 = 縄で緊縛
+TEQUIP:45 = ボールギャグ装着
+TEQUIP:46 = 浣腸＋アナルプラグ装着
+TEQUIP:47 = 助手がボンデージ装着
+TEQUIP:48 = 拡張バルーン（廃止）
+TEQUIP:49 = アナル電極
+TEQUIP:53 = ビデオ撮影
+TEQUIP:54 = 野外プレイ
+TEQUIP:57 = 羞恥プレイ
+TEQUIP:58 = お風呂場プレイ
+TEQUIP:59 = 新妻プレイ
+TEQUIP:89 = 獣姦プレイ
+TEQUIP:90 = 触手調教
+TEQUIP:98 = 触手口辱
+
+TEQUIP:11 = 바이브 장착
+TEQUIP:13 = 아나르 바이브 장착
+TEQUIP:14 = 클리캡 장착
+TEQUIP:15 = 니플캡 장착
+TEQUIP:16 = 착유기 장착
+TEQUIP:17 = 오너홀 장착
+TEQUIP:18 = 샤워 사용중
+TEQUIP:19 = 아나르비즈 사용중
+TEQUIP:21 = 행복초
+TEQUIP:22 = 이뇨제
+TEQUIP:35 = 마스터가 콘돔 장착
+TEQUIP:36 = 조수가 콘돔 장착
+TEQUIP:37 = 조교 대상이 콘돔 장착
+TEQUIP:43 = 안대 장착
+TEQUIP:44 = 밧줄로 긴박
+TEQUIP:45 = 볼개그 장착
+TEQUIP:46 = 관장 + 항문 플러그 장착
+TEQUIP:47 = 조수가 본디지 장착
+TEQUIP:48 = 확장 풍선 (폐지)
+TEQUIP:49 = 아날로그 전극
+TEQUIP:53 = 비디오 촬영
+TEQUIP:54 = 야외 플레이
+TEQUIP:57 = 수치 플레이
+TEQUIP:58 = 목욕탕 플레이
+TEQUIP:59 = 새댁 플레이
+TEQUIP:89 = 수간 플레이
+TEQUIP:90 = 촉수 조교
+TEQUIP:98 = 촉수구욕
+
+TEQUIP:150 ;슬라임지도중
+TEQUIP:151 ;슬라임 질내 진입중
+TEQUIP:152 ;슬라임 항문 진입중
+TEQUIP:154 ;슬라임 구욕중

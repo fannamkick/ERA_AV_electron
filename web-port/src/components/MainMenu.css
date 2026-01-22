@@ -1,0 +1,21 @@
+/* 메인 메뉴 */
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.8rem;
+}
+
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.menu-list button {
+  padding: 0.7rem 0.8rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* 공통 버튼 스타일은 App.css에서 전역으로 정의됨 */

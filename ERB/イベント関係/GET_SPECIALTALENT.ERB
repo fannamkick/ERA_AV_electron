@@ -1,0 +1,1184 @@
+﻿;-------------------------------------------------
+;キャラの特殊技能獲得判定
+;2009/11/14 EVENTCHECK_Mより改名
+;erapokeへの改造に際して親愛(TALENT:88)は廃止
+;-------------------------------------------------
+@CHECK_SPECIALSKIL
+;調教対象がいないとダメ
+SIF TARGET < 0
+	RETURN 0
+;【붕괴】してるとダメ
+SIF TALENT:9
+	RETURN 0
+
+;레즈경험が500以下, 반발각인がない場合, 
+;主人による調教経験他依存で特殊技能を獲得
+IF MARK:3 == 0
+	;調教経験2000以上で【연심】か【음란】で【매각 불가】がなければ売却・조수 가능能に
+	IF CFLAG:2 >= 2000 && CFLAG:1 < 2 && (TALENT:76 || TALENT:85) && TALENT:199 == 0
+			PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+			PRINTFORML %타겟은()% 몸도 마음도 %CALLNAME:MASTER%에게 의존해 버린 것 같다…
+			IF ABL:10 < 5
+				ABL:10 = 5
+				PRINTL 순종이 LV5가 됐다
+			ENDIF
+			SIF CFLAG:1 < 1
+				PRINTFORML %타겟이(1)% 은퇴 가능하게 되었습니다
+			PRINTFORMW %타겟이(1)% 조수 가능하게 되었습니다
+			CFLAG:1 = 2
+	;主人による調教経験1000以上で
+	ELSEIF CFLAG:2 >= 1000
+		;음마アンドロ천사は
+		IF TALENT:505 == 1 || TALENT:504 == 1 || TALENT:511 == 1
+			;従順3以上, 봉사쾌락경험200以上で【남친있음】がなければ【연심】を獲得
+			IF ABL:10 >= 3 && EXP:21 >= 200 && TALENT:85 == 0 && TALENT:184 == 0 && CFLAG:621 != 1
+				PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+				PRINTFORML %타겟은()% %플레이어와()%의 행위에 즐거움을 느끼고 있는 것 같다…
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:85%】%조사만처리(TALENTNAME:85,"를")% 얻었다
+				TALENT:85 = 1
+				;寝取られ進行値をリセット, 完了値を倍に
+				CFLAG:619 = 0
+				CFLAG:620 *= 2
+				;堕とした人数＋1。既に음란だとなし
+				SIF TALENT:76 == 0
+					FLAG:30 += 1
+				;로리콘フラグ
+				IF FLAG:39 == 0 && TALENT:76 == 0
+					;【초등학생】だと＋2/【중학생】だと＋1/【고등학생】だと＋0/それ以外は－1
+					IF TALENT:222
+						FLAG:68 += 2
+					ELSEIF TALENT:221
+						FLAG:68 += 1
+					ELSEIF TALENT:220
+						FLAG:68 += 0
+					ELSE
+						FLAG:68 -= 1
+					ENDIF
+					;로리콘フラグの値を0から5までの範囲に収める
+					SIF FLAG:68 > 5
+						FLAG:68 = 5
+					SIF FLAG:68 < 0
+						FLAG:68 = 0
+				ENDIF
+				;【츤데레】なら【건방짐】が【솔직함】に変化
+				IF TALENT:11 && TALENT:18
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:11%】%조사만처리(TALENTNAME:11,"를")% 잃고,【%TALENTNAME:13%】%조사만처리(TALENTNAME:13,"를")% 얻었다
+					TALENT:11 = 0
+					TALENT:13 = 1
+				ENDIF
+				;【츤데레】以外での【건방짐】は消滅
+				IF TALENT:18 == 0 && TALENT:11
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:11%】%조사만처리(TALENTNAME:11,"를")% 잃었다
+					TALENT:11 = 0
+				ENDIF
+				;【자제심】か【무관심】なら【매각 불가】でない限り消える
+				IF (TALENT:20 || TALENT:21) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)%
+					IF TALENT:20
+						PRINTFORM 【%TALENTNAME:20%】%조사만처리(TALENTNAME:20,"를")% 
+						TALENT:20 = 0
+					ENDIF
+					IF TALENT:21
+						PRINTFORM 【%TALENTNAME:21%】%조사만처리(TALENTNAME:21,"를")% 
+						TALENT:21 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF
+				;【一線を越えない】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:27 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:27%】%조사만처리(TALENTNAME:27,"를")% 잃었다
+					TALENT:27 = 0
+				ENDIF
+				;[츤데레]持ちで[건방짐]なしの場合に[솔직함]を持たせる処理
+				IF TALENT:11 == 0 && TALENT:13 == 0 && TALENT:18 == 1
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:13%】%조사만처리(TALENTNAME:13,"을")% 얻었다
+					TALENT:13 = 1
+				ENDIF
+				;【봉사 안함】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:151 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:151%】%조사만처리(TALENTNAME:151,"가")% 아니게 됐다
+					TALENT:151 = 0
+				ENDIF
+				;【질투】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:84 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:84%】%조사만처리(TALENTNAME:84,"가")% 사라졌다
+					TALENT:84 = 0
+				ENDIF
+				;【왕도짓코】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:198 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:198%】%조사만처리(TALENTNAME:198,"가")% 완화됐다
+					TALENT:198 = 0
+				ENDIF
+				;[남성불신]から[바이]へ。
+				IF TALENT:82 == 1 && TALENT:81 == 0
+					PRINTFORM 남자를 싫어하던 %타겟은(1)%【%TALENTNAME:82%】
+					PRINTFORMW 에서【%TALENTNAME:81%】%조사만처리(TALENTNAME:81,"가")% 됐다
+					TALENT:82 = 0
+					TALENT:81 = 1
+				ENDIF
+				;【사실의 진상】持ちなら, 主人公が【사실의 진상】を知らなければ教えてくれる
+				IF TALENT:399 == 1 && TALENT:MASTER:399 == 0 && FLAG:5 != 9
+					PRINTFORMW %NAME:TARGET%에게서 %플레이어는()%【%TALENTNAME:399%】%조사만처리(TALENTNAME:399,"을")% 배웠다
+					TALENT:MASTER:399 = 1
+				ENDIF
+				;수명持ちの場合は残り수명を表示
+				IF BASE:10 > 0
+					D = BASE:10 / 2
+					PRINTFORMW %CALLNAME:TARGET%에게 남겨진 생명은, 나머지 {D}주 입니다
+				ENDIF
+				SIF RELATION:TARGET:MASTER <= 100
+					RELATION:TARGET:MASTER = 100
+			ENDIF
+		ELSE
+			;普通はこっち
+			;従順3以上, 봉사쾌락경험200以上で레즈경험が1200以下であり,【음란】【남친있음】がなければ【연심】を獲得
+			IF ABL:10 >= 3 && EXP:21 >= EXPLV:5 && TALENT:76 == 0 && TALENT:85 == 0 && TALENT:184 == 0 && EXP:40 <= 1200 && CFLAG:621 != 1 && FLAG:110 == 0
+				PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+				PRINTFORML %타겟은()% %플레이어와()%의 행위에 즐거움을 느끼고 있는 것 같다…
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:85%】%조사만처리(TALENTNAME:85,"을")% 얻었다
+				TALENT:85 = 1
+				CFLAG:619 = 0
+				CFLAG:620 *= 2
+				;堕とした人数＋1。既に음란だとなし
+				SIF TALENT:76 == 0
+					FLAG:30 += 1
+				;로리콘フラグ
+				IF FLAG:39 == 0 && TALENT:76 == 0
+					;【초등학생】だと＋2/【중학생】だと＋1/【고등학생】だと＋0/それ以外は－1
+					IF TALENT:222
+						FLAG:68 += 2
+					ELSEIF TALENT:221
+						FLAG:68 += 1
+					ELSEIF TALENT:220
+						FLAG:68 += 0
+					ELSE
+						FLAG:68 -= 1
+					ENDIF
+					;로리콘フラグの値を0から5までの範囲に収める
+					SIF FLAG:68 > 5
+						FLAG:68 = 5
+					SIF FLAG:68 < 0
+						FLAG:68 = 0
+				ENDIF
+				;【츤데레】なら【反抗】が【従順】に変化
+				IF  TALENT:11 && TALENT:18
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:11%】%조사만처리(TALENTNAME:11,"을")% 잃고,【%TALENTNAME:13%】%조사만처리(TALENTNAME:13,"을")% 얻었다
+					TALENT:11 = 0
+					TALENT:13 = 1
+				ENDIF
+				;【자제심】か【무관심】なら【매각 불가】でない限り消える
+				IF (TALENT:20 || TALENT:21) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)%
+					IF TALENT:20
+						PRINTFORM 【%TALENTNAME:20%】%조사만처리(TALENTNAME:20,"을")% 
+						TALENT:20 = 0
+					ENDIF
+					IF TALENT:21
+						PRINTFORM 【%TALENTNAME:21%】%조사만처리(TALENTNAME:21,"을")% 
+						TALENT:21 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF
+				;【一線を越えない】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:27 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:27%】%조사만처리(TALENTNAME:27,"을")% 잃었다
+					TALENT:27 = 0
+				ENDIF
+				;【봉사 안함】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:151 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:151%】%조사만처리(TALENTNAME:151,"가")% 아니게 됐다
+					TALENT:151 = 0
+				ENDIF
+				;【질투】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:84 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:84%】%조사만처리(TALENTNAME:84,"가")% 사라졌다
+					TALENT:84 = 0
+				ENDIF
+				IF TALENT:11 == 0 && TALENT:13 == 0 && TALENT:18 == 1
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:13%】%조사만처리(TALENTNAME:13,"을")% 얻었다
+					TALENT:13 = 1
+				ENDIF
+				IF TALENT:82 == 1 && TALENT:81 == 0
+					PRINTFORM 남자를 싫어하던 %타겟은(1)%【%TALENTNAME:82%】
+					PRINTFORMW 에서【%TALENTNAME:81%】%조사만처리(TALENTNAME:81,"가")% 됐다
+					TALENT:82 = 0
+					TALENT:81 = 1
+				ENDIF
+				;【왕도짓코】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:198 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:198%】%조사만처리(TALENTNAME:198,"가")% 완화됐다
+					TALENT:198 = 0
+				ENDIF
+				;【사실의 진상】持ちなら, 主人公が【사실의 진상】を知らなければ教えてくれる
+				IF TALENT:399 == 1 && TALENT:MASTER:399 == 0 && FLAG:5 != 9
+					PRINTFORMW %NAME:TARGET%에게서 %플레이어는()%【%TALENTNAME:399%】%조사만처리(TALENTNAME:399,"을")% 배웠다
+					TALENT:MASTER:399 = 1
+				ENDIF
+				;수명持ちの場合は残り수명を表示
+				IF BASE:10 > 0
+					D = BASE:10 / 2
+					PRINTFORMW %CALLNAME:TARGET%에게 남겨진 생명은, 나머지 {D}주 입니다
+				ENDIF
+				SIF RELATION:TARGET:MASTER <= 100
+					RELATION:TARGET:MASTER = 100
+			ENDIF
+			;実績ボーナスによる레즈경험の無視
+			IF ABL:10 >= 3 && EXP:21 >= EXPLV:5 && TALENT:76 == 0 && TALENT:85 == 0 && TALENT:184 == 0 && CFLAG:621 != 1 && FLAG:110 == 1
+				PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+				PRINTFORML %타겟은()% %플레이어와()%의 행위에 즐거움을 느끼고 있는 것 같다…
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:85%】%조사만처리(TALENTNAME:85,"을")% 얻었다
+				TALENT:85 = 1
+				CFLAG:619 = 0
+				CFLAG:620 *= 2
+				;堕とした人数＋1。既に음란だとなし
+				SIF TALENT:76 == 0
+					FLAG:30 += 1
+				;로리콘フラグ
+				IF FLAG:39 == 0 && TALENT:76 == 0
+					;【초등학생】だと＋2/【중학생】だと＋1/【고등학생】だと＋0/それ以外は－1
+					IF TALENT:222
+						FLAG:68 += 2
+					ELSEIF TALENT:221
+						FLAG:68 += 1
+					ELSEIF TALENT:220
+						FLAG:68 += 0
+					ELSE
+						FLAG:68 -= 1
+					ENDIF
+					;로리콘フラグの値を0から5までの範囲に収める
+					SIF FLAG:68 > 5
+						FLAG:68 = 5
+					SIF FLAG:68 < 0
+						FLAG:68 = 0
+				ENDIF
+				;【츤데레】なら【反抗】が【従順】に変化
+				IF  TALENT:11 && TALENT:18
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:11%】%조사만처리(TALENTNAME:11,"를")% 잃고,【%TALENTNAME:13%】%조사만처리(TALENTNAME:13,"를")% 얻었다
+					TALENT:11 = 0
+					TALENT:13 = 1
+				ENDIF
+				;【자제심】か【무관심】なら【매각 불가】でない限り消える
+				IF (TALENT:20 || TALENT:21) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)%
+					IF TALENT:20
+						PRINTFORM 【%TALENTNAME:20%】%조사만처리(TALENTNAME:20,"를")% 
+						TALENT:20 = 0
+					ENDIF
+					IF TALENT:21
+						PRINTFORM 【%TALENTNAME:21%】%조사만처리(TALENTNAME:21,"를")% 
+						TALENT:21 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF
+				;【一線を越えない】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:27 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:27%】%조사만처리(TALENTNAME:27,"을")% 잃었다
+					TALENT:27 = 0
+				ENDIF
+				;【봉사 안함】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:151 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:151%】%조사만처리(TALENTNAME:151,"가")% 아니게 됐다
+					TALENT:151 = 0
+				ENDIF
+				;【질투】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:84 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:84%】%조사만처리(TALENTNAME:84,"가")% 사라졌다
+					TALENT:84 = 0
+				ENDIF
+				IF TALENT:11 == 0 && TALENT:13 == 0 && TALENT:18 == 1
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:13%】%조사만처리(TALENTNAME:13,"을")% 얻었다
+					TALENT:13 = 1
+				ENDIF
+				IF TALENT:82 == 1 && TALENT:81 == 0
+					PRINTFORM 남자를 싫어하던 %타겟은(1)%【%TALENTNAME:82%】
+					PRINTFORMW 에서【%TALENTNAME:81%】%조사만처리(TALENTNAME:81,"가")% 됐다
+					TALENT:82 = 0
+					TALENT:81 = 1
+				ENDIF
+				;【왕도짓코】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:198 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:198%】%조사만처리(TALENTNAME:198,"가")% 완화됐다
+					TALENT:198 = 0
+				ENDIF
+				;【사실의 진상】持ちなら, 主人公が【사실의 진상】を知らなければ教えてくれる
+				IF TALENT:399 == 1 && TALENT:MASTER:399 == 0 && FLAG:5 != 9
+					PRINTFORMW %NAME:TARGET%에게서 %플레이어는()%【%TALENTNAME:399%】%조사만처리(TALENTNAME:399,"을")% 배웠다
+					TALENT:MASTER:399 = 1
+				ENDIF
+				;수명持ちの場合は残り수명を表示
+				IF BASE:10 > 0
+					D = BASE:10 / 2
+					PRINTFORMW %CALLNAME:TARGET%에게 남겨진 생명은, 나머지 {D}주 입니다
+				ENDIF
+				SIF RELATION:TARGET:MASTER <= 100
+					RELATION:TARGET:MASTER = 100
+			ENDIF
+		ENDIF
+		;욕망3以上, CVAB感覚合計10以上, 이상경험3以上で【연심】がなければ【음란】に
+		;両方처녀だとだめ
+		IF TALENT:505 == 0 && TALENT:504 == 0 && TALENT:511 == 0 && TALENT:553 == 0
+			IF ABL:11 >= 3 && ABL:0+ABL:1+ABL:2+ABL:3 >= 10 && EXP:50 >= 3 && TALENT:76 == 0 && TALENT:85 == 0 && (TALENT:0 == 0 || TALENT:2 == 0)
+				PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+				PRINTFORML %타겟은()% %CALLNAME:MASTER%에게 받고 있는 쾌락에 빠져버린 것 같다…
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:76%】%조사만처리(TALENTNAME:76,"을")% 얻었다
+				TALENT:76 = 1
+				;堕とした人数。既に연심だとなし
+				SIF TALENT:85 == 0
+					FLAG:30 += 1
+				;로리콘フラグ
+				IF FLAG:39 == 0 && TALENT:85 == 0
+					;【초등학생】だと＋2(上限5)
+					SIF TALENT:222 && FLAG:68 < 4
+						FLAG:68 += 2
+					SIF TALENT:222 && FLAG:68 == 4
+						FLAG:68 = 5
+					;【중학생】だと＋1(上限5)
+					SIF TALENT:221 && FLAG:68 < 5
+						FLAG:68 += 1
+					;【중학생】でも【고등학생】でもないと－1
+					SIF TALENT:221 == 0 && TALENT:220 == 0 && FLAG:68 > 0
+						FLAG:68 -= 1
+				ENDIF
+				;【자제심】か【무관심】なら【매각 불가】でない限り消える
+				IF (TALENT:20 || TALENT:21) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)%
+					IF TALENT:20
+						PRINTFORM 【%TALENTNAME:20%】%조사만처리(TALENTNAME:20,"을")% 
+						TALENT:20 = 0
+					ENDIF
+					IF TALENT:21
+						PRINTFORM 【%TALENTNAME:21%】%조사만처리(TALENTNAME:21,"을")% 
+						TALENT:21 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF
+				;【一線を越えない】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:27 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:27%】%조사만처리(TALENTNAME:27,"을")% 잃었다
+					TALENT:27 = 0
+				ENDIF
+				;【억압】か【저항】か【질투】なら【매각 불가】でない限り消える
+				IF (TALENT:32 || TALENT:34 || TALENT:84) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)% 
+					IF TALENT:32
+						PRINTFORM 【%TALENTNAME:32%】%조사만처리(TALENTNAME:32,"을")% 
+						TALENT:32 = 0
+					ENDIF
+					IF TALENT:34
+						PRINTFORM 【%TALENTNAME:34%】%조사만처리(TALENTNAME:34,"을")% 
+						TALENT:34 = 0
+					ENDIF
+					IF TALENT:84
+						PRINTFORM 【%TALENTNAME:84%】%조사만처리(TALENTNAME:84,"을")% 
+						TALENT:84 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF
+				;【쾌감을 부정】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:71 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+					TALENT:71 = 0
+				ENDIF
+				;【자위 안함】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:150 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:150%】%조사만처리(TALENTNAME:150,"가")% 아니게 됐다
+					TALENT:150 = 0
+				ENDIF
+				;【자위 안함】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:82 == 1 && TALENT:81 == 0
+					PRINTFORM 남자를 싫어하던 %타겟은(1)%【%TALENTNAME:82%】
+					PRINTFORMW 에서【%TALENTNAME:81%】%조사만처리(TALENTNAME:81,"가")% 됐다
+					TALENT:82 = 0
+					TALENT:81 = 1
+				ENDIF
+				;【왕도짓코】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:198 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:198%】%조사만처리(TALENTNAME:198,"가")% 완화됐다
+					TALENT:198 = 0
+				ENDIF
+				SIF RELATION:TARGET:MASTER <= 100
+					RELATION:TARGET:MASTER = 100
+			ENDIF		
+		ELSE
+			;음마천사アンドロだと両처녀でも大丈夫
+			IF ABL:11 >= 3 && ABL:0+ABL:1+ABL:2+ABL:3 >= 10 && EXP:50 >= 2 && TALENT:76 == 0
+				PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+				PRINTFORML %타겟은()% %CALLNAME:MASTER%에게 받고 있는 쾌락에 빠져버린 것 같다…
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:76%】%조사만처리(TALENTNAME:76,"을")% 얻었다
+				TALENT:76 = 1
+				;堕とした人数。既に연심だとなし
+				SIF TALENT:85 == 0
+					FLAG:30 += 1
+				;로리콘フラグ
+				IF FLAG:39 == 0 && TALENT:85 == 0
+					;【초등학생】だと＋2(上限5)
+					SIF TALENT:222 && FLAG:68 < 4
+						FLAG:68 += 2
+					SIF TALENT:222 && FLAG:68 == 4
+						FLAG:68 = 5
+					;【중학생】だと＋1(上限5)
+					SIF TALENT:221 && FLAG:68 < 5
+						FLAG:68 += 1
+					;【중학생】でも【고등학생】でもないと－1
+					SIF TALENT:221 == 0 && TALENT:220 == 0 && FLAG:68 > 0
+						FLAG:68 -= 1
+				ENDIF
+				;【자제심】か【무관심】なら【매각 불가】でない限り消える
+				IF (TALENT:20 || TALENT:21) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)%
+					IF TALENT:20
+						PRINTFORM 【%TALENTNAME:20%】%조사만처리(TALENTNAME:20,"을")% 
+						TALENT:20 = 0
+					ENDIF
+					IF TALENT:21
+						PRINTFORM 【%TALENTNAME:21%】%조사만처리(TALENTNAME:21,"을")% 
+						TALENT:21 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF	
+				;【一線を越えない】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:27 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:27%】%조사만처리(TALENTNAME:27,"을")% 잃었다
+					TALENT:27 = 0
+				ENDIF
+				;【억압】か【저항】か【질투】なら【매각 불가】でない限り消える
+				IF (TALENT:32 || TALENT:34 || TALENT:84) && TALENT:199 == 0
+					PRINTFORM %타겟은(1)%
+					IF TALENT:32
+						PRINTFORM 【%TALENTNAME:32%】%조사만처리(TALENTNAME:32,"을")% 
+						TALENT:32 = 0
+					ENDIF
+					IF TALENT:34
+						PRINTFORM 【%TALENTNAME:34%】%조사만처리(TALENTNAME:34,"을")% 
+						TALENT:34 = 0
+					ENDIF
+					IF TALENT:84
+						PRINTFORM 【%TALENTNAME:84%】%조사만처리(TALENTNAME:84,"을")% 
+						TALENT:84 = 0
+					ENDIF
+					PRINTL 잃었다
+					PRINTL 부정의 구슬이 반이 됐다
+					JUEL:100 /= 2
+				ENDIF
+				;【쾌감을 부정】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:71 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+					TALENT:71 = 0
+				ENDIF
+				IF TALENT:82 == 1 && TALENT:81 == 0
+					PRINTFORM 남자를 싫어하던 %타겟은(1)%【%TALENTNAME:82%】
+					PRINTFORMW 에서【%TALENTNAME:81%】%조사만처리(TALENTNAME:81,"가")% 됐다
+					TALENT:82 = 0
+					TALENT:81 = 1
+				ENDIF
+				;【자위 안함】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:150 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:150%】%조사만처리(TALENTNAME:150,"가")% 아니게 됐다
+					TALENT:150 = 0
+				ENDIF
+				;【왕도짓코】持ちの場合は【매각 불가】でない限り消える
+				IF TALENT:198 == 1 && TALENT:199 == 0
+					PRINTFORMW %타겟은(1)%【%TALENTNAME:198%】%조사만처리(TALENTNAME:198,"가")% 완화됐다
+					TALENT:198 = 0
+				ENDIF
+				SIF RELATION:TARGET:MASTER <= 100
+					RELATION:TARGET:MASTER = 100
+			ENDIF			
+		ENDIF
+	ENDIF
+		;主人による調教経験5000以上, 従順LV5以上, 快楽・굴복각인 LV3で,【매각 불가】【자위 안함】【봉사 안함】【세뇌 안당함】が消滅
+		IF CFLAG:2 >= 5000 && ABL:10 >= 5 && MARK:1 == 3 && MARK:2 == 3
+			IF TALENT:150
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:150%】%조사만처리(TALENTNAME:150,"을")% 잃었다
+				TALENT:150 = 0
+			ENDIF
+			IF TALENT:151
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:151%】%조사만처리(TALENTNAME:151,"을")% 잃었다
+				TALENT:151 = 0
+			ENDIF
+			IF TALENT:152
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:152%】%조사만처리(TALENTNAME:152,"을")% 잃었다
+				TALENT:152 = 0
+			ENDIF
+			IF TALENT:199
+				PRINTFORMW %타겟은(1)%【%TALENTNAME:199%】%조사만처리(TALENTNAME:199,"을")% 잃었다
+				TALENT:199 = 0
+			ENDIF
+		ENDIF
+ENDIF
+
+;---------------------------------------------------------
+;特殊技能素質
+;---------------------------------------------------------
+IF TALENT:51
+	;기교Lv7以上かつ봉사기술Lv7以上かつ펠라경험1500以上([습득느림]ありの場合)で【혀놀림】
+	IF ABL:12 >= 7 && ABL:13 >= 7 && EXP:22 >= 1500 && TALENT:52 == 0
+		PRINTFORMW %CALLNAME:TARGET%의 봉사도 굉장히 능숙해졌다……
+		PRINTFORMW %타겟은()%【%TALENTNAME:52%】%조사만처리(TALENTNAME:52,"을")% 얻었다
+		TALENT:52 = 1
+	ENDIF
+ELSE
+	;기교Lv5以上かつ봉사기술Lv5以上かつ펠라경험1000以上([습득느림]なしの場合)で【혀놀림】
+	IF ABL:12 >= 5 && ABL:13 >= 5 && EXP:22 >= 1000 && TALENT:52 == 0
+		PRINTFORMW %CALLNAME:TARGET%의 봉사도 굉장히 능숙해졌다……
+		PRINTFORMW %타겟은()%【%TALENTNAME:52%】%조사만처리(TALENTNAME:52,"을")% 얻었다
+		TALENT:52 = 1
+	ENDIF
+ENDIF
+
+;---------------------------------------------------------
+;特殊性癖素質
+;---------------------------------------------------------
+
+;새드끼Lv4以上かつ기교Lv4以上, 가학쾌락경험300以上で【새드】に
+;음마以外は[마조]と両立しない
+IF ABL:20 >= 4 && ABL:12 >= 4 && EXP:33 >= 300 && TALENT:83 == 0 && ((TALENT:505 == 0 && TALENT:88 == 0) || TALENT:505 == 1)
+	PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+	PRINTFORML %타겟은()% 사람을 고통스럽게 하는 기쁨에 눈뜬 것 같다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:83%】%조사만처리(TALENTNAME:83,"을")% 얻었다
+	TALENT:83 = 1
+ENDIF
+
+;마조끼Lv4以上かつ노출벽Lv2以上, 피학쾌락경험300以上で【마조】に
+;음마以外は[새드]と両立しない
+IF ABL:21 >= 4 && ABL:17 >= 2 && EXP:30 >= 300 && TALENT:88 == 0 && ((TALENT:505 == 0 && TALENT:83 == 0) || TALENT:505 == 1)
+	PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+	PRINTFORML %타겟은()% 몸을 학대받는 기쁨에 눈뜬 것 같다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:88%】%조사만처리(TALENTNAME:88,"을")% 얻었다
+	TALENT:88 = 1
+ENDIF
+
+;노출벽LV4以上, 야외노출경험100以上, 자위경험200以上, 절정경험100以上で【노출광】に
+IF ABL:17 >= 4 && EXP:10 >= 200 && EXP:2 >= 100 && TALENT:89 == 0 && EXP:12 >= 100
+	PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+	PRINTFORML 자신의 부끄러운 모습을 타인에게 보여지는 것이 기뻐서 견딜 수 없는 것 같다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:89%】%조사만처리(TALENTNAME:89,"을")% 얻었다
+	TALENT:89 = 1
+;튀고 싶어함, 부끄럼 없음, 음마で条件緩和(3,50,100,50)
+;부끄럼 없음で条件緩和ってあまりぴんと来ないね(恥ずかしいのが好き, だろうから)
+ELSEIF ABL:17 >= 3 && EXP:10 >= 100 && EXP:2 >= 50 && TALENT:89 == 0 && EXP:12 >= 50 && (TALENT:28 == 1 || TALENT:505 == 1 || TALENT:36 == 1)
+	PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+	PRINTFORML 자신의 부끄러운 모습을 타인에게 보여지는 것이 기뻐서 견딜 수 없는 것 같다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:89%】%조사만처리(TALENTNAME:89,"을")% 얻었다
+	TALENT:89 = 1
+ENDIF
+
+;욕망Lv5以上かつ수간중독Lv3以上, 수간경험300以上で【암캐】に
+IF ABL:11 >= 5 && ABL:40 >= 3 && EXP:56 >= 300 && TALENT:136 == 0
+	PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+	PRINTFORML 바닥에 네발로 엎드려 허리를 흔들면서 이쪽을 올려보는 눈은, 
+	PRINTFORML 마치 한창 발정하고 있는 암캐 그 자체다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:136%】%조사만처리(TALENTNAME:136,"가")% 됐다
+	TALENT:136 = 1
+ENDIF
+
+;욕망Lv5以上かつ촉수中毒Lv3以上, 촉수경험300以上で【묘판】に
+;復旧
+IF ABL:11 >= 5 && ABL:41 >= 3 && EXP:55 >= 300 && TALENT:137 == 0
+	PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+	PRINTFORML 촉수에 완전히 몸을 맡기고 있는 모습은
+	PRINTFORML 촉수의 묘판 그 자체였다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:137%】%조사만처리(TALENTNAME:137,"가")% 됐다
+	TALENT:137 = 1
+ENDIF
+
+;---------------------------------------------------------
+;特殊性感素質 [쾌감을 부정]を失う
+;---------------------------------------------------------
+;C感覚4以上, 자위경험100以上で절정경험100以上で【자위광】
+IF (TALENT:76 == 0 && TALENT:505 == 0) && TALENT:74 == 0
+	IF ABL:0 >= 4 && EXP:2 >= 100 && TALENT:74 == 0 && EXP:10 >= 100
+		PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+		PRINTFORM 지도가 끝났는데도 %타겟은()% %플레이어를()% 잊은듯이, 
+		IF TALENT:121 || TALENT:122
+			PRINT 페니스
+		ELSE
+			PRINT 클리토리스
+		ENDIF
+		PRINTFORML 를 문지르고 있다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:74%】%조사만처리(TALENTNAME:74,"가")% 됐다
+		TALENT:74 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ELSEIF (TALENT:76 == 1 || TALENT:505 == 1) && TALENT:74 == 0
+	IF ABL:0 >= 3 && EXP:2 >= 50 && TALENT:74 == 0 && EXP:10 >= 50
+		PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+		PRINTFORM 지도가 끝났는데도 %타겟은()% %플레이어를()% 잊은듯이, 
+		IF TALENT:121 || TALENT:122
+			PRINT 페니스
+		ELSE
+			PRINT 클리토리스
+		ENDIF
+		PRINTFORML 를 문지르고 있다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:74%】%조사만처리(TALENTNAME:74,"가")% 됐다
+		TALENT:74 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ENDIF
+
+;V감각4以上, V경험150以上, 절정경험100以上で【섹스광い】
+IF (TALENT:76 == 0 && TALENT:505 == 0) && TALENT:75 == 0
+	IF ABL:2 >= 4 && EXP:0 >= 150 && EXP:2 >= 100 && TALENT:75 == 0
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% %CALLNAME:MASTER%에게 매달려 더 범해달라고 원해왔다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:75%】%조사만처리(TALENTNAME:75,"가")% 됐다
+		TALENT:75 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ELSEIF (TALENT:76 == 1 || TALENT:505 == 1) && TALENT:75 == 0
+	IF ABL:2 >= 3 && EXP:0 >= 80 && EXP:2 >= 50 && TALENT:75 == 0
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% %CALLNAME:MASTER%에게 매달려 더 범해달라고 원해왔다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:75%】%조사만처리(TALENTNAME:75,"가")% 됐다
+		TALENT:75 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ENDIF
+
+;A감각4以上, A쾌락경험300以上, 절정경험100以上で【애널광】
+IF (TALENT:76 == 0 && TALENT:505 == 0) && TALENT:77 == 0
+	IF ABL:3 >= 4 && EXP:32 >= 300 && EXP:2 >= 100 && TALENT:77 == 0
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% 애널을 휘저으며 %CALLNAME:MASTER%에게 더 해달라고 시선을 보내고 있다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:77%】%조사만처리(TALENTNAME:77,"가")% 됐다
+		TALENT:77 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ELSEIF (TALENT:76 == 1 || TALENT:505 == 1) && TALENT:77 == 0
+	IF ABL:3 >= 3 && EXP:32 >= 150 && EXP:2 >= 50 && TALENT:77 == 0
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% 애널을 휘저으며 %CALLNAME:MASTER%에게 더 해달라고 시선을 보내고 있다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:77%】%조사만처리(TALENTNAME:77,"가")% 됐다
+		TALENT:77 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ENDIF
+
+;;B感覚4以上, 분유경험100以上, 절정경험100以上で【가슴광】
+;噴乳前提は一つだけ厳しいってことでどっかで変更入ってた模様(そんな記憶はある)
+;B感覚4以上, B開発経験150以上, 절정경험100以上
+IF (TALENT:76 == 0 && TALENT:505 == 0) && TALENT:78 == 0
+	IF ABL:1 >= 4 && EXP:14 >= 150 && EXP:2 >= 100 && TALENT:78 == 0
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% 유두를 문지르며 %CALLNAME:MASTER%에게 더 해달라고 시선을 보내고 있다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:78%】%조사만처리(TALENTNAME:78,"가")% 됐다
+		TALENT:78 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ELSEIF (TALENT:76 == 1 || TALENT:505 == 1) && TALENT:78 == 0
+	IF ABL:1 >= 3 && EXP:14 >= 80 && EXP:2 >= 50 && TALENT:78 == 0
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% 유두를 문지르며 %CALLNAME:MASTER%에게 더 해달라고 시선을 보내고 있다
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:78%】%조사만처리(TALENTNAME:78,"가")% 됐다
+		TALENT:78 = 1
+		IF TALENT:71 == 1 && TALENT:199 == 0
+			PRINTFORMW %타겟은(1)%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+			TALENT:71 = 0
+		ENDIF
+	ENDIF
+ENDIF
+
+
+
+;---------------------------------------------------------
+;強化素質:절륜か음마が必要
+;---------------------------------------------------------
+;素質強化を適応している場合
+IF FLAG:73 == 0
+	;C感覚5以上, 지도자위경험100以上で절정경험300以上で【음핵】
+	IF ABL:0 >= 5 && TALENT:74 == 1 && TALENT:230 == 0 && (TALENT:505 == 1 || TALENT:440)
+		PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+		PRINTFORM 지도가 끝났는데도 %타겟은()% %CALLNAME:MASTER%에게
+		IF TALENT:121 || TALENT:122
+			PRINT 페니스
+		ELSE
+			PRINT 클리토리스
+		ENDIF
+			PRINTL 를 진정시켜달라고 애원했다…
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:230%】%조사만처리(TALENTNAME:230,"을")% 얻었다
+		TALENT:230 = 1
+	ENDIF
+
+	;V감각5以上, V경험300以上, 절정경험300以上で【淫壷】
+	IF ABL:2 >= 5 && TALENT:75 == 1 && TALENT:232 == 0 && (TALENT:505 == 1 || TALENT:440 == 1)
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% %CALLNAME:MASTER%에게 자궁의 갈증을 달래달라고 매달렸다…
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:232%】%조사만처리(TALENTNAME:232,"을")% 얻었다
+		TALENT:232 = 1
+	ENDIF
+
+	;A감각5以上, A쾌락경험300以上, 절정경험300以上で【음항】
+	IF ABL:3 >= 5 && TALENT:77 == 1 && TALENT:233 == 0 && (TALENT:505 == 1 || TALENT:440 == 1)
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% %CALLNAME:MASTER%에게 엉덩이를 괴롭혀달라고 간절히 애원했다…
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:233%】%조사만처리(TALENTNAME:233,"을")% 얻었다
+		TALENT:233 = 1
+	ENDIF
+
+	;B感覚5以上, 분유경험100以上, 절정경험300以上で【음유】
+	IF ABL:1 >= 5 && TALENT:78 == 1 && TALENT:231 == 0 && (TALENT:505 == 1 || TALENT:440 == 1)
+		PRINTFORMW %타겟이()% 이쪽을 바라보는 눈이 이상하다
+		PRINTFORML 지도가 끝났는데도 %타겟은()% %CALLNAME:MASTER%에게 가슴을 주물러달라고 애원했다…
+		PRINTFORMW %타겟은(1)%【%TALENTNAME:231%】%조사만처리(TALENTNAME:231,"을")% 얻었다
+		TALENT:231 = 1
+	ENDIF
+
+	;強化素質を全部取得した場合【성호】
+	IF TALENT:230 && TALENT:231 && TALENT:232 && TALENT:233 && TALENT:272 == 0 && (TALENT:505 == 1 || TALENT:440 == 1)
+		PRINTFORMW %타겟은()%【%TALENTNAME:272%】%조사만처리(TALENTNAME:272,"을")% 얻었다
+		TALENT:272 = 1
+		;【C둔감】【V둔감】【A둔감】【B둔감】は消える
+		IF TALENT:101
+			PRINTFORMW %타겟은()%【%TALENTNAME:101%】%조사만처리(TALENTNAME:101,"을")% 잃었다
+			TALENT:101 = 0
+		ENDIF
+		IF TALENT:103
+			PRINTFORMW %타겟은()%【%TALENTNAME:103%】%조사만처리(TALENTNAME:103,"을")% 잃었다
+			TALENT:103 = 0
+		ENDIF
+		IF TALENT:105
+			PRINTFORMW %타겟은()%【%TALENTNAME:105%】%조사만처리(TALENTNAME:105,"을")% 잃었다
+			TALENT:105 = 0
+		ENDIF
+		IF TALENT:107
+			PRINTFORMW %타겟은()%【%TALENTNAME:107%】%조사만처리(TALENTNAME:107,"을")% 잃었다
+			TALENT:107 = 0
+		ENDIF
+		;【C민감】【V민감】【A민감】【B민감】を得る
+			PRINTFORMW %타겟은()%【%TALENTNAME:102%】%조사만처리(TALENTNAME:102,"이")% 됐다
+			TALENT:102 = 1
+			PRINTFORMW %타겟은()%【%TALENTNAME:104%】%조사만처리(TALENTNAME:104,"이")% 됐다
+			TALENT:104 = 1
+			PRINTFORMW %타겟은()%【%TALENTNAME:106%】%조사만처리(TALENTNAME:106,"이")% 됐다
+			TALENT:106 = 1
+			PRINTFORMW %타겟은()%【%TALENTNAME:108%】%조사만처리(TALENTNAME:108,"이")% 됐다
+			TALENT:108 = 1
+			PRINTFORML
+	ENDIF
+ENDIF
+
+;---------------------------------------------------------
+;항상발정
+;---------------------------------------------------------
+;항상발정システムを使用している場合
+IF FLAG:75 == 0
+	IF TALENT:271 == 0
+		;潤滑の蓄積が700以上, と欲情の蓄積が2250以上
+		IF CFLAG:81 >= 700 && CFLAG:82 >= 2250
+			PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+			PRINTFORM %CALLNAME:TARGET%의 
+			SIF TALENT:TARGET:122 || TALENT:TARGET:121
+				PRINT 페니스
+			SIF TALENT:TARGET:121
+				PRINT 와 
+			SIF TALENT:TARGET:122 == 0
+				PRINT 보지
+			PRINTFORML 에서 투명한 액체가 펑펑 솟아났다…
+			PRINTFORMW %타겟은()%【%TALENTNAME:271%】%조사만처리(TALENTNAME:271,"을")% 얻었다
+			TALENT:271 = 1
+			;【젖기힘듬】がなければ【젖기쉬움】追加
+			IF TALENT:43 == 0 && TALENT:42 == 0
+				PRINTFORMW %타겟은()%【%TALENTNAME:42%】%조사만처리(TALENTNAME:42,"을")% 얻었다
+				TALENT:42 = 1
+			;【젖기힘듬】は消える
+			ELSEIF TALENT:43
+				PRINTFORMW %타겟은()%【%TALENTNAME:43%】%조사만처리(TALENTNAME:43,"을")% 잃었다
+				TALENT:43 = 0
+			ENDIF
+			;【억압】か【저항】か【질투】なら【매각 불가】でない限り消える
+			IF (TALENT:32 || TALENT:34 || TALENT:84) && TALENT:199 == 0
+				PRINTFORM %타겟은(1)% 
+				IF TALENT:32
+					PRINTFORM 【%TALENTNAME:32%】%조사만처리(TALENTNAME:32,"을")% 
+					TALENT:32 = 0
+				ENDIF
+				IF TALENT:34
+					PRINTFORM 【%TALENTNAME:34%】%조사만처리(TALENTNAME:34,"을")% 
+					TALENT:34 = 0
+				ENDIF
+				IF TALENT:84
+					PRINTFORM 【%TALENTNAME:84%】%조사만처리(TALENTNAME:84,"을")% 
+					TALENT:84 = 0
+				ENDIF
+				PRINTL 잃었다
+				PRINTL 부정의 구슬이 반이 됐다
+				JUEL:100 /= 2
+			ENDIF
+			;【쾌감을 부정】持ちの場合は【매각 불가】でない限り消える
+			IF TALENT:71 == 1 && TALENT:199 == 0
+				PRINTFORMW %타겟은()%【%TALENTNAME:71%】%조사만처리(TALENTNAME:71,"을")% 잃었다
+				TALENT:71 = 0
+			ENDIF
+			;【정조관념】持ちの場合は【매각 불가】でない限り消える
+			IF TALENT:30 == 1 && TALENT:199 == 0
+				PRINTFORMW %타겟은()%【%TALENTNAME:30%】%조사만처리(TALENTNAME:30,"을")% 잃었다
+				TALENT:30 = 0
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+			
+;---------------------------------------------------------
+;정애미각の習得
+;---------------------------------------------------------
+;정애미각を持たず, 強制精飲절정の回数が規定値を超えた
+IF TFLAG:110 && TALENT:47 == 0
+	PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+	PRINTFORML %타겟은()% 성적자극 없이 정액을 마신 것만으로 가버리게 됐다
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:47%】%조사만처리(TALENTNAME:47,"을")% 얻었다
+	TALENT:47 = 1
+	;악취민감がなくなる
+	IF TALENT:62 == 1
+		PRINTFORMW %타겟은()%【%TALENTNAME:62%】%조사만처리(TALENTNAME:62,"가")% 아니게 됐다
+		TALENT:62 = 0
+	ENDIF
+	;정액중독がLV5に上がる
+	IF ABL:32 < 5
+		PRINTFORMW %CALLNAME:TARGET%의 정액중독이 LV5가 됐다
+		ABL:32 = 5
+	ENDIF
+;取得フラグのリセット
+	TFLAG:110 = 0
+ENDIF
+
+;---------------------------------------------------------
+;マイナス素質の消滅
+;---------------------------------------------------------
+;봉사정신5以上で【봉사 안함】があれば【매각 불가】でない限り消滅
+IF ABL:16 >= 5 && TALENT:151 && TALENT:199 == 0
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:151%】%조사만처리(TALENTNAME:151,"을")% 잃었다
+	TALENT:151 = 0
+ENDIF
+;자위중독5以上で【자위 안함】があれば【매각 불가】でない限り消滅
+IF ABL:31 >= 5 && TALENT:150 && TALENT:199 == 0
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:150%】%조사만처리(TALENTNAME:150,"을")% 잃었다
+	TALENT:150 = 0
+ENDIF
+
+;---------------------------------------------------------
+;フレーバー(?)素質の獲得
+;---------------------------------------------------------
+;새드끼, 기교ともに4
+IF ABL:20 >= 4 && ABL:12 >= 4 && TALENT:87 == 0
+	PRINTFORMW %NAME:TARGET%의 상태가 이상하다……
+	PRINTFORML 최근 %타겟은()% 봉사할 때 일부러 대충하면서, 상대방의 반응을 보고 즐기는 듯 하다
+	IF TALENT:13 == 1
+		PRINTFORM 지금까지 말한대로 따라주던 
+	ENDIF
+	PRINTFORM %타겟이()% 남자를 가지고 노는【%TALENTNAME:87%】 같은 매력을 가지게 된 것을, 
+	PRINTFORMW %플레이어는()% 기뻐해야할지 말아야할지 생각이 복잡해졌다
+	TALENT:87 = 1
+ENDIF
+
+;신뢰7,봉사정신7,연심,애정경험500,彼氏なし,굴복각인3
+;TALENT:532はルーンマスター=마르티나
+;TALENT:85を取り直す処理をしてたので撤去
+IF ABL:10 >= 7 && ABL:16 >= 7 && TALENT:85 == 1 && TALENT:430 == 0 && TALENT:532 == 0 && EXP:23 > 499 && MARK:2 == 3 && TALENT:184 == 0
+	PRINTFORMW %타겟은(1)% %CALLNAME:MASTER%에게 할말이 있다고 했다……
+	PRINTFORM %CALLNAME:TARGET%에게 무슨 일이냐고 재촉하자, %타겟은()% 얼굴을 새빨갛게 물들이며 
+	PRINTFORM %CALLNAME:MASTER%에게 결혼해주지 않아도 좋으니, 곁에만 있게 해달라
+	PRINTFORMW …… 며, %CALLNAME:MASTER%에게【%TALENTNAME:430%】%조사만처리(TALENTNAME:430,"을")% 맹세했다
+	TALENT:430 = 1
+	IF CFLAG:661 == 1
+		CFLAG:661 = 0
+		CFLAG:621 = 0
+	ENDIF
+	SIF RELATION:TARGET:(NO:MASTER) <= 200
+			RELATION:TARGET:(NO:MASTER) = 200
+;마르티나さんは10,10,1000必要
+ELSEIF ABL:10 >= 10 && ABL:16 >= 10 && TALENT:85 == 1 && TALENT:430 == 0 && EXP:23 > 999 && MARK:2 == 3 && TALENT:184 == 0
+	PRINTFORMW %타겟은(1)% %CALLNAME:MASTER%에게 할말이 있다고 했다……
+	PRINTFORM %CALLNAME:TARGET%에게 무슨 일이냐고 재촉하자, %타겟은()% 얼굴을 새빨갛게 물들이며 
+	PRINTFORM %CALLNAME:MASTER%에게 결혼해주지 않아도 좋으니, 곁에만 있게 해달라
+	PRINTFORMW …… 며, %CALLNAME:MASTER%에게【%TALENTNAME:430%】%조사만처리(TALENTNAME:430,"을")% 맹세했다
+	TALENT:430 = 1
+	IF CFLAG:661 == 1
+		CFLAG:661 = 0
+		CFLAG:621 = 0
+	ENDIF
+	SIF RELATION:TARGET:(NO:MASTER) <= 200
+			RELATION:TARGET:(NO:MASTER) = 200
+ENDIF
+
+;IF (ABL:11 >= 7 && EXP:50 >= 5 && TALENT:76 == 1 && TALENT:440 == 0 && (ABL:0 == 10 || ABL:1 == 10 || ABL:2 == 10 || ABL:3 == 10) && TALENT:505 == 0 && TALENT:504 == 0&& TALENT:511 == 0 && (TALENT:0 == 0 || TALENT:2 == 0)) || (ABL:11 >= 7 && EXP:50 >= 3 && TALENT:76 == 1 && TALENT:440 == 0 && (ABL:0 == 10 || ABL:1 == 10 || ABL:2 == 10 || ABL:3 == 10) && (TALENT:505 == 1 || TALENT:504 == 1 || TALENT:511 == 1 || TALENT:553 == 1))
+;長かったので縮める。それでも長い……
+;절륜取得の条件: 
+;욕망が7以上であり[음란]持ち, [절륜]を取得していないときに, いずれかの感覚が10であり, 
+;음마안드로이드천사以外であれば: 이상경험5以上とどっちかの처녀상실済
+;음마안드로이드천사であれば: 이상경험3
+IF ABL:11 >= 7 && TALENT:76 == 1 && TALENT:440 == 0 && (ABL:0 == 10 || ABL:1 == 10 || ABL:2 == 10 || ABL:3 == 10) && ((EXP:50 >= 5 && TALENT:505 == 0 && TALENT:504 == 0 && TALENT:511 == 0 && (TALENT:0 == 0 || TALENT:2 == 0)) || (EXP:50 >= 3 && (TALENT:505 == 1 || TALENT:504 == 1 || TALENT:511 == 1 || TALENT:553 == 1)))
+	PRINTFORMW %NAME:TARGET%의 상태가 이상하다……
+	PRINTFORM 지도가 끝나도 몇번이고 
+	IF ABL:2 == 10
+		PRINTFORM %CALLNAME:MASTER%의 허리를 발로 감싸고 몇번이나 자궁에 씨앗을 받으며
+	ELSEIF ABL:3 == 10 && TALENT:2 == 0
+		PRINTFORM %CALLNAME:MASTER%의 허리를 발로 감싸고 몇번이나 직장에 씨앗을 받으며
+	ELSEIF ABL:0 == 10
+		IF TALENT:121 == 0
+			PRINTFORM 단단하게 선 클리토리스로 
+		ELSE
+			PRINTFORM 딱딱하게 발기한 후타나리 페니스로 
+		ENDIF
+		PRINTFORM 자위하며
+	ELSEIF ABL:1 == 10
+		PRINTFORM 빨갛게 충혈된 유두를 문지르며
+	ENDIF
+	PRINTFORML , 제대로 발음도 못하는 상태로 음어를 연호하면서 절정을 반복하고도, 더 강한 쾌락을 갈망했다
+	PRINTFORMW 음란을 넘어선 %CALLNAME:TARGET%의 끝없는 성욕은, 그야말로【%TALENTNAME:440%】%조사만처리(TALENTNAME:440,"라")%는 말이 어울렸다……
+	TALENT:440 = 1
+ENDIF
+
+IF TALENT:520 && (BASE:40 == 0 ||  BASE:31 <= 0) 
+	PRINTFORMW %CALLNAME:TARGET%의 상태가 이상하다…
+	PRINTFORMW %타겟은()% 성마술의 반동을 견디지 못하고 정신이【%TALENTNAME:9%】돼버렸다
+	CALL ADD_CATASTROPH
+ENDIF
+
+;[남친있음],[정조관념]なし,[음란],[섹프있음],[연심]なし,신뢰3以上,욕망5以上,성교중독2以上,どっちか비처녀,봉사경험300以上
+IF TALENT:184 == 1 && TALENT:30 == 0 && TALENT:76 == 1 && TALENT:425 == 1 && TALENT:85 == 0 && ABL:10 >= 3 && ABL:11 >= 5 && ABL:30 >= 2 && (TALENT:0 == 0 || TALENT:2 == 0) && EXP:21 >= 300 && TALENT:90 == 0
+	PRINTFORM 방금 전까지 침대 위에서 %CALLNAME:MASTER%에게 
+	IF ABL:2 >= ABL:3
+		PRINTFORM 바기나를 
+	ELSE
+		PRINTFORM 애널을 
+	ENDIF
+	PRINTFORM 후배위로 격하게 찔리며 교성을 내뱉던 
+	CALL PRINT_CLOTHTYPE
+	SIF CFLAG:40 != 0
+		PRINTFORM 차림
+	PRINTFORML 의 %타겟은()% 
+	PRINTFORM %CALLNAME:MASTER%의 페니스가 열어놓은 
+	IF ABL:2 >= ABL:3
+		PRINTFORM 질구
+	ELSE
+		PRINTFORM 애널
+	ENDIF
+	PRINTFORM 애서 %CALLNAME:MASTER%의 정액을 질질 흘리며, 
+	SIF TALENT:400 == 1
+		PRINTFORM AV배우와 감독이라는 관계에 만족하지 말고, 
+	PRINTFORMW 서로의 성욕을 채워주는 관계가 되지 않겠냐고 유혹해왔다……
+	SIF CFLAG:15 == 8
+		PRINTFORM 남친에게 처녀를 바친 뒤로, 수없이 몸을 꿰뚫려 
+	PRINTFORML 섹스의 쾌락을 기억해버린 %타겟은()%, 남친만으로는 만족하지 못하게 된 것 같다……
+	PRINTFORM 사적으로도 %CALLNAME:TARGET%의 몸을 맛볼 수 있다는 매력적인 제안에, %플레이어는()% 대답 대신 
+	IF ABL:2 >= ABL:3
+		PRINTFORM 바기나 
+	ELSE
+		PRINTFORM 애널 
+	ENDIF
+	PRINTFORML 안쪽까지 페니스를 집어넣었다……
+	PRINTL
+	PRINTFORMW 《%플레이어는()% %NAME:TARGET%의【%TALENTNAME:90%】중 한 명이 됐다》
+	TALENT:90 = 1
+ENDIF
+
+;主人調教経験1500以上,레즈끼4以上,레즈중독3以上,레즈경험2000以上,[남성불신]を持たないとき바이
+IF TALENT:81 == 0 && CFLAG:2 >= 1500 && EXP:40 >= 2000 && ABL:22 >= 4 && ABL:33 >= 3 && TALENT:82 == 0
+	PRINTFORMW %NAME:TARGET%의 상태가 이상하다……
+	PRINTFORM 거듭되는 지도로 몇번이나 동성과 몸을 섞어온 %타겟은()% 
+	PRINTFORML 이제 레즈플레이에도 저항감이 없어진 것 같다
+	PRINTFORMW 《%타겟은(1)%【%TALENTNAME:81%】%조사만처리(TALENTNAME:81,"가")% 됐다》
+	TALENT:81 = 1
+ENDIF
+
+;EXP:104は섹프との経験
+IF EXP:104 >= 20 && TALENT:30
+	PRINTFORMW %NAME:TARGET%의 상태가 이상하다……
+	PRINTFORM 얼마 전까지는 성적인 행위에 저항감이 있었지만, 섹프들과 몸을 섞는 사이에 
+	PRINTFORML 성행위에 저항감이 없어진 것 같다
+	PRINTFORMW 《%타겟은(1)%【%TALENTNAME:30%】%조사만처리(TALENTNAME:30,"를")% 잃었다》
+	TALENT:30 = 0
+ENDIF
+
+;TALENT:432なしでEXP:104は現状稼げないはず。死に分岐
+IF EXP:104 >= 30 && TALENT:423 && TALENT:85 == 0 && TALENT:432 == 0
+	PRINTFORMW %NAME:TARGET%의 상태가 이상하다……
+	PRINTFORM %CALLNAME:TARGET%의『최애』섹프인 %CSTR:47%에게 영향을 받은건지, 
+	PRINTFORML 취향이 점점【%TALENTNAME:432%】%조사만처리(TALENTNAME:432,"로")% 변하고 있다……
+	PRINTFORMW 《%타겟은(1)%【%TALENTNAME:432%】%조사만처리(TALENTNAME:432,"가")% 됐다》
+	TALENT:432 = 1
+ENDIF
+
+IF EXP:104 >= 50 && TALENT:31 == 0 && TALENT:76 == 1
+	;△現状EXP:104の増加には要흑갸루。
+	;どうもそれっぽいテクストじゃないような
+	;(あと前口上に移動予定)
+	IF NO:TARGET == 1 && NO:MASTER == 0 && TALENT:85 == 0
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		SETCOLOR 0xDDBBCC
+		
+		PRINTFORML 「하앙, 흐응……츄르츕……! 
+		PRINTFORML 　아앗……하항……츄브……츕……응!
+		PRINTFORML 　……츄, 츄…… 하아――앙!! 
+		PRINTFORML 　아하, 네 %CSTR:80%, 냄새나는 좆밥이 쌓여있네?
+		PRINTFORML 　이정도로 %CSTR:9% 펠라치오로 좆밥 청소해주길 기다린거야?
+		PRINTFORM 　……그치만, 이 냄새를 맡고 있으면 %조사처리(CSTR:81,"가")% 큥큥 울려서 
+		PRINTFORML 박아버리고 싶어져%UNICODE(0x2665)%
+		PRINTFORML 　그러니까 ……네 %CSTR:80%, 그냥 넣어버릴게?
+		PRINTFORM 　――아앙%UNICODE(0x2665)% 네 %CSTR:80%, 
+		PRINTFORML 단단하고 커서, %CSTR:81% 안쪽을 비비고 있어%UNICODE(0x2665)%
+		PRINTFORML 　수업중에도 생SEX하고 싶어져서…… 앙, %조사처리(CSTR:81,"가")% 계속 쑤셨어%UNICODE(0x2665)%
+		PRINTFORM 　응, 맞아%UNICODE(0x2665)% %CSTR:80%, %CSTR:80% 가지고 싶다고 
+		PRINTFORML 계속 생각났어%UNICODE(0x2665)%
+		PRINTFORML 　하루노짱하고 에리짱이랑 이야기할 때도, 머리 속에선 %CSTR:80%만 생각했었어%UNICODE(0x2665)%
+		PRINTFORML 　%조사처리(CSTR:9,"는")% 사실 다른 애들 생각처럼 우등생이 아니야%UNICODE(0x2665)%
+		PRINTFORML 　난교 생SEX를 엄청 좋아하는 걸레야%UNICODE(0x2665)%
+		PRINTFORML 　――응, 좋아하는 사람?
+		PRINTFORML 　있었지만, 이제 아무래도 좋아졌어%UNICODE(0x2665)%
+		PRINTFORML 　그치만 SEX도 안해주고, %조사처리(CSTR:9,"가")% 좋아하는 건 사람이 아니라 단단하게 발기한 %CSTR:80%%UNICODE(0x2665)%
+		PRINTFORM 　그런 사람이랑 같이 있을 바에는 
+		PRINTFORML 너희들과 SEX하는 게 몇배는 즐겁고 기분 좋아아앙%UNICODE(0x2665)%
+		PRINTFORML 　그러니까 오늘도 ……햐아앙!　정액이 다 떨어질때까지 %타겟을()% 범해줘%UNICODE(0x2665)%」
+		PRINTFORML
+		SETFONT ""
+		RESETCOLOR
+		PRINTFORMW 방과후, %타겟이(1)% 같은 반의 남자 여러명과 학교 뒷편에 가는 게 보였다……
+		PRINTFORM 요즘 학원의 남자들 사이에서, %타겟이()%『부탁하면 누구든 대주는 걸레』라고 불리던데 
+		PRINTFORML 이것도 관계가 있는 걸까
+		PRINTFORM 궁금해진 %플레이어가()% %CALLNAME:TARGET%의 뒤를 쫓아 학교 뒷편에 가자, 평소엔 잠겨있는 
+		PRINTFORML 체육창고 문이 살짝 열려있고, 남자들의 말소리가 들려왔다
+		PRINTFORM 문 틈새로 안을 들여다보니 치마를 걷어 올려서 
+		CALL PRINT_UNDERWEAR_COLOR_UNDER
+		PRINTFORM  
+		CALL PRINT_UNDERWEAR_UNDER
+		PRINTFORML 를 보여주면서, 상스럽게 다리를 벌려 남학생 위에 걸터앉아, 
+		PRINTFORML 양손엔 다른 학생들의 페니스를 교대로 펠라하는 %타겟이()% 보였다
+		PRINTFORM 지금까지 본적 없는 음란한 표정으로 육봉을 입에 넣고 범해지던 
+		PRINTFORML %타겟은()% 스스로 허리를 흔들며, 옛날의 청순함 모습은 어디로 갔는지, 그저 쾌락만을 추구하고 있었다
+		PRINTFORM 거기다 남자들의 대화로 보건데, 
+		PRINTFORML 그들이 %타겟과()% SEX하는 것도 이게 처음은 아닌 것 같다……
+		PRINTFORM 『그』얌전하고 청순했던 %타겟이()% SEX에 빠져, 이름도 모르는 남자의 육봉에 
+		PRINTFORML 범해지는 모습에, %CALLNAME:PLAYER%의 페니스는 아플 정도로 커져 있었다
+	ELSEIF NO:TARGET != 1
+		PRINTFORMW %NAME:TARGET%에게 이상한 소문이 돌고 있다……
+		PRINTFORM 소문으로는 %타겟은()%
+		SIF TALENT:14 == 1
+			PRINTFORM  겉으로는 얌전한 채 하면서
+		PRINTFORM 『부탁하면 누구든 대주는』걸레고, 진짜로 %CALLNAME:TARGET%하고 
+		PRINTFORML SEX해본 사람도 많다고 한다
+		PRINTFORML %CALLNAME:TARGET%에게 진짜냐고 추궁하자, 오늘도 지도받기 전에 섹프들과『놀고』왔다고 했다
+	ENDIF
+
+	PRINTFORMW 《%타겟은(1)%【%TALENTNAME:31%】%조사만처리(TALENTNAME:31,"가")% 됐다》
+	TALENT:31 = 1
+ENDIF
+
+;---------------------------------------------------------
+;【불량】獲得(フレーバー要素, Blackgirlに持ってったほうがいい?)
+;---------------------------------------------------------
+;20歳未満で5回補導された場合に不良を所持する
+IF BASE:9 < 20 && EXP:92 >= 5 && TALENT:452 == 0
+	PRINTFORML 지금까지 미성년 음주나 흡연등을 계속하여, 몇번이나 훈계를 당한 %타겟은()%, 동네에서도 유명한 불량아가 되어있었다.
+	PRINTFORMW %타겟은()%【%TALENTNAME:452%】%조사만처리(TALENTNAME:452,"가")% 됐다
+	TALENT:452 = 1
+ENDIF
+
+
+;---------------------------------------------------------
+;【인기 AV배우】獲得(フレーバー要素)
+;---------------------------------------------------------
+;ビデオ売り上げ50万以上, 出演11本以上で入手
+IF CFLAG:730 >= 500000 && EXP:76 >= 11 && TALENT:401 == 0
+;(キャラステータスの3ページ目の表記がぶれるから, 獲得要件に売上は外すべき?)
+PRINTFORML ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	PRINTFORML %플레이어는(1)%, 인터넷에 올린 동영상에 달린 댓글을 살펴봤다.
+	PRINTFORML
+ 	PRINTFORML 　
+	IF BASE:9 < 27 
+	;27歳未満で以下の通りに若手扱いに分岐。いつで切るか微妙だがとりあえず。	
+	PRINTFORML 「신작인『%CSTR:30%%CSTR:31%%CSTR:32%%CSTR:33%%CSTR:34%%CSTR:35%%CSTR:36%%CSTR:37%』에서
+	PRINTFORML 　%NICKNAME:TARGET%짱을 처음 봤는데, 너무 야하고 귀여워서 빨딱 섰다」
+	PRINTFORML 　
+	PRINTFORML 「대표작인『%CSTR:20%%CSTR:21%%CSTR:22%%CSTR:23%%CSTR:24%%CSTR:25%%CSTR:26%%CSTR:27%』도
+	PRINTFORML 　명작이지. 앞으로도 야한거 내놔」
+	PRINTFORML 　
+	PRINTFORML 「데뷔작인『%CSTR:10%%CSTR:11%%CSTR:12%%CSTR:13%%CSTR:14%%CSTR:15%%CSTR:16%%CSTR:17%』본 뒤부터, 
+	PRINTFORML 　쭉 %NICKNAME:TARGET%짱 팬이었는데, 딱 한번이라도 떡치고 싶다!」
+	ENDIF
+	
+	IF BASE:9 >= 27 
+	;27歳以上で以下の通りに熟女系扱いに分岐。	
+	PRINTFORML 「신작인『%CSTR:30%%CSTR:31%%CSTR:32%%CSTR:33%%CSTR:34%%CSTR:35%%CSTR:36%%CSTR:37%』에서
+	PRINTFORML 　%조사처리(NICKNAME:TARGET,"을")% 처음 봤는데, 너무 야해서 쥬지가 터지는 줄 알았다」
+	PRINTFORML 　
+	PRINTFORML 「대표작인『%CSTR:20%%CSTR:21%%CSTR:22%%CSTR:23%%CSTR:24%%CSTR:25%%CSTR:26%%CSTR:27%』도
+	PRINTFORML 　명작이지. 앞으로도 색기가 넘치는 작품, 부탁합니다!」	
+	PRINTFORML 　
+	PRINTFORML 「데뷔작인『%CSTR:10%%CSTR:11%%CSTR:12%%CSTR:13%%CSTR:14%%CSTR:15%%CSTR:16%%CSTR:17%』본 뒤부터,
+	PRINTFORML 쭉 %NICKNAME:TARGET% 팬이었는데, 하룻밤만이라도 같이 자고 싶어」
+	ENDIF
+	PRINTFORML 　
+	PRINTFORML 　 
+	PRINTFORML AV에 데뷔한 뒤, 수많은 작품으로 팬들을 매료해온 결과
+	PRINTFORML %조사처리(NICKNAME:TARGET,"는")%【%TALENTNAME:401%】%조사만처리(TALENTNAME:401,"이")% 됐다.
+	PRINTFORML %CALLNAME:TARGET%에게 이 일을 전해주니, 싫지는 않은 듯, 살짝 웃었다. 
+;인기 AV배우付与, 最大魅力, 魅力20上昇
+	TALENT:401 = 1
+	MAXBASE:31 += 20
+	BASE:31 += 20
+
+
+ENDIF
+
+;Talent表示上の問題でフォルダ『システム関係』の『info』もいじっている。
+;---------------------------------------------------------
+;【요설스러움】獲得(캬바레녀持ち限定, 職業素質のほうにもってくべき?)
+;---------------------------------------------------------
+;화술レベル5以上, 회화경험200, 지명경험20以上, かつ【캬바레녀】で入手
+IF ABL:15 >= 5 && EXP:73 >= 200 && EXP:80 >= 20 && Talent:421 == 1 && Talent:182 == 0
+	PRINTFORML  %타겟은()%【%TALENTNAME:421%】일에도 익숙해져 손님 대응도 능숙하게 해내게 됐다.
+	PRINTFORML  %타겟은()%【%TALENTNAME:182%】%조사만처리(TALENTNAME:182,"을")% 얻었다
+	TALENT:182 = 1
+ENDIF
+
+
+;---------------------------------------------------------
+;マスターの特殊能力
+;---------------------------------------------------------
+;堕とした人数が5人以上で,【수수께끼의 매력】が付く
+IF FLAG:30 >= 5 && TALENT:MASTER:92 == 0
+	PRINTFORMW %플레이어는(1)%【%TALENTNAME:92%】%조사만처리(TALENTNAME:92,"을")% 가지게 됐다
+	TALENT:MASTER:92 = 1
+ENDIF
+;로리콘フラグ4以上で,【로리콘】がつく
+IF FLAG:68 >= 4 && TALENT:MASTER:163 == 0
+	PRINTFORMW %플레이어는(1)%【%TALENTNAME:163%】%조사만처리(TALENTNAME:163,"이")% 됐다
+	TALENT:MASTER:163 = 1
+ENDIF

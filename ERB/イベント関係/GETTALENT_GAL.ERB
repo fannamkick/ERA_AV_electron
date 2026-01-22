@@ -1,0 +1,30 @@
+﻿;===========================================================
+;갸루계取得の処理
+;===========================================================
+@GETTALENT_GAL
+SIF FLAG:85
+	RETURN 0
+VARSET LOCAL
+;FORで人数分回す
+FOR LOCAL,0,CHARANUM
+	;LOCALがMASTER, 영향받기 쉬움を持ってない, 既に갸루계を持ってる場合は飛ばして次の人
+	SIF LOCAL == MASTER || TALENT:LOCAL:423 == 0 || TALENT:LOCAL:432 == 1
+		CONTINUE
+	;またFORで人数分回す
+	FOR LOCAL:1,0,CHARANUM
+		;同一人物じゃない, LOCAL:1が갸루계を持っている, 相性が良い(とりあえず120以上))時にランダムで(とりあえず2割くらいで)
+		IF LOCAL != LOCAL:1 && TALENT:(LOCAL:1):432 && RELATION:LOCAL:(NO:(LOCAL:1)) >= 120 && RAND:100 <= 20 && ((NO:LOCAL != 1 && NO:(LOCAL:1) != 91) || (NO:LOCAL != 91 && NO:(LOCAL:1) != 1))
+			PRINTFORMW %NAME:LOCAL%의 상태가 이상하다……
+			PRINTFORM 이전엔 화장품이나 악세사리, 네일에 별로 흥미가 없고, 어느쪽이냐면 
+			PRINTFORML 수수한 패션이었지만, 최근에는 그런 물건을 좋아하게 되고 언동도 가벼워졌다
+			PRINTFORM 오늘도 사무소에서 %조사처리(NAME:(LOCAL:1),"와")% 패션잡지를 펼치고, 코디가 어디가 어떻고 어떤 네일샬롱이 좋냐느니 
+			PRINTFORML 하는 대화를 나누고 있다……
+			PRINTFORMW 아무래도 %조사처리(CALLNAME:LOCAL,"는")% %CALLNAME:(LOCAL:1)%의 영향을 받아【%TALENTNAME:432%】%조사만처리(TALENTNAME:432,"가")% 되버린 것 같다……
+			PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+			TALENT:LOCAL:432 = 1
+			TALENT:LOCAL:209 = 0
+			;既に取得したのでこのループから脱出して次の人に
+			BREAK
+		ENDIF
+	NEXT
+NEXT

@@ -1,0 +1,228 @@
+﻿;===========================================================
+;売却ではなく은퇴なのでsellafterとは名ばかりな
+;===========================================================
+@EVENT_SELL_AFTER
+
+PRINTL
+SETCOLOR 0xDDBBCC
+CHKFONT "あくびん"
+IF RESULT
+	SETFONT "あくびん"
+ENDIF
+
+
+;연심あり음란なし영원한 사랑なし, 寝取られ度激高で카나데以外のとき駆け落ちエンド
+;セリフ
+IF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:430 == 0 && NO:TARGET != 1 && NO:TARGET != 91 && CFLAG:619 >= CFLAG:620 - 10
+	PRINTFORML 「%조사처리(CSTR:9,"를")% 신경 써 주지 않는 %CALLNAME:MASTER% 따위, 이제 몰라……」
+	PRINTFORML 「%조사처리(CSTR:9,"는")% 알아서 행복을 찾을꺼니까……!」
+	PRINTFORML 「응, 사랑하고 있어 달링,　달링의 아기 낳아 줄께」
+	PRINTFORML 「아앙, 정말 성질이 급해♪　이런 곳에서 야한거 하면 안돼에」
+	
+;연심あり음란なし영원한 사랑なし, 寝取られ度高めで카나데以外のとき浮気エンド
+;セリフ
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:430 == 0 && NO:TARGET != 1 && NO:TARGET != 91 && CFLAG:619 >= CFLAG:620 / 2
+	PRINTFORML 「부탁해, 좀 더 격렬하게 팡팡해 줘」
+	PRINTFORML 「감독이 나쁜거야, %조사처리(CSTR:9,"를")% 내버려 두니까!」
+	PRINTFORML 「있지~, 좀 더 %후치환(CSTR:9+"의")% 질내에 꿀렁꿀렁해 줘」
+	PRINTFORML 「저런 번데기%조사처리(CSTR:80,"로")%는 이제 만족 할 수 없어, 씩씩한 정액 가득 원해에」
+	PRINTFORML 「아앙, 바람 섹스로 질내사정 최고오오오오오오옷」
+	
+;음마エンド　연심あり음란あり영원한 사랑ありで음마であり, 카나데, 에리스, リリス以外　NTR?いいえ, 真の愛です
+ELSEIF TALENT:85 == 1 && TALENT:76 == 1 && TALENT:430 == 1 && TALENT:505 == 1 && NO:TARGET != 1 && NO:TARGET != 91 && NO:TARGET != 81 && NO:TARGET != 82
+	PRINTFORML 「마스터, 마스터♪　오늘도 여러 사람에게 잔뜩 야한일 당하고 왔어♪」
+	PRINTFORML 「그래도, 역시 마스터가 야한짓 해주지 않으면 안심해서 잘 수 없어♪」
+	PRINTFORML 「있지 마스터, 안심해서 잘 수 있도록 오늘도 %CSTR:81%에 가득 꿀렁꿀렁하고 정액 쏟아줘」
+	PRINTFORML 「아앙, 마스터 정말 좋아해 영원히 함께야」
+	
+;人妻寝取りエンド・愛　연심あり음란なし영원한 사랑あり
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:430 == 1 && TALENT:206 == 1 && NO:TARGET != 1 && NO:TARGET != 91
+	PRINTFORML 「그 사람은…… 이제 괜찮아요。%조사처리(CSTR:9,"는")%, 진정한 사랑을 찾아냈으니까……」
+	PRINTFORML 「우후후…… 배의 아기, 지금 움직였어요. 진짜 파파를 아는거네요……」
+	PRINTFORML 「사랑하고 있어요, 여・보 ……쪽」
+;人妻寝取りエンド・음란　음란あり
+ELSEIF TALENT:76 == 1 && NO:TARGET != 1 && NO:TARGET != 91 && TALENT:206 == 1 
+	PRINTFORML 「이제 그 사람 따위론 만족 할 수 없어, 좀 더 팡팡해 줘!」
+	PRINTFORML 「자궁의 안쪽이 쑤시고 있어, 아앙, 바람 섹스 최고오오오」
+	PRINTFORML 「이런 거 알아 버리면, 더 이상 보통의 주부로는 못 돌아가아아아아」
+	PRINTFORML 「당신, 미안해요♪　당신과의 섹스따위 보다 몇만배도 기분 좋은거얼♪」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && NO:TARGET != 1 && NO:TARGET != 91
+	PRINTFORML  「저기, %CALLNAME:MASTER%, 오늘도 늦게 돌아와요?」
+	PRINTFORML  「그래요…… 어쩔 수 없지요, 빚은 갚아야 하니까」
+	PRINTFORML  「다른 여자아이와 야한일 하는 건 괜찮지만…… 다음엔 %CALLNAME:TARGET%도 귀여워해 줘요?」
+	PRINTFORML  「우읏, 그러면 다녀오세요, %CALLNAME:MASTER%」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 1 && NO:TARGET != 1 && NO:TARGET != 91
+	PRINTFORML  「다녀오셨어요 %CALLNAME:MASTER%, 참을 수 없어서 먼저 하고 있었어요오」
+	PRINTFORML  「%CALLNAME:TARGET%의 %CSTR:81%, 이렇~게 굵은 바이브 먹어 버려서 벌써 질척질척이야」
+	PRINTFORML  「아핫, %CALLNAME:MASTER%의 %CSTR:80%, 정액이랑 애액이 섞여서 맛있어♪」
+	PRINTFORML  「지금 %CSTR:81%에 바이브 넣고 있으니까 삽입하는 곳은 %CSTR:82%로, 응?」
+	PRINTFORML  「봐, %CSTR:82%로도 자위 하고 있었으니까 %CALLNAME:MASTER%의 %CSTR:81%도 금방 넣을 수 있어요♪」
+	PRINTFORML  「있지, 또 AV찍고 싶은데…… 물론 감독도 남자 배우도 %조사처리(CALLNAME:MASTER,"으로")%, 말이야」
+ELSEIF TALENT:76 == 1 && TALENT:85 == 0&& NO:TARGET != 1
+	PRINTFORML  「앗, %CSTR:80% 기분 좋앗 %CALLNAME:TARGET%의 %CSTR:81% 망가져버렷」
+	PRINTFORML  「당신의 %CSTR:80%도 입으로 물어 줄테니까 이쪽에 와♪」
+	PRINTFORML  「싫엉, %조사처리(CSTR:82,"랑")% %CSTR:81% 동시에 문지르지 말아 줘」
+	PRINTFORML  「더 이상 안되엣! 전신 정액 투성이가 돼서 가버려어어어어어어엇」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:422 == 0 && TALENT:430 == 1 && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+	PRINTFORML  「저기 오빠, 오늘도 늦게 돌아와?」
+	PRINTFORML  「그래…… 어쩔 수 없지, 아버지가 남긴 빛을 갚아야 하니까」
+	PRINTFORML  「다른 여자아이와 야한 짓 하는 건 괜찮지만…… 나도 귀여워해줘?」
+	PRINTFORML  「응, 그러면 다녀오세요, 나의 여보옷」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:430 == 1 && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+	PRINTFORML  「이봐 형님, 오늘도 늦게 돌아와?」
+	PRINTFORML  「그런가…… 별 수 없지, 아빠가 남긴 빚은 갚아야 하니까」
+	PRINTFORML  「다른 여자한테 박는건 괜찮지만…… 나도 귀여워해 줄거지♪」
+	PRINTFORML  「OK, 그러면 다녀와, 달링」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:422 == 0 && TALENT:430 == 0 && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+	PRINTFORML  「저기 오빠, 오늘도 늦게 돌아와?」
+	PRINTFORML  「그래…… 어쩔 수 없지, 아버지가 남긴 빛을 갚아야 하니까」
+	PRINTFORML  「다른 여자아이와 야한 짓 하는 건 괜찮지만…… 나도 귀여워해줘?」
+	PRINTFORML  「응, 그러면 다녀오세요, 오빠」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:430 == 0 && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+	PRINTFORML  「이봐 형님, 오늘도 늦게 돌아와?」
+	PRINTFORML  「그런가…… 별 수 없지, 아빠가 남긴 빚은 갚아야 하니까」
+	PRINTFORML  「다른 여자한테 박는건 괜찮지만…… 나도 귀여워해 줄거지♪」
+	PRINTFORML  「OK, 그러면 다녀와, 오빠」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 1 && TALENT:422 == 0 && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+	PRINTFORML  「다녀오셨어요 오빠, 참을 수 없어서 먼저 하고 있었어」
+	PRINTFORML  「카나데의 %CSTR:81%, 이렇~게 굵은 바이브 먹어 버려서 벌써 질척질척해」
+	PRINTFORML  「아핫, 오빠의 %CSTR:80%, 정액이랑 애액이 섞여서 맛있어♪」
+	PRINTFORML  「지금 %CSTR:81%에 바이브 넣고 있으니까 삽입하는 것은 %CSTR:82%로, 응?」
+	PRINTFORML  「봐, %CSTR:82%로도 자위하고 있었으니까 오빠의 %CSTR:80%도 금방 넣을 수 있겠지♪」
+	PRINTFORML  「있지, 또 AV찍고 싶은데…… 물론 감독도 남배우씨도 오빠로, 말야」
+ELSEIF TALENT:85 == 1 && TALENT:76 == 1 && TALENT:422 == 1  && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+	PRINTFORML  「어서와 형님, 참을 수 없어서 먼저 자위하고 있었어」
+	PRINTFORML  「나의 %CSTR:81%, 이렇게 굵은 바이브 먹어 버려서 벌써 질척질척해」
+	PRINTFORML  「아핫, 형님의 %CSTR:80%, 정액이랑 애액이 섞여서 맛있어♪」
+	PRINTFORML  「지금 %CSTR:81%에 바이브 넣고 있으니까 박는 것은 %CSTR:82%도 괜찮지?」
+	PRINTFORML  「봐, %CSTR:82%로도 자위하고 있었으니까 형님의 %CSTR:80%도 금방 박을 수 있잖아♪」
+	PRINTFORML  「저기, 또 AV찍고 싶은데…… 물론 감독도 남배우도 형님으로, 말야」
+ELSEIF TALENT:76 == 1 && TALENT:85 == 0&& NO:TARGET == 1 && TALENT:422 == 0
+	PRINTFORML  「앗, %CSTR:80% 기분 좋앗, 카나데의 %CSTR:81% 망가져버렷」
+	PRINTFORML  「자, 오빠의 %CSTR:80%도 입으로 물어 줄테니까 이쪽으로 와♪」
+	PRINTFORML  「싫엉, %조사처리(CSTR:82,"랑")% %CSTR:81% 동시에 문지르지 말아 줘」
+	PRINTFORML  「더 이상 안됏! 전신 정액 투성이가 돼서 가버려어어어어어어엇」
+ELSEIF TALENT:76 == 1 && TALENT:85 == 0&& NO:TARGET == 1 && TALENT:422 == 1
+	PRINTFORML  「앗, 생 삽입 기분 좋아앗, 질척질척 %CSTR:81% 망가져버렷」
+	PRINTFORML  「자, 형님의 %CSTR:80%도 펠라해 줄테니까 이쪽에 와♪」
+	PRINTFORML  「싫엉, %조사처리(CSTR:82,"랑")% %CSTR:81% 동시에 문지르지 말아 줘」
+	PRINTFORML  「더 이상 안됏! 전신 정액 투성이가 돼서 가버려어어어어어어엇」
+ELSE
+	PRINTFORML  「부탁드려요…… 더 이상하면 망가져 버리니깐 %CSTR:81%에 %CSTR:80% 넣지 말아줘요……」
+	PRINTFORML  「풍속에서 일하고 있다고, 야한걸 좋아하는 게 아니에요……」
+	PRINTFORML  「싫엇, %CSTR:82%따위 핥지 말아 주세요!」
+	PRINTFORML  「더 이상 싫어…… 안쪽에 정액나와서…… 임신해버려어……」
+ENDIF
+RESETCOLOR
+SETFONT ""
+PRINTL
+
+;本文
+IF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:430 == 0 && NO:TARGET != 1 && NO:TARGET != 91 && CFLAG:619 >= CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORM 한동안 %플레이어와()% 함께 살고 있었지만, 너무나도 %CALLNAME:MASTER%에게 
+	PRINTFORML 관심받지 못하는 나날에 점차 싫증이 나, 지도에 의해 달아오른 몸을 주체하지 못하기 시작했다……
+	PRINTFORM 어느 날, 일에서 돌아온 %플레이어는()%, 빛이 사라진 깜깜한 방 안에서 쪽지 한장이 
+	PRINTFORML 남아 있는 것을 발견했다
+	PRINTFORML 「찾지 말아 주세요」
+	PRINTFORML %타겟을()% 영원히 잃어 버렸다고 이해한 %플레이어는()%, 당분간 상실감에 풀 죽어 있었다
+	PRINTFORML 일에 매달려있기만 해 신경써주지 못 한 것이 나쁜건가. 2명의 정이 좀 더 깊어져 있었으면, 어쩌면……
+	PRINTFORML 아무리 후회해도, 더 이상 만회는 할 수 없다……
+ELSEIF TALENT:85 == 1 && TALENT:76 == 1 && TALENT:430 == 1 && TALENT:505 == 1 && NO:TARGET != 1 && NO:TARGET != 91 && NO:TARGET != 81 && NO:TARGET != 82
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORML %CALLNAME:MASTER%에 의해 음마가 된 %CALLNAME:TARGET%에게는,『먹이』로써 이성의 정이 필요했다
+	PRINTFORML 거기서 %플레이어는()% %타겟을()% 밤의 거리에 풀어놓아, 자유롭게 이성의 정을 짜내 오도록 명했다……
+	PRINTFORML 이 후, %타겟은()% 음마의 성질에 따라서 자유롭게 정을 섭취해 왔지만, 그 식사 마지막에는 반드시 
+	PRINTFORML 주인인 %CALLNAME:MASTER%의 정을 요구해왔다
+	PRINTFORM 마치 사냥의 성과를 자랑하는 고양이처럼, 오늘 하루 얼만큼의 남자들로부터 어떻게 정을 짜냈는지 자랑스럽게 보고하면서, 
+	PRINTFORML %타겟은()% 순종과 애정에 젖은 눈을 흔들며 %CALLNAME:MASTER%의 위에서 허리를 계속 흔들었다
+	PRINTFORML 주종의 사랑의 정은, %CALLNAME:MASTER%의 생명이 다하는 날까지 영원히 계속되겠지……
+ELSEIF TALENT:85 == 1 && TALENT:76 == 0 && TALENT:430 == 1 && TALENT:206 == 1 && NO:TARGET != 1 && NO:TARGET != 91
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORML 남편과 이혼하지 않고, 주말마다 %CALLNAME:MASTER%의 집에 다니며 사랑을 주고 받는 나날을 보내고 있었다
+	PRINTFORM %CALLNAME:TARGET%의 남편도, 아내가 다른 남자에게 가로채였다고 어렴풋이 깨달은 것 같지만, 
+	PRINTFORML 딱히 행동을 취하지 않았다
+	PRINTFORML 지금, %CALLNAME:TARGET%의 크게 부풀은 배 안에는, %CALLNAME:MASTER%의 아이가 숨쉬고 있다
+	PRINTFORML 남편을 배반해, 다른 남자와의 사랑을 기르는 생활…… 그 배덕감에, %타겟은()% 넋을 잃고 미소 짓는 것이였다……
+ELSEIF TALENT:85 == 1 && TALENT:76 == 1 && TALENT:430 == 1 && NO:TARGET != 1 && NO:TARGET != 91 && TALENT:206 == 1 
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORML %CALLNAME:MASTER%에게 지도받아 농익은 몸을 개발당한 %타겟은()%, 밤마다 거리에 나와
+	PRINTFORML 남자를 찾아다니는 음탕한 바람둥이 아내로 전락했다
+	PRINTFORML 그 중에서도 제일 마음에 드는 것은, 역시 %타겟을()% 지도한 %플레이어였()%다
+	PRINTFORM 러브호텔의 한 방에서 %타겟과()% 촬영한 바람현장은, 이후 익명으로 %CALLNAME:TARGET%의 
+	PRINTFORML 남편의 PC에 보내질 예정이다
+	PRINTFORML 돌아왔을 때의 남편의 표정을 상상하며, %CALLNAME:TARGET%의 정욕은 한층 불타오르는 것이었다……
+ELSEIF TALENT:76 == 1 && TALENT:85 == 1 &&NO:TARGET != 1 && NO:TARGET != 91 && CFLAG:619 < CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORM 사무소를 나와 동거중인 %타겟이()% 기다리는 자택으로 돌아온 %CALLNAME:MASTER%의 눈 앞에, 
+	PRINTFORML 현관에서 알몸 에이프런 차림으로 한 손에 바이브를 들고 격렬히 자위를 하고 있는 %CALLNAME:TARGET%의 모습이 보였다
+	PRINTFORM 거듭되는 지도로 음욕에 눈 떠, 여러가지의 의미로 %CALLNAME:MASTER% 없이는 살아갈 수 없게 된 
+	PRINTFORML %타겟은()%, AV배우를 은퇴한 후에도 이렇게 매일같이 유혹해왔다
+	PRINTFORM %CALLNAME:TARGET%의 동료였던 여배우 후보들의 지도와 촬영을 한 뒤라 지쳐있었지만, 
+	PRINTFORML %CALLNAME:MASTER%의 페니스는 그 음란한 모습에 다시 딱딱해지고 있었다
+	PRINTFORM %CALLNAME:TARGET%의 리퀘스트대로, %플레이어는()% 높게 치겨 올린 엉덩이를 잡아, 
+	PRINTFORM 여배우를 그만두어도 계속된 개발로 완전히 쾌락 기관이 된 %CALLNAME:TARGET%의 애널에 
+	PRINTFORML 팽팽히 부풀어 오른 물건을 단숨에 안까지 찔러 넣었다……
+	PRINTFORML 아무래도 오늘 밤도 자는 것이 늦어질 것 같다……
+ELSEIF TALENT:76 == 1 && TALENT:85 == 1 && NO:MASTER == 0 && (NO:TARGET == 1 || NO:TARGET == 91) && CFLAG:619 < CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORM 사무소를 나와 사랑스러운 아내이자…… 친 여동생인 %타겟이()% 기다리는 자택에 돌아온 
+	PRINTFORM %플레이어가()% 본 것은, 현관에서 알몸 에이프런 차림으로 
+	PRINTFORML 바이브를 한 손에 들고 격렬히 자위를 하고 있는 %CALLNAME:TARGET%의 모습이였다
+	PRINTFORM 거듭되는 지도로 음욕에 눈 떠, 이전보다도 여러가지 의미로 %CALLNAME:MASTER% 없이는 살아갈 수 없게 된 
+	PRINTFORML %타겟은()%, AV배우를 은퇴한 후에도 이렇게 매일같이 유혹해왔다
+	PRINTFORM %CALLNAME:TARGET%의 동료였던 여배우 후보들의 지도와 촬영을 한 뒤라 지쳐있었지만, 
+	PRINTFORML %CALLNAME:MASTER%의 페니스는 그 음란한 모습에 다시 딱딱해지고 있었다
+	PRINTFORM %CALLNAME:TARGET%의 리퀘스트대로, %플레이어는()% 높게 치겨 올린 엉덩이를 잡아, 
+	PRINTFORM 여배우를 그만두어도 계속된 개발로 완전히 쾌락 기관이 된 %CALLNAME:TARGET%의 애널에 
+	PRINTFORML 팽팽히 부풀어 오른 물건을 단숨에 안까지 찔러 넣었다……
+	PRINTFORML 아무래도 오늘 밤도 자는 것이 늦어질 것 같다……
+ELSEIF TALENT:76 == 0 && TALENT:85 == 1 && NO:TARGET != 1 && NO:TARGET != 91 && CFLAG:619 < CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORM 어느 휴일, 촬영을 위해 집을 나서는 %플레이어를()%, 동거중인 %타겟이()%
+	PRINTFORML 도시락 가방을 한 손에 들고 불러 세웠다
+	PRINTFORM AV배우를 은퇴한 후, 이렇게 바지런하게 %플레이어가()% 출근하는 모습을 지켜보고, 도시락까지 만들어 주는 
+	PRINTFORML ……말하자면 우렁각시 같은 존재가 지금의 %타겟이었()%다
+	PRINTFORM 카나데와도 사이 좋게 지내며, 요리를 서로 가르쳐주거나 여자라서 말할 수 있는 고민을 들어주면서, 
+	PRINTFORML 사이가 정다운 모습을 보게 되는 일이 있다
+	PRINTFORM 고맙다고 말하고 도시락을 받으려고 한 %CALLNAME:MASTER%의 뺨에, %타겟이()% 갑자기 
+	PRINTFORML 키스를 했다……
+	PRINTFORML 오늘도 힘낼 수 있을 것 같다……
+ELSEIF TALENT:76 == 0 && TALENT:85 == 1 && (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:430 == 0 && NO:MASTER == 0 && CFLAG:619 < CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORM 어느 휴일, 촬영을 위해서 집을 나서는 %플레이어를()%, %타겟이()%
+	PRINTFORML 도시락 가방을 한 손에 들고 불러 세웠다
+	PRINTFORM AV배우를 은퇴한 후, 이전보다 더욱 바지런하게 %플레이어가()% 출근하는 모습을 지켜보고, 
+	PRINTFORML 도시락까지 만들어주는 ……마치 %CALLNAME:MASTER%의 아내 같은 존재가 지금의 %타겟이었()%다
+	PRINTFORM 고맙다고 말하고 도시락을 받으려고 한 %CALLNAME:MASTER%의 뺨에, %타겟이()% 갑자기 
+	PRINTFORML 키스를 했다……
+	PRINTFORML 오늘도 힘낼 수 있을 것 같다……
+ELSEIF TALENT:76 == 0 && TALENT:85 == 1 && (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:430 == 1 && NO:MASTER == 0 && CFLAG:619 < CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORM 어느 휴일, 촬영을 위해서 집을 나오려고 하는 %플레이어를()%, 가장 사랑하는 여동생이며…… 
+	PRINTFORML 가장 사랑하는 아내이기도 한 %타겟이()% 도시락 가방을 한 손에 들고 불러 세웠다
+	PRINTFORM AV배우를 은퇴한 후, 이전보다 더욱 바지런하게 %플레이어가()% 출근하는 모습을 지켜보고, 
+	PRINTFORML 도시락까지 만들어주는 ……그야말로 좋은 아내 같은 존재가 지금의 %타겟이었()%다
+	PRINTFORML 그리고…… %CALLNAME:TARGET%의 배에는 %플레이어와()%의 사랑의 결정이 머물고 있었다
+	PRINTFORML AV배우를 은퇴한 후, %타겟이()% 졸라 피임하지 않고 몇번이나 사랑을 나눈 결과다
+	PRINTFORML 혼인신고는 할 수 없지만, 서류 위에서의 부부라는 관계 따위 아무래도 좋다,고 둘 다 생각하고 있다
+	PRINTFORM 세간으로부터 손가락질을 당할지라도 %타겟과()% 그 아이를 지켜 가자고 맹세하며, 
+	PRINTFORM 고맙다고 말하고 도시락을 받으려고 한 %CALLNAME:MASTER%의 뺨에, %타겟이()% 갑자기 
+	PRINTFORML 키스를 했다……
+	PRINTFORML 아오늘도 힘낼 수 있을 것 같다……
+ELSEIF TALENT:76 == 1 && TALENT:85 == 0 && CFLAG:619 < CFLAG:620 / 2
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORML 이름을 바꾸어 다른 라벨에서 다시 데뷔했다
+	PRINTFORM %플레이어가()% 촬영해 온 그 어떤 작품보다도 추잡하게 비치고 있는 %CALLNAME:TARGET%의 모습에, 
+	PRINTFORM %플레이어는()% 가벼운 질투와, 아까운 짓을 했다고 생각하며, 
+	PRINTFORML 그 날의 지도를 준비했다……
+ELSE
+	PRINTFORMW AV배우를 은퇴한 %타겟은()%……
+	PRINTFORML 키류 조직이 경영하는 금지사항 없는 지하 풍속에서 일하고 있다고 했다
+	PRINTFORML 전에 모습을 보러 간 스탭이 말하기로는, 날이 갈수록 여위어가며 눈에서 생기가 사라졌다고 한다
+	PRINTFORM 그리고 보여줬던 %CALLNAME:TARGET%의 사진에는, 신체의 여기저기에 멍이 있고 
+	PRINTFORM %CALLNAME:MASTER%의 기억과 다른 거대한 유방에, 고간에는 팔 정도 굵기의 긴 페니스가 생겼고…… 
+	PRINTFORML 왼팔까지 없어져 있었다……
+	PRINTFORML 끔직한 기억이 떠오른 %플레이어는()% 가볍게 머리를 흔들고, 그 주의 촬영 내용에 의식을 집중했다……
+ENDIF
+PRINTW

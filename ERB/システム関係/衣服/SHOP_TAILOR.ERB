@@ -1,0 +1,2001 @@
+﻿;=================================================
+;仕立て屋
+;=================================================
+@TAILOR_MAIN
+;購入した品物の種類(1~9:通常衣類 2:学生服 3:아동복 10:下着 11:替え기저귀 20:装備品 )
+A = 0
+;選んだ服の種類
+R = 0
+;服の価格
+C = 0
+;着せ替えるのに必要な従順Lv
+S = 0
+;着衣時の服の損傷フラグ
+F = 0
+
+$INPUT_LOOP_01
+
+DRAWLINE
+PRINTL 의상점
+PRINTL 《어떤 옷이나 장신구라도 취급하는 옷집입니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+PRINTL 누굴 데려갈까요?　
+DRAWLINE
+CALL LIFE_LIST_NEW,4
+
+IF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_01
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP_01
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_02
+
+A = 0
+C = 0
+R = 0
+S = 0
+
+DRAWLINE
+PRINTFORML 소지금: {MONEY}포인트
+PRINTFORM 지금 %NAME:TARGET%의 모습은 
+CALL PRINT_CLOTHTYPE
+PRINTL 입니다.
+
+PRINTFORML %CALLNAME:TARGET%에게 어떤 옷을 입힐까요?
+DRAWLINE
+
+CALL SHOW_INFO_CASUALWEAR
+DRAWLINE
+
+PRINTL  [ 0] - 평상복(100포인트)
+PRINTL  [ 1] - 평범한 옷(1000포인트)
+PRINTL  [ 2] - 학교지정교복(5000포인트)
+PRINTL  [ 3] - 기타 의상(10000포인트)
+PRINTL  [ 4] - 장신구
+PRINTL  [ 5] - 속옷(100포인트)
+SIF CFLAG:42 == 69 && ((CFLAG:40 & 64) == 0 || CFLAG:47 > 0)
+	PRINTL  [ 6] - 기저귀(50포인트)
+SIF CFLAG:42 == 79 && (CFLAG:40 & 64) && CFLAG:49 == 0 && TALENT:0
+	PRINTL  [ 7] - 정조대 열쇠를 버린다
+;SIF TALENT:85 == 1
+;	PRINTL  [ 8] - 専用装備
+SIF TALENT:422 == 0
+	PRINTL  [ 9] - 태닝살롱(1000포인트)
+PRINTL  [10] - 헤어살롱
+PRINTL  [11] - 양말
+PRINTL  [12] - 신발
+SIF PBAND:305 >= 3 && EXP:124 == 0
+	PRINTL  [13] - 스페셜 에스테(3000000포인트)
+SIF CFLAG:41
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+IF CFLAG:41 && (CFLAG:45 == 0 || CFLAG:46 == 0)
+	PRINT  [20] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	IF RESULT == 0
+		PRINTL 를 처분한다
+	ELSE
+		PRINTL 을 처분한다
+	ENDIF
+ENDIF
+
+
+
+;/////2012/09/23改造部分ここから/////
+
+SIF CFLAG:43 == 0 || CFLAG:44 == 0
+	PRINTL  [21] - 속옷을 처분한다
+IF CFLAG:42 && CFLAG:47 == 0 && CFLAG:49 == 0
+	PRINT  [22] - 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINTL 를 처분한다
+	ELSE
+		PRINTL 을 처분한다
+	ENDIF
+ENDIF
+IF CFLAG:170 != 0 || CFLAG:171 != 0
+	PRINTL  [23] - 신발과 양말을 처분한다
+ENDIF
+IF CFLAG:178 != 0
+	PRINT  [24] - 예비 의상(
+		CALL PRINT_CLOTHTYPE_CASUALWEAR
+	IF RESULT == 0
+		PRINTL )와 바꾼다
+	ELSE
+		PRINTL )과 바꾼다
+	ENDIF
+ENDIF
+
+
+DRAWLINE
+
+;TARGETをTに退避
+T = TARGET
+
+;前後のキャラボタンを用意する
+PRINTFORMLC \@(T <= 0) ? %" " * 16% # [1001] 이전 캐릭터\@
+PRINTLC [999] 리스트로 돌아간다
+PRINTFORMLC \@(T >= CHARANUM - 1) ? %" " * 16% # [1003] 다음 캐릭터\@
+PRINTL
+PRINTFORMLC %" " * 24% [1000] 메인 화면으로 돌아간다
+
+
+INPUT
+
+IF RESULT == 0
+	CALL TAILOR_CASUAL
+ELSEIF RESULT == 1
+	CALL TAILOR_NORMAL
+ELSEIF RESULT == 2
+	CALL TAILOR_STUDENT
+ELSEIF RESULT == 3
+	CALL TAILOR_OTHER
+ELSEIF RESULT == 4
+	CALL TAILOR_ACCESSORY
+ELSEIF RESULT == 5
+	CALL TAILOR_UNDERWARE
+ELSEIF RESULT == 6 && CFLAG:42 == 69
+	CALL TAILOR_DIAPER
+ELSEIF RESULT == 7 && CFLAG:42 == 79 && (CFLAG:40 & 64) && CFLAG:49 == 0 && TALENT:0
+	CALL CHASTITY_KEY
+;ELSEIF RESULT == 8 && TALENT:85 == 1
+;	CALL TAILOR_SPECIA
+ELSEIF RESULT == 9 && TALENT:422 == 0
+	CALL TAILOR_BLACKGIRL
+ELSEIF RESULT == 10
+	CALL HAIRSTYLE_CHANGE
+ELSEIF RESULT == 11
+	CALL TAILOR_SOCKS
+ELSEIF RESULT == 12
+	CALL TAILOR_SHOES
+ELSEIF RESULT == 13 && PBAND:305 >= 3 && EXP:124 == 0
+	CALL TAILOR_ESTHETIC
+ELSEIF RESULT == 20 && (CFLAG:45 == 0 || CFLAG:46 == 0)
+	PRINTFORM %타겟이()% 입고있던 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	IF RESULT == 0
+		PRINT 를 
+	ELSE
+		PRINT 을 
+	ENDIF
+	PRINTL 소각처리했습니다
+	CFLAG:41 = 0
+	CFLAG:45 = -3
+	CFLAG:46 = -3
+	CFLAG:40 -= CFLAG:40 & 28
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 21 && (CFLAG:43 == 0 || CFLAG:44 == 0)
+	IF CFLAG:43 >= 0
+		CALL SELLING_PANTS
+	ELSE
+		PRINTFORMW %타겟이()% 입고있던 속옷을 처분했습니다
+	ENDIF
+	CFLAG:43 = -3
+	CFLAG:44 = -3
+	CFLAG:40 -= CFLAG:40 & 3
+	CFLAG:174 = 99
+	CFLAG:175 = -1
+	CFLAG:176 = 99
+	CFLAG:177 = -1
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 22 && CFLAG:47 == 0 && CFLAG:49 == 0
+	PRINTFORM %타겟이()% 쓰던 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINT 를 
+	ELSE
+		PRINT 을 
+	ENDIF
+	PRINTL 소각처분했습니다
+	CFLAG:42 = 0
+	CFLAG:40 -= CFLAG:40 & 64
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 23 && (CFLAG:170 != 0 || CFLAG:171 != 0)
+	PRINTFORM %타겟이()% 신고있던 
+	IF CFLAG:171 != 0
+		CALL PRINT_SHOESTYPE_MAIN2
+		IF RESULT == 0 && CFLAG:170 != 0
+			PRINT 와 
+		ELSEIF RESULT == 0 && CFLAG:170 != 0
+			PRINT 과 
+		ELSEIF RESULT == 0 && CFLAG:170 == 0
+			PRINT 를 
+		ELSEIF RESULT == 0 && CFLAG:170 != 0
+			PRINT 을 
+		ENDIF
+	ENDIF
+	IF CFLAG:170 != 0
+		CALL PRINT_SHOESTYPE_MAIN
+		IF RESULT == 0
+			PRINT 를 
+		ELSEIF RESULT == 1
+			PRINT 을 
+		ENDIF
+	ENDIF
+	PRINTL 소각처분했습니다
+	CFLAG:170 == 0
+	CFLAG:171 == 0
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 24 && CFLAG:178 != 0
+	PRINTFORM 《현재 입고있는 
+		CALL PRINT_CLOTHTYPE_MAIN2
+	IF RESULT == 0
+		PRINTL 를 
+	ELSE
+		PRINTL 을 
+	ENDIF
+	PRINTFORM 예비인 
+		CALL PRINT_CLOTHTYPE_CASUALWEAR
+	SIF RESULT == 1
+		PRINT 으
+	PRINTFORMW 로 갈아입혔습니다》
+		CFLAG:179 = CFLAG:41
+		CFLAG:41 = CFLAG:178
+		CFLAG:178 = CFLAG:179
+
+ELSEIF RESULT == 999
+	GOTO INPUT_LOOP_01
+
+
+ELSEIF RESULT == 1000
+	RETURN 0
+
+ELSEIF RESULT == 1001 && T > 0
+	PRINTFORM %CALLNAME:TARGET% 대신에 
+	TARGET = T - 1
+	PRINTFORMW %타겟을(1)% 의상점에 데리고 왔습니다
+	GOTO INPUT_LOOP_02
+
+ELSEIF RESULT == 1003 && T < CHARANUM - 1
+	PRINTFORM %CALLNAME:TARGET% 대신에 
+	TARGET = T + 1
+	PRINTFORMW %타겟을(1)% 의상점에 데리고 왔습니다
+	GOTO INPUT_LOOP_02
+ELSE
+	GOTO INPUT_LOOP_02
+ENDIF
+;/////2012/09/23改造部分ここまで/////
+
+
+
+IF A == 0
+	GOTO INPUT_LOOP_02
+ELSEIF A == 20 && CFLAG:49
+	PRINTFORMW 정조대를 벗지 않으면 다른 장신구는 찰 수 없습니다
+	GOTO INPUT_LOOP_02
+ELSEIF MONEY < C
+	PRINTW 소지금이 부족합니다
+	GOTO INPUT_LOOP_02
+ELSEIF ABL:10 < S
+	PRINTFORMW 착용을 거부당했습니다
+	GOTO INPUT_LOOP_02
+ENDIF
+
+;【큰체구】キャラに아동복を買ってやった場合
+IF TALENT:99 && A == 3
+	$INPUT_LOOP_03
+	PRINTFORML 이 옷은 %CALLNAME:TARGET%에게 맞지 않습니다……
+	PRINTFORML  [0] - 억지로 입힌다
+	PRINTFORML  [1] - 포기한다
+	INPUT
+	IF RESULT == 0
+		PRINTL 억지로 입히니 하의가 뜯어져버렸습니다
+		WAIT
+		;下半身が破れたフラグ
+		F = 2
+	ELSEIF RESULT == 1
+		GOTO INPUT_LOOP_02
+	ELSE
+		GOTO INPUT_LOOP_03
+	ENDIF
+;【小型体型】でない【거유】【폭유】キャラに아동복を買ってやった場合
+ELSEIF (TALENT:100 == 0 && (TALENT:114 || TALENT:110)) && A == 3
+	$INPUT_LOOP_04
+	PRINTFORML 이 옷은 %CALLNAME:TARGET%에게 맞지 않습니다……
+	PRINTFORML  [0] - 억지로 입힌다
+	PRINTFORML  [1] - 포기한다
+	INPUT
+	IF RESULT == 0
+		PRINTL 억지로 입히니 상의가 뜯어져버렸습니다
+		WAIT
+		;上半身が破れたフラグ
+		F = 1
+	ELSEIF RESULT == 1
+		GOTO INPUT_LOOP_02
+	ELSE
+		GOTO INPUT_LOOP_04
+	ENDIF
+ENDIF
+
+IF A <= 9 
+	PRINTFORM %타겟을(1)% 
+	IF CFLAG:41 && (CFLAG:45 == 0 || CFLAG:46 == 0)
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINTFORM 에서 
+		CFLAG:179 = CFLAG:41
+		CFLAG:178 = CFLAG:179
+	ENDIF
+	
+	CFLAG:41 = R
+	CFLAG:45 = 0
+	CFLAG:46 = 0
+	
+	CALL PRINT_CLOTHTYPE_MAIN2
+	SIF RESULT == 1
+		PRINT 으
+	PRINTFORML 로 갈아입혔습니다
+
+	IF F == 1
+		PRINT 방금 산
+		CALL PRINT_CLOTHTYPE_MAIN2
+		IF RESULT == 0
+			PRINTL 는 
+		ELSE
+			PRINTL 은 
+		ENDIF
+		PRINTFORML 상의가 뜯어져 
+		PRINTFORML %CALLNAME:TARGET%의 가슴이 그대로 보입니다……
+		CFLAG:44 = 0 - 3
+		CFLAG:45 = 0 - 3
+	ELSEIF F == 2
+		PRINT 방금 산
+		CALL PRINT_CLOTHTYPE_MAIN2
+		IF RESULT == 0
+			PRINTL 는 
+		ELSE
+			PRINTL 은 
+		ENDIF
+		PRINTFORML 하의가 뜯어져 
+		PRINTFORML %CALLNAME:TARGET%의 엉덩이가 그대로 보입니다……
+		CFLAG:46 = 0 - 3
+	ENDIF
+
+	CALL WEARING_CLOTH_ABLE
+
+	IF CFLAG:179 != R
+		PRINT 지금까지 입고 있던 
+			CALL PRINT_CLOTHTYPE_CASUALWEAR
+		IF RESULT == 0
+			PRINTL 를 
+		ELSE
+			PRINTL 을 
+		ENDIF
+		PRINTL 예비로 설정합니까?
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		$INPUTLOOP_CASUALCHANGE
+		INPUT
+	
+		IF RESULT == 0
+			PRINTFORM 《
+			CALL PRINT_CLOTHTYPE_CASUALWEAR
+			IF RESULT == 0
+				PRINT 를 
+			ELSE
+				PRINT 을 
+			ENDIF
+			PRINTFORML 예비의상으로 지정합니다》
+			CFLAG:41 = R
+			CFLAG:179 = 0
+		ELSEIF RESULT == 1
+			PRINTFORM 《
+			CALL PRINT_CLOTHTYPE_CASUALWEAR
+			IF RESULT == 0
+				PRINT 를 
+			ELSE
+				PRINT 을 
+			ENDIF
+			PRINTFORML 예비의상으로 지정하지 않습니다》
+			CFLAG:178 = CFLAG:180
+			CFLAG:179 = 0
+		ELSE
+			GOTO INPUTLOOP_CASUALCHANGE
+		ENDIF
+	ENDIF
+
+ELSEIF A == 10
+	PRINTFORML %NAME:TARGET%에게 새로운 속옷을 사줬습니다
+	IF CFLAG:43 >= 0 && CFLAG:48 >= 6
+		WAIT
+		CALL SELLING_PANTS
+	ENDIF
+
+	;全裸だった場合は通常コスに普段着を代入しておく
+	IF CFLAG:41 == 0
+
+		;/////2012/09/22改造部分/////
+		;挙動がバグにしか見えないのでコメントアウトしました。
+		;CFLAG:41 = 1
+
+		CFLAG:45 = -3
+		CFLAG:46 = -3
+	ENDIF
+
+	CFLAG:43 = 0
+	CFLAG:44 = 0
+
+	;下着着衣フラグの初期化
+	CALL WEARING_UNDERWARE_ALL
+
+ELSEIF A == 11
+	PRINTFORML 가게 구석에서 %CALLNAME:TARGET%에게 기저귀를 채웠습니다
+	CFLAG:47 = 0
+ELSEIF A == 20
+	IF CFLAG:42 && CFLAG:47 == 0
+		PRINTFORM %NAME:TARGET%에게서 
+		CALL PRINT_CLOTHTYPE_SPECIAL
+		IF RESULT == 0
+			PRINT 를 
+		ELSE
+			PRINT 을 
+		ENDIF
+		PRINTFORML 벗기고
+	ELSE
+		PRINTFORM %NAME:TARGET%에게 
+	ENDIF
+
+	CFLAG:42 = R
+	CFLAG:47 = 0
+
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINT 를 
+	ELSE
+		PRINT 을 
+	ENDIF
+	PRINTFORML 줬습니다
+
+	CFLAG:40 |= 64
+
+ENDIF
+
+MONEY -= C
+
+WAIT
+
+TARGET = -1
+
+RESTART
+
+;-------------------------------------------------
+;普段着
+;-------------------------------------------------
+@TAILOR_CASUAL
+A = 1
+C = 100
+F = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_01
+
+PRINTL □평상복
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [1] - 평상복・치마타입
+PRINTL  [2] - 평상복・바지타입
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1
+	R = 1
+	S = 0
+	SIF TALENT:122
+		S = 3
+ELSEIF RESULT == 2
+	R = 101
+	S = 0
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+RETURN 1
+
+;-------------------------------------------------
+;一般的な服
+;-------------------------------------------------
+@TAILOR_NORMAL
+A = 1
+C = 1000
+F = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_01
+
+PRINTL □평범한 옷
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [1] - 정장・치마타입
+PRINTL  [2] - 아동복(여아용)
+PRINTL  [3] - 명품옷
+PRINTL  [4] - 블레이저・스커트타입
+PRINTL  [5] - 정장・바지타입
+PRINTL  [6] - 츄리닝
+PRINTL  [7] - 블레이저・바지타입
+PRINTL  [8] - 아동복(남아용)
+PRINTL  [9] - 잠옷
+PRINTL  [10] - 원피스
+PRINTL  [11] - 기모노
+PRINTL  [12] - 칵테일 드레스
+PRINTL  [13] - 유카타
+PRINTL  [14] - 마이크로 미니타이트 원피스
+PRINTL  [15] - 페미닌 원피스
+PRINTL  [16] - 멜빵바지
+PRINTL  [17] - 원피스정장
+PRINTL  [18] - 캐미솔과 데님미니스커트
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+
+IF RESULT == 1
+	R = 21
+	S = 0
+	SIF TALENT:122
+		S = 3
+ELSEIF RESULT == 2
+	A = 3
+	R = 22
+	S = 5
+	SIF TALENT:132 || TALENT:135 || TALENT:131
+		S = 0
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 3
+	R = 23
+	S = 0
+ELSEIF RESULT == 4
+	R = 31
+	S = 0
+	SIF TALENT:122
+		S = 3
+ELSEIF RESULT == 5
+	R = 102
+	S = 0
+ELSEIF RESULT == 6
+	R = 103
+	S = 0
+ELSEIF RESULT == 7
+	R = 108
+	S = 0
+ELSEIF RESULT == 8
+	A = 3
+	R = 122
+	S = 5
+	SIF TALENT:132 || TALENT:135 || TALENT:131
+		S = 0
+ELSEIF RESULT == 9
+	R = 131
+	S = 0
+ELSEIF RESULT == 10
+	R = 201
+	S = 0
+	SIF TALENT:122
+		S = 3
+ELSEIF RESULT == 11
+	R = 202
+	S = 0
+ELSEIF RESULT == 12
+	R = 203
+	S = 1
+	SIF TALENT:122 && TALENT:322 == 0
+		S = 3
+ELSEIF RESULT == 13
+	R = 204
+	S = 1
+ELSEIF RESULT == 14
+	R = 205
+	S = 4
+	SIF TALENT:153
+		S = 1
+ELSEIF RESULT == 15
+	A = 3
+	R = 222
+	S = 5
+	SIF TALENT:132 || TALENT:135 || TALENT:131
+		S = 0
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 16
+	R = 252
+	S = 0
+ELSEIF RESULT == 17
+	R = 232
+	S = 0
+ELSEIF RESULT == 18
+	R = 40
+	S = 0
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;学校指定制服
+;-------------------------------------------------
+@TAILOR_STUDENT
+A = 2
+C = 5000
+F = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_01
+
+PRINTL 학교지정교복
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [1] - 고쿠아쿠 고등학교 교복
+PRINTL  [2] - 히노데 고등학교 교복
+PRINTL  [3] - 하나마루 고등학교 교복
+PRINTL  [4] - 신세츠 고등학교 교복
+PRINTL  [5] - 세이에이 고등학교 교복
+PRINTL  [6] - 파라이소 중학교 교복
+PRINTL  [7] - 사립 메키메키 학원 교복
+PRINTL  [8] - 고등학교 교복
+PRINTL  [9] - 중학교 교복
+PRINTL  [10] - 세일러복
+PRINTL  [11] - 체육복과 부르마
+PRINTL  [12] - 유치원복
+PRINTL  [13] - 학교수영복
+PRINTL  [14] - 마호라 학원 초등부 교복
+PRINTL  [15] - 마호라 여자중학교 교복
+PRINTL  [16] - 성 우르술라 고등학교 교복
+PRINTL  [17] - 마호라예대 부속 중학교 교복
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1
+	R = 2
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 2
+	R = 3
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 3
+	R = 4
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 4
+	R = 5
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 5
+	R = 6
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 6
+	R = 7
+	S = 4
+	SIF TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 7
+	R = 8
+	S = 4 - ABL:81
+	SIF S < 1
+		S = 1
+ELSEIF RESULT == 8
+	R = 17
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 9
+	R = 18
+	S = 4
+	SIF TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 10
+	R = 19
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 2
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 11
+	R = 109
+	S = 5
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 2
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 12
+	A = 3
+	R = 221
+	S = 5
+	SIF TALENT:132 || TALENT:135 || TALENT:131
+		S = 0
+ELSEIF RESULT == 13
+	R = 291
+	S = 5
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 2
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 14
+	A = 3
+	R = 229
+	S = 5
+	SIF TALENT:132 || TALENT:135 || TALENT:131
+		S = 0
+ELSEIF RESULT == 15
+	R = 20
+	S = 4
+	SIF TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 16
+	R = 230
+	S = 4
+	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 17
+	R = 53
+	S = 4
+	SIF TALENT:221 || TALENT:132 || TALENT:135
+		S = 0
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;코스프레用衣装
+;-------------------------------------------------
+@TAILOR_OTHER
+A = 1
+C = 10000
+F = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_01
+
+PRINTL □기타 의상
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [1] - 간호사복
+PRINTL  [2] - 메이드복
+PRINTL  [3] - 웨이트리스복
+PRINTL  [4] - 편의점 제복
+PRINTL  [5] - 사무원 제복
+PRINTL  [6] - CPG 유니폼
+PRINTL  [7] - 펑크 로리타
+PRINTL  [8] - 상복
+PRINTL  [9] - 무녀복
+PRINTL  [10] - 야구 유니폼
+PRINTL  [11] - 군복
+PRINTL  [12] - 닌자복
+PRINTL  [13] - 왕자복
+PRINTL  [14] - 마이크로 비키니
+PRINTL  [15] - 구형 학교수영복
+PRINTL  [16] - 본디지
+PRINTL  [17] - 전신 타이즈
+PRINTL  [18] - 버니걸
+PRINTL  [19] - 군복+타이트스커트
+PRINTL  [20] - 수도복
+PRINTL  [21] - 레오타드
+PRINTL  [22] - 고식 로리타
+PRINTL  [23] - 여음양사복
+PRINTL  [24] - 치어리더 의상
+SIF PBAND:141 == 3
+	PRINTL  [25] - 웨딩 드레스
+SIF PBAND:51 == 3
+	PRINTL  [26] - 벨리댄스복
+SIF PBAND:54 == 3
+	PRINTL  [27] - 할로윈 마녀복
+SIF PBAND:84 == 3
+	PRINTL  [28] - 테니스복
+SIF PBAND:68 == 3
+	PRINTL  [29] - 슬링샷
+SIF PBAND:146 == 3
+	PRINTL  [28] - 라텍스 슈트
+SIF PBAND:304 >= 3
+	PRINTL  [99] - 유리 메이드복
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1
+	R = 24
+	S = 2 - TALENT:63
+	SIF TALENT:122 && S < 2
+		S = 3
+ELSEIF RESULT == 2
+	R = 25
+	S = 3 - (ABL:81 + TALENT:63)
+	SIF S < 1
+		S = 1
+ELSEIF RESULT == 3
+	R = 26
+	S = 0
+ELSEIF RESULT == 4
+	R = 27
+	S = 0
+ELSEIF RESULT == 5
+	R = 28
+	S = 0
+ELSEIF RESULT == 6
+	R = 29
+	S = 4
+	;インミン用処理
+	SIF NO:TARGET == 92
+		S = 0
+ELSEIF RESULT == 7
+	R = 30
+	S = 3
+	SIF TALENT:203
+		S = 0
+ELSEIF RESULT == 8
+	R = 32
+	S = 2
+ELSEIF RESULT == 9
+	R = 104
+	S = 3 - (ABL:81 + TALENT:207 * 2)
+	SIF S < 0
+		S = 0
+ELSEIF RESULT == 10
+	R = 105
+	S = 0
+ELSEIF RESULT == 11
+	R = 106
+	S = 3 - ABL:79
+	SIF S < 0
+		S = 0
+ELSEIF RESULT == 12
+	R = 110
+	S = 3
+	SIF TALENT:312
+		S = 0
+ELSEIF RESULT == 13
+	R = 111
+	S = 3
+	SIF TALENT:208
+		S = 0
+ELSEIF RESULT == 14
+	R = 191
+	S = 8 - ABL:17
+	SIF S < 3
+		S = 3
+ELSEIF RESULT == 15
+	R = 244
+	IF TALENT:204 == 0
+		S = 5 - ABL:17
+		SIF S < 4
+			S = 4
+	ENDIF
+ELSEIF RESULT == 16
+	R = 241
+	S = 8 - ABL:20
+	SIF TALENT:83 || S < 1
+		S = 1
+ELSEIF RESULT == 17
+	R = 251
+	S = 4
+ELSEIF RESULT == 18
+	R = 254
+	S = 4
+ELSEIF RESULT == 19
+	R = 51
+	S = 3 - ABL:81
+ELSEIF RESULT == 20
+	R = 231
+	S = 3 - (ABL:81 + TALENT:204 * 2)
+	SIF S < 0
+		S = 0
+ELSEIF RESULT == 21
+	R = 295
+	S = 4 - ABL:17
+ELSEIF RESULT == 22
+	R = 52
+	S = 2
+ELSEIF RESULT == 23
+	R = 233
+	S = 2
+ELSEIF RESULT == 24
+	R = 54
+	S = 2
+ELSEIF RESULT == 25 && PBAND:141 == 3
+	R = 240
+	S = 3
+ELSEIF RESULT == 26 && PBAND:51 == 3
+	R = 243
+	S = 3
+ELSEIF RESULT == 27 && PBAND:54 == 3
+	R = 56
+	S = 3
+ELSEIF RESULT == 27 && PBAND:54 == 3
+	R = 56
+	S = 3
+ELSEIF RESULT == 28 && PBAND:84 == 3
+	R = 55
+	S = 3
+ELSEIF RESULT == 29 && PBAND:68 == 3
+	R = 246
+	S = 3
+ELSEIF RESULT == 30 && PBAND:84 == 3
+	R = 245
+	S = 3
+ELSEIF RESULT == 99 && PBAND:304 >= 3
+	R = 99
+	S = 0
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;装備品
+;-------------------------------------------------
+@TAILOR_ACCESSORY
+A = 20
+F = 0
+
+$INPUT_LOOP_01
+
+PRINTL □장신구
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [1] - 에이프런(10000포인트)
+PRINTL  [2] - 코트(10000포인트)
+PRINTL  [3] - 백의(10000포인트)
+PRINTL  [4] - 남자용 와이셔츠(10000포인트)
+PRINTL  [5] - 수수한 조끼(10000포인트)
+PRINTL  [6] - 떠돌이의 망토(10000포인트)
+PRINTL  [7] - 머플러(10000포인트)
+PRINTL  [8] - 간호사 모자(10000포인트)
+PRINTL  [9] - 개목걸이(10000포인트)
+PRINTL  [10] - 귀갑묶기용 끈(10000포인트)
+PRINTL  [11] - 카우벨과 코뚜레(10000포인트)
+PRINTL  [12] - 기저귀(100포인트)
+PRINTL  [13] - 정조대(10000포인트)
+PRINTL  [14] - 수녀용 베일(3000포인트)
+PRINTL  [15] - 웨딩 베일(3000포인트)
+;PRINTL  [16] - 麻帆良学園初等部帽子(2000포인트)
+;PRINTL  [17] - 성 우르술라 高校帽子(2000포인트)
+PRINTL  [18] - 정장 자켓(1000포인트)
+PRINTL  [19] - 뱅글&링(2000포인트)
+PRINTL  [20] - 안경(1000포인트)
+PRINTL  [21] - 마법사의 로브(10000포인트)
+PRINTL  [22] - 고양이귀&꼬리(10000포인트)
+PRINTL  [23] - 폼폼(1000포인트)
+PRINTL  [24] - 레이스 파티 글러브(1000포인트)
+PRINTL  [25] - 에나멜 롱 글러브(10000포인트)
+SIF PBAND:83 == 3
+	PRINTL  [26] - 꼬리 애널플래그(50000포인트)
+SIF PBAND:304 == 4
+	PRINTL  [27] - 유리 고양이귀(100000포인트)
+SIF PBAND:56 >= 3
+	PRINTL  [28] - 프릴 앞치마(10000포인트)
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1
+	R = 1
+	C = 10000
+	S = 0
+ELSEIF RESULT == 2
+	R = 2
+	C = 10000
+	S = 0
+ELSEIF RESULT == 3
+	R = 3
+	C = 10000
+	S = 0
+ELSEIF RESULT == 4
+	R = 4
+	C = 10000
+	S = 1
+ELSEIF RESULT == 5
+	R = 10
+	C = 10000
+	S = 0
+ELSEIF RESULT == 6
+	R = 12
+	C = 10000
+	S = 1
+ELSEIF RESULT == 7
+	R = 51
+	S = 0
+ELSEIF RESULT == 8
+	R = 52
+	C = 10000
+	S = 2 - TALENT:63
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 9
+	R = 71
+	C = 10000
+	S = 10 - ABL:21
+	SIF TALENT:124 && S > 5
+		S = 5
+	SIF TALENT:136 || S < 3
+		S = 3
+ELSEIF RESULT == 10
+	R = 72
+	C = 10000
+	S = 8 - ABL:21
+	SIF TALENT:88 || S < 3
+		S = 3
+ELSEIF RESULT == 11
+	R = 73
+	C = 10000
+	S = 5
+	SIF (TALENT:110 || TALENT:114) && TALENT:130
+		S = 3
+ELSEIF RESULT == 12
+	R = 69
+	C = 100
+	S = 5
+	SIF TALENT:57
+		S = 1
+ELSEIF RESULT == 13
+	R = 79
+	C = 10000
+	S = 0
+	SIF TALENT:122
+		S = 99
+ELSEIF RESULT == 14
+	R = 60
+	C = 3000
+	S = 3
+ELSEIF RESULT == 15
+	R = 61
+	C = 3000
+	S = 3 - (ABL:81 + TALENT:204 * 2)
+;ELSEIF RESULT == 16
+;	R = 62
+;	C = 2000
+;	S = 3
+;	SIF TALENT:132 || TALENT:135 || TALENT:131
+;		S = 0
+;ELSEIF RESULT == 17
+;	R = 63
+;	C = 2000
+;	S = 2
+;	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+;		S = 0
+ELSEIF RESULT == 18
+	R = 40
+	C = 1000
+	S = 0
+ELSEIF RESULT == 19
+	R = 74
+	C = 2000
+	S = 2
+	SIF TALENT:432 || TALENT:422
+		S = 0
+ELSEIF RESULT == 20
+	R = 80
+	C = 1000
+	S = 0
+ELSEIF RESULT == 21
+	R = 41
+	C = 10000
+	S = 0
+ELSEIF RESULT == 22
+	R = 65
+	C = 10000
+	S = 1
+ELSEIF RESULT == 23
+	R = 66
+	C = 1000
+	S = 1
+ELSEIF RESULT == 24
+	R = 83
+	C = 1000
+	S = 1
+ELSEIF RESULT == 25
+	R = 85
+	C = 10000
+	S = 1
+ELSEIF RESULT == 26 && PBAND:83 == 3
+	R = 82
+	C = 50000
+	S = 1
+	SIF TALENT:2 == 1
+		S = 11
+ELSEIF RESULT == 27 && PBAND:304 == 4
+	R = 99
+	C = 100000
+	S = 1
+ELSEIF RESULT == 28 && PBAND:56 >= 3
+	R = 50
+	C = 10000
+	S = 1
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;下着
+;-------------------------------------------------
+@TAILOR_UNDERWARE
+A = 10
+C = 100
+F = 0
+S = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	C = 0
+	R = 0
+	T = 0
+	RETURN 0
+ENDIF
+
+	CALL TAILOR_UNDER_MAIN
+
+RETURN 1
+
+;-------------------------------------------------
+;替え기저귀
+;-------------------------------------------------
+@TAILOR_DIAPER
+A = 11
+C = 50
+F = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	C = 0
+	R = 0
+	T = 0
+	RETURN 0
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;パンツ売却
+;-------------------------------------------------
+@SELLING_PANTS
+M = 100 * CFLAG:48
+SIF M == 0
+	M = 50
+
+;補正前の金額は200포인트以上にならない
+SIF M > 500
+	M = 500
+;자위광
+SIF TALENT:74
+	TIMES M , 1.50
+;수수께끼의 매력
+SIF TALENT:92
+	TIMES M , 2.00
+;인기인
+SIF TALENT:126
+	TIMES M , 1.50
+;아이돌
+SIF TALENT:203
+	TIMES M , 2.00
+;女子고등학생
+SIF TALENT:220
+	TIMES M , 5.00
+;女子중학생
+SIF TALENT:221
+	TIMES M , 5.00
+SIF TALENT:414
+	TIMES M , 2.00
+SIF TALENT:271
+	TIMES M , 2.00
+PRINTFORML %타겟이()% 입고있던 팬티는 {M}포인트로 팔렸습니다.
+MONEY += M
+CFLAG:48 = 0
+
+;-------------------------------------------------
+;정조대のカギを捨てる
+;-------------------------------------------------
+@CHASTITY_KEY
+A = 0
+
+PRINTFORML %CALLNAME:TARGET%의 정조대 열쇠를 버려버리면
+PRINTFORML 더이상 %CALLNAME:MASTER%도 정조대를 벗길 수 없게 됩니다.
+PRINTFORML 열쇠를 버리면, 두번 다시 얻지 못할수도 있습니다.
+$INPUT_LOOP_01
+PRINTL  
+PRINTFORML 정말 %NAME:TARGET%의 정조대 열쇠를 버립니까?
+PRINTFORML  [0] - 네
+PRINTFORML  [1] - 아니오
+INPUT
+IF RESULT == 0
+	PRINTFORML 멍하는 바라보는 %CALLNAME:TARGET%의 눈앞에서
+	PRINTFORMW %플레이어는()% 정조대 열쇠는 저멀리 던져버렸다.
+	PRINTFORML 열쇠가 어디에 떨어졌는지는 아무도 모른다.
+	WAIT
+	CFLAG:49 = 1
+ELSEIF RESULT != 1
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;装備品
+;-------------------------------------------------
+@TAILOR_SPECIAL
+A = 20
+F = 0
+
+$INPUT_LOOP_01
+
+PRINTL □장신구
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL   [1] - 병아리 앞치마		( 100000포인트)
+PRINTL   [2] - 커다란 흰리본		( 100000포인트)
+PRINTL   [3] - 히비스커스 슈슈		( 100000포인트)
+PRINTL   [4] - 진주목걸이			( 500000포인트)
+PRINTL   [5] - 카츄사				( 200000포인트)
+PRINTL   [6] - 로켓 팬던트			( 500000포인트)
+PRINTL   [7] - 유나의 리본			( 100000포인트)
+PRINTL   [8] - 히나의 리본			( 100000포인트)
+PRINTL   [9] - 코로넷				(1000000포인트)
+PRINTL  [10] - 고에몽의 담뱃대		(1000000포인트)
+PRINTL  [11] - 호○인 쿄○마의 백의	( 500000포인트)
+PRINTL  [12] - 반짝이 네일			( 100000포인트)
+PRINTL  [13] - 붙임머리				( 100000포인트)
+PRINTL  [14] - 붉은실 리본			( 100000포인트)
+PRINTL  [15] - 방울초커				( 200000포인트)
+PRINTL  [16] - 검은 트윈리본		( 200000포인트)
+PRINTL  [17] - 프릴 앞치마			( 200000포인트)
+PRINTL  [18] - 리스트밴드			( 100000포인트)
+PRINTL  [20] - 카우보이 모자		( 100000포인트)
+PRINTL  [21] - 호박 머리핀			( 200000포인트)
+PRINTL  [70] - 검은 리본			( 100000포인트)
+PRINTL  [72] - 빨간 트윈리본		( 100000포인트)
+PRINTL  [80] - 가죽팔찌				( 500000포인트)
+PRINTL  [81] - 검은 가죽 팔토시		( 500000포인트)
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1 && NO:TARGET == 1
+	R = 100
+	C = 1000000
+	S = 0
+ELSEIF RESULT == 2 && NO:TARGET == 2
+	R = 101
+	C = 10000
+	S = 0
+ELSEIF RESULT == 3
+	R = 3
+	C = 10000
+	S = 0
+ELSEIF RESULT == 4
+	R = 4
+	C = 10000
+	S = 1
+ELSEIF RESULT == 5
+	R = 10
+	C = 10000
+	S = 0
+ELSEIF RESULT == 6
+	R = 12
+	C = 10000
+	S = 1
+ELSEIF RESULT == 7
+	R = 51
+	S = 0
+ELSEIF RESULT == 8
+	R = 52
+	C = 10000
+	S = 2 - TALENT:63
+	SIF TALENT:122 && S < 3
+		S = 3
+ELSEIF RESULT == 9
+	R = 71
+	C = 10000
+	S = 10 - ABL:21
+	SIF TALENT:124 && S > 5
+		S = 5
+	SIF TALENT:136 || S < 3
+		S = 3
+ELSEIF RESULT == 10
+	R = 72
+	C = 10000
+	S = 8 - ABL:21
+	SIF TALENT:88 || S < 3
+		S = 3
+ELSEIF RESULT == 11
+	R = 73
+	C = 10000
+	S = 5
+	SIF (TALENT:110 || TALENT:114) && TALENT:130
+		S = 3
+ELSEIF RESULT == 12
+	R = 69
+	C = 100
+	S = 5
+	SIF TALENT:57
+		S = 1
+ELSEIF RESULT == 13
+	R = 79
+	C = 100
+	S = 0
+	SIF TALENT:122
+		S = 99
+ELSEIF RESULT == 14
+	R = 60
+	C = 3000
+	S = 3
+ELSEIF RESULT == 15
+	R = 61
+	C = 3000
+	S = 3 - (ABL:81 + TALENT:204 * 2)
+;ELSEIF RESULT == 16
+;	R = 62
+;	C = 2000
+;	S = 3
+;	SIF TALENT:132 || TALENT:135 || TALENT:131
+;		S = 0
+;ELSEIF RESULT == 17
+;	R = 63
+;	C = 2000
+;	S = 2
+;	SIF TALENT:220 || TALENT:221 || TALENT:132 || TALENT:135
+;		S = 0
+ELSEIF RESULT == 18
+	R = 40
+	C = 1000
+	S = 0
+;ELSEIF RESULT == 19
+;	R = 64
+;	C = 2000
+;	S = 2
+;	SIF TALENT:221 || TALENT:132 || TALENT:135
+;		S = 0
+ELSEIF RESULT == 20
+	R = 80
+	C = 1000
+	S = 0
+ELSEIF RESULT == 21
+	R = 41
+	C = 10000
+	S = 0
+ELSEIF RESULT == 22
+	R = 65
+	C = 10000
+	S = 1
+ELSEIF RESULT == 23
+	R = 66
+	C = 1000
+	S = 1
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_01
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;日焼け
+;-------------------------------------------------
+@TAILOR_BLACKGIRL
+C = 1000
+F = 0
+S = 3
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	C = 0
+	R = 0
+	T = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_BG
+PRINTFORML  %타겟을(1)% 태닝살롱에 보내 건강한【%TALENTNAME:422%】로 만듭니다
+PRINTFORML  ※【갸루계】가 없을 경우 정기적으로 보내지 않으면 약 1개월후에 원래대로 돌아옵니다
+PRINTFORML  %타겟을()% 태닝살롱에 보내겠습니까?
+PRINTL
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+INPUT
+IF RESULT == 0 && TALENT:122 == 0 
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORMW  태닝살롱에서 돌아온 %타겟은()%《%TALENTNAME:422%》가 됐습니다
+	TALENT:422 = 1
+	CFLAG:614 = 4 + RAND:4
+	MONEY -= C
+ELSEIF RESULT == 0 && TALENT:122 == 1
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORMW  태닝살롱에서 돌아온 %타겟은()%《%TALENTNAME:422%》가 됐습니다
+	TALENT:422 = 1
+	CFLAG:614 = 4 + RAND:4
+	MONEY -= C
+ELSE 
+	RETURN 1
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;日焼け
+;-------------------------------------------------
+@TAILOR_ESTHETIC
+C = 3000000
+F = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	C = 0
+	R = 0
+	T = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_ESTHETIC
+PRINTFORML  %타겟을(1)% 특별한 에스테살롱에 보내 매력치를 회복합니다
+PRINTFORML  ※이 항목은 캐릭터마다 한번씩만 사용가능합니다!
+PRINTFORML  %타겟을()% 특별한 에스테살롱에 보냅니까?  
+PRINTL
+PRINTL  [0] - 네
+PRINTL  [1] - い아니오
+INPUT
+IF RESULT == 0 
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORMW  《에스테살롱에서 돌아온 %타겟은()% 매력을 되찾았다》
+	BASE:31 = MAXBASE:31
+	EXP:124 = 1
+	MONEY -= C
+ELSEIF RESULT == 1 
+	RETURN 1
+ELSE
+	GOTO INPUT_LOOP_ESTHETIC
+ENDIF
+	
+RETURN 1
+
+
+;-------------------------------------------------
+;仕立屋用メンバーリスト
+;-------------------------------------------------
+@LIFE_LIST_TAILOR
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	TARGET = COUNT
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	IF CFLAG:41 && (CFLAG:45 >= 0 || CFLAG:46 >= 0)
+		PRINT / 
+		CALL PRINT_CLOTHTYPE_MAIN2
+	ELSEIF CFLAG:41 && (CFLAG:43 >= 0 || CFLAG:44 >= 0)
+		PRINT / 속옷
+	ELSE
+		PRINT / 전라
+	ENDIF
+	IF CFLAG:42 && CFLAG:47 >= 0
+		PRINT / 
+		CALL PRINT_CLOTHTYPE_SPECIAL
+	ENDIF
+	PRINTL 
+REND
+;===========================================================
+;ヘアサロン
+;===========================================================
+@HAIRSTYLE_CHANGE
+
+$INPUT_LOOP_50
+
+PRINTL □헤어살롱
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+PRINTFORM %타겟은(1)%
+CALL PRINT_HAIRSTYLE
+PRINTFORML 。
+PRINTFORML ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [0] - 머리모양을 바꾼다(500포인트)
+PRINTL        ※더 긴머리로도 바꿀 수 있습니다
+PRINTL  [1] - 머리색을 바꾼다(1000포인트)
+PRINTL        ※원래색으로 돌릴경우 1500포인트가 필요합니다
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL [999] - 돌아간다
+INPUT
+IF RESULT == 0
+	CALL HAIRCUT
+ELSEIF RESULT == 1
+	CALL HAIRCOLOR
+ELSEIF RESULT == 999
+	RETURN 1
+ELSE
+	GOTO INPUT_LOOP_50
+ENDIF
+;===========================================================
+;ヘアスタイルの変更
+;===========================================================
+@HAIRCUT
+C = 500
+X = 0
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_51
+
+PRINTL □헤어스타일 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 0] - 쇼트
+PRINTL  [ 1] - 세미 롱
+PRINTL  [ 2] - 보브
+PRINTL  [ 3] - 포니테일
+PRINTL  [ 4] - 트윈테일
+PRINTL  [ 5] - 스트레이트 롱
+PRINTL  [ 6] - 올림머리
+PRINTL  [ 7] - 풍성한 파마
+PRINTL  [ 8] - 롱 웨이브
+PRINTL  [ 9] - 땋음머리
+PRINTL  [10] - 투 사이드 업
+PRINTL  [11] - 트윈드릴테일
+PRINTL  [12] - 경단머리
+PRINTL  [99] - 승천 페가서스MIX
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+
+;999は前の選択肢に戻る
+IF RESULT == 999
+	RETURN 1
+
+;不正な値は弾く
+ELSEIF RESULT != 99 && RESULT >= 13
+	GOTO INPUT_LOOP_51
+
+ELSEIF CFLAG:602 != RESULT
+	CFLAG:TARGET:602 = RESULT
+	PRINTFORM  《%CALLNAME:TARGET%의 헤어스타일이 
+	CALL PRINT_HAIRSTYLE_TAILOR
+	SIF RESULT == 1
+		PRINT 으
+	PRINTFORMW 로 변했다》
+ELSEIF CFLAG:602 == RESULT
+	PRINTFORMW  《%CALLNAME:TARGET%의 헤어스타일을 바꾸지 않습니다》
+
+ELSE
+	GOTO INPUT_LOOP_51
+ENDIF
+
+RETURN 1
+;===========================================================
+;髪色の変更
+;===========================================================
+@HAIRCOLOR
+C = 1000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	A = 0
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP_52
+
+PRINTL □머리색 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 0] - 검은색
+PRINTL  [ 1] - 짙은색
+PRINTL  [ 2] - 금빛
+PRINTL  [ 3] - 은빛
+PRINTL  [ 4] - 붉은색
+PRINTL  [ 5] - 푸른색
+PRINTL  [ 6] - 녹색
+PRINTL  [ 7] - 핑크빛
+PRINTL  [ 8] - 보라색
+PRINTL  [ 9] - 탈색한다
+PRINTL  [10] - 갈색
+PRINTL  [99] - 원래 색으로 되돌린다
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+;今の髪色と同じ場合は染めない(地毛色→染色同色も不可(現実的に意味ないことはしない))
+IF RESULT == CFLAG:600
+	PRINTFORMW 같은 색으로 바꿀 수 없습니다
+	GOTO INPUT_LOOP_52
+
+;999は前の選択肢に戻る
+ELSEIF RESULT == 999
+	RETURN 1
+
+;不正な値は弾く
+ELSEIF RESULT != 99 && RESULT >= 11
+	GOTO INPUT_LOOP_52
+
+;地毛の色に戻す以外の選択肢を選んだ場合の処理(肢0－10)
+ELSEIF RESULT != 99 && RESULT != CFLAG:600 
+	PRINTFORM %타겟은()% 머리를
+	IF RESULT == 0
+		PRINTFORM 검은색으로 물들였
+	ELSEIF RESULT == 1
+		PRINTFORM 짙은색으로 물들였
+	ELSEIF RESULT == 2
+		PRINTFORM 금빛으로 물들였
+	ELSEIF RESULT == 3
+		PRINTFORM 은빛으로 물들였
+	ELSEIF RESULT == 4
+		PRINTFORM 븕은색으로 물들였
+	ELSEIF RESULT == 5
+		PRINTFORM 푸른색으로 물들였
+	ELSEIF RESULT == 6
+		PRINTFORM 녹색으로 물들였
+	ELSEIF RESULT == 7
+		PRINTFORM 핑크빛으로 물들였
+	ELSEIF RESULT == 8
+		PRINTFORM 보라색으로 물들였
+	ELSEIF RESULT == 9
+		PRINTFORM 탈색했
+	ELSEIF RESULT == 10
+		PRINTFORM 갈색으로 물들였
+	ENDIF
+	PRINTFORMW 다
+	CFLAG:TARGET:600 = RESULT
+	CFLAG:TARGET:601 = 1
+	MONEY -= C	
+
+ELSEIF RESULT == 99 && CFLAG:TARGET:601 == 1
+
+	IF MONEY < 1500
+		PRINTW 소지금이 부족합니다
+		GOTO INPUT_LOOP_52
+	ENDIF
+
+	;地毛色の値がある→0でないとき
+	;未入力の時はCSVCFLAGを取ってこれる。未指定なら0のはず
+	IF CFLAG:TARGET:603 
+		PRINTFORMW %타겟은()% 머리를 원래색으로 되돌렸다.
+		CFLAG:TARGET:600 = CFLAG:TARGET:603
+	;初期設定で髪を染めているキャラは, 地毛を黒髪とみなします。
+	;CFLAG:603をCSVで指定することでみなしを免れます
+	ELSEIF CSVCFLAG(NO:TARGET,601) == 1
+		PRINTFORMW %타겟은()% 머리를 원래색으로 되돌렸다.
+		CFLAG:TARGET:600 = 0
+	ELSE
+		PRINTFORMW %타겟은()% 머리를 원래색으로 되돌렸다.
+		CFLAG:TARGET:600 = CSVCFLAG(NO:TARGET,600)
+	ENDIF
+	;染髪なしにする。
+	CFLAG:TARGET:601 = 0
+	MONEY -= 1500
+
+ELSEIF RESULT == 99 && CFLAG:TARGET:601 == 0
+	PRINTFORMW %타겟은()% 염색을 하지 않았습니다.
+	GOTO INPUT_LOOP_52
+ELSE	
+	GOTO INPUT_LOOP_52
+ENDIF
+RETURN 1
+;-------------------------------------------------
+;靴下
+;-------------------------------------------------
+@TAILOR_SOCKS
+
+$INPUT_LOOP_SOCKS
+
+PRINTL □양말 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 1] - 발목양말		(5포인트)
+PRINTL  [ 2] - 학교지정 양말(10포인트)
+PRINTL  [ 3] - 하이삭스		(20포인트)
+PRINTL  [ 4] - 루즈삭스		(25포인트)
+PRINTL  [ 5] - 니삭스		(30포인트)
+PRINTL  [ 6] - 검은 스타킹	(40포인트)
+PRINTL  [ 7] - 가터 스타킹	(50포인트)
+PRINTL  [ 8] - 망사 스타킹	(100포인트)
+SIF PBAND:304 == 4
+	PRINTL  [99] - 유리 니삭스	(100000포인트)
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 발목양말을 사줬습니다》
+	C = 5
+	S = 0
+	CFLAG:170 = 1
+	CFLAG:173 = 0
+ELSEIF RESULT == 2
+	PRINTFORMW 《%CALLNAME:TARGET%에게 학교지정 양말을 사줬습니다》
+	C = 10
+	S = 0
+	CFLAG:170 = 2
+	CFLAG:173 = 0
+ELSEIF RESULT == 3
+	PRINTFORMW 《%CALLNAME:TARGET%에게 하이삭스를 사줬습니다》
+	C = 15
+	S = 0
+	CFLAG:170 = 3
+	CFLAG:173 = 0
+ELSEIF RESULT == 4
+	PRINTFORMW 《%CALLNAME:TARGET%에게 루즈삭스를 사줬습니다》
+	C = 20
+	S = 0
+	CFLAG:170 = 4
+	CFLAG:173 = 0
+ELSEIF RESULT == 5
+	PRINTFORMW 《%CALLNAME:TARGET%에게 니삭스를 사줬습니다》
+	C = 30
+	S = 0
+	CFLAG:170 = 5
+	CFLAG:173 = 0
+ELSEIF RESULT == 6
+	PRINTFORMW 《%CALLNAME:TARGET%에게 검은 스타킹을 사줬습니다》
+	C = 40
+	S = 0
+	CFLAG:170 = 6
+	CFLAG:173 = 0
+ELSEIF RESULT == 7
+	PRINTFORMW 《%CALLNAME:TARGET%에게 가터 스타킹을 사줬습니다》
+	C = 50
+	S = 0
+	CFLAG:170 = 7
+	CFLAG:173 = 0
+ELSEIF RESULT == 8
+	PRINTFORMW 《%CALLNAME:TARGET%에게 망사 스타킹을 사줬습니다》
+	C = 20
+	S = 0
+	CFLAG:170 = 8
+	CFLAG:173 = 0
+ELSEIF RESULT == 99 && PBAND:304 == 4
+	PRINTFORMW 《%CALLNAME:TARGET%에게 유리 니삭스를 사줬습니다》
+	C = 20
+	S = 0
+	CFLAG:170 = 99
+	CFLAG:171 = 0
+	CFLAG:173 = -1
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_SOCKS
+ENDIF
+
+RETURN 1
+;-------------------------------------------------
+;靴
+;-------------------------------------------------
+@TAILOR_SHOES
+
+$INPUT_LOOP_SHOES
+
+PRINTL □신발 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 1] - 스니커			(100포인트)
+PRINTL  [ 2] - 학교 지정 로퍼	(200포인트)
+PRINTL  [ 3] - 펌프스			(250포인트)
+PRINTL  [ 4] - 하이힐			(300포인트)
+PRINTL  [ 5] - 샌들				(50포인트)
+PRINTL  [ 6] - 비치샌들			(80포인트)
+PRINTL  [ 7] - 간호사샌들		(100포인트)
+PRINTL  [ 8] - 펄핑크뮬			(1000포인트)
+PRINTL  [ 9] - 게타				(150포인트)
+PRINTL  [10] - 털슬리퍼			(80포인트)
+PRINTL  [11] - 화장실 슬리퍼	(10포인트)
+PRINTL  [12] - 끈부츠			(500포인트)
+PRINTL  [13] - 카우보이부츠		(700포인트)
+PRINTL  [14] - 핀힐 니하이부츠	(1500포인트)
+PRINTL  [15] - 크록스			(150포인트)
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 스니커를 사줬습니다》
+	C = 100
+	S = 0
+	CFLAG:171 = 1
+ELSEIF RESULT == 2
+	PRINTFORMW 《%CALLNAME:TARGET%에게 학교 지정 로퍼를 사줬습니다》
+	C = 200
+	S = 0
+	CFLAG:171 = 2
+ELSEIF RESULT == 3
+	PRINTFORMW 《%CALLNAME:TARGET%에게 펌프스를 사줬습니다》
+	C = 250
+	S = 0
+	CFLAG:171 = 3
+ELSEIF RESULT == 4
+	PRINTFORMW 《%CALLNAME:TARGET%에게 하이힐을 사줬습니다》
+	C = 300
+	S = 0
+	CFLAG:171 = 4
+ELSEIF RESULT == 5
+	PRINTFORMW 《%CALLNAME:TARGET%에게 샌들을 사줬습니다》
+	C = 50
+	S = 0
+	CFLAG:171 = 5
+ELSEIF RESULT == 6
+	PRINTFORMW 《%CALLNAME:TARGET%에게 비치샌들을 사줬습니다》
+	C = 80
+	S = 0
+	CFLAG:171 = 6
+ELSEIF RESULT == 7
+	PRINTFORMW 《%CALLNAME:TARGET%에게 간호사샌들을 사줬습니다》
+	C = 100
+	S = 0
+	CFLAG:171 = 7
+ELSEIF RESULT == 8
+	PRINTFORMW 《%CALLNAME:TARGET%에게 펄핑크뮬을 사줬습니다》
+	C = 1000
+	S = 0
+	CFLAG:171 = 8
+ELSEIF RESULT == 9
+	PRINTFORMW 《%CALLNAME:TARGET%에게 게타를 사줬습니다》
+	C = 150
+	S = 0
+	CFLAG:171 = 9
+ELSEIF RESULT == 10
+	PRINTFORMW 《%CALLNAME:TARGET%에게 털슬리퍼를 사줬습니다》
+	C = 70
+	S = 0
+	CFLAG:171 = 10
+ELSEIF RESULT == 11
+	PRINTFORMW 《%CALLNAME:TARGET%에게 화장실 슬리퍼를 사줬습니다》
+	C = 10
+	S = 3
+	CFLAG:171 = 11
+ELSEIF RESULT == 12
+	PRINTFORMW 《%CALLNAME:TARGET%에게 끈부츠를 사줬습니다》
+	C = 500
+	S = 0
+	CFLAG:171 = 12
+ELSEIF RESULT == 13
+	PRINTFORMW 《%CALLNAME:TARGET%에게 카우보이부츠를 사줬습니다》
+	C = 700
+	S = 0
+	CFLAG:171 = 13
+ELSEIF RESULT == 14
+	PRINTFORMW 《%CALLNAME:TARGET%에게 핀힐 니하이부츠를 사줬습니다》
+	C = 1500
+	S = 0
+	CFLAG:171 = 14
+ELSEIF RESULT == 15
+	PRINTFORMW 《%CALLNAME:TARGET%에게 크록스를 사줬습니다》
+	C = 150
+	S = 0
+	CFLAG:171 = 15
+ELSEIF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	S = 0
+	T = 0
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_SHOES
+ENDIF
+
+RETURN 1

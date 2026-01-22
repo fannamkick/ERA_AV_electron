@@ -1,0 +1,1069 @@
+﻿;-------------------------------------------------
+;キャラの死亡確認
+;-------------------------------------------------
+@CHARADEAD_CHECK
+
+IF TALENT:85 == 1
+	CFLAG:619 -= RAND:5
+		IF CFLAG:619 <= 0
+			CFLAG:619 = 0
+		ENDIF
+ENDIF
+
+
+;生きてるなら問題ナシ
+SIF BASE:0 > 0
+	RETURN 0
+
+;3~9の乱数を設定
+R = RAND:7 + 3
+
+;調教キャラが가이노이드・忍者・サイボーグなら死亡時に従順LV依存で復活
+IF (TALENT:310 || TALENT:312 || TALENT:313) && ABL:10 > R
+	DRAWLINE
+	PRINTFORML %타겟은()% 순간 죽었다고 생각했으나, 
+	PRINTFORML 기적적으로 가사상태에서 살아났다.
+	EXP:50 += 1
+	PRINTL 이상경험 +1
+	ABL:10 -= 3
+	PRINTFORML %CALLNAME:TARGET%의 복종이 3 내려갔다.
+	WAIT
+	BASE:0 = 100
+;調教キャラが精霊・幽霊・매각 불가なら死亡, と見せかけて後に必ず復活
+ELSEIF TALENT:315 || TALENT:316 || TALENT:199
+	DRAWLINE
+	PRINTL 
+	PRINTFORML %타겟은()% 죽고 말았다……
+	PRINTL 
+	DRAWLINE
+	;수명持ちの精霊・幽霊を死なせると수명が7日縮まる
+	IF (TALENT:315 || TALENT:316) && BASE:10 > 0
+		BASE:10 -= 14
+		SIF BASE:10 < 1
+			BASE:10 = 1
+	ENDIF
+	ABL:10 -= 3
+	SIF ABL:10 < 0
+		ABL:10 = 0
+	BASE:0 = 0
+
+;調教キャラが【愛】持ちなら死亡, と見せかけて従順LV依存で幽霊として復活
+;ELSEIF TALENT:85 && ABL:10 > R
+;	DRAWLINE
+;	PRINTL 
+;	PRINTFORML %타겟은()% 죽고 말았다……
+;	PRINTL 
+;	DRAWLINE
+;	TALENT:316 = 1
+;	BASE:0 = 0
+;	;幽霊化したキャラの残り수명は7日
+;	BASE:10 = 15
+
+;	;이상경험に加算
+;	EXP:50 += 1
+
+	;キャラの殺害回数に加算
+;	FLAG:31 += 1
+
+ELSE
+	;死亡時口上
+	TFLAG:13 = 999
+	CALL SELF_KOJO
+	DRAWLINE
+	PRINTL 
+	PRINTFORML %타겟은()% 죽고 말았다……
+	PRINTL 
+	DRAWLINE
+	BASE:0 = -1
+
+	;死亡フラグを残す
+	T = NO:TARGET + 999
+	FLAG:T = -2
+
+	;キャラの殺害回数に加算
+	FLAG:31 += 1
+ENDIF
+
+;殺した人数が3人以上で,【威圧感】が付く
+;↑このバリアントではTALENT名は【카리스마】
+IF FLAG:31 >= 3 && TALENT:MASTER:93 == 0
+	PRINTFORMW %플레이어는(1)%【%TALENTNAME:93%】를 익혔다
+	TALENT:MASTER:93 = 1
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;調教後行為のチェック
+;-------------------------------------------------
+;>調教後性交渉追加版(2008/04/17 byα)
+;>夜, 厳しい条件をクリアすると…?
+;-------------------------------------------------
+@SELF_CHECK
+;調教対象が空ならそのまま終了
+SIF TARGET < 0
+	RETURN 0
+
+;失神中に調教終了したらスルー
+SIF TFLAG:899 >= 1
+	RETURN 0
+
+;自動着脱。
+IF FLAG:549 == 1
+	IF CFLAG:42 == 79 && CFLAG:49 == 0 && CFLAG:40 <= 63
+		CFLAG:40 += 64
+	ENDIF
+ENDIF
+
+;めがねっこはめがねをはめる
+IF TALENT:311 == 1
+	IF CFLAG:42 == 80 && CFLAG:40 <=63
+		CFLAG:40 += 64
+	ENDIF
+ENDIF
+
+;
+						;****촉수中毒パッチ追加ここから****
+;촉수中毒による촉수陵辱チェック
+;
+	CALL AFTERTRAIN_TENTACLESEX_CHECK
+						;****촉수中毒パッチ追加ここまで****
+;調教後の性交渉チェック
+;奴隷がオトコか, 女かつV감각よりA감각の方が高いか, 처녀でもA감각が3以上ある場合はアナルセックス
+;△この条件だと再生처녀かつV감각上げておらずA처녀, A감각1ぐらいでも通るんじゃないか。
+;(誰がそんなことするのかはともかく)
+IF TALENT:122 || (TALENT:122 == 0 && ABL:2 < ABL:3) || (TALENT:0 && ABL:3 >= 3 && TALENT:2 == 0)
+	CALL AFTERTRAIN_ANALSEX_CHECK
+;それ以外なら通常のセックス
+ELSE
+	CALL AFTERTRAIN_SEX_CHECK
+ENDIF
+;;下の레즈중독の判定用変数
+;使ってない(リセットしてる)
+;S = RESULT
+
+;레즈중독によるレズチェック
+CALL AFTERTRAIN_LESBIANSEX_CHECK
+;下の자위중독の判定用変数
+N = RESULT
+
+;자위중독による자위チェック
+CALL AFTERTRAIN_MASTURBATION_CHECK
+
+;수간중독による獣姦チェック
+CALL AFTERTRAIN_BEASTSEX_CHECK
+
+RETURN 0
+
+;-------------------------------------------------
+;調教後性交渉チェック
+;-------------------------------------------------
+@AFTERTRAIN_SEX_CHECK
+;調教対象が空だとダメ
+SIF TARGET < 0
+	RETURN 0
+;미숙함だとダメ
+SIF TALENT:135
+	RETURN 0
+;연심か음란がないとダメ
+SIF TALENT:85 == 0 && TALENT:76 == 0
+	RETURN 0
+;성교경험が30以上ないとダメ
+SIF EXP:5 < 30
+	RETURN 0
+;처녀やオトコだとダメ
+SIF TALENT:0 || TALENT:122 == 1
+	RETURN 0
+;정조대だとダメ
+SIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+	RETURN 0
+;主人がオトコかフタナリじゃないとダメ
+SIF TALENT:MASTER:122 == 0 && TALENT:MASTER:121 == 0
+	RETURN 0
+;瀕死だとダメ
+SIF BASE:0 < 500
+	RETURN 0
+
+;性交回数
+S = 0
+
+;V감각
+IF ABL:2 == 4
+	S += 1
+ELSEIF ABL:2 == 5
+	S += 2
+ELSEIF ABL:2 >= 6
+	S += 3
+ENDIF
+
+;성교중독によるボーナス
+SIF ABL:30
+	S += ABL:30 / 2 + 1
+
+;回数が0以下なら終了
+SIF S <= 0
+	RETURN 0
+
+;PALAM:욕정がLV4以上
+;욕망LV5以上봉사정신5以上で+1
+SIF ABL:11 >= 5 && ABL:16 >= 5 && PALAM:5 >= PALAMLV:4
+	S += 2
+;욕망LV4以上봉사정신4以上で+1
+SIF ABL:11 == 4 && ABL:16 >= 4 && PALAM:5 >= PALAMLV:4
+	S += 1
+
+;PALAM:욕정がLV3以上
+;욕망LV7以上V감각LV6以上で+1(下と合わせて+2)
+SIF ABL:11 >= 7 && ABL:5 >= 6 && PALAM:5 >= PALAMLV:3
+	S += 1
+;욕망LV4以上V감각LV3以上で+1
+SIF ABL:11 >= 4 && ABL:2 >= 3 && PALAM:5 >= PALAMLV:3
+	S += 1
+
+;연심, 음란によるボーナス
+SIF TALENT:85
+	S += 1
+SIF TALENT:76
+	S += 1
+
+;섹스광によるボーナス
+SIF TALENT:75
+	S += 2
+
+;쾌감에 솔직, 쾌감을 부정
+IF TALENT:70
+	S += 1
+ELSEIF TALENT:71
+	S -= 2
+ENDIF
+
+;回数が0以下になっていたら終了
+SIF S <= 0
+	RETURN 0
+
+DRAWLINE
+PRINTFORML %플레이어와()% %타겟은()% 아직 채 가시지 않은 흥분을 주체하지 못하고, 
+PRINTFORML {S}회 침대에서 함께 뒹굴었다…
+
+;調教後セックス口上
+TFLAG:13 = 4
+CALL SELF_KOJO
+
+PRINTFORML %EXPNAME:0% +{S}
+PRINTFORML %EXPNAME:5% +{S}
+PRINTFORML %PALAMNAME:1%의 구슬 +{S*200}
+PRINTFORML %PALAMNAME:4%의 구슬 +{S*100}
+PRINTFORMW %PALAMNAME:5%의 구슬 +{S*250}
+EXP:0 += S
+EXP:5 += S
+JUEL:1 += S*200
+JUEL:4 += S*100
+JUEL:5 += S*250
+
+IF ABL:10+ABL:2+ABL:16 >= 13
+	PRINTFORMW %타겟은()% 아쉬움에 소매를 잡아당겼다
+	PRINTFORMW 하지만 그 손을 뿌리치고서, %플레이어는()% 방을 뒤로 했다…
+ENDIF
+
+RELATION:0 += 5
+	IF RELATION:0 > 1000
+		RELATION:0 = 1000
+	ELSEIF RELATION:0 < 100
+		RELATION:0 = 100
+	ENDIF
+RETURN 1
+
+;-------------------------------------------------
+;調教後アナル性交渉チェック
+;-------------------------------------------------
+@AFTERTRAIN_ANALSEX_CHECK
+;調教対象が空だとダメ
+SIF TARGET < 0
+	RETURN 0
+;연심か음란がないとダメ
+SIF TALENT:85 == 0 && TALENT:76 == 0
+	RETURN 0
+;성교경험が30以上ないとダメ
+SIF EXP:5 < 30
+	RETURN 0
+;主人がオトコかフタナリじゃないとダメ
+SIF TALENT:MASTER:122 == 0 && TALENT:MASTER:121 == 0
+	RETURN 0
+;瀕死だとダメ
+SIF BASE:0 < 500
+	RETURN 0
+
+;性交回数
+S = 0
+
+;A감각
+IF ABL:3 == 4
+	S += 1
+ELSEIF ABL:3 == 5
+	S += 2
+ELSEIF ABL:3 >= 6
+	S += 3
+ENDIF
+
+;성교중독によるボーナス
+SIF ABL:30
+	S += ABL:30 / 2 + 1
+
+;回数が0以下なら終了
+SIF S <= 0
+	RETURN 0
+
+;PALAM:욕정がLV4以上
+;욕망LV5以上봉사정신5以上で+1
+SIF ABL:11 >= 5 && ABL:16 >= 5 && PALAM:5 >= PALAMLV:4
+	S += 2
+;욕망LV4以上봉사정신4以上で+1
+SIF ABL:11 == 4 && ABL:16 >= 4 && PALAM:5 >= PALAMLV:4
+	S += 1
+
+;PALAM:욕정がLV3以上
+;욕망LV7以上V감각LV6以上で+1(下と合わせて+2)
+SIF ABL:11 >= 7 && ABL:5 >= 6 && PALAM:5 >= PALAMLV:3
+	S += 1
+;욕망LV4以上V감각LV3以上で+1
+SIF ABL:11 >= 4 && ABL:2 >= 3 && PALAM:5 >= PALAMLV:3
+	S += 1
+
+;연심, 음란によるボーナス
+SIF TALENT:85
+	S += 1
+SIF TALENT:76
+	S += 1
+
+;애널광によるボーナス
+SIF TALENT:75
+	S += 2
+
+;쾌감에 솔직, 쾌감을 부정
+IF TALENT:70
+	S += 1
+ELSEIF TALENT:71
+	S -= 2
+ENDIF
+
+;回数が0以下になっていたら終了
+SIF S <= 0
+	RETURN 0
+
+DRAWLINE
+PRINTFORML %플레이어와()% %타겟은()% 아직 채 가시지 않은 흥분을 주체하지 못하고, 
+PRINTFORML {S}회 침대 위에서 함께 뒹굴었다…
+
+;;調教後A口上
+;△あとで解凍
+;TFLAG:13 = XX
+;CALL SELF_KOJO
+
+PRINTFORML %EXPNAME:1% +{S}
+PRINTFORML %EXPNAME:5% +{S}
+PRINTFORML %PALAMNAME:2%의 구슬 +{S*200}
+PRINTFORML %PALAMNAME:4%의 구슬 +{S*100}
+PRINTFORMW %PALAMNAME:5%의 구슬 +{S*250}
+EXP:1 += S
+EXP:5 += S
+JUEL:2 += S*200
+JUEL:4 += S*100
+JUEL:5 += S*250
+
+IF ABL:10+ABL:3+ABL:16 >= 13
+	PRINTFORMW %타겟은()% 아쉬움에 소매를 잡아당겼다
+	PRINTFORMW 그러나 그 손을 뿌리치고서, %플레이어는()% 방을 뒤로 했다…
+ENDIF
+
+RELATION:0 += 5
+	IF RELATION:0 > 1000
+		RELATION:0 = 1000
+	ELSEIF RELATION:0 < 100
+		RELATION:0 = 100
+	ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;레즈중독によるレズチェック
+;-------------------------------------------------
+@AFTERTRAIN_LESBIANSEX_CHECK
+;레즈중독によるレズチェック
+;調教対象が空だとダメ
+SIF TARGET < 0
+	RETURN 0
+;助手がいないとダメ
+SIF ASSI < 0
+	RETURN 0
+;奴隷か助手がオトコだとだめ
+SIF TALENT:122 || TALENT:ASSI:122
+	RETURN 0
+;레즈끼2以上, C感覚3以上, 욕망2以上, 기교2以上が必要
+SIF ABL:22 < 2 || ABL:0 < 3 || ABL:10 < 2 || ABL:11 < 2
+	RETURN 0
+;調教キャラか助手に레즈중독必要
+SIF ABL:33 == 0 && ABL:ASSI:33 == 0
+	RETURN 0
+;瀕死だとダメ
+SIF BASE:0 < 500
+	RETURN 0
+
+;レズプレイ回数
+N = 0
+;사정回数管理用
+S = 0
+S = ABL:38
+SIF S == 0
+	S = 1
+
+;레즈중독
+IF ABL:33 == 1
+	N += 1
+ELSEIF ABL:33 == 2
+	N += 2
+ELSEIF ABL:33 == 3
+	N += 3
+ELSEIF ABL:33 == 4
+	N += 5
+ELSEIF ABL:33 == 5
+	N += 7
+ELSEIF ABL:33 >= 6
+	N += 9
+ENDIF
+
+;助手の레즈중독
+IF ABL:ASSI:33 == 1
+	N += 1
+ELSEIF ABL:ASSI:33 == 2
+	N += 2
+ELSEIF ABL:ASSI:33 == 3
+	N += 5
+ELSEIF ABL:ASSI:33 == 4
+	N += 8
+ELSEIF ABL:ASSI:33 == 5
+	N += 13
+ELSEIF ABL:ASSI:33 >= 6
+	N += 18
+ENDIF
+
+;回数が0以下なら終了
+SIF N <= 0
+	RETURN 0
+
+;레즈끼によるボーナス
+SIF ABL:22 >= 5 && PALAM:5 >= PALAMLV:3
+	N += 1
+
+;助手の레즈끼によるボーナス
+SIF ABL:ASSI:22 >= 3 && PALAM:5 >= PALAMLV:3
+	N += 1
+
+;PALAM:욕정がLV3以上
+;욕망LV7以上で+1(下と合わせて+2)
+SIF ABL:11 >= 7 && ABL:5 >= 6 && PALAM:5 >= PALAMLV:3
+	N += 1
+;욕망LV4以上で+1
+SIF ABL:11 >= 4 && ABL:2 >= 3 && PALAM:5 >= PALAMLV:3
+	N += 1
+
+;相性によるボーナス
+R = NO:ASSI
+	IF RELATION:R > 0
+	N *= RELATION:R
+	N /= 100
+ENDIF
+
+;보수적, 일선을 넘지않음によるペナルティ
+SIF TALENT:24
+	N -= 1
+SIF TALENT:ASSI:24
+	N -= 1
+SIF TALENT:27
+	N -= 1
+SIF TALENT:ASSI:27
+	N -= 1
+
+;바이, 음란によるボーナス
+SIF TALENT:81
+	N += 2
+SIF TALENT:ASSI:81
+	N += 2
+SIF TALENT:76
+	N += 1
+SIF TALENT:ASSI:76
+	N += 1
+
+;쾌감에 솔직, 쾌감을 부정
+IF TALENT:70
+	N += 1
+ELSEIF TALENT:71
+	N -= 2
+ENDIF
+IF TALENT:ASSI:70
+	N += 1
+ELSEIF TALENT:ASSI:71
+	N -= 2
+ENDIF
+
+;回数が0以下になっていたら終了
+SIF N <= 0
+	RETURN 0
+
+IF S == 1
+	DRAWLINE
+	PRINTFORM %플레이어가()% 밖으로 나간 후, 
+ELSE
+	PRINT 지도 종료 후에 
+ENDIF
+PRINTFORMW %타겟과()% %조수는()% {N}번 레즈비언 플레이를 한 것 같다.
+
+;調教後レズプレイ口上
+TFLAG:13 = 2
+CALL SELF_KOJO
+
+PRINTFORML %EXPNAME:40% +{N*2}
+SIF N*100*ABL:10/500 > 0
+	PRINTFORML %EXPNAME:2% +{N*100*ABL:10/500}
+PRINTFORML %PALAMNAME:0%의 구슬 +{N*100*ABL:10}
+PRINTFORML %PALAMNAME:5%의 구슬 +{N*200}
+
+EXP:40 += N*2
+EXP:2 += N*100*ABL:10/500
+
+JUEL:0 += N*100*ABL:10
+JUEL:5 += N*200
+;ふた
+IF TALENT:ASSI:121
+	PRINTFORML %EXPNAME:20% +{N}
+	PRINTFORML %PALAMNAME:6%의 구슬 +{N*100*(ABL:12+ABL:16)}
+	PRINTFORML %PALAMNAME:7%의 구슬 +{N*100*(ABL:12+ABL:16)}
+
+	EXP:20 += N
+	JUEL:6 += N*100*(ABL:12+ABL:16)
+	JUEL:7 += N*100*(ABL:12+ABL:16)
+ELSE
+	PRINTFORML %PALAMNAME:6%의 구슬 +{N*50*(ABL:12+ABL:16)}
+	PRINTFORML %PALAMNAME:7%의 구슬 +{N*50*(ABL:12+ABL:16)}
+
+	JUEL:6 += N*50*(ABL:12+ABL:16)
+	JUEL:7 += N*50*(ABL:12+ABL:16)
+ENDIF
+;助手が새드または覚醒카나데
+;ONLY ONE EMPRESS持ってて새드持ってないことってあるの?
+IF TALENT:ASSI:83 || TALENT:ASSI:553
+	PRINTFORML %EXPNAME:30% +{N}
+	IF TALENT:ASSI:553
+		PRINTFORML %PALAMNAME:9%의 구슬 +{N*100*ABL:ASSI:20}
+		JUEL:9 += N*100*ABL:ASSI:20
+	ELSEIF (N*100*ABL:21) > 0
+		PRINTFORML %PALAMNAME:9%의 구슬 +{N*100*ABL:21}
+		JUEL:9 += N*100*ABL:21
+	ENDIF
+	
+	EXP:30 += N
+ENDIF
+;助手が마조かつ対象が새드끼もち
+IF TALENT:ASSI:88 && ABL:TARGET:20 >= 3
+	PRINTFORML %EXPNAME:33% +{N}
+	SIF TALENT:553
+		TIMES N , 1.80
+	SIF N*100*ABL:20 > 0
+		PRINTFORML %PALAMNAME:5%의 구슬 +{N*100*ABL:20}
+	JUEL:5 += N*100*ABL:20
+	EXP:33 += N
+ENDIF
+;ふた
+IF TALENT:121
+	PRINTFORML %EXPNAME:3% +{N*S}
+	PRINTFORML %PALAMNAME:8%의 구슬 +{N*100*S}
+
+	EXP:3 += N*S
+	JUEL:8 += N*100*S
+ENDIF
+;ふた×ふた　見てるABLは봉사정신と정액중독。TARGETだけでいいんかねこれ。
+IF TALENT:121 && TALENT:ASSI:121 && ABL:16 >= 3 && ABL:32 >= 3
+	PRINTFORML %조수와(1)% %타겟은(1)% 
+	IF TIME == 0
+		PRINTFORMW 해가 저물 때까지 서로의 페니스를 물고 빨았다.
+	ELSE
+		PRINTFORMW 밤새도록 서로의 페니스를 물고 빨았다.
+	ENDIF
+	PRINTFORML %EXPNAME:3% +{N*S}
+	PRINTFORML %EXPNAME:20% +{N}
+	PRINTFORML %EXPNAME:21% +{N}
+	PRINTFORML %EXPNAME:22% +{N}
+	PRINTFORML %PALAMNAME:5%의 구슬 +{N*100}
+	PRINTFORML %PALAMNAME:6%의 구슬 +{N*100}
+	PRINTFORML %PALAMNAME:8%의 구슬 +{N*100*S}
+	EXP:3 += N*S
+	EXP:20 += N
+	EXP:21 += N
+	EXP:22 += N
+	JUEL:5 += N*100
+	JUEL:6 += N*100
+	JUEL:8 += N*100*S
+ENDIF
+
+RELATION:(NO:ASSI) += 5
+	SIF TALENT:553 || TALENT:ASSI:553
+		RELATION:(NO:ASSI) += 5
+	IF RELATION:(NO:ASSI) > 1000
+		RELATION:(NO:ASSI) = 1000
+	ELSEIF RELATION:(NO:ASSI) < 100
+		RELATION:(NO:ASSI) = 100
+	ENDIF
+RELATION:ASSI:(NO:TARGET) += 5
+	SIF TALENT:553 || TALENT:ASSI:553
+		RELATION:(NO:ASSI) += 5
+	IF RELATION:ASSI:(NO:TARGET) > 1000
+		RELATION:ASSI:(NO:TARGET) = 1000
+	ELSEIF RELATION:ASSI:(NO:TARGET) < 100
+		RELATION:ASSI:(NO:TARGET) = 100
+	ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;자위중독による자위チェック
+;-------------------------------------------------
+@AFTERTRAIN_MASTURBATION_CHECK
+;調教対象が空だとダメ
+SIF TARGET < 0
+	RETURN 0
+;C感覚が3以上, 욕망が2以上ないとダメ
+SIF ABL:0 < 3 || ABL:11 < 2
+	RETURN 0
+;자위 안함があるとダメ
+SIF TALENT:150
+	RETURN 0
+;瀕死だとダメ
+SIF BASE:0 < 500
+	RETURN 0
+
+A = 0
+
+IF ABL:31 == 0
+	RETURN 0
+ENDIF
+
+;자위중독
+IF ABL:31 == 1
+	A += 1
+ELSEIF ABL:31 == 2
+	A += 2
+ELSEIF ABL:31 == 3
+	A += 4
+ELSEIF ABL:31 == 4
+	A += 6
+ELSEIF ABL:31 == 5
+	A += 9
+ELSEIF ABL:31 >= 6
+	A += 14
+ENDIF
+
+;자위하기쉬움で욕망LV3以上PALAM:욕정がLV3以上
+SIF TALENT:60 && ABL:11 >= 3 && PALAM:5 >= PALAMLV:3
+	A += 1
+
+;助手が鼓舞で욕망LV4以上PALAM:욕정がLV3以上
+IF ASSI >= 0
+	SIF TALENT:ASSI:118 && ABL:11 >= 4 && PALAM:5 >= PALAMLV:3
+		A += 1
+ENDIF
+
+;PALAM:욕정がLV4以上
+;욕망LV5以上노출벽4以上で+1(下と合わせて+2)
+SIF ABL:11 >= 5 && ABL:17 >= 4 && PALAM:5 >= PALAMLV:4
+	A += 1
+;욕망LV4以上노출벽3以上で+1(下と合わせて+2)
+SIF ABL:11 >= 4 && ABL:17 >= 3 && PALAM:5 >= PALAMLV:4
+	A += 1
+
+;回数が0以下なら終了
+SIF A <= 0
+	RETURN 0
+
+;자위광によるボーナス
+SIF TALENT:74
+	TIMES A , 1.50
+
+;助手が鼓舞
+IF ASSI >= 0
+	SIF TALENT:ASSI:118
+		TIMES A , 1.20
+ENDIF
+
+;프라이드 낮음, 해방によるボーナス
+SIF TALENT:17
+	A += 1
+SIF TALENT:33
+	A += 1
+
+;프라이드 높음, 자제심, 억압によるペナルティ
+SIF TALENT:15
+	A -= 1
+SIF TALENT:20
+	A -= 1
+SIF TALENT:32
+	A -= 1
+
+;쾌감에 솔직, 쾌감을 부정
+IF TALENT:70
+	A += 1
+ELSEIF TALENT:71
+	A -= 2
+ENDIF
+
+;음란によるボーナス
+SIF TALENT:76
+	A += 1
+
+;回数が0以下になっていたら終了
+SIF A <= 0
+	RETURN 0
+
+DRAWLINE
+PRINTFORM %타겟은()% 
+IF N == 1
+	PRINTFORM %조수가()% 나간 뒤에, 
+ELSEIF S == 1
+	PRINTFORM %플레이어가()% 나간 뒤에, 
+ELSE
+	PRINT 지도 종료 후에, 
+ENDIF
+
+;調教後자위の妄想の相手
+;연심がなくかつ助手とのレズセックス後なら레즈끼×20%で助手
+IF TALENT:85 == 0 && N == 1 && ABL:22 > RAND:5
+	PRINTFORML %조수를()% 생각하면서 {A}번 자위를 한 것 같다.
+	Q = 1
+;上に該当せずかつ愛がなく아이템に들개があれば, 수간중독×20%で들개
+ELSEIF TALENT:85 == 0 && ABL:40 > RAND:5 && ITEM:22
+	PRINTFORML 들개와의 교미를 망상하면서 {A}번 자위를 한 것 같다.
+	Q = 2
+;それ以外なら主人
+ELSE
+	PRINTFORML %플레이어를()% 생각하면서 {A}번 자위를 한 것 같다.
+	Q = 0
+ENDIF
+
+;調教後자위口上
+TFLAG:13 = 1
+CALL SELF_KOJO
+
+;자위경험
+PRINTFORML %EXPNAME:10% +{A}
+EXP:10 += A
+
+;珠経験
+PRINTFORML %PALAMNAME:0%의 구슬 +{A*500}
+PRINTFORML %PALAMNAME:4%의 구슬 +{A*100}
+PRINTFORMW %PALAMNAME:5%의 구슬 +{A*250}
+JUEL:0 += A*500
+JUEL:4 += A*100
+JUEL:5 += A*250
+	
+;従順+露出+마조끼が10以上かつ時間が朝なら主人に報告
+IF ABL:10+ABL:17+ABL:21 >= 10 && TIME == 0
+	PRINTFORML 그 일을 %타겟은(1)% 보고해왔다.
+	PRINTFORML %PALAMNAME:8%의 구슬 +{A*200}
+	JUEL:8 += A*200
+ENDIF
+	
+IF (ABL:10 >= 5 || ABL:11 >= 5) && Q == 0
+	PRINTFORMW 그러나 몇 번이고 자신을 위로해봐도, %플레이어를()% 향한 욕망은 채워지지 않았다.
+ELSEIF (ABL:11 >= 5 || ABL:33 >= 3) && Q == 1
+	PRINTFORMW 그러나 몇 번이고 자신을 위로해봐도, %조수를()% 향한 욕망은 채워지지 않았다.
+ELSEIF (ABL:11 >= 5 || ABL:40 >= 3) && Q == 2
+	PRINTFORMW 그러나 몇 번이고 자신을 위로해봐도, 수간을 향한 욕망은 채워지지 않았다.
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;수간중독による獣姦チェック
+;-------------------------------------------------
+@AFTERTRAIN_BEASTSEX_CHECK
+;調教対象が空だとダメ
+SIF TARGET < 0
+	RETURN 0
+;미숙함だとダメ
+SIF TALENT:135
+	RETURN 0
+;수간경험が50以上ないとダメ
+SIF EXP:56 < 50
+	RETURN 0
+;처녀やオトコだとダメ
+SIF TALENT:0 || TALENT:122 == 1
+	RETURN 0
+;정조대だとダメ
+SIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+	RETURN 0
+;ITEM:野良犬がないとダメ
+SIF ITEM:22 == 0
+	RETURN 0
+;瀕死だとダメ
+SIF BASE:0 < 500
+	RETURN 0
+
+B = 0
+
+;수간중독
+IF ABL:40 == 0
+	B -= 2
+ELSEIF ABL:40 == 1
+	B -= 1
+ELSEIF ABL:40 == 2
+	B += 0
+ELSEIF ABL:40 == 3
+	B += 1
+ELSEIF ABL:40 == 4
+	B += 2
+ELSEIF ABL:40 == 5
+	B += 3
+ELSEIF ABL:40 >= 6
+	B += 4
+ENDIF
+
+;동물귀で욕망LV3以上PALAM:욕정がLV3以上
+SIF TALENT:124 && ABL:11 >= 3 && PALAM:5 >= PALAMLV:3
+	B += 1
+
+;PALAM:욕정がLV4以上
+;욕망LV5以上노출벽4以上で+1(下と合わせて+2)
+SIF ABL:11 >= 5 && ABL:17 >= 4 && PALAM:5 >= PALAMLV:4
+	B += 1
+;욕망LV4以上노출벽3以上で+1
+SIF ABL:11 >= 4 && ABL:17 >= 3 && PALAM:5 >= PALAMLV:4
+	B += 1
+
+;암캐によるボーナス
+SIF TALENT:136
+	B += 2
+
+;回数が0以下なら終了
+SIF B <= 0
+	RETURN 0
+
+;프라이드 낮음, 해방, 동물귀によるボーナス
+SIF TALENT:17
+	B += 1
+SIF TALENT:33
+	B += 1
+SIF TALENT:124
+	B += 1
+
+;프라이드 높음, 자제심, 억압, 악취민감によるペナルティ
+SIF TALENT:15
+	B -= 1
+SIF TALENT:20
+	B -= 1
+SIF TALENT:32
+	B -= 1
+SIF TALENT:62 && TALENT:64 == 0
+	B -= 2
+
+;쾌감에 솔직, 쾌감을 부정
+IF TALENT:70
+	B += 1
+ELSEIF TALENT:71
+	B -= 2
+ENDIF
+
+;음란によるボーナス
+SIF TALENT:76
+	B += 1
+
+;암캐によるボーナスその2
+SIF TALENT:136
+	TIMES B , 1.50
+
+;回数が0以下になっていたら終了
+SIF B <= 0
+	RETURN 0
+
+DRAWLINE
+PRINTFORM 그 후, %타겟은()% 들개를 기르고 있는 개집에 잠입해, 
+PRINTFORML {B}번의 교미를 한 것 같다.
+
+;;調教後交尾口上
+;△あとで解凍
+;TFLAG:13 = XX
+;CALL SELF_KOJO
+
+;수간경험
+PRINTFORML %EXPNAME:56% +{B}
+PRINTFORML %EXPNAME:0% +{B}
+PRINTFORML %EXPNAME:5% +{B}
+EXP:56 += B
+EXP:0 += B
+EXP:5 += B
+
+;珠経験
+PRINTFORML %PALAMNAME:1%의 구슬 +{B*200}
+PRINTFORML %PALAMNAME:6%의 구슬 +{B*300}
+PRINTFORMW %PALAMNAME:8%의 구슬 +{B*200}
+JUEL:1 += B*200
+JUEL:6 += B*300
+JUEL:8 += B*200
+
+;従順+露出+마조끼が12以上かつ時間が朝なら主人に報告
+IF ABL:10+ABL:17+ABL:21 >= 12 && TIME == 0
+	PRINTFORM 그것을 %타겟은(1)%
+	SIF TALENT:124
+		PRINT 꼬리를 흔들면서 
+	PRINTFORML 보고해왔다.
+	PRINTFORML %PALAMNAME:8%의 구슬 +{B*200}
+	JUEL:8 += B*200
+ENDIF
+
+RETURN 1
+						;****촉수中毒パッチ追加ここから****
+;-------------------------------------------------
+;촉수中毒による촉수姦チェック
+;-------------------------------------------------
+@AFTERTRAIN_TENTACLESEX_CHECK
+;調教対象が空だとダメ
+SIF TARGET < 0
+	RETURN 0
+;미숙함だとダメ
+SIF TALENT:135
+	RETURN 0
+;촉수경험が50以上ないとダメ
+SIF EXP:55 < 50
+	RETURN 0
+;처녀やオトコだとダメ
+SIF TALENT:0 || TALENT:122 == 1
+	RETURN 0
+;정조대だとダメ
+SIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+	RETURN 0
+;ITEM:촉수생물がないとダメ
+SIF ITEM:90 == 0
+	RETURN 0
+;瀕死だとダメ
+SIF BASE:0 < 500
+	RETURN 0
+;촉수 지도중に調教終了しないとダメ
+SIF TEQUIP:90 == 0
+	RETURN 0
+
+B = 0
+
+;촉수中毒
+IF ABL:41 == 0
+	B -= 2
+ELSEIF ABL:41 == 1
+	B -= 1
+ELSEIF ABL:41 == 2
+	B += 0
+ELSEIF ABL:41 == 3
+	B += 1
+ELSEIF ABL:41 == 4
+	B += 2
+ELSEIF ABL:41 == 5
+	B += 3
+ELSEIF ABL:41 >= 6
+	B += 4
+ENDIF
+
+;촉수中毒LV3以上で욕망LV3以上PALAM:욕정がLV3以上
+SIF ABL:41 >= 3 && ABL:11 >= 3 && PALAM:5 >= PALAMLV:3
+	B += 1
+
+;PALAM:욕정がLV4以上
+;욕망LV5以上노출벽4以上で+1(下と合わせて+2)
+SIF ABL:11 >= 5 && ABL:17 >= 4 && PALAM:5 >= PALAMLV:4
+	B += 1
+;욕망LV4以上노출벽3以上で+1
+SIF ABL:11 >= 4 && ABL:17 >= 3 && PALAM:5 >= PALAMLV:4
+	B += 1
+
+;묘판によるボーナス
+SIF TALENT:137
+	B += 2
+
+;回数が0以下なら終了
+SIF B <= 0
+	RETURN 0
+
+;프라이드 낮음, 해방によるボーナス
+SIF TALENT:17
+	B += 1
+SIF TALENT:33
+	B += 1
+
+;프라이드 높음, 자제심, 억압, 악취민감によるペナルティ
+SIF TALENT:15
+	B -= 1
+SIF TALENT:20
+	B -= 1
+SIF TALENT:32
+	B -= 1
+SIF TALENT:62 && TALENT:64 == 0
+	B -= 2
+
+;쾌감에 솔직, 쾌감을 부정
+IF TALENT:70
+	B += 1
+ELSEIF TALENT:71
+	B -= 2
+ENDIF
+
+;음란によるボーナス
+SIF TALENT:76
+	B += 1
+
+;절륜によるボーナス
+SIF TALENT:440
+	B += 1
+
+;묘판によるボーナスその2
+SIF TALENT:137
+	TIMES B , 1.50
+
+;回数が0以下になっていたら終了
+SIF B <= 0
+	RETURN 0
+
+DRAWLINE
+PRINTFORM %타겟은()% 지도가 끝나고
+PRINTFORML {B}회 촉수에게 당했다고 한다.
+
+;;調教後촉수プレイ口上
+;△あとで解凍
+;TFLAG:13 = XX
+;CALL SELF_KOJO
+
+;촉수경험
+PRINTFORML %EXPNAME:55% +{B}
+PRINTFORML %EXPNAME:0% +{B}
+PRINTFORML %EXPNAME:5% +{B}
+PRINTFORML %EXPNAME:20% +{B}
+EXP:55 += B
+EXP:0 += B
+EXP:5 += B
+EXP:20 += B
+CFLAG:107 += B
+
+;珠経験
+PRINTFORML %PALAMNAME:1%의 구슬 +{B*200}
+PRINTFORML %PALAMNAME:5%의 구슬 +{B*300}
+PRINTFORMW %PALAMNAME:8%의 구슬 +{B*200}
+JUEL:1 += B*200
+JUEL:5 += B*300
+JUEL:8 += B*200
+
+;従順+露出+마조끼が12以上かつ時間が朝なら主人に報告
+IF ABL:10+ABL:17+ABL:21 >= 12 && TIME == 0
+	PRINTFORM 그것을 %타겟은(1)% 
+;動物関係させる必要はないと判断。
+;	SIF TALENT:124
+;		PRINT 尻尾を振りながら
+	PRINTFORML 보고해왔다.
+	PRINTFORML %PALAMNAME:8%의 구슬 +{B*200}
+	JUEL:8 += B*200
+ENDIF
+
+RETURN 1
+						;****촉수中毒パッチ追加ここまで****

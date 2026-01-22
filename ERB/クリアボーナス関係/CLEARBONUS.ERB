@@ -1,0 +1,705 @@
+﻿;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS
+
+LOADGLOBAL
+LOCAL = GLOBAL:200
+
+$INPUT_LOOP
+PRINTL □캐릭터 클리어 보너스□
+PRINTFORML 소지 클리어 포인트: {LOCAL}포인트
+DRAWLINE
+IF LOCAL:1 == 0
+	PRINTL [ 1] - 게임 기간을 두 배로 연장해 시작  　　　    　     　       (  2포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:2 == 0
+	PRINTL [ 2] - 소지금을 500000포인트로 시작　　　　　     　　　　  　　　 (  3포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:3 == 0
+	PRINTL [ 3] - 거물 아이돌과 계약한 상태로 시작　　 　　    　　　　　  　 (  5포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:4 == 0
+	PRINTL [ 4] - 전설의 AV남배우 겸 감독의 제자가 된다.　　　　　　  　　　 ( 10포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:5 == 0
+	PRINTL [ 5] - 미션모드를 해금한 상태로 시작      　　　　 　　　　　 　　 ( 15포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:6 == 0
+	PRINTL [ 6] - 구입가능한 아이템을 모두 가진채 시작     　　 　　　　 　   ( 30포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:7 == 0 && GLOBAL:60 == 1
+	PRINTL [ 7] - 빚이 없는 상태로 시작    　　　　　　　　　　　　 　　　 　 (100포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:8 == 0
+	PRINTL [ 8] - 계약 가능한 캐릭터의 남친 유무를 선택가능   　　　　 　　 　( 10포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:9 == 0
+	PRINTL [ 9] - 기쎄고 허술한 그 아이와 계약한 상태로 시작 　　　　 　  　　( 30포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:10 == 0
+	PRINTL [10] - 계약 가능한 캐릭터의 자지 유무를 선택가능     　　　 　　　 ( 40포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:11 == 0
+	PRINTL [11] - 언제나 뜨거운 그 아이와 계약한 상태로 시작     　　　 　 　 ( 30포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:12 == 0
+	PRINTL [12] - 계약 가능한 캐릭터가 보이면서 흥분하는지 선택가능         　(200포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:13 == 0
+	PRINTL [13] - 고스트 프린세스 같은 그 아이와 계약한 상태로 시작 　 　　　 ( 30포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:3 == 0 && LOCAL:9 == 0 && LOCAL:11 == 0 && LOCAL:13 == 0
+	PRINTL [14] - 클리어 보너스 캐릭터 패키지   　　　　　　　　　　  　 　　 ( 80포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+IF LOCAL:15 == 0 && GLOBAL:30 == 1
+	PRINTL [15] - 모든 여배우 후보중 한명이 처음부터 소속된 상태로 시작       (300포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+;Ho暫定
+IF LOCAL:16 == 0
+	PRINTL [16] - (Ho잠정조치: 입수수단이 사라진 아이를 구제)　　　　　　　　　(  0포인트)
+ELSE
+	PRINTL [ -] - －－－－－－－－－－
+ENDIF
+DRAWLINE
+PRINTL [999] - 돌아간다 
+INPUT
+IF RESULT == 1 && LOCAL:1 == 0 && LOCAL >= 2
+	PRINTL 게임 기간을 두 배로 한 상태에서 게임을 시작할 수 있습니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_EXTEND
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			FLAG:3 *= 2
+			PRINTFORMW 게임 기간을 {FLAG:3}주로 연장했습니다
+			LOCAL -= 2
+			LOCAL:1 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 이 보너스를 습득하지 않았습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_EXTEND
+		ENDIF
+ELSEIF RESULT == 1 && LOCAL:1 == 0 && LOCAL < 2
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 2 && LOCAL:2 == 0 && LOCAL >= 3
+	PRINTL 게임 시작시의 자금을 500000포인트로 놓고 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_HALFMILLION
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			MONEY = 500000
+			PRINTFORMW 게임 시작시의 자금을 500000포인트로 변경했습니다
+			LOCAL -= 3
+			LOCAL:2 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 게임 기간을 연장하지 않았습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_HALFMILLION
+		ENDIF
+ELSEIF RESULT == 2 && LOCAL:2 == 0 && LOCAL < 3
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 3 && LOCAL:3 == 0 && LOCAL >= 5
+	PRINTL 거물 아이돌과 계약한 상태로 게임을 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_ADDYUKI
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			ADDCHARA 150
+			PRINTFORMW 거물 아이돌과 계약한 채로 스타트합니다
+			LOCAL -= 5
+			LOCAL:3 = 1
+			LOADGLOBAL
+			GLOBAL:350 += 1
+			SAVEGLOBAL
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 거물 아이돌과 계약하지 않았습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ADDYUKI
+		ENDIF
+ELSEIF RESULT == 3 && LOCAL:3 == 0 && LOCAL < 5
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 4 && LOCAL:4 == 0 && LOCAL >= 10
+	PRINTL 전설의 AV 남배우 겸 감독의 제자로 입문한 상태에서 게임을 시작하게 됩니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_CHOCOBALL
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 전설의 AV 남배우 겸 감독의 제자로 입문한 상태로 게임을 시작합니다
+			LOCAL -= 10
+			LOCAL:4 = 1
+			TALENT:MASTER:55 = 1
+			TALENT:MASTER:91 = 1
+			TALENT:MASTER:92 = 1
+			TALENT:MASTER:93 = 1
+			TALENT:MASTER:325 = 1
+			ABL:MASTER:12 = 10
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 전설의 AV 남배우 겸 감독의 제자로 입문하지 않았습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_CHOCOBALL
+		ENDIF
+ELSEIF RESULT == 4 && LOCAL:4 == 0 && LOCAL < 10
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 5 && LOCAL:5 == 0 && LOCAL >= 15
+	PRINTL 미션모드를 해금한 상태에서 게임을 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_MISSION
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 미션모드를 해금한 상태에서 시작합니다
+			LOCAL -= 15
+			FLAG:570 = 1
+			LOCAL:5 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 미션모드를 해금하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_MISSION
+		ENDIF
+ELSEIF RESULT == 5 && LOCAL:5 == 0 && LOCAL < 15
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 6 && LOCAL:6 == 0 && LOCAL >= 30
+	PRINTL 구입할 수 있는 아이템을 모두 소지한 상태로 게임을 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_ITEM
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 구입할 수 있는 아이템을 모두 소지한채로 시작합니다
+			LOCAL -= 30
+			
+			REPEAT 25
+				SIF COUNT == 22
+					CONTINUE
+				ITEM:COUNT = 1
+			REND
+			
+			REPEAT 5
+				ITEM:(COUNT + 24) = 99
+			REND
+			
+			ITEM:34 = 99
+			ITEM:37 = 1
+
+			LOCAL:6 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 아이템 소지상태를 바꾸지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ITEM
+		ENDIF
+ELSEIF RESULT == 6 && LOCAL:6 == 0 && LOCAL < 30
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 7 && LOCAL:7 == 0 && GLOBAL:60 == 1 && LOCAL >= 100
+	PRINTL 게임 클리어에 필요한 빚이 없는 상태로 게임을 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_NOCHARGE2
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 필요한 빚이 없는 상태로 시작합니다
+			LOCAL -= 100
+			LOCAL:7 = 1
+			FLAG:4 = 0
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 빚은 그대로입니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_NOCHARGE2
+		ENDIF
+ELSEIF RESULT == 7 && LOCAL:7 == 0 && LOCAL < 100
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 8 && LOCAL:8 == 0 && LOCAL >= 10
+	PRINTL 계약 가능한 캐릭터의 남친 유무를 선택가능합니다
+	PRINTL ※일부 캐릭터 제외
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_BOYFRIEND
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 계약 가능한 캐릭터의 남친 유무를 선택가능합니다
+			LOCAL -= 10
+			LOCAL:8 = 1
+			FLAG:567 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 계약 가능한 캐릭터의 남친 유무를 선택하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_BOYFRIEND
+		ENDIF
+ELSEIF RESULT == 8 && LOCAL:8 == 0 && LOCAL < 10
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 9 && LOCAL:9 == 0 && LOCAL >= 30
+	PRINTL 기쎄고 허술한 그 아이와 계약한 상태로 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_ADDSACHI
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			ADDCHARA 106
+			PRINTFORMW  기쎄고 허술한 그 아이와 계약한 상태로 시작합니다
+			LOCAL -= 30
+			LOCAL:9 = 1
+			LOADGLOBAL
+			GLOBAL:306 += 1
+			SAVEGLOBAL
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW  기쎄고 허술한 그 아이와 계약하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ADDSACHI
+		ENDIF
+ELSEIF RESULT == 9 && LOCAL:9 == 0 && LOCAL < 30
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 10 && LOCAL:10 == 0 && LOCAL >= 40
+	PRINTL 계약 가능한 캐릭터의 자지 유무를 선택가능합니다
+	PRINTL ※일부 캐릭터 제외
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_FUTANARI
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 계약 가능한 캐릭터의 자지 유무를 선택가능합니다
+			LOCAL -= 40
+			LOCAL:10 = 1
+			FLAG:568 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 계약 가능한 캐릭터의 자지 유무를 선택하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_FUTANARI
+		ENDIF
+ELSEIF RESULT == 10 && LOCAL:10 == 0 && LOCAL < 40
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 11 && LOCAL:11 == 0 && LOCAL >= 30
+	PRINTL 언제나 뜨거운 그 아이와 계약한 상태로 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_ADDHIMENO
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			ADDCHARA 107
+			PRINTFORMW  언제나 뜨거운 그 아이와 계약한 상태로 시작합니다
+			LOCAL -= 30
+			LOCAL:11 = 1
+			LOADGLOBAL
+			GLOBAL:307 += 1
+			SAVEGLOBAL
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW  언제나 뜨거운 그 아이와 계약하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ADDHIMENO
+		ENDIF
+ELSEIF RESULT == 11 && LOCAL:11 == 0 && LOCAL < 30
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP	
+ELSEIF RESULT == 12 && LOCAL:12 == 0 && LOCAL >= 200
+	PRINTL 계약 가능한 캐릭터가 보이면서 흥분하는지 선택가능합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는
+	PRINTL 【부끄럼 없음】이 없는 모든 캐릭터가【부끄럼 없음】을 얻습니다
+	$INPUT_LOOP_HENTAI
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 계약 가능한 캐릭터가 보이면서 흥분하는지 선택가능합니다
+			LOCAL -= 200
+			LOCAL:12 = 1
+			FLAG:569 = 1
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW 계약 가능한 캐릭터가 보이면서 흥분하는지 선택하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_HENTAI
+		ENDIF
+ELSEIF RESULT == 12 && LOCAL:12 == 0 && LOCAL < 200
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP	
+ELSEIF RESULT == 13 && LOCAL:13 == 0 && LOCAL >= 30
+	PRINTL 고스트 프린세스 같은 그 아이와 계약한 상태로 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_ADDTAMAKI
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			ADDCHARA 108
+			PRINTFORMW  고스트 프린세스 같은 그 아이와 계약한 상태로 시작합니다
+			LOCAL -= 30
+			LOCAL:13 = 1
+			LOADGLOBAL
+			GLOBAL:308 += 1
+			SAVEGLOBAL
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW  고스트 프린세스 같은 그 아이와 계약하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ADDTAMAKI
+		ENDIF
+ELSEIF RESULT == 13 && LOCAL:13 == 0 && LOCAL < 30
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP	
+ELSEIF RESULT == 14 && LOCAL:3 == 0 && LOCAL:9 == 0 && LOCAL:11 == 0 && LOCAL:13 == 0 && LOCAL >= 80
+	PRINTL 클리어보너스로 계약 가능한 모든 아이와 계약한 상태로 시작합니다
+	PRINTL 이 보너스를 사용하는 데 따르는 페널티는 없습니다
+	$INPUT_LOOP_ADDALL
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			ADDCHARA 106
+			ADDCHARA 107
+			ADDCHARA 108
+			ADDCHARA 150
+			PRINTFORMW  클리어보너스로 계약 가능한 모든 아이와 계약한 상태로 시작합니다
+			LOCAL -= 80
+			LOCAL:3 = 1
+			LOCAL:9 = 1
+			LOCAL:11 = 1
+			LOCAL:13 = 1
+			LOADGLOBAL
+				GLOBAL:306 += 1
+				GLOBAL:307 += 1
+				GLOBAL:308 += 1
+				GLOBAL:350 += 1
+			SAVEGLOBAL
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW  클리어보너스로 계약 가능한 모든 아이와 계약하지 않습니다
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ADDALL
+		ENDIF
+
+ELSEIF RESULT == 14 && LOCAL:3 == 0 && LOCAL:9 == 0 && LOCAL:11 == 0 && LOCAL:13 == 0 && LOCAL < 80
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP	
+ELSEIF RESULT == 15 && LOCAL:15 == 0 && LOCAL >= 300
+	CALL ACTRESS_CB_LIST
+	IF RESULT == 1
+		LOCAL -= 300
+		LOCAL:15 = 1
+	ENDIF	
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 15 && LOCAL:15 == 0 && LOCAL < 300
+	PRINTL 《보너스 포인트가 부족합니다》
+	GOTO INPUT_LOOP
+;特殊処理
+ELSEIF RESULT == 16 && LOCAL:16 == 0
+	PRINTL 「쿠로이 미야코」「미나・크레인」두 명과 계약합니다
+	PRINTL (Ho미션보수 재배포까지 임시조치)
+	PRINTL 패널티는 없지만 세트입니다
+	$INPUT_LOOP_ADDMIYAKO
+	PRINTL 이 보너스를 습득하시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+		IF RESULT == 0
+			ADDCHARA 97
+			ADDCHARA 105
+			PRINTFORMW 
+			LOCAL:16 = 1
+			LOADGLOBAL
+			GLOBAL:297 += 1
+			GLOBAL:305 += 1
+			SAVEGLOBAL
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == 1
+			PRINTW  
+			GOTO INPUT_LOOP
+		ELSE
+			GOTO INPUT_LOOP_ADDMIYAKO
+		ENDIF
+ELSEIF RESULT == 8826 && CFLAG:MASTER:150 == 0 && CFLAG:MASTER:150 == 0 && CFLAG:MASTER:151 == 0 && CFLAG:MASTER:152 == 0 && CFLAG:MASTER:153 == 0 && CFLAG:MASTER:154 == 0 && CFLAG:MASTER:155 == 0 && CFLAG:MASTER:156 == 0 && CFLAG:MASTER:157 == 0 && CFLAG:MASTER:158 == 0 && CFLAG:MASTER:161 == 0 && CFLAG:MASTER:162 == 0
+	PRINTFORMW 디버그용입니다
+
+	FLAG:3 *= 2
+	CFLAG:MASTER:150 = 1
+	MONEY = 500000
+	CFLAG:MASTER:151 = 1
+	CFLAG:MASTER:153 = 1
+	TALENT:MASTER:55 = 1
+	TALENT:MASTER:91 = 1
+	TALENT:MASTER:92 = 1
+	TALENT:MASTER:93 = 1
+	TALENT:MASTER:325 = 1
+	ABL:MASTER:12 = 10
+	FLAG:570 = 1
+	CFLAG:MASTER:154 = 1
+	REPEAT 25
+		SIF COUNT == 22
+			CONTINUE
+		ITEM:COUNT = 1
+	REND
+	REPEAT 5
+		ITEM:(COUNT + 24) = 99
+	REND
+	ITEM:34 = 99
+	ITEM:37 = 1
+	CFLAG:MASTER:156 = 1
+	EXP:MASTER:90 += 50
+	CFLAG:MASTER:155 = 1
+	CFLAG:MASTER:157 = 1
+	FLAG:4 = 0
+	CFLAG:MASTER:158 = 1
+	FLAG:567 = 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 999
+
+	IF GETCHARA(S, 0) != -1
+		TARGET = GETCHARA(S)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+
+	IF GETCHARA(180, 0) != -1
+		TARGET = GETCHARA(180)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+
+	IF GETCHARA(106, 0) != -1
+		TARGET = GETCHARA(106)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+
+	IF GETCHARA(107, 0) != -1
+		TARGET = GETCHARA(107)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+
+	IF GETCHARA(108, 0) != -1
+		TARGET = GETCHARA(108)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+
+	IF GETCHARA(150, 0) != -1
+		TARGET = GETCHARA(150)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+	
+	IF GETCHARA(Y, 0) != -1
+		TARGET = GETCHARA(Y)
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN
+
+;===========================================================
+;クリアボーナスの計算
+;===========================================================
+@CHARACLEAR_CALC
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:430 == 1 && CFLAG:COUNT:850 == 0
+		LOADGLOBAL
+		CFLAG:COUNT:850 = 1
+		GLOBAL:200 += 1
+		SAVEGLOBAL
+	ENDIF
+REND
+
+;===========================================================
+;여배우명부
+;===========================================================
+@ACTRESS_CB_LIST
+
+#DIM LIST, 250
+#DIM PAGE
+#DIM MAXPAGE
+#DIM SHOWNUM
+#DIM SHOWCOLUMN
+#DIM SHOWLENGTH
+
+LOADGLOBAL
+Y = 0
+
+;1ページあたりの表示人数の定義
+SHOWNUM = 30
+;1ページあたりの列数の定義
+SHOWCOLUMN = 3
+;1行あたりの長さの定義
+SHOWLENGTH = 108
+;------------------------------------------------------------
+;リスト作成
+;------------------------------------------------------------
+VARSET LIST, -1
+LOCAL:1 = 0
+FOR LOCAL, 0, 250
+	;CSVが存在しない場合ははじく
+	SIF !EXISTCSV(LOCAL, 0)
+		CONTINUE
+	SIF LOCAL == MASTER
+		CONTINUE
+	;条件満たした番号をリストに登録
+	LIST:(LOCAL:1) = LOCAL
+	LOCAL:1++
+NEXT
+MAXPAGE = LOCAL:1 / SHOWNUM
+
+$INPUT_LOOP35
+DRAWLINE
+PRINTFORML 여배우명부 page[{PAGE}/{MAXPAGE}]
+PRINTFORML %"‥" * (SHOWLENGTH / 2)%
+LOCAL:1 = 0
+FOR LOCAL, PAGE * SHOWNUM, (PAGE + 1) * SHOWNUM
+	SIF LOCAL >= 250
+		CONTINUE
+	IF LIST:LOCAL < 0
+		PRINTFORM %"", SHOWLENGTH / 3, LEFT%
+	;契約済み
+	ELSEIF GLOBAL:(200 + LIST:LOCAL)
+		PRINTFORM %@"[{LIST:LOCAL, 3}] - %CSVNAME(LIST:LOCAL, 0)%", SHOWLENGTH / 3, LEFT%
+	ELSE
+		PRINTFORM %"[ - ] - ----------", SHOWLENGTH / 3, LEFT%
+	ENDIF
+	SIF LOCAL:1 % SHOWCOLUMN == SHOWCOLUMN - 1
+		PRINTL 
+	LOCAL:1++
+NEXT
+SIF !LINEISEMPTY()
+	PRINTL 
+;こっちのほうがいいかもしれない
+;CUSTOMDRAWLINE ‥
+PRINTFORML %"‥" * (SHOWLENGTH / 2)%
+PRINTFORM %"[998] - 이전 페이지", SHOWLENGTH / 3, LEFT%
+;適当にボタンの間隔は変更してください
+PRINTFORM %"[999] - 돌아간다", SHOWLENGTH / 3, LEFT%
+PRINTFORM %"[1000] - 다음 페이지", SHOWLENGTH / 3, LEFT%
+PRINTL 
+
+INPUT
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT == 998 && PAGE > 0
+	PAGE -= 1
+ELSEIF RESULT == 1000 && PAGE < MAXPAGE
+	PAGE += 1
+ELSEIF RESULT >= 0 && RESULT < 250 && MATCH(LIST, RESULT) && GLOBAL:(200 + RESULT) > 0
+	Y = RESULT
+	ADDCHARA Y
+	SIF GETCHARA(Y, 0) != -1
+		TARGET = GETCHARA(Y)
+	PRINTFORML %타겟과(1)% 계약한 상태로 시작하겠습니까?
+	PRINTFORML [0] - 네
+	PRINTFORML [1] - 아니오
+	$INPUT_LOOP_ACTRESS
+	INPUT
+	IF RESULT == 0
+		PRINTFORMW %타겟과(1)% 계약했습니다
+		FLAG:(999 + (NO:TARGET)) = -1
+		LOADGLOBAL
+			GLOBAL:(200 + (NO:TARGET)) += 1
+		SAVEGLOBAL
+		CALL DEFOLT_GENITALCALL
+		CALL CLEARBONUS_CALL_CHARA
+		SIF TALENT:330 == 1
+			TALENT:330 = 0
+		RETURN 1
+	ELSEIF RESULT
+		PRINTFORMW %타겟과(1)% 계약하지 않았습니다
+		CALL キャラ削除, TARGET
+	ELSE
+		GOTO INPUT_LOOP_ACTRESS
+	ENDIF
+ENDIF
+
+GOTO INPUT_LOOP35

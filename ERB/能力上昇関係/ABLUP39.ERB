@@ -1,0 +1,266 @@
+﻿;噴乳中毒のLvUP処理とその可否判定
+;eraIm@s_ver.0.17βdのスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;噴乳中毒のLvUP
+;-------------------------------------------------
+@ABLUP39
+DRAWLINE
+;PRINTL 奴隷の噴乳への執着心を高めます
+;PRINTL 
+;PRINTL 
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;噴乳中毒はLv5が上限
+;[음유]が付いている場合はLv10まで해방
+IF ABL:39 >= 5 && TALENT:231 == 0
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:39 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要な쾌B의 구슬
+A = 0
+;必要な屈服의 구슬
+B = 0
+;必要な분유경험
+C = 0
+;必要な이상경험
+F = 0
+
+
+CALL DECIDE_ABLUP39
+
+;上げるときは이상경험必要(素質: [음란][중독되기쉬움]なら無視できる)
+SIF F > 0
+	PRINTFORML %EXPNAME:50%{F}이상 (현재{EXP:50}) 그리고
+
+;욕망が必要
+PRINTFORML %ABLNAME:11%{ABL:39 + 1}LV이상(현재{ABL:11})그리고 
+
+PRINTFORM [0] - %PALAMNAME:14%의 구슬×{JUEL:14}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+	SIF I & 4
+		PRINT 능력부족 
+ENDIF
+PRINTL 
+PRINTFORML 　　　%PALAMNAME:6%의 구슬×{JUEL:6}/{B}
+PRINTFORML 　　　%EXPNAME:54%　{EXP:54}/{C}
+PRINTL [100] - 그만둔다
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:39 += 1
+IF RESULT == 0
+	JUEL:14 -= A
+	JUEL:6 -= B
+ENDIF
+
+PRINTFORML %ABLNAME:39%의 레벨이 %조사처리(ABL:39,"가")% 되었습니다
+
+RETURN 0
+
+;--------------------------------------------------
+;レベルアップに必要な珠計算, レベルアップ予告処理
+;--------------------------------------------------
+@DECIDE_ABLUP39
+;噴乳中毒はLv5が上限
+;[음유]が付いている場合はLv10まで해방
+SIF ABL:39 >= 10
+	RETURN 0
+SIF ABL:39 >= 5 && TALENT:231 == 0
+	RETURN 0
+
+
+;条件別にOKかダメかを記録する
+I = 0
+
+IF ABL:39 == 0
+	A = 3000
+	B = 10000
+ELSEIF ABL:39 == 1
+	A = 8000
+	B = 20000
+	C = 10
+ELSEIF ABL:39 == 2
+	A = 15000
+	B = 35000
+	C = 30
+ELSEIF ABL:39 == 3
+	A = 30000
+	B = 60000
+	C = 75
+	F = 1
+ELSEIF ABL:39 == 4
+	A = 50000
+	B = 130000
+	C = 150
+	F = 2
+ELSEIF ABL:39 == 5
+	A = 65000
+	B = 190000
+	C = 180
+ELSEIF ABL:39 == 6
+	A = 900000
+	B = 3000000
+	C = 250
+ELSEIF ABL:39 == 7
+	A = 120000
+	B = 500000
+	C = 350
+ELSEIF ABL:39 == 8
+	A = 200000
+	B = 800000
+	C = 500
+	F = 5
+ELSEIF ABL:39 == 9
+	A = 500000
+	B = 1500000
+	C = 600
+	F = 7
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	IF ABL:39 == 3
+		TIMES A , 2.00
+		TIMES B , 2.00
+		TIMES C , 2.00
+	ELSEIF ABL:39 == 4
+		TIMES A , 2.50
+		TIMES B , 2.50
+		TIMES C , 2.50
+	ELSEIF ABL:39 >= 5
+		TIMES A , 3.00
+		TIMES B , 3.00
+		TIMES C , 3.00
+	ENDIF
+ENDIF
+
+F = 0
+;2以上に上げるときは이상경험必要(素質: [중독되기쉬움][음란]なら無視できる)
+SIF ABL:39 >= 2 && (TALENT:72 == 0 && TALENT:76 == 0)
+		F = ABL:39 + 1
+
+;자제심
+IF TALENT:20
+	TIMES A , 2.50
+	TIMES B , 2.50
+	TIMES C , 1.50
+ENDIF
+
+;쾌감에 솔직
+IF TALENT:70
+	TIMES A , 0.75
+	TIMES B , 0.75
+ENDIF
+
+;쾌감을 부정
+IF TALENT:71
+	TIMES A , 1.75
+	TIMES B , 1.75
+ENDIF
+
+;중독되기쉬움
+IF TALENT:72
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES C , 0.50
+ENDIF
+
+;도착적
+IF TALENT:80
+	TIMES A , 0.75
+	TIMES B , 0.75
+	TIMES C , 0.75
+ENDIF
+
+;음란
+IF TALENT:76
+	TIMES A , 0.75
+	TIMES B , 0.75
+	TIMES C , 0.75
+ENDIF
+;색정광
+IF TALENT:440
+	TIMES A , 0.40
+	TIMES B , 0.40
+	TIMES C , 0.40
+ENDIF
+;음마
+IF TALENT:505
+	TIMES A , 0.01
+	TIMES B , 0.01
+	TIMES C , 0.01
+ENDIF
+
+;B둔감
+IF TALENT:107
+	TIMES A , 1.50
+	TIMES B , 1.50
+	TIMES C , 1.50
+ENDIF
+
+;B민감
+IF TALENT:108
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+ENDIF
+
+;음유
+IF TALENT:231
+	TIMES A , 0.75
+	TIMES B , 0.75
+	TIMES C , 0.75
+ENDIF
+
+;最低でも1回・1個は必要
+SIF A < 1
+	A = 1
+SIF B < 1
+	B = 1
+SIF C < 1
+	C = 1
+
+;욕망が必要
+SIF ABL:11 < ABL:39 + 1
+	I |= 4
+;쾌B의 구슬は足りている?
+SIF JUEL:14 < A
+	I |= 1
+;屈服의 구슬は足りている?
+SIF JUEL:6 < B
+	I |= 1
+
+;분유경험は足りている?
+SIF EXP:54 < C
+	I |= 2
+;이상경험は足りている?
+SIF EXP:50 < F
+	I |= 2
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+;
+;
+;

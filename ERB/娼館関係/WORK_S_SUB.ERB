@@ -1,0 +1,363 @@
+﻿;===========================================================
+;特殊営業で使用する補助関数群
+;===========================================================
+;-----------------------------------------------------------
+;特殊営業参加キャラの相性をチェック
+;-----------------------------------------------------------
+@WORK_SUB_RELATION
+FLAG:51 = 0
+IF FLAG:42 >= 2
+	E = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130
+			CALL WORK_SUB_RELATION_02
+		IF E == -1
+			E = 0
+			BREAK
+		ENDIF
+	REND
+	E /= FLAG:42
+	E /= FLAG:42 - 1
+	SIF E < 50
+		E = 50
+	SIF E > 200
+		E = 200
+	FLAG:51 = E
+ENDIF
+
+@WORK_SUB_RELATION_02
+X = COUNT
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF X == COUNT
+		CONTINUE
+	F = NO:COUNT
+	IF RELATION:X:F == 0
+		E += 100
+	ELSEIF RELATION:X:F < 100
+		E = -1
+		BREAK
+	ELSE
+		E += RELATION:X:F
+	ENDIF
+REND
+COUNT = X
+
+
+;-----------------------------------------------------------
+;特殊営業夜の部で起こる乱交内容の判定
+;-----------------------------------------------------------
+@WORK_SP_SEX_01
+
+;メンバー全員が음란・娼婦持ちか
+E = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF TALENT:COUNT:76 == 0 || TALENT:COUNT:180 == 0
+		E = 0
+REND
+;メンバー全員がV使用不可ならV使用なし
+F = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF CFLAG:COUNT:54
+		CONTINUE
+	F = 0
+REND
+
+SIF E == 0 && FLAG:51 >= 150 && FLAG:42 >= 2
+	PRINT 극심한 공포에 떨며 꼭 붙어있던 
+CALL WORK_SUB_PRINT_MEMBER
+PRINTFORM %조사만처리(RESULT+2,"는")% 
+
+IF E == 0 && FLAG:51 >= 150 && FLAG:42 >= 2
+	PRINTL  폭도에 의해 강제로 떨어져서 
+ELSEIF E == 0
+	PRINTFORML  도망치려고 했지만 붙잡혀버려 
+ENDIF
+
+PRINTFORM 모인 군중들에게 
+SIF F == 0
+	PRINT 바기너와 
+PRINTFORM 애널과 입을 계속해서 범해졌다……
+PRINTL 
+
+;처녀상실
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF CFLAG:54
+		CONTINUE
+	IF TALENT:COUNT:0
+		CFLAG:COUNT:50 = 1
+	ENDIF
+REND
+
+;-----------------------------------------------------------
+;特殊営業で起こる乱交内容の判定(その2)
+;-----------------------------------------------------------
+@WORK_SP_SEX_02
+
+;参加人数が多ければ一人あたりの負担減
+;V使用回数は人数＋0~5
+T:0 = (G / FLAG:42) + RAND:6
+;V使用不可フラグチェック
+SIF CFLAG:54
+	T:0 = 0
+
+;A使用回数は人数＋0~5
+T:1 = (G / FLAG:42) + RAND:6
+
+;フェラ回数は人数＋0~4
+T:22 = (G / FLAG:42) + RAND:5
+
+;정액경험はV＋A＋フェラ回数
+T:20 = T:0 + T:1 + T:22
+
+;総성교경험はV＋A使用回数
+T:5 = T:0 + T:1
+
+;첫 키스
+IF CFLAG:16 == -1
+	PRINTFORML %타겟은()% 낯선 남자에게 첫 키스를 빼앗겼다……
+	IF CFLAG:16 == -1
+		CFLAG:16 = 2
+		CSTR:1 = 모르는 남자
+		BASE:31 -= 10
+	ENDIF
+	;異常体験に＋1
+	T:50 += 1
+ENDIF
+
+;처녀상실
+IF CFLAG:50 == 1
+	SETCOLOR 0xF58F98
+	PRINTFORML 【처녀상실】
+	RESETCOLOR
+	TALENT:0 = 0
+	;初体験の相手(輪姦)を記録
+	IF CFLAG:15 == 0
+		CFLAG:15 = 1
+		CSTR:0 = 모르는 남자
+		BASE:31 -= 20
+	ENDIF
+	;異常体験に＋2
+	T:50 += 2
+ENDIF
+
+;애널처녀상실
+IF TALENT:2 == 1
+	SETCOLOR 0xF58F98
+	PRINTFORML 【애널처녀상실】
+	RESETCOLOR
+	TALENT:2 = 0
+	;初体験の相手(輪姦)を記録
+		CSTR:3 = 모르는 남자
+	;異常体験に＋2
+	T:50 += 2
+	BASE:31 -= 10
+ENDIF
+
+
+;이상경험が10未満なら+1
+SIF EXP:50 < 10
+	T:50 += 1
+
+;욕망5以上か음란か娼婦ならA・V감각に応じて절정경험に加算
+IF ABL:11 >= 5 || TALENT:76 || TALENT:180
+	IF ABL:2 >= 5 && ABL:3 >= 5
+		T:2 = ( T:0 + T:1 )/2
+	ELSEIF ABL:2 >= 5
+		T:2 = ( T:0 / 2 )
+	ELSEIF ABL:3 >= 5
+		T:2 = ( T:1 / 2 )
+	ENDIF
+ENDIF
+
+;부정의 구슬
+;輪姦だとモリモリ溜まる
+TIMES U:100 , 1.20
+U:100 *= M
+	
+;経験補正
+;처녀상실だとかなり増える
+SIF CFLAG:50
+	TIMES U:100 , 10.00
+;V경험が足りないとちょっと増える
+SIF EXP:0 <= 200 && CFLAG:54 == 0
+	TIMES U:100 , 1.10
+;A경험が足りないとちょっと増える
+SIF EXP:1 <= 200
+	TIMES U:100 , 1.20
+
+;売春中毒のレベルに応じてちょっとずつ減る
+IF ABL:37 == 1
+	TIMES U:100 , 0.90
+ELSEIF ABL:37 == 2
+	TIMES U:100 , 0.80
+ELSEIF ABL:37 == 3
+	TIMES U:100 , 0.70
+ELSEIF ABL:37 == 4
+	TIMES U:100 , 0.60
+ELSEIF ABL:37 >= 5
+	TIMES U:100 , 0.50
+ENDIF
+
+;素質補正
+;反抗的だと増える
+SIF TALENT:11
+	TIMES U:100 , 1.20
+;보수적だと増える
+SIF TALENT:24
+	TIMES U:100 , 1.30
+;정조관념だと凄く増える
+SIF TALENT:30
+	TIMES U:100 , 2.50
+;정조무관심だと少なくなる
+SIF TALENT:31
+	TIMES U:100 , 0.90
+;저항だと増える
+SIF TALENT:34
+	TIMES U:100 , 2.00
+;음란だと一気に少なくなる
+SIF TALENT:76
+	TIMES U:100 , 0.50
+;도착적だと少なくなる
+SIF TALENT:80
+	TIMES U:100 , 0.80
+;마조だと一気に少なくなる
+SIF TALENT:88
+	TIMES U:100 , 0.50
+;愛してるとかなり嫌な気分
+SIF TALENT:85
+	TIMES U:100 , 2.50
+;망신してるとわりと少なくなる
+SIF TALENT:86
+	TIMES U:100 , 0.70
+;질투してるとこれは酷い
+SIF TALENT:84
+	U:100 *= 100
+;娼婦だと一気に少なくなる
+SIF TALENT:180
+	TIMES U:100 , 0.60
+;傾城だとほとんどなくなる
+SIF TALENT:181
+	TIMES U:100 , 0.10
+;求愛だと凄く嫌な気分
+SIF TALENT:184
+	TIMES U:100 , 2.50
+
+;参加人数による軽減
+U:100 /= FLAG:42
+
+RETURN 1
+
+;-----------------------------------------------------------
+;共通する獲得資金処理
+;-----------------------------------------------------------
+@WORK_SP_MONEY_CM
+;参加者同士の相性による補正
+IF FLAG:42 >= 2 && FLAG:51 != 100
+	V = FLAG:51
+	PRINT 상성보정
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;失敗だと半額払い戻し。
+IF A <= 1
+	V = 50
+	PRINT 영업실패
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;난이도보정
+;HARD
+IF FLAG:5 == 3
+	V = 80
+;POWERFUL
+ELSEIF FLAG:5 == 4
+	V = 60
+ENDIF
+IF V
+	PRINT 난이도보정
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;-----------------------------------------------------------
+;特殊営業終了処理
+;-----------------------------------------------------------
+@WORK_SP_AFTER
+;처녀상실フラグ, A・V경험判定フラグはここで消す
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	CFLAG:50 = 0
+	CFLAG:51 = 0
+	CFLAG:52 = 0
+	CFLAG:53 = 0
+	CFLAG:54 = 0
+REND
+
+;参加人数初期化
+FLAG:42 = 0
+
+;特殊チケット初期化
+FLAG:50 = 0
+;相性フラグ初期化
+FLAG:51 = 0
+;お揃いフラグ初期化
+FLAG:52 = 0
+;特殊営業のタイプ詳細フラグ初期化
+FLAG:53 = 0
+
+;近親フラグクリア
+TFLAG:14 = 0
+
+;-----------------------------------------------------------
+;その他の特殊営業用サブ関数群
+;-----------------------------------------------------------
+;参加キャラのフルネームを表示
+@WORK_SUB_PRINT_FULLNAME
+S = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF S
+		PRINTFORM %LSTR% 
+	PRINTFORM %NAME:COUNT%
+	LSTR = %조사만처리(NAME:COUNT,"와")%
+	S = 1
+REND
+S = 0
+RETURN COUNT
+
+;参加キャラの呼び名を表示
+@WORK_SUB_PRINT_MEMBER
+IF FLAG:42 == 1
+	PRINTFORM %CALLNAME:TARGET%
+	LOCAL:1 = KR_NAME(CALLNAME:TARGET)
+	SIF LOCAL:1 == 2
+		LOCAL:1 = 0
+	RETURN LOCAL:1
+ELSEIF FLAG:42 == 2
+	PRINTFORM 2명
+	RETURN 1
+ELSEIF FLAG:42 == 3
+	PRINT 3명
+	RETURN 1
+ELSEIF FLAG:42 >= 4
+	PRINTFORM %CALLNAME:TARGET%들
+	RETURN 1
+ENDIF

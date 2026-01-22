@@ -1,0 +1,394 @@
+﻿;-------------------------------------------------
+;지도중のユーザーコマンド表示
+;-------------------------------------------------
+@SHOW_USERCOM
+;**********改造部分************************************************
+;VARSET LOCAL
+;**********改造ここまで********************************************
+
+PRINTC 이력 표시[120]
+PRINTC 더러움 표시[121]
+PRINTC 능력 표시[122]
+PRINTL 
+IF ASSI > 0
+						;****슬라임パッチ追加ここから****
+	IF ASSIPLAY && TEQUIP:90 == 0 && TEQUIP:150 == 0
+		PRINTC 마스터와 교대[200]
+	ELSEIF TEQUIP:90 == 0 && TEQUIP:150 == 0
+		PRINTC 조수와 교대[200]
+	ENDIF
+						;****슬라임パッチ追加ここまで****
+ENDIF
+IF ASSIPLAY 
+	PRINTC 능력 표시(조수)[202]
+ELSE
+	PRINTC 능력 표시(마스터)[202]
+ENDIF
+IF TALENT:PLAYER:560 && TALENT:PLAYER:121 == 0
+	PRINTC 구현화(페니스 생성)[300]
+ELSEIF  TALENT:PLAYER:560 && TALENT:PLAYER:121 == 1
+	PRINTC 구현화(페니스 제거)[300]
+ENDIF
+PRINTL 
+PRINTC 사정장소 변경[400]
+SIF ITEM:24 >= 1 && TEQUIP:35 == 0 && (TALENT:PLAYER:121 || TALENT:PLAYER:122)
+	PRINTC 콘돔 장착 [500]
+PRINTL 
+PRINTC 지도메뉴 등록[990]
+PRINTC 지도메뉴 표시[991]
+PRINTC 지도메뉴 실행[992]
+PRINTL 
+
+PRINTC 지도종료[999]
+PRINTL
+PRINTC [치트][888]
+PRINTL
+PRINTC <전회 지도커맨드: 
+PRINTS SAVESTR:0
+PRINT >
+
+;-------------------------------------------------
+;지도중のユーザーコマンド判定
+;-------------------------------------------------
+@USERCOM
+IF RESULT == 120
+	CALL SHOW_EQUIP
+	RETURN 1
+ELSEIF RESULT == 121
+	CALL STAIN_INFO
+	RETURN 1
+ELSEIF RESULT == 122
+	CALL SHOW_INFO
+	WAIT
+	RETURN 1
+						;****슬라임パッチ追加ここから****
+ELSEIF RESULT == 200 && ASSI > 0 && TEQUIP:90 == 0 && TEQUIP:150 == 0
+						;****슬라임パッチ追加ここまで****
+	IF ASSIPLAY
+		ASSIPLAY = 0
+		PLAYER = MASTER
+	ELSE
+		ASSIPLAY = 1
+		PLAYER = ASSI
+	ENDIF
+	RETURN 1
+ELSEIF RESULT == 202
+	T = TARGET
+	TARGET = PLAYER
+	CALL SHOW_INFO
+	WAIT
+	TARGET = T
+	RETURN 1
+ELSEIF RESULT == 300 && TALENT:PLAYER:560 && TALENT:PLAYER:121 == 0
+	PRINTFORM 《%플레이어는()% 페니스를 구현시켰다》
+	SIF CFLAG:PLAYER:18 == 0
+		TALENT:PLAYER:1 = 1
+	TALENT:PLAYER:121 = 1
+	WAIT
+	RETURN 1
+ELSEIF RESULT == 300 && TALENT:PLAYER:560 && TALENT:PLAYER:121 == 1
+	PRINTFORM 《%플레이어는()% 구현시킨 페니스를 소멸시켰다》
+	SIF CFLAG:PLAYER:18 == 0
+		TALENT:PLAYER:1 = 0
+	TALENT:PLAYER:121 = 0
+	WAIT
+	RETURN 1
+ELSEIF RESULT == 400
+	CALL SHOOT_POSITION
+ELSEIF RESULT == 500 && ITEM:24 >= 1 && TEQUIP:35 == 0 && (TALENT:PLAYER:121 || TALENT:PLAYER:122)
+	CALL SET_CONDOM
+ELSEIF RESULT == 990
+	CALL COMSEQ_REGISTER_BEGIN
+	RETURN 1
+ELSEIF RESULT == 991
+	CALL SHOW_COMSEQ_REGISTER
+	RETURN 1
+ELSEIF RESULT == 992
+	CALL COMSEQ_REGISTER_TRAIN
+	RETURN 1
+
+ELSEIF RESULT == 888
+	CALL CHEAT_TRAIN
+	RETURN 1
+
+ELSEIF RESULT == 999
+
+;終了時に失神していた場合は口上を表示しない
+	IF TFLAG:899 >= 1 && FLAG:7 > 0
+		IF FLAG:7 == 1
+			FLAG:7 = 0
+			TFLAG:860 = 1
+		ELSEIF FLAG:7 == 2
+			FLAG:7 = 0
+			TFLAG:860 = 2
+		ENDIF
+	ENDIF
+	BEGIN AFTERTRAIN
+	RETURN 1
+ENDIF
+RETURN 0
+
+;-------------------------------------------------
+;履歴の表示
+;-------------------------------------------------
+@SHOOT_POSITION
+
+PRINTFORML 《V경험이 올라가는 지도시 %CALLNAME:TARGET%에게 사정하는 곳을 변경 가능합니다
+PRINT (현재 부위: 
+CALL SHOOT_POSITION_PRINT
+PRINTL )》
+PRINTFORML 어디에 사정합니까?
+SIF CFLAG:33 != 0
+	PRINTL  [0] - 질내
+SIF CFLAG:33 != 1
+	PRINTL  [1] - 음부
+SIF CFLAG:33 != 2
+	PRINTL  [2] - 허벅지
+SIF CFLAG:33 != 3
+	PRINTL  [3] - 배꼽
+SIF CFLAG:33 != 4
+	PRINTL  [4] - 가슴
+SIF CFLAG:33 != 5
+	PRINTL  [5] - 입
+SIF CFLAG:33 != 6
+	PRINTL  [6] - 얼굴
+SIF CFLAG:33 != 7
+	PRINTL  [7] - 머리카락
+IF CFLAG:33 != 8 && (CFLAG:42 == 80 && CFLAG:42 == 81)
+	PRINT  [8] - 
+	IF CFLAG:42 == 80
+		PRINT 안경
+	ELSEIF CFLAG:42 == 80
+		PRINT 선글라스
+	ENDIF
+ENDIF
+$INPUT_LOOP
+INPUT
+
+IF RESULT < 0 || RESULT > 8
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 8 && CFLAG:42 != 80 && CFLAG:42 != 81
+	GOTO INPUT_LOOP
+ELSEIF CFLAG:33 != RESULT
+	CFLAG:33 = RESULT
+	PRINTFORM 《%CALLNAME:TARGET%에게 사정하는 곳을 
+	CALL SHOOT_POSITION_PRINT
+	SIF RESULT == 1
+		PRINT 으
+	PRINT 로 변경했습니다》
+	WAIT
+	RETURN 1
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;履歴の表示
+;-------------------------------------------------
+@SHOOT_POSITION_PRINT
+
+IF CFLAG:33 == 0
+	PRINT 질내
+	RETURN 0
+ELSEIF CFLAG:33 == 1
+	PRINT 음부
+	RETURN 0
+ELSEIF CFLAG:33 == 2
+	PRINT 허벅지
+	RETURN 0
+ELSEIF CFLAG:33 == 3
+	PRINT 배꼽
+	RETURN 1
+ELSEIF CFLAG:33 == 4
+	PRINT 가슴
+	RETURN 1
+ELSEIF CFLAG:33 == 5
+	PRINT 입
+	RETURN 1
+ELSEIF CFLAG:33 == 6
+	PRINT 얼굴
+	RETURN 1
+ELSEIF CFLAG:33 == 7
+	PRINT 머리카락
+	RETURN 1
+ELSEIF CFLAG:33 == 8
+	IF CFLAG:42 == 80
+		PRINT 안경
+		RETURN 1
+	ELSEIF CFLAG:42 == 81
+		PRINT 선글라스
+		RETURN 0
+	ENDIF
+ENDIF
+
+;-------------------------------------------------
+;履歴の表示
+;-------------------------------------------------
+@SHOW_EQUIP
+CALL SHOW_JUEL
+IF PREVCOM >= 0
+	PRINT <
+	PRINT 전회 지도커맨드:
+	PRINTS SAVESTR:0
+	SIF TFLAG:50
+		PRINT (조수)
+	;PRINT (COMF:
+	;PRINTV PREVCOM
+	;PRINTL )
+	PRINTL >
+ENDIF
+SIF TEQUIP:21
+	PRINTL [미약효과 발휘 중]
+SIF TEQUIP:22
+	PRINTL [이뇨제효과 발휘 중]
+SIF TEQUIP:35 && (TALENT:PLAYER:121 || TALENT:PLAYER:122)
+	PRINTFORML [콘돔 장착중(%CALLNAME:PLAYER%)]
+SIF TEQUIP:53
+	PRINTFORML [비디오 촬영중({TFLAG:70 - 1}/10)]
+SIF TEQUIP:54
+	PRINTL [야외 플레이중]
+SIF TEQUIP:57
+	PRINTL [수치 플레이중]
+SIF TEQUIP:58
+	PRINTL [목욕탕 플레이중]
+IF TEQUIP:59
+	PRINT [
+	CALL PRINT_COSTUME
+	PRINTL  코스프레중]
+ENDIF
+SIF TEQUIP:90
+	PRINTL [촉수 지도 중]
+						;****슬라임パッチ追加ここから****
+SIF TEQUIP:150
+	PRINTL [슬라임 생성중]
+						;****슬라임パッチ追加ここまで****
+IF TEQUIP:11 && TEQUIP:90
+	PRINTL [촉수 삽입]
+ELSEIF TEQUIP:11
+	PRINTL [바이브 장착중]
+ENDIF
+
+						;****슬라임パッチ追加ここから****
+SIF TEQUIP:151
+	PRINTL [슬라임 질내진입]
+						;****슬라임パッチ追加ここまで****
+IF TEQUIP:13 && TEQUIP:90
+	PRINTL [촉수 애널 삽입]
+ELSEIF TEQUIP:13
+	PRINTL [애널바이브 장착중]
+ENDIF
+						;****슬라임パッチ追加ここから****
+SIF TEQUIP:152
+	PRINTL [슬라임 항문 진입]
+						;****슬라임パッチ追加ここまで****
+IF TEQUIP:14 && TEQUIP:90
+	PRINTL [촉수 클리 자극]
+ELSEIF TEQUIP:14
+	PRINTL [클리캡 장착중]
+ENDIF
+
+IF TEQUIP:15 && TEQUIP:90
+	PRINTL [촉수 유두 자극]
+ELSEIF TEQUIP:15
+	PRINTL [니플캡 장착중]
+ENDIF
+
+IF TEQUIP:16 && TEQUIP:90
+	PRINTL [촉수 착유]
+ELSEIF TEQUIP:16
+	PRINTL [착유기 장착중]
+ENDIF
+
+IF TEQUIP:17 && TEQUIP:90
+	PRINTL [촉수 페니스 자극]
+ELSEIF TEQUIP:17
+	PRINTL [오나홀 장착중]
+ENDIF
+
+IF TEQUIP:18
+	PRINTL [샤워 사용중]
+ENDIF
+
+IF TEQUIP:44 && TEQUIP:90
+	PRINTL [촉수 긴박]
+						;****追加ここから****
+ELSEIF TEQUIP:44 && TEQUIP:70
+	PRINTL [삼각목마 기승 중]
+ELSEIF TEQUIP:44
+						;****追加ここまで****
+	PRINTL [밧줄로 긴박 중]
+ENDIF
+
+IF TEQUIP:46 && TEQUIP:90
+	PRINTL [촉수 관장]
+ELSEIF TEQUIP:46
+	PRINTL [관장+애널플러그 장착중]
+ENDIF
+
+SIF TEQUIP:98
+	PRINTL [촉수 구욕 중]
+						;****슬라임パッチ追加ここから****
+SIF TEQUIP:154
+	PRINTL [슬라임 펠라]
+						;****슬라임パッチ追加ここまで****
+SIF TEQUIP:43
+	PRINTL [아이마스크 장착중]
+SIF TEQUIP:45
+	PRINTL [볼재갈 장착중]
+SIF TEQUIP:19
+	PRINT [애널비즈 사용중]
+SIF TEQUIP:49
+	PRINT [애널전극 삽입중]
+SIF TEQUIP:89
+	PRINTL [수간 플레이중]
+
+SIF EX:0
+	PRINTFORM C절정:{EX:0}회 
+SIF EX:1
+	PRINTFORM V절정:{EX:1}회 
+SIF EX:2
+	PRINTFORM A절정:{EX:2}회 
+SIF EX:3
+	PRINTFORM B절정:{EX:3}회 
+SIF EX:4
+	PRINTFORM 분유:{EX:4}회 
+SIF EX:5
+	PRINTFORM 사정:{EX:5}회 
+SIF EX:0 || EX:1 || EX:2 || EX:3 || EX:4 || EX:5
+	PRINTL 
+WAIT
+
+;-------------------------------------------------
+;履歴の表示
+;-------------------------------------------------
+@SET_CONDOM
+
+SIF ITEM:24 <= 0
+	RETURN
+
+IF ABL:16 >= 4 && ABL:13 >= 4 && TALENT:52
+	PRINTFORM %타겟은()% 
+	IF RAND:3 == 0
+		PRINTFORM 연보라
+	ELSEIF RAND:2 == 0
+		PRINTFORM 연갈
+	ELSE
+		PRINTFORM 연파란
+	ENDIF
+	PRINTFORML 색 콘돔을 입과 혀를 사용해 %CALLNAME:PLAYER%의 페니스에 씌었다
+ELSE
+	PRINTFORM %플레이어는()%
+	IF RAND:3 == 0
+		PRINTFORM 연보라
+	ELSEIF RAND:2 == 0
+		PRINTFORM 연갈
+	ELSE
+		PRINTFORM 연파란
+	ENDIF
+	PRINTFORML  색 콘돔을 발기한 자기 페니스에 씌었다
+ENDIF
+
+PRINTFORMW 《%플레이어는()% 콘돔을 장착했다》
+TEQUIP:35 = 1

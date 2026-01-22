@@ -1,0 +1,37 @@
+﻿;===========================================================
+;実績・후타나리っ娘らばーず
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_18
+RESULTS = 후타나리 러버즈
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_18
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF TALENT:COUNT:121 == 1 && ABL:COUNT:38 >= 3 && TALENT:COUNT:1 == 0
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:18 == 0 && DIFFICULTY_CHECK() && LOCAL >= 5
+	GLOBAL:18 = 1
+RETURN GLOBAL:18
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_18
+; 解説文
+PRINTFORM 비밀 연구실에는 다양한 육체개조 메뉴가 있고, 그중에서도 %플레이어가()% 좋아하는 건
+PRINTFORML 『여성의 클리토리스를 후타나리 페니스로 개조한다』였습니다 
+PRINTFORM 남성기가 자라난 그녀들은 모두, 지금까지 경험한 적 없는 사정에 당황하고는
+PRINTFORML 얼마 안가 욕망이 악취를 풍기는 백탁액으로 튀어나오는 쾌감에 몸을 태워갔습니다
+PRINTFORML 그녀들은 조금씩 쾌감에 먹혀간 끝에, 언제부터인가 페니스로 얻는 열략을 당연하게 받아들였고……
+PRINTFORMW 더 강한 쾌락을 추구한 끝에, 그녀들이 남자의 섹스를 경험하는 것은 시간문제였습니다
+
+IF FLAG:564 == 0
+	PRINTFORMW 《실적 해금 보너스로서 연구실의「후타나리로 만든다」에서 자지 사이즈를 선택할 수 있게 됐습니다》
+	FLAG:564 = 1
+ENDIF

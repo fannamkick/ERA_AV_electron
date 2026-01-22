@@ -1,0 +1,447 @@
+﻿;========================================================
+;SYSTEM_BIRTHDAY 誕生日関連のシステム・コンフィグを扱ってます
+;				ファイル名が紛らわしいですが月日の設定もここで行なっています
+;SYSTEM_IWS.ERBの構文を参考にさせて頂きました
+;というよりもほぼ書き写しに近いです。ありがとうございました
+;========================================================;
+;フラグメモ
+;BASE:7		외견연령
+;BASE:8		見た目年代, 1以上なら외견연령で表示する
+;			(1=BASE:7代, 2=BASE:7代전반, 
+;			　3=BASE:7代半ば, 4=BASE:7代후반, 5=BASE:7歳前後)
+;BASE:9		実연령
+;BASE:11	誕生月
+;BASE:12	誕生日
+;BASE:13	血液型(0=不明,1=A,2=B,3=O,4=AB)
+;
+;-------------------------------------------------
+;연령と誕生日, 血液型の表示
+;INFO.ERBから呼び出される関数
+;-------------------------------------------------
+@SHOW_INFO_BIRTHDAY
+PRINT 　연령: 
+						;****연령表示修正追加ここから****
+;見た目年代が存在するなら외견연령で表示,【연심】があれば진짜연령を表示
+IF  BASE:7 > 0 && TALENT:85 == 0
+	IF BASE:7 == 999
+		PRINT 불명
+	ELSE
+		SIF BASE:8 == 6
+			PRINT 자칭 
+		PRINTFORM {BASE:7}
+		IF  BASE:8 == 0
+			PRINT 세
+		ELSEIF  BASE:8 == 1
+			PRINT 대
+		ELSEIF BASE:8 == 2
+			PRINT 대 초반
+		ELSEIF BASE:8 == 3
+			PRINT 대 중반
+		ELSEIF BASE:8 == 4
+			PRINT 대 후반
+		ELSEIF BASE:8 == 5
+			PRINT 세 전후
+		ELSEIF BASE:8 == 6
+			PRINT 세
+		ENDIF
+	ENDIF
+ELSEIF BASE:9 == 999
+	PRINT 미상
+ELSE
+	PRINTFORM {BASE:9}세
+ENDIF
+						;****연령表示修正追加ここまで****
+IF BASE:11 == 0
+	PRINTFORM  　?월
+ELSE 
+	PRINTFORM  　{BASE:11}월
+ENDIF
+
+IF BASE:12 == 0
+	PRINTFORM ?일생
+ELSE 
+	PRINTFORM {BASE:12}일생
+ENDIF
+
+PRINT  　혈액형: 
+IF BASE:13 == 0
+	PRINTL 불명
+ELSEIF BASE:13 == 1
+	PRINTL A형
+ELSEIF BASE:13 == 2
+	PRINTL B형
+ELSEIF BASE:13 == 3
+	PRINTL O형
+ELSE
+	PRINTL AB형
+ENDIF
+
+
+;-------------------------------------------------
+;誕生日かどうかのチェック
+;EVENT_NEXTDAY.ERBから呼び出される関数
+;-------------------------------------------------
+@HAPPY_BIRTHDAY
+VARSET LOCAL
+FOR LOCAL,0,CHARANUM
+	IF DAY:1 == BASE:LOCAL:11
+		;3,5,8,10月は5週目がある
+		IF DAY:1 == 3 || DAY:1 == 5 || DAY:1 == 8 || DAY:1 == 10
+			IF (DAY:2 == 1 && 1 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 7) || (DAY:2 == 2 && 8 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 14) || (DAY:2 == 3 && 15 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 21) || (DAY:2 == 4 && 22 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 28) ||  (DAY:2 == 5 && 29 <= BASE:LOCAL:12)
+				PRINTL *****************************************************
+				PRINTFORML %조사처리(CALLNAME:LOCAL,"가")% 생일을 맞이했습니다
+				PRINTW *****************************************************
+				SIF !FLAG:74
+					BASE:LOCAL:9 += 1
+				;誕生日イベント(口上等)をする場合はここから呼び出して下さい
+				IF LOCAL != 0
+					TARGET = LOCAL
+					CALL EVENT_BIRTHDAY
+				ENDIF
+			ENDIF
+		ELSE
+			IF (DAY:2 == 1 && 1 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 7) || (DAY:2 == 2 && 8 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 14) || (DAY:2 == 3 && 15 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 21) || (DAY:2 == 4 && 22 <= BASE:LOCAL:12)
+				PRINTL *****************************************************
+				PRINTFORML %조사처리(CALLNAME:LOCAL,"가")% 생일을 맞이했습니다
+				PRINTW *****************************************************
+				SIF !FLAG:74
+					BASE:LOCAL:9 += 1
+				;誕生日イベント(口上等)をする場合はここから呼び出して下さい
+				TARGET = LOCAL
+				CALL EVENT_BIRTHDAY
+			ENDIF
+		ENDIF
+	ENDIF
+NEXT
+;-------------------------------------------------
+;연령・誕生日・血液型の手動設定
+;SYSTEM_CONFIG.ERBから呼び出される関数
+;IWSの手動設定からいくつかの処理を省いているため, 
+;既存の値があるキャラでも設定できてしまいます。
+;ご利用は計画的に。
+;-------------------------------------------------
+@MANUAL_SET_BIRTHDAY
+$INPUT_LOOP
+DRAWLINE
+
+PRINTL 연령・생일・혈액형을 수동으로 설정합니다
+PRINTL 어느 캐릭터를 설정하시겠습니까?
+REPEAT CHARANUM
+		PRINTFORML [{COUNT}] - %CALLNAME:COUNT%
+REND
+DRAWLINE
+PRINTL  [999] - 그만둔다
+
+INPUT
+IF RESULT == 999
+		RETURN 0
+ELSEIF RESULT >= 0 && RESULT < COUNT
+	A = TARGET
+	TARGET = RESULT
+	PRINTFORML %NAME:TARGET%의 연령・생일・혈액형 설정은 다음과 같습니다
+	CALL SHOW_INFO_BIRTHDAY
+
+	;진짜연령
+	$INPUT_LOOP_1
+	PRINTFORML %NAME:TARGET%의 연령을 설정해주세요(10-60, 불명이면 0)
+	INPUT
+	IF RESULT == 0
+		BASE:9 = RESULT
+		PRINTL 실제 연령은 불명입니다. 외견 연령을 설정해주세요(10대-50대)
+		;長くなったので下の方に別関数として呼びに行く
+		CALL AGE_UNKNOWN
+	ELSEIF RESULT < 10 || RESULT > 60
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_1
+	ELSE
+		BASE:9 = RESULT
+		;見た目年代処理を行なわなくする
+		;加齢フラグがONなら年を取るようになります
+		BASE:8 = 0
+	ENDIF
+
+	;誕生月
+	;入力月の格納用にMを使用します
+	M = 0
+	$INPUT_LOOP_2
+	PRINTFORML %NAME:TARGET%가 태어난 달의 숫자를 설정해주세요(1-12, 불명이면 0) 
+	INPUT
+	IF RESULT < 0 || RESULT > 12
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_2
+	ELSEIF RESULT == 0
+		PRINTL 태어난 달은 불명인 것으로 하겠습니다
+	ELSE
+		M = RESULT
+		BASE:11 = RESULT
+	ENDIF
+
+	;誕生日
+	$INPUT_LOOP_3
+	PRINTFORML %NAME:TARGET%가 태어난 날의 숫자를 설정해주세요(1-31, 불명이면 0)
+	INPUT
+	IF RESULT < 0
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_3
+	ELSEIF RESULT == 0
+		PRINTL 태어난 날은 불명인 것으로 하겠습니다
+	ELSEIF RESULT > 28 && M == 2
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_3
+	ELSEIF RESULT > 30 && ( M == 4 || M == 6 || M == 9 || M == 11 )
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_3
+	ELSEIF RESULT > 31 && ( M == 1 || M == 3 || M == 5 || M == 7 || M == 8 || M == 10 || M == 12)
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_3
+	ELSE
+		BASE:12 = RESULT
+	ENDIF
+
+	;血液型
+	$INPUT_LOOP_4
+	PRINTFORML %NAME:TARGET%의 혈액형을 설정해주세요(0-4)
+	PRINT 　[0] 불명
+	PRINT  　[1] A형
+	PRINTL  　[2] B형
+	PRINT  　　　　　　[3] O형
+	PRINTL  　[4] AB형
+	INPUT
+	IF RESULT < 0 || RESULT > 4
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_4
+	ELSE
+		BASE:13 = RESULT
+	ENDIF
+
+	
+	;設定の確認
+	PRINTFORML %NAME:TARGET%의 연령・생일・혈액형 설정은 다음과 같습니다
+	CALL SHOW_INFO_BIRTHDAY
+	PRINTL 이것으로 좋습니까?
+	PRINTL [0] - 예
+	PRINTL [1] - 다시 설정
+	PRINTL [2] - 이 캐릭터의 설정을 그만둔다(기존의 값은 0이 됩니다)
+	$INPUT_LOOP_6
+	INPUT
+	IF RESULT == 0
+		PRINTFORMW %NAME:TARGET%의 연령・생일・혈액형을 설정합니다
+		TARGET = A
+		GOTO INPUT_LOOP
+	ELSEIF RESULT == 1
+		PRINTW 다시 설정하겠습니다
+		GOTO INPUT_LOOP_1
+	ELSEIF RESULT == 2
+		PRINTW 이 캐릭터의 설정을 중지합니다(기존의 값은 0이 됩니다)
+		BASE:9 = 0
+		BASE:11 = 0
+		BASE:12 = 0
+		BASE:13 = 0
+		TARGET = A
+		GOTO INPUT_LOOP
+	ELSE
+		GOTO INPUT_LOOP_6
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+;実연령を決めない場合の외견연령
+@AGE_UNKNOWN
+$INPUT_LOOP_7
+	PRINT   [0] 10대 초반
+	PRINT   [1] 10대 중반
+	PRINTL   [2] 10대 후반
+	PRINT   [3] 20대 초반
+	PRINT   [4] 20대 중반
+	PRINTL   [5] 20대 후반
+	PRINT   [6] 30대 초반
+	PRINT   [7] 30대 중반
+	PRINTL   [8] 30대 후반
+	PRINT   [9] 40대 초반
+	PRINT  [10] 40대 후반
+	PRINT  [11] 50대 초반
+	PRINTL  [12] 50대 후반
+	PRINTL  [99] 연령 미상
+INPUT
+	IF RESULT == 99
+		BASE:7 = 0
+		BASE:8 = 1
+	ELSEIF RESULT == 0
+		BASE:7 = 10
+		BASE:8 = 2
+	ELSEIF RESULT == 1
+		BASE:7 = 10
+		BASE:8 = 3
+	ELSEIF RESULT == 2
+		BASE:7 = 10
+		BASE:8 = 4
+	ELSEIF RESULT == 3
+		BASE:7 = 20
+		BASE:8 = 2
+	ELSEIF RESULT == 4
+		BASE:7 = 20
+		BASE:8 = 3
+	ELSEIF RESULT == 5
+		BASE:7 = 20
+		BASE:8 = 4
+	ELSEIF RESULT == 6
+		BASE:7 = 30
+		BASE:8 = 2
+	ELSEIF RESULT == 7
+		BASE:7 = 30
+		BASE:8 = 3
+	ELSEIF RESULT == 8
+		BASE:7 = 30
+		BASE:8 = 4
+	ELSEIF RESULT == 9
+		BASE:7 = 20
+		BASE:8 = 2
+	ELSEIF RESULT == 10
+		BASE:7 = 20
+		BASE:8 = 4
+	ELSEIF RESULT == 11
+		BASE:7 = 50
+		BASE:8 = 2
+	ELSEIF RESULT == 12
+		BASE:7 = 50
+		BASE:8 = 4
+	ELSE
+		GOTO INPUT_LOOP_7
+	ENDIF
+;-------------------------------------------------
+;今日の日付の手動設定
+;SYSTEM_CONFIG.ERBから呼び出される関数
+;-------------------------------------------------
+@MANUAL_SET_DATE
+DRAWLINE
+PRINTL 오늘의 날짜를 수동으로 설정합니다
+
+;現在の月の設定
+$INPUT_LOOP_0
+;入力月の格納用にMを使用します
+M = 0
+PRINTL 현재 몇 월입니까?
+PRINTL  [999] - 돌아간다
+INPUT
+	IF RESULT == 999
+		RETURN 0
+	ELSEIF  RESULT <= 0 || RESULT > 12
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_0
+	ELSE
+		M = RESULT
+	ENDIF
+
+;現在の日の設定
+$INPUT_LOOP_1
+PRINTL 현재 며칠입니까?
+PRINTL  [999] - 돌아간다
+INPUT
+	IF RESULT == 999
+		RETURN 0
+	;存在しない日付を弾く
+	;初心者丸出しの処理です……
+	ELSEIF  RESULT < 1
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_1
+	ELSEIF RESULT > 28 && M == 2
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_1
+	ELSEIF RESULT > 30 && ( M == 4 || M == 6 || M == 9 || M == 11 )
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_1
+	ELSEIF RESULT > 31 && ( M == 1 || M == 3 || M == 5 || M == 7 || M == 8 || M == 10 || M == 12)
+		PRINTL 부적절한 값입니다. 다시 한 번 입력해주세요
+		GOTO INPUT_LOOP_1
+	ELSE
+		DAY:1 = M
+		DAY:2 = RESULT
+	ENDIF
+
+PRINTFORML 오늘의 날짜가 {DAY:1}월 {DAY:2}로 변경되었습니다
+
+FLAG:80 = 0
+FLAG:81 = 0
+FLAG:82 = 0
+PRINTL 또한, FLAG:80~FLAG:82를 0으로 수정하였습니다
+
+;確認
+$INPUT_LOOP_2
+PRINTL 이대로 실행합니까?
+PRINTL [0] - 예
+PRINTL [1] - 아니오
+INPUT
+	IF RESULT == 1
+		PRINTW 다시 설정하겠습니다
+		GOTO INPUT_LOOP_0
+	ELSEIF RESULT != 0
+		GOTO INPUT_LOOP_2
+	ENDIF
+
+
+;-------------------------------------------------
+;途中導入時のCSVデータ読み込み
+;SYSTEM_CONFIG.ERBから呼び出される関数
+;SYSTEM_IWS.ERBの構文をほぼ丸ごと使わせて頂きました
+;-------------------------------------------------
+@READ_CSV_BIRTHDAY
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL CSV 파일로부터 연령, 생일, 혈액형 정보를 불러옵니다.
+	PRINTL 불러들일 캐릭터의 종류를 선택해주십시오.
+	PRINTL 
+	PRINTL  [0] - 미설정 캐릭터만(패치가 되었을 때 사용하는 메뉴)
+	PRINTL  [1] - 등록 캐릭터 모두(［고등학생］과 ［중학생］을 고려하지 않습니다)
+	PRINTL  [9] - 그만둔다
+	INPUT
+	IF RESULT == 9
+		RETURN 0
+	ELSEIF RESULT == 0
+		REPEAT CHARANUM
+			;実연령が0歳のキャラクター全員
+			IF BASE:COUNT:9 == 0
+				BASE:COUNT:7 = CSVBASE(NO:COUNT, 7, 0)
+				BASE:COUNT:8 = CSVBASE(NO:COUNT, 8, 0)
+				BASE:COUNT:9 = CSVBASE(NO:COUNT, 9, 0)
+			ENDIF
+			;誕生月が不明なキャラクター全員
+			IF BASE:COUNT:11 == 0
+				BASE:COUNT:11 = CSVBASE(NO:COUNT, 11, 0)
+				BASE:COUNT:12 = CSVBASE(NO:COUNT, 12, 0)
+				BASE:COUNT:13 = CSVBASE(NO:COUNT, 13, 0)
+			ENDIF
+		REND
+	ELSEIF RESULT == 1	
+		REPEAT CHARANUM
+			BASE:COUNT:7 = CSVBASE(NO:COUNT, 7, 0)
+			BASE:COUNT:8 = CSVBASE(NO:COUNT, 8, 0)
+			BASE:COUNT:9 = CSVBASE(NO:COUNT, 9, 0)
+			BASE:COUNT:11 = CSVBASE(NO:COUNT, 11, 0)
+			BASE:COUNT:12 = CSVBASE(NO:COUNT, 12, 0)
+			BASE:COUNT:13 = CSVBASE(NO:COUNT, 13, 0)
+		REND
+	ELSE
+			GOTO INPUT_LOOP
+	ENDIF
+PRINTW 완료했습니다
+;-------------------------------------------------
+;途中導入時のCSVデータ読み込み
+;SYSTEM_CONFIG.ERBから呼び出される関数
+;SYSTEM_IWS.ERBの構文をほぼ丸ごと使わせて頂きました
+;-------------------------------------------------
+@ADD_CSV_BIRTHDAY
+IF DAY:1 == BASE:LOCAL:11
+	;3,5,8,10月は5週目がある
+	IF DAY:1 == 3 || DAY:1 == 5 || DAY:1 == 8 || DAY:1 == 10
+		IF (DAY:2 == 1 && 1 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 7) || (DAY:2 == 2 && 8 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 14) || (DAY:2 == 3 && 15 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 21) || (DAY:2 == 4 && 22 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 28) ||  (DAY:2 == 5 && 29 <= BASE:LOCAL:12)
+			SIF !FLAG:74
+				BASE:LOCAL:9 += 1
+		ENDIF
+	ELSE
+		IF (DAY:2 == 1 && 1 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 7) || (DAY:2 == 2 && 8 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 14) || (DAY:2 == 3 && 15 <= BASE:LOCAL:12 && BASE:LOCAL:12 <= 21) || (DAY:2 == 4 && 22 <= BASE:LOCAL:12)
+			SIF !FLAG:74
+				BASE:LOCAL:9 += 1
+		ENDIF
+	ENDIF
+ENDIF

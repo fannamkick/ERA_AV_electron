@@ -1,0 +1,602 @@
+﻿;===========================================================
+;ボーイフレンドの処理
+;===========================================================
+;CFLAG:622=彼氏の仕事
+;CFLAG:623=彼氏とラブホに寄る度合い
+;CFLAG:624=彼氏とセックスしたかどうか
+;CFLAG:625=彼氏好みのファッションになったか
+;CFLAG:626=ファッションを変えたい希望の度合い
+;===========================================================
+@PRINT_BOYFRIEND
+IF CFLAG:621 >= 1
+	IF CFLAG:622 == 1
+		PRINT 반친구
+	ELSEIF CFLAG:622 == 2
+		PRINT 고등학생
+	ELSEIF CFLAG:622 == 3
+		PRINT 중학생
+	ELSEIF CFLAG:622 == 4
+		PRINT 대학생
+	ELSEIF CFLAG:622 == 5
+		PRINT 직장인
+	ELSEIF CFLAG:622 == 6
+		PRINT 호스트
+	ELSEIF CFLAG:622 == 99
+		PRINT 주인님
+	ELSE
+		PRINT 양키
+	ENDIF
+ENDIF
+
+;===========================================================
+;交際発覚
+;===========================================================
+@EVENT_BOYFRIEND
+IF TALENT:COUNT:85 == 0 && TALENT:COUNT:430 == 0 && CFLAG:COUNT:621 != 1
+	PRINTFORMW %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %CALLNAME:COUNT%에게 직접 캐물어보니 남친이 생겼다고 한다.
+	PRINTFORMW %조사처리(CALLNAME:COUNT,"는")% 홍조를 띄우며 남친과 깨가 쏟아지는 에피소드를 %CALLNAME:MASTER%에게 자랑했다……
+	CALL DECIDE_BOYFRIEND,COUNT
+		CFLAG:COUNT:621 = 1
+		IF FLAG:541 == 0 || TALENT:COUNT:432 == 0
+			CFLAG:COUNT:622 += RAND:7
+				IF CFLAG:COUNT:622 == 1 && BASE:COUNT:9 > 18
+					CFLAG:COUNT:622 = 5
+				ENDIF
+			BASE:COUNT:31 -= 5
+		ENDIF
+		TALENT:COUNT:184 = 1
+
+	IF CFLAG:COUNT:16 == -1
+		PRINTFORMW %조사처리(CALLNAME:COUNT,"는")% 이미 남친에게 첫 키스를 바쳤다고 한다……
+		CFLAG:COUNT:16 = 8
+		CSTR:COUNT:1 = %CSTR:COUNT:7% %CSTR:COUNT:8%
+			BASE:COUNT:31 -= 5
+		CFLAG:COUNT:820 = BASE:COUNT:9
+		CFLAG:COUNT:821 = DAY:1
+		CFLAG:COUNT:822 = DAY:2
+	ENDIF
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSEIF TALENT:COUNT:85 == 1 && TALENT:COUNT:430 == 0 && CFLAG:COUNT:621 != 1
+	PRINTFORMW %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %CALLNAME:COUNT%에게 직접 캐물어보니 %CALLNAME:MASTER%보다 좋아하는 남자가 생겼다고 한다.
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% %CALLNAME:MASTER%에게 이전처럼 지내자고 말했다……
+		CFLAG:COUNT:621 = 1 || TALENT:COUNT:432 == 0
+		IF FLAG:541 == 0
+			CFLAG:COUNT:622 += RAND:7
+				IF CFLAG:COUNT:622 == 1 && BASE:COUNT:9 > 18
+					CFLAG:COUNT:622 = 5
+				ENDIF 
+		ELSE
+			CFLAG:COUNT:622 = 0
+		ENDIF
+		CALL DECIDE_BOYFRIEND,COUNT
+		TALENT:COUNT:85 = 0
+		TALENT:COUNT:184 = 1
+			BASE:COUNT:31 -= 5
+	IF CFLAG:COUNT:16 == -1
+		PRINTFORMW %조사처리(CALLNAME:COUNT,"는")% 이미 다른 남자에게 첫 키스를 바쳤다고 한다……
+		CFLAG:COUNT:16 = 8
+		CSTR:COUNT:1 = %CSTR:COUNT:7% %CSTR:COUNT:8%
+			BASE:COUNT:31 -= 5
+		CFLAG:COUNT:820 = BASE:9
+		CFLAG:COUNT:821 = DAY:1
+		CFLAG:COUNT:822 = DAY:2
+	ENDIF
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ENDIF
+
+
+;===========================================================
+;BFによる経験
+;===========================================================
+@EVENT_BOYFRIEND2
+
+REPEAT 100
+	J:COUNT = 0
+	J = 0
+REND
+VARSET LOCAL, 0
+VARSET TCVAR, 0
+FOR LOCAL, 0, CHARANUM
+	IF LOCAL == 0
+		CONTINUE
+	ELSEIF TALENT:LOCAL:184 == 0
+		CONTINUE
+	ELSEIF TALENT:LOCAL:153 == 1
+		CONTINUE
+	ELSEIF TALENT:LOCAL:154 == 1
+		CONTINUE
+	ELSEIF CFLAG:LOCAL:140 == 1 && (FLAG:101 & 128)
+		CONTINUE
+	ELSEIF TALENT:LOCAL:190 == 1
+		CONTINUE
+	ELSE
+		TARGET = LOCAL
+		LOCAL:1 = CFLAG:622
+		LOCAL:2 = RAND:3
+		SIF CFLAG:623 == 1
+			LOCAL:2 = 0
+			IF LOCAL:2 <= 1
+				TRYCALLFORM BF_COMMONEV_{LOCAL:2}
+			ELSE
+				LOCAL:2 = RAND:2
+				TRYCALLFORM BF_EV{LOCAL:1}_{LOCAL:2}
+			ENDIF
+		REPEAT 100
+			IF J:COUNT >= 1
+				PRINTL
+				BREAK
+			ENDIF
+		REND
+		FOR LOCAL:4, 0, 100
+			IF J:(LOCAL:4)
+				; 経験値の加算処理
+				; 経験名が定義されているのみ加算処理を行う
+				IF STRLENS(PALAMNAME:(LOCAL:4)) > 0
+					JUEL:(LOCAL:4) += J:(LOCAL:4)
+				ELSE
+					DEBUGPRINTFORML %조사처리(JUEL:{(LOCAL:4)},"는")% 정의되지 않았기에 가속처리를 스킵합니다
+				ENDIF
+				SIF J:(LOCAL:4) > 0
+					PRINTFORML %PALAMNAME:(LOCAL:4)%의 구슬 + {J:(LOCAL:4)}
+			ENDIF
+		NEXT
+		FOR LOCAL:5, 0, 90
+			SIF TCVAR:(LOCAL:5)
+				LOCAL:6 = 1
+		NEXT
+		SIF LOCAL:6 == 1
+			PRINTL
+		FOR LOCAL:3, 0, 90
+			IF TCVAR:(LOCAL:3)
+				; 経験値の加算処理
+				; 経験名が定義されているのみ加算処理を行う
+				IF STRLENS(EXPNAME:(LOCAL:3)) > 0
+					EXP:(LOCAL:3) += TCVAR:(LOCAL:3)
+				ELSE
+					DEBUGPRINTFORML %조사처리(EXP:{(LOCAL:3)},"는")% 정의되지 않았기에 가속처리를 스킵합니다
+				ENDIF
+				SIF TCVAR:(LOCAL:3) != 101
+					PRINTFORML %EXPNAME:(LOCAL:3)% + {TCVAR:(LOCAL:3)}
+			ENDIF
+		NEXT
+
+			IF TCVAR:5 >= 1
+				CUSTOMDRAWLINE ･･
+				WAIT
+			ENDIF
+		REPEAT 100
+			J:COUNT = 0
+			J = 0
+		REND
+		VARSET TCVAR:TARGET, 0
+	ENDIF
+NEXT
+
+;===========================================================
+;BFの与える経験: V系
+;===========================================================
+@CALC_BFSEX
+
+VARSET TCVAR:TARGET, 0
+VARSET LOCAL, 0
+
+;とりあえず1文字変数で経験を渡すようにする
+REPEAT 100
+	J:COUNT = 0
+REND
+;性交回数
+S = 0
+;V감각
+IF ABL:2 == 4
+	LOCAL += 1
+ELSEIF ABL:2 == 5
+	LOCAL += 2
+ELSEIF ABL:2 >= 6
+	LOCAL += 3
+ENDIF
+;성교중독によるボーナス
+SIF ABL:30
+	LOCAL += ABL:30 / 2 + 1
+;PALAM:욕정がLV4以上
+;욕망LV5以上봉사정신5以上で+1
+SIF ABL:11 >= 5 && ABL:16 >= 5
+	LOCAL += 2
+;욕망LV4以上봉사정신4以上で+1
+SIF ABL:11 >= 3 && ABL:16 >= 3
+	LOCAL += 1
+;PALAM:욕정がLV3以上
+;욕망LV7以上V감각LV6以上で+1(下と合わせて+2)
+SIF ABL:11 >= 7 && ABL:5 >= 6
+	LOCAL += 1
+;욕망LV4以上V감각LV3以上で+1
+SIF ABL:11 >= 4 && ABL:2 >= 3
+	LOCAL += 1
+;남친있음によるボーナス
+SIF TALENT:184
+	LOCAL += 1
+;섹스광によるボーナス
+SIF TALENT:75
+	LOCAL *= 2
+;쾌감에 솔직
+SIF TALENT:70
+	LOCAL += 1
+;음란によるボーナス
+SIF TALENT:76
+	LOCAL *= 2
+
+
+SIF TALENT:432 == 1 && TALENT:422 == 0
+	TIMES LOCAL, 1.50
+SIF TALENT:422 == 1 && TALENT:432 == 0
+	TIMES LOCAL, 1.50
+SIF TALENT:422 == 1 && TALENT:432 == 1
+	TIMES LOCAL, 2.00
+
+;V경험
+TCVAR:0 += LOCAL
+;정액경험
+TCVAR:20 += LOCAL*2
+;성교경험
+TCVAR:5 += LOCAL
+
+IF TALENT:153 == 0 && TALENT:154 == 0
+	LOCAL:1 += RAND:100
+
+	IF CFLAG:109 >= 1
+		LOCAL:2 = CFLAG:109 * 2
+		LOCAL:1 *= LOCAL:2
+	ELSEIF CFLAG:109 == -1
+		LOCAL:1 = 0
+	ENDIF
+	SIF TALENT:30 == 1
+		LOCAL:1 = 0
+	SIF TALENT:30 == 0 && TALENT:31 == 0
+		LOCAL:1 /= 2
+	SIF TALENT:420 == 1
+		LOCAL:1 = 0
+	SIF TALENT:500 == 1
+		LOCAL:1 = 0
+	SIF TALENT:501 == 1
+		LOCAL:1 = 0
+	SIF TALENT:504 == 1
+		LOCAL:1 = 0
+	SIF TALENT:505 == 1
+		LOCAL:1 = 0
+	SIF TALENT:508 == 1
+		LOCAL:1 = 0
+	SIF TALENT:511 == 1
+		LOCAL:1 = 0
+	SIF TALENT:520 == 1
+		LOCAL:1 = 0
+	SIF TALENT:521 == 1
+		LOCAL:1 = 0
+	IF LOCAL:1 >= 95
+		CFLAG:102 = 7
+		CFLAG:110 = DAY + 10 + RAND:3
+		CFLAG:111 = -4
+		CSTR:60 = %CSTR:7% %CSTR:8%(남친)
+	ENDIF
+ENDIF
+
+J:0 += LOCAL * 25
+J:1 += LOCAL * 250
+J:14 += LOCAL * 10
+J:5 += LOCAL * 500
+J:7 += LOCAL * 100
+J:8 += LOCAL * 20
+
+;===========================================================
+;BF共通イベント: V
+;===========================================================
+@BF_COMMONEV_0
+
+SIF CFLAG:42 == 79 && CFLAG:40 >= 64
+	RETURN
+
+IF DAY:1 >= 7 && DAY:1 <= 8
+	LOCAL = RAND:4
+ELSE
+	LOCAL = RAND:3
+ENDIF
+
+SIF CFLAG:623 == 1
+	LOCAL = 2
+
+CALL CALC_BFSEX
+
+PRINTFORM 주말이 지나고 월요일, 
+IF CFLAG:623 != 1
+	PRINTFORM 어제 휴일이었던 %타겟은(1)%, 
+ELSE
+	PRINTFORM 주말에 참가한 미팅에서 그대로『보쌈』당한 %타겟은(1)%, 
+	SIF TALENT:0 == 1
+		TCVAR:50 += 1
+ENDIF
+
+IF LOCAL == 0
+	PRINTFORM 남친의 방
+	CFLAG:163 = 2
+ELSEIF LOCAL == 1
+	PRINTFORM %CALLNAME:TARGET%의 방
+	CFLAG:163 = 1
+ELSEIF LOCAL == 2
+	PRINTFORM 러브호텔
+	CFLAG:163 = 3
+ELSEIF LOCAL == 3
+	PRINTFORM 바다
+	CFLAG:163 = 4
+ENDIF
+PRINTFORM 에서 
+
+IF CFLAG:15 == 0
+	PRINTFORM 처음으로 sex하고 처녀를 바친
+ELSE
+	PRINTFORM 러브러브sex를 한
+ENDIF
+
+LOCAL:1 = RAND:10
+SIF CFLAG:622 == 0
+	LOCAL:1 = 9
+IF LOCAL:1 >= 8
+	PRINTFORM 데다, 그 모습을 몰래 찍힌
+	CFLAG:164 = 3
+	J:8 *= 10
+	TCVAR:70 += (TCVAR:0 / 10)
+	SIF TCVAR:70 <= 0
+		TCVAR:70 = 1
+ENDIF
+PRINTFORM  것을 스탭
+
+IF CHARANUM >= 2
+	PRINTFORM  과 다른 여배우
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF COUNT == TARGET
+			CONTINUE
+		ELSEIF TALENT:COUNT:400 == 1
+			LOCAL:2 += 1
+		ENDIF
+	REND
+	SIF LOCAL:2 == 0
+		PRINTFORM  후보
+ENDIF
+
+PRINTFORML 들에게 기쁜듯이 웃으며 자랑했다……
+
+IF CFLAG:15 == 0
+	PRINTFORM 듣고보니 확실히 스탭들과 담소하는 %CALLNAME:TARGET%의 얼굴에선 
+	PRINTFORML 남자를 알게 된 여자의 요염함이 느껴진다
+	IF NO:TARGET == 1 && NO:MASTER == 0
+		PRINTFORM %CALLNAME:MASTER%에게 정말 소중한, 하나뿐인 가족인 %타겟이()% 
+		PRINTFORML 자신이 모르는 곳에서
+		CALL PRINT_BOYFRIEND
+		PRINTFORM  남친에게 어른이 돼버렸다는 사실―― 
+		PRINTFORML 다른 남자의 것이 돼버렸다는 사실에, %플레이어는()% 질투하고 있었다
+	ENDIF
+ENDIF
+
+EXP:101 += 1
+
+SIF LOCAL:1 >= 8 && TALENT:0
+	TCVAR:50 += 1
+IF CFLAG:15 == 0
+	SETCOLOR 0xF58F98
+		PRINTL 【처녀상실】
+	RESETCOLOR
+	CFLAG:15 = 8
+	TALENT:0 = 0
+	CSTR:0 = %CSTR:7% %CSTR:8%
+	CFLAG:160 = BASE:9
+	CFLAG:161 = DAY:1
+	CFLAG:162 = DAY:2
+
+ENDIF
+
+IF CFLAG:16 == -1
+	SETCOLOR 0xF58F98
+		PRINTL 【첫 키스】
+	RESETCOLOR
+	IF RAND:2 == 0
+		CSTR:1 = %CSTR:7% %CSTR:8%
+		CFLAG:16 = 8
+	ELSE
+		CSTR:1 = %CSTR:7% %CSTR:8%
+		CFLAG:16 = 8
+		CFLAG:824 = 1
+		TCVAR:50 += 1
+	ENDIF
+	CFLAG:820 = BASE:9
+	CFLAG:821 = DAY:1
+	CFLAG:822 = DAY:2
+ENDIF
+
+SIF CFLAG:623 == 1
+	CFLAG:623 = 0
+
+;===========================================================
+;BFの与える経験計算・A
+;===========================================================
+@CALC_BFSEX2
+
+VARSET TCVAR:TARGET, 0
+VARSET LOCAL, 0
+
+;とりあえず1文字変数で経験を渡すようにする
+
+;性交回数
+S = 0
+;A감각
+IF ABL:3 == 4
+	LOCAL += 1
+ELSEIF ABL:3 == 5
+	LOCAL += 2
+ELSEIF ABL:3 >= 6
+	LOCAL += 3
+ENDIF
+;성교중독によるボーナス
+SIF ABL:30
+	LOCAL += ABL:30 / 2 + 1
+;PALAM:욕정がLV4以上
+;욕망LV5以上봉사정신5以上で+1
+SIF ABL:11 >= 5 && ABL:16 >= 5
+	LOCAL += 2
+;욕망LV4以上봉사정신4以上で+1
+SIF ABL:11 >= 3 && ABL:16 >= 3
+	LOCAL += 1
+;PALAM:욕정がLV3以上
+;욕망LV7以上V감각LV6以上で+1(下と合わせて+2)
+SIF ABL:11 >= 7 && ABL:5 >= 6
+	LOCAL += 1
+;욕망LV4以上V감각LV3以上で+1
+SIF ABL:11 >= 4 && ABL:2 >= 3
+	LOCAL += 1
+;남친있음, 음란によるボーナス
+SIF TALENT:184
+	LOCAL += 1
+;섹스광によるボーナス
+SIF TALENT:75
+	LOCAL *= 2
+;쾌감에 솔직
+SIF TALENT:70
+	LOCAL += 1
+;음란によるボーナス
+SIF TALENT:76
+	LOCAL *= 2
+
+
+
+;A경험
+TCVAR:1 += LOCAL
+;정액경험
+TCVAR:20 += LOCAL*2
+;성교경험
+TCVAR:5 += LOCAL
+
+
+
+J:0 += LOCAL * 25
+J:2 += LOCAL * 250
+J:14 += LOCAL * 10
+J:5 += LOCAL * 500
+J:7 += LOCAL * 100
+J:8 += LOCAL * 20
+
+;===========================================================
+;BF共通イベント: A
+;===========================================================
+@BF_COMMONEV_1
+
+SIF EXP:1 == 0
+	RETURN
+SIF CFLAG:42 == 79 && CFLAG:40 >= 64
+	RETURN
+
+IF DAY:1 >= 7 && DAY:1 <= 8
+	LOCAL = RAND:4
+ELSE
+	LOCAL = RAND:3
+ENDIF
+
+CALL CALC_BFSEX2
+
+PRINTFORM 주말이 지나고 월요일, 어제 휴일이었던 %타겟은(1)%, 
+
+IF LOCAL == 0
+	PRINTFORM 남친의 방
+	CFLAG:833 = 2
+ELSEIF LOCAL == 1
+	PRINTFORM %CALLNAME:TARGET%의 방
+	CFLAG:833 = 1
+ELSEIF LOCAL == 2
+	PRINTFORM 러브호텔
+	CFLAG:833 = 3
+ELSEIF LOCAL == 3
+	PRINTFORM 바다
+	CFLAG:833 = 4
+ENDIF
+PRINTFORM 에서 
+
+
+;CFLAG:15が0であってほしい理由はないよね?
+;IF CFLAG:15 == 0 && TALENT:2 == 1
+;	PRINTFORM 指ぐらいしか挿入したことが無かったアナルの처녀をカレシに捧げ
+;ELSEIF CFLAG:15 == 8 && TALENT:2 == 1
+;	PRINTFORM 처녀だけでなく指ぐらいしか挿入したことが無かったアナルの처녀もカレシに捧げ
+;ELSE
+;	PRINTFORM らぶらぶなSEXをアナルでし
+;ENDIF
+
+IF CFLAG:15 == 8 && TALENT:2 == 1
+	PRINTFORM 처녀와, 손가락 밖에 넣은 적이 없는 애널처녀까지 남친에게 바친
+ELSEIF TALENT:2 == 1
+	PRINTFORM 손가락 밖에 넣은 적이 없는 애널처녀까지 남친에게 바친
+ELSE
+	PRINTFORM 러브러브 애널sex를 한
+ENDIF
+
+LOCAL:1 = RAND:10
+IF LOCAL:1 >= 8
+	PRINTFORM 데다, 그 모습을 몰래 찍힌
+	CFLAG:834 = 3
+	TCVAR:70 += TCVAR:0
+ENDIF
+PRINTFORM  것을 스탭
+
+IF CHARANUM >= 2
+	PRINTFORM 과 다른 여배우
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF COUNT == TARGET
+			CONTINUE
+		ELSEIF TALENT:COUNT:400 == 1
+			CONTINUE
+			LOCAL:2 = 1
+		ENDIF
+	REND
+	SIF LOCAL:2 == 0
+		PRINTFORM  후보
+ENDIF
+
+PRINTFORML 들에게 기쁜듯이 웃으며 자랑했다……
+
+IF TALENT:2 == 1
+	PRINTFORM 듣고보니 확실히 스탭들과 담소하는 %CALLNAME:TARGET%의 얼굴에선 
+	PRINTFORML 사랑하는 남친을 위해서라면 어브노멀한 플레이도 받아들이는, 어른 여자의여유가 묻어난다
+ENDIF
+
+EXP:101 += 1
+
+SIF LOCAL:1 >= 8 && TALENT:0
+	TCVAR:50 = 1
+IF TALENT:2 == 1
+	CFLAG:616 = 8
+	SETCOLOR 0xF58F98
+		PRINTL 【애널처녀상실】
+	RESETCOLOR
+	TALENT:2 = 0
+	CSTR:3 = %CSTR:7% %CSTR:8%
+	CFLAG:830 = BASE:9
+	CFLAG:831 = DAY:1
+	CFLAG:832 = DAY:2
+ENDIF
+
+IF CFLAG:16 == -1
+	SETCOLOR 0xF58F98
+		PRINTL 【첫 키스】
+	RESETCOLOR
+	CFLAG:16 = 8
+		IF RAND:2 == 0
+		CSTR:1 = %CSTR:7% %CSTR:8%
+	ELSE
+		CSTR:1 = %CSTR:7% %CSTR:8%
+		CFLAG:824 = 1
+	ENDIF
+	CFLAG:820 = BASE:9
+	CFLAG:821 = DAY:1
+	CFLAG:822 = DAY:2
+ENDIF
+

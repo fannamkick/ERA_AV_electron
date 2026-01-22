@@ -1,0 +1,36 @@
+﻿;===========================================================
+;実績・NTR = CUCKOLD
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_6
+RESULTS = NTR = CUCKOLD
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_6
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF TALENT:COUNT:184 == 1 && EXP:COUNT:101 >= 1
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:6 == 0 && DIFFICULTY_CHECK() && LOCAL >= 4
+	GLOBAL:6 = 1
+RETURN GLOBAL:6
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_6
+; 解説文
+PRINTFORM 수많은 여자아이와 나름대로 좋은 관계였지만, 그런 그녀들의 몸도 마음도
+PRINTFORML 다른 남자에게 빼앗겨버린 당신에게 딱 맞는 실적이군요
+PRINTFORML 영어로는『네토라레』를『CUCKOLD』라고 말한답니다。
+PRINTFORMW 이번엔 네토라레 당하지 않도록 당신의 테크닉으로 여자아이들의 혼을 빼버리는 것이 좋을 겁니다
+; ボーナスなどの処理はここ以降に記述する
+PRINTFORML 그런 %CALLNAME:MASTER%에게 보너스를 내리겠습니다
+PRINTFORM 인계플레이가 아닌, 신규게임 개시 후에 이 실적을 선택해주시면 주인의 기량이 4
+PRINTFORMW 이하인 경우, 주인의 기량이 5로 됩니다
+SIF ABL:MASTER:12 <= 4
+	ABL:MASTER:12 = 5

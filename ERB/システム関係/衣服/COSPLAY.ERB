@@ -1,0 +1,192 @@
+﻿;===========================================================
+;コスチューム名称表示
+;===========================================================
+@PRINT_COSTUME
+IF TFLAG:180 == 1
+	PRINT 하츠네 ○쿠
+ELSEIF TFLAG:180 == 2
+	PRINT 세일○문
+ELSEIF TFLAG:180 == 3
+	PRINT 아야○미 레이
+ELSEIF TFLAG:180 == 4
+	PRINT 아케미 ○무라
+ELSEIF TFLAG:180 == 5
+	PRINT 안○라
+ELSEIF TFLAG:180 == 6
+	PRINT 코○카 키리노
+ELSEIF TFLAG:180 == 7
+	PRINT CPG
+ELSEIF TFLAG:180 == 8
+	PRINT 성 크○니카 학원
+ELSEIF TFLAG:180 == 9
+	PRINT 혈○기사단 부단장
+ELSEIF TFLAG:180 == 10
+	PRINT 사립 ○리안 여학원
+ELSEIF TFLAG:180 == 11
+	PRINT 흑○공주
+ELSEIF TFLAG:180 == 12
+	PRINT 하코○와 학원
+ELSEIF TFLAG:180 == 13
+	PRINT 나나모○ 중학교
+ELSEIF TFLAG:180 == 14
+	PRINT 금빛 ○둠
+ELSEIF TFLAG:180 == 15
+	PRINT 사립 사○라가오카 여고
+ELSEIF TFLAG:180 == 16
+	PRINT 텐○ 학원
+ELSEIF TFLAG:180 == 17
+	PRINT ○하의 요정
+ELSEIF TFLAG:180 == 18
+	PRINT 큐어 멜○디
+ELSEIF TFLAG:180 == 19
+	PRINT 유○카제
+ELSEIF TFLAG:180 == 20
+	PRINT 사립 아○티에 학원
+ELSEIF TFLAG:180 == 21
+	PRINT 세○오 여학원
+ELSEIF TFLAG:180 == 22
+	PRINT 카자마○리 학원
+ELSEIF TFLAG:180 == 23
+	PRINT 코○에가하라 학원
+;ELSEIF TFLAG:180 == 28
+;△裸에이프런코스프레중, だとなんか違うので保留。
+ELSEIF TFLAG:180 == 31
+	PRINTFORM %CSTR:MASTER:4%
+ELSE
+	PRINT 
+ENDIF
+
+;===========================================================
+;코스프레着用コスチュームの選択
+;===========================================================
+@COSPLAY_COSTUME
+PRINTFORML ◆어떤 의상으로 갈아입을까요?◆
+$INPUT_LOOP_1
+DRAWLINE
+PRINTFORML [ 0] - 하츠네 ○쿠 의상
+PRINTFORML [ 1] - 세일○문 의상
+PRINTFORML [ 2] - 아야○미 레이 의상
+PRINTFORML [ 3] - 아케미 ○무라 마법소녀옷
+PRINTFORML [ 4] - 안○라 제복
+PRINTFORML [ 5] - 코○카 키리노의 교복
+PRINTFORML [ 6] - Colorful Pure Girls 유니폼
+IF ITEM:60 == 1
+	PRINTFORML [ 7] - 성 크○니카 학원 교복
+	PRINTFORML [ 8] - 혈○기사단 부단장 제복
+	PRINTFORML [ 9] - 사립 ○리안 여학원 교복
+	PRINTFORML [10] - 흑○공주 아바타 의상
+ENDIF
+IF ITEM:61 == 1
+	PRINTFORML [11] - 하코○와 학원 교복
+	PRINTFORML [12] - 나나모○ 중학교 교복
+	PRINTFORML [13] - 금빛 ○둠 의상
+	PRINTFORML [14] - 사립 사○라가오카 여교 교복
+ENDIF
+IF ITEM:62 == 1
+	PRINTFORML [15] - 텐○ 학원 제복 블레이저타입
+	PRINTFORML [16] - ○하의 요정 무대의상
+	PRINTFORML [17] - 큐어 멜○디 의상
+	PRINTFORML [18] - 유키○제 닌자의상
+ENDIF
+IF ITEM:63 == 1
+	PRINTFORML [19] - 사립 아○티에 학원 교복
+	PRINTFORML [20] - 세○오 여학원 교복
+	PRINTFORML [21] - 카자마○리 학원 고등학교 교복
+	PRINTFORML [22] - 코○에가하라 학원 교복
+ENDIF
+IF ITEM:64 == 1
+	PRINTFORML [23] - 
+	PRINTFORML [24] - 
+	PRINTFORML [25] - 
+	PRINTFORML [26] - 
+ENDIF
+IF ITEM:211 == 1
+	PRINTFORML [27] - 알몸 앞치마
+ENDIF
+IF FLAG:554
+	PRINTFORML [30] - %CSTR:MASTER:4% 제복
+ENDIF
+DRAWLINE
+INPUT
+
+IF RESULT == 0 && ABL:81 >= 1
+	PRINTFORMW %CALLNAME:TARGET%에게 하츠네 ○쿠 의상을 입혔다
+	TFLAG:180 = 1
+ELSEIF RESULT == 1 && ABL:81 >= 2
+	PRINTFORMW %CALLNAME:TARGET%에게 세일○문 의상을 입혔다
+	TFLAG:180 = 2
+ELSEIF RESULT == 2 && ABL:81 >= 3
+	PRINTFORMW %CALLNAME:TARGET%에게 아야○미 레이 의상을 입혔다
+	TFLAG:180 = 3
+ELSEIF RESULT == 3 && ABL:81 >= 1
+	PRINTFORMW %CALLNAME:TARGET%에게 아케미 ○무라 마법소녀옷을 입혔다
+	TFLAG:180 = 4
+ELSEIF RESULT == 4
+	PRINTFORMW %CALLNAME:TARGET%에게 안○라 제복을 입혔다
+	TFLAG:180 = 5
+ELSEIF RESULT == 5
+	PRINTFORMW %CALLNAME:TARGET%에게 코○카 키리노의 교복을 입혔다
+	TFLAG:180 = 6
+ELSEIF RESULT == 6
+	PRINTFORMW %CALLNAME:TARGET%에게 Colorful Pure Girls 유니폼을 입혔다
+	TFLAG:180 = 7
+ELSEIF RESULT == 7
+	PRINTFORMW %CALLNAME:TARGET%에게 성 크○니카 학원 교복을 입혔다.
+	TFLAG:180 = 8
+ELSEIF RESULT == 8 && ABL:81 >= 5
+	PRINTFORMW %CALLNAME:TARGET%에게 혈○기사단 부단장 제복을 입혔다
+	TFLAG:180 = 9
+ELSEIF RESULT == 9 && ABL:81 >= 1
+	PRINTFORMW %CALLNAME:TARGET%에게 사립 ○리안 여학원 교복을 입혔다
+	TFLAG:180 = 10
+ELSEIF RESULT == 10 && ABL:81 >= 6
+	PRINTFORMW %CALLNAME:TARGET%에게 흑○공주 아바타 의상을 입혔다
+	TFLAG:180 = 11
+ELSEIF RESULT == 11 && ABL:81 >= 1
+	PRINTFORMW %CALLNAME:TARGET%에게 하코○와 학원 교복을 입혔다
+	TFLAG:180 = 12
+ELSEIF RESULT == 12 && ABL:81 >= 3
+	PRINTFORMW %CALLNAME:TARGET%에게 나나모○ 중학교 교복을 입혔다
+	TFLAG:180 = 13
+ELSEIF RESULT == 13 && ABL:81 >= 7
+	PRINTFORMW %CALLNAME:TARGET%에게 금빛 ○둠 의상을 입혔다
+	TFLAG:180 = 14
+ELSEIF RESULT == 14
+	PRINTFORMW %CALLNAME:TARGET%에게 사립 사○라가오카 여고 교복을 입혔다
+	TFLAG:180 = 15
+ELSEIF RESULT == 15 && ABL:81 >= 4
+	PRINTFORMW %CALLNAME:TARGET%에게 텐○ 학원 제복 블레이저타입을 입혔다
+	TFLAG:180 = 16
+ELSEIF RESULT == 16 && ABL:81 >= 7
+	PRINTFORMW %CALLNAME:TARGET%에게 ○하의 요정 무대의상을 입혔다
+	TFLAG:180 = 17
+ELSEIF RESULT == 17 && ABL:81 >= 8
+	PRINTFORMW %CALLNAME:TARGET%에게 큐어 멜○디 의상 입혔다
+	TFLAG:180 = 18
+ELSEIF RESULT == 18 && ABL:81 >= 5
+	PRINTFORMW %CALLNAME:TARGET%에게 유키○제 닌자의상을 입혔다
+	TFLAG:180 = 19
+ELSEIF RESULT == 19 && ABL:81 >= 1
+	PRINTFORMW %CALLNAME:TARGET%에게 사립 아○티에 학원 교복을 입혔다
+	TFLAG:180 = 20
+ELSEIF RESULT == 20 && ABL:81 >= 1
+	PRINTFORMW %CALLNAME:TARGET%에게 세○오 여학원 교복을 입혔다
+	TFLAG:180 = 21
+ELSEIF RESULT == 21 && ABL:81 >= 4
+	PRINTFORMW %CALLNAME:TARGET%에게 카자마○리 학원 고등학교 교복을 입혔다
+	TFLAG:180 = 22
+ELSEIF RESULT == 22 && ABL:81 >= 2
+	PRINTFORMW %CALLNAME:TARGET%에게 코○에가하라 학원 교복을 입혔다
+	TFLAG:180 = 23
+						;****슬라임パッチ追加ここから****
+ELSEIF RESULT == 27 && ITEM:211 == 1
+	PRINTFORMW %CALLNAME:TARGET%에게 알몸 앞치마를 입혔다
+	TFLAG:180 = 28
+						;****슬라임パッチ追加ここまで****
+ELSEIF RESULT == 30 && FLAG:554
+	PRINTFORMW %CALLNAME:TARGET%에게 %CSTR:MASTER:4% 유니폼을 입혔다
+	TFLAG:180 = 31
+ELSE
+	PRINTFORMW 착용을 거부당했습니다
+	GOTO INPUT_LOOP_1
+ENDIF

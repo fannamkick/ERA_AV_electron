@@ -1,0 +1,104 @@
+.visit-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+}
+
+.visit-grid-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.visit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.visit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.2rem;
+  background: #2a2a2a;
+  border: 2px solid #444;
+  border-radius: 6px;
+}
+
+.char-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #3a3a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 auto;
+}
+
+.char-details {
+  text-align: center;
+  flex: 1;
+}
+
+.char-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+
+.char-callname {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.visit-button {
+  padding: 0.8rem;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 2px solid #666;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.visit-button:hover {
+  background: #4a4a4a;
+  border-color: #888;
+}
+
+.visit-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+}
+
+.visit-actions button {
+  padding: 0.8rem 2rem;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 2px solid #666;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.visit-actions button:hover {
+  background: #4a4a4a;
+  border-color: #888;
+}
+
+.info-desc {
+  margin: 0.5rem 0 0;
+  color: #999;
+  font-size: 0.9rem;
+}

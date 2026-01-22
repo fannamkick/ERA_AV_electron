@@ -1,0 +1,193 @@
+﻿;V감각のLvUP処理とその可否判定
+;eratohoA ver1,204のスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;V감각のLvUP
+;-------------------------------------------------
+@ABLUP2
+;オトコは却下
+SIF TALENT:122
+	RETURN 0
+
+DRAWLINE
+;PRINTL 바기나의 감도를 올립니다
+;PRINTL V감각이 높아지면, 통상 섹스와 바이브로부터 보다 큰 쾌락을 얻을 수 있습니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;最大Lvは5, [섹스광]が付いている場合はLv10まで해방
+IF ABL:2 >= 2 && TALENT:0 == 1
+	PRINTW 이 이상 올리려면 비처녀여야합니다
+	RETURN 0
+ELSEIF ABL:2 >= 5 && TALENT:75 == 0
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:2 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要なV감각의 구슬
+A = 0
+;必要なV경험
+B = 0
+
+;条件別にOKかダメかを記録する
+;V감각의 구슬による可否(I=0:可, I&1:珠不足, I&2:経験不足)
+I = 0
+
+CALL DECIDE_ABLUP2
+
+PRINTFORM [0] - %PALAMNAME:1%의 구슬×{JUEL:1}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+;V경험
+PRINTFORML       %EXPNAME:0%　　{EXP:0}/{B}
+
+PRINTL [100] - 그만둔다
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:2 += 1
+
+IF RESULT == 0
+	JUEL:1 -= A
+ENDIF
+
+PRINTFORML %ABLNAME:2%의 레벨이 %조사처리(ABL:2,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;V감각のLvUP可否判定
+;-------------------------------------------------
+@DECIDE_ABLUP2
+;オトコは却下
+SIF TALENT:122
+	RETURN 0
+SIF ABL:2 >= 3 && TALENT:0 == 1
+	RETURN 0
+
+;V감각はLv5が上限, [섹스광]が付いている場合はLv10まで해방
+SIF ABL:2 >= 5 && TALENT:75 == 0
+	RETURN 0
+SIF ABL:2 >= 10
+	RETURN 0
+
+;判定変数を空に
+A = 0
+B = 0
+I = 0
+
+IF ABL:2 == 0
+	A = 1
+	B = 0
+ELSEIF ABL:2 == 1
+	A = 20
+	B = 0
+ELSEIF ABL:2 == 2
+	A = 400
+	B = 15
+ELSEIF ABL:2 == 3
+	A = 8000
+	B = 50
+ELSEIF ABL:2 == 4
+	A = 20000
+	B = 100
+ELSEIF ABL:2 == 5
+	A = 40000
+	B = 150
+ELSEIF ABL:2 == 6
+	A = 60000
+	B = 200
+ELSEIF ABL:2 == 7
+	A = 90000
+	B = 250
+ELSEIF ABL:2 == 8
+	A = 120000
+	B = 350
+ELSEIF ABL:2 == 9
+	A = 180000
+	B = 500
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	IF ABL:2 == 4
+		TIMES A , 2.00
+		TIMES B , 2.00
+	ELSEIF ABL:2 == 5
+		TIMES A , 2.50
+		TIMES B , 2.50
+	ELSEIF ABL:2 >= 6
+		TIMES A , 3.00
+		TIMES B , 3.00
+	ENDIF
+ENDIF
+
+;V둔감
+IF TALENT:103
+	TIMES A , 1.20
+	TIMES B , 1.10
+ENDIF
+
+;음란
+IF TALENT:76
+	TIMES A , 0.80
+	TIMES B , 0.80
+ENDIF
+;색정광
+IF TALENT:440
+	TIMES A , 0.20
+	TIMES B , 0.20
+ENDIF
+;섹스광
+IF TALENT:75
+	TIMES A , 0.80
+	TIMES B , 0.80
+ENDIF
+;V민감
+IF TALENT:104
+	TIMES A , 0.80
+	TIMES B , 0.80
+ENDIF
+
+IF TALENT:505
+	TIMES A , 0.01
+	TIMES B , 0.1
+ENDIF
+
+;最低でも1個は必要
+SIF A < 1
+	A = 1
+SIF B < 1 && ABL:2 >= 3
+	B = 1
+
+;쾌V의 구슬は足りている?
+SIF JUEL:1 < A
+	I |= 1
+;성교경험は足りている?
+SIF EXP:0 < B
+	I |= 2
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+;
+;
+;

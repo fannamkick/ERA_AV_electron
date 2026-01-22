@@ -1,0 +1,307 @@
+// 캐릭터 데이터 타입 정의
+
+// 능력치 (Abl.csv)
+export interface CharacterAbilities {
+  // 기본 능력
+  0?: number; // C쾌감
+  1?: number; // B쾌감
+  2?: number; // V쾌감
+  3?: number; // A쾌감
+
+  // 욕망 능력
+  10?: number; // 욕망
+  11?: number; // 순종
+  12?: number; // 기교
+  13?: number; // 봉사정신
+  14?: number; // 자위기술
+  15?: number; // T기술
+  16?: number; // 촉수기술
+  17?: number; // 방뇨기술
+
+  // 성향 능력
+  20?: number; // 창녀
+  21?: number; // 야외플
+  22?: number; // 마조
+  23?: number; // BL
+
+  // 특수 능력
+  30?: number; // 자위중독
+  31?: number; // 정액중독
+  32?: number; // 레즈중독
+  33?: number; // 촉수중독
+  37?: number; // 노출벽
+  38?: number; // 레즈끼
+  39?: number; // 마조끼
+  40?: number; // 임신
+  41?: number; // 출산
+
+  // 직업 능력
+  50?: number; // 가창력
+  51?: number; // 댄스실력
+  52?: number; // Y능력
+
+  // 성향 경험
+  70?: number; // 정상위경험
+  71?: number; // 기승위경험
+  72?: number; // 배면위경험
+  73?: number; // 측위경험
+
+  // 촬영 관련
+  80?: number; // 일반촬영
+  81?: number; // 하드촬영
+
+  [key: number]: number | undefined;
+}
+
+// 파라미터 (Palam.csv) - 조교 중 변화하는 수치
+export interface CharacterParameters {
+  0?: number;  // 쾌C
+  1?: number;  // 쾌V
+  2?: number;  // 쾌A
+  3?: number;  // 윤활
+  4?: number;  // 온순
+  5?: number;  // 욕정
+  6?: number;  // 굴복
+  7?: number;  // 습득
+  8?: number;  // 치정
+  9?: number;  // 고통
+  10?: number; // 공포
+  11?: number; // 반감
+  12?: number; // 불쾌
+  13?: number; // 억울
+  14?: number; // 쾌B
+  15?: number; // 향락
+  100?: number; // 부정
+
+  [key: number]: number | undefined;
+}
+
+// 특성 (Talent.csv)
+export interface CharacterTalents {
+  // 기본 소질 (0-9)
+  0?: number;  // 처녀
+  1?: number;  // 동정
+  2?: number;  // 애널처녀
+  9?: number;  // 붕괴
+
+  // 성격 (10-19)
+  10?: number; // 겁쟁이
+  11?: number; // 건방짐
+  12?: number; // 다부짐
+  13?: number; // 솔직함
+  14?: number; // 얌전함
+  15?: number; // 프라이드 높음
+  16?: number; // 활발함
+  17?: number; // 프라이드 낮음
+  18?: number; // 츤데레
+
+  // 성에 대한 관심 (20-29)
+  20?: number; // 자제심
+  21?: number; // 쿨
+  22?: number; // 감정부족
+  23?: number; // 호기심
+  24?: number; // 보수적
+  25?: number; // 포지티브
+  26?: number; // 네거티브
+  27?: number; // 일선을 넘지않음
+  28?: number; // 튀고 싶어함
+
+  // 처녀성 (30-39)
+  30?: number; // 정조관념
+  31?: number; // 정조 무관심
+  32?: number; // 억압
+  33?: number; // 해방
+  34?: number; // 저항
+  35?: number; // 수줍음
+  36?: number; // 부끄럼 없음
+  37?: number; // 약점
+
+  // 체질 (40-49)
+  40?: number; // 아픔에 약함
+  41?: number; // 아픔에 강함
+  42?: number; // 젖기쉬움
+  43?: number; // 젖기힘듬
+  44?: number; // 울보
+  45?: number; // 울지 않음
+  46?: number; // 약물중독
+  47?: number; // 정애미각
+
+  // 기술 (50-59)
+  50?: number; // 소질있음
+  51?: number; // 습득느림
+  52?: number; // 혀놀림
+  55?: number; // 조합지식
+  56?: number; // 약독내성
+  57?: number; // 오줌싸개
+
+  // 결벽도 (60-69)
+  60?: number; // 자위하기 쉬움
+  61?: number; // 악취둔감
+  62?: number; // 악취민감
+  63?: number; // 헌신적
+  64?: number; // 불결무시
+
+  // 솔직도 (70-79)
+  70?: number; // 쾌감에 솔직
+  71?: number; // 쾌감을 부정
+  72?: number; // 중독되기 쉬움
+  73?: number; // 즉각함락
+  74?: number; // 자위광
+  75?: number; // 섹스광
+  76?: number; // 음란
+  77?: number; // 애널광
+  78?: number; // 가슴광
+
+  // 성벽 (79-99)
+  79?: number; // 보이시
+  80?: number; // 도착적
+  81?: number; // 바이
+  82?: number; // 남성불신
+  83?: number; // 새드
+  84?: number; // 질투
+  85?: number; // 연심
+  86?: number; // 망신
+  87?: number; // 소악마
+  88?: number; // 마조
+  89?: number; // 노출광
+  90?: number; // 섹프
+  91?: number; // 매혹
+  92?: number; // 수수께끼의 매력
+  93?: number; // 카리스마
+
+  // 신체 특징 (99-152)
+  99?: number;  // 큰체구
+  100?: number; // 작은체형
+  101?: number; // C둔감
+  102?: number; // C민감
+  103?: number; // V둔감
+  104?: number; // V민감
+  105?: number; // A둔감
+  106?: number; // A민감
+  107?: number; // B둔감
+  108?: number; // B민감
+  109?: number; // 빈유
+  110?: number; // 거유
+  111?: number; // 회복 빠름
+  112?: number; // 회복 느림
+  113?: number; // 매력
+  114?: number; // 폭유
+  115?: number; // 비만
+  116?: number; // 절벽
+  117?: number; // 치료
+  118?: number; // 고무
+  119?: number; // 통통함
+  121?: number; // 후타나리
+  122?: number; // 남성
+  123?: number; // 광기
+  124?: number; // 동물귀
+  125?: number; // 음모 없음
+  126?: number; // 인기인
+  127?: number; // 역습
+  128?: number; // 음모 빽빽함
+  130?: number; // 모유체질
+  131?: number; // 유아퇴행
+  132?: number; // 유치
+  133?: number; // 조루
+  134?: number; // 유리멘탈
+  135?: number; // 미숙함
+  136?: number; // 암캐
+  137?: number; // 묘판
+  140?: number; // 동물 좋아함
+  141?: number; // 동물 싫어함
+  150?: number; // 자위 안함
+  151?: number; // 봉사 안함
+  152?: number; // 세뇌 안당함
+  153?: number; // 임신
+  154?: number; // 육아 중
+
+  [key: number]: number | undefined;
+}
+
+// 경험치 (EXP)
+export interface CharacterExperience {
+  [key: number]: number;
+}
+
+// 표정 (MARK)
+export interface CharacterMarks {
+  [key: number]: number;
+}
+
+// 구슬/상성 (JUEL/相性)
+export interface CharacterJuel {
+  [key: number]: number;
+}
+
+// 캐릭터 플래그 (CFLAG)
+export interface CharacterFlags {
+  16?: number;  // 호감도
+  21?: number;  // 생일(월일 4자리)
+  22?: number;  // 연령(생년 4자리)
+  41?: number;  // 나이
+  170?: number; // B컵
+  171?: number; // B우유통
+  174?: number; // B乳륜
+  175?: number; // B유두
+  176?: number; // V길이
+  177?: number; // V크기
+  600?: number; // 처음조교일
+  602?: number; // 처음조교주
+  620?: number; // 매수 가격
+
+  [key: number]: number | undefined;
+}
+
+// 캐릭터 문자열 데이터 (CSTR)
+export interface CharacterStrings {
+  9?: string;   // 혈액형
+  42?: string;  // 짝사랑 상대
+  43?: string;  // 친구
+  44?: string;  // 부모자식
+
+  [key: number]: string | undefined;
+}
+
+// 메인 캐릭터 데이터 구조
+export interface Character {
+  id: number;
+  name: string;           // 이름 (NAME)
+  callName: string;       // 호칭 (CALLNAME)
+  nickname?: string;      // 애칭 (NICKNAME)
+
+  // 기본 수치
+  base: CharacterAbilities;      // 기본 능력치 (BASE)
+  abl: CharacterAbilities;       // 현재 능력치 (ABL)
+  palam: CharacterParameters;    // 파라미터
+  talent: CharacterTalents;      // 특성
+  exp: CharacterExperience;      // 경험치
+  mark: CharacterMarks;          // 표정
+  juel: CharacterJuel;           // 구슬/상성 (相性)
+
+  // 최대치
+  maxBase: CharacterAbilities;   // 최대 능력치 (MAXBASE)
+
+  // 플래그 및 문자열
+  cflag: CharacterFlags;         // 캐릭터 플래그
+  cstr: CharacterStrings;        // 캐릭터 문자열
+
+  // 관계
+  relation: number[];            // 관계 (RELATION)
+
+  // 상태
+  isOwned: boolean;              // 소유 여부
+  isAssistant: boolean;          // 조수 여부
+  location?: string;             // 현재 위치
+}
+
+// 캐릭터 생성 시 초기 데이터
+export interface CharacterCreateData {
+  id: number;
+  name: string;
+  callName: string;
+  nickname?: string;
+  base?: Partial<CharacterAbilities>;
+  talent?: Partial<CharacterTalents>;
+  cflag?: Partial<CharacterFlags>;
+  cstr?: Partial<CharacterStrings>;
+}

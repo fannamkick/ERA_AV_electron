@@ -1,0 +1,728 @@
+﻿;;各種通常営業の内容と結果を計算します
+;;客の数, 満足度の決定, 영업 결과による経験の増加, お金の入手, 체력の減少はYUUKAKU_Rにある関数を使って一括で計算しています
+;;計算順は客の数→満足度→영업 결과の良し悪し→お金, 経験, 부정의 구슬, 체력の減少, の順のはずです……
+;eraIm@s_ver.0.17βdより流用して改造(pawapokya-)
+
+;===========================================================
+;회화영업
+;===========================================================
+@WORK_1ST
+
+CALL WORK_PERSON_A
+
+;客の욕망(0~2)をチェック
+;キャラの욕망が客の욕망を上回れば욕망の二倍, 下回れば等倍を客の満足度に加算
+A = RAND:3
+IF A <= ABL:11
+	D += ABL:11 * 2
+ELSE
+	D += ABL:11
+ENDIF
+
+;봉사정신と노출벽は等倍加算
+D += ABL:16
+D += ABL:17
+
+E = 0
+
+;従順が2以下なら満足度は半減
+IF ABL:10 <= 2
+	D /= 2
+ENDIF
+
+;화술が2以下なら満足度は半減
+IF ABL:15 <= 2
+	D /= 2
+ENDIF
+
+;普通の会話
+IF RAND:2 == 0
+	SIF (FLAG:6 & 2) == 0
+		PRINTFORML %타겟은()% 고객과 술을 마시면서, 가벼운 잡담을 했다
+	TFLAG:13 = 100
+	;욕망と봉사정신は等倍, 기교は二倍を加算。화술が기교を上回っていた場合, 代わりに화술の三倍を加算
+	B += ABL:11
+	B += ABL:16
+	IF ABL:12 > ABL:15
+		B += ABL:12 * 2
+	ELSE
+		B += ABL:15 * 3
+	ENDIF
+
+	D += B
+
+	CALL WORK_HAPPY
+
+	IF (FLAG:6 & 2) == 0
+		IF A >= 2
+			PRINTFORML %타겟과()% 즐겁게 대화를 나눠 고객은 만족한 것 같다
+		ELSEIF A <= 1
+			PRINTL 고객과의 대화는 시들해져, 만족시킬 수는 없었던 것 같다
+		ENDIF
+	ENDIF
+
+;紳士な会話
+ELSE
+	SIF (FLAG:6 & 2) == 0
+		PRINTFORML %타겟은()% 고객과 술을 마시면서, 음담패설이 들어간 잡담을 했다
+	TFLAG:13 = 101
+	;従順と기교は等倍, 노출벽はニ倍を加算。화술が기교を上回っていた場合, 代わりに화술の三倍を加算
+	B += ABL:10
+	B += ABL:17 * 2
+	IF ABL:12 > ABL:15
+		B += ABL:12
+	ELSE
+		B += ABL:15 * 3
+	ENDIF
+	;해방か부끄럼 없음があればボーナス+2
+	SIF TALENT:33 || TALENT:36
+		B += 2
+
+	D += B
+	
+	CALL WORK_HAPPY
+
+	IF (FLAG:6 & 2) == 0
+		IF A >= 2
+			PRINTFORML %CALLNAME:TARGET%의 도발적인 말과 매력적인 거동에, 고객은 만족한 것 같다
+		ELSEIF A <= 1
+			PRINTL 오히려 분위기가 어색해져, 고객을 만족시킬 수 없었던 것 같다
+		ENDIF
+	ENDIF
+ENDIF
+
+SIF (FLAG:6 & 2)
+	PRINT 회화영업
+
+;獲得額補正
+T:91 = 1
+
+;체력減少量補正
+F = 1
+
+;===========================================================
+;봉사영업
+;===========================================================
+@WORK_2ND
+
+CALL WORK_PERSON_A
+
+;客の욕망(0~3)をチェック
+;キャラの욕망が客の욕망を上回れば욕망の二倍, 下回れば等倍を客の満足度に加算
+A = RAND:4
+IF A <= ABL:11
+	D += ABL:11 * 2
+ELSE
+	D += ABL:11
+ENDIF
+
+IF (FLAG:6 & 2) == 0
+	IF CFLAG:12 == 2
+		PRINTFORML %타겟은()% 고객의 앞에 무릎 꿇고, 그 성기에 봉사를 했다
+	ELSEIF CFLAG:12 == 7
+		PRINTFORML %타겟은()% 온몸을 거품으로 감싸고, 전신으로 고객의 몸을 씻어주었다
+	ENDIF
+ENDIF
+
+TFLAG:13 = 102
+;봉사정신, 정액중독は等倍, 기교, 봉사기술は二倍を加算
+D += ABL:16
+D += ABL:32
+D += ABL:12 * 2
+D += ABL:13 * 2
+
+;従順が3以下なら満足度は半減
+SIF ABL:10 <= 3
+	D /= 2
+
+;オトコの場合ホモっ気が1以下なら満足度は半減
+SIF TALENT:122 && ABL:23 <= 1
+	D /= 2
+
+;헌신적ならボーナス+2
+SIF TALENT:63
+	D += 2
+
+CALL WORK_HAPPY
+
+IF (FLAG:6 & 2) == 0
+	IF A >= 3
+		IF ABL:12 >= 3
+			PRINTFORML %타겟은()% 능숙한 기교로 고객을 사로잡았다
+		ELSEIF ABL:16 >= 4
+			PRINTFORML %CALLNAME:TARGET%의 열띤 봉사에, 고객은 대단히 산뜻해졌다
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 봉사에, 고객은 대단히 만족한 것 같다
+		ENDIF
+	ELSEIF A == 2
+		PRINTFORML %CALLNAME:TARGET%의 봉사로 고객은 산뜻해진 것 같다
+	ELSEIF A < 2
+		PRINTFORML 그러나, %CALLNAME:TARGET%의 봉사로는 고객을 만족시킬 수 없었다
+	ENDIF
+ENDIF
+
+;첫 키스
+IF CFLAG:16 == -1
+	PRINTFORML %타겟은()% 낯선 남자의 페니스에 첫 키스를 바쳤다……
+		CFLAG:16 = 2
+			IF CFLAG:16 == 4 && TALENT:76 == 0
+				CSTR:1 = 모르는 아저씨의 %CSTR:80%
+			ELSEIF CFLAG:16 == 4 && TALENT:76 == 1
+				CSTR:1 = 모르는 아저씨의 %CSTR:80%
+			ENDIF
+		CFLAG:820 = BASE:9
+		CFLAG:821 = DAY:1
+		CFLAG:822 = DAY:2
+		CFLAG:823 = 7
+		CFLAG:824 = 1
+	;異常体験に＋1
+	EXP:50 += 1
+ENDIF
+
+T:20 = G
+T:22 = G
+T:74 = G
+SIF TALENT:122
+	T:41 = G
+
+;단골손님がいれば営業애정경험増加
+SIF TALENT:183 == 1
+	T:75 = 2
+
+;通常애정경험が少なければ, 得られる営業애정경험増加
+IF EXP:23 <= 30
+	T:75 *= 5
+ELSEIF  EXP:23 <= 50
+	T:75 *= 4
+ELSEIF EXP:23 <= 100
+	T:75 *= 3
+ELSEIF EXP:23 >= 200
+	T:75 /= 2
+ENDIF
+
+SIF (FLAG:6 & 2)
+	PRINT 봉사영업
+
+;獲得額補正
+T:91 = 2
+
+;체력減少量補正
+F = 3
+
+;===========================================================
+;A영업
+;===========================================================
+@WORK_3RD
+
+CALL WORK_PERSON_A
+
+;客の욕망(0~4)をチェック
+;キャラの욕망が客の욕망を上回れば욕망の二倍, 下回れば等倍を客の満足度に加算
+A = RAND:5
+IF A <= ABL:11
+	D += ABL:11 * 2
+ELSE
+	D += ABL:11
+ENDIF
+
+E = 0
+
+IF (FLAG:6 & 2) == 0
+	PRINTFORM %타겟은()% 고객에게 몇번이고 애널을 범해져
+	IF CFLAG:13
+		PRINTFORML  버렸다
+	ELSE
+		PRINTFORML , 장내에 정액을 부어 넣어졌다
+	ENDIF
+ENDIF
+
+TFLAG:13 = 103
+;A감각は三倍, 기교は二倍, 봉사정신と성교기술と성교중독は等倍を加算
+D += ABL:3 * 3
+D += ABL:12 * 2
+D += ABL:16
+D += ABL:14
+D += ABL:30
+
+;A경험が少ないと満足度は少し減少
+SIF EXP:1 <= EXPLV:4
+	D -= 3
+
+;従順が4以下なら満足度は半減
+SIF ABL:10 <= 4
+	D /= 2
+
+;オトコの場合ホモっ気が2以下なら満足度は半減
+SIF TALENT:122 && ABL:23 <= 2
+	D /= 2
+
+;애널광ならボーナス+5
+SIF TALENT:77
+	D += 5
+
+CALL WORK_HAPPY
+
+IF (FLAG:6 & 2) == 0
+	IF A >= 3
+		IF ABL:12 >= 3
+			PRINTFORML %타겟은()% 그 기교로 고객들을 사로잡았다
+		ELSEIF ABL:3 >= 4
+			PRINTFORML 고객들은 %CALLNAME:TARGET%의 애널의 뛰어난 상태에 만족했다
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 애널은, 손님들을 매우 만족시켰다
+		ENDIF
+	ELSEIF A == 2
+		PRINTFORML %CALLNAME:TARGET%의 애널에, 고객들은 그런대로 만족은 한 것 같다
+	ELSEIF A < 2
+		PRINTFORML 그러나, %CALLNAME:TARGET%의 애널로는 고객들의 욕구를 만족시킬 수 없었다
+	ENDIF
+ENDIF
+IF TALENT:2 == 1 && CFLAG:616 == 0
+	PRINTFORMW 【매춘으로 애널처녀상실】
+	TALENT:2 = 0
+	CFLAG:616 = 2
+	CSTR:3 = 모르는 남자
+	;異常体験に＋1
+	EXP:50 += 1
+	CFLAG:830 = BASE:9
+	CFLAG:831 = DAY:1
+	CFLAG:832 = DAY:2
+	CFLAG:833 = 7
+	CFLAG:834 = 0
+ENDIF
+
+;A경험が少ないと, 체력の減少量と부정의 구슬の取得量が増加するフラグを点灯
+SIF EXP:1 <= 200
+	CFLAG:52 = 1
+
+T:1 = G
+T:5 = G
+T:20 = G
+T:74 = G
+SIF TALENT:122
+	T:41 = G * 2
+
+;단골손님がいれば営業애정경험増加
+SIF TALENT:183 == 1
+		T:75 = 4
+
+;通常애정경험が少なければ, 得られる営業애정경험増加
+IF EXP:23 <= 30
+	T:75 *= 5
+ELSEIF  EXP:23 <= 50
+	T:75 *= 4
+ELSEIF EXP:23 <= 100
+	T:75 *= 3
+ELSEIF EXP:23 >= 200
+	T:75 /= 2
+ENDIF
+
+SIF (FLAG:6 & 2)
+	PRINT A영업
+
+;獲得額補正
+;콘돔あり
+IF CFLAG:13
+	T:91 = 3
+;콘돔なし
+ELSE
+	T:91 = 5
+ENDIF
+
+;オトコの場合A영업の獲得額増加
+SIF TALENT:122
+	T:91 += 1
+
+;체력減少量補正
+F = 6
+
+;===========================================================
+;V영업
+;===========================================================
+@WORK_4TH
+
+CALL WORK_PERSON_A
+
+;客の욕망(0~4)をチェック
+;キャラの욕망が客の욕망を上回れば욕망の二倍, 下回れば等倍を客の満足度に加算
+A = RAND:5
+IF A <= ABL:11
+	D += ABL:11 * 2
+ELSE
+	D += ABL:11
+ENDIF
+
+E = 0
+
+IF (FLAG:6 & 2) == 0
+	PRINTFORM %타겟은()% 고객에게 몇번이고 질을 범해져
+	IF CFLAG:13
+		PRINTFORML  버렸다
+	ELSE
+		PRINTFORML , 질내에 정액을 부어 넣어졌다
+	ENDIF
+ENDIF
+
+TFLAG:13 = 104
+;V감각は三倍, 기교は二倍, 봉사정신と성교기술と성교중독は等倍を加算
+D += ABL:2 * 3
+D += ABL:12 * 2
+D += ABL:16
+D += ABL:14
+D += ABL:30
+
+;V경험が少ないと満足度は少し減少
+SIF EXP:0 <= EXPLV:4
+	D -= 3
+
+;従順が4以下だと満足度半減
+SIF ABL:10 <= 4
+	D /= 2
+
+;섹스광いならボーナス+5
+SIF TALENT:75
+	D += 5
+
+CALL WORK_HAPPY
+
+IF (FLAG:6 & 2) == 0
+	IF A >= 3
+		IF ABL:12 >= 3
+			PRINTFORML %타겟은()%, 그 기교로 고객들을 사로잡았다
+		ELSEIF ABL:2 >= 4
+			PRINTFORML 고객들은, %CALLNAME:TARGET%의 질의 상태에 만족한 것 같다
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 질에, 고객들은 매우 만족한 것 같다
+		ENDIF
+	ELSEIF A == 2
+		PRINTFORML %CALLNAME:TARGET%의 질의 상태에, 일단 고객은 만족한 것 같다
+	ELSEIF A < 2
+		PRINTFORML 그러나, %CALLNAME:TARGET%의 성기는 고객들의 욕구를 만족시킬 수 없었다
+	ENDIF
+ENDIF
+
+;처녀だった場合, 처녀상실フラグを点灯
+IF TALENT:0
+	PRINTFORMW 【매춘으로 처녀상실】
+	CFLAG:50 = 2
+	TALENT:0 = 0
+	;初体験の相手を記録
+	IF CFLAG:15 == 0
+		CFLAG:15 = 2
+		CSTR:0 = 모르는 남자
+		CFLAG:160 = BASE:9
+		CFLAG:161 = DAY:1
+		CFLAG:162 = DAY:2
+		CFLAG:163 = 7
+		CFLAG:164 = 0
+	ENDIF
+	;이상경험に＋2
+	T:50 += 2
+ENDIF
+
+
+T:0 = G
+T:5 = G
+T:20 = G
+T:74 = G
+
+;단골손님がいれば営業애정경험増加
+SIF TALENT:183 == 1
+	T:75 = 4
+
+;通常애정경험が少なければ, 得られる営業애정경험増加
+IF EXP:23 <= 30
+	T:75 *= 5
+ELSEIF  EXP:23 <= 50
+	T:75 *= 4
+ELSEIF EXP:23 <= 100
+	T:75 *= 3
+ELSEIF EXP:23 >= 200
+	T:75 /= 2
+ENDIF
+
+SIF (FLAG:6 & 2)
+	PRINT V영업
+
+;獲得額補正
+;콘돔あり
+IF CFLAG:13
+	T:91 = 4
+;콘돔なし
+ELSE
+	T:91 = 7
+ENDIF
+
+;消費체력補正
+F = 6
+
+;===========================================================
+;SM영업
+;===========================================================
+@WORK_5TH
+
+CALL WORK_PERSON_A
+
+;客の욕망(0~5)をチェック
+;キャラの욕망が客の욕망を上回れば욕망の二倍, 下回れば等倍を客の満足度に加算
+A = RAND:6
+IF A <= ABL:11
+	D += ABL:11 * 2
+ELSE
+	D += ABL:11
+ENDIF
+
+;기교は等倍を加算。새드끼と마조끼のうち高い方の等倍を加算([새드][마조]は5LV分の効果)
+D += ABL:12
+IF ABL:20 + TALENT:83 * 5 >= ABL:21 + TALENT:88 * 5
+	D += ABL:20 + TALENT:83 * 5
+ELSE
+	D += ABL:21 + TALENT:88 * 5
+ENDIF
+
+E = 0
+
+;従順が4以下だった場合, 満足度は半減
+IF ABL:10 <= 4
+	D /= 2
+ENDIF
+
+;새드끼＋[새드]が마조끼＋[마조]以上
+IF ABL:20 + TALENT:83 * 5 >= ABL:21 + TALENT:88 * 5
+	SIF (FLAG:6 & 2) == 0
+		PRINTFORML %타겟은()% 밧줄에 묶인 고객의 위에서 가학적인 미소를 지으며 허리를 흔들면서, 정액을 짜냈다……
+	TFLAG:13 = 105
+	;기교と새드끼のそれぞれ二倍を加算([새드]は5LV分の効果)
+	D += ABL:12 * 2
+	D += ABL:20 * 2
+	D += TALENT:83 * 5
+
+	CALL WORK_HAPPY
+
+	IF (FLAG:6 & 2) == 0
+		IF A >= 3
+			IF ABL:12 >= 3
+				PRINTL 그 기교로 고객들을 사로잡은 것 같다
+			ELSEIF ABL:20 >= 4
+				PRINTFORML 고객들은 %CALLNAME:TARGET%에게 희롱당하는 것을 충분히 즐긴 것 같다
+			ELSE
+				PRINTL 고객들은 매우 만족한 것 같다
+			ENDIF
+		ELSEIF A == 2
+			PRINTFORML %타겟과()%의 SM플레이에, 일단은 만족한 것 같다
+		ELSEIF A < 2
+			PRINTL 그러나 안타깝게도, 고객들의 욕구를 만족시키지는 못한 것 같다
+		ENDIF
+	ENDIF
+	
+	;V경험が少ないと, 체력の減少量と부정의 구슬の取得量が増加するフラグを点灯
+	SIF EXP:0 <= 200
+		CFLAG:51 = 1
+
+	T:0 = G
+	T:5 = G
+	T:20 = G
+	T:33 = G
+	T:74 = G
+
+;마조끼＋[마조]が새드끼＋[새드]より高い
+ELSE
+	SIF (FLAG:6 & 2) == 0
+		PRINTFORML %타겟은()% 고객에게 움직이지 못하도록 묶여서, 그대로 그 질을 범해졌다……
+	TFLAG:13 = 106
+	;기교と마조끼のそれぞれ二倍を加算([마조]は5LV分の効果)
+	D += ABL:12 * 2
+	D += ABL:21 * 2
+	D += TALENT:88 * 5
+
+	CALL WORK_HAPPY
+
+	IF (FLAG:6 & 2) == 0
+		IF A >= 3
+			IF ABL:12 >= 3
+				PRINTL 그 기교로 고객들을 사로잡은 것 같다
+			ELSEIF ABL:21 >= 4
+				PRINTFORML 고객들은 울며 애원하는 %CALLNAME:TARGET%에게서 가학심을 충분히 만족시킨 것 같다
+			ELSE
+				PRINTL 고객들은 매우 만족한 것 같다
+			ENDIF
+		ELSEIF A == 2
+			PRINTFORML %타겟과()%의 SM플레이에, 일단은 만족한 것 같다
+		ELSEIF A < 2
+			PRINTL 그러나 안타깝게도, 고객들의 욕구를 만족시키지는 못한 것 같다
+		ENDIF
+	ENDIF
+	
+	;V경험が少ないと, 체력の減少量と부정의 구슬の取得量が増加するフラグを点灯
+	SIF EXP:0 <= 200
+		CFLAG:51 = 1
+		
+	T:0 = G
+	T:5 = G
+	T:20 = G
+	T:30 = G
+	T:74 = G
+
+ENDIF
+
+;단골손님がいれば営業애정경험増加
+SIF TALENT:183 == 1
+	T:75 = 4
+;通常애정경험が少なければ, 得られる営業애정경험増加
+IF EXP:23 <= 30
+	T:75 *= 5
+ELSEIF EXP:23 <= 50
+	T:75 *= 4
+ELSEIF EXP:23 <= 100
+	T:75 *= 3
+ELSEIF EXP:23 >= 200
+	T:75 /= 2
+ENDIF
+
+SIF (FLAG:6 & 2)
+	PRINT SM영업
+
+;獲得額補正
+;콘돔あり
+IF CFLAG:13
+	T:91 = 5
+;콘돔なし
+ELSE
+	T:91 = 10
+ENDIF
+
+;消費체력補正
+F = 8
+
+;처녀だった場合, 처녀상실フラグを点灯
+IF TALENT:0
+	PRINTFORML 【매춘으로 처녀상실】
+	CFLAG:50 = 2
+	TALENT:0 = 0
+	;初体験の相手を記録
+	SIF CFLAG:15 == 0
+		CFLAG:15 = 2
+		CSTR:3 = 모르는 남자
+	;이상경험に＋2
+	T:50 += 2
+ENDIF
+
+;===========================================================
+;출장영업
+;===========================================================
+@WORK_6TH
+
+CALL WORK_PERSON_A
+
+;客の家に行くので強制的に人数は一人に
+G = 1
+
+;客の욕망(0~4)をチェック
+;キャラの욕망が客の욕망を上回れば욕망の二倍, 下回れば等倍を客の満足度に加算
+A = RAND:5
+IF A <= ABL:11
+	D += ABL:11 * 2
+ELSE
+	D += ABL:11
+ENDIF
+
+;화술と봉사정신の等倍を加算
+D += ABL:15
+D += ABL:16
+
+E = 0
+
+;従順が4以下だった場合, 満足度は半減
+IF ABL:10 <= 4
+	D /= 2
+ENDIF
+
+SIF (FLAG:6 & 2) == 0
+	PRINTFORML %타겟은()% 고객의 집까지 가서, 농후한 서비스를 했다……
+TFLAG:13 = 107
+
+;기교と봉사정신のそれぞれ二倍を加算
+D += ABL:12 * 2
+D += ABL:16 * 2
+
+CALL WORK_HAPPY
+
+IF (FLAG:6 & 2) == 0
+	IF A >= 3
+		PRINTFORML 고객은 %타겟과()% 매우 충실한 시간을 보낸 것 같다
+	ELSEIF A == 2
+		PRINTFORML 고객은 %타겟과()% 즐거운 한때를 보낸 것 같다
+	ELSEIF A < 2
+		PRINTL 아무래도 고객은 그다지 즐기지 못한 것 같다
+	ENDIF
+ENDIF
+
+;처녀だった場合, 처녀상실フラグを点灯
+IF TALENT:0
+	PRINTFORML 【매춘으로 처녀상실】
+	CFLAG:50 = 2
+	TALENT:0 = 0
+	;初体験の相手を記録
+	SIF CFLAG:15 == 0
+		CFLAG:15 = 2
+		CSTR:0 = 단골 손님
+	;이상경험に＋2
+	T:50 += 2
+ENDIF
+;첫 키스
+IF CFLAG:16 == -1
+	PRINTFORML 첫 키스
+		CFLAG:16 = 4
+			IF TALENT:432 == 0
+				CSTR:1 = 단골 손님
+			ELSEIF TALENT:432 == 1
+				CSTR:1 = 단골 손님의 자지
+			ENDIF
+ENDIF
+
+;V경험が少ないと, 체력の減少量と부정의 구슬の取得量が増加するフラグを点灯
+SIF EXP:0 <= 200
+	CFLAG:51 = 1
+
+;素質『求愛』がついていた場合はCFLAG:50とCFLAG:51を消す(これらは체력の減少量と부정의 구슬の取得量の増加にのみ関わるため)
+IF TALENT:183 == 1
+	CFLAG:50 = 0
+	CFLAG:51 = 0
+ENDIF
+
+T:0 = G
+T:5 = G
+T:20 = G
+T:22 = G
+T:74 = G
+
+
+;단골손님がいれば営業애정경험増加
+SIF TALENT:183 == 1
+	T:75 = 8
+;通常애정경험が少なければ, 得られる営業애정경험増加
+IF EXP:23 <= 30
+	T:75 *= 5
+ELSEIF EXP:23 <= 50
+	T:75 *= 4
+ELSEIF EXP:23 <= 100
+	T:75 *= 3
+ELSEIF EXP:23 >= 200
+	T:75 /= 2
+ENDIF
+
+SIF (FLAG:6 & 2)
+	PRINT 출장영업
+
+;獲得額補正
+;콘돔あり
+IF CFLAG:13
+	T:91 = 10
+;콘돔なし
+ELSE
+	T:91 = 30
+ENDIF
+
+;消費체력補正
+F = 6
+

@@ -1,0 +1,48 @@
+﻿;===========================================================
+;実績・BIG3
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_14
+RESULTS = BIG3
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_14
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF (NO:COUNT == 9 || NO:COUNT == 10 || NO:COUNT == 11) && TALENT:COUNT:430 == 1
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:14 == 0 && DIFFICULTY_CHECK() && LOCAL == 3
+	GLOBAL:14 = 1
+RETURN GLOBAL:14
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_14
+; 解説文
+PRINTFORML 뒷세계에 뿌리깊게 관계되있는「키류 카논」「레이첼・파라디수스」「스노 이쿠미」……
+PRINTFORML 그녀들을 아군으로 얻었던 것은, 앞으로의 %CALLNAME:MASTER%에게 있어 큰 이익이 될 것 같습니다
+PRINTFORMW 하지만 그와 동시에, 그런 %CALLNAME:MASTER%의 존재를 위험하게 생각하는 사람이 나와도 이상하지는 않을 것입니다
+; ボーナスなどの処理はここ以降に記述する
+IF FLAG:552 == 0
+	PRINTFORML ……그리고 지금, 상하이의 뒷세계를 좌지우지하는 조직장이 당신에게 흥미를 가졌다고 합니다
+	PRINTFORML 공식적으로는 단순한 유학생으로 온 소녀, 리 메이링
+	PRINTFORML 레이첼이 말하길, 일찍이 존재했던 왕조를 몰락시킨 전설상의 구미호의 환생이라고도 소문난『구미회』의 장이라고 합니다
+	PRINTFORM 그녀는 %플레이어를()% 위험시 하는 것과 동시에, 파라디수스 왕가와 희대의 천재 과학자를 설득해서 납득시킨 그 인품에 
+	PRINTFORML 흥미를 가져, 그녀 스스로 접촉해 왔습니다
+	PRINTFORMW 얼핏 보기엔 겁쟁이에 얌전한 소녀로밖에 안 보이지만, 카논이나 레이첼조차 경계하는 그녀를 어찌할지는, 모두 %CALLNAME:MASTER% 나름입니다
+	PRINTL
+	PRINTFORMW 《리 메이링과 계약했습니다》
+	ADDCHARA 93
+	GLOBAL:293 = 1
+	SAVEGLOBAL
+	FLAG:552 = 1
+		IF GLOBAL:200 >= 0
+			TARGET = GETCHARA(93)
+			CALL CLEARBONUS_CALL
+		ENDIF
+ENDIF

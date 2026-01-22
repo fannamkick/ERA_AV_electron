@@ -1,0 +1,70 @@
+﻿;=================================================
+;ターン終了時の職業素質持ちへの経験入手処理
+;=================================================
+@JOB_EXEC
+;203:아이돌 402:モデル 421:캬바레녀
+
+
+FOR LOCAL, 0, CHARANUM
+	SIF LOCAL == MASTER
+		CONTINUE
+	;別にALLSAMESなんて使う理由はないのだが
+	SIF ALLSAMES(TALENT:LOCAL:203,TALENT:LOCAL:402,TALENT:LOCAL:421)
+		CONTINUE
+	; 체력が無ければ休む
+	IF BASE:LOCAL:0 < 500
+		PRINTFORML 몸상태가 안좋은 %조사처리(CALLNAME:LOCAL,"는")% 일을 쉬었다
+	ELSE
+		IF TALENT:LOCAL:203
+			LOCAL:1 = 203
+		ELSEIF TALENT:LOCAL:402
+			LOCAL:1 = 402
+		ELSEIF TALENT:LOCAL:421
+			LOCAL:1 = 421
+		ENDIF
+		CALLFORM JOB_EXEC_{LOCAL:1}(LOCAL)
+		CUSTOMDRAWLINE ･･
+	ENDIF
+	DRAWLINE
+NEXT
+
+@JOB_EXEC_203(ARG)
+;아이돌
+
+PRINTFORML %조사처리(NAME:ARG,"는")% 아이돌 레슨에 매진하고 있다……
+JUEL:ARG:7 += 500
+PRINTFORMW 습득의 구슬 +500
+
+SELECTCASE RAND:3
+	;피사, 歌唱, 舞踊
+	CASE 0
+		EXP:ARG:70 += 1
+		PRINTFORMW 피사경험 +1
+	CASE 1
+		EXP:ARG:71 += 1
+		PRINTFORMW 가창경험 +1
+	CASE 2
+		EXP:ARG:72 += 1
+		PRINTFORMW 무용경험 +1
+ENDSELECT
+
+
+@JOB_EXEC_402(ARG)
+;モデル
+
+JUEL:ARG:7 += 500
+EXP:ARG:70 += 1
+
+PRINTFORML %조사처리(NAME:ARG,"는")% 모델로 일하고 있다……
+PRINTFORMW 습득의 구슬 +500
+PRINTFORMW 피사경험 +1
+
+@JOB_EXEC_421(ARG)
+;モデル
+
+JUEL:ARG:7 += 500
+EXP:ARG:73 += 1
+
+PRINTFORML %조사처리(NAME:ARG,"는")% 캬바레녀로 일하고 있다……
+PRINTFORMW 습득의 구슬 +500
+PRINTFORMW 회화경험 +1

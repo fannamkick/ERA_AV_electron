@@ -1,0 +1,154 @@
+﻿;===========================================================
+;実績・至高の처녀厨
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_5
+RESULTS = 위대한 유니콘
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_5
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF TALENT:COUNT:0 == 1 && CFLAG:COUNT:15 == 0 && TALENT:COUNT:2 == 1 && TALENT:COUNT:430 == 1 && TALENT:COUNT:505 == 0 && TALENT:COUNT:504 == 0
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+; 은퇴経験は削ってあります。面倒。
+SIF GLOBAL:5 == 0 && DIFFICULTY_CHECK() && MONEY >= 5000000 && FLAG:550 == 0 && LOCAL >= 5
+	GLOBAL:5 = 1
+RETURN GLOBAL:5
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_5
+; 解説文
+PRINTFORM 수많은 여자아이들과 꺄꺄우후후 하면서도, 여자아이들을 결코 더럽히지 않았던
+PRINTFORML %CALLNAME:MASTER%에게 딱 맞는 실적이군요
+PRINTFORML 그런 %플레이어를()%『유니콘』이라고 부르는 사람이 있을지도 모릅니다
+PRINTFORMW 그렇지만, 앞으로도 그 자세를 관철한다면 반드시 존경심을 가져줄 사람이 있겠지요
+; ボーナスなどの処理はここ以降に記述する
+;空いてたので仮にFLAG:553を使用
+IF FLAG:553 == 0 || (GLOBAL:30 == 1)
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORML %플레이어는()% 상당히 가혹했던 실적을 해제했습니다
+	PRINTFORML 그런 %CALLNAME:MASTER%에게 보너스를 주겠습니다
+	PRINTFORML 아래의 보너스 중에서 좋아하는 것을 하나 선택해주세요
+	$INPUT_LOOP_2
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORML  [0] - 소질【천사】를 부여한다(신뢰와 봉사정신 상승시에 필요한 구슬을 1％로 한다)
+	PRINTFORML  [1] - 소질【음마】을 부여한다(신뢰와 봉사정신 이외를 상승시에 필요한 구슬을 10％로 한다)
+	PRINTFORML  [2] - 특수 캐릭터『히나미 마유』와 계약한다
+	PRINTFORML  [3] - 특수 캐릭터『유니스 파라디수스』와 계약한다
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTL [999] - 돌아간다
+	INPUT
+	IF RESULT == 0
+		$INPUT_LOOP_5
+		DRAWLINE
+		PRINTFORML 【천사】를 부여할 캐릭터를 선택해 주세요
+		CALL LIFE_LIST_NEW,1
+		IF RESULT == 999
+			GOTO INPUT_LOOP_2	
+		ELSEIF RESULT < 0 || RESULT >= CHARANUM
+			GOTO INPUT_LOOP_2
+		ENDIF
+		IF TALENT:RESULT:511 == 1
+			PRINTFORML 이미 %조사처리(NAME:RESULT,"는")%【천사】가 부여되어 있습니다
+			WAIT
+			GOTO INPUT_LOOP_5
+		ENDIF
+		IF CFLAG:RESULT:900 == 1
+			PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 두 번 다시【천사】가 될 수 없습니다
+			GOTO INPUT_LOOP_5
+		ENDIF
+
+		TARGET = RESULT
+		PRINTFORMW %NAME:TARGET%에게【천사】를 부여했습니다
+		CALL ADD_ANGEL
+		FLAG:553 = 1
+		SAVEGLOBAL
+	ELSEIF RESULT == 1
+		$INPUT_LOOP_6
+		DRAWLINE
+		PRINTFORML 【음마】를 부여할 캐릭터를 선택해 주세요
+		CALL LIFE_LIST_NEW,1
+		IF RESULT == 999
+			GOTO INPUT_LOOP_2
+		ELSEIF RESULT < 0 || RESULT >= CHARANUM
+			GOTO INPUT_LOOP_6
+		ENDIF
+		IF TALENT:RESULT:505 == 1
+			PRINTFORML 이미 %조사처리(NAME:RESULT,"는")%【음마】가 부여되어 있습니다
+			WAIT
+			GOTO INPUT_LOOP_6
+		ENDIF
+		IF CFLAG:RESULT:900 == 1
+			PRINTFORMW %타겟은()% 두 번 다시【음마】가 될 수 없습니다
+			GOTO INPUT_LOOP_6
+		ENDIF
+		TARGET = RESULT
+		PRINTFORMW %NAME:TARGET%에게【음마】를 부여했습니다
+		TALENT:505 = 1
+		CFLAG:620 = 999999
+		CALL SUCCUBUS_STATUS_ACH
+		MAXBASE:0 += 1000
+		MAXBASE:1 += 1000
+		BASE:0 = MAXBASE:0
+		BASE:1 = MAXBASE:1
+		FLAG:553 = 1
+		SAVEGLOBAL
+	ELSEIF RESULT == 2 && GETCHARA(85, 0) < 0
+		CALL EXCHARA_MANUAL_1
+		PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+		PRINTL 히나미 마유와 계약합니까?
+		$INPUT_LOOP_MAYU
+		PRINTL [0] - 예
+		PRINTL [1] - 아니오
+		INPUT
+		IF RESULT == 0
+			PRINTW 【히나미 마유】와 계약했습니다
+			ADDCHARA 85
+			FLAG:553 = 1
+			GLOBAL:285 += 1	
+			SAVEGLOBAL
+		ELSEIF RESULT == 1
+			GOTO INPUT_LOOP_2
+		ELSE
+			GOTO INPUT_LOOP_MAYU
+		ENDIF
+		IF GLOBAL:200 >= 0
+			TARGET = GETCHARA(85)
+			CALL CLEARBONUS_CALL
+		ENDIF
+	ELSEIF RESULT == 3 && GETCHARA(86, 0) < 0
+		CALL EXCHARA_MANUAL_2
+		PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+		PRINTL 유니스・파라디수스와 계약합니까?
+		$INPUT_LOOP_YOUNIS
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		INPUT
+		IF RESULT == 0
+			PRINTW 【유니스 파라디수스】와 계약했습니다
+			ADDCHARA 86
+			FLAG:553 = 1
+			GLOBAL:286 += 1
+			SAVEGLOBAL
+		ELSEIF RESULT == 1
+			GOTO INPUT_LOOP_2
+		ELSE
+			GOTO INPUT_LOOP_YOUNIS
+		ENDIF
+		IF GLOBAL:200 >= 0
+			TARGET = GETCHARA(86)
+			CALL CLEARBONUS_CALL
+		ENDIF
+	ELSEIF RESULT == 999
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP_2
+	ENDIF
+ENDIF

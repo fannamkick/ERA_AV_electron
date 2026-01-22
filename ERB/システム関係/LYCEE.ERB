@@ -1,0 +1,690 @@
+﻿;総契約女優数に使ってるLOCAL:2とかCHARANUM-2でいいんじゃないのかこれ
+;===========================================================
+;女子寮
+;===========================================================
+@LYCEE_MAIN
+
+LOCAL:1 = 0
+LOCAL:2 = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:140 == 0
+		CONTINUE
+	ELSE
+		LOCAL:1++
+	ENDIF
+REND
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSE
+		LOCAL:2++
+	ENDIF
+REND
+DRAWLINE
+PRINTFORML 《여자 기숙사》
+PRINTFORML 계약한 여배우를 여자 기숙사에 넣을 수 있습니다
+PRINTFORM 현재 입주자수(
+SIF LOCAL:1 < 10
+	PRINT 0
+PRINTFORM {LOCAL:1}명 / 
+SIF LOCAL:2 < 10
+	PRINT 0
+PRINTFORML {LOCAL:2}명)
+DRAWLINE
+PRINTL  [0] - 입주시킨다
+PRINTL  [1] - 불러온다
+PRINTL  [2] - 시설을 확장한다
+IF FLAG:101
+	PRINTL  [3] - 입주중인 배우에게 시설을 이용하게 시킨다
+ELSE
+	PRINTL  [-] - －－－－－－－
+ENDIF
+
+DRAWLINE
+PRINTL [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	CALL LYCEE_IN
+ELSEIF RESULT == 1
+	CALL LYCEE_OUT
+ELSEIF RESULT == 2
+	CALL LYCEE_LABO
+ELSEIF RESULT == 3 && FLAG:101
+	CALL LYCEE_LABO_USE
+ELSEIF RESULT == 999
+	RETURN
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN 0
+
+;===========================================================
+;入寮処理
+;===========================================================
+@LYCEE_IN
+
+LOCAL:1 = 0
+LOCAL:2 = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:140 == 0
+		CONTINUE
+	ELSE
+		LOCAL:1++
+	ENDIF
+REND
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSE
+		LOCAL:2++
+	ENDIF
+REND
+
+PRINTFORML 《입주시킨다》
+PRINTFORM 현재 입주자수(
+SIF LOCAL:1 < 10
+	PRINT 0
+PRINTFORM {LOCAL:1}명 / 
+SIF LOCAL:2 < 10
+	PRINT 0
+PRINTFORML {LOCAL:2}명)
+DRAWLINE
+$INPUT_LOOP
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSE
+	TARGET = RESULT
+	PRINTFORML 《%타겟을(1)% 여자 기숙사에 입주시킵니까?》
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP_1
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 《%타겟을(1)% 여자 기숙사에 입주시켰습니다》
+			CFLAG:140 = 1
+			RESTART
+		ELSEIF RESULT == 1
+			PRINTFORMW 《입주시키지 않았습니다》
+			RESTART
+		ELSE
+			GOTO INPUT_LOOP_1
+		ENDIF
+ENDIF
+
+RETURN 0
+
+;===========================================================
+;出寮処理
+;===========================================================
+@LYCEE_OUT
+
+LOCAL:1 = 0
+LOCAL:2 = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:140 == 0
+		CONTINUE
+	ELSE
+		LOCAL:1++
+	ENDIF
+REND
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSE
+		LOCAL:2++
+	ENDIF
+REND
+
+PRINTFORML 《불러온다》
+PRINTFORM 현재 입주자수(
+SIF LOCAL:1 < 10
+	PRINT 0
+PRINTFORM {LOCAL:1}명 / 
+SIF LOCAL:2 < 10
+	PRINT 0
+PRINTFORML {LOCAL:2}명)
+DRAWLINE
+$INPUT_LOOP
+
+CALL LIFE_LIST_NEW,5
+
+IF RESULT == 999
+	RETURN
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSE
+	TARGET = RESULT
+	PRINTFORML 《%타겟을(1)% 여자 기숙사에서 불러오겠습니까?》
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP_1
+	INPUT
+		IF RESULT == 0
+			PRINTFORMW 《%타겟을(1)% 여자 기숙사에서 불러왔습니다》
+			CFLAG:140 = 0
+			CFLAG:141 = 0
+			RESTART
+		ELSEIF RESULT == 1
+			PRINTFORMW 《불러오지 않았습니다》
+			RESTART
+		ELSE
+			GOTO INPUT_LOOP_1
+		ENDIF
+ENDIF
+
+RETURN 0
+
+;===========================================================
+;寮施設利用
+;===========================================================
+@LYCEE_LABO_USE
+
+LOCAL:1 = 0
+LOCAL:2 = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:140 == 0
+		CONTINUE
+	ELSE
+		LOCAL:1++
+	ENDIF
+REND
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSE
+		LOCAL:2++
+	ENDIF
+REND
+
+PRINTFORML 《시설을 이용시킨다》
+PRINTFORM 현재 입주자수(
+SIF LOCAL:1 < 10
+	PRINT 0
+PRINTFORM {LOCAL:1}명 / 
+SIF LOCAL:2 < 10
+	PRINT 0
+PRINTFORML {LOCAL:2}명)
+DRAWLINE
+$INPUT_LOOP
+
+CALL LIFE_LIST_NEW,5
+
+IF RESULT == 999
+	RETURN
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSE
+	TARGET = RESULT
+	PRINTFORML 《%NAME:TARGET%에게 어떤 시설을 이용시키겠습니까?》
+	SIF (FLAG:101 & 1)
+		PRINTL [0] - 에스테룸
+	SIF (FLAG:101 & 2)
+		PRINTL [1] - 휴게실
+	SIF (FLAG:101 & 8)
+		PRINTL [2] - 탁아소
+	SIF (FLAG:101 & 32)
+		PRINTL [3] - 고급 노래방
+	SIF (FLAG:101 & 64)
+		PRINTL [4] - 댄스 스튜디오
+	$INPUT_LOOP_1
+	INPUT
+		IF RESULT == 0 && (FLAG:101 & 1)
+			PRINTFORMW 《%NAME:TARGET%에게 에스테룸을 이용시킵니다》
+			CFLAG:141 = 1
+			RESTART
+		ELSEIF RESULT == 1 && (FLAG:101 & 2)
+			PRINTFORMW 《%NAME:TARGET%에게 휴게실을 이용시킵니다》
+			CFLAG:141 = 2
+			RESTART
+		ELSEIF RESULT == 2 && (FLAG:101 & 8)
+			PRINTFORMW 《%NAME:TARGET%에게 탁아소를 이용시킵니다》
+			CFLAG:141 = 3
+			RESTART
+		ELSEIF RESULT == 3 && (FLAG:101 & 32)
+			PRINTFORMW 《%NAME:TARGET%에게 고급 노래방을 이용시킵니다》
+			CFLAG:141 = 4
+			RESTART
+		ELSEIF RESULT == 4 && (FLAG:101 & 64)
+			PRINTFORMW 《%NAME:TARGET%에게 댄스 스튜디오를 이용시킵니다》
+			CFLAG:141 = 5
+			RESTART
+		ELSE
+			GOTO INPUT_LOOP_1
+		ENDIF
+ENDIF
+
+RETURN 0
+
+;===========================================================
+;現在生きている調教対象キャラのリスト
+;===========================================================
+@LIFE_LIST_LYCEE_IN
+
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	SIF CFLAG:COUNT:140 == 1
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	PRINT (체력: 
+	A = BASE:COUNT:0
+	SIF BASE:COUNT:0 < 0
+		A = 0
+	PRINTFORM {A}/{MAXBASE:COUNT:0})
+	PRINT  / (매력치: 
+	IF BASE:COUNT:0 < 0
+		PRINTFORM 0/{MAXBASE:COUNT:31}) / 
+	ELSE
+		PRINTFORM {BASE:COUNT:31}/{MAXBASE:COUNT:31}) / 
+	ENDIF
+	IF  COUNT == FLAG:1 && CFLAG:COUNT:1 >= 2
+		PRINT (전회 지도・조수 가능)
+	ELSEIF COUNT == FLAG:1
+		PRINT (전회 지도)
+	ELSEIF COUNT == FLAG:2
+		PRINT (전회 조수)
+	ELSEIF CFLAG:COUNT:1 >= 2
+		PRINT (조수 가능)
+	ENDIF
+	IF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		PRINT [산월]
+	ELSEIF TALENT:COUNT:153
+		PRINT [임신]
+	ELSEIF TALENT:COUNT:154
+		PRINT [육아]
+	ENDIF
+	IF CFLAG:COUNT:12 != 0
+		IF CFLAG:COUNT:12 == 1
+			PRINT <회화
+		ELSEIF CFLAG:COUNT:12 == 2 || CFLAG:COUNT:12 == 7
+			PRINT <봉사
+		ELSEIF CFLAG:COUNT:12 == 3
+			PRINT <A영업
+		ELSEIF CFLAG:COUNT:12 == 4
+			PRINT <V영업
+		ELSEIF CFLAG:COUNT:12 == 5
+			PRINT <SM
+		ELSEIF CFLAG:COUNT:12 == 6
+			PRINT <출장
+		ENDIF
+		SIF CFLAG:COUNT:13
+			PRINT C
+		PRINT >
+	ENDIF
+	SIF CFLAG:COUNT:115 ==1
+		PRINT <방목>
+	PRINTL 
+REND
+DRAWLINE
+
+;===========================================================
+;現在生きている調教対象キャラのリスト
+;===========================================================
+@LIFE_LIST_LYCEE_OUT
+
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	SIF CFLAG:COUNT:140 == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	PRINT (체력: 
+	A = BASE:COUNT:0
+	SIF BASE:COUNT:0 < 0
+		A = 0
+	PRINTFORM {A}/{MAXBASE:COUNT:0})
+	PRINT  / (매력치: 
+	IF BASE:COUNT:0 < 0
+		PRINTFORM 0/{MAXBASE:COUNT:31}) / 
+	ELSE
+		PRINTFORM {BASE:COUNT:31}/{MAXBASE:COUNT:31}) / 
+	ENDIF
+	IF  COUNT == FLAG:1 && CFLAG:COUNT:1 >= 2
+		PRINT (전회 지도・조수 가능)
+	ELSEIF COUNT == FLAG:1
+		PRINT (전회 지도)
+	ELSEIF COUNT == FLAG:2
+		PRINT (전회 조수)
+	ELSEIF CFLAG:COUNT:1 >= 2
+		PRINT (조수 가능)
+	ENDIF
+	IF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		PRINT [산월]
+	ELSEIF TALENT:COUNT:153
+		PRINT [임신]
+	ELSEIF TALENT:COUNT:154
+		PRINT [육아]
+	ENDIF
+	IF CFLAG:COUNT:12 != 0
+		IF CFLAG:COUNT:12 == 1
+			PRINT <회화
+		ELSEIF CFLAG:COUNT:12 == 2 || CFLAG:COUNT:12 == 7
+			PRINT <봉사
+		ELSEIF CFLAG:COUNT:12 == 3
+			PRINT <A영업
+		ELSEIF CFLAG:COUNT:12 == 4
+			PRINT <V영업
+		ELSEIF CFLAG:COUNT:12 == 5
+			PRINT <SM
+		ELSEIF CFLAG:COUNT:12 == 6
+			PRINT <출장
+		ENDIF
+		SIF CFLAG:COUNT:13
+			PRINT C
+		PRINT >
+	ENDIF
+	IF CFLAG:COUNT:141 >= 1
+		PRINT  《
+		IF CFLAG:COUNT:141 == 1
+			PRINT 에스테룸
+		ELSEIF CFLAG:COUNT:141 == 2
+			PRINT 휴게실
+		ELSEIF CFLAG:COUNT:141 == 3
+			PRINT 탁아소
+		ELSEIF CFLAG:COUNT:141 == 4
+			PRINT 고급 노래방
+		ELSEIF CFLAG:COUNT:141 == 5
+			PRINT 댄스 스튜디오
+		ENDIF
+		PRINT  이용중》
+	ENDIF		
+	SIF CFLAG:COUNT:115 ==1
+		PRINT <방목>
+	PRINTL 
+REND
+DRAWLINE
+
+;===========================================================
+;寮施設拡張
+;===========================================================
+@LYCEE_LABO
+
+DRAWLINE
+PRINTL 어떤 시설을 확장합니까?
+PRINTFORML 《운영자금 {MONEY}포인트》(현재 공헌도: {EXP:MASTER:90})
+CUSTOMDRAWLINE ･･
+SIF (FLAG:101 & 1) == 0
+	PRINTL  [0] - 에스테룸　　　　　　(300000포인트)
+SIF (FLAG:101 & 2) == 0
+	PRINTL  [1] - 휴게실　　　　　　　　　(150000포인트)
+SIF (FLAG:101 & 4) == 0
+	PRINTL  [2] - 사계절용 수영장　　　　　(100000포인트)
+SIF (FLAG:101 & 8) == 0
+	PRINTL  [3] - 탁아소　　　　　　　　　(300000포인트)
+SIF (FLAG:101 & 32) == 0
+	PRINTL  [5] - 고급 노래방　　　(100000포인트)
+SIF (FLAG:101 & 64) == 0 
+	PRINTL  [6] - 댄스 스튜디오　　　　　(100000포인트)
+SIF (FLAG:101 & 128) == 0
+	PRINTL  [7] - 경비원　　        　　　(80000포인트)
+CUSTOMDRAWLINE ･･
+PRINTL  [99] - 확장상태 확인
+DRAWLINE
+PRINTL  [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0 && (FLAG:101 & 1) == 0
+	PRINTFORML  에스테룸을 설치했습니다
+	PRINTFORMW  한 주를 시작할때 시설을 이용중인 캐릭터의 매력치가 조금 회복됩니다
+	MONEY -= 300000
+	FLAG:101 |= 1
+	RESTART
+ELSEIF RESULT == 1 && (FLAG:101 & 2) == 0
+	PRINTFORML  휴게실을 설치했습니다
+	PRINTFORMW  한 주를 시작할때 시설을 이용중인 캐릭터 사이의 상성이 증가합니다
+	MONEY -= 150000
+	FLAG:101 |= 2
+	RESTART
+ELSEIF RESULT == 2 && (FLAG:101 & 4) == 0
+	PRINTFORML  사계절용 수영장을 설치했습니다
+	PRINTFORMW  비디오 촬영시「사계절용 수영장」을 선택할 수 있게 됩니다
+	MONEY -= 100000
+	FLAG:101 |= 4
+	RESTART
+ELSEIF RESULT == 3 && (FLAG:101 & 8) == 0
+	PRINTFORML  탁아소를 설치했습니다
+	PRINTFORMW  시설을 이용중인【육아 중】캐릭터의 현역복귀가 빨라집니다
+	MONEY -= 300000
+	FLAG:101 |= 8
+	RESTART
+ELSEIF RESULT == 5 && (FLAG:101 & 32) == 0
+	PRINTFORML  고급 노래방을 설치했습니다
+	PRINTFORMW  한 주를 시작할때 시설을 이용중인 캐릭터의 가창경험이 증가합니다
+	MONEY -= 300000
+	FLAG:101 |= 32
+	RESTART
+ELSEIF RESULT == 6 && (FLAG:101 & 64) == 0
+	PRINTFORML  댄스 스튜디오를 설치했습니다
+	PRINTFORMW  한 주를 시작할때 시설을 이용중인 캐릭터의 무용경험이 증가합니다
+	MONEY -= 300000
+	FLAG:101 |= 64
+	RESTART
+ELSEIF RESULT == 7 && (FLAG:101 & 128) == 0
+	PRINTFORML  경비원과 계약했습니다
+	PRINTFORMW  시설을 이용중인 캐릭터가【남친있음】일 경우 남친과 이벤트가 발생하지 않게 됩니다
+	MONEY -= 800000
+	FLAG:101 |= 128
+	RESTART
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+;===========================================================
+;女子寮イベント
+;===========================================================
+@LYCEE_EVENT_WEEKEND
+
+IF (FLAG:101 & 1)
+	LOCAL = 0
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:140 == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:141 != 1
+			CONTINUE
+		ELSE
+			PRINTFORML %조사처리(NAME:COUNT,"는")% 여자 기숙사의 에스테룸에서 오일마사지를 받고 있다……
+			LOCAL = MAXBASE:COUNT:31 * 3
+			LOCAL /= 100
+			SIF LOCAL <= 1
+				LOCAL = 1
+			SIF BASE:COUNT:31 + LOCAL >= MAXBASE:COUNT:31
+				LOCAL = MAXBASE:COUNT:31 - BASE:COUNT:31
+			IF BASE:COUNT:31 >= MAXBASE:COUNT:31
+				PRINTFORML 《%CALLNAME:COUNT%에겐 더이상 효과가 없습니다》
+			ELSE
+				PRINTFORML 《%CALLNAME:COUNT%의 매력치가 {LOCAL} 회복됐다》
+				BASE:COUNT:31 += LOCAL
+			ENDIF
+			CUSTOMDRAWLINE ･･
+			WAIT
+		ENDIF
+	REND
+ENDIF
+
+;△同じ組み合わせが二回発生するのはいやなので一回にして双方からの相性が上がるようにしたい
+;スキップ機能もほしいかもしれない。長い。
+IF (FLAG:101 & 2)
+	VARSET LOCAL, 0
+	FOR LOCAL, 0, CHARANUM
+		IF LOCAL == 0
+			CONTINUE
+		ELSEIF CFLAG:LOCAL:140 == 0
+			CONTINUE
+		ELSEIF CFLAG:LOCAL:141 != 2
+			CONTINUE
+		ELSE
+			FOR LOCAL:1, 0, CHARANUM
+				IF LOCAL == 0
+					CONTINUE
+				ELSEIF CFLAG:(LOCAL:1):140 == 0
+					CONTINUE
+				ELSEIF CFLAG:(LOCAL:1):141 != 2
+					CONTINUE
+				ELSEIF LOCAL:1 == LOCAL
+					CONTINUE
+				ELSEIF RELATION:LOCAL:(NO:(LOCAL:1)) >= 1000
+					CONTINUE
+;△発生率調整用に確保
+;				ELSEIF RAND:3 == 0
+;					CONTINUE
+				ELSE
+					IF ABL:LOCAL:22 >= 2 && ABL:(LOCAL:1):22 >= 2 && RELATION:LOCAL:(NO:(LOCAL:1)) >= 250
+						LOCAL:2 = 0
+						REPEAT CHARANUM
+							IF COUNT == 0
+								CONTINUE
+							ELSEIF CFLAG:COUNT:141 == 2
+								LOCAL:2 += 1
+							ENDIF
+						REND
+						PRINTFORM 휴게실에서 닿을 정도로 가깝게 
+						SIF LOCAL:2 >= 3						
+							PRINTFORM 다른 사람은 신경도 안쓰고 
+						PRINTFORM %조사처리(NAME:LOCAL,"과")% %(NAME:(LOCAL:1),"는")% 스킨십을 하며 일상적인 대화를 나누고 있었지만, 
+						PRINTFORML 이윽고 스킨십이 과격해지더니 혀를 엮고 타액을 교환하는 키스를 하며 서로의 비부를 애무하기 시작했다……
+						PRINTFORM %조사처리(CALLNAME:LOCAL,"과")% %CALLNAME:(LOCAL:1)%의 신음소리가 점점 달콤해지며 
+						SIF LOCAL:2 >= 3
+							PRINTFORM 다른 사람이 보고 있는 앞에서
+						PRINTFORML 거의 동시에 절정했다
+						PRINTFORML %조사처리(CALLNAME:LOCAL,"과")% %조사처리(CALLNAME:(LOCAL:1),"는")% 레즈플레이를 통해 서로를 더 깊이 알게됐다……
+						RELATION:LOCAL:(NO:(LOCAL:1)) += 10
+						IF CFLAG:LOCAL:16 == -1
+							PRINTL
+							CFLAG:LOCAL:16 = 1
+							SETCOLOR 0xF58F98
+								PRINTFORM 【첫 키스】
+							RESETCOLOR
+							PRINTFORML (%CALLNAME:LOCAL%)
+							CSTR:LOCAL:1 = %NAME:(LOCAL:1)%
+							CFLAG:LOCAL:820 = BASE:LOCAL:9
+							CFLAG:LOCAL:821 = DAY:1
+							CFLAG:LOCAL:822 = DAY:2
+							;△そのうち場所に휴게실とか突っ込んでおくこと
+							;ここに限らず日付を合わせる処理はどっかでしないと……
+							;どう考えても첫 키스関数作るべきなんですが今回はパス
+						ENDIF
+						IF CFLAG:(LOCAL:1):16 == -1
+							PRINTL
+							CFLAG:(LOCAL:1):16 = 1
+							SETCOLOR 0xF58F98
+								PRINTFORM 【첫 키스】
+							RESETCOLOR
+							PRINTFORML (%CALLNAME:(LOCAL:1)%) 
+							CSTR:(LOCAL:1):1 = %NAME:LOCAL%
+							CFLAG:(LOCAL:1):820 = BASE:(LOCAL:1):9
+							CFLAG:(LOCAL:1):821 = DAY:1
+							CFLAG:(LOCAL:1):822 = DAY:2							
+						ENDIF
+						PRINTL
+						LOCAL:3 = RAND:11 + 1
+						SIF LOCAL:3 <= 1
+							LOCAL:3 = 1
+						SIF TALENT:LOCAL:76 == 1
+							LOCAL:3 *= 2
+						EXP:LOCAL:40 += LOCAL:3
+						EXP:LOCAL:2 += LOCAL:3
+						JUEL:LOCAL:0 += LOCAL:3 * 100
+						JUEL:LOCAL:5 += LOCAL:3 * 500
+						PRINTFORML %EXPNAME:40%(%CALLNAME:LOCAL%)＋{LOCAL}
+						PRINTFORML %EXPNAME:2%(%CALLNAME:LOCAL%)＋{LOCAL}
+						PRINTFORML %PALAMNAME:0%의 구슬(%CALLNAME:LOCAL%)＋{LOCAL * 100}
+						PRINTFORML %PALAMNAME:5%의 구슬(%CALLNAME:LOCAL%)＋{LOCAL * 500}
+						PRINTL
+					ELSE
+						PRINTFORML %조사처리(NAME:LOCAL,"는")% %조사처리(NAME:(LOCAL:1),"와")% 휴게실에서 일상적인 대화를 하며 서로를 더 깊이 알게됐다……
+						RELATION:LOCAL:(NO:(LOCAL:1)) += 5
+					ENDIF
+					SIF RELATION:LOCAL:(NO:(LOCAL:1)) <= 100
+						RELATION:LOCAL:(NO:(LOCAL:1)) = 100
+					PRINTFORML %조사처리(NAME:LOCAL,"와")% %NAME:(LOCAL:1)%의 상성이 {RELATION:LOCAL:(NO:(LOCAL:1))}％가 됐다
+					CUSTOMDRAWLINE ･･
+					WAIT
+				ENDIF
+			NEXT
+		ENDIF
+	NEXT
+ENDIF
+
+
+IF (FLAG:101 & 32)
+	LOCAL = 0
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:140 == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:141 != 4
+			CONTINUE
+		ELSE
+			PRINTFORML %NAME:COUNT%は女子寮の고급 노래방を利用している……
+			LOCAL = RAND:6
+			SIF LOCAL <= 1
+				LOCAL = 1
+			EXP:COUNT:71 += LOCAL
+			PRINTFORML 가창경험(%CALLNAME:COUNT%)＋{LOCAL}
+			CUSTOMDRAWLINE ･･
+			WAIT
+		ENDIF
+	REND
+ENDIF
+
+IF (FLAG:101 & 64)
+	LOCAL = 0
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:140 == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:141 != 5
+			CONTINUE
+		ELSE
+			PRINTFORML %조사처리(NAME:COUNT,"는")%는 기숙사의 댄스 스튜디오에서 레슨을 받고 있다……
+			LOCAL = RAND:6
+			SIF LOCAL <= 1
+				LOCAL = 1
+			EXP:COUNT:72 += LOCAL
+			PRINTFORML 무용경험(%CALLNAME:COUNT%)＋{LOCAL}
+			CUSTOMDRAWLINE ･･
+			WAIT
+		ENDIF
+	REND
+ENDIF

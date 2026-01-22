@@ -1,0 +1,113 @@
+﻿;===========================================================
+;TIPS 特殊素質해방
+;===========================================================
+@TIPS_TALENT
+PRINTFORML 《TIPS》
+PRINTFORML 특수한 소질의 획득 방법
+CUSTOMDRAWLINE ･･
+PRINTL  [0] - 감각 강화 소질
+PRINTL  [1] - 감각 강화 종료 소질
+PRINTL  [2] - 도착계 소질
+PRINTL  [3] - 그 외의 소질
+CUSTOMDRAWLINE ･･
+PRINTL [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	CALL TIPS_TALENT_CVAB
+ELSEIF RESULT == 1
+	CALL TIPS_TALENT_CVAB_END
+ELSEIF RESULT == 2
+	CALL TIPS_TALENT_SM
+ELSEIF RESULT == 3
+	CALL TIPS_TALENT_OTHERS
+ELSEIF RESULT == 999
+	CALL TIPS_MAIN
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+
+;===========================================================
+;感覚強化素質
+;===========================================================
+@TIPS_TALENT_CVAB
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆감각 강화 소질◆
+PRINTFORML 보통 LV5까지만 상승하는 C・V・A・B감각의 상한을 LV10까지 해방한다
+PRINTFORML 각 감각강화소질 습득방법은 이하
+PRINTFORML 
+PRINTFORML C감각 강화 소질:【자위광】
+PRINTFORML C감각이 LV4이상이고 자위경험이 100이상
+PRINTFORML 
+PRINTFORML B감각 강화 소질:【가슴광】
+PRINTFORML B감각이 LV4이상이고 B개발경험이 150이상
+PRINTFORML 
+PRINTFORML V감각 강화 소질:【섹스광】
+PRINTFORML V감각이 LV4이상이고 V경험이 150이상
+PRINTFORML 
+PRINTFORML A감각 강화 소질:【애널광】
+PRINTFORML A감각이 LV4이상이고 A쾌락경험이 300이상
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_TALENT
+
+;===========================================================
+;感覚強化終了素質
+;===========================================================
+@TIPS_TALENT_CVAB_END
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆감각 강화 종료 소질◆
+PRINTFORML 감각 강화 소질과【절륜】또는【음마】를 습득했고 각종 감각을 LV10까지 올리면 습득가능
+PRINTFORML 각 감각 강화 종료 소질은 이하
+PRINTFORML 
+PRINTFORML C감각 강화 종료 소질:【음핵】
+PRINTFORML B감각 강화 종료 소질:【음유】
+PRINTFORML V감각 강화 종료 소질:【음호】
+PRINTFORML A감각 강화 종료 소질:【음항】
+PRINTFORML 
+PRINTFORML 감각 강화 종료 소질 모두를 습득하면【성호】를 습득하고 각 감각이【○민감】으로 변화한다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_TALENT
+
+;===========================================================
+;倒錯系素質
+;===========================================================
+@TIPS_TALENT_SM
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆도착계 소질◆
+PRINTFORML 보통 LV5까지만 상승하는 각 능력의 상한을 LV10까지 해방한다
+PRINTFORML 각 도착계 소질 습득조건은 이하
+PRINTFORML 
+PRINTFORML 【새드】: 새드끼 LV4이상, 가학쾌락경험 300이상
+PRINTFORML 【마조】: 마조끼 LV4이상, 피학쾌락경험 300이상
+PRINTFORML 
+PRINTFORML 도착계 소질은【음마】【천사】중 하나를 습득하지 않았을 경우, 한쪽만 습득가능
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_TALENT
+
+;===========================================================
+;その他の素質
+;===========================================================
+@TIPS_TALENT_OTHERS
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆그 외의 소질◆
+PRINTFORML 그 외에 특정 조건을 만족했을 경우, 이하의 소질을 얻을 수 있다.
+PRINTFORML 
+PRINTFORML 　　　【바이】: 레즈끼 LV4이상, 레즈중독 LV3이상, 호감도 150이상, 레즈경험 2000이상
+PRINTFORML 　　【노출광】: 노출벽 LV4이상, 야외노출경험 100이상, 자위경험 200이상
+PRINTFORML 　  【갸루계】:【영향받기 쉬움】을 습득한 캐릭터가
+PRINTFORML 　　　　　　　　【갸루계】를 습득한 캐릭터와 상성이 120이상일 경우, 랜덤으로 습득
+PRINTFORML 　【남친있음】: 주말처리시에 랜덤으로 가산되는 수치가 캐릭터마다 정해진 달성치를 넘어섰을때,
+PRINTFORML 　　　　　　　　혹은 미팅에 참가시키는 것으로 랜덤하게 습득
+PRINTFORML   【섹프있음】:【갸루계】를 습득하고 있고,【정조관념】【일선을 넘지않음】이 없다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_TALENT

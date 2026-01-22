@@ -1,0 +1,502 @@
+/**
+ * Training Module 타입 정의 (원본 타입 기반으로 재정의)
+ */
+
+import type {
+  Character,
+  CharacterAbilities,
+  CharacterBase,
+  CharacterParameters,
+  CharacterTalents,
+  CharacterExperience,
+  CharacterMarks,
+  CharacterFlags
+} from '../../types/character';
+
+import type { MasterCharacter } from '../../types/master';
+
+// ============================================================================
+// 조교 컨텍스트 - 커맨드 실행에 필요한 모든 정보
+// ============================================================================
+
+export interface TrainingContext {
+  // ========== 핵심 캐릭터 데이터 ==========
+
+  /** 대상 캐릭터 (전체 데이터) */
+  target: Character;
+
+  /** 대상 캐릭터 ID */
+  targetId: number;
+
+  /** 조수 캐릭터 (옵션) */
+  assistant?: Character;
+
+  /** 조수 캐릭터 ID (옵션) */
+  assistantId?: number;
+
+  /** 마스터(플레이어) 캐릭터 */
+  master?: MasterCharacter;
+
+  // ========== 편의성 배열 접근 (target 데이터의 별칭) ==========
+  // 기존 COMF 코드 호환성을 위해 유지
+
+  /** 능력치 배열 (target.abl의 별칭) */
+  abilities: number[];
+
+  /** 특성 배열 (target.talent의 별칭) */
+  talents: number[];
+
+  /** 파라미터 배열 (target.palam의 별칭) */
+  params: number[];
+
+  /** 경험치 배열 (target.exp의 별칭) */
+  exp: number[];
+
+  /** 각인 배열 (target.mark의 별칭) */
+  marks?: number[];
+
+  /** 기본 능력치 배열 (target.base의 별칭) */
+  base?: number[];
+
+  /** 최대 능력치 배열 (target.maxBase의 별칭) */
+  maxBase?: number[];
+
+  // ========== 조교 시스템 전용 데이터 ==========
+
+  /** SOURCE 배열 - 커맨드 실행 시 PALAM 증가량 (인덱스 0-18) */
+  source?: number[];
+
+  /** LOSEBASE 배열 - 체력/기력 소모량 */
+  loseBase?: number[];
+
+  /** PALAM 레벨 기준값 */
+  palamlv?: number[];
+
+  /** 경험치 레벨 (EXPLV) */
+  explv?: number[];
+
+  /** 오염 상태 (STAIN) - 비트마스크 */
+  stain?: number[];
+
+  /** 임시 플래그 (TFLAG) */
+  tflags?: Record<number, number>;
+
+  /** 장비 활성 상태 (TEQUIP) */
+  equipment?: Record<number, number>;
+
+  /** 아이템 보유 (ITEM) */
+  items?: Record<number, number>;
+
+  /** 전역 플래그 (FLAG) */
+  globalFlags?: Record<number, number>;
+
+  /** 캐릭터 플래그 (CFLAG) - 의류, 피어싱, 음모 등 */
+  charFlags?: Record<number, number>;
+
+  /** 임시 플래그 (TFLAG) - flags 별칭 */
+  flags?: Record<number, number>;
+
+  /** 현재 커맨드 ID */
+  currentCommand?: number;
+
+  /** 조수 객체 (호환성) */
+  assi?: Character;
+
+  // ========== 조수 관련 배열 ==========
+
+  /** 조수 능력치 (assistant.abl의 별칭) */
+  assiAbilities?: number[];
+
+  /** 조수 파라미터 (assistant.palam의 별칭) */
+  assiParams?: number[];
+
+  /** 조수 특성 (assistant.talent의 별칭) */
+  assiTalents?: number[];
+
+  /** 조수 경험치 (assistant.exp의 별칭) */
+  assiExp?: number[];
+
+  /** 조수 플레이 모드 여부 (0 or 1) */
+  assiPlay: number;
+
+  /** 조수 플레이 모드 여부 (boolean) */
+  isAssistantPlay: boolean;
+
+  // ========== 플레이어(마스터) 관련 배열 ==========
+
+  /** 플레이어 능력치 (master.abl의 별칭) */
+  playerAbilities?: number[];
+
+  /** 플레이어 특성 (master.talent의 별칭) */
+  playerTalents?: number[];
+
+  /** 플레이어 기본 능력치 (master.base의 별칭) */
+  playerBase?: number[];
+
+  /** 플레이어 최대 능력치 */
+  playerMaxBase?: number[];
+
+  /** 플레이어 오염 상태 */
+  playerStain?: number[];
+
+  /** 플레이어 경험치 (master.exp의 별칭) */
+  playerExp?: number[];
+
+  /** 플레이어 캐릭터 플래그 (CFLAG:PLAYER) */
+  playerCharFlags?: Record<number, number>;
+
+  /** 플레이어 객체 (호환성) */
+  player?: {
+    id?: number;
+    name?: string;
+    base?: number[];
+    maxBase?: number[];
+    abilities?: number[];
+    talents?: number[];
+    stain?: number[];
+    exp?: number[];
+  };
+
+  // ========== 게임 상태 ==========
+
+  /** 현재 일자 */
+  day: number;
+
+  /** 현재 시간 */
+  time: number;
+
+  /** 이전 커맨드 ID */
+  prevCom?: number;
+
+  /** 문자열 저장용 (SAVESTR) */
+  saveStr?: string[];
+
+  /** 선택된 커맨드 (SELECTCOM) */
+  selectCom?: number;
+
+  // ========== 함수 ==========
+
+  /** 메시지 표시 함수 */
+  showMessage: (message: string, options?: { color?: string }) => void;
+
+  /** SOURCE 적용 함수 (옵션) */
+  applySource?: (source: number[]) => void;
+}
+
+// ============================================================================
+// 커맨드 플러그인 인터페이스
+// ============================================================================
+
+export interface CommandPlugin {
+  /** 커맨드 ID (0-180) */
+  id: number;
+
+  /** 커맨드 이름 */
+  name: string;
+
+  /** 카테고리 */
+  category: CommandCategory;
+
+  /** 스태미나 소비량 */
+  staminaCost: number;
+
+  /** 가용성 판정 함수 */
+  isAvailable: (context: TrainingContext) => boolean;
+
+  /** 실행 함수 */
+  execute: (context: TrainingContext) => Promise<void>;
+}
+
+// ============================================================================
+// 커맨드 카테고리
+// ============================================================================
+
+export type CommandCategory =
+  | '애무'       // 0-9
+  | '도구'       // 10-19
+  | '삽입'       // 20-29
+  | '봉사'       // 30-39
+  | 'SM'         // 40-49
+  | '약물'       // 50-59
+  | '조수'       // 60-69
+  | '복합'       // 70-79
+  | '고급'       // 80-99
+  | '촉수'       // 100-110
+  | '특수'       // 기타
+  | '파이즈리';  // 파이즈리계
+
+// ============================================================================
+// PALAM 인덱스 상수
+// ============================================================================
+
+export const PALAM = {
+  쾌C: 0,
+  쾌V: 1,
+  쾌A: 2,
+  쾌B: 3,
+  윤활: 4,
+  굴종: 5,
+  욕정: 6,
+  굴복: 7,
+  습득: 8,
+  치정: 9,
+  고통: 10,
+  공포: 11,
+  반감: 12,
+  불쾌: 13,
+  억울: 14,
+  향락: 15,
+} as const;
+
+// ============================================================================
+// SOURCE 인덱스 상수 (PALAM과 동일 + 추가)
+// ============================================================================
+
+export const SOURCE = {
+  쾌C: 0,
+  쾌V: 1,
+  쾌A: 2,
+  쾌B: 3,
+  쾌감: 4,    // 일반 쾌감
+  쾌락: 5,
+  윤활: 6,
+  굴종: 7,
+  욕정: 8,
+  굴복: 9,
+  습득: 10,
+  수치심: 11,
+  고통: 12,
+  공포: 13,
+  반감: 14,
+  불쾌: 15,
+  억울: 16,
+  불결: 17,
+  절정: 18,
+} as const;
+
+// ============================================================================
+// ABL 인덱스 상수
+// ============================================================================
+
+export const ABL = {
+  C감각: 0,
+  B감각: 1,
+  V감각: 2,
+  A감각: 3,
+  욕망: 11,
+  기교: 12,
+  봉사기술: 13,
+  성교기술: 14,
+  화술: 15,
+  봉사정신: 16,
+  노출벽: 17,
+  従順: 10,  // 순종
+  정액중독: 32,
+} as const;
+
+// ============================================================================
+// TALENT 인덱스 상수
+// ============================================================================
+
+export const TALENT = {
+  처녀: 0,
+  동정: 1,
+  애널처녀: 2,
+  혀놀림: 52,
+  감도: 102,
+  V민감: 104,
+  거유: 110,
+} as const;
+
+// ============================================================================
+// STAIN 비트마스크 상수
+// ============================================================================
+
+export const STAIN = {
+  정액_얼굴: 0,
+  정액_가슴: 1,
+  정액_배: 2,
+  정액_성기: 3,
+  정액_엉덩이: 4,
+  정액_등: 5,
+  정액_팔: 6,
+  정액_다리: 7,
+  정액_머리: 8,
+  정액_입: 9,
+  정액_질내: 10,
+  정액_항내: 11,
+  애액: 12,
+  오줌: 13,
+  땀: 14,
+} as const;
+
+// ============================================================================
+// 레벨 기준 (PALAMLV)
+// ============================================================================
+
+export const PALAM_LEVELS = {
+  L1: 500_000,      // 레벨 1 기준
+  L2: 1_000_000,    // 레벨 2 기준
+  L3: 5_000_000,    // 레벨 3 기준
+  L4: 10_000_000,   // 레벨 4 기준
+} as const;
+
+// ============================================================================
+// 하위 호환성 타입 (deprecated)
+// ============================================================================
+
+/**
+ * @deprecated Use number[] instead
+ * SOURCE는 이제 number[] 배열로 사용합니다.
+ */
+export type SourceValues = number[];
+
+// ============================================================================
+// 유틸리티 함수
+// ============================================================================
+
+/**
+ * TrainingContext 생성 헬퍼
+ * Character 객체로부터 TrainingContext를 생성
+ */
+export function createTrainingContext(
+  target: Character,
+  options?: {
+    assistant?: Character;
+    master?: MasterCharacter;
+    showMessage?: (message: string, options?: { color?: string }) => void;
+  }
+): TrainingContext {
+  return {
+    target,
+    targetId: target.id,
+    assistant: options?.assistant,
+    assistantId: options?.assistant?.id,
+    master: options?.master,
+
+    // 배열 별칭 생성
+    abilities: characterAbilitiesToArray(target.abl),
+    talents: characterTalentsToArray(target.talent),
+    params: characterParametersToArray(target.palam),
+    exp: characterExperienceToArray(target.exp),
+    marks: characterMarksToArray(target.mark),
+    base: characterBaseToArray(target.base),
+    maxBase: characterBaseToArray(target.maxBase),
+
+    // 조수 배열
+    assiAbilities: options?.assistant ? characterAbilitiesToArray(options.assistant.abl) : undefined,
+    assiTalents: options?.assistant ? characterTalentsToArray(options.assistant.talent) : undefined,
+    assiParams: options?.assistant ? characterParametersToArray(options.assistant.palam) : undefined,
+    assiExp: options?.assistant ? characterExperienceToArray(options.assistant.exp) : undefined,
+    assiPlay: options?.assistant ? 1 : 0,
+    isAssistantPlay: !!options?.assistant,
+
+    // 플레이어 배열
+    playerAbilities: options?.master ? masterAbilitiesToArray(options.master.abl) : undefined,
+    playerTalents: options?.master ? masterTalentsToArray(options.master.talent) : undefined,
+    playerBase: options?.master ? masterBaseToArray(options.master.base) : undefined,
+    playerExp: options?.master ? masterExperienceToArray(options.master.exp) : undefined,
+
+    // 초기화
+    source: new Array(19).fill(0),
+    loseBase: new Array(10).fill(0),
+    stain: new Array(20).fill(0),
+
+    day: 1,
+    time: 0,
+
+    showMessage: options?.showMessage ?? (() => {}),
+  };
+}
+
+// ============================================================================
+// 변환 헬퍼 함수
+// ============================================================================
+
+function characterAbilitiesToArray(abl: CharacterAbilities): number[] {
+  const arr = new Array(100).fill(0);
+  Object.keys(abl).forEach(key => {
+    arr[Number(key)] = abl[Number(key)] ?? 0;
+  });
+  return arr;
+}
+
+function characterTalentsToArray(talent: CharacterTalents): number[] {
+  const arr = new Array(200).fill(0);
+  Object.keys(talent).forEach(key => {
+    arr[Number(key)] = talent[Number(key)] ?? 0;
+  });
+  return arr;
+}
+
+function characterParametersToArray(palam: CharacterParameters): number[] {
+  const arr = new Array(20).fill(0);
+  Object.keys(palam).forEach(key => {
+    arr[Number(key)] = palam[Number(key)] ?? 0;
+  });
+  return arr;
+}
+
+function characterExperienceToArray(exp: CharacterExperience): number[] {
+  const arr = new Array(150).fill(0);
+  Object.keys(exp).forEach(key => {
+    arr[Number(key)] = exp[Number(key)] ?? 0;
+  });
+  return arr;
+}
+
+function characterMarksToArray(mark: CharacterMarks): number[] {
+  const arr = new Array(10).fill(0);
+  Object.keys(mark).forEach(key => {
+    arr[Number(key)] = mark[Number(key)] ?? 0;
+  });
+  return arr;
+}
+
+function characterBaseToArray(base: CharacterBase): number[] {
+  const arr = new Array(100).fill(0);
+  Object.keys(base).forEach(key => {
+    arr[Number(key)] = base[Number(key)] ?? 0;
+  });
+  return arr;
+}
+
+function masterAbilitiesToArray(abl: any): number[] {
+  const arr = new Array(100).fill(0);
+  if (abl) {
+    Object.keys(abl).forEach(key => {
+      arr[Number(key)] = abl[Number(key)] ?? 0;
+    });
+  }
+  return arr;
+}
+
+function masterTalentsToArray(talent: any): number[] {
+  const arr = new Array(200).fill(0);
+  if (talent) {
+    Object.keys(talent).forEach(key => {
+      arr[Number(key)] = talent[Number(key)] ?? 0;
+    });
+  }
+  return arr;
+}
+
+function masterBaseToArray(base: any): number[] {
+  const arr = new Array(100).fill(0);
+  if (base) {
+    Object.keys(base).forEach(key => {
+      arr[Number(key)] = base[Number(key)] ?? 0;
+    });
+  }
+  return arr;
+}
+
+function masterExperienceToArray(exp: any): number[] {
+  const arr = new Array(150).fill(0);
+  if (exp) {
+    Object.keys(exp).forEach(key => {
+      arr[Number(key)] = exp[Number(key)] ?? 0;
+    });
+  }
+  return arr;
+}

@@ -1,0 +1,97 @@
+﻿;-------------------------------------------------
+;커닐링구스
+;애무系コマンド: 調教者が調教対象の클리토리스を口で刺激
+;-------------------------------------------------
+@COM1
+
+;前回と今回の調教者が同じで
+IF (ASSIPLAY && TFLAG:50) || (ASSIPLAY == 0 && TFLAG:50 == 0) && TEQUIP:89 == 0
+	;밧줄사용중でなく, 前回の調教が펠라치오か커닐링구스강제か식스나인だと식스나인に
+	IF (PREVCOM == 31 || PREVCOM == 61 || PREVCOM == 69) && TEQUIP:44 == 0
+		CALL COM_ABLE69
+		SIF RESULT == 1
+			JUMP COM69
+	ENDIF
+ENDIF
+
+PRINTL 커닐링구스
+SAVESTR:0 = 커닐링구스
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 5
+LOSEBASE:1 += 50
+
+;△COMF69との液体系ソース量の差が大きい(10倍)のでこっちを倍にしてみる
+;こっち50:50で向こうを50:950とかでもいいんだけど, 100:900のほうがなんとなく好みなので……
+SOURCE:9 = 100
+SOURCE:10 = 100
+SOURCE:12 = 220
+SOURCE:14 = 50
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	SOURCE:0 = 40
+ELSEIF ABL:0 == 1
+	SOURCE:0 = 160
+ELSEIF ABL:0 == 2
+	SOURCE:0 = 700
+ELSEIF ABL:0 == 3
+	SOURCE:0 = 1500
+ELSEIF ABL:0 == 4
+	SOURCE:0 = 2400
+ELSE
+	SOURCE:0 = 3300
+ENDIF
+
+;調教者のTALENT:혀놀림をみる
+IF TALENT:PLAYER:52 || TEQUIP:89
+	TIMES SOURCE:0 , 2.00
+	SOURCE:16 += SOURCE:0/20
+ENDIF
+
+;獣姦の場合はここで終了
+SIF TEQUIP:89
+	RETURN 1
+
+;-------------------------------------------------
+;汚れの処理
+;-------------------------------------------------
+;奴隷のV⇔調教者の口の汚れが移動
+STAIN:3 |= STAIN:PLAYER:0
+STAIN:PLAYER:0 |= STAIN:3
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;레즈경험
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +3
+	EXP:40 += 3
+ENDIF
+
+P = 0
+
+
+;調教者の첫 키스記録
+IF CFLAG:PLAYER:16 == -1
+	TFLAG:620 |= 1
+	IF TALENT:122 || TALENT:121
+		TFLAG:620 |= 2
+	ELSE
+		TFLAG:620 |= 8
+	ENDIF
+ENDIF
+
+;애정경험
+E = 1
+IF CFLAG:2 >= 1000 && ASSIPLAY == 0
+	PRINTFORML %EXPNAME:23%+{E}
+	EXP:23 += E
+ENDIF
+E = 0
+
+RETURN 1

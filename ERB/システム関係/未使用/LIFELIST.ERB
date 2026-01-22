@@ -1,0 +1,75 @@
+﻿;**********改造部分************************************************
+@LIFE_LIST(ARG)
+;**********改造ここまで********************************************
+DRAWLINE
+PRINTFORML  [0] %NAME:MASTER% (調教者)
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+DRAWLINE
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	SIF CFLAG:COUNT:140 == 1
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+;**********改造部分************************************************
+	IF ARG && GETBIT(FLAG:1111,COUNT)
+		PRINT *
+	ELSE
+		PRINT  
+	ENDIF
+;**********改造ここまで********************************************
+
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	PRINT (체력: 
+	A = BASE:COUNT:0
+	SIF BASE:COUNT:0 < 0
+		A = 0
+	PRINTFORM {A}/{MAXBASE:COUNT:0})
+	PRINT  / (매력치: 
+	IF BASE:COUNT:0 < 0
+		PRINTFORM 0/{MAXBASE:COUNT:31}) / 
+	ELSE
+		PRINTFORM {BASE:COUNT:31}/{MAXBASE:COUNT:31}) / 
+	ENDIF
+	IF  COUNT == FLAG:1 && CFLAG:COUNT:1 >= 2
+		PRINT (전회 지도・조수 가능)
+	ELSEIF COUNT == FLAG:1
+		PRINT (전회 지도)
+	ELSEIF COUNT == FLAG:2
+		PRINT (전회 조수)
+	ELSEIF CFLAG:COUNT:1 >= 2
+		PRINT (조수 가능)
+	ENDIF
+	IF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		PRINT [산월]
+	ELSEIF TALENT:COUNT:153
+		PRINT [임신]
+	ELSEIF TALENT:COUNT:154
+		PRINT [육아]
+	ENDIF
+	IF CFLAG:COUNT:12 != 0
+		IF CFLAG:COUNT:12 == 1
+			PRINT <会話
+		ELSEIF CFLAG:COUNT:12 == 2 || CFLAG:COUNT:12 == 7
+			PRINT <奉仕
+		ELSEIF CFLAG:COUNT:12 == 3
+			PRINT <A営
+		ELSEIF CFLAG:COUNT:12 == 4
+			PRINT <V営
+		ELSEIF CFLAG:COUNT:12 == 5
+			PRINT <SM
+		ELSEIF CFLAG:COUNT:12 == 6
+			PRINT <出張
+		ENDIF
+		SIF CFLAG:COUNT:13
+			PRINT C
+		PRINT >
+	ENDIF
+	SIF CFLAG:COUNT:115 ==1
+		PRINT <放牧>
+	PRINTL 
+REND
+DRAWLINE

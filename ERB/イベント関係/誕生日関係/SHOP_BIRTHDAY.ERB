@@ -1,0 +1,309 @@
+﻿;===========================================================
+;誕生日イベント
+;===========================================================
+@EVENT_BIRTHDAY
+
+SIF ABL:10 < 3
+	RETURN
+
+PRINTFORML %플레이어는()% 생일을 맞이한 %타겟을()% 축하해 주기로 했다……
+PRINTFORML 《%타겟을()% 어떻게 축하해 줍니까?》
+
+PRINTL [0] - 생일선물을 준다
+;IF TALENT:85 == 1
+;	PRINTL [1] - 데이트에 데려간다
+;	PRINTL [2] - 아무것도 안한다
+;ELSE
+	PRINTL [1] - 아무것도 안한다
+;ENDIF
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	CALL BIRTHDAY_PRESENT
+;ELSEIF RESULT == 1 && TALENT:85
+;	CALL BIRTHDAY_DATE
+ELSEIF RESULT == 1
+	PRINTFORMW 《%CALLNAME:TARGET%의 생일을 축하해 주지 않습니다》
+	IF TALENT:85
+		PRINTFORML 생일축하를 못 받은 %타겟은()% 삐졌다……
+		PRINTL
+		PRINTFORMW 《%ABLNAME:10%: Lv{ABL:10}　→　Lv{(ABL:10 - 1)}》
+		ABL:10 -= 1
+	ENDIF
+ELSEIF RESULT == 2 && TALENT:85
+	PRINTFORMW 《%CALLNAME:TARGET%의 생일을 축하해 주지 않습니다》
+	IF TALENT:85
+		PRINTFORML 생일축하를 못 받은 %타겟은()% 삐졌다……
+		PRINTL
+		PRINTFORMW 《%ABLNAME:10%: Lv{ABL:10}　→　Lv{(ABL:10 - 1)}》
+		ABL:10 -= 1
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN
+
+;===========================================================
+;誕生日イベント
+;===========================================================
+@BIRTHDAY_PRESENT
+
+VARSET LOCAL, 0
+PRINTFORML 《%CALLNAME:TARGET%에게 어떤 선물을 줍니까?》
+
+PRINTL [0] - 화장품　　　　　　　　　(가격: 1000포인트)
+PRINTL [1] - 운동기구　　　       　(가격: 5000포인트)
+PRINTL [2] - 아로마 캔들 세트     　(가격:  500포인트)
+PRINTL [3] - 수제요리              (가격:    0포인트)
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	PRINTFORML %플레이어는()% %CALLNAME:TARGET%에게 화장품을 선물했다……
+	IF CFLAG:760 != 1 || TALENT:430 == 1
+		LOCAL = 5
+		LOCAL += RAND:6
+		SIF TALENT:326
+			LOCAL *= 2
+		SIF (BASE:31 + LOCAL) >= MAXBASE:31
+			LOCAL = MAXBASE:31 - BASE:31
+		LOCAL:1 = 1 + RAND:5
+		LOCAL:1 *= 10
+		PRINTFORML %타겟은()% 선물이 마음에 들었는지 기뻐하고 있다
+		PRINTL
+		IF BASE:31 < MAXBASE:31
+			PRINTFORML 《%CALLNAME:TARGET%의 매력치가 {LOCAL} 회복했다》
+			BASE:31 += LOCAL
+		ENDIF
+		IF TALENT:85 == 0
+
+			PRINTFORML 호감도 +{LOCAL:1}
+			CFLAG:2 += (LOCAL:1 * 10)
+		ELSE
+			PRINTFORML 애정경험 +{LOCAL:1}
+			EXP:23 += LOCAL:1
+		ENDIF
+		WAIT
+	ELSE
+		LOCAL = 1
+		LOCAL += RAND:4
+		SIF (BASE:31 + LOCAL) >= MAXBASE:31
+			LOCAL = MAXBASE:31 - BASE:31
+		LOCAL:1 = 1 + RAND:5
+		LOCAL:1 *= 5
+		PRINTFORML %타겟은()% 얼굴에 드러내지는 않지만, 작년과 같은 선물인 게 불만인 것 같다……
+		PRINTL
+		IF BASE:31 < MAXBASE:31
+			PRINTFORML 《%CALLNAME:TARGET%의 매력치가 {LOCAL} 회복했다》
+			BASE:31 += LOCAL
+		ENDIF
+		IF TALENT:85 == 0
+
+			PRINTFORML 호감도 +{LOCAL:1}
+			CFLAG:2 += (LOCAL:1 * 10)
+		ELSE
+			PRINTFORML 애정경험 +{LOCAL:1}
+			EXP:23 += LOCAL:1
+		ENDIF
+		WAIT
+	ENDIF
+	CFLAG:760 = 1
+	MONEY -= 1000
+ELSEIF RESULT == 1
+	PRINTFORML %플레이어는()% %CALLNAME:TARGET%에게 운동기구를 선물했다……
+	IF CFLAG:760 != 2 || TALENT:430 == 1
+		LOCAL = 100
+		LOCAL *= RAND:3
+		SIF LOCAL == 0
+			LOCAL = 100
+		SIF TALENT:518
+			LOCAL += 100
+		LOCAL:1 = 1 + RAND:5
+		LOCAL:1 *= 10
+		PRINTFORML %타겟은()% 선물이 마음에 들었는지 기뻐하고 있다
+		PRINTL
+		PRINTFORML 《%CALLNAME:TARGET%의 최대 체력이 {LOCAL} 증가했다》
+		MAXBASE:0 += LOCAL
+		IF TALENT:85 == 0
+			PRINTFORML 호감도 +{LOCAL:1}
+			CFLAG:2 += (LOCAL:1 * 10)
+		ELSE
+			PRINTFORML 애정경험 +{LOCAL:1}
+			EXP:23 += LOCAL:1
+		ENDIF
+		WAIT
+	ELSE
+		LOCAL = 100
+		SIF TALENT:518
+			LOCAL += 100
+		LOCAL:1 = 1 + RAND:5
+		LOCAL:1 *= 10
+		PRINTFORML %타겟은()% 얼굴에 드러내지는 않지만, 작년과 같은 선물인 게 불만인 것 같다……
+		PRINTL
+		PRINTFORML 《%CALLNAME:TARGET%의 최대 체력이 {LOCAL} 증가했다》
+		MAXBASE:0 += LOCAL
+		IF TALENT:85 == 0
+			PRINTFORML 호감도 +{LOCAL:1}
+			CFLAG:2 += (LOCAL:1 * 10)
+		ELSE
+			PRINTFORML 애정경험 +{LOCAL:1}
+			EXP:23 += LOCAL:1
+		ENDIF
+		WAIT
+	ENDIF
+	CFLAG:760 = 2
+	MONEY -= 5000
+ELSEIF RESULT == 2
+	PRINTFORML %플레이어는()% %CALLNAME:TARGET%에게 아로마 캔들 세트를 선물했다……
+	IF CFLAG:760 != 3 || TALENT:430 == 1
+		LOCAL = 100
+		LOCAL *= RAND:3
+		SIF LOCAL == 0
+			LOCAL = 100
+		LOCAL:1 = 1 + RAND:5
+		LOCAL:1 *= 10
+		PRINTFORML %타겟은()% 선물이 마음에 들었는지 기뻐하고 있다
+		PRINTL
+		PRINTFORML 《%CALLNAME:TARGET%의 최대 기력이 {LOCAL} 증가했다》
+		MAXBASE:1 += LOCAL
+		IF TALENT:85 == 0
+			PRINTFORML 호감도 +{LOCAL:1}
+			CFLAG:2 += (LOCAL:1 * 10)
+		ELSE
+			PRINTFORML 애정경험 +{LOCAL:1}
+			EXP:23 += LOCAL:1
+		ENDIF
+		WAIT
+	ELSE
+		LOCAL = 100
+		SIF TALENT:518
+			LOCAL += 100
+		LOCAL:1 = 1 + RAND:5
+		LOCAL:1 *= 10
+		PRINTFORML %타겟은()% 얼굴에 드러내지는 않지만, 작년과 같은 선물인 게 불만인 것 같다……
+		PRINTL
+		PRINTFORML 《%CALLNAME:TARGET%의 최대 기력이 {LOCAL} 증가했다》
+		MAXBASE:0 += LOCAL
+		IF TALENT:85 == 0
+			PRINTFORML 호감도 +{LOCAL:1}
+			CFLAG:2 += (LOCAL:1 * 10)
+		ELSE
+			PRINTFORML 애정경험 +{LOCAL:1}
+			EXP:23 += LOCAL:1
+		ENDIF
+		WAIT
+	ENDIF
+	CFLAG:760 = 3
+	MONEY -= 500
+ELSEIF RESULT == 3
+	PRINTFORML %플레이어는()% %CALLNAME:TARGET%에게 직접 요리를 만들어 줬다……
+	LOCAL:1 = 1 + RAND:5
+	LOCAL:1 *= 10
+	PRINTFORML %타겟은()% 선물이 마음에 들었는지 기뻐하고 있다
+	PRINTL
+	IF TALENT:85 == 0
+		PRINTFORML 호감도 +{LOCAL:1}
+		CFLAG:2 += (LOCAL:1 * 10)
+	ELSE
+		PRINTFORML 애정경험 +{LOCAL:1}
+		EXP:23 += LOCAL:1
+	ENDIF
+	WAIT
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN
+
+;===========================================================
+;誕生日イベント
+;===========================================================
+;@BIRTHDAY_DATE
+
+PRINTFORML %플레이어는()% %타겟과()% 데이트 약속을 했다……
+PRINTFORMW
+PRINTFORML 그러나, 간단한 일이지만 사무소의 대표로 시급히 처리해야 하는 안건이 생겨 지각해 버렸다
+PRINTFORM 약속장소엔 이미 
+IF TALENT:326 || TALENT:402
+	PRINTFORM 평소보다 힘들여 꾸민
+ELSE
+	PRINTFORM 정성들여 세팅한
+ENDIF
+SIF ABL:17 >= 4
+	PRINTFORM 데다 노출도가 높은 
+PRINTFORML  모습으로 기다리던 %타겟이()%, %CALLNAME:MASTER%의 모습을 보자마자 토라진, 
+PRINTFORML 그러나 왠지 기쁜 얼굴을 하고 있다
+IF MAXBASE:31 >= 120 && TALENT:87
+	PRINTFORML 사과하는 %CALLNAME:MASTER%에게 %타겟은()% 질투심을 부채질하듯이, 기다리는 동안 {1 + RAND:10}명에게 헌팅 당했다고 말했다
+	PRINTFORML 역시 다른 남자 눈에도 %타겟은()% 매력적으로 비치는 듯하다……
+ENDIF
+PRINTFORML
+PRINTFORMW ………………
+PRINTFORMW …………
+PRINTFORML ……
+PRINTW
+PRINTFORML %플레이어와()% %타겟은()% 노래방과 오락실, 아이쇼핑을 즐기며 둘만의 시간을 만끽했지만,
+PRINTFORML %타겟은()% 오늘은 종일 %플레이어와()% 같이 있고 싶어, 라면서 졸랐다
+PRINTL
+PRINTFORML 《%타겟과()% 계속 데이트를 즐깁니까?》
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+;$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+;	CALL BIRTHDAY_SEX
+ELSEIF RESULT == 1
+	PRINTFORML %타겟은()% 아쉬워 하면서도, 내년에도 데이트하자고 약속하니 기쁜듯이 웃으며
+	PRINTFORML %CALLNAME:MASTER%에게 기습키스를 했다……
+	PRINTFORML 
+	PRINTFORML %타겟과()% 성공적으로 데이트를 마쳤다
+	IF CFLAG:16 == -1
+		CFLAG:16 = 1
+		SETCOLOR 0xDDBBCC
+		PRINTFORML 첫 키스
+		RESETCOLOR
+		CFLAG:16 = 1
+		IF NO:TARGET == 1 && NO:MASTER == 0 && TALENT:432 == 0
+			CSTR:1 = 오빠
+		ELSEIF NO:TARGET == 1 && NO:MASTER == 0 && TALENT:432 == 1
+			CSTR:1 = 오라비
+		ELSEIF NO:TARGET == 90 && NO:MASTER == 0
+			CSTR:1 = 형님
+		ELSE
+			CSTR:1 = %NAME:MASTER%
+		ENDIF
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN
+
+;===========================================================
+;誕生日イベント
+;===========================================================
+;@BIRTHDAY_SEX
+
+PRINTFORML 몽롱한 표정으로 기대오는 %CALLNAME:TARGET%의 부탁이 의미하는 것을 깨달은 %플레이어는()%
+PRINTFORML 역 뒷거리에 있는 러브호텔로 들어갔다……
+PRINTW
+
+;===========================================================
+;誕生日イベント
+;===========================================================
+;@BIRTHDAY_SEX_SS
+
+
+PRINTFORML 핑크색 간접조명이 비추는 방 한가운데의 침대 위에서, %플레이어와()% %타겟은()% 누가 먼저랄것 없이 입술을 겹치고
+PRINTFORML 옷 위로도 고동이 느껴지는 가슴에 손을 올리고 껴안았다
+PRINTFORM 그리고 흐름에 몸을 맡겨 , 
+SIF (CFLAG:7 & 16)
+	PRINTFORM 피어스가 빛나는 
+PRINTFORML %CALLNAME:TARGET%의 혀와 %CALLNAME:MASTER%의 혀가 얽혀 타액을 교환하는 농후한 것으로 변해간다
+PRINTFORML %플레이어가()% %타겟과()% 시선을 맞추니, 뺨이 주황색으로 물든 %CALLNAME:TARGET%의 촉촉한 눈이 천천히 움직였다
+PRINTFORML 침대 위에 누은 %CALLNAME:TARGET%의 옷을 다정하게 벗겨주니, 오늘을 위한 승부속옷인지, 평소보다 화려한 디자인의 속옷이 드러났다
+PRINTFORM 照明の色も相まって
+

@@ -1,0 +1,1167 @@
+﻿;---------------------------------------------------------
+;一日の終了時, 営業させていた場合その結果を表示します
+;---------------------------------------------------------
+@YUUKAKU_RESULT
+SIF TIME != 0
+	CALL WORKING_RESULT
+
+;---------------------------------------------------------
+;営業している奴隷を探します
+;---------------------------------------------------------
+@WORKING_RESULT
+
+DRAWLINE
+
+REPEAT CHARANUM
+	;営業を行っていない人(CFLAG:12が0の人)はスルー
+	SIF CFLAG:COUNT:12 == 0
+		CONTINUE
+	TARGET = COUNT
+	CALL WORKING_MAIN
+	COUNT = TARGET
+REND
+
+IF (FLAG:6 & 2)
+	PRINTFORML  ☆현재의 창관 인기: {EXP:MASTER:91}☆
+	DRAWLINE
+ENDIF
+
+;---------------------------------------------------------
+;営業の計算の根幹です
+;---------------------------------------------------------
+@WORKING_MAIN
+
+;Aは様々な変数に用いられます。HAPPYから, MONEYの間は, 顧客の満足度として機能しますので, この間は操作してはいけません
+A = 0
+;Bは様々な変数に用いられます
+B = 0
+;Cは단골손님かどうかのチェックに使われます
+C = 0
+;Dは満足度の数値になります
+D = 0
+;EはV, A경험があるかのチェックに使われます。&1でA&2でV&4で처녀상실
+E = 0
+;Fは체력ダウンの基準値として使われます
+F = 0
+;Gはやってきたお客さんの数として使われます
+G = 0
+;HはWORK_S_~~等の外部変数で失敗・成功の判定値として使用
+;I,Jはその他の一時変数(人気の変動等)に使用
+I = 0
+J = 0
+;L は特殊営業から呼び出される際に, 参加するメンバーの数として使用
+;Nは数字表示用の関数@FIGURE_INDENT(TRAIN_MAIN.ERBに記述)の引数として使用
+N = 0
+;変数T:XXは지도중に獲得した経験の記録に使われています
+REPEAT 100
+	T:COUNT = 0
+REND
+;変数U:XXは지도중に獲得した珠の記録に使われています
+REPEAT 101
+	U:COUNT = 0
+REND
+
+IF (FLAG:6 & 2) == 0
+	PRINTFORML %NAME:TARGET%의 영업 결과: 
+ELSE
+	PRINTFORM %NAME:TARGET%: 
+ENDIF
+
+;ここから各営業内容の関数へ飛びます
+;회화영업の場合
+IF CFLAG:12 == 1
+	CALL WORK_1ST
+
+;봉사영업の場合
+ELSEIF CFLAG:12 == 2 || CFLAG:12 == 7
+	CALL WORK_2ND
+
+;A영업の場合
+ELSEIF CFLAG:12 == 3
+	CALL WORK_3RD
+
+;V영업の場合
+ELSEIF CFLAG:12 == 4
+	CALL WORK_4TH
+
+;SM영업の場合
+ELSEIF CFLAG:12 == 5
+	CALL WORK_5TH
+
+;출장영업の場合
+ELSEIF CFLAG:12 == 6
+	CALL WORK_6TH
+
+ENDIF
+
+SIF (FLAG:6 & 2) == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+CALL WORK_MONEY
+SIF (FLAG:6 & 2) == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+CALL WORK_EXP
+SIF (FLAG:6 & 2) == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+CALL WORK_DOWN
+SIF (FLAG:6 & 2) == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+CALL WORK_BASE
+
+;死亡
+IF BASE:0 <= 0
+	PRINTFORML 그 날의 영업이 끝나, %타겟은()% 쓰러지듯이 누웠다…
+	CFLAG:12 = 0
+	;キャラの死亡確認
+	CALL CHARADEAD_CHECK
+;瀕死
+ELSEIF BASE:0 <= 500
+	PRINTFORML 체력이 한계에 도달했습니다. 영업 멤버에서 제외되었습니다
+	CFLAG:12 = 0
+ENDIF
+
+;처녀상실の相手を記録
+IF CFLAG:50 && CFLAG:15 == 0
+	CFLAG:15 = 2
+	CSTR:0 = 모르는 남자
+	CFLAG:160 = BASE:9
+	CFLAG:161 = DAY:1
+	CFLAG:162 = DAY:2
+	CFLAG:163 = 7
+	CFLAG:164 = 0
+ENDIF
+
+;営業関連の計算が終わったら처녀상실判定等のフラグをリセット
+CFLAG:50 = 0
+CFLAG:51 = 0
+CFLAG:52 = 0
+CFLAG:53 = 0
+CFLAG:54 = 0
+
+SIF (FLAG:6 & 2) == 0
+	WAIT
+
+DRAWLINE
+
+;---------------------------------------------------------
+;客の人数の計算
+;---------------------------------------------------------
+;この関数は各営業内容の最初に計算されます
+;---------------------------------------------------------
+@WORK_PERSON_A
+
+B = 0
+
+;素質『단골손님』があるとプラス
+IF TALENT:183
+	REPEAT TALENT:183
+		B += RAND:2
+	REND
+ENDIF
+
+IF EXP:70 == 0 && CFLAG:17 == 0
+	;売春デビュー時は, 店の人気を参考する
+	D = EXP:MASTER:91
+	D /= 10
+	IF D
+		REPEAT D
+			B += RAND:2
+		REND
+	ENDIF
+ELSE
+	;デビューしてからは奴隷の人気を参考
+	D = EXP:91
+	D /= 10
+	IF D
+		REPEAT D
+			B += RAND:2
+		REND
+	ENDIF
+ENDIF
+
+;店の人気に応じてプラス
+D = EXP:MASTER:91
+D /= 20
+IF D
+	REPEAT D
+		B += RAND:2
+	REND
+ENDIF
+
+
+
+G = B
+G += ABL:30 / 2
+SIF TALENT:76 == 1
+	TIMES G, 1.50
+SIF TALENT:440 == 1
+	TIMES G, 1.80
+
+G *= BASE:31
+G /= 100
+
+SIF G < 1
+	G = 1 
+
+;客の数の最終決定
+;計算結果で客が2人未満になったら2人にする
+SIF G < 2
+	G = 2
+
+;회화영업の場合, 客の数がちょっと増えます
+SIF CFLAG:12 == 1
+	TIMES G , 1.50
+
+;단골손님が代表のお客かどうか
+IF TALENT:183
+	SIF RAND:10 < TALENT:183
+		C = 1
+ENDIF
+
+
+;続いて, 満足度の決定
+;Dで満足度判定を行います
+
+;ランダムで40を追加します。매춘경험に応じて期待値は上昇します
+IF EXP:74 > 10000 && C
+	D = 40
+ELSEIF (EXP:74 > 5000 && C) || EXP:74 > 10000
+	D = RAND:11 + 30
+ELSEIF (EXP:74 > 3000 && C) || EXP:74 > 5000
+	D = RAND:16 + 25
+ELSEIF (EXP:74 > 1000 && C) || EXP:74 > 3000
+	D = RAND:21 + 20
+ELSEIF (EXP:74 > 500 && C) || EXP:74 > 1000
+	D = RAND:26 + 15
+ELSEIF (EXP:74 > 100 && C) || EXP:74 > 500
+	D = RAND:31 + 10
+ELSEIF (EXP:74 > 50 && C) || EXP:74 > 100
+	D = RAND:36 + 5
+ELSE
+	D = RAND:41
+ENDIF
+E = 0
+
+VARSET LOCAL, 0
+LOCAL = RAND:10
+PRINTFORM {G}명의 손님에게 지명받은 %타겟은(1)% 
+
+IF TALENT:184 == 1 && ITEM:19
+	IF LOCAL == 0
+		PRINTFORM 
+	ELSEIF LOCAL == 1
+		PRINTFORM 교복 매니아
+	ELSEIF LOCAL == 2
+		PRINTFORM 메이드 취향
+	ELSEIF LOCAL == 3
+		PRINTFORM 무녀 취향
+	ELSEIF LOCAL == 4
+		PRINTFORM 아이돌 오타쿠
+	ELSEIF LOCAL == 5
+		PRINTFORM 여교사 취향
+	ELSEIF LOCAL == 6
+		PRINTFORM 간호사 페티쉬
+	ELSEIF LOCAL == 7
+		PRINTFORM 버니걸 취향
+	ELSEIF LOCAL == 8
+		PRINTFORM 체육복 매니아
+	ELSEIF LOCAL == 9 && CFLAG:12 == 5 && ABL:20 + TALENT:83 * 5 >= ABL:21 + TALENT:88 * 5
+		PRINTFORM 마조
+	ELSEIF LOCAL == 9 && CFLAG:12 == 5 && ABL:20 + TALENT:83 * 5 < ABL:21 + TALENT:88 * 5
+		PRINTFORM 새드
+	ELSEIF LOCAL == 9
+		PRINTFORM 수영복 페티쉬
+	ENDIF
+	SIF LOCAL != 0
+		PRINTFORM 인 
+	PRINTFORML 단골손님의 요구에 응해, 
+ENDIF
+
+IF LOCAL == 0
+	SIF TALENT:78
+		PRINTFORM 단단하게 발기한 
+	SIF (CFLAG:7 & 1)
+		PRINTFORM 피어스가 빛나는 
+	PRINTFORM 유두가 비쳐보이는, 시스루 베이비돌
+ELSEIF LOCAL == 1
+	SIF TALENT:220 == 1 || TALENT:221
+		PRINTFORM 자기가 다니는 
+	PRINTFORM 학교 교복
+ELSEIF LOCAL == 2
+	PRINTFORM 본격파 메이드복
+ELSEIF LOCAL == 3
+	PRINTFORM 겨드랑이가 드러나는 무녀복
+ELSEIF LOCAL == 4
+	IF TALENT:522
+		PRINTFORM %TALENTNAME:522%
+	ELSEIF TALENT:523 
+		PRINTFORM %TALENTNAME:523%
+	ELSEIF TALENT:509
+		PRINTFORM %TALENTNAME:509%
+	ELSEIF TALENT:509
+		PRINTFORM %TALENTNAME:519%
+	ELSEIF TALENT:515
+		PRINTFORM %CSTR:MASTER:4%
+	ELSEIF TALENT:203
+		PRINTFORM 자신
+	ELSE
+		PRINTFORM %TALENTNAME:509%
+	ENDIF
+	PRINTFORM 의 스테이지 의상
+ELSEIF LOCAL == 5
+	PRINTFORM 타이트스커트 정장
+ELSEIF LOCAL == 6
+	PRINTFORM 연분홍색 간호사복
+ELSEIF LOCAL == 7
+	PRINTFORM 가슴이 깊에 파인 버니걸
+ELSEIF LOCAL == 8
+	PRINTFORM 감색 부르마에 %타겟이라()%고 적힌 명찰이 박힌 체육복
+ELSEIF LOCAL == 9 && CFLAG:12 == 5
+	PRINTFORM 에나멜 본디지
+ELSEIF LOCAL == 9
+	IF TALENT:518
+		PRINTFORM %타겟이()% 경기 때 입는 꽉 달라붙는 전신 수영복
+	ELSE
+		PRINTFORM 구식 학교 수영복
+	ENDIF
+ENDIF
+
+PRINTFORML  차림으로『상대』하게 됐다……
+PRINTFORML 
+
+;---------------------------------------------------------
+;客の満足度の計算
+;---------------------------------------------------------
+@WORK_HAPPY
+
+;売春内容によらないボーナス
+;음란持ちは2, 수수께끼의 매력持ちは2, 娼婦は3포인트, 傾城は4포인트が満足度に加算
+
+SIF TALENT:76
+	D += 2
+SIF TALENT:92
+	D += 2
+SIF TALENT:180
+	D += 3
+SIF TALENT:181
+	D += 4
+
+;콘돔사용중だと満足度2/3
+IF CFLAG:13 && CFLAG:12
+	D *= 2
+	D /= 3
+ENDIF
+
+;満足度の最終判定, Dの値によって5段階の評価がなされます
+
+IF D > 65
+;最高評価です
+	A = 4
+ELSEIF D > 45
+;いい評価です
+	A = 3
+ELSEIF D > 30
+;普通の評価です
+	A = 2
+ELSEIF D > 15
+;悪い評価です
+	A = 1
+ELSE
+;最低評価です
+	A = 0
+ENDIF
+
+;---------------------------------------------------------
+;営業内容によって得た経験や素質の変化を計算
+;---------------------------------------------------------
+@WORK_EXP
+;娼婦デビュー
+IF CFLAG:17 == 0
+	SIF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+		PRINTFORML 【%타겟이(1)% 업소여성으로 데뷔했습니다】
+	T:50 += 1
+	B = A
+	B *= 10
+	;인기인
+	SIF TALENT:126 && B < 40
+		B = 40
+	SIF TALENT:203
+		B = 60
+	;수수께끼의 매력, 魅惑補正
+	SIF TALENT:91 || TALENT:92
+		B += 10
+	SIF TALENT:509
+		B = 100
+	SIF TALENT:518
+		B = 100
+	SIF TALENT:553
+		B = 100
+	SIF TALENT:515
+		B = 80
+	SIF TALENT:519
+		B = 90
+	IF B == 0
+		J = 0
+		SIF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+			PRINTFORML 유감스럽게도 인기는 전혀 없었지만, 지금부터 열심히 하자
+	ELSE
+		J = B
+	ENDIF
+	
+	;デビューしたかどうかをCFLAGで保存
+	CFLAG:17 = 1
+	
+	;デビュー時は, もらえるお金に一定のプラス補正がかかります
+	T:91 += 10
+	
+;満足度によって人気が上下します
+;満足度最低
+ELSEIF A <= 0
+	;個人人気
+	J = -6
+	;娼館人気
+	I = -5
+;満足度悪い
+ELSEIF A == 1
+	;個人人気
+	J = -3
+	;娼館人気
+	I = -1
+;満足度普通
+ELSEIF A == 2
+	;個人人気
+	J = 1
+	;娼館人気
+	I = 0
+;満足度いい
+ELSEIF A == 3
+	;個人人気
+	J = 2
+	;娼館人気
+	I = 1
+;満足度最高
+ELSEIF A == 4
+	;個人人気
+	J = 3
+	;娼館人気
+	I = 1
+;満足度超最高
+ELSEIF A >= 5
+	;個人人気
+	J = 5
+	;娼館人気
+	I = 2
+ENDIF
+
+;特殊営業の参加人数(FLAG:42)が多いと, 一人あたりの娼館人気上昇は下がる
+IF FLAG:42 >= 3 && I >= 1
+	IF A >= 5
+		I = 1
+	ELSE 
+		I = 0
+	ENDIF
+ELSEIF FLAG:42 == 2 && I >= 1
+	IF A >= 4
+		I = 1
+	ELSE 
+		I = 0
+	ENDIF
+ENDIF
+
+;人気の上限は100
+SIF EXP:91 + J >= 100
+	J = 100 - EXP:91
+SIF EXP:MASTER:91 + I >= 100
+	I = 100 - EXP:MASTER:91
+
+;人気の下限は0
+SIF EXP:91 + J <= 0
+	J = 0 - EXP:91
+SIF EXP:MASTER:91 + I <= 0
+	I = 0 - EXP:MASTER:91
+
+;人気・娼館人気変化の表示
+IF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+	PRINT  인기　　　　: 
+	N = EXP:91
+	CALL FIGURE_INDENT
+	PRINTV EXP:91
+	IF J >= 0
+		PRINT  + 
+		N = J
+		CALL FIGURE_INDENT
+		PRINTV J
+	ELSE
+		PRINT  - 
+		;eraBASICはマイナス演算子を扱えないのでわざとこうしています
+		J = 0 - J
+		N = J
+		CALL FIGURE_INDENT
+		PRINTV J
+		J = 0 - J
+	ENDIF
+	PRINT  = 
+	N = EXP:91 + J
+	CALL FIGURE_INDENT
+	PRINTVL EXP:91 + J
+
+	PRINT  창관 인기　　: 
+	N = EXP:MASTER:91
+	CALL FIGURE_INDENT
+	PRINTV EXP:MASTER:91
+	IF I >= 0
+		PRINT  + 
+		N = I
+		CALL FIGURE_INDENT
+		PRINTV I
+	ELSE
+		PRINT  - 
+		;eraBASICはマイナス演算子を扱えないのでわざとこうしています
+		I = 0 - I
+		N = I
+		CALL FIGURE_INDENT
+		PRINTV I
+		I = 0 - I
+	ENDIF
+	PRINT  = 
+	N = EXP:MASTER:91 + I
+	CALL FIGURE_INDENT
+	PRINTVL EXP:MASTER:91 + I
+ELSE
+	PRINTFORML (인기: {EXP:91 + J})
+ENDIF
+
+EXP:91 += J
+EXP:MASTER:91 += I
+
+;満足度最高の場合단골손님が付くことあり
+IF A >= 4
+	IF TALENT:183 == 0 && (C == 0 || CFLAG:12 == 3 || CFLAG:12 == 4 || CFLAG:12 == 5) && TALENT:27 == 0
+		PRINTFORML 손님 중 한 명은 %타겟이()% 대단히 마음에 든 것 같다…
+		PRINTFORMW %CALLNAME:TARGET%에게【%TALENTNAME:183%】이 붙었다
+		TALENT:183 = 1
+	ENDIF
+ENDIF
+
+SIF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;V경험増加量=客に질내사정された回数と解釈して임신フラグを加算
+SIF T:0 && CFLAG:13 == 0 
+	CFLAG:105 += T:0
+
+;『T:X』のXの値に応じて経験が上昇します
+REPEAT 76
+	IF T:COUNT
+		IF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+			PRINTFORM  %EXPNAME:COUNT%
+			IF COUNT == 0 || COUNT == 1
+				PRINT 　　　
+			ELSEIF COUNT == 11 || COUNT == 21 || COUNT == 30 || COUNT == 33 || COUNT == 73 || COUNT == 75
+				PRINT 
+			ELSEIF COUNT == 22 || COUNT == 32 || COUNT == 52 || COUNT == 53
+				PRINT 　
+			ELSE
+				PRINT 　　
+			ENDIF
+			PRINT :
+			N = EXP:COUNT
+			CALL FIGURE_INDENT
+			PRINTV EXP:COUNT
+			PRINTFORM  + 
+			N = T:COUNT
+			CALL FIGURE_INDENT
+			PRINTV T:COUNT
+			PRINTFORM  = 
+			N = EXP:COUNT + T:COUNT
+			CALL FIGURE_INDENT
+			PRINTVL EXP:COUNT + T:COUNT
+		ENDIF
+		EXP:COUNT += T:COUNT
+		T:COUNT = 0
+	ENDIF
+REND
+
+SIF CFLAG:12 == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;『U:X』のXの値に応じて珠を獲得します
+REPEAT 101
+	IF U:COUNT
+		IF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+			PRINTFORM  %PALAMNAME:COUNT%의 구슬　　
+			PRINT :
+			N = JUEL:COUNT
+			CALL FIGURE_INDENT
+			PRINTV JUEL:COUNT
+			PRINTFORM  + 
+			N = U:COUNT
+			CALL FIGURE_INDENT
+			PRINTV U:COUNT
+			PRINTFORM  = 
+			N = JUEL:COUNT + U:COUNT
+			CALL FIGURE_INDENT
+			PRINTVL JUEL:COUNT + U:COUNT
+		ENDIF
+		JUEL:COUNT += U:COUNT
+		U:COUNT = 0
+	ENDIF
+REND
+
+;娼婦, 傾城, 求愛を取得します
+;娼婦の条件: 매춘경험100以上, 반발각인なし, 굴복각인 LV3, 人気40以上
+IF EXP:74 >= 100 && MARK:3 == 0 && TALENT:180 == 0 && EXP:91 >= 40 && TALENT:181 == 0 && ABL:37 >= 2
+	PRINTFORML %CALLNAME:TARGET%의 영업 모습이 이상하다…
+	PRINTFORMW %타겟은()% 업소여성의 일에 달성감을 느끼게 된 모양이다……
+		TALENT:403 = 0
+		TALENT:404 = 0
+		TALENT:405 = 0
+	TALENT:180 = 1
+	MAXBASE:31 += 10
+	BASE:31 += 10
+	IF TALENT:30 == 1
+		PRINTFORML 《%타겟은()%【%TALENTNAME:30%】을 잃었다》
+		TALENT:30 = 0
+	ELSEIF TALENT:30 == 0 && TALENT:31 == 0
+		PRINTFORML 《%타겟은()%【%TALENTNAME:31%】이 됐다》
+		TALENT:31 = 1
+	ENDIF
+ENDIF
+;傾城の条件: 매춘경험200以上, 반발각인なし, 굴복각인 LV3, 娼婦取得, 人気100
+IF EXP:74 >= 200 && MARK:3 == 0 && TALENT:180 == 1 &&TALENT:181 == 0 && EXP:91 >= 100 && ABL:37 >= 4
+	PRINTFORML %타겟은()% 완전히 창관의 간판이 되어버렸다
+	PRINTFORML 오늘도 %타겟을()% 지명하고 싶어하는 손님이 몇 명이나 방문해왔다……
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:181%】가 됐다
+	TALENT:181 = 1
+	TALENT:180 = 0
+	MAXBASE:31 += 20
+	BASE:31 += 20
+	IF TALENT:30 == 1
+		PRINTFORML 《%타겟은()%【%TALENTNAME:30%】을 잃었다》
+		TALENT:30 = 0
+	ELSEIF TALENT:30 == 0 && TALENT:31 == 0
+		PRINTFORML 《%타겟은()%【%TALENTNAME:31%】이 됐다》
+		TALENT:31 = 1
+	ENDIF
+ENDIF
+;求愛の条件: 매춘경험100以上, 営業애정경험300以上, 愛未取得, 단골손님がいる, 人気60以上
+IF EXP:74 >= 100 && EXP:75 >= 300 && TALENT:85 == 0 && TALENT:183 == 1 && TALENT:184 == 0 && EXP:91 >= 60
+	PRINTFORML %CALLNAME:TARGET%의 영업 모습이 이상하다…
+	PRINTFORML %타겟은()% 후원객과 연인 사이가 되어버린 것 같다……
+	PRINTFORMW %타겟은(1)%【%TALENTNAME:184%】이 됐다
+		IF TALENT:85 == 0
+			TALENT:184 = 1
+			CFLAG:621 = 1
+			CFLAG:622 += RAND:6
+		ENDIF
+ENDIF
+
+;---------------------------------------------------------
+;獲得額の計算
+;---------------------------------------------------------
+;計算式は次の通り
+;「キャラの元値」×「買った人数」×「プレイ内容補正」×「満足度補正」
+;---------------------------------------------------------
+@WORK_MONEY
+
+;キャラの元値
+CALL WORK_MONEYD
+
+;買った人数
+B *= G
+
+;콘돔の代金を引く
+B -= CFLAG:13 * G * 200
+
+;マイナスになる事はない
+SIF B < 0
+	B = 0
+
+;회화영업の場合, 客が多く来るので帳尻あわせを
+SIF CFLAG:12 == 1
+	TIMES B , 0.75
+
+;プレイ内容補正
+B *= T:91
+
+;娼婦だとちょっと増える
+SIF TALENT:180
+	TIMES B , 1.10
+;傾城だと結構増える
+SIF TALENT:181
+	TIMES B , 1.30
+
+;人気が高いと高さに応じて増える
+IF EXP:91 >= 100
+	TIMES B , 1.30
+ELSEIF EXP:91 >= 80
+	TIMES B , 1.20
+ELSEIF EXP:91 >= 60
+	TIMES B , 1.10
+ENDIF
+
+;満足度補正
+IF A == 0
+	SIF (FLAG:6 & 2) == 0
+		PRINTFORML 불친절한 서비스 때문에 대량의 클레임이 들어와 일부 요금을 환불해야했습니다.
+	TIMES B , 0.50
+ELSEIF A == 1
+	TIMES B , 1.00
+ELSEIF A == 2
+	TIMES B , 1.00
+ELSEIF A == 3
+	TIMES B , 1.20
+ELSEIF A == 4
+	TIMES B , 1.30
+ENDIF
+
+
+
+IF (FLAG:6 & 2) == 0
+	IF CFLAG:12 == 6
+		PRINTFORML 돌아갈 때 손님에게 오늘분의 요금을 받았습니다
+	ELSE
+		PRINTFORML 오늘은 {G}명의 고객이 방문했습니다
+	ENDIF
+	PRINTFORML %타겟은()% 영업으로 {B}포인트를 벌었습니다
+ELSE
+	IF A == 0
+		PRINT 대실패: 
+	ELSEIF A == 1
+		PRINT 실패: 
+	ELSEIF A == 2
+		PRINT 보통: 
+	ELSEIF A == 3
+		PRINT 성공: 
+	ELSEIF A == 4
+		PRINT 대성공: 
+	ENDIF
+	PRINTFORM {G}명의 손님에게서 {B}포인트 획득
+ENDIF
+
+MONEY += B
+
+;---------------------------------------------------------
+;キャラの元値の計算
+;---------------------------------------------------------
+;;基本費用は200, 素質によってさらに加算されることになります
+;;現在はテストも兼ねてわりと適当な値ですが, 追々バランスを取りながら変更していく予定です
+;営業が効率良過ぎるので, erapoke導入に際して大幅にダンピング
+;HoX_pre2でさらにダンピング
+;---------------------------------------------------------
+@WORK_MONEYD
+
+;基本額
+B = 100
+
+;能力ボーナス: 従順・욕망・화술・봉사정신は営業内容に問わずボーナスとして加算
+;従順
+IF ABL:10 <= 3
+	B += 5
+ELSEIF ABL:10 == 4
+	B += 10
+ELSEIF ABL:10 == 5
+	B += 20
+ELSEIF ABL:10 == 6
+	B += 25
+ELSEIF ABL:10 == 7
+	B += 30
+ELSEIF ABL:10 == 8
+	B += 35
+ELSEIF ABL:10 == 9
+	B += 45
+ELSEIF ABL:10 >= 10
+	B += 50
+ENDIF
+
+;욕망
+IF ABL:11 <= 3
+	B += 10
+ELSEIF ABL:11 == 4
+	B += 20
+ELSEIF ABL:11 == 5
+	B += 30
+ELSEIF ABL:11 == 6
+	B += 50
+ELSEIF ABL:11 == 7
+	B += 70
+ELSEIF ABL:11 == 8
+	B += 90
+ELSEIF ABL:11 == 9
+	B += 120
+ELSEIF ABL:11 >= 10
+	B += 150
+ENDIF
+
+;화술: 회화영업だった場合通常よりも多く加算
+IF CFLAG:12 == 1
+	IF ABL:15 == 1
+		B += 10
+	ELSEIF ABL:15 == 2
+		B += 20
+	ELSEIF ABL:15 == 3
+		B += 40
+	ELSEIF ABL:15 == 4
+		B += 70
+	ELSEIF ABL:15 == 5
+		B += 100
+	ELSEIF ABL:15 >= 6
+		B += 150
+	ENDIF
+ELSE
+	IF ABL:15 == 1
+		B += 5
+	ELSEIF ABL:15 == 2
+		B += 10
+	ELSEIF ABL:15 == 3
+		B += 20
+	ELSEIF ABL:15 == 4
+		B += 35
+	ELSEIF ABL:15 == 5
+		B += 50
+	ELSEIF ABL:15 >= 6
+		B += 75
+	ENDIF
+ENDIF
+
+;봉사정신: 출장영업だった場合通常よりも多く加算
+IF CFLAG:12 == 6
+	IF ABL:16 == 1
+		B += 15
+	ELSEIF ABL:16 == 2
+		B += 30
+	ELSEIF ABL:16 == 3
+		B += 60
+	ELSEIF ABL:16 == 4
+		B += 105
+	ELSEIF ABL:16 == 5
+		B += 150
+	ELSEIF ABL:16 >= 6
+		B += 225
+	ENDIF
+ELSE
+	IF ABL:16 == 1
+		B += 10
+	ELSEIF ABL:16 == 2
+		B += 20
+	ELSEIF ABL:16 == 3
+		B += 40
+	ELSEIF ABL:16 == 4
+		B += 70
+	ELSEIF ABL:16 == 5
+		B += 100
+	ELSEIF ABL:16 >= 6
+		B += 150
+	ENDIF
+ENDIF
+
+;봉사영업だった場合, 봉사기술に応じて加算
+IF CFLAG:12 == 2 || CFLAG:12 == 7
+	IF ABL:13 == 1
+		B += 15
+	ELSEIF ABL:13 == 2
+		B += 25
+	ELSEIF ABL:13 == 3
+		B += 40
+	ELSEIF ABL:13 == 4
+		B += 60
+	ELSEIF ABL:13 == 5
+		B += 75
+	ELSEIF ABL:13 >= 6
+		B += 100
+	ENDIF
+ENDIF
+
+;AorV영업だった場合, 성교기술に応じて加算
+IF CFLAG:12 == 3 || CFLAG:12 == 4
+	IF ABL:14 == 1
+		B += 30
+	ELSEIF ABL:14 == 2
+		B += 50
+	ELSEIF ABL:14 == 3
+		B += 75
+	ELSEIF ABL:14 == 4
+		B += 100
+	ELSEIF ABL:14 == 5
+		B += 150
+	ELSEIF ABL:14 >= 6
+		B += 200
+	ENDIF
+ENDIF
+
+;SM영업だった場合, 새드끼or마조끼に応じて加算(高い方を判定)
+IF CFLAG:12 == 5
+	IF ABL:20 >= ABL:21
+		IF ABL:20 == 1
+			B += 15
+		ELSEIF ABL:20 == 2
+			B += 25
+		ELSEIF ABL:20 == 3
+			B += 40
+		ELSEIF ABL:20 == 4
+			B += 60
+		ELSEIF ABL:20 == 5
+			B += 75
+		ELSEIF ABL:20 >= 6
+			B += 100
+		ENDIF
+	ELSEIF ABL:21 > ABL:20
+		IF ABL:21 == 1
+			B += 15
+		ELSEIF ABL:21 == 2
+			B += 25
+		ELSEIF ABL:21 == 3
+			B += 40
+		ELSEIF ABL:21 == 4
+			B += 60
+		ELSEIF ABL:21 == 5
+			B += 75
+		ELSEIF ABL:21 >= 6
+			B += 100
+		ENDIF
+	ENDIF
+ENDIF
+
+;素質ボーナス
+;음란
+SIF TALENT:76
+	B += 20
+;매력
+SIF TALENT:113
+	B += 40
+;매혹
+SIF TALENT:91
+	B += 40
+;수수께끼의 매력
+SIF TALENT:92
+	B += 75
+;인기인
+SIF TALENT:126
+	B += 35
+;거유か빈유
+SIF TALENT:110 || TALENT:109
+	B += 25
+;후타나리
+SIF TALENT:121
+	B += 15
+;小柄体系
+SIF TALENT:100
+	B += 25
+;아이돌
+SIF TALENT:203
+	B += 50
+
+;HoX pre2にて, ビデオバリアントなのに!という声に応えてざっくり切り下げ
+B /= 10
+
+;---------------------------------------------------------
+;부정의 구슬の計算
+;---------------------------------------------------------
+;従順が高くないとガンガン溜まっていきます
+;従順が高くても溜まるのは溜まります
+;---------------------------------------------------------
+@WORK_DOWN
+
+A = G
+B = 6 - ABL:10
+SIF B < 1
+	B = 1
+A *= 5
+A *= B
+A *= B
+
+;経験補正
+;처녀상실だとかなり増える
+SIF CFLAG:50
+	TIMES A , 10.00
+
+;V경험が足りないとちょっと増える
+SIF CFLAG:51
+	TIMES A , 1.50
+
+;A경험が足りないとちょっと増える
+SIF CFLAG:52
+	TIMES A ,1.50
+
+;売春中毒のレベルに応じてちょっとずつ減る
+IF ABL:37 == 1
+	TIMES A , 0.90
+ELSEIF ABL:37 == 2
+	TIMES A , 0.80
+ELSEIF ABL:37 == 3
+	TIMES A , 0.70
+ELSEIF ABL:37 == 4
+	TIMES A , 0.60
+ELSEIF ABL:37 >= 5
+	TIMES A , 0.50
+ENDIF
+
+;素質補正
+;무관심だと少なくなる
+SIF TALENT:21
+	TIMES A , 0.90
+;감정부족と少なくなる
+SIF TALENT:22
+	TIMES A , 0.90
+;娼婦だとさらに少なくなる
+SIF TALENT:180
+	TIMES A , 0.80
+;求愛だと凄く少なくなる
+SIF TALENT:184
+	TIMES A , 0.50
+;プライドが高いと増える
+SIF TALENT:15
+	TIMES A , 1.50
+;정조관념だと凄く増える
+SIF TALENT:30
+	TIMES A , 2.50
+;음란だとやや少なくなる
+SIF TALENT:76
+	TIMES A , 0.80
+SIF TALENT:440
+	TIMES A , 0.01
+;【愛】してると嫌な気分
+SIF TALENT:85
+	TIMES A , 1.20
+;질투してるとこれは酷い
+SIF TALENT:84
+	A *= 100
+
+IF (FLAG:6 & 2) == 0
+	PRINT  부정의 구슬　　:
+	N = JUEL:100
+	CALL FIGURE_INDENT
+	PRINTV JUEL:100
+	PRINT  + 
+	N = A
+	CALL FIGURE_INDENT
+	PRINTV A
+	PRINT  = 
+	N = JUEL:100 + A
+	CALL FIGURE_INDENT
+	PRINTVL JUEL:100 + A
+ENDIF
+
+JUEL:100 += A
+
+;부정의 구슬の許容量を決定します
+;従順の150倍+100まで許容できます。LV2はルート2倍, LV3はルート3倍
+A = ABL:10
+A *= 150
+A += 100
+B = A
+TIMES B , 1.41
+C = A
+TIMES C , 1.73
+
+IF (FLAG:6 & 2) == 0
+	PRINT  허용량　　　: 
+	IF MARK:3 == 0
+		BAR JUEL:100, A, 32
+		PRINTFORML ({JUEL:100}/{A})
+	ELSEIF MARK:3 == 1
+		BAR JUEL:100, B, 32
+		PRINTFORML ({JUEL:100}/{B})
+	ELSE
+		BAR JUEL:100, C, 32
+		PRINTFORML ({JUEL:100}/{C})
+	ENDIF
+ENDIF
+
+IF MARK:3 != 3 && JUEL:100 > C
+	PRINTL 반발각인 LV3을 습득
+	PRINTL 더 이상 매춘을 계속할 수 없습니다
+	MARK:3 = 3
+	CFLAG:12 = 0
+ELSEIF MARK:3 != 2 && JUEL:100 > B
+	PRINTL 반발각인 LV2를 습득
+	PRINTL 더 이상 매춘을 계속할 수 없습니다
+	MARK:3 = 2
+	CFLAG:12 = 0
+ELSEIF MARK:3 != 1 && JUEL:100 > A
+	PRINTL 반발각인 LV1을 습득
+	MARK:3 = 1
+ENDIF
+
+
+;---------------------------------------------------------
+;消費체력の計算
+;---------------------------------------------------------
+@WORK_BASE
+;人数に応じて, ダメージの基準値を決定します
+IF G > 45
+	LOSEBASE:0 = 50
+ELSEIF G > 34
+	LOSEBASE:0 = 45
+ELSEIF G > 24
+	LOSEBASE:0 = 40
+ELSEIF G > 15
+	LOSEBASE:0 = 35
+ELSEIF G > 7
+	LOSEBASE:0 = 30
+ELSE
+	LOSEBASE:0 = 25
+ENDIF
+
+;営業種目による補正
+LOSEBASE:0 *= F
+
+;経験補正
+;처녀상실だとかなり増える
+IF CFLAG:50
+	TIMES LOSEBASE:0 , 2.00
+	BASE:31 -= 20
+ENDIF
+
+;V경험が足りないとちょっと増える
+IF CFLAG:51
+	TIMES LOSEBASE:0 , 1.10
+	BASE:31 -= 2
+ENDIF
+
+;A경험が足りないとちょっと増える
+IF CFLAG:52
+	TIMES LOSEBASE:0 , 1.20
+	BASE:31 -= 2
+ENDIF
+
+;음란だとちょっと少なくなる
+SIF TALENT:76
+	TIMES LOSEBASE:0 , 0.80
+
+;売春中毒のレベルに応じてちょっとずつ減る
+IF ABL:37 == 1
+	TIMES LOSEBASE:0 , 0.90
+ELSEIF ABL:37 == 2
+	TIMES LOSEBASE:0 , 0.80
+ELSEIF ABL:37 == 3
+	TIMES LOSEBASE:0 , 0.70
+ELSEIF ABL:37 == 4
+	TIMES LOSEBASE:0 , 0.60
+ELSEIF ABL:37 >= 5
+	TIMES LOSEBASE:0 , 0.50
+ENDIF
+
+IF (FLAG:6 & 2) == 0
+	PRINT  체력 소비　　: 
+	N = BASE:0
+	CALL FIGURE_INDENT
+	PRINTV BASE:0
+	PRINT  - 
+	N = LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTV LOSEBASE:0
+	PRINT  = 
+	N = BASE:0 - LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTVL BASE:0 - LOSEBASE:0
+	BASE:31 -= RAND:6
+ENDIF
+
+BASE:0 -= LOSEBASE:0
+LOSEBASE:0 = 0
+
+IF (FLAG:6 & 2) == 0
+	PRINT  체력　　　　:
+	BAR BASE:0, MAXBASE:0, 32
+	PRINTFORML ({BASE:0}/{MAXBASE:0})
+ENDIF

@@ -1,0 +1,108 @@
+﻿;===========================================================
+;クリアボーナス: 후타나리
+;===========================================================
+@CLEARBONUS_FUTANARI
+IF  TALENT:122 == 0
+	PRINTFORML %타겟이(1)% 후타나리인 IF세계로 갈까요?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+		IF RESULT == 0
+			CALL CLEARBONUS_FUTANARI_ADDEXP
+		ELSEIF RESULT == 1
+			RETURN 0
+		ELSE
+			GOTO INPUT_LOOP
+		ENDIF
+ENDIF
+
+;===========================================================
+;クリアボーナス: 후타나리
+;===========================================================
+@CLEARBONUS_FUTANARI_ADDEXP
+
+
+LOCAL = TARGET
+$INPUTLOOP_START
+PRINTL 《자지사이즈를 선택해 주세요》
+
+PRINTL [0] - 작음
+PRINTL [1] - 평균
+PRINTL [2] - 거근
+
+$INPUTLOOP_1
+INPUT
+
+IF RESULT == 0
+	CFLAG:LOCAL:609 = 0
+	BASE:LOCAL:50 = 9 + RAND:4
+ELSEIF RESULT == 1
+	CFLAG:LOCAL:609 = 1
+	BASE:LOCAL:50 = 13 + RAND:4
+ELSEIF RESULT == 2
+	CFLAG:LOCAL:609 = 2
+	BASE:LOCAL:50 = 17 + RAND:4
+ELSE
+	GOTO INPUTLOOP_1
+ENDIF
+
+PRINTL 《포경 상태를 선택해 주세요》
+
+PRINTL [0] - 진성포경
+PRINTL [1] - 가성포경(영구적)
+PRINTL [2] - 가성포경(동정상실후「벗겨짐」이 된다)
+PRINTL [3] - 벗겨짐
+
+$INPUTLOOP_2
+INPUT
+
+IF RESULT == 0
+	CFLAG:LOCAL:611 = 0
+ELSEIF RESULT == 1
+	CFLAG:LOCAL:611 = 1
+ELSEIF RESULT == 2
+	CFLAG:LOCAL:611 = 2
+ELSEIF RESULT == 3
+	CFLAG:LOCAL:611 = 3
+ELSE
+	GOTO INPUTLOOP_2
+ENDIF
+
+PRINTFORM %NAME:LOCAL%에게 생긴 후타나리 페니스는 {BASE:LOCAL:50}cm인 
+
+IF CFLAG:LOCAL:609 == 0
+	PRINTFORM 작은 
+ELSEIF CFLAG:LOCAL:609 == 1
+	PRINTFORM 
+ELSEIF CFLAG:LOCAL:609 == 2
+	PRINTFORM 극태 
+ENDIF
+
+IF CFLAG:LOCAL:611 == 0
+	PRINTFORM 진성포경 
+ELSEIF CFLAG:LOCAL:611 == 1
+	PRINTFORM 가성포경 
+ELSEIF CFLAG:LOCAL:611 == 2
+	PRINTFORM 가성포경 
+ELSEIF CFLAG:LOCAL:611 == 3
+	PRINTFORM 벗겨진 
+ENDIF
+
+PRINTFORML 페니스입니까?
+
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUTLOOP_3
+INPUT
+
+IF RESULT == 0
+	PRINTFORMW 《%조사처리(CALLNAME:LOCAL,"는")%【%TALENTNAME:121%】%조사만처리(TALENTNAME:121,"이")% 됐다》
+	TALENT:LOCAL:121 = 1
+	TALENT:LOCAL:1 = 1
+ELSEIF RESULT == 1
+	PRINTFORML 다시 선택해 주세요
+	GOTO INPUTLOOP_START
+ELSE
+	GOTO INPUTLOOP_3
+ENDIF

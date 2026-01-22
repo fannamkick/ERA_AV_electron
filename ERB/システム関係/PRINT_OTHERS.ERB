@@ -1,0 +1,79 @@
+﻿;===========================================================
+;ミニ情報の表示
+;===========================================================
+@PRINT_OTHERS
+
+
+;===========================================================
+;治安情報の表示
+;===========================================================
+
+PRINTFORM 마을의 치안상태: 
+IF FLAG:301 == 0
+	SETCOLOR 0x00FF00
+	PRINTFORM 좋음
+ELSEIF FLAG:301 == 1
+	PRINTFORM 보통
+ELSEIF FLAG:301 == 2
+	SETCOLOR 0xFFA500
+	PRINTFORM 악화
+ELSEIF FLAG:301 == 3
+	SETCOLOR 0xFF0000
+	PRINTFORM 최악
+ENDIF
+RESETCOLOR
+PRINTL
+
+;===========================================================
+;미션対象人数の表示
+;===========================================================
+
+VARSET LOCAL, 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSE
+		TRYCALLFORM MISSION_VISIBLE_{(50 + COUNT)}
+		IF RESULT == 1
+			SIF PBAND:(50 + COUNT) == 0
+				LOCAL:1 ++
+		ENDIF
+	ENDIF
+REND
+
+IF FLAG:570 && EXP:MASTER:90 >= 50
+	PRINTFORM 미션 대상 캐릭터: 
+	SETCOLOR 0x00FF00
+	PRINTFORM {LOCAL:1}명
+	RESETCOLOR
+	PRINTFORML 
+ENDIF
+
+;===========================================================
+;合コン参加キャラの表示
+;===========================================================
+
+VARSET LOCAL, 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:613 == 1
+		LOCAL:1++
+	ENDIF
+REND
+
+IF FLAG:540 == 0 && LOCAL:1 >= 1
+	PRINTFORM 미팅 참가예정: 
+	REPEAT CHARANUM
+		IF COUNT == 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:613 == 1
+			PRINTFORM %CALLNAME:COUNT%
+		ENDIF
+		SIF COUNT < LOCAL:1
+			PRINTFORM  / 
+	REND
+	PRINTL
+ENDIF

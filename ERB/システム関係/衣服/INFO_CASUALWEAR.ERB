@@ -1,0 +1,243 @@
+﻿;-------------------------------------------------
+;衣装の定義
+;-------------------------------------------------
+@PRINT_CLOTHTYPE_CASUALWEAR
+IF CFLAG:178 == 0
+	PRINT 없음
+	RETURN 1
+;----------------------------------------------------
+;사타구니를 덮지 않는 투피스(1~100)
+;----------------------------------------------------
+ELSEIF CFLAG:178 == 1
+	PRINT 평상복+스커트
+	RETURN 1
+ELSEIF CFLAG:178 == 2
+	PRINT 고쿠아쿠 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 3
+	PRINT 히노데 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 4
+	PRINT 하나마루 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 5
+	PRINT 신세츠 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 6
+	PRINT 세이에이 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 7
+	PRINT 파라이소 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 8
+	PRINT 사립 메키메키 학원 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 17
+	PRINT 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 18
+	PRINT 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 19
+	PRINT 세일러복
+	RETURN 1
+ELSEIF CFLAG:178 == 20
+	PRINT 마호라 여자중학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 21
+	PRINT 정장+치마
+	RETURN 1
+ELSEIF CFLAG:178 == 22
+	PRINT 아동복
+	RETURN 1
+ELSEIF CFLAG:178 == 23
+	PRINT 명품옷
+	RETURN 1
+ELSEIF CFLAG:178 == 24
+	PRINT 간호사복
+	RETURN 1
+ELSEIF CFLAG:178 == 25
+	PRINT 메이드복
+	RETURN 1
+ELSEIF CFLAG:178 == 26
+	PRINT 웨이트리스복
+	RETURN 1
+ELSEIF CFLAG:178 == 27
+	PRINT 편의점 제복
+	RETURN 1
+ELSEIF CFLAG:178 == 28
+	PRINT 사무원 제복
+	RETURN 1
+ELSEIF CFLAG:178 == 29
+	PRINT CPG 유니폼
+	RETURN 1
+ELSEIF CFLAG:178 == 30
+	PRINT 펑크 로리타
+	RETURN 0
+ELSEIF CFLAG:178 == 31
+	PRINT 블레이저+스커트
+	RETURN 0
+ELSEIF CFLAG:178 == 32
+	PRINT 상복
+	RETURN 1
+ELSEIF CFLAG:178 == 40
+	PRINT 캐미솔과 데님미니스커트
+	RETURN 0
+ELSEIF CFLAG:178 == 51
+	PRINT 군복
+	RETURN 1
+ELSEIF CFLAG:178 == 52
+	PRINT 고식 로리타
+	RETURN 0
+ELSEIF CFLAG:178 == 53
+	PRINT 마호라예대 부속 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 54
+	PRINT 치어리더 의상
+	RETURN 1
+ELSEIF CFLAG:178 == 55
+	PRINT 테니스복+스터트
+	RETURN 1
+ELSEIF CFLAG:178 == 56
+	PRINT 할로윈 마녀복
+	RETURN 1
+ELSEIF CFLAG:178 == 99
+	PRINT 유리 메이드복
+	RETURN 1
+;----------------------------------------------------
+;사타구니를 덮는 타입의 투피스(101~200)
+;----------------------------------------------------
+ELSEIF CFLAG:178 == 101
+	PRINT 평상복+바지
+	RETURN 1
+ELSEIF CFLAG:178 == 102
+	PRINT 정장+바지
+	RETURN 1
+ELSEIF CFLAG:178 == 103
+	PRINT 츄리닝+바지
+	RETURN 1
+ELSEIF CFLAG:178 == 104
+	PRINT 무녀복+하카마
+	RETURN 1
+ELSEIF CFLAG:178 == 105
+	PRINT 야구 유니폼
+	RETURN 1
+ELSEIF CFLAG:178 == 106
+	PRINT 군복+바지
+	RETURN 1
+ELSEIF CFLAG:178 == 108
+	PRINT 블레이저+바지
+	RETURN 0
+ELSEIF CFLAG:178 == 109
+	PRINT 체육복+브루마
+	RETURN 1
+ELSEIF CFLAG:178 == 110
+	PRINT 닌자복
+	RETURN 1
+ELSEIF CFLAG:178 == 111
+	PRINT 왕자복
+	RETURN 1
+ELSEIF CFLAG:178 == 122
+	PRINT 아동복
+	RETURN 1
+ELSEIF CFLAG:178 == 131
+	PRINT 잠옷
+	RETURN 1
+;----------------------------------------------------
+;사타구니를 덮는 타입으로 알몸으로 붙이는 투피스(191~200)
+;----------------------------------------------------
+ELSEIF CFLAG:178 == 191
+	PRINT 마이크로 비키니
+	RETURN 0
+;----------------------------------------------------
+;사타구니를 덮지 않는 타입의 전신 의상(201~240)
+;----------------------------------------------------
+ELSEIF CFLAG:178 == 201
+	PRINT 원피스
+	RETURN 0
+ELSEIF CFLAG:178 == 202
+	PRINT 기모노
+	RETURN 0
+ELSEIF CFLAG:178 == 203
+	PRINT 칵테일 드레스
+	RETURN 0
+ELSEIF CFLAG:178 == 204
+	PRINT 유카타
+	RETURN 0
+ELSEIF CFLAG:178 == 205
+	PRINT 마이크로 미니타이트 원피스
+	RETURN 0
+ELSEIF CFLAG:178 == 221
+	PRINT 차이나 드레스
+	RETURN 0
+ELSEIF CFLAG:178 == 222
+	PRINT 페미닌 원피스
+	RETURN 0
+ELSEIF CFLAG:178 == 229
+	PRINT 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 230
+	PRINT 성 우르술라 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:178 == 231
+	PRINT 수도복
+	RETURN 1
+ELSEIF CFLAG:178 == 232
+	PRINT 원피스 정장
+	RETURN 1
+ELSEIF CFLAG:178 == 233
+	PRINT 여자 음양사복
+	RETURN 1
+ELSEIF CFLAG:178 == 240
+	PRINT 웨딩 드레스
+	RETURN 0
+;股間を覆わないタイプで全裸で付ける全身衣装(241~250)
+ELSEIF CFLAG:178 == 241
+	PRINT 본디지
+	RETURN 0
+ELSEIF CFLAG:178 == 242
+	PRINT 음마의 본디지
+	RETURN 0
+ELSEIF CFLAG:178 == 243
+	PRINT 벨리댄스복
+	RETURN 1
+ELSEIF CFLAG:178 == 244
+	PRINT 구형 학교수영복
+	RETURN 1
+ELSEIF CFLAG:178 == 245
+	PRINT 라텍스 슈트
+	RETURN 0
+ELSEIF CFLAG:178 == 246
+	PRINT 브라질 수영복
+	RETURN 1
+;股間を覆うタイプでの全身衣装(251~290)
+ELSEIF CFLAG:178 == 251
+	PRINT 전신 타이즈
+	RETURN 0
+ELSEIF CFLAG:178 == 252
+	PRINT 멜빵바지
+	RETURN 0
+ELSEIF CFLAG:178 == 253
+	PRINT 프로페라단 코스튬
+	RETURN 1
+ELSEIF CFLAG:178 == 254
+	PRINT 버니걸
+	RETURN 1
+;股間を覆うタイプで全裸で付ける全身衣装(291~300)
+ELSEIF CFLAG:178 == 291
+	PRINT 학교수영복
+	RETURN 1
+ELSEIF CFLAG:178 == 292
+	PRINT 블랙 코스튬
+	RETURN 1
+ELSEIF CFLAG:178 == 295
+	PRINT 레오타드
+	RETURN 0
+;その他
+ELSEIF CFLAG:178 == -1
+	PRINT 속옷
+	RETURN 1
+ELSE
+	PRINT 옷
+	RETURN 1
+ENDIF

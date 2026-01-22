@@ -1,0 +1,161 @@
+﻿;B感覚のLvUP処理とその可否判定
+;eratohoA ver1,204のスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;B感覚のLvUP
+;-------------------------------------------------
+@ABLUP1
+DRAWLINE
+;SIF TALENT:122 == 0 && TALENT:116 == 0
+;	PRINT 乳房や
+;PRINTL 유두の感度をUPします
+;PRINTL B感覚が高まると, 胸への愛撫や착유からより大きな快楽が得られます
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;最大Lvは5, [음유]が付いている場合はLv10まで해방
+IF ABL:1 >= 5 && TALENT:78 == 0
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:1 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要なB感覚의 구슬
+A = 0
+
+;条件別にOKかダメかを記録する
+;B感覚의 구슬による可否(I=0:可, I&1:珠不足)
+I = 0
+
+CALL DECIDE_ABLUP1
+
+PRINTFORM [0] - %PALAMNAME:14%의 구슬×{JUEL:14}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+
+PRINTL [100] - 그만둔다
+
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:1 += 1
+
+IF RESULT == 0
+	JUEL:14 -= A
+ENDIF
+
+PRINTFORML %ABLNAME:1%의 레벨이 %조사처리(ABL:1,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;B感覚のLvUP可否判定
+;-------------------------------------------------
+@DECIDE_ABLUP1
+;B感覚はLv5が上限, [음유]が付いている場合はLv10まで해방
+SIF ABL:1 >= 5 && TALENT:78 == 0
+	RETURN 0
+SIF ABL:1 >= 10
+	RETURN 0
+
+;判定変数を空に
+A = 0
+I = 0
+
+IF ABL:1 == 0
+	A = 1
+ELSEIF ABL:1 == 1
+	A = 20
+ELSEIF ABL:1 == 2
+	A = 400
+ELSEIF ABL:1 == 3
+	A = 8000
+ELSEIF ABL:1 == 4
+	A = 20000
+ELSEIF ABL:1 == 5
+	A = 40000
+ELSEIF ABL:1 == 6
+	A = 60000
+ELSEIF ABL:1 == 7
+	A = 90000
+ELSEIF ABL:1 == 8
+	A = 120000
+ELSEIF ABL:1 == 9
+	A = 180000
+ENDIF
+
+IF TALENT:505
+	TIMES A , 0.01
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	SIF ABL:1 == 4
+		TIMES A , 2.00
+	SIF ABL:1 == 5
+		TIMES A , 2.50
+	SIF ABL:1 >= 6
+		TIMES A , 3.00
+ENDIF
+
+;B둔감
+SIF TALENT:107
+	TIMES A , 1.20
+;거유
+SIF TALENT:110
+	TIMES A , 1.10
+;폭유
+SIF TALENT:114
+	TIMES A , 1.20
+
+;B민감
+SIF TALENT:108
+	TIMES A , 0.80
+;음란
+SIF TALENT:76
+	TIMES A , 0.80
+;색정광
+SIF TALENT:440
+	TIMES A , 0.20
+;음유
+SIF TALENT:78
+	TIMES A , 0.80
+;빈유
+SIF TALENT:109
+	TIMES A , 0.80
+;절벽
+SIF TALENT:116
+	TIMES A , 0.65
+
+;最低でも1個は必要
+SIF A < 1
+	A = 1
+
+;쾌B의 구슬で上げられるか?
+SIF JUEL:14 < A
+	I |= 1
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+;
+;
+;

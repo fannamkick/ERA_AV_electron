@@ -1,0 +1,282 @@
+﻿;===========================================================
+;レズプレイ週末イベント
+;===========================================================
+@EVENT_LESPLAY_NEW
+#DIM LCOUNT
+#DIM f_actor
+#DIM s_actor
+#DIM NumofTimes
+
+CALL CLEARRANDCHOOSE
+
+;FORで人数分回す
+FOR LCOUNT,0,CHARANUM
+	;MASTER, 레즈끼2以下, 카논, の場合は除く
+	IF !(LCOUNT == 0 || ABL:LCOUNT:22 <= 2 || NO:LCOUNT == 10)
+		CALL ADDRANDCHOOSE(LCOUNT)
+	ENDIF
+NEXT
+
+IF CHOICECOUNT_F() > 0
+	CALL RANDCHOOSE
+	f_actor = RESULT
+ELSE
+	RETURN
+ENDIF
+
+CALL CLEARRANDCHOOSE
+
+;またFORで人数分回す
+FOR LCOUNT,0,CHARANUM
+	;同一人物じゃない, s_actorの레즈끼2以上, 카논でない, 相性が良い(%とりあえず120以上%)%)時にランダムで(%とりあえず1割くらいで%)
+	;こっちにはオトコはダメって書いてあるんだけどなぜこっちだけ。
+	IF LCOUNT != f_actor && ABL:LCOUNT:22 >= 2  && (RELATION:f_actor:(NO:LCOUNT) >= 120) && RAND:100 < 10 && TALENT:LCOUNT:122 == 0 && NO:LCOUNT != 10
+		CALL ADDRANDCHOOSE(LCOUNT)
+	ENDIF
+NEXT
+
+IF CHOICECOUNT_F() > 0
+	CALL RANDCHOOSE
+	s_actor = RESULT
+ELSE
+	RETURN
+ENDIF
+
+
+PRINTFORM 내일은 모처럼의 휴일이니 
+IF NO:f_actor == 1
+	PRINTFORML %CALLNAME:f_actor%의 방에 %조사처리(NAME:s_actor,"가")% 놀러왔다
+ELSEIF NO:s_actor == 1 
+	PRINTFORML %CALLNAME:s_actor%의 방에 %조사처리(NAME:f_actor,"가")% 놀러왔다
+ELSEIF NO:f_actor == 1 && NO:s_actor == 17
+	PRINTFORML %조사처리(NAME:f_actor,"와")% %조사처리(NAME:s_actor,"랑")% 놀기로 했다
+ELSEIF NO:f_actor == 17 && NO:s_actor == 1
+	PRINTFORML %조사처리(NAME:f_actor,"와")% %조사처리(NAME:s_actor,"랑")% 놀기로 했다
+ELSE
+	PRINTFORML %조사처리(NAME:f_actor,"와")% %조사처리(NAME:s_actor,"가")% %CALLNAME:MASTER%의 방에 놀러왔다
+ENDIF
+PRINTFORMW 
+PRINTFORM %CALLNAME:MASTER%도 함께 
+IF ABL:f_actor:73 >= 2 && ABL:s_actor:73 < 2
+	PRINTFORM %조사처리(NAME:f_actor,"가")% 만든 요리를 먹으며 
+ELSEIF ABL:f_actor:73 < 2 && ABL:s_actor:73 >= 2
+	PRINTFORM %조사처리(NAME:s_actor,"가")% 만든 요리를 먹으며 
+ELSEIF ABL:f_actor:73 >= 2 && ABL:s_actor:73 >= 2
+	PRINTFORM %조사처리(NAME:f_actor,"랑")% %조사처리(NAME:s_actor,"가")% 만든 요리를 먹으며 
+ELSE
+	PRINTFORM 배달시킨 피자를 먹으며 
+ENDIF
+PRINTFORML 보드게임을 하거나 영화를 보고, 잡담을 하며 즐거운 시간을 보냈다
+PRINTFORM 그렇게 밤이 깊어지고, 졸린듯 눈을 비비는 %조사처리(NAME:f_actor,"와")% %조사처리(NAME:s_actor,"가")% 자기 전에 샤워를 하고 싶다고 하기에, 
+PRINTFORML 당신은 두 사람의 알몸에는 이미 익숙해졌지만, 그래도 최소한의 매너를 지키고 먼저 방으로 돌아갔다
+PRINTFORML 그런데, 욕실에 둘이 같이 간 것처럼 보인 건 기분 탓일까……
+PRINTW
+
+CALL KOJO_LESPLAY,f_actor,s_actor
+
+
+PRINTFORML 옆 방에서 %조사처리(NAME:f_actor,"와")% %CALLNAME:s_actor%의 신음소리가 들린다……
+PRINTFORM 그때 본것은 기분 탓이 아니라 정말 같이 욕탕에 들어갔다가 몸이 뜨거워졌는지, 
+PRINTFORML 옆방에서 %플레이어가()% 자고 있는 것도 잊은듯이 레즈 플레이를 시작했다
+PRINTFORM 사이가 좋은건 바람직하지만, 주위에는 신경써주길 바라며, %플레이어는()% 
+PRINTFORM 두 사람의 신음소리에 영향받았는지 자기는 불러주지 않는 외로움을 느끼며 
+IF TALENT:MASTER:122 == 1 || TALENT:MASTER:121 == 1
+	PRINTFORM 발기한 페니스를 
+ELSE
+	PRINTFORM 애액으로 젖은 바기나를 
+ENDIF
+PRINTFORML 스스로 위로했다……
+PRINTL
+
+		;レズプレイ回数
+		NumofTimes = 0
+		
+		;레즈중독
+		IF ABL:f_actor:33 == 1
+			NumofTimes += 1
+		ELSEIF ABL:f_actor:33 == 2
+			NumofTimes += 2
+		ELSEIF ABL:f_actor:33 == 3
+			NumofTimes += 3
+		ELSEIF ABL:f_actor:33 == 4
+			NumofTimes += 5
+		ELSEIF ABL:f_actor:33 == 5
+			NumofTimes += 8
+		ELSEIF ABL:f_actor:33 >= 6
+			NumofTimes += 13
+		ENDIF
+		
+		;助手の레즈중독
+		IF ABL:s_actor:33 == 1
+			NumofTimes += 1
+		ELSEIF ABL:s_actor:33 == 2
+			NumofTimes += 2
+		ELSEIF ABL:s_actor:33 == 3
+			NumofTimes += 3
+		ELSEIF ABL:s_actor:33 == 4
+			NumofTimes += 5
+		ELSEIF ABL:s_actor:33 == 5
+			NumofTimes += 8
+		ELSEIF ABL:s_actor:33 >= 6
+			NumofTimes += 13
+		ENDIF
+		
+		;레즈끼によるボーナス
+		SIF ABL:f_actor:22 >= 3
+			NumofTimes += 1
+		
+		;助手の레즈끼によるボーナス
+		SIF ABL:s_actor:22 >= 3
+			NumofTimes += 1
+		
+		;욕망LV7以上で+1(%下と合わせて+2)
+		SIF ABL:f_actor:11 >= 7
+			NumofTimes += 1
+		;욕망LV4以上で+1
+		SIF ABL:f_actor:11 >= 4
+			NumofTimes += 1
+		
+		;相性によるボーナス
+		IF RELATION:f_actor:(NO:s_actor) > 0
+			NumofTimes *= RELATION:f_actor:(NO:s_actor) * 3
+			NumofTimes /= 100
+		ENDIF
+
+		;보수적, 일선을 넘지않음によるペナルティ
+		SIF TALENT:f_actor:24
+			NumofTimes -= 1
+		SIF TALENT:s_actor:24
+			NumofTimes -= 1
+		SIF TALENT:f_actor:27
+			NumofTimes -= 1
+		SIF TALENT:s_actor:27
+			NumofTimes -= 1
+		
+		;바이, 음란によるボーナス
+		SIF TALENT:f_actor:81
+			NumofTimes += 2
+		SIF TALENT:s_actor:81
+			NumofTimes += 2
+		SIF TALENT:f_actor:76
+			NumofTimes += 1
+		SIF TALENT:s_actor:76
+			NumofTimes += 1
+
+		;쾌감에 솔직, 쾌감을 부정
+		IF TALENT:f_actor:70
+			NumofTimes += 1
+		ELSEIF TALENT:f_actor:71
+			NumofTimes -= 2
+		ENDIF
+		IF TALENT:s_actor:70
+			NumofTimes += 1
+		ELSEIF TALENT:s_actor:71
+			NumofTimes -= 2
+		ENDIF
+
+		NumofTimes /= 10
+
+		IF NumofTimes <= 1
+			NumofTimes = 1
+		ENDIF
+
+
+		PRINTFORML %EXPNAME:40% +{NumofTimes*2}(%CALLNAME:f_actor%)
+		SIF NumofTimes*100*ABL:f_actor:11/500 > 0
+			PRINTFORML %EXPNAME:2% +{NumofTimes*100*ABL:f_actor:11/500}(%CALLNAME:f_actor%)
+		PRINTFORML %PALAMNAME:0%의 구슬 +{NumofTimes*100*ABL:f_actor:11}(%CALLNAME:f_actor%)
+		PRINTFORML %PALAMNAME:5%의 구슬 +{NumofTimes*200}(%CALLNAME:f_actor%)
+		
+		EXP:f_actor:40 += NumofTimes*2
+		EXP:f_actor:2 += NumofTimes*100*ABL:f_actor:11/500
+		
+		JUEL:f_actor:0 += NumofTimes*100*ABL:f_actor:11
+		JUEL:f_actor:5 += NumofTimes*200
+		
+		IF TALENT:s_actor:121
+			PRINTFORML %EXPNAME:20% +{NumofTimes}(%CALLNAME:f_actor%)
+			PRINTFORML %PALAMNAME:6%의 구슬 +{NumofTimes*100*(ABL:f_actor:12+ABL:f_actor:16)}(%CALLNAME:f_actor%)
+			PRINTFORML %PALAMNAME:7%의 구슬 +{NumofTimes*100*(ABL:f_actor:12+ABL:f_actor:16)}(%CALLNAME:f_actor%)
+		
+			EXP:f_actor:20 += NumofTimes
+			JUEL:f_actor:6 += NumofTimes*100*(ABL:f_actor:12+ABL:f_actor:16)
+			JUEL:f_actor:7 += NumofTimes*100*(ABL:f_actor:12+ABL:f_actor:16)
+		ELSE
+			PRINTFORML %PALAMNAME:6%의 구슬 +{NumofTimes*50*(ABL:f_actor:12+ABL:f_actor:16)}(%CALLNAME:f_actor%)
+			PRINTFORML %PALAMNAME:7%의 구슬 +{NumofTimes*50*(ABL:f_actor:12+ABL:f_actor:16)}(%CALLNAME:f_actor%)
+		
+			JUEL:f_actor:6 += NumofTimes*50*(ABL:f_actor:12+ABL:f_actor:16)
+			JUEL:f_actor:7 += NumofTimes*50*(ABL:f_actor:12+ABL:f_actor:16)
+		ENDIF
+		IF TALENT:s_actor:83
+			PRINTFORML %EXPNAME:30% +{NumofTimes}
+			SIF NumofTimes*100*ABL:f_actor:21 > 0
+				PRINTFORML %PALAMNAME:9%의 구슬 +{NumofTimes*100*ABL:f_actor:21}(%CALLNAME:f_actor%)
+			JUEL:f_actor:19 += NumofTimes*100*ABL:f_actor:21
+			EXP:f_actor:30 += NumofTimes
+		ENDIF
+		IF TALENT:s_actor:88 == 1 && ABL:f_actor:20 >= 3
+			PRINTFORML %EXPNAME:33% +{NumofTimes}
+			SIF NumofTimes*100*ABL:f_actor:20 > 0
+			PRINTFORML %PALAMNAME:5%의 구슬 +{NumofTimes*100*ABL:f_actor:20}(%CALLNAME:f_actor%)
+			JUEL:f_actor:5 += NumofTimes*100*ABL:f_actor:20
+			EXP:f_actor:33 += NumofTimes
+		ENDIF
+		IF TALENT:f_actor:121
+			PRINTFORML %EXPNAME:3% +{NumofTimes}(%CALLNAME:f_actor%)
+			PRINTFORML %PALAMNAME:8%의 구슬 +{NumofTimes*100}(%CALLNAME:f_actor%)
+			EXP:f_actor:3 += NumofTimes
+			JUEL:f_actor:8 += NumofTimes*100
+		ENDIF
+		
+		PRINTL
+		
+		PRINTFORML %EXPNAME:40% +{NumofTimes*2}(%CALLNAME:s_actor%)
+		SIF NumofTimes*100*ABL:s_actor:11/500 > 0
+			PRINTFORML %EXPNAME:2% +{NumofTimes*100*ABL:s_actor:11/500}(%CALLNAME:s_actor%)
+		PRINTFORML %PALAMNAME:0%의 구슬 +{NumofTimes*100*ABL:s_actor:11}(%CALLNAME:s_actor%)
+		PRINTFORML %PALAMNAME:5%의 구슬 +{NumofTimes*200}(%CALLNAME:s_actor%)
+		
+		EXP:s_actor:40 += NumofTimes*2
+		EXP:s_actor:2 += NumofTimes*100*ABL:s_actor:11/500
+		
+		JUEL:s_actor:0 += NumofTimes*100*ABL:s_actor:11
+		JUEL:s_actor:5 += NumofTimes*200
+		
+		IF TALENT:f_actor:121
+			PRINTFORML %EXPNAME:20% +{NumofTimes}(%CALLNAME:s_actor%)
+			PRINTFORML %PALAMNAME:6%의 구슬 +{NumofTimes*100*(ABL:s_actor:12+ABL:s_actor:16)}(%CALLNAME:s_actor%)
+			PRINTFORML %PALAMNAME:7%의 구슬 +{NumofTimes*100*(ABL:s_actor:12+ABL:s_actor:16)}(%CALLNAME:s_actor%)
+		
+			EXP:s_actor:20 += NumofTimes
+			JUEL:s_actor:6 += NumofTimes*100*(ABL:s_actor:12+ABL:s_actor:16)
+			JUEL:s_actor:7 += NumofTimes*100*(ABL:s_actor:12+ABL:s_actor:16)
+		ELSE
+			PRINTFORML %PALAMNAME:6%의 구슬 +{NumofTimes*50*(ABL:s_actor:12+ABL:s_actor:16)}(%CALLNAME:s_actor%)
+			PRINTFORML %PALAMNAME:7%의 구슬 +{NumofTimes*50*(ABL:s_actor:12+ABL:s_actor:16)}(%CALLNAME:s_actor%)
+		
+			JUEL:s_actor:6 += NumofTimes*50*(ABL:s_actor:12+ABL:s_actor:16)
+			JUEL:s_actor:7 += NumofTimes*50*(ABL:s_actor:12+ABL:s_actor:16)
+		ENDIF
+		IF TALENT:f_actor:83
+			PRINTFORML %EXPNAME:30% +{NumofTimes}
+			SIF NumofTimes*100*ABL:s_actor:21 > 0
+				PRINTFORML %PALAMNAME:9%의 구슬 +{NumofTimes*100*ABL:s_actor:21}(%CALLNAME:s_actor%)
+			JUEL:s_actor:9 += NumofTimes*100*ABL:s_actor:21
+			EXP:s_actor:30 += NumofTimes
+		ENDIF
+		IF TALENT:f_actor:88 == 1 && ABL:f_actor:20 >= 3
+			PRINTFORML %EXPNAME:33% +{NumofTimes}
+			SIF NumofTimes*100*ABL:f_actor:20 > 0
+				PRINTFORML %PALAMNAME:5%의 구슬 +{NumofTimes*100*ABL:f_actor:20}(%CALLNAME:s_actor%)
+			JUEL:f_actor:5 += NumofTimes*100*ABL:f_actor:20
+			EXP:f_actor:33 += NumofTimes
+		ENDIF
+		IF TALENT:s_actor:121
+			PRINTFORML %EXPNAME:3% +{NumofTimes}
+			PRINTFORML %PALAMNAME:8%의 구슬 +{NumofTimes*100}(%CALLNAME:s_actor%)
+			EXP:s_actor:3 += NumofTimes
+			JUEL:s_actor:8 += NumofTimes*100
+		ENDIF
+		RELATION:s_actor:(NO:f_actor) += 10
+		RELATION:f_actor:(NO:s_actor) += 10

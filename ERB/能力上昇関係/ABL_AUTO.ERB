@@ -1,0 +1,811 @@
+﻿;eraim@sPOFA0.06Gのものを移入
+;上限を他と共有するものは上限を下げるか, 一括上昇の対象にしない処理
+;=================================================
+;一括レベル上げ機能
+;=================================================
+@AUT_LVUPPER, ARG
+;C感覚
+CALL AUT_C_0
+;B感覚
+CALL AUT_B_0
+;V감각
+CALL AUT_V_0
+;A감각
+CALL AUT_A_0
+;M感覚
+;CALL AUT_M_0
+
+;従順;恐怖
+CALL AUT_ZYUUZYUN_0
+;従順;恭順
+CALL AUT_ZYUUZYUN_1
+;従順;욕정
+CALL AUT_ZYUUZYUN_2
+;従順;屈服
+CALL AUT_ZYUUZYUN_3
+;욕망;욕정
+CALL AUT_YOKUBOU_0
+;기교;習得
+CALL AUT_GIKOU_0
+;봉사기술;習得
+CALL AUT_HOUSHIGI_0
+
+;성교기술;習得
+CALL AUT_SEIKOUGI_0
+;화술;習得
+CALL AUT_WAZYUTU_0
+;봉사정신;屈服
+CALL AUT_HOUSHISE_0
+;봉사정신;恭順
+CALL AUT_HOUSHISE_1
+;봉사정신;習得
+CALL AUT_HOUSHISE_2
+;노출벽;恥情
+CALL AUT_ROSHITU_0
+
+;;새드끼;욕정＋習得
+;CALL AUT_SADO_0
+;;마조끼;고통＋欲情
+;CALL AUT_MAZO_0
+;;마조끼;고통＋屈服
+;CALL AUT_MAZO_1
+;;마조끼;恐怖＋欲情
+;;CALL AUT_MAZO_2
+;;마조끼;恥情＋恭順
+;;CALL AUT_MAZO_3
+
+;레즈끼;いろいろ
+CALL AUT_REZUKKE_0
+;레즈끼;C感覚
+CALL AUT_REZUKKE_1
+;BLっ気;いろいろ
+CALL AUT_BLKKE_0
+;BLっ気;A감각
+CALL AUT_BLKKE_1
+
+;;성교중독;욕정＋屈服
+;CALL AUT_SEIKOU_0
+;;성교중독;성교경험半分
+;CALL AUT_SEIKOU_1
+;;자위중독;욕정＋快C＋恥情＋자위경험
+;CALL AUT_JII_0
+;;자위중독;욕정＋快C＋恥情＋지도자위경험
+;CALL AUT_JII_1
+;;자위중독;B感覚
+;;CALL AUT_JII_2
+;;자위중독;V감각
+;;CALL AUT_JII_3
+;;자위중독;A감각
+;;CALL AUT_JII_4
+;;정액중독;욕정＋屈服;정액경험多いバージョン
+;CALL AUT_SEIEKI_0
+;;정액중독;욕정＋屈服;정액경험少ないバージョン
+;CALL AUT_SEIEKI_1
+;;레즈중독;快C＋欲情＋屈服
+;CALL AUT_REZUTYUUDOKU_0
+;;売春中毒;恭順＋欲情＋屈服
+;;CALL AUT_BAISYUN_0
+
+;;수간중독;욕정＋屈服
+;CALL AUT_ZYUUKAN_0
+
+
+;ビジュアル技能;習得
+CALL AUT_Vi_0
+;;ボーカル技能;習得
+;CALL AUT_Vo_0
+;;ダンス技能;習得
+;CALL AUT_Da_0
+
+;;요리기능;習得
+;CALL AUT_RYOURI_0
+
+;////////////////////////
+IF ARG == 200
+	;従順;恭順
+	CALL AUT_ZYUUZYUN_1
+	;봉사정신;恭順
+	CALL AUT_HOUSHISE_1
+	;売春中毒;恭順＋欲情＋屈服
+	CALL AUT_BAISYUN_0
+ENDIF
+;////////////////////////
+
+PRINTW 자동으로 레벨업 했습니다
+CALL YOKUBO_UP_CHECK
+CALL JUJUN_UP_CHECK
+
+;-------------------------------------------------
+;C感覚
+;-------------------------------------------------
+@AUT_C_0
+LOCAL = 0
+REPEAT 10 - ABL:0
+CALL DECIDE_ABLUP0
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:0 += 1
+	JUEL:0 -= A
+REND
+CALL PRINT_AUT_ABLUP(0, 0, -1, -1, LOCAL)
+;-------------------------------------------------
+;B感覚
+;-------------------------------------------------
+@AUT_B_0
+LOCAL = 0
+REPEAT 10 - ABL:1
+CALL DECIDE_ABLUP1
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:1 += 1
+	JUEL:14 -= A
+REND
+CALL PRINT_AUT_ABLUP(1, 14, -1, -1, LOCAL)
+;-------------------------------------------------
+;V감각
+;-------------------------------------------------
+@AUT_V_0
+LOCAL = 0
+REPEAT 10 - ABL:2
+CALL DECIDE_ABLUP2
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:2 += 1
+	JUEL:1 -= A
+REND
+CALL PRINT_AUT_ABLUP(2, 1, -1, -1, LOCAL)
+;-------------------------------------------------
+;A감각
+;-------------------------------------------------
+@AUT_A_0
+LOCAL = 0
+REPEAT 10 - ABL:3
+CALL DECIDE_ABLUP3
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:3 += 1
+	JUEL:2 -= A
+REND
+CALL PRINT_AUT_ABLUP(3, 2, -1, -1, LOCAL)
+;-------------------------------------------------
+;M感覚
+;-------------------------------------------------
+;@AUT_M_0
+;LOCAL = 0
+;REPEAT 10 - ABL:4
+;CALL DECIDE_ABLUP4
+;	IF I != 0
+;		BREAK
+;	ENDIF
+;	LOCAL += 1
+;	ABL:4 += 1
+;	JUEL:4 -= A
+;REND
+;CALL PRINT_AUT_ABLUP(4, 4, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;従順
+;-------------------------------------------------
+;恐怖
+@AUT_ZYUUZYUN_0
+LOCAL = 0
+REPEAT 10 - ABL:10
+	CALL DECIDE_ABLUP10
+	IF RESULT == 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:10 += 1
+	JUEL:10 -= A
+REND
+CALL PRINT_AUT_ABLUP(10, 10, -1, -1, LOCAL)
+;恭順
+@AUT_ZYUUZYUN_1
+LOCAL = 0
+REPEAT 10 - ABL:10
+	CALL DECIDE_ABLUP10
+	IF RESULT == 0 || J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:10 += 1
+	JUEL:4 -= B
+REND
+CALL PRINT_AUT_ABLUP(10, 4, -1, -1, LOCAL)
+;욕정
+@AUT_ZYUUZYUN_2
+LOCAL = 0
+REPEAT 10 - ABL:10
+	CALL DECIDE_ABLUP10
+	IF C < 0
+		BREAK
+	ELSEIF  RESULT == 0 || K != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:10 += 1
+	JUEL:5 -= C
+REND
+CALL PRINT_AUT_ABLUP(10, 5, -1, -1, LOCAL)
+;屈服
+@AUT_ZYUUZYUN_3
+LOCAL = 0
+REPEAT 10 - ABL:10
+	CALL DECIDE_ABLUP10
+	IF D < 0
+		BREAK
+	ELSEIF RESULT == 0 || L != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:10 += 1
+	JUEL:6 -= D
+REND
+CALL PRINT_AUT_ABLUP(10, 6, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;욕망
+;-------------------------------------------------
+;욕정
+@AUT_YOKUBOU_0
+LOCAL = 0
+REPEAT 10 - ABL:11
+CALL DECIDE_ABLUP11
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:11 += 1
+	JUEL:5 -= A
+REND
+CALL PRINT_AUT_ABLUP(11, 5, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;기교
+;화술との兼ね合いで5まで
+;-------------------------------------------------
+;習得
+@AUT_GIKOU_0
+LOCAL = 0
+REPEAT 5 - ABL:12
+CALL DECIDE_ABLUP12
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:12 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(12, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;봉사기술
+;-------------------------------------------------
+;習得
+@AUT_HOUSHIGI_0
+LOCAL = 0
+REPEAT 10 - ABL:13
+CALL DECIDE_ABLUP13
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:13 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(13, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;성교기술
+;-------------------------------------------------
+;習得
+@AUT_SEIKOUGI_0
+LOCAL = 0
+REPEAT 10 - ABL:14
+CALL DECIDE_ABLUP14
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:14 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(14, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;화술
+;기교との略
+;-------------------------------------------------
+;習得
+@AUT_WAZYUTU_0
+LOCAL = 0
+REPEAT 5 - ABL:15
+CALL DECIDE_ABLUP15
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:15 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(15, 7, -1, -1, LOCAL)
+
+
+;-------------------------------------------------
+;봉사정신
+;-------------------------------------------------
+;屈服
+@AUT_HOUSHISE_0
+LOCAL = 0
+REPEAT 10 - ABL:16
+CALL DECIDE_ABLUP16
+	IF RESULT == 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:16 += 1
+	JUEL:6 -= A
+REND
+CALL PRINT_AUT_ABLUP(16, 6, -1, -1, LOCAL)
+;恭順
+@AUT_HOUSHISE_1
+LOCAL = 0
+REPEAT 10 - ABL:16
+CALL DECIDE_ABLUP16
+	IF RESULT == 0 || B <= 0 || J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:16 += 1
+	JUEL:4 -= B
+REND
+CALL PRINT_AUT_ABLUP(16, 4, -1, -1, LOCAL)
+;習得
+@AUT_HOUSHISE_2
+LOCAL = 0
+REPEAT 10 - ABL:16
+CALL DECIDE_ABLUP16
+	IF RESULT == 0 || C <= 0 || K != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:16 += 1
+	JUEL:7 -= C
+REND
+CALL PRINT_AUT_ABLUP(16, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;노출벽
+;-------------------------------------------------
+@AUT_ROSHITU_0
+LOCAL = 0
+REPEAT 10 - ABL:17
+CALL DECIDE_ABLUP17
+	IF RESULT == 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:17 += 1
+	JUEL:8 -= A
+REND
+CALL PRINT_AUT_ABLUP(17, 8, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;새드끼
+;-------------------------------------------------
+;욕정
+@AUT_SADO_0
+LOCAL = 0
+REPEAT 10 - ABL:20
+CALL DECIDE_ABLUP20
+	IF B <= 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:20 += 1
+	JUEL:5 -= A
+REND
+CALL PRINT_AUT_ABLUP(20, 5, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;마조끼
+;-------------------------------------------------
+;고통＋欲情
+@AUT_MAZO_0
+LOCAL = 0
+REPEAT 10 - ABL:21
+CALL DECIDE_ABLUP21
+	IF B <= 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:21 += 1
+	JUEL:9 -= A
+	JUEL:5 -= B
+REND
+CALL PRINT_AUT_ABLUP(21, 9, 5, -1, LOCAL)
+;고통＋屈服
+@AUT_MAZO_1
+LOCAL = 0
+REPEAT 10 - ABL:21
+CALL DECIDE_ABLUP21
+	IF D <= 0 || J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:21 += 1
+	JUEL:9 -= D
+	JUEL:6 -= E
+REND
+CALL PRINT_AUT_ABLUP(21, 9, 6, -1, LOCAL)
+;恐怖＋欲情
+;@AUT_MAZO_2
+;LOCAL = 0
+;REPEAT 10 - ABL:21
+;CALL DECIDE_ABLUP21
+;	IF B <= 0 || K != 0
+;		BREAK
+;	ENDIF
+;	LOCAL += 1
+;	ABL:21 += 1
+;	JUEL:11 -= A
+;	JUEL:6 -= B
+;REND
+;CALL PRINT_AUT_ABLUP(21, 11, 6, -1, LOCAL)
+;恥情＋恭順
+;@AUT_MAZO_3
+;LOCAL = 0
+;REPEAT 10 - ABL:21
+;CALL DECIDE_ABLUP21
+;	IF D <= 0 || L != 0
+;		BREAK
+;	ENDIF
+;	LOCAL += 1
+;	ABL:21 += 1
+;	JUEL:9 -= D
+;	JUEL:5 -= E
+;REND
+;CALL PRINT_AUT_ABLUP(21, 9, 5, -1, LOCAL)
+
+;-------------------------------------------------
+;레즈끼
+;-------------------------------------------------
+;욕정＋屈服
+@AUT_REZUKKE_0
+LOCAL = 0
+REPEAT 10 - ABL:22
+CALL DECIDE_ABLUP22
+	IF RESULT == 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:22 += 1
+	JUEL:5 -= A
+	JUEL:6 -= C
+REND
+CALL PRINT_AUT_ABLUP(22, 5, 6, -1, LOCAL)
+;C感覚
+@AUT_REZUKKE_1
+LOCAL = 0
+REPEAT 10 - ABL:22
+CALL DECIDE_ABLUP22
+	IF RESULT == 0 || D <= 0 || J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:22 += 1
+	JUEL:0 -= D
+REND
+CALL PRINT_AUT_ABLUP(22, 0, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;BLっ気
+;-------------------------------------------------
+;욕정＋屈服
+@AUT_BLKKE_0
+LOCAL = 0
+REPEAT 10 - ABL:23
+CALL DECIDE_ABLUP23
+	IF RESULT == 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:23 += 1
+	JUEL:5 -= A
+	JUEL:6 -= C
+REND
+CALL PRINT_AUT_ABLUP(23, 5, 6, -1, LOCAL)
+;A감각
+@AUT_BLKKE_1
+LOCAL = 0
+REPEAT 10 - ABL:23
+CALL DECIDE_ABLUP23
+	IF RESULT == 0 || D <= 0 || J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:23 += 1
+	JUEL:2 -= D
+REND
+CALL PRINT_AUT_ABLUP(23, 2, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;성교중독
+;-------------------------------------------------
+;욕정＋屈服
+@AUT_SEIKOU_0
+LOCAL = 0
+REPEAT 10 - ABL:30
+CALL DECIDE_ABLUP30
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:30 += 1
+	JUEL:5 -= A
+	JUEL:6 -= B
+REND
+CALL PRINT_AUT_ABLUP(30, 5, 6, -1, LOCAL)
+;半分の성교경험で上げる場合
+@AUT_SEIKOU_1
+LOCAL = 0
+REPEAT 10 - ABL:30
+CALL DECIDE_ABLUP30
+	IF J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:30 += 1
+	JUEL:5 -= A*3
+	JUEL:6 -= B*3
+REND
+CALL PRINT_AUT_ABLUP(30, 5, 6, -1, LOCAL)
+
+;-------------------------------------------------
+;자위중독
+;-------------------------------------------------
+;快C＋자위경험
+@AUT_JII_0
+LOCAL = 0
+REPEAT 10 - ABL:31
+CALL DECIDE_ABLUP31
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:31 += 1
+	JUEL:5 -= A
+	JUEL:0 -= B
+	JUEL:8 -= C
+REND
+CALL PRINT_AUT_ABLUP(31, 5, 0, 8, LOCAL)
+;快C＋지도자위경험
+@AUT_JII_1
+LOCAL = 0
+REPEAT 10 - ABL:31
+CALL DECIDE_ABLUP31
+	IF J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:31 += 1
+	JUEL:5 -= A
+	JUEL:0 -= B
+	JUEL:8 -= C
+REND
+CALL PRINT_AUT_ABLUP(31, 5, 0, 8, LOCAL)
+;B자위
+;@AUT_JII_2
+;LOCAL = 0
+;REPEAT 10 - ABL:31
+;CALL DECIDE_ABLUP31
+;	IF P != 0
+;		BREAK
+;	ENDIF
+;	LOCAL++
+;	ABL:31 += 1
+;	JUEL:6 -= A
+;	JUEL:1 -= S
+;	JUEL:9 -= C
+;REND
+;CALL PRINT_AUT_ABLUP(31, 6, 1, 9, LOCAL)
+;V자위
+;@AUT_JII_3
+;LOCAL = 0
+;REPEAT 10 - ABL:31
+;CALL DECIDE_ABLUP31
+;	IF M != 0
+;		BREAK
+;	ENDIF
+;	LOCAL++
+;	ABL:31 += 1
+;	JUEL:6 -= A
+;	JUEL:2 -= R
+;	JUEL:9 -= C
+;REND
+;CALL PRINT_AUT_ABLUP(31, 6, 2, 9, LOCAL)
+;A자위
+;@AUT_JII_4
+;LOCAL = 0
+;REPEAT 10 - ABL:31
+;CALL DECIDE_ABLUP31
+;	IF J != 0
+;		BREAK
+;	ENDIF
+;	LOCAL += 1
+;	ABL:31 += 1
+;	JUEL:6 -= A
+;	JUEL:3 -= F
+;	JUEL:9 -= C
+;REND
+;CALL PRINT_AUT_ABLUP(31, 6, 3, 9, LOCAL)
+
+;-------------------------------------------------
+;정액중독
+;-------------------------------------------------
+;정액경험多いバージョン
+@AUT_SEIEKI_0
+LOCAL = 0
+REPEAT 10 - ABL:32
+CALL DECIDE_ABLUP32
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:32 += 1
+	JUEL:5 -= A
+	JUEL:6 -= B
+REND
+CALL PRINT_AUT_ABLUP(32, 5, 6, -1, LOCAL)
+;정액경험少ないバージョン
+@AUT_SEIEKI_1
+LOCAL = 0
+REPEAT 10 - ABL:32
+CALL DECIDE_ABLUP32
+	IF J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:32 += 1
+	JUEL:5 -= A*3
+	JUEL:6 -= B*3
+REND
+CALL PRINT_AUT_ABLUP(32, 5, 6, -1, LOCAL)
+
+;-------------------------------------------------
+;레즈중독
+;-------------------------------------------------
+@AUT_REZUTYUUDOKU_0
+LOCAL = 0
+REPEAT 10 - ABL:33
+CALL DECIDE_ABLUP33
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:33 += 1
+	JUEL:0 -= B
+	JUEL:5 -= A
+	JUEL:6 -= A
+REND
+CALL PRINT_AUT_ABLUP(33, 0, 5, 6, LOCAL)
+
+;-------------------------------------------------
+;売春中毒
+;-------------------------------------------------
+@AUT_BAISYUN_0
+LOCAL = 0
+REPEAT 10 - ABL:37
+CALL DECIDE_ABLUP37
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:37 += 1
+	JUEL:4 -= A
+	JUEL:5 -= B
+	JUEL:6 -= C
+REND
+CALL PRINT_AUT_ABLUP(37, 4, 5, 6, LOCAL)
+
+;-------------------------------------------------
+;수간중독
+;-------------------------------------------------
+@AUT_ZYUUKAN_0
+LOCAL = 0
+REPEAT 10 - ABL:39
+CALL DECIDE_ABLUP39
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:39 += 1
+	JUEL:5 -= A
+	JUEL:6 -= B
+REND
+CALL PRINT_AUT_ABLUP(39, 5, 6, -1, LOCAL)
+
+;-------------------------------------------------
+;ビジュアル技能
+;-------------------------------------------------
+@AUT_Vi_0
+LOCAL = 0
+REPEAT 10 - ABL:70
+CALL DECIDE_ABLUP70
+	IF RESULT == 0 || I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:70 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(70, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;ボーカル技能
+;-------------------------------------------------
+@AUT_Vo_0
+LOCAL = 0
+REPEAT 10 - ABL:71
+CALL DECIDE_ABLUP71
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:71 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(71, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;ダンス技能
+;-------------------------------------------------
+@AUT_Da_0
+LOCAL = 0
+REPEAT 10 - ABL:72
+CALL DECIDE_ABLUP72
+	IF I != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:72 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(72, 7, -1, -1, LOCAL)
+
+;-------------------------------------------------
+;요리기능
+;-------------------------------------------------
+@AUT_RYOURI_0
+LOCAL = 0
+REPEAT 10 - ABL:73
+CALL DECIDE_ABLUP73
+	IF J != 0
+		BREAK
+	ENDIF
+	LOCAL += 1
+	ABL:73 += 1
+	JUEL:7 -= A
+REND
+CALL PRINT_AUT_ABLUP(73, 7, -1, -1, LOCAL)
+
+
+;-------------------------------------------------
+@PRINT_AUT_ABLUP(ARG, ARG:1, ARG:2, ARG:3, ARG:4)
+SIF ARG:4 < 1
+	RETURN 0
+IF ARG:2 < 0 && ARG:3 < 0
+	PRINTFORML %조사처리(ABLNAME:ARG,"를")% %PALAMNAME:(ARG:1)%의 구슬을 사용해 {ARG:4}LV 올렸습니다
+ELSEIF ARG:3 < 0
+	PRINTFORML %조사처리(ABLNAME:ARG,"를")% %조사처리(PALAMNAME:(ARG:1),"와")% %PALAMNAME:(ARG:2)%의 구슬을 사용해 {ARG:4}LV 올렸습니다
+ELSE
+	PRINTFORML %조사처리(ABLNAME:ARG,"를")% %조사처리(PALAMNAME:(ARG:1),"와")% %조사처리(PALAMNAME:(ARG:2),"와")% %PALAMNAME:(ARG:3)%의 구슬을 사용해 {ARG:4}LV 올렸습니다
+ENDIF

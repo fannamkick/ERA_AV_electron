@@ -1,0 +1,37 @@
+﻿;===========================================================
+;実績・후타나리っ娘らばーず
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_20
+RESULTS = Strawberry Panic!
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_20
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	IF ABL:COUNT:22 == 10
+		LOCAL++
+	ENDIF
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:20 == 0 && DIFFICULTY_CHECK() && LOCAL >= 7
+	GLOBAL:20 = 1
+RETURN GLOBAL:20
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_20
+; 解説文
+PRINTFORML 지도와 촬영을 반복하며 동성과 다양한 행위를 경험하게 된 그녀들
+PRINTFORM 같은 여자이기에 알 수 있는, 서로의『기분 좋은 곳』을 자극해주는 행위에
+PRINTFORML 그녀들은 깊게 빠져있었다
+PRINTFORM 그것은 우정을 넘어, 육욕과 함께 동성을 향한 애정이라고도 할 수 있는 것으로 변하여
+PRINTFORMW 이제와선 그녀들은 동성과 살을 겹치는 행위에 완전히 저항이 없어졌다
+
+IF FLAG:110 == 0
+	PRINTFORMW 《실적 해금 보너스로서【연심】습득조건에서 레즈경험을 무시하게 됐습니다》
+	FLAG:110 = 1
+ENDIF

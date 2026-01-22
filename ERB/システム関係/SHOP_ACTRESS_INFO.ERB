@@ -1,0 +1,148 @@
+﻿;===========================================================
+;女優の選択
+;===========================================================
+@ACTRESS_INFO
+
+$INPUT_LOOP_0
+
+DRAWLINE
+PRINTL 누구의 정보를 확인할까요?
+CALL LIFE_LIST_NEW,6
+
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_0
+ENDIF
+
+;以下営業させられる条件
+;主人だと不可
+IF RESULT == MASTER
+	PRINTFORML %플레이어는()% 감독입니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+
+IF TALENT:RESULT:400 == 0
+	PRINTFORML %조사처리(CALLNAME:RESULT,"는")% 아직 데뷔하지 않았습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+
+TARGET = RESULT
+
+CALL PRINT_ACTRESS_INFO
+
+;===========================================================
+;タイトルの表示
+;===========================================================
+@PRINT_ACTRESS_INFO
+
+CALL ACTRESS_ARTICLE
+
+DRAWLINE
+PRINTFORML  본명: %NAME:TARGET%　／　예명: %NICKNAME:TARGET%
+PRINTFORML  총 매상: {CFLAG:730}포인트　／　출연작수: {EXP:76}편
+PRINTFORML  현재의 칭호: %CSTR:41% %CSTR:42%
+PRINTFORML  팬 인원수: {CFLAG:733}명　／　전속계약: %CSTR:MASTER:5%
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTFORML  ★데뷔작 타이틀★
+	CHKFONT "あくびん"
+			IF RESULT
+				SETFONT "あくびん"
+			ENDIF
+			SETCOLOR 0xDDBBCC
+	PRINT  
+	CALL PRINT_VIDEO_TITLE
+	SETFONT ""
+	RESETCOLOR
+PRINTFORML  매상: {CFLAG:734}포인트
+IF CFLAG:732 > 0
+	PRINTFORML  ★최신작 타이틀★
+		CHKFONT "あくびん"
+				IF RESULT
+					SETFONT "あくびん"
+				ENDIF
+				SETCOLOR 0xDDBBCC
+		PRINT  
+		CALL PRINT_VIDEO_TITLE_NEW
+		SETFONT ""
+		RESETCOLOR
+	PRINTFORML  매상: {CFLAG:732}포인트
+ENDIF
+IF CFLAG:732 > 0
+	PRINTFORML  ★대표작 타이틀★
+		CHKFONT "あくびん"
+				IF RESULT
+					SETFONT "あくびん"
+				ENDIF
+				SETCOLOR 0xDDBBCC
+		PRINT  
+		CALL PRINT_VIDEO_TITLE_REPRESENT
+		SETFONT ""
+		RESETCOLOR
+	PRINTFORML  매상: {CFLAG:731}포인트
+ENDIF
+WAIT
+
+CALL ACTRESS_INFO
+
+						;****パラ表示改造追加ここから****
+;===========================================================
+;ステータス表示用
+;===========================================================
+@PRINT_ACTRESS_STR
+
+IF TALENT:400 == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORML 아직 데뷔하지 않았습니다
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSE
+	CALL ACTRESS_ARTICLE
+	
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORML  총 매상: {CFLAG:730}포인트　／　출연작수: {EXP:76}편
+	PRINTFORML  현재의 친호: %CSTR:41%%CSTR:42%
+	PRINTFORML  팬 수: {CFLAG:733}명　／　전속 계약: %CSTR:MASTER:5%
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTFORML  ★데뷔작의 타이틀★
+		CHKFONT "あくびん"
+				IF RESULT
+					SETFONT "あくびん"
+				ENDIF
+				SETCOLOR 0xDDBBCC
+		PRINT  
+		CALL PRINT_VIDEO_TITLE
+		SETFONT ""
+		RESETCOLOR
+	PRINTFORML  매상: {CFLAG:734}포인트
+	IF CFLAG:732 > 0
+		PRINTFORML  ★최신작의 타이틀★
+			CHKFONT "あくびん"
+					IF RESULT
+						SETFONT "あくびん"
+					ENDIF
+					SETCOLOR 0xDDBBCC
+			PRINT  
+			CALL PRINT_VIDEO_TITLE_NEW
+			SETFONT ""
+			RESETCOLOR
+		PRINTFORML  매상: {CFLAG:732}포인트
+	ENDIF
+	IF CFLAG:732 > 0
+		PRINTFORML  ★대표작의 타이틀★
+			CHKFONT "あくびん"
+					IF RESULT
+						SETFONT "あくびん"
+					ENDIF
+					SETCOLOR 0xDDBBCC
+			PRINT  
+			CALL PRINT_VIDEO_TITLE_REPRESENT
+			SETFONT ""
+			RESETCOLOR
+		PRINTFORML  매상: {CFLAG:731}포인트
+	ENDIF
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ENDIF
+						;****パラ表示改造追加ここまで****
+

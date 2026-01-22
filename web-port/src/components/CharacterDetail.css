@@ -1,0 +1,318 @@
+/* 캐릭터 상세 정보 */
+.character-detail {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.character-detail-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+}
+
+.character-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #333;
+}
+
+.character-header h2 {
+  font-size: 2rem;
+  margin: 0;
+  color: #ffffff;
+}
+
+.call-name {
+  margin: 0.5rem 0 0 0;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.character-nickname {
+  margin: 0.3rem 0;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.character-main-name {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* BASE 스탯 바 */
+.base-stats {
+  margin: 1rem 0;
+  font-family: monospace;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.stat-bar {
+  color: #4CAF50;
+  margin-right: 0.5rem;
+  letter-spacing: -2px;
+}
+
+.mark-bar {
+  color: #FFD700;
+  letter-spacing: 0px;
+}
+
+/* 스탯 섹션 */
+.stats-section {
+  margin-bottom: 2rem;
+}
+
+.stats-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: #2a2a2a;
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* 섹션 구분선 */
+.section-divider {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  text-align: left;
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+
+.section-title {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #ffffff;
+}
+
+/* TALENT 텍스트 리스트 */
+.talent-section {
+  margin: 0.5rem 0;
+}
+
+.talent-text-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: monospace;
+}
+
+.talent-text {
+  color: #DDB8CC;
+  font-size: 0.9rem;
+}
+
+/* ABL 섹션 */
+.abl-section {
+  margin: 0.5rem 0;
+}
+
+.abl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
+  margin: 0.5rem 0;
+}
+
+.abl-grid-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2a2a2a;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  border: 1px solid #333;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.abl-name {
+  color: #aaa;
+  margin-right: 0.5rem;
+}
+
+.abl-value {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+/* 각인 섹션 (MARK) */
+.mark-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 0.5rem 0;
+  font-family: monospace;
+}
+
+.mark-item {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+/* PALAM 섹션 */
+.palam-section {
+  margin: 0.5rem 0;
+}
+
+.palam-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: monospace;
+}
+
+.palam-item {
+  color: #ffffff;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* CFLAG 섹션 */
+.cflag-section {
+  margin: 0.5rem 0;
+}
+
+.cflag-list {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.cflag-list p {
+  margin: 0.3rem 0;
+  color: #ffffff;
+}
+
+/* CSTR 섹션 */
+.cstr-section {
+  margin: 0.5rem 0;
+}
+
+.cstr-list {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.cstr-list p {
+  margin: 0.3rem 0;
+  color: #ffffff;
+}
+
+/* 신체 정보 섹션 */
+.body-info-section {
+  margin: 0.5rem 0;
+}
+
+.body-measurements {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.body-measurements p {
+  margin: 0.3rem 0;
+  color: #ffffff;
+}
+
+/* 경험치 섹션 (EXP) */
+.exp-section {
+  margin: 0.5rem 0;
+}
+
+.exp-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: monospace;
+}
+
+.exp-item {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+/* 구슬 섹션 (JUEL) */
+.juel-section {
+  margin: 0.5rem 0;
+  font-family: monospace;
+}
+
+.juel-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0.3rem 0;
+}
+
+.juel-item {
+  color: #ffffff;
+  font-size: 0.9rem;
+  min-width: 180px;
+}
+
+/* 소질 리스트 */
+.talent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.talent-badge {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+/* 초체험 기록 섹션 */
+.event-records-section {
+  margin: 0.5rem 0;
+  font-family: monospace;
+}
+
+.event-record {
+  margin: 0.3rem 0;
+  color: #F58F98;
+  font-size: 0.9rem;
+}
+
+.juel-line {
+  margin: 0.3rem 0;
+  color: #ffffff;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,512 @@
+﻿;========================================================
+;SYSTEM_PARTICULAR_DATE 特定日付に発生するイベントを扱ってます
+;
+;========================================================;
+;フラグメモ(今後の使用予定)
+;CFLAG:150	誕生日を祝われた
+;CFLAG:151	バレンタインチョコを贈ったか
+;		(0=贈ってない, 1=今年贈った(ホワイトデーまで有効), 2=以前贈ったことがある)
+;CFLAG:152	ホワイトデーのお返し
+;CFLAG:153	クリスマスイブを一緒に過ごした
+;CFLAG:154	元旦を一緒に過ごした
+;CFLAG:155	夏休み(전반)を一緒に過ごした
+;-------------------------------------------------
+
+;-------------------------------------------------
+;特定日かどうかのチェック
+;EVENT_NEXTDAY.ERBから呼び出される関数
+;-------------------------------------------------
+@PARTICULAR_DATE
+IF DAY:1 == 2 && DAY:2 == 3
+	CALL VALENTINE_DAY
+;ELSEIF DAY:1 == 3 && DAY:2 == 3
+;	CALL WHITE_DAY
+ELSEIF DAY:1 == 7 && DAY:2 == 3
+	CALL SUMMER_VACATION1
+;ELSEIF DAY:1 == 12 && DAY:2 == 4
+;	CALL CHRISTMAS_EVE
+;ELSEIF DAY:1 == 1 && DAY:2 == 1
+;	CALL NEWYEAR_DAY
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;バレンタインデー
+;-------------------------------------------------
+@VALENTINE_DAY
+N = 0
+REPEAT CHARANUM
+	;%CALLNAME:MASTER%の호감도はチェックしない
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:2 >= 200
+		DRAWLINE
+		N += 1 
+		;3人目まで
+		IF N < 4
+			PRINTFORML 아침 식사를 마치고 방으로 돌아가던 중, %조사처리(CALLNAME:COUNT,"가")% %플레이어를()% 불러 세웠다.
+		;4人目以降
+		ELSE
+			PRINTFORML %플레이어가()% 오전의 예정을 생각하고 있을 때, %조사처리(CALLNAME:COUNT,"가")% 방을 노크했다.
+		ENDIF
+
+		;호감도1000以上＋【음란】
+		IF CFLAG:COUNT:2 >= 1000 && TALENT:COUNT:76
+			PRINTFORMW 잠시 후에, 자신의 방으로 와달라는 것이었다.
+			PRINTL
+			PRINTFORM %조사처리(CALLNAME:COUNT,"가")% 말한대로 %플레이어가()% 방에 들어가자, 
+
+			;마조끼3で긴박경험100以上, または마조끼4以上で긴박경험50以上の場合
+			IF (ABL:COUNT:21 == 3 && EXP:COUNT:51 >= 100) || (ABL:COUNT:21 >= 4 && EXP:COUNT:51 >= 50) 
+				PRINTL 리본으로 장식된 커다란 상자가 방 한가운데에 놓여져 있었다.
+				PRINTFORML 뚜껑을 열어 보니, 안에는 초콜릿으로 칠해진 %조사처리(CALLNAME:COUNT,"가")% 들어 있었다.
+				PRINTFORML 스스로 묶은 것일까, %CALLNAME:COUNT%의 몸에는 리본이 몇 겹이나 감겨있고 황홀한 눈동자가 %플레이어를()% 올려다보았다.
+
+				;%CALLNAME:MASTER%が새드
+				IF TALENT:MASTER:83
+					PRINTFORMW 질척질척 더러운 %CALLNAME:COUNT%의 피부를 구두로 사뿐히 즈려밟으니, %조사처리(CALLNAME:COUNT,"는")% 신음 소리를 내면서 고통의 쾌락에 숨이 가파라졌다…
+					PRINTL
+					PRINTL 피학쾌락경험 +2
+					EXP:COUNT:30 += 2
+				ELSE
+					PRINTFORMW 손가락으로 %CALLNAME:COUNT%의 몸에 묻은 초콜릿을 떠올리자 그 자극으로 느껴버렸는지, %조사처리(CALLNAME:COUNT,"는")% 작게 허덕였다.
+					PRINTL
+				ENDIF
+				PRINTL 긴박경험 +2
+				EXP:COUNT:51 += 2
+				PRINTL 온순의 구슬 +500
+				JUEL:COUNT:4 += 500
+				PRINTW 욕정의 구슬 +200
+				JUEL:COUNT:5 += 200
+
+			;全裸か, 노출벽4以上の場合
+			ELSEIF (CFLAG:COUNT:41 == 0 && CFLAG:COUNT:42 == 0) || FLAG:37 == 0 || ABL:COUNT:17 >= 4
+				PRINTFORML 알몸인 %조사처리(CALLNAME:COUNT,"가")% %플레이어를()% 기다리고 있었다.
+				;노출벽5以上, V감각3以上
+				IF ABL:COUNT:17 >= 5 && ABL:COUNT:2 >= 3
+					PRINTFORML %조사처리(CALLNAME:COUNT,"는")% M자 포즈로 양손으로 음순을 펼쳐 질에 넣은 초콜릿을 %CALLNAME:MASTER%에게 보여줬다.
+					PRINTFORML 그 안을 손가락으로 초콜릿과 함께 휘저어 주면,  %조사처리(CALLNAME:COUNT,"는")% 수치와 쾌감으로 몸부림쳤다.
+					PRINTFORML 초콜릿과 애액으로 더러워진 손가락을 %CALLNAME:COUNT%의 입가에 가져다대니, %조사처리(CALLNAME:COUNT,"는")% 황홀해하며 %CALLNAME:MASTER%의 손가락을 빨았다…
+					PRINTL
+					PRINTL 쾌V의 구슬 +200
+					JUEL:COUNT:1 += 200
+					PRINTL 욕정의 구슬 +300
+					JUEL:COUNT:5 += 300
+					PRINTW 치정의 구슬 +500
+					JUEL:COUNT:8 += 500
+
+				;노출벽5以上
+				ELSEIF ABL:COUNT:17 >= 5
+					PRINTFORML %CALLNAME:COUNT%의 맨살에는 초콜릿 소스로 하트 모양이 그려져있고 유두에는 휘핑 크림이 올려져 있다.
+					PRINTFORML %플레이어가()% 초콜릿을 핥을때마다 %조사처리(CALLNAME:COUNT,"는")% 흥분되는지, 신음소리를 내며 몸을 떨었다…
+					PRINTL
+					PRINTL 욕정의 구슬 +300
+					JUEL:COUNT:5 += 300
+					PRINTW 치정의 구슬 +500
+					JUEL:COUNT:8 += 500
+
+				;폭유以上
+				ELSEIF TALENT:COUNT:114 || TALENT:COUNT:251 || TALENT:COUNT:252 || TALENT:COUNT:253
+					PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 거대한 유방의 골짜기에 하트 모양의 초콜릿을 올려 %CALLNAME:MASTER%에게 내밀었다.
+					PRINTFORML %CALLNAME:COUNT%의 가슴의 감촉을 마음껏 즐기면서 %플레이어가()% 초콜릿을 다 먹었을 무렵에는, %조사처리(CALLNAME:COUNT,"는")% 홍조를 띄우며 뜨거운 숨을 내쉬고 있었다…
+					PRINTL
+					PRINTL 쾌B의 구슬 +200
+					JUEL:COUNT:14 += 200
+					PRINTL 욕정의 구슬 +300
+					JUEL:COUNT:5 += 300
+					PRINTW 치정의 구슬 +300
+					JUEL:COUNT:8 += 300
+
+				;それ以外
+				ELSE
+					PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 준비한 초콜릿을 물고, %CALLNAME:MASTER%에게 입술을 내밀었다.
+					PRINTFORML 입을 맞추는 동안 녹아내린 초콜릿과 서로의 타액이 섞여, %플레이어와()% %CALLNAME:COUNT%의 농후한 키스는 계속됐다…
+					PRINTL
+					PRINTL 욕정의 구슬 +300
+					JUEL:COUNT:5 += 300
+					PRINTW 치정의 구슬 +300
+					JUEL:COUNT:8 += 300
+				ENDIF
+
+			;それ以外の場合
+			ELSE
+				PRINTFORML 속옷 차림의 %조사처리(CALLNAME:COUNT,"가")% %플레이어를()% 기다리고 있었다.
+
+				;폭유以上
+				IF TALENT:COUNT:114 || TALENT:COUNT:251 || TALENT:COUNT:252 || TALENT:COUNT:253
+					PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 거대한 유방의 골짜기에 하트 모양의 초콜릿을 올려 %CALLNAME:MASTER%에게 내밀었다.
+					PRINTFORML %CALLNAME:COUNT%의 가슴의 감촉을 마음껏 즐기면서 %플레이어가()% 초콜릿을 다 먹었을 무렵에는, %조사처리(CALLNAME:COUNT,"는")% 홍조를 띄우며 뜨거운 숨을 내쉬고 있었다…
+					PRINTL
+					PRINTL 쾌B의 구슬 +200
+					JUEL:COUNT:14 += 200
+					PRINTL 욕정의 구슬 +300
+					JUEL:COUNT:5 += 300
+					PRINTW 치정의 구슬 +200
+					JUEL:COUNT:8 += 200
+				;それ以外
+				ELSE
+					PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 준비한 초콜릿을 물고, %CALLNAME:MASTER%에게 입술을 내밀었다.
+					PRINTFORML 입을 맞추는 동안 녹아내린 초콜릿과 서로의 타액이 섞여, %플레이어와()% %CALLNAME:COUNT%의 농후한 키스는 계속됐다…
+					PRINTL
+					PRINTL 욕정의 구슬 +300
+					JUEL:COUNT:5 += 300
+					PRINTW 치정의 구슬 +300
+					JUEL:COUNT:8 += 300
+				ENDIF
+			ENDIF
+		;호감도1000以上＋【연심】
+		ELSEIF CFLAG:COUNT:2 >= 1000 && TALENT:COUNT:85
+			;素質ごとに描写(겁쟁이・수줍음／솔직함／호기심・포지티브／프라이드 높음／それ以外)
+			IF TALENT:COUNT:10 || TALENT:COUNT:35
+				PRINT 얼굴이 새빨개진 
+			ELSEIF TALENT:COUNT:13
+				PRINT 왠지 들떠보이는 
+			ELSEIF TALENT:COUNT:23 || TALENT:COUNT:25
+				PRINT 즐거워 보이는 
+			ELSEIF TALENT:COUNT:15
+				PRINT 안절부절 못하는 
+			ELSE
+				PRINT 뺨을 붉힌 
+			ENDIF
+
+			PRINTFORM %조사처리(CALLNAME:COUNT,"가")% 
+			
+			;素質ごとに描写(자제심／부끄럼 없음・튀고 싶어함／무관심／겁쟁이)
+			IF TALENT:COUNT:20
+				PRINT 눈치를 살피며 
+			ELSEIF TALENT:COUNT:36 || TALENT:COUNT:28
+				PRINT 힘차게 
+			ELSEIF TALENT:COUNT:21
+				PRINT 자연스럽게 
+			ELSEIF TALENT:COUNT:10
+				PRINT 소심하게  
+			ENDIF
+
+			PRINTFORM %CALLNAME:MASTER%에게 건낸 것은, 
+
+			;素質ごとに描写(아가씨／튀고 싶어함／자제심・무관심／それ以外)
+			IF TALENT:COUNT:205
+				PRINT 고급스러운 
+			ELSEIF TALENT:COUNT:28
+				PRINT 화려한 
+			ELSEIF TALENT:COUNT:20 || TALENT:COUNT:21
+				PRINT 세련된 
+			ELSE
+				PRINT 귀여운 
+			ENDIF
+
+			PRINT 포장지로 쌓인 
+
+			;초등학생・중학생の場合のみ
+			SIF TALENT:COUNT:221 || TALENT:COUNT:222
+				PRINT 작은 
+			PRINT 물건이었다.
+
+			PRINTFORM %플레이어가()% 그것을 받아 들자, %조사처리(CALLNAME:COUNT,"는")% 
+
+			;素質ごとに描写(호감도1500未満／호감도2000未満／작은체형／무관심／겁쟁이)
+			IF CFLAG:COUNT:2 < 1500
+				PRINT 생긋 웃으며, 
+			ELSEIF CFLAG:COUNT:2 < 2000
+				PRINTFORM %플레이어를()% 꽉 껴안고 
+			ELSEIF TALENT:COUNT:100
+				PRINTFORM 발 돋움해 %CALLNAME:MASTER%에게 입맞추고, 
+			ELSE
+				PRINTFORM 미소지으며 %CALLNAME:MASTER%에게 입맞추고, 
+			ENDIF
+
+			;素質ごとに描写(솔직함・츤데레／겁쟁이・얌전함／それ以外)
+			IF TALENT:COUNT:13 || TALENT:COUNT:18
+				PRINTL 행복해하며 떠나갔다.
+			ELSEIF TALENT:COUNT:10 || TALENT:COUNT:35
+				PRINTL 도망치듯이 떠나갔다.
+			ELSE
+				PRINTL 손을 흔들며 떠나갔다.
+			ENDIF
+
+			PRINTL 아무래도 애정의 초콜릿 같다.
+
+			PRINTFORM 함께 들어있는 메세지 카드에는 %CALLNAME:MASTER%에게 보내는 편지
+
+			;욕망5・호감도2000以上ならキスマークも添える
+			SIF ABL:COUNT:11 >= 5 && CFLAG:COUNT:2 >= 2000
+				PRINTFORM 와 %CALLNAME:COUNT%의 키스마크
+
+			PRINTL 가 있었다.
+
+			;요리기능あれば手作り
+			IF ABL:COUNT:73 > 2
+				PRINTFORML 초콜릿은 %CALLNAME:COUNT%의 수제 같았지만, 외형도 맛도 최고급 전문점의 솜씨라고 해도 좋을 정도였다.
+				PRINTL 요리경험 +5
+				EXP:COUNT:61 += 5
+			ELSEIF ABL:COUNT:73 > 0
+				PRINTFORML 초콜릿은 %조사처리(CALLNAME:COUNT,"가")% 직접 만든 것 같아 약간 서툰 부분도 있었지만, %CALLNAME:MASTER%에게는 충분히 맛있게 느껴졌다.
+				PRINTL 요리경험 +3
+				EXP:COUNT:61 += 3
+			ENDIF
+			PRINTL
+			PRINTL 애정경험 +5
+			EXP:COUNT:23 += 5
+			PRINTW 온순의 구슬 +1000
+			JUEL:COUNT:4 += 1000
+
+		;호감도500以上
+		ELSEIF CFLAG:COUNT:2 >= 500
+			PRINTFORML %조사처리(CALLNAME:COUNT,"가")% 조금 당황해하며 %CALLNAME:MASTER%에게 내민 것은, 작은 선물이었다.
+			PRINTFORML 발렌타인 초콜릿, 이라고 한다.
+			PRINTFORML %플레이어가()% 그것을 받으니, %조사처리(CALLNAME:COUNT,"는")% 미소지으며 떠나 갔다.
+			PRINTFORMW 온순의 구슬 +200
+			JUEL:COUNT:4 += 200
+
+		;호감도200以上
+		ELSEIF CFLAG:COUNT:2 >= 200
+			PRINTFORML %조사처리(CALLNAME:COUNT,"가")% %CALLNAME:MASTER%에게 내민 것은, 간단하게 포장된 선물이었다.
+			PRINTFORML 우정의 초콜릿이라는 거겠지.
+			PRINTL
+			PRINTFORMW 온순의 구슬 +100
+			JUEL:COUNT:4 += 100
+		ENDIF		
+	ENDIF
+REND
+
+RETURN 1
+
+
+;-------------------------------------------------
+;夏休み전반(海)
+;-------------------------------------------------
+@SUMMER_VACATION1
+DRAWLINE
+PRINTFORML 오늘은 바다의 날이다……
+PRINTFORML 날씨도 좋고, 해수욕하기에 딱 맞는 날이었다。
+PRINTFORML 
+$SUMMER_VACATION_LOOP
+PRINTL 여배우(후보)를 바다에 데리고 갑니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+
+INPUT
+IF RESULT == 1
+	RETURN 1
+ELSEIF RESULT == 0
+	PRINTL 
+	GOTO SUMMER_VACATION_LOOP2
+ELSE
+	GOTO SUMMER_VACATION_LOOP
+ENDIF
+
+$SUMMER_VACATION_LOOP2
+PRINTFORML 바다에 데려갈 여배우(후보)를 선택해 주세요
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	;【연심】【영원한 사랑】持ちでないキャラは排除
+	;△と見せかけて[섹프]でも可になってるんですが。下コメでは음란とか言ってるしわけわかめ。
+	SIF TALENT:COUNT:85 == 0 && TALENT:COUNT:90 == 0
+		CONTINUE
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	PRINTL 
+REND
+DRAWLINE
+PRINTFORML  [999] - 그만둔다
+
+INPUT
+
+IF RESULT == 999
+	RETURN 1
+ELSEIF RESULT == 0
+	GOTO SUMMER_VACATION_LOOP2
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO SUMMER_VACATION_LOOP2
+;【연심】【음란】持ちでないキャラは排除
+;△実際には음란は見ていない
+ELSEIF TALENT:RESULT:85 == 0 && TALENT:RESULT:90 == 0
+	GOTO SUMMER_VACATION_LOOP2
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO SUMMER_VACATION_LOOP2
+ENDIF
+
+TARGET = RESULT
+PRINTFORMW %타겟과(1)% 바다로 놀러갑니다.
+
+CUSTOMDRAWLINE ‥
+;노출벽のLvに応じて文章が変わります
+IF PBAND:68 >= 3 && ABL:17 >= 5
+	PRINTFORM 끈이나 마찬가지인 에로틱 슬링샷을 
+ELSEIF ABL:17 >= 5
+	PRINTFORM 노출도가 높은 마이크로 비키니를 
+ELSE
+	PRINTFORM 얌전한 원피스 비키니를 
+ENDIF
+PRINTFORM 입은 %타겟은()% 
+;おっぱいおっぱい(絶望)
+IF TALENT:110 == 1 || TALENT:114 == 1
+	PRINTFORM 커다란 가슴을 흔들며 
+ENDIF
+PRINTFORML %플레이어와()% 장난을 치고 있다……
+PRINTW 
+
+IF TALENT:422 == 0 && ABL:17 >= 3
+	PRINTFORM 어느정도 %타겟과()% 논 뒤에, 비치 체어에 엎드려 쉬고 있던 %타겟이()% 
+	PRINTFORML %CALLNAME:MASTER%에게 선 오일을 발라달라고 보채왔다
+	PRINTFORML 모처럼 바다에 왔으니 이런 커플 같은 일도 해보고 싶다고 하는데……
+	PRINTFORML 《%CALLNAME:TARGET%에게 선 오일을 발라줍니까?》
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP_SUNOIL
+	INPUT
+		IF RESULT == 0
+			PRINTFORML %플레이어는()% 엎드려있는 %CALLNAME:TARGET%의 온몸 구석구석에 선 오일을 발라줬다
+			PRINTFORML %타겟은()% 간지러운듯 웃으면서도, %CALLNAME:MASTER%의 스킨십을 즐기고 있다……
+			TFLAG:130 = 1
+		ELSEIF RESULT == 1
+			PRINTFORML 모처럼 예쁜 피부를 태우는 건 아깝다고 말하자 %타겟은()% 아쉬워했다
+			PRINTFORM 그래도 대신에 %플레이어가()% 부끄러운 걸 참고 사온, 
+			PRINTFORM 커플용으로 빨대가 나눠진 트로피컬 쥬스를 보여주니 
+			PRINTFORML %타겟은()% 기쁘게 웃으며 빨대를 입에 대고, %CALLNAME:MASTER%도 빨리 마시라고 재촉했다……
+		ELSE
+			GOTO INPUT_LOOP_SUNOIL
+		ENDIF
+	PRINTW
+ENDIF
+
+;口上21番使用
+TFLAG:13 = 21
+CALL SELF_KOJO
+PRINTL
+
+PRINTL 온순의 구슬 +1000
+JUEL:4 += 1000
+PRINTL 욕정의 구슬 +500
+JUEL:5 += 500
+PRINTL 야외노출경험 +5
+EXP:12 += 5
+PRINT 애정경험 +5
+EXP:23 += 5
+
+WAIT
+
+;お楽しみはこれからだ
+	;처녀ではなく, 노출벽4以上, 성교중독2以上
+	IF TALENT:0 == 0 && ABL:30 >= 2 && ABL:17 >= 4
+		CUSTOMDRAWLINE ‥
+		PRINTFORM 해도 수평선 너머로 저물고 있지만, 
+		PRINTFORML %타겟은()% 돌아가려 하질 않았다……
+		PRINTFORM 거기다 인적이 드문 바위틈에 숨어들고는 
+		PRINTFORMW 지금 바로 안아달라고 보채고 있다……
+		PRINTL 
+		;口上22番使用
+		TFLAG:13 = 22
+		CALL SELF_KOJO
+		PRINTL 
+		PRINTFORML %플레이어는()% 별이 빛나는 밤하늘 아래에서, %타겟과()% 밤새 사랑을 나눴다……
+		N = 0
+		N = ((ABL:11 + ABL:30) * 5) + RAND:5
+		IF TALENT:440 == 1
+			TIMES N , 1.80
+		ELSEIF TALENT:440 == 1
+			TIMES N , 1.50
+		ENDIF
+		N /= 10
+		PRINTFORML 성교경험 +{N}
+		EXP:5 += N
+		PRINTFORML V경험 +{N + RAND:51}
+		EXP:0 += N * ABL:2 / 2
+		PRINTFORML 절정경험 +{N - RAND:11}
+		EXP:2 += N / 4
+		PRINTFORML 야외노출경험 +{N / 3}
+		EXP:12 += N * ABL:17 / 10
+		IF (TALENT:MASTER:121 == 1 || TALENT:MASTER:122 == 1)
+			PRINTFORML 정액경험 +{N / 5}
+			EXP:20 += N * ABL:32 / 5
+		ENDIF
+		PRINTFORML 봉사쾌락경험 +{N * 2}
+		EXP:21 += N * ABL:16 / 5
+		IF (TALENT:MASTER:121 == 1 || TALENT:MASTER:122 == 1)
+			PRINTFORML 펠라경험 +{N / 3}
+			EXP:22 += N * ABL:13 / 3
+		ENDIF
+
+		PRINTFORML 애정경험 +{N / 3}
+		EXP:23 += N * ABL:10 / 2
+		IF CFLAG:16 == -1
+			CFLAG:16 = 1
+			IF NO:TARGET != 1
+				CSTR:1 = %CALLNAME:MASTER%
+			ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:11 == 0
+				CSTR:1 = 오빠
+			ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:11 == 1
+				CSTR:1 = 형님
+			ENDIF
+			CFLAG:820 = BASE:9
+			CFLAG:821 = DAY:1
+			CFLAG:822 = DAY:2
+			;4は海
+			CFLAG:823 = 4
+			SETCOLOR 0xDDBBCC
+				PRINTFORML 【첫 키스】
+			RESETCOLOR
+		ENDIF
+		IF CFLAG:MASTER:16 == -1
+			CFLAG:MASTER:16 = 1
+			CSTR:MASTER:1 = %NAME:TARGET%
+			CFLAG:MASTER:820 = BASE:PLAYER:9
+			CFLAG:MASTER:821 = DAY:1
+			CFLAG:MASTER:822 = DAY:2
+			CFLAG:MASTER:823 = 4
+			SETCOLOR 0xDDBBCC
+				PRINTFORML 【첫 키스】(%CALLNAME:MASTER%)
+			RESETCOLOR
+		ENDIF
+		IF TALENT:MASTER:1 == 1 && (TALENT:MASTER:121 == 1 || TALENT:MASTER:122 == 1)
+			TALENT:MASTER:1 = 0
+			CSTR:MASTER:2 = %NAME:TARGET%
+			SETCOLOR 0xDDBBCC
+				PRINTFORML 【동정상실】(%CALLNAME:MASTER%)
+			RESETCOLOR
+			CFLAG:MASTER:18 = 1
+		ENDIF
+	ENDIF
+
+PRINTFORML 
+PRINTFORMW %플레이어와()% 함께 보낸 여름의 추억을, %타겟은()% 가슴 깊이 새겼다……
+IF CFLAG:155 == 0
+	CFLAG:155 = 1
+ENDIF
+IF TFLAG:130 == 1 || RAND:11 >= 8
+	PRINTFORML 《여름 바다를 만끽한 %타겟은()% 완전히 피부가 타버렸다……》
+	TALENT:422 = 1
+	CFLAG:614 = 4 + RAND:4
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;ホワイトデー
+;-------------------------------------------------
+;@WHITE_DAY
+;PRINTL
+;PRINTFORMW (ホワイトデーイベントは未実装です)
+
+;-------------------------------------------------
+;クリスマスイブ
+;-------------------------------------------------
+;@CHRISTMAS_EVE
+;PRINTL
+;PRINTFORMW (クリスマスイブイベントは未実装です)
+
+;-------------------------------------------------
+;元旦
+;-------------------------------------------------
+;@NEWYEAR_DAY
+;PRINTL
+;PRINTFORMW (元旦イベントは未実装です)
+
+

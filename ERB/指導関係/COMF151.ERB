@@ -1,0 +1,284 @@
+﻿;-------------------------------------------------
+;슬라임 질내진입
+;道具使用コマンド: 調教対象のヴァギナに슬라임を進入させる
+;-------------------------------------------------
+@COM151
+
+	PRINTL 슬라임 질내진입
+	SAVESTR:0 = 슬라임 질내진입
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 15
+LOSEBASE:1 += 70
+
+;ABL:V감각をみる
+IF ABL:2 == 0
+	SOURCE:1 = 40
+ELSEIF ABL:2 == 1
+	SOURCE:1 = 125
+ELSEIF ABL:2 == 2
+	SOURCE:1 = 300
+ELSEIF ABL:2 == 3
+	SOURCE:1 = 500
+ELSEIF ABL:2 == 4
+	SOURCE:1 = 650
+ELSE
+	SOURCE:1 = 850
+ENDIF
+
+;EXP:V경험をみる
+IF EXP:0 < EXPLV:1
+	TIMES SOURCE:1 , 0.20
+	SOURCE:6 = 5500
+ELSEIF EXP:0 < EXPLV:2
+	TIMES SOURCE:1 , 0.60
+	SOURCE:6 = 300
+ELSEIF EXP:0 < EXPLV:3
+	TIMES SOURCE:1 , 1.00
+	SOURCE:6 = 50
+ELSEIF EXP:0 < EXPLV:4
+	TIMES SOURCE:1 , 1.20
+	SOURCE:6 = 10
+ELSEIF EXP:0 < EXPLV:5
+	TIMES SOURCE:1 , 1.40
+	SOURCE:6 = 0
+ELSE
+	TIMES SOURCE:1 , 1.60
+	SOURCE:6 = 0
+ENDIF
+
+;PALAM:윤활をみる
+IF PALAM:3 < PALAMLV:1
+	TIMES SOURCE:1 , 0.10
+	SOURCE:6 += 1000
+	TIMES SOURCE:6 , 3.00
+ELSEIF PALAM:3 < PALAMLV:2
+	TIMES SOURCE:1 , 0.40
+	SOURCE:6 += 400
+	TIMES SOURCE:6 , 1.00
+ELSEIF PALAM:3 < PALAMLV:3
+	TIMES SOURCE:1 , 1.00
+	TIMES SOURCE:6 , 0.50
+ELSEIF PALAM:3 < PALAMLV:4
+	TIMES SOURCE:1 , 1.40
+	TIMES SOURCE:6 , 0.20
+ELSEIF PALAM:3 >= PALAMLV:4
+	TIMES SOURCE:1 , 1.80
+	TIMES SOURCE:6 , 0.10
+ENDIF
+
+;PALAM:욕정をみる
+IF PALAM:5 < PALAMLV:1
+	TIMES SOURCE:1 , 0.80
+ELSEIF PALAM:5 < PALAMLV:2
+	TIMES SOURCE:1 , 0.90
+ELSEIF PALAM:5 < PALAMLV:3
+	TIMES SOURCE:1 , 1.00
+ELSEIF PALAM:5 < PALAMLV:4
+	TIMES SOURCE:1 , 1.10
+ELSEIF PALAM:5 >= PALAMLV:4
+	TIMES SOURCE:1 , 1.20
+ENDIF
+
+;ABL:従順をみる
+IF ABL:10 == 0
+	TIMES SOURCE:1 , 0.80
+ELSEIF ABL:10 == 1
+	TIMES SOURCE:1 , 0.90
+ELSEIF ABL:10 == 2
+	TIMES SOURCE:1 , 1.00
+ELSEIF ABL:10 == 3
+	TIMES SOURCE:1 , 1.10
+ELSEIF ABL:10 == 4
+	TIMES SOURCE:1 , 1.20
+ELSE
+	TIMES SOURCE:1 , 1.30
+ENDIF
+
+;큰체구
+SIF TALENT:99
+	TIMES SOURCE:6 , 0.80
+;작은체형
+SIF TALENT:100
+	TIMES SOURCE:6 , 2.00
+;미숙함
+SIF TALENT:135
+	TIMES SOURCE:6 , 4.00
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+S = 0
+;V감각が高いほどV경험が入る
+IF ABL:2 <= 1
+	S = 1
+ELSEIF ABL:2 <= 4
+	S = 2
+ELSEIF ABL:2 <= 7
+	S = 3
+ELSE
+	S = 4
+ENDIF
+EXP:0 += S
+PRINTFORML V경험 +{S}
+S = 0
+
+;레즈경험
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +1
+	EXP:40 += 1
+ENDIF
+
+;-------------------------------------------------
+;바이브の着脱
+;-------------------------------------------------
+TEQUIP:151 = 1 - TEQUIP:151
+
+RETURN 1
+
+;-------------------------------------------------
+;-------------------------------------------------
+;바이브 삽입중
+;-------------------------------------------------
+@EQUIP_COM151
+
+	PRINTL ＜슬라임 질내 진입중＞
+
+LOSEBASE:0 += 5
+LOSEBASE:1 += 25
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+;ABL:V감각をみる
+IF ABL:2 == 0
+	A = 20
+ELSEIF ABL:2 == 1
+	A = 60
+ELSEIF ABL:2 == 2
+	A = 150
+ELSEIF ABL:2 == 3
+	A = 250
+ELSEIF ABL:2 == 4
+	A = 325
+ELSE
+	A = 425
+ENDIF
+
+;EXP:V경험をみる
+IF EXP:0 < EXPLV:1
+	TIMES A , 0.40
+	B = 100
+ELSEIF EXP:0 < EXPLV:2
+	TIMES A , 0.60
+	B = 75
+ELSEIF EXP:0 < EXPLV:3
+	TIMES A , 1.00
+	B = 10
+ELSEIF EXP:0 < EXPLV:4
+	TIMES A , 1.20
+	B = 0
+ELSEIF EXP:0 < EXPLV:5
+	TIMES A , 1.40
+	B = 0
+ELSE
+	TIMES A , 1.60
+	B = 0
+ENDIF
+
+;PALAM:윤활をみる
+IF PALAM:3 < PALAMLV:1
+	TIMES A , 0.10
+	B += 200
+	TIMES B , 3.00
+	C += 500
+ELSEIF PALAM:3 < PALAMLV:2
+	TIMES A , 0.40
+	B += 75
+	TIMES B , 1.00
+	C += 100
+ELSEIF PALAM:3 < PALAMLV:3
+	TIMES A , 1.00
+	TIMES B , 0.50
+	C += 40
+ELSEIF PALAM:3 < PALAMLV:4
+	TIMES A , 1.40
+	TIMES B , 0.20
+ELSEIF PALAM:3 >= PALAMLV:4
+	TIMES A , 1.80
+	TIMES B , 0.10
+ENDIF
+
+;PALAM:욕정をみる
+IF PALAM:5 < PALAMLV:1
+	TIMES A , 0.80
+ELSEIF PALAM:5 < PALAMLV:2
+	TIMES A , 0.90
+ELSEIF PALAM:5 < PALAMLV:3
+	TIMES A , 1.00
+ELSEIF PALAM:5 < PALAMLV:4
+	TIMES A , 1.10
+ELSEIF PALAM:5 >= PALAMLV:4
+	TIMES A , 1.20
+ENDIF
+
+;ABL:従順をみる
+IF ABL:10 == 0
+	TIMES A , 0.80
+ELSEIF ABL:10 == 1
+	TIMES A , 0.90
+ELSEIF ABL:10 == 2
+	TIMES A , 1.00
+ELSEIF ABL:10 == 3
+	TIMES A , 1.10
+ELSEIF ABL:10 == 4
+	TIMES A , 1.20
+ELSE
+	TIMES A , 1.30
+ENDIF
+
+
+;큰체구
+SIF TALENT:99
+	TIMES B , 0.80
+;작은체형
+SIF TALENT:100
+	TIMES B , 2.00
+;미숙함
+SIF TALENT:135
+	TIMES B , 4.00
+
+;정조관념
+IF EXP:0 && TALENT:30
+	TIMES B, 3.00
+ENDIF
+
+SOURCE:1 += A
+SOURCE:6 += B
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+S = 0
+;자위実行時は経験 +1
+SIF SELECTCOM == 3
+	S = 1
+;V감각が高いほどV경험が入る
+IF ABL:2 <= 1
+	S += 1
+ELSEIF ABL:2 <= 4
+	S += 2
+ELSEIF ABL:2 <= 7
+	S += 3
+ELSE
+	S += 4
+ENDIF
+EXP:0 += S
+PRINTFORML V경험 +{S}
+S = 0
+
+RETURN 1

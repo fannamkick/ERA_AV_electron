@@ -1,0 +1,1090 @@
+﻿;===========================================================
+;特殊タイトルの計算
+;===========================================================
+@SPECIAL_TITLE_CALC
+
+;-----------------------------------------------------------
+;衣装別
+;-----------------------------------------------------------
+;ベリーダンスの衣装
+IF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 243 && TALENT:422 == 1)
+	TFLAG:160 = 1
+;ニーソ姫セット
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 99 && CFLAG:42 == 99 && CFLAG:170 == 99 && TALENT:87 == 1)
+	TFLAG:160 = 1
+;ローゼンメイデンな組み合わせ
+ELSEIF ((CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 52 && CFLAG:600 == 2 && CFLAG:602 == 11) && (CFLAG:40 >= 12 && CFLAG:41 == 52 &&  CFLAG:40 != 64 && CFLAG:600 == 3 && CFLAG:602 == 5)) 
+	TFLAG:160 = 1
+;レーティアちゃんセット
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 51 && CFLAG:600 == 2 && CFLAG:602 == 8 && TALENT:203 == 1 && TALENT:93 == 1)
+	TFLAG:160 = 1
+;肉食系。タイトルは雑誌「TOKYO BAD GIRLS」のパクり(←
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 40 && CFLAG:42 == 74 && (TALENT:87 == 1 || TALENT:432 == 1))
+	TFLAG:160 = 1
+;ウェディングドレス
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 240 && CFLAG:42 == 61 && TALENT:432 == 1 && TFLAG:32 & 1)
+	TFLAG:160 = 1
+;パンクロリータセット。サブタイトルはTom-H@ckのけいおん関係ではない曲から。안즈にどうぞ(←
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 30 && TALENT:109 == 0 && TALENT:116 == 0)
+	TFLAG:160 = 1
+;スク水。現実にあるタイトルそのままになりました(←
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 244)
+	TFLAG:160 = 1
+;-----------------------------------------------------------
+;코스프레衣装別
+;-----------------------------------------------------------
+ELSEIF (TFLAG:180 == 1 && CFLAG:600 == 6 && CFLAG:602 == 4)
+	TFLAG:160 = 1
+ELSEIF (TFLAG:180 == 16 && CFLAG:600 == 11 && CFLAG:602 == 5)
+	TFLAG:160 = 1
+ELSEIF (TFLAG:180 == 20 && TFLAG:32 & 1 && TALENT:320)
+	TFLAG:160 = 1
+ELSEIF (TFLAG:180 == 8 && A:3 && B:3 && CFLAG:600 == 10 && CFLAG:602 == 5 && BASE:9 <= 22)
+	TFLAG:160 = 1
+ENDIF
+
+SIF ASSI <= 0
+	RETURN
+;-----------------------------------------------------------
+;キャラ別
+;-----------------------------------------------------------
+;;흑갸루+음란持ち카나데とP持ち助手で何か予定されてたようなんですが実装されてませんでした。
+;IF ((NO:TARGET == 1 && TALENT:432 == 1 && TALENT:422 == 1 && TALENT:76 == 1) && (TALENT:ASSI:121 == 1 || TALENT:ASSI:122 == 1) && D:12)
+;	TFLAG:160 = 1
+;미이×카나데
+IF (NO:TARGET == 1 && NO:ASSI == 17)
+	TFLAG:160 = 1
+;하루노×카나데
+ELSEIF ((NO:TARGET == 1 && TALENT:TARGET:432 == 0) && (NO:ASSI == 15 && TALENT:TARGET:432 == 0))
+	TFLAG:160 = 1
+;黒카나데×카나데
+ELSEIF ((NO:TARGET == 1 && TALENT:TARGET:432 == 0) && (NO:ASSI == 91 && TALENT:ASSI:432 == 1)) 
+	TFLAG:160 = 1
+;카나데×黒카나데
+ELSEIF ((NO:TARGET == 91 && TALENT:TARGET:432 == 1) && (NO:ASSI == 1 && TALENT:ASSI:432 == 0)) 
+	TFLAG:160 = 1
+;카나데×하루노
+ELSEIF ((NO:TARGET == 15 && TALENT:TARGET:432 == 0) && (NO:ASSI == 1 && TALENT:TARGET:432 == 0)) 
+	TFLAG:160 = 1
+;카나데×미이
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 1)
+	TFLAG:160 = 1
+;마리×사에
+ELSEIF (NO:TARGET == 3 && NO:ASSI == 20)
+	TFLAG:160 = 1
+;사에×마리
+ELSEIF (NO:TARGET == 20 && NO:ASSI == 3)
+	TFLAG:160 = 1
+;히요리×미키
+ELSEIF (NO:TARGET == 4 && NO:ASSI == 6)
+	TFLAG:160 = 1
+;히요리×미키
+ELSEIF (NO:TARGET == 6 && NO:ASSI == 4)
+	TFLAG:160 = 1
+;사쿠라코×키쿄우
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 26)
+	TFLAG:160 = 1
+;키쿄우×사쿠라코
+ELSEIF (NO:TARGET == 26 && NO:ASSI == 5)
+	TFLAG:160 = 1
+;유나×히나
+ELSEIF (NO:TARGET == 7 && NO:ASSI == 8)
+	TFLAG:160 = 1
+;히나×유나
+ELSEIF (NO:TARGET == 8 && NO:ASSI == 7)
+	TFLAG:160 = 1
+;유니스×레이첼
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 86)
+	TFLAG:160 = 1
+;레이첼×유니스
+ELSEIF (NO:TARGET == 86 && NO:ASSI == 9)
+	TFLAG:160 = 1
+;乙姫×카논
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 75)
+	TFLAG:160 = 1
+;카논×乙姫
+ELSEIF (NO:TARGET == 75 && NO:ASSI == 10)
+	TFLAG:160 = 1
+;사쿠라코×이쿠미
+ELSEIF (NO:TARGET == 11 && NO:ASSI == 26)
+	TFLAG:160 = 1
+;이쿠미×사쿠라코
+ELSEIF (NO:TARGET == 26 && NO:ASSI == 11)
+	TFLAG:160 = 1
+;하루카×키요카
+ELSEIF (NO:TARGET == 25 && NO:ASSI == 29)
+	TFLAG:160 = 1
+;키요카×하루카
+ELSEIF (NO:TARGET == 29 && NO:ASSI == 25)
+	TFLAG:160 = 1
+;아야노×프리실라
+ELSEIF (NO:TARGET == 27 && NO:ASSI == 28)
+	TFLAG:160 = 1
+;프리실라×아야노
+ELSEIF (NO:TARGET == 28 && NO:ASSI == 27)
+	TFLAG:160 = 1
+;유키×미히로
+ELSEIF (NO:TARGET == 80 && NO:ASSI == 997)
+	TFLAG:160 = 1
+;미히로×유키
+ELSEIF (NO:TARGET == 997 && NO:ASSI == 80)
+	TFLAG:160 = 1
+;エリナ×아리사
+ELSEIF (NO:TARGET == 32 && NO:ASSI == 33)
+	TFLAG:160 = 1
+;아리사×エリナ
+ELSEIF (NO:TARGET == 33 && NO:ASSI == 32)
+	TFLAG:160 = 1
+;아사히×하즈키
+ELSEIF (NO:TARGET == 34 && NO:ASSI == 36)
+	TFLAG:160 = 1
+;하즈키×아사히
+ELSEIF (NO:TARGET == 36 && NO:ASSI == 34)
+	TFLAG:160 = 1
+;카논×엘렌
+ELSEIF (NO:TARGET == 95 && NO:ASSI == 10)
+	TFLAG:160 = 1
+;엘렌×카논
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 95)
+	TFLAG:160 = 1
+;마나카×나츠미
+ELSEIF (NO:TARGET == 22 && NO:ASSI == 35)
+	TFLAG:160 = 1
+;나츠미×마나카
+ELSEIF (NO:TARGET == 35 && NO:ASSI == 22)
+	TFLAG:160 = 1
+;키쿄우×아유무
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 13)
+	TFLAG:160 = 1
+;아유무×키쿄우
+ELSEIF (NO:TARGET == 13 && NO:ASSI == 5)
+	TFLAG:160 = 1
+;하루노×まゆ
+ELSEIF (NO:TARGET == 15 && NO:ASSI == 85)
+	TFLAG:160 = 1
+;まゆ×하루노
+ELSEIF (NO:TARGET == 85 && NO:ASSI == 15)
+	TFLAG:160 = 1
+;リーナ×레이첼
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 96)
+	TFLAG:160 = 1
+;레이첼×リーナ
+ELSEIF (NO:TARGET == 96 && NO:ASSI == 9)
+	TFLAG:160 = 1
+;미키×아이샤
+ELSEIF (NO:TARGET == 200 && NO:ASSI == 4)
+	TFLAG:160 = 1
+;아이샤×미키
+ELSEIF (NO:TARGET == 4 && NO:ASSI == 200)
+	TFLAG:160 = 1
+;렌카×키쿄우
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 18)
+	TFLAG:160 = 1
+;키쿄우×렌카
+ELSEIF (NO:TARGET == 18 && NO:ASSI == 5)
+	TFLAG:160 = 1
+;엘레나×메이링
+ELSEIF (NO:TARGET == 93 && NO:ASSI == 32)
+	TFLAG:160 = 1
+;메이링×엘레나
+ELSEIF (NO:TARGET == 32 && NO:ASSI == 93)
+	TFLAG:160 = 1
+;아리사×메이링
+ELSEIF (NO:TARGET == 93 && NO:ASSI == 33)
+	TFLAG:160 = 1
+;메이링×아리사
+ELSEIF (NO:TARGET == 33 && NO:ASSI == 93)
+	TFLAG:160 = 1
+;미레이×안즈
+ELSEIF (NO:TARGET == 202 && NO:ASSI == 37)
+	TFLAG:160 = 1
+;안즈×미레이
+ELSEIF (NO:TARGET == 37 && NO:ASSI == 202)
+	TFLAG:160 = 1
+;이즈키×쇼코
+ELSEIF (NO:TARGET == 87 && NO:ASSI == 14)
+	TFLAG:160 = 1
+;쇼코×이즈키
+ELSEIF (NO:TARGET == 14 && NO:ASSI == 87)
+	TFLAG:160 = 1
+;시오리×미야
+ELSEIF (NO:TARGET == 39 && NO:ASSI == 203)
+	TFLAG:160 = 1
+;미야×시오리
+ELSEIF (NO:TARGET == 203 && NO:ASSI == 39)
+	TFLAG:160 = 1
+;리사×세리나
+ELSEIF (NO:TARGET == 41 && NO:ASSI == 43)
+	TFLAG:160 = 1
+;세리나×리사
+ELSEIF (NO:TARGET == 43 && NO:ASSI == 41)
+	TFLAG:160 = 1
+;루이×미야코
+ELSEIF (NO:TARGET == 23 && NO:ASSI == 97)
+	TFLAG:160 = 1
+;미야코×루이
+ELSEIF (NO:TARGET == 97 && NO:ASSI == 23)
+	TFLAG:160 = 1
+;카논×미야코
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 97)
+	TFLAG:160 = 1
+;미야코×카논
+ELSEIF (NO:TARGET == 97 && NO:ASSI == 10)
+	TFLAG:160 = 1
+;유우히×히카루
+ELSEIF (NO:TARGET == 98 && NO:ASSI == 211)
+	TFLAG:160 = 1
+;히카루×유우히
+ELSEIF (NO:TARGET == 211 && NO:ASSI == 98)
+	TFLAG:160 = 1
+;하루노×사토시美
+ELSEIF (NO:TARGET == 15 && NO:ASSI == 212)
+	TFLAG:160 = 1
+;사토시美×하루노
+ELSEIF (NO:TARGET == 212 && NO:ASSI == 15)
+	TFLAG:160 = 1
+;이즈키×하루미
+ELSEIF (NO:TARGET == 14 && NO:ASSI == 205)
+	TFLAG:160 = 1
+;하루미×이즈키
+ELSEIF (NO:TARGET == 205 && NO:ASSI == 14)
+	TFLAG:160 = 1
+;에리스×아이리스
+ELSEIF (NO:TARGET == 81 && NO:ASSI == 84)
+	TFLAG:160 = 1
+;아이리스×에리스
+ELSEIF (NO:TARGET == 84 && NO:ASSI == 81)
+	TFLAG:160 = 1
+;레이첼×에리스
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 81)
+	TFLAG:160 = 1
+;에리스×레이첼
+ELSEIF (NO:TARGET == 81 && NO:ASSI == 9)
+	TFLAG:160 = 1
+;미이×안드로이드
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 92)
+	TFLAG:160 = 1
+;안드로이드×미이
+ELSEIF (NO:TARGET == 92 && NO:ASSI == 17)
+	TFLAG:160 = 1
+;미이×히토미쨩
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 19)
+	TFLAG:160 = 1
+;히토미쨩×미이
+ELSEIF (NO:TARGET == 19 && NO:ASSI == 17)
+	TFLAG:160 = 1
+;카나데単独
+ELSEIF (NO:TARGET == 1 && TALENT:211 == 1 && TALENT:83 == 1 && CFLAG:41 == 241 && CFLAG:40 == 76 && CFLAG:42 == 85)
+	TFLAG:160 = 1
+;미노리×히메노
+ELSEIF (NO:TARGET == 2 && NO:ASSI == 107)
+	TFLAG:160 = 1
+;히메노×미노리
+ELSEIF (NO:TARGET == 107 && NO:ASSI == 2)
+	TFLAG:160 = 1
+;-----------------------------------------------------------
+;素質別
+;-----------------------------------------------------------
+;ギャルJKタッグ
+ELSEIF (TALENT:220 == 1 && TALENT:432 == 1 && TALENT:ASSI:220 == 1 && TALENT:ASSI:432 == 1)
+	TFLAG:160 = 1
+ELSEIF F & 128
+	TFLAG:160 = 1
+ENDIF
+
+;===========================================================
+;特殊タイトルの計算
+;===========================================================
+@SPECIAL_TITLE_DECIDE_DEBUT
+
+;-----------------------------------------------------------
+;衣装別
+;-----------------------------------------------------------
+;ベリーダンスの衣装
+IF (CFLAG:40 >= 12 && CFLAG:40 != 64  && CFLAG:41 == 243 && TALENT:422 == 1)
+	PRINTFORM Arabian Rave Night ~BLACK ANOTHER EX-HARD HARD HARD!!~
+	CSTR:13 = Arabian Rave Night　~BLACK ANOTHER EX-HARD HARD HARD!!~
+;ニーソ姫セット
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 99 && CFLAG:42 == 99 && CFLAG:170 == 99 && TALENT:87 == 1)
+	PRINTFORM 돌격! 유리 니삭스 공주!　~어째서 이렇게 된 거야~
+	CSTR:13 = 돌격! 유리 니삭스 공주!　~어째서 이렇게 된 거야~
+;ローゼンメイデンな組み合わせ
+ELSEIF ((CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 52 && CFLAG:600 == 2 && CFLAG:602 == 4) && (CFLAG:40 >= 12 && CFLAG:41 == 52 &&  CFLAG:40 != 64 && CFLAG:600 == 3 && CFLAG:602 == 5)) 
+	PRINTFORM 금지된 장난　~성소녀영역, 음욕의 앨리스・게임~
+	CSTR:13 = 금지된 장난　~성소녀영역, 음욕의 앨리스・게임~
+;レーティアちゃんセット
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 51 && CFLAG:600 == 2 && CFLAG:602 == 8 && TALENT:203 == 1 && TALENT:93 == 1)
+	PRINTFORM 초은하 아이돌 총감사제!　~내 보○에 정액을 잔뜩 투표해줘~
+	CSTR:13 = 초은하 아이돌 총감사제!　~내 보○에 정액을 잔뜩 투표해줘~
+;肉食系。タイトルは雑誌「TOKYO BAD GIRLS」のパクり(←
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 40 && CFLAG:42 == 74 && (TALENT:87 == 1 || TALENT:432 == 1))
+	PRINTFORM PREMIUM BAD GIRLS　~네 정액, %타겟이(1)% 전부 뽑・아・줄・게☆~
+	CSTR:13 = PREMIUM BAD GIRLS　~네 정액, %타겟이(1)% 전부 뽑・아・줄・게☆~
+;웨딩 드레스
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 240 && CFLAG:42 == 61 && TALENT:432 == 1 && TFLAG:32 & 1)
+	PRINTFORM Princess Bride! 　~제발 제 처음을 받아주세요, 서방님~
+	CSTR:13 = Princess Bride! 　~제발 제 처음을 받아주세요, 서방님~
+;펑크 로리타セット。サブタイトルはTom-H@ckのけいおん関係ではない曲から。안즈にどうぞ(←
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 30 && TALENT:109 == 0 && TALENT:116 == 0)
+	PRINTFORM 방과후 티슈타임　~그것이 내 X-Plan~
+	CSTR:13 = 방과후 티슈타임　~그것이 내 X-Plan~
+;スク水。現実にあるタイトルそのままになりました(←
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 244)
+	PRINTFORM 학교수영복H。 ~%NICKNAME:TARGET%~
+	CSTR:13 = 학교수영복H。 ~%NICKNAME:TARGET%~
+
+;-----------------------------------------------------------
+;코스프레衣装別
+;-----------------------------------------------------------
+ELSEIF (TFLAG:180 == 1 && CFLAG:600 == 6 && CFLAG:602 == 4)
+	PRINTFORM 전자의 가희・음욕에 떨어져　~하츠네 ○쿠의 욕정~
+	CSTR:13 = 전자의 가희・음욕에 떨어져　~하츠네 ○쿠의 욕정~
+ELSEIF (TFLAG:180 == 16 && CFLAG:600 == 11 && CFLAG:602 == 5)
+	PRINTFORM Angel Bitch!　~천사짱 진짜 엣찌~
+	CSTR:13 = Angel Bitch!　~천사짱 진짜 엣찌~
+ELSEIF (TFLAG:180 == 20 && TFLAG:32 & 1 && TALENT:320)
+	PRINTFORM 노을빛으로 물드는 처녀혈・하드코어 ~처녀상실이에요, 오빠~
+	CSTR:13 = 노을빛으로 물드는 처녀혈・하드코어 ~처녀상실이에요, 오빠~
+ELSEIF (TFLAG:180 == 8 && A:3 && B:3 && CFLAG:600 == 10 && CFLAG:602 == 5 && BASE:9 <= 22)
+	PRINTFORM 누드 아웃・오프라인 ~항명기사단・미소녀부단장의 하드 애널퍽~
+	CSTR:13 = 누드 아웃・오프라인 ~항명기사단・미소녀부단장의 하드 애널퍽~
+ENDIF
+
+SIF ASSI <= 0
+	RETURN
+
+;-----------------------------------------------------------
+;キャラ別
+;-----------------------------------------------------------
+;미이×카나데
+IF (NO:TARGET == 1 && NO:ASSI == 17)
+	PRINTFORM 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+	CSTR:13 = 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+;하루노×카나데
+ELSEIF ((NO:TARGET == 1 && TALENT:TARGET:432 == 0) && (NO:ASSI == 15 && TALENT:ASSI:432 == 0))
+	PRINTFORM Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+	CSTR:13 = Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+;흑카나데×카나데
+ELSEIF ((NO:TARGET == 1 && TALENT:TARGET:432 == 0) && (NO:ASSI == 91 && TALENT:ASSI:432 == 1)) 
+	PRINTFORM 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+	CSTR:13 = 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+;카나데×흑카나데
+ELSEIF ((NO:TARGET == 91 && TALENT:TARGET:432 == 1) && (NO:ASSI == 1 && TALENT:ASSI:432 == 0)) 
+	PRINTFORM 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+	CSTR:13 = 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+;카나데×하루노
+ELSEIF ((NO:TARGET == 15 && TALENT:TARGET:432 == 0) && (NO:ASSI == 1 && TALENT:ASSI:432 == 0)) 
+	PRINTFORM Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+	CSTR:13 = Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+;카나데×미이
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 1)
+	PRINTFORM 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+	CSTR:13 = 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+;마리×사에
+ELSEIF (NO:TARGET == 3 && NO:ASSI == 20)
+	PRINTFORM 흑백갸루 대난교　~Sex on the bitch!~
+	CSTR:13 = 흑백갸루 대난교　~Sex on the bitch!~
+;사에×마리
+ELSEIF (NO:TARGET == 20 && NO:ASSI == 3)
+	PRINTFORM 흑백갸루 대난교　~Sex on the bitch!~
+	CSTR:13 = 흑백갸루 대난교　~Sex on the bitch!~
+;히요리×미키
+ELSEIF (NO:TARGET == 4 && NO:ASSI == 6)
+	PRINTFORM 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+	CSTR:13 = 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+;미키×히요리
+ELSEIF (NO:TARGET == 6 && NO:ASSI == 4)
+	PRINTFORM 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+	CSTR:13 = 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+;사쿠라코×키쿄우
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 26)
+	PRINTFORM W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+	CSTR:13 = W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+;키쿄우×사쿠라코
+ELSEIF (NO:TARGET == 26 && NO:ASSI == 5)
+	PRINTFORM W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+	CSTR:13 = W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+;유나×히나
+ELSEIF (NO:TARGET == 7 && NO:ASSI == 8)
+	PRINTFORM 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+	CSTR:13 = 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+;히나×유나
+ELSEIF (NO:TARGET == 8 && NO:ASSI == 7)
+	PRINTFORM 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+	CSTR:13 = 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+;유니스×레이첼
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 86)
+	PRINTFORM PARADISE LOST　~실낙원의 자매공주~
+	CSTR:13 = PARADISE LOST　~실낙원의 자매공주~
+;레이첼×유니스
+ELSEIF (NO:TARGET == 86 && NO:ASSI == 9)
+	PRINTFORM PARADISE LOST　~실낙원의 자매공주~
+	CSTR:13 = PARADISE LOST　~실낙원의 자매공주~
+;오토히메×카논
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 75)
+;「生徒会のイキ損」とかTMAかよと思ったのでやめました
+	PRINTFORM 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+	CSTR:13 = 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+;카논×오토히메
+ELSEIF (NO:TARGET == 75 && NO:ASSI == 10)
+	PRINTFORM 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+	CSTR:13 = 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+;사쿠라코×이쿠미
+ELSEIF (NO:TARGET == 11 && NO:ASSI == 26)
+	PRINTFORM 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+	CSTR:13 = 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+;이쿠미×사쿠라코
+ELSEIF (NO:TARGET == 26 && NO:ASSI == 11)
+	PRINTFORM 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+	CSTR:13 = 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+;하루카×키요카
+ELSEIF (NO:TARGET == 25 && NO:ASSI == 29)
+	PRINTFORM 배덕의 수녀 절정지옥　~하느님, 용서해 주세요~
+	CSTR:13 = 배덕의 수녀 절정지옥　~하느님, 용서해 주세요~
+;키요카×하루카
+ELSEIF (NO:TARGET == 29 && NO:ASSI == 25)
+	PRINTFORM 발정 수녀・성당의 검은 미사　~마리아님께 보이고 있어~
+	CSTR:13 = 발정 수녀・성당의 검은 미사　~마리아님께 보이고 있어~
+;아야노×프리실라
+ELSEIF (NO:TARGET == 27 && NO:ASSI == 28)
+;俺はアホなんじゃないかと思った
+	PRINTFORM SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+	CSTR:13 = SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+;프리실라×아야노
+ELSEIF (NO:TARGET == 28 && NO:ASSI == 27)
+	PRINTFORM SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+	CSTR:13 = SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+;유키×미히로
+ELSEIF (NO:TARGET == 80 && NO:ASSI == 997)
+;「닮은꼴!!국민 아이돌 꿈의 Wキャスト 타카기み○り 橘美○」より
+	PRINTFORM 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+	CSTR:13 = 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+;미히로×유키
+ELSEIF (NO:TARGET == 997 && NO:ASSI == 80)
+	PRINTFORM 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+	CSTR:13 = 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+;エリナ×알리사
+ELSEIF (NO:TARGET == 32 && NO:ASSI == 33)
+;おまめじゃなくて「くり。」にしようかと思った。ペドいなあ
+	PRINTFORM 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+	CSTR:13 = 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+;알리사×エリナ
+ELSEIF (NO:TARGET == 33 && NO:ASSI == 32)
+	PRINTFORM 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+	CSTR:13 = 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+;아사히×하즈키
+ELSEIF (NO:TARGET == 34 && NO:ASSI == 36)
+	PRINTFORM 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+	CSTR:13 = 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+;하즈키×아사히
+ELSEIF (NO:TARGET == 36 && NO:ASSI == 34)
+	PRINTFORM 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+	CSTR:13 = 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+;카논×엘렌
+ELSEIF (NO:TARGET == 95 && NO:ASSI == 10)
+	PRINTFORM 기모노자매・더러워진 다다미방　~엄마? 아니, 사실 언니죠?w~
+	CSTR:13 = 기모노자매・더러워진 다다미방　~엄마? 아니, 사실 언니죠?w~
+;엘렌×카논
+	ELSEIF (NO:TARGET == 10 && NO:ASSI == 95)
+	PRINTFORM 기모노자매・더러워진 다다미방　~짐승의 방~
+	CSTR:13 = 기모노자매・더러워진 다다미방　~짐승의 방~
+;마나카×나츠미
+ELSEIF (NO:TARGET == 22 && NO:ASSI == 35)
+;「첫 키스物語」をもじって「パンツとKISS物語」とか「ファーストASS物語」とか考えたがやめた
+	PRINTFORM 미소녀자매・사랑의 과외수업! ~남자를 가르쳐주세요~
+	CSTR:13 = 미소녀자매・사랑의 과외수업! ~남자를 가르쳐주세요~
+;나츠미×마나카
+ELSEIF (NO:TARGET == 35 && NO:ASSI == 22)
+	PRINTFORM 소악마☆리틀 시스터　~언니, 엣찌를 가르쳐줄게~
+	CSTR:13 = 소악마☆리틀 시스터　~언니, 엣찌를 가르쳐줄게~
+;아유무×키쿄우
+;「えーマジ동정!?」「동정が許され(略
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 13)
+	PRINTFORM 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+	CSTR:13 = 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+;키쿄우×아유무
+ELSEIF (NO:TARGET == 13 && NO:ASSI == 5)
+	PRINTFORM 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+	CSTR:13 = 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+;하루노×마유
+ELSEIF (NO:TARGET == 15 && NO:ASSI == 85)
+	PRINTFORM 아아 천사님　~천사와 무녀의 동서양결합 SEX풀코스~
+	CSTR:13 = 아아 천사님　~천사와 무녀의 동서양결합 SEX풀코스~
+;마유×하루노
+ELSEIF (NO:TARGET == 85 && NO:ASSI == 15)
+	PRINTFORM 아아 천사님　~천사와 무녀의 동서양결합 SEX풀코스~
+	CSTR:13 = 아아 천사님　~천사와 무녀의 동서양결합 SEX풀코스~
+;리나×레이첼
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 96)
+;ひどいタイトルだ……w
+	PRINTFORM 탐정귀족・하극상SEX　~여탐정이 주인의 그곳을 강제수색~
+	CSTR:13 = 탐정귀족・하극상SEX　~여탐정이 주인의 그곳을 강제수색~
+;레이첼×리나
+ELSEIF (NO:TARGET == 96 && NO:ASSI == 9)
+	PRINTFORM 공주님 폭주!　~국민의 암캐구멍은 나의 것~
+	CSTR:13 = 공주님 폭주!　~국민의 암캐구멍은 나의 것~
+;미키×아이샤
+ELSEIF (NO:TARGET == 200 && NO:ASSI == 4)
+	PRINTFORM 미소녀 아가씨・비밀의 오후　~음락의 화원~
+	CSTR:13 = 미소녀 아가씨・비밀의 오후　~음락의 화원~
+;아이샤×미키
+ELSEIF (NO:TARGET == 4 && NO:ASSI == 200)
+	PRINTFORM 미소녀 아가씨・비밀의 오후　~음락의 화원~
+	CSTR:13 = 미소녀 아가씨・비밀의 오후　~음락의 화원~
+;렌카×키쿄우
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 18)
+	PRINTFORM 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+	CSTR:13 = 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+;키쿄우×렌카
+ELSEIF (NO:TARGET == 18 && NO:ASSI == 5)
+	PRINTFORM 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+	CSTR:13 = 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+;엘레나×메이링
+;ケモミミつながり
+ELSEIF (NO:TARGET == 93 && NO:ASSI == 32)
+	PRINTFORM 동물귀 난무!　~동물귀 아가씨를 뒤어세도 앞에서도~
+	CSTR:13 = 동물귀 난무!　~동물귀 아가씨를 뒤어세도 앞에서도~
+;메이링×엘레나
+ELSEIF (NO:TARGET == 32 && NO:ASSI == 93)
+	PRINTFORM 동물귀 난무!　~동물귀 아가씨를 뒤어세도 앞에서도~
+	CSTR:13 = 동물귀 난무!　~동물귀 아가씨를 뒤어세도 앞에서도~
+;알리사×메이링
+;東京ミュウミュウをもじろうとしたがうまくいかなかったなあ
+ELSEIF (NO:TARGET == 93 && NO:ASSI == 33)
+	PRINTFORM 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+	CSTR:13 = 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+;메이링×알리사
+ELSEIF (NO:TARGET == 33 && NO:ASSI == 93)
+	PRINTFORM 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+	CSTR:13 = 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+;미레이×안즈
+;別に미레이はメンバーでもないけどそっくりさんって言ってたから
+ELSEIF (NO:TARGET == 202 && NO:ASSI == 37)
+	PRINTFORM 인기 걸밴드・강간제!　~우리들의 그곳이 모에모에 큥~
+	CSTR:13 = 인기 걸밴드・강간제!　~우리들의 그곳이 모에모에 큥~
+;안즈×미레이
+ELSEIF (NO:TARGET == 37 && NO:ASSI == 202)
+	PRINTFORM 인기 걸밴드・강간제!　~우리들의 그곳이 모에모에 큥~
+	CSTR:13 = 인기 걸밴드・강간제!　~우리들의 그곳이 모에모에 큥~
+;이즈키×쇼우코
+ELSEIF (NO:TARGET == 87 && NO:ASSI == 14)
+	PRINTFORM 발정 캣파이트　~절정지옥 3판승부~
+	CSTR:13 = 발정 캣파이트　~절정지옥 3판승부~
+;쇼우코×이즈키
+ELSEIF (NO:TARGET == 14 && NO:ASSI == 87)
+	PRINTFORM 발정 캣파이트2　~육덕진 팬티레슬링~
+	CSTR:13 = 발정 캣파이트2　~육덕진 팬티레슬링~
+;시오리×미야
+;クローバー포인트をもじろうとしたけど, ブルーマー포인트とかしか思いつかなかった
+ELSEIF (NO:TARGET == 39 && NO:ASSI == 203)
+	PRINTFORM 여○생 민감 포인트　~비밀의 성기지도 해주세요~
+	CSTR:13 = 여○생 민감 포인트　~비밀의 성기지도 해주세요~
+;미야×시오리
+ELSEIF (NO:TARGET == 203 && NO:ASSI == 39)
+	PRINTFORM 여○생 민감 포인트　~비밀의 성기지도 해주세요~
+	CSTR:13 = 여○생 민감 포인트　~비밀의 성기지도 해주세요~
+;리사×세리나
+;ましろ色シンフォニー
+ELSEIF (NO:TARGET == 41 && NO:ASSI == 43)
+	PRINTFORM 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+	CSTR:13 = 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+;세리나×리사
+ELSEIF (NO:TARGET == 43 && NO:ASSI == 41)
+	PRINTFORM 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+	CSTR:13 = 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+;루이×사토코
+;レールガン組。何このタイトル超頭悪そう
+ELSEIF (NO:TARGET == 23 && NO:ASSI == 97)
+	PRINTFORM 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+	CSTR:13 = 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+;사토코×루이
+ELSEIF (NO:TARGET == 97 && NO:ASSI == 23)
+	PRINTFORM 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+	CSTR:13 = 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+;카논×사토코
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 97)
+	PRINTFORM 저지먼트랍니다!　~언니의 치마안을 조사해보겠사옵니다~
+	CSTR:13 = 저지먼트랍니다!　~언니의 치마안을 조사해보겠사옵니다~
+;사토코×카논
+ELSEIF (NO:TARGET == 97 && NO:ASSI == 10)
+	PRINTFORM 저지먼트랍니다!　~언니에게 벌을 받아 버린겁니다~
+	CSTR:13 = 저지먼트랍니다!　~언니에게 벌을 받아 버린겁니다~
+;유우히×히카루
+;まあこれしかないよね……w
+ELSEIF (NO:TARGET == 98 && NO:ASSI == 211)
+	PRINTFORM 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+	CSTR:13 = 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+;히카루×유우히
+ELSEIF (NO:TARGET == 211 && NO:ASSI == 98)
+	PRINTFORM 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+	CSTR:13 = 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+;하루노×토모미
+;巫女コンビ
+ELSEIF (NO:TARGET == 15 && NO:ASSI == 212)
+	PRINTFORM 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+	CSTR:13 = 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+;토모미×하루노
+ELSEIF (NO:TARGET == 212 && NO:ASSI == 15)
+	PRINTFORM 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+	CSTR:13 = 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+;이즈키×하루미
+;何気にアリスソフトつながりでもあるなあ
+ELSEIF (NO:TARGET == 14 && NO:ASSI == 205)
+	PRINTFORM 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+	CSTR:13 = 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+;하루미×이즈키
+ELSEIF (NO:TARGET == 205 && NO:ASSI == 14)
+	PRINTFORM 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+	CSTR:13 = 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+;에리스×아이리스
+ELSEIF (NO:TARGET == 81 && NO:ASSI == 84)
+	PRINTFORM 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+	CSTR:13 = 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+;아이리스×에리스
+ELSEIF (NO:TARGET == 84 && NO:ASSI == 81)
+	PRINTFORM 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+	CSTR:13 = 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+;레이첼×에리스
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 81)
+	PRINTFORM Princess Lovers!　~2명의 내가 사랑해줄게~
+	CSTR:13 = Princess Lovers!　~2명의 내가 사랑해줄게~
+;에리스×레이첼
+ELSEIF (NO:TARGET == 81 && NO:ASSI == 9)
+	PRINTFORM Princess Lovers!　~2명의 내가 사랑해줄게~
+	CSTR:13 = Princess Lovers!　~2명의 내가 사랑해줄게~
+;미이×안드로이드
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 92)
+	PRINTFORM Marionette Company　~로봇소녀 정액탱크~
+	CSTR:13 = Marionette Company　~로봇소녀 정액탱크~
+;안드로이드×미이
+ELSEIF (NO:TARGET == 92 && NO:ASSI == 17)
+	PRINTFORM Marionette Company　~로봇소녀 정액탱크~
+	CSTR:13 = Marionette Company　~로봇소녀 정액탱크~
+;미이×히토미쨩
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 19)
+	PRINTFORM Saver Marionette　~우리들이 당신의 고간의 구세주~
+	CSTR:13 = Saver Marionette　~우리들이 당신의 고간의 구세주~
+;히토미쨩×미이
+ELSEIF (NO:TARGET == 19 && NO:ASSI == 17)
+	PRINTFORM Saver Marionette　~우리들이 당신의 고간의 구세주~
+	CSTR:13 = Saver Marionette　~우리들이 당신의 고간의 구세주~
+ELSEIF (NO:TARGET == 1 && TALENT:211 == 1 && TALENT:83 == 1 && CFLAG:41 == 241 && CFLAG:40 == 76 && CFLAG:42 == 85)
+	PRINTFORM Queen's Pride　~내 여동생은 새드 여왕님~
+	CSTR:13 = Queen's Pride　~내 여동생은 새드 여왕님~
+ELSEIF (NO:TARGET == 2 && NO:ASSI == 107)
+	PRINTFORM 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+	CSTR:13 = 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+ELSEIF (NO:TARGET == 107 && NO:ASSI == 2)
+	PRINTFORM 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+	CSTR:13 = 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+;-----------------------------------------------------------
+;素質別
+;-----------------------------------------------------------
+;ギャルJKタッグ
+ELSEIF (TALENT:220 == 1 && TALENT:432 == 1 && TALENT:ASSI:220 == 1 && TALENT:ASSI:432 == 1)
+	PRINTFORM 요즘 아이들과 원교・난교　~%조사처리(NICKNAME:TARGET,"과")% %NICKNAME:ASSI%의 방과후 아르바이트~
+	CSTR:13 = 요즘 아이들과 원교・난교　~%조사처리(NICKNAME:TARGET,"과")% %NICKNAME:ASSI%의 방과후 아르바이트~
+ELSEIF F & 128
+	PRINTFORM BEAST FUCK ~짐승에게 범해져 기뻐하는 음란암캐・%NICKNAME:TARGET%~
+	CSTR:13 = BEAST FUCK ~짐승에게 범해져 기뻐하는 음란암캐・%NICKNAME:TARGET%~
+ENDIF
+
+;===========================================================
+;特殊タイトルの計算
+;===========================================================
+@SPECIAL_TITLE_DECIDE
+CSTR:30 = 
+CSTR:31 = 
+CSTR:32 = 
+CSTR:34 = 
+CSTR:35 = 
+CSTR:36 = 
+CSTR:37 = 
+CFLAG:642 = 0
+;-----------------------------------------------------------
+;衣装別
+;-----------------------------------------------------------
+;벨리댄스복
+IF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 243 && TALENT:422 == 1)
+	PRINTFORM Arabian Rave Night　~BLACK ANOTHER EX-HARD HARD HARD!!~
+	CSTR:33 = Arabian Rave Night　~BLACK ANOTHER EX-HARD HARD HARD!!~
+;ニーソ姫セット
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 99 && CFLAG:42 == 99 && CFLAG:170 == 99 && TALENT:87 == 1)
+	PRINTFORM 돌격! 유리 니삭스 공주!　~어째서 이렇게 된 거야~
+	CSTR:33 = 돌격! 유리 니삭스 공주!　~어째서 이렇게 된 거야~
+;ローゼンメイデンな組み合わせ
+ELSEIF ((CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 52 && CFLAG:600 == 2 && CFLAG:604 == 4) && (CFLAG:40 >= 12 && CFLAG:41 == 52 &&  CFLAG:40 != 64 && CFLAG:600 == 3 && CFLAG:604 == 5)) 
+	PRINTFORM 금지된 장난 ~성소녀영역, 음욕의 앨리스・게임~
+	CSTR:33 = 금지된 장난 ~성소녀영역, 음욕의 앨리스・게임~
+;レーティアちゃんセット
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 51 && CFLAG:600 == 2 && CFLAG:602 == 8 && TALENT:203 == 1 && TALENT:93 == 1)
+	PRINTFORM 초은하 아이돌 총감사제!　~내 보○에 정액을 잔뜩 투표해줘~
+	CSTR:33 = 초은하 아이돌 총감사제!　~내 보○에 정액을 잔뜩 투표해줘~
+;肉食系。タイトルは雑誌「TOKYO BAD GIRLS」のパクり(←
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 40 && CFLAG:42 == 74 && (TALENT:87 == 1 || TALENT:432 == 1))
+	PRINTFORM PREMIUM BAD GIRLS　~네 정액, %타겟이(1)% 전부 뽑・아・줄・게☆~
+	CSTR:33 = PREMIUM BAD GIRLS　~네 정액, %타겟이(1)% 전부 뽑・아・줄・게☆~
+;웨딩 드레스
+ELSEIF (CFLAG:40 >= 76 && CFLAG:41 == 240 && CFLAG:42 == 61 && TALENT:432 == 1 && TFLAG:32 & 1)
+	PRINTFORM Princess Bride! 　~제발 제 처음을 받아주세요, 서방님~
+	CSTR:33 = Princess Bride! 　~제발 제 처음을 받아주세요, 서방님~
+;펑크 로리타セット。サブタイトルはTom-H@ckのけいおん関係ではない曲から。안즈にどうぞ(←
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 30 && TALENT:109 == 0 && TALENT:116 == 0)
+	PRINTFORM 방과후 티슈타임　~그것이 내 X-Plan~
+	CSTR:33 = 방과후 티슈타임　~그것이 내 X-Plan~
+;スク水。現実にあるタイトルそのままになりました(←
+ELSEIF (CFLAG:40 >= 12 && CFLAG:40 != 64 && CFLAG:41 == 244)
+	PRINTFORM 학교수영복H。 ~%NICKNAME:TARGET%~
+	CSTR:33 = 학교수영복H。 ~%NICKNAME:TARGET%~
+;-----------------------------------------------------------
+;衣装別
+;-----------------------------------------------------------
+ELSEIF (TFLAG:180 == 1 && CFLAG:600 == 6 && CFLAG:602 == 4)
+	PRINTFORM 전자의 가희・음욕에 떨어져　~하츠네 ○쿠의 욕정~
+	CSTR:33 = 전자의 가희・음욕에 떨어져　~하츠네 ○쿠의 욕정~
+ELSEIF (TFLAG:180 == 16 && CFLAG:600 == 11 && CFLAG:602 == 5)
+	PRINTFORM Angel Bitch!　~천사짱 진짜 엣찌~
+	CSTR:33 = Angel Bitch!　~천사짱 진짜 엣찌~
+ELSEIF (TFLAG:180 == 20 && TFLAG:32 & 1 && TALENT:320)
+	PRINTFORM 노을빛으로 물드는 처녀혈・하드코어 ~처녀상실이에요, 오빠~
+	CSTR:33 = 노을빛으로 물드는 처녀혈・하드코어 ~처녀상실이에요, 오빠~
+ELSEIF (TFLAG:180 == 8 &&  A:3 && B:3 && CFLAG:600 == 10 && CFLAG:602 == 5 && BASE:9 <= 22)
+	PRINTFORM 누드 아웃・오프라인 ~항명기사단・미소녀부단장의 하드 애널퍽~
+	CSTR:33 = 누드 아웃・오프라인 ~항명기사단・미소녀부단장의 하드 애널퍽~
+ENDIF
+
+SIF ASSI <= 0
+	RETURN
+
+;-----------------------------------------------------------
+;キャラ別
+;-----------------------------------------------------------
+;미이×카나데
+IF (NO:TARGET == 1 && NO:ASSI == 17)
+	PRINTFORM 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+	CSTR:33 = 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+;하루노×카나데
+ELSEIF ((NO:TARGET == 1 && TALENT:TARGET:432 == 0) && (NO:ASSI == 15 && TALENT:ASSI:432 == 0))
+	PRINTFORM Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+	CSTR:33 = Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+;흑카나데×카나데
+ELSEIF ((NO:TARGET == 1 && TALENT:TARGET:432 == 0) && (NO:ASSI == 91 && TALENT:ASSI:432 == 1)) 
+	PRINTFORM 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+	CSTR:33 = 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+;카나데×흑카나데
+ELSEIF ((NO:TARGET == 91 && TALENT:TARGET:432 == 1) && (NO:ASSI == 1 && TALENT:ASSI:432 == 0)) 
+	PRINTFORM 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+	CSTR:33 = 거울 속의 또 한명의 나 ~GIRL IN THE MIRROR~
+;카나데×하루노
+ELSEIF ((NO:TARGET == 15 && TALENT:TARGET:432 == 0) && (NO:ASSI == 1 && TALENT:ASSI:432 == 0)) 
+	PRINTFORM Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+	CSTR:33 = Lily's Garden ~청초한 흑발 미소녀들의 비밀의 백합정원~
+;카나데×미이
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 1)
+	PRINTFORM 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+	CSTR:33 = 노예자매능욕 ~음욕에 빠지는 미소녀자매~
+;마리×사에
+ELSEIF (NO:TARGET == 3 && NO:ASSI == 20)
+	PRINTFORM 흑백갸루 대난교　~Sex on the bitch!~
+	CSTR:33 = 흑백갸루 대난교　~Sex on the bitch!~
+;사에×마리
+ELSEIF (NO:TARGET == 20 && NO:ASSI == 3)
+	PRINTFORM 흑백갸루 대난교　~Sex on the bitch!~
+	CSTR:33 = 흑백갸루 대난교　~Sex on the bitch!~
+;히요리×미키
+ELSEIF (NO:TARGET == 4 && NO:ASSI == 6)
+	PRINTFORM 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+	CSTR:33 = 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+;미키×히요리
+ELSEIF (NO:TARGET == 6 && NO:ASSI == 4)
+	PRINTFORM 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+	CSTR:33 = 유한 세레브자매　~유부녀 언니가 동생을 음란교육~
+;사쿠라코×키쿄우
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 26)
+	PRINTFORM W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+	CSTR:33 = W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+;키쿄우×사쿠라코
+ELSEIF (NO:TARGET == 26 && NO:ASSI == 5)
+	PRINTFORM W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+	CSTR:33 = W로리타 백탁절임　~이렇게 잔뜩 나오면 빠져버려~
+;유나×히나
+ELSEIF (NO:TARGET == 7 && NO:ASSI == 8)
+	PRINTFORM 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+	CSTR:33 = 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+;히나×유나
+ELSEIF (NO:TARGET == 8 && NO:ASSI == 7)
+	PRINTFORM 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+	CSTR:33 = 백합미소녀 상간　~자매만의 비밀 엣찌 들켜버렸습니다~
+;유니스×레이첼
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 86)
+	PRINTFORM PARADISE LOST　~실낙원의 자매공주~
+	CSTR:33 = PARADISE LOST　~실낙원의 자매공주~
+;레이첼×유니스
+ELSEIF (NO:TARGET == 86 && NO:ASSI == 9)
+	PRINTFORM PARADISE LOST　~실낙원의 자매공주~
+	CSTR:33 = PARADISE LOST　~실낙원의 자매공주~
+;오토히메×카논
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 75)
+;「生徒会のイキ損」とかTMAかよと思ったのでやめました
+	PRINTFORM 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+	CSTR:33 = 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+;카논×오토히메
+ELSEIF (NO:TARGET == 75 && NO:ASSI == 10)
+	PRINTFORM 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+	CSTR:33 = 음욕에 물드는 학생회실　~엘리트 아가씨는 정액투성이~
+;사쿠라코×이쿠미
+ELSEIF (NO:TARGET == 11 && NO:ASSI == 26)
+	PRINTFORM 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+	CSTR:33 = 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+;이쿠미×사쿠라코
+ELSEIF (NO:TARGET == 26 && NO:ASSI == 11)
+	PRINTFORM 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+	CSTR:33 = 코킹호스☆랩소디　~진한 정액짜내기♪~ 
+;하루카×키요카
+ELSEIF (NO:TARGET == 25 && NO:ASSI == 29)
+	PRINTFORM 배덕의 수녀 절정지옥　~하느님, 용서해 주세요~
+	CSTR:33 = 배덕의 수녀 절정지옥　~하느님, 용서해 주세요~
+;키요카×하루카
+ELSEIF (NO:TARGET == 29 && NO:ASSI == 25)
+	PRINTFORM 발정 수녀・성당의 검은 미사　~마리아님께 보이고 있어~
+	CSTR:33 = 발정 수녀・성당의 검은 미사　~마리아님께 보이고 있어~
+;아야노×프리실라
+ELSEIF (NO:TARGET == 27 && NO:ASSI == 28)
+;俺はアホなんじゃないかと思った
+	PRINTFORM SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+	CSTR:33 = SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+;프리실라×아야노
+ELSEIF (NO:TARGET == 28 && NO:ASSI == 27)
+	PRINTFORM SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+	CSTR:33 = SPERMA Capter Cherry　~정자 불법소지죄로 체포합니다!~
+;유키×미히로
+ELSEIF (NO:TARGET == 80 && NO:ASSI == 997)
+;「닮은꼴!!국민 아이돌 꿈의 Wキャスト 타카기み○り 橘美○」より
+	PRINTFORM 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+	CSTR:33 = 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+;미히로×유키
+ELSEIF (NO:TARGET == 997 && NO:ASSI == 80)
+	PRINTFORM 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+	CSTR:33 = 닮은꼴!!　국민 아이돌 꿈의 더블캐스트! ~미○로＆유○~ 
+;エリナ×알리사
+ELSEIF (NO:TARGET == 32 && NO:ASSI == 33)
+;おまめじゃなくて「くり。」にしようかと思った。ペドいなあ
+	PRINTFORM 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+	CSTR:33 = 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+;알리사×エリナ
+ELSEIF (NO:TARGET == 33 && NO:ASSI == 32)
+	PRINTFORM 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+	CSTR:33 = 미인자매・비밀의 의사놀이　~언니, 콩이 지릿지릿해~
+;아사히×하즈키
+ELSEIF (NO:TARGET == 34 && NO:ASSI == 36)
+	PRINTFORM 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+	CSTR:33 = 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+;하즈키×아사히
+ELSEIF (NO:TARGET == 36 && NO:ASSI == 34)
+	PRINTFORM 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+	CSTR:33 = 음란 바람소녀　~남친을 배신하고 AV나와버렸습니다~
+;카논×엘렌
+ELSEIF (NO:TARGET == 95 && NO:ASSI == 10)
+	PRINTFORM 기모노자매・더러워진 다다미방　~엄마? 아니, 사실 언니죠?w~
+	CSTR:33 = 기모노자매・더러워진 다다미방　~엄마? 아니, 사실 언니죠?w~
+;엘렌×카논
+	ELSEIF (NO:TARGET == 10 && NO:ASSI == 95)
+	PRINTFORM 기모노자매・더러워진 다다미방　~짐승의 방~
+	CSTR:33 = 기모노자매・더러워진 다다미방　~짐승의 방~
+;마나카×나츠미
+ELSEIF (NO:TARGET == 22 && NO:ASSI == 35)
+;「첫 키스物語」をもじって「パンツとKISS物語」とか「ファーストASS物語」とか考えたがやめた
+	PRINTFORM 미소녀자매・사랑의 과외수업!　~남자를 가르쳐주세요~
+	CSTR:33 = 미소녀자매・사랑의 과외수업!　~남자를 가르쳐주세요~
+;나츠미×마나카
+ELSEIF (NO:TARGET == 35 && NO:ASSI == 22)
+	PRINTFORM 소악마☆리틀 시스터　~언니, 엣찌를 가르쳐줄게~
+	CSTR:33 = 소악마☆리틀 시스터　~언니, 엣찌를 가르쳐줄게~
+;아유무×키쿄우
+;「えーマジ동정!?」「동정が許され(略
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 13)
+	PRINTFORM 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+	CSTR:33 = 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+;키쿄우×아유무
+ELSEIF (NO:TARGET == 13 && NO:ASSI == 5)
+	PRINTFORM 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+	CSTR:33 = 육식소녀　동정・강탈!　~여장남자가 흘낏흘낏 쳐다봐서 먹어버렸습니다~
+;하루노×마유
+ELSEIF (NO:TARGET == 15 && NO:ASSI == 85)
+	PRINTFORM 아아 천사님　~천사와 무녀의 동서양결합SEX풀코스~
+	CSTR:33 = 아아 천사님　~천사와 무녀의 동서양결합SEX풀코스~
+;마유×하루노
+ELSEIF (NO:TARGET == 85 && NO:ASSI == 15)
+	PRINTFORM 아아 천사님　~천사와 무녀의 동서양결합SEX풀코스~
+	CSTR:33 = 아아 천사님　~천사와 무녀의 동서양결합SEX풀코스~
+;리나×레이첼
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 96)
+;ひどいタイトルだ……w
+	PRINTFORM 탐정귀족・하극상SEX　~여탐정이 주인의 그곳을 강제수색~
+	CSTR:33 = 탐정귀족・하극상SEX　~여탐정이 주인의 그곳을 강제수색~
+;레이첼×리나
+ELSEIF (NO:TARGET == 96 && NO:ASSI == 9)
+	PRINTFORM 공주님 폭주!　~국민의 암캐구멍은 나의 것~
+	CSTR:33 = 공주님 폭주!　~국민의 암캐구멍은 나의 것~
+;미키×아이샤
+ELSEIF (NO:TARGET == 200 && NO:ASSI == 4)
+	PRINTFORM 미소녀 아가씨・비밀의 오후　~음락의 화원~
+	CSTR:33 = 미소녀 아가씨・비밀의 오후　~음락의 화원~
+;아이샤×미키
+ELSEIF (NO:TARGET == 4 && NO:ASSI == 200)
+	PRINTFORM 미소녀 아가씨・비밀의 오후　~음락의 화원~
+	CSTR:33 = 미소녀 아가씨・비밀의 오후　~음락의 화원~
+;렌카×키쿄우
+ELSEIF (NO:TARGET == 5 && NO:ASSI == 18)
+	PRINTFORM 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+	CSTR:33 = 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+;키쿄우×렌카
+ELSEIF (NO:TARGET == 18 && NO:ASSI == 5)
+	PRINTFORM 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+	CSTR:33 = 일미대결! 미소녀 코스프레이어　~에로는 세계의 공통언어~
+;엘레나×메이링
+;ケモミミつながり
+ELSEIF (NO:TARGET == 93 && NO:ASSI == 32)
+	PRINTFORM 동물귀 난무!　~동물아가씨를 뒤어세도 앞에서도~
+	CSTR:33 = 동물귀 난무!　~동물아가씨를 뒤어세도 앞에서도~
+;메이링×엘레나
+ELSEIF (NO:TARGET == 32 && NO:ASSI == 93)
+	PRINTFORM 동물귀 난무!　~동물아가씨를 뒤어세도 앞에서도~
+	CSTR:33 = 동물귀 난무!　~동물아가씨를 뒤어세도 앞에서도~
+;알리사×메이링
+;東京ミュウミュウをもじろうとしたがうまくいかなかったなあ
+ELSEIF (NO:TARGET == 93 && NO:ASSI == 33)
+	PRINTFORM 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+	CSTR:33 = 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+;메이링×알리사
+ELSEIF (NO:TARGET == 33 && NO:ASSI == 93)
+	PRINTFORM 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+	CSTR:33 = 동물귀 아가씨・정액chuchu　~오늘도 잔뜩 봉사하겠멍~
+;미레이×안즈
+;別に미레이はガルデモメンバーでもないけどそっくりさんって言ってたから
+ELSEIF (NO:TARGET == 202 && NO:ASSI == 37)
+	PRINTFORM 人気ガルデモ・강간제!　~우리들의 그곳이 모에모에 큥~
+	CSTR:33 = 人気ガルデモ・강간제!　~우리들의 그곳이 모에모에 큥~
+;안즈×미레이
+ELSEIF (NO:TARGET == 37 && NO:ASSI == 202)
+	PRINTFORM 人気ガルデモ・강간제!　~우리들의 그곳이 모에모에 큥~
+	CSTR:33 = 人気ガルデモ・강간제!　~우리들의 그곳이 모에모에 큥~
+;이즈키×쇼우코
+ELSEIF (NO:TARGET == 87 && NO:ASSI == 14)
+	PRINTFORM 발정 캣파이트　~절정지옥 3판승부~
+	CSTR:33 = 발정 캣파이트　~절정지옥 3판승부~
+;쇼우코×이즈키
+ELSEIF (NO:TARGET == 14 && NO:ASSI == 87)
+	PRINTFORM 발정 캣파이트2　~육덕진 팬티레슬링~
+	CSTR:33 = 발정 캣파이트2　~육덕진 팬티레슬링~
+;시오리×미야
+;クローバー포인트をもじろうとしたけど, ブルーマー포인트とかしか思いつかなかった
+ELSEIF (NO:TARGET == 39 && NO:ASSI == 203)
+	PRINTFORM 여○생 민감 포인트　~비밀의 염기지도 해주세요~
+	CSTR:33 = 여○생 민감 포인트　~비밀의 염기지도 해주세요~
+;미야×시오리
+ELSEIF (NO:TARGET == 203 && NO:ASSI == 39)
+	PRINTFORM 여○생 민감 포인트　~비밀의 염기지도 해주세요~
+	CSTR:33 = 여○생 민감 포인트　~비밀의 염기지도 해주세요~
+;리사×세리나
+;ましろ色シンフォニー
+ELSEIF (NO:TARGET == 41 && NO:ASSI == 43)
+	PRINTFORM 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+	CSTR:33 = 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+;세리나×리사
+ELSEIF (NO:TARGET == 43 && NO:ASSI == 41)
+	PRINTFORM 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+	CSTR:33 = 절정에로심포니　~여학교 아가씨・당신의 색으로 물들여 주세요~
+;루이×사토코
+;レールガン組。何このタイトル超頭悪そう
+ELSEIF (NO:TARGET == 23 && NO:ASSI == 97)
+	PRINTFORM 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+	CSTR:33 = 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+;사토코×루이
+ELSEIF (NO:TARGET == 97 && NO:ASSI == 23)
+	PRINTFORM 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+	CSTR:33 = 어떤 AV의 촬영풍경　~절정천국으로 레벨업이랍니다~
+;카논×사토코
+ELSEIF (NO:TARGET == 10 && NO:ASSI == 97)
+	PRINTFORM 저지먼트랍니다!　~언니의 치마안을 조사해보겠사옵니다~
+	CSTR:33 = 저지먼트랍니다!　~언니의 치마안을 조사해보겠사옵니다~
+;사토코×카논
+ELSEIF (NO:TARGET == 97 && NO:ASSI == 10)
+	PRINTFORM 저지먼트랍니다!　~언니에게 벌을 받아 버린겁니다~
+	CSTR:33 = 저지먼트랍니다!　~언니에게 벌을 받아 버린겁니다~
+;유우히×히카루
+;まあこれしかないよね……w
+ELSEIF (NO:TARGET == 98 && NO:ASSI == 211)
+	PRINTFORM 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+	CSTR:33 = 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+;히카루×유우히
+ELSEIF (NO:TARGET == 211 && NO:ASSI == 98)
+	PRINTFORM 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+	CSTR:33 = 진심유리!!　~인기 카리스마 모델을 닮은 언니가 여동생을 음행해서 대사건!!~
+;하루노×토모미
+;巫女コンビ
+ELSEIF (NO:TARGET == 15 && NO:ASSI == 212)
+	PRINTFORM 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+	CSTR:33 = 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+;토모미×하루노
+ELSEIF (NO:TARGET == 212 && NO:ASSI == 15)
+	PRINTFORM 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+	CSTR:33 = 음란 무녀님 신락부!!　~우리의 엣찌를 신님께 봉납합니다~
+;이즈키×하루미
+;何気にアリスソフトつながりでもあるなあ
+ELSEIF (NO:TARGET == 14 && NO:ASSI == 205)
+	PRINTFORM 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+	CSTR:33 = 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+;하루미×이즈키
+ELSEIF (NO:TARGET == 205 && NO:ASSI == 14)
+	PRINTFORM 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+	CSTR:33 = 사무라이 걸VS미소녀 닌자　~일본풍 엣찌 십번승부!~
+;에리스×아이리스
+ELSEIF (NO:TARGET == 81 && NO:ASSI == 84)
+	PRINTFORM 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+	CSTR:33 = 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+;아이리스×에리스
+ELSEIF (NO:TARGET == 84 && NO:ASSI == 81)
+	PRINTFORM 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+	CSTR:33 = 한여름 밤의 음마　~섹시 음마가 당신의 자○를 짜낸다~
+;레이첼×에리스
+ELSEIF (NO:TARGET == 9 && NO:ASSI == 81)
+	PRINTFORM Princess Lovers!　~2명의 내가 사랑해줄게~
+	CSTR:33 = Princess Lovers!　~2명의 내가 사랑해줄게~
+;에리스×레이첼
+ELSEIF (NO:TARGET == 81 && NO:ASSI == 9)
+	PRINTFORM Princess Lovers!　~2명의 내가 사랑해줄게~
+	CSTR:33 = Princess Lovers!　~2명의 내가 사랑해줄게~
+;미이×안드로이드
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 92)
+	PRINTFORM Marionette Company　~로봇소녀 정액탱크~
+	CSTR:33 = Marionette Company　~로봇소녀 정액탱크~
+;안드로이드×미이
+ELSEIF (NO:TARGET == 92 && NO:ASSI == 17)
+	PRINTFORM Marionette Company　~로봇소녀 정액탱크~
+	CSTR:33 = Marionette Company　~로봇소녀 정액탱크~
+;미이×히토미쨩
+ELSEIF (NO:TARGET == 17 && NO:ASSI == 19)
+	PRINTFORM Saver Marionette　~우리들이 당신의 고간의 구세주~
+	CSTR:33 = Saver Marionette　~우리들이 당신의 고간의 구세주~
+;히토미쨩×미이
+ELSEIF (NO:TARGET == 19 && NO:ASSI == 17)
+	PRINTFORM Saver Marionette　~우리들이 당신의 고간의 구세주~
+	CSTR:33 = Saver Marionette　~우리들이 당신의 고간의 구세주~
+ELSEIF (NO:TARGET == 1 && TALENT:211 == 1 && TALENT:83 == 1 && CFLAG:41 == 241 && CFLAG:40 == 76 && CFLAG:42 == 85)
+	PRINTFORM Queen's Pride　~내 여동생은 새드 여왕님~
+	CSTR:33 = Queen's Pride　~내 여동생은 새드 여왕님~
+ELSEIF (NO:TARGET == 2 && NO:ASSI == 107)
+	PRINTFORM 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+	CSTR:33 = 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+ELSEIF (NO:TARGET == 107 && NO:ASSI == 107)
+	PRINTFORM 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+	CSTR:33 = 성기제전! 음란한 보○픽 개막 ~우리들의 보○를 응원해줘!~
+;-----------------------------------------------------------
+;素質別
+;-----------------------------------------------------------
+ELSEIF (TALENT:220 == 1 && TALENT:432 == 1 && TALENT:ASSI:220 == 1 && TALENT:ASSI:432 == 1)
+	PRINTFORM 요즘 아이들과 원교・난교　~%조사처리(NICKNAME:TARGET,"과")% %NICKNAME:ASSI%의 방과후 아르바이트~
+	CSTR:33 = 요즘 아이들과 원교・난교　~%조사처리(NICKNAME:TARGET,"과")% %NICKNAME:ASSI%의 방과후 아르바이트~
+ENDIF
+

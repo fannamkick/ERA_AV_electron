@@ -1,0 +1,1120 @@
+﻿;===========================================================
+;コンサート関係の処理はここで
+;===========================================================
+;eraIm@s_ver.0.17βdより流用して改造(pawapokya-)
+;===========================================================
+@CONCERT
+DRAWLINE
+
+;特殊チケットフラグ初期化
+FLAG:50 = 0
+
+;お揃いフラグ初期化
+FLAG:52 = 0
+
+;夜の場合, 通常コンサートか特殊コンサートかを選択
+PRINTL 어느 티켓을 판매합니까?
+PRINTL  [0] - 일반티켓
+SIF TIME == 1
+	PRINTL  [1] - 특수티켓
+PRINTL  [100] - 그만둠
+	
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	PRINTFORMW 일반티켓을 판매합니다
+ELSEIF RESULT == 1 && TIME == 1
+	PRINTFORMW 특수티켓을 판매합니다. 콘서트 후에 즐길 거리가 있습니다
+	FLAG:50 = 1
+	;콘돔使用フラグ外す
+	CFLAG:13 = 0
+ELSEIF RESULT == 100
+	RETURN 100
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+DRAWLINE
+
+;ローカル変数初期化
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+F = 0
+
+G = 0
+H = 0
+I = 0
+J = 0
+N = 0
+O = 0
+P = 0
+Q = 0
+R = 0
+S = 0
+
+;COUNT用待避変数
+X = 0
+
+REPEAT 101
+	T:COUNT = 0
+	U:COUNT = 0
+REND
+
+;調教対象と助手を空に
+TARGET = -1
+ASSI = -1
+;参加人数が一人の場合はTARGETにそのキャラを代入
+IF FLAG:42 == 1
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130
+			TARGET = COUNT
+	REND
+;参加人数が二人の場合は가창경험の高い方をTARGETに, もう一人をASSIに代入
+ELSEIF FLAG:42 == 2
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF TARGET == -1
+			TARGET = COUNT
+		ELSEIF EXP:COUNT:71 > EXP:TARGET:71
+			ASSI = TARGET
+			TARGET = COUNT
+		ELSE
+			ASSI = COUNT
+		ENDIF
+	REND
+;参加人数が3人以上の場合は, 最も가창경험の高い者をTARGETに代入
+ELSEIF FLAG:42 >= 3
+	E = -1
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF E < EXP:COUNT:71
+			TARGET = COUNT
+			E = EXP:COUNT:71
+		ENDIF
+	REND
+	E = 0
+ENDIF
+
+;特殊営業参加キャラの相性をチェック
+CALL WORK_SUB_RELATION
+
+;キャラの衣装がお揃いかをチェック
+IF FLAG:42 >= 2 && FLAG:37
+	FLAG:52 = 1
+	E = -1
+	F = 0
+	S = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF E == -1
+			S = CFLAG:COUNT:40
+			E = CFLAG:COUNT:41
+			F = CFLAG:COUNT:42
+		;すっぱだか
+		ELSEIF S == 0 && CFLAG:COUNT:40 == 0
+			CONTINUE
+		;裸＋特別コス
+		ELSEIF F == CFLAG:COUNT:42 && S == 64 && CFLAG:COUNT:40 == 64
+			CONTINUE
+		;下着姿。ランナウェイズ……
+		ELSEIF S > 0 && S < 4 && CFLAG:COUNT:40 > 0 && CFLAG:COUNT:40 < 4
+			CONTINUE
+		;下着＋特別コス
+		ELSEIF F == CFLAG:COUNT:42 && S > 64 && S < 68 && CFLAG:COUNT:40 > 64 && CFLAG:COUNT:40 < 68
+			CONTINUE
+		ELSEIF (CFLAG:COUNT:45 || CFLAG:COUNT:46 || CFLAG:COUNT:47)
+			FLAG:52 = 0
+		ELSEIF (CFLAG:COUNT:40 & 92) == 0
+			FLAG:52 = 0
+		ELSEIF E != CFLAG:COUNT:41 || F != CFLAG:COUNT:42
+			FLAG:52 = 0
+		ELSEIF ((S & 92) != (CFLAG:COUNT:40 & 92))
+			FLAG:52 = 0
+		ENDIF
+	REND
+	E = 0
+	F = 0
+	S = 0
+ELSEIF FLAG:37
+	FLAG:52 = 1
+ENDIF
+
+;客の数を計算
+;参加するキャラの人気の最大値に応じて客が来ます
+E = 0
+REPEAT CHARANUM
+	SIF E < EXP:COUNT:91 && CFLAG:COUNT:130
+		E = EXP:COUNT:91
+REND
+C = E / 4
+G = C / 2
+IF C
+	IF C < 13
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 16
+		TIMES G , 1.20
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 20
+		TIMES G , 1.50
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 24
+		TIMES G , 2.00
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSE
+		TIMES G , 2.50
+		REPEAT C
+			G += RAND:3
+		REND
+	ENDIF
+ENDIF
+
+;娼館の人気に応じてさらにプラス
+C = (EXP:MASTER:91 / 5)
+IF C
+	REPEAT C
+		G += RAND:2
+	REND
+ENDIF
+
+;参加者が特定の素質を持っていた場合ボーナス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	;社会的ステータスが影響
+	;인기인
+	SIF TALENT:COUNT:126
+		G += 5
+	;아이돌
+	SIF TALENT:COUNT:203
+		G += 10
+	;娼婦
+	SIF TALENT:COUNT:180
+		G += 2
+	;傾城
+	SIF TALENT:COUNT:181
+		G += 3
+	;요설스러움
+	SIF TALENT:COUNT:182
+		G += 2
+	;단골손님
+	SIF TALENT:COUNT:183
+		G += 2
+	;求愛
+	SIF TALENT:COUNT:184
+		G += 1
+	;가희
+	SIF TALENT:COUNT:185
+		G += 15
+	;무희
+	SIF TALENT:COUNT:186
+		G += 5
+	;미희
+	SIF TALENT:COUNT:187
+		G += 10
+	;우등생
+	SIF TALENT:COUNT:224
+		G += 5
+	;패션모델
+	SIF TALENT:COUNT:402
+		G += 3
+		
+	;専用素質(まあ(差別化する必要もあるし)多少はね?)
+	;야쿠자의 딸
+	SIF TALENT:COUNT:502
+		G += 20
+	;음마
+	SIF TALENT:COUNT:505
+		G += 5
+	;성우
+	SIF TALENT:COUNT:506
+		G += 25
+	;하루우라레
+	SIF TALENT:COUNT:507
+		G += 15
+	;Colorful Pure Girls
+	SIF TALENT:COUNT:509
+		G += 30
+	;무당
+	SIF TALENT:COUNT:510
+		G += 5
+	;천사
+	SIF TALENT:COUNT:511
+		G += 10
+	;그랜드마스터
+	SIF TALENT:COUNT:512
+		G += 10
+	;야쿠자의 아내
+	SIF TALENT:COUNT:516
+		G += 15
+	;Mermaid girl
+	SIF TALENT:COUNT:518
+		G += 20
+	;FallenFallAngel
+	SIF TALENT:COUNT:519
+		G += 30
+REND
+
+	;警備員の数に応じて観客数の限界が伸びます。500000Pをケチってはいけない(戒め)
+	IF G > 50 && FLAG:40 < 10
+		IF (50 + (FLAG:40 * 10)) < G
+			G = (50 + (FLAG:40 * 10))
+		ENDIF
+	ENDIF
+
+;10人以下だった場合, 10人にします
+SIF G < 10
+	G = 10
+
+;コンサートの種類
+;現状形だけ
+PRINTL 곡의 장르를 선택해주세요.
+PRINTL  [0] - 가요
+PRINTL  [1] - 팝
+PRINTL  [2] - 락
+PRINTL  [3] - 테크노
+PRINTL  [4] - R&B
+PRINTL  [5] - 애니송
+PRINTL  [6] - 엔카
+$INPUT_LOOP2
+INPUT
+
+IF RESULT == 0
+	PRINTFORMW 가요를 주로 노래합니다
+ELSEIF RESULT == 1
+	PRINTFORMW 팝을 주로 노래합니다
+ELSEIF RESULT == 2
+	PRINTFORMW 락을 주로 노래합니다
+ELSEIF RESULT == 3
+	PRINTFORMW 테크노를 주로 노래합니다
+ELSEIF RESULT == 4
+	PRINTFORMW R&B를 주로 노래합니다
+ELSEIF RESULT == 5
+	PRINTFORMW 애니송을 주로 노래합니다
+ELSEIF RESULT == 6
+	PRINTFORMW 엔카를 주로 노래합니다
+ELSE
+	GOTO INPUT_LOOP2
+ENDIF
+
+DRAWLINE
+
+CALL WORK_SUB_PRINT_FULLNAME
+PRINTFORMW 의 콘서트를 열었다……
+PRINTFORML 이번 콘서트에는 {G}명의 청중이 모였다
+
+WAIT
+
+;歌う曲数
+L = 0
+K = 0
+REPEAT CHARANUM
+	SIF L < MAXBASE:COUNT:1 && CFLAG:COUNT:130
+		L = MAXBASE:COUNT:1 / 100
+REND
+;
+K = L / 10
+
+;次に成功か失敗かの判定を計算
+;参加者の가창경험の最低値によって基礎値が決定
+;(※下手な歌い手は他のメンバーの足まで引っぱります)
+E = 0
+REPEAT CHARANUM
+	SIF E > EXP:COUNT:71 && CFLAG:COUNT:130
+		E = EXP:COUNT:71
+REND
+
+IF E < 50
+	D = 0 + RAND:2 + RAND:L + K
+ELSEIF E < 100
+	D = 0 + RAND:3 + RAND:L + K
+ELSEIF E < 200
+	D = 2 + RAND:3 + RAND:L + K
+ELSEIF E < 300
+	D = 4 + RAND:4 + RAND:L + (K * 2)
+ELSEIF E < 400
+	D = 7 + RAND:4 + RAND:L + (K * 2)
+ELSEIF E < 500
+	D = 10 + RAND:5 + RAND:L + (K * 2)
+ELSEIF E < 600
+	D = 13 + RAND:6 + RAND:L + (K * 3)
+ELSEIF E < 800
+	D = 16 + RAND:7 + RAND:L + (K * 3)
+ELSEIF E < 1000
+	D = 20 + RAND:8 + RAND:L + (K * 3)
+ELSEIF E < 1500
+	D = 25 + RAND:9 + RAND:L + (K * 4)
+ELSEIF E < 2500
+	D = 30 + RAND:9 + RAND:L + (K * 4)
+ELSEIF E < 4000
+	D = 40 + RAND:10 + RAND:L + (K * 4)
+ELSE
+	D = 50 + RAND:10 + RAND:L + (K * 5)
+ENDIF
+
+;参加者全員の技能・素質による修正値を加算
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+
+	;全員の가창기능をプラス
+	D += ABL:COUNT:71
+
+	;피사技能と무용기능は1/2をプラス
+	D += ABL:COUNT:70 / 2
+	D += ABL:COUNT:72 / 2
+
+	;화술と노출벽は1/3をプラス
+	D += ABL:COUNT:15 / 3
+	D += ABL:COUNT:17 / 3
+
+	;全員の미용감각をプラス
+	D += ABL:COUNT:50
+
+	;素質に応じて加減
+	;겁쟁이
+	SIF TALENT:COUNT:10
+		D -= 2
+	;얌전함
+	SIF TALENT:COUNT:14
+		D -= 2
+	;프라이드 높음
+	SIF TALENT:COUNT:15
+		D += 3
+	;활발함
+	SIF TALENT:COUNT:16
+		D += 5
+	;프라이드 낮음
+	SIF TALENT:COUNT:17
+		D -= 1
+	;감정부족
+	SIF TALENT:COUNT:22
+		D -= 2
+	;호기심
+	SIF TALENT:COUNT:23
+		D += 3
+	;튀고 싶어함
+	SIF TALENT:COUNT:28
+		D += 5
+	;억압
+	SIF TALENT:COUNT:32
+		D -= 3
+	;해방
+	SIF TALENT:COUNT:33
+		D += 3
+	;저항
+	SIF TALENT:COUNT:34
+		D -= 5
+	;수줍음
+	SIF TALENT:COUNT:35
+		D -= 3
+	;부끄럼 없음
+	SIF TALENT:COUNT:36
+		D += 3
+	;헌신적
+	SIF TALENT:COUNT:63
+		D += 3
+	;노출광
+	SIF TALENT:COUNT:89
+		D += 3
+	;매혹
+	SIF TALENT:COUNT:91
+		D += 5
+	;수수께끼의 매력
+	SIF TALENT:COUNT:92
+		D += 10
+	;빈유
+	SIF TALENT:COUNT:109
+		D -= 2
+	;거유
+	SIF TALENT:COUNT:110
+		D += 2
+	;매력
+	SIF TALENT:COUNT:113
+		D += 5
+	;폭유
+	SIF TALENT:COUNT:114
+		D += 2
+	;절벽
+	SIF TALENT:COUNT:116
+		D -= 3
+
+	;비만
+	SIF TALENT:COUNT:115
+		D /= 2
+
+	;광기・붕괴があると満足度激減
+	SIF TALENT:COUNT:123 || TALENT:COUNT:9
+		D /= 5
+
+REND
+
+;相性による修正
+IF FLAG:51 >= 200
+	TIMES D , 2.00
+ELSEIF FLAG:51 >= 150
+	TIMES D , 1.50
+ELSEIF FLAG:51 >= 120
+	TIMES D , 1.20
+ELSEIF FLAG:51 < 100
+	TIMES D , 0.50
+ENDIF
+
+;満足度Dが目標値Pを上回れば成功, 下回れば失敗
+;2週目以降は相性値込でなければまず超成功は狙えないでしょう。
+IF FLAG:10 > 1
+	P = 41 + RAND:10
+ELSE
+	P = 21 + RAND:5
+ENDIF
+
+;特殊チケットの場合は客の目的が目的なのでちょっと下がる
+SIF FLAG:50 == 1
+	P -= 5
+
+;満足度DがPの50%未満だったら大失敗
+IF D < (P / 2)
+	A = 0
+;P未満だったら小失敗
+ELSEIF D < P
+	A = 1
+;Pの150%未満だったら普通
+ELSEIF D < (P * 3) / 2
+	A = 2
+;Pの200%未満だったら小成功
+ELSEIF D < P * 2
+	A = 3
+;Pの400%未満だったら大成功
+ELSEIF D < P * 4
+	A = 4
+;それ以上だったら超成功
+ELSE
+	A = 5
+ENDIF
+Z = 0
+Z = A
+
+IF FLAG:52
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORM %조사만처리(RESULT+2,"는")% 
+	SIF FLAG:42 >= 2
+		PRINT 맞춰입은 
+	IF CFLAG:40 == 0
+		PRINT 실오라기 하나 걸치지 않은 모습
+	ELSEIF CFLAG:40 < 4
+		PRINT 속옷차림
+	ELSE
+		CALL PRINT_CLOTHTYPE_MAIN2
+		IF CFLAG:42
+			PRINT 에 
+			CALL PRINT_CLOTHTYPE_SPECIAL
+		ENDIF
+		PRINT 차림
+	ENDIF
+	PRINTFORML 으로 스테이지에 올랐다
+ENDIF
+
+PRINTFORMW 일반 상연 목록 {L}곡에 더해 앵콜 {K}곡을 노래했다
+
+PRINTL 「♪~♪~」
+IF FLAG:42 >= 2 && FLAG:51 >= 175
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML 의 노랫소리는 절묘한 하모니를 만들어 내고 있다
+ELSEIF FLAG:42 >= 2 && FLAG:51 >= 120
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML 의 노랫소리는 그럭저럭 어울린다
+ELSEIF FLAG:42 >= 2 && FLAG:51 <= 100
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML 의 노랫소리는 빈말로도 어울린다고는 못한다……
+ENDIF
+
+WAIT
+
+PRINTL      
+;結果を一応視覚化しておく。デバッグ用なので, 消してもいい。
+PRINTFORML 만족도: {D}％
+P *= 4
+PRINTFORMW 목표 만족도: {P}％
+PRINTL      
+
+;失敗時メッセージ
+IF A <= 1
+	PRINTFORM 매우 긴장했는지, 노래하는 도중에 
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML %조사만처리(RESULT+2,"는")% 굳어 버렸다
+	PRINTFORMW 아무래도 이번 콘서트는 실패한 것 같다……
+	TFLAG:13 = 110
+;成功時メッセージ
+ELSE
+	PRINTFORMW 좋은 느낌으로 성공한 것 같다
+	IF FLAG:50 == 0
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW %조사만처리(RESULT+2,"는")% 수줍은 듯이 웃으며, 스테이지에서 내려왔다……
+	ENDIF
+	TFLAG:13 = 111
+ENDIF
+
+;特殊コンサート用処理
+IF FLAG:50 == 1
+	IF A <= 1
+		PRINTFORM 불만을 느낀 청중들은 
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW %조사만처리(RESULT+2,"를")% 향해 쇄도했다……
+	ELSE
+		PRINTFORM %CALLNAME:TARGET%
+		SIF FLAG:42 >= 2
+			PRINT 들
+		PRINTFORML 의 매력과 노랫소리에 매료됬는지 
+		PRINTFORM 흥분한 청중들은 일제히 
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW 의 곁으로 쇄도했다……
+	ENDIF
+	PRINTW      ･
+	PRINTW      ･
+	PRINTW      ･
+
+	CALL WORK_SP_SEX_01
+
+	;口上の判定
+	IF A <= 1
+		TFLAG:13 = 112
+	ELSE
+		TFLAG:13 = 113
+	ENDIF
+	
+	WAIT
+ENDIF
+
+;口上処理
+X = TARGET
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	TARGET = COUNT
+	CALL SELF_KOJO
+REND
+TARGET = X
+;念のため口上用フラグを空に
+TFLAG:13 = 0
+
+;/_/_/_/_/_/※ここから下の処理ではTARGETは保存されていません/_/_/_/_/_/
+
+DRAWLINE
+
+;パラメータ変化
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	
+	TARGET = COUNT
+
+	PRINTFORML %NAME:TARGET%의 패러미터가 다음과 같이 변화되었습니다
+
+	;失敗時経験値
+	IF Z <= 1
+		T:71 = (G / 10) + 1
+		T:70 = (G / 20) + 1
+		T:72 = (G / 15) + 1
+		U:7 = (G * L / 10) + 1
+		U:4 = (G * L / 15) + 1
+		U:8 = (G * L / 20) + 1
+	;成功時経験値
+	ELSE
+	;今後技能が充実してくれば書き換える可能性有
+		T:71 = ((G / (7 - Z)) * ABL:71) + L + (K * 10)
+		T:70 = ((G / (10 - Z)) * ABL:70) + (L / 4) + (K * 3)
+		T:72 = ((G / (9 - Z)) * ABL:72) + (L / 2) + (K * 5)
+		U:7 = ((G * L * Z) / 5 ) + (K * 500)
+		U:4 = ((G * L * Z) / 6 ) + (K * 300)
+		U:8 = ((G * L * Z) / 7 ) + (K * 100)
+	ENDIF
+
+	;参加者が複数の場合は得られる経験がやや目減り
+	IF FLAG:42 == 2
+		TIMES T:71 , 0.50
+		TIMES T:70 , 0.50
+		TIMES T:72 , 0.50
+		TIMES U:7 , 0.80
+		TIMES U:4 , 0.80
+		TIMES U:8 , 0.80
+	ELSEIF FLAG:42 >= 3
+		TIMES T:71 , 0.30
+		TIMES T:70 , 0.30
+		TIMES T:72 , 0.30
+		TIMES U:7 , 0.60
+		TIMES U:4 , 0.60
+		TIMES U:8 , 0.60
+	ENDIF
+
+	;부정의 구슬の計算(基礎値は人数ベースで, 従順に応じて減少)
+	;特殊チケットだと一気に溜まる
+	
+	IF FLAG:50 == 1
+		M = 15 - ABL:10
+	ELSE
+		M = 9 - ABL:10
+	ENDIF
+
+	;부정의 구슬が増加しないという事はない
+	SIF M <= 0
+		M = 1
+
+	U:100 = G * M
+
+	;素質補正
+	;무관심だと少なくなる
+	SIF TALENT:21
+		TIMES U:100 , 0.90
+	;감정부족と少なくなる
+	SIF TALENT:22
+		TIMES U:100 , 0.90
+	;プライドが高いと増える
+	SIF TALENT:15
+		TIMES U:100 , 1.50
+	;튀고 싶어함だと少なくなる
+	SIF TALENT:28
+		TIMES U:100 , 0.80
+	;억압だと増える
+	SIF TALENT:32
+		TIMES U:100 , 1.20
+	;해방だと少なくなる
+	SIF TALENT:33
+		TIMES U:100 , 0.80
+	;아이돌だと少なくなる
+	SIF TALENT:203
+		TIMES U:100 , 0.80
+	;コンサート失敗かつ수줍음だと結構増える
+	SIF TALENT:35 && A <= 1
+		TIMES U:100 , 1.50
+
+	;特殊コンサート用処理その2
+	IF FLAG:50 == 1
+		CALL WORK_SP_SEX_02
+		;客は輪姦目的で来ているので, 営業が成功しても失敗しても一定の満足を得る
+		A += 1
+	ELSE
+		;昼の部の参加人数による부정의 구슬補正
+		IF FLAG:42 == 2
+			TIMES U:100 , 0.80
+		ELSEIF FLAG:42 >= 3
+			TIMES U:100 , 0.60
+		ENDIF
+	ENDIF
+
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	X = COUNT
+	CALL WORK_EXP
+	COUNT = X
+
+	;반발각인取得の判定
+	;通常チケットは従順の200倍+1000まで, 特殊チケットは100倍まで許容します
+	O = ABL:10
+	IF FLAG:50 == 1
+		O *= 100
+	ELSE
+		O *= 200
+		O += 1000
+	ENDIF
+	
+	;반발각인 LV2はLV1の√3倍, LV3は√5倍で獲得
+	I = O
+	TIMES I , 2.23
+	J = O
+	TIMES J , 1.73
+	
+	IF MARK:3 != 3 && JUEL:100 > I
+		PRINTL  반발각인 LV3을 습득
+		MARK:3 = 3
+	ELSEIF MARK:3 != 2 && JUEL:100 > J
+		PRINTL  반발각인 LV2를 습득
+		MARK:3 = 2
+	ELSEIF MARK:3 != 1 && JUEL:100 > O
+		PRINTL  반발각인 LV1을 습득
+		MARK:3 = 1
+	ENDIF
+
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	;체력減少の計算
+	LOSEBASE:0 = G * L
+
+	;アンコールはかなり疲れる
+	IF K == 1
+		TIMES LOSEBASE:0 , 1.10
+	ELSEIF K == 2
+		TIMES LOSEBASE:0 , 1.20
+	ELSEIF K >= 3
+		TIMES LOSEBASE:0 , 1.30
+	ENDIF
+
+	;小柄だと疲労増加
+	SIF TALENT:100
+		TIMES LOSEBASE:0 , 1.20
+	;아이돌だと疲労半減
+	SIF TALENT:203
+		TIMES LOSEBASE:0 , 0.50
+	
+	;特殊チケットの場合
+	IF FLAG:50 == 1
+		;特殊チケットだと人数ベースでかなり疲れる
+		LOSEBASE:0 += G * 40
+		;처녀상실だとかなり増える
+		SIF CFLAG:50
+			TIMES LOSEBASE:0 , 2.00
+	
+		;売春中毒のレベルに応じてちょっとずつ減る
+		IF ABL:37 == 1
+			TIMES LOSEBASE:0 , 0.90
+		ELSEIF ABL:37 == 2
+			TIMES LOSEBASE:0 , 0.80
+		ELSEIF ABL:37 == 3
+			TIMES LOSEBASE:0 , 0.70
+		ELSEIF ABL:37 == 4
+			TIMES LOSEBASE:0 , 0.60
+		ELSEIF ABL:37 >= 5
+			TIMES LOSEBASE:0 , 0.50
+		ENDIF
+	
+		;V경험, A경험が一定値以下だった場合체력소비増加
+		SIF EXP:0 <= 200 && TALENT:122 == 0
+			TIMES LOSEBASE:0 , 1.10
+		SIF EXP:1 <= 200
+			TIMES LOSEBASE:0 , 1.20
+	
+	ENDIF
+
+	;운동능력に応じて疲労軽減
+	IF ABL:51 == 1
+		TIMES LOSEBASE:0 , 0.95
+	ELSEIF ABL:51 == 2
+		TIMES LOSEBASE:0 , 0.90
+	ELSEIF ABL:51 == 3
+		TIMES LOSEBASE:0 , 0.85
+	ELSEIF ABL:51 == 4
+		TIMES LOSEBASE:0 , 0.80
+	ELSEIF ABL:51 == 5
+		TIMES LOSEBASE:0 , 0.75
+	ELSEIF ABL:51 == 6
+		TIMES LOSEBASE:0 , 0.70
+	ELSEIF ABL:51 == 7
+		TIMES LOSEBASE:0 , 0.65
+	ELSEIF ABL:51 == 8
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF ABL:51 == 9
+		TIMES LOSEBASE:0 , 0.55
+	ELSEIF ABL:51 >= 10
+		TIMES LOSEBASE:0 , 0.50
+	ENDIF
+
+	;参加人数に応じて疲労軽減
+	IF FLAG:50
+		LOSEBASE:0 /= FLAG:42
+	ELSEIF FLAG:42 >= 3
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF FLAG:42 >= 2
+		TIMES LOSEBASE:0 , 0.80
+	ENDIF
+	
+	;警備員の人数に応じてちょっとずつ減る(最大1~2割減)
+	;特殊チケットなら警備員とても大事(効果2倍)
+	LOSEBASE:0 *= 100 - FLAG:40 * (1 + FLAG:50)
+	LOSEBASE:0 /= 100
+	
+	;警備員の人数に応じて即死回避
+	IF LOSEBASE:0 >= BASE:0
+		;警備員の人数*9+9%の確率で체력が1残る(救済フラグを立てる)
+		SIF RAND:100 < (FLAG:40 * 9 + 9)
+		LOSEBASE:0 = BASE:0 - 1
+	ENDIF
+
+	SIF LOSEBASE:0 >= BASE:0
+		LOSEBASE:0 = BASE:0
+	
+	PRINT  체력소비　　: 
+	N = BASE:0
+	CALL FIGURE_INDENT
+	PRINTV BASE:0
+	PRINT  - 
+	N = LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTV LOSEBASE:0
+	PRINT  = 
+	N = BASE:0 - LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTVL BASE:0 - LOSEBASE:0
+	
+	BASE:0 -= LOSEBASE:0
+	
+	PRINT  체력　　　　:
+	BAR BASE:0, MAXBASE:0, 32
+	PRINTFORML ({BASE:0}/{MAXBASE:0})
+	
+	;체력が0以下, または500以下だった場合の処理
+	IF BASE:0 <= 0
+		PRINTFORML %타겟은()%, 마지막 스테이지 후 갑자기 푹 엎드리듯이 쓰러졌다
+		PRINTFORML 무엇을 해도 반응이 없다……
+		WAIT
+		;キャラの死亡確認
+		CALL CHARADEAD_CHECK
+	ELSEIF BASE:0 <= 500
+		PRINTFORML 체력이 한계에 달했습니다. 쉬게 해주세요
+	ENDIF
+
+	DRAWLINE
+	WAIT
+REND
+
+;売上金を計算します
+Q = 0
+
+;기준액は参加キャラの가창기능の평균値に大きく左右されます
+;(※素人の歌を金を払って聞きに来る人はあまりいません)
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:71
+REND
+E /= FLAG:42
+IF E == 0
+	V = (1 * L) + (5 * K)
+ELSEIF E == 1
+	V = (2 * L) + (10 * K)
+ELSEIF E == 2
+	V = (3 * L) + (15 * K)
+ELSEIF E == 3
+	V = (5 * L) + (20 * K)
+ELSEIF E == 4
+	V = (8 * L) + (25 * K)
+ELSEIF E == 5
+	V = (10 * L) + (30 * K)
+ELSEIF E == 6
+	V = (15 * L) + (40 * K)
+ELSEIF E == 7
+	V = (20 * L) + (50 * K)
+ELSEIF E == 8
+	V = (30 * L) + (60 * K)
+ELSEIF E == 9
+	V = (40 * L) + (80 * K)
+ELSEIF E >= 10
+	V = (50 * L) + (100 * K)
+ENDIF
+PRINT 가창 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV +{V}
+Q += V
+V = 0
+
+;参加キャラの素質補正
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	;카리스마
+	SIF TALENT:COUNT:93
+		V += 500
+	;고무
+	SIF TALENT:COUNT:118
+		V += 100
+	IF V
+		PRINTFORML %NAME:COUNT% +{V}
+		Q += V
+		V = 0
+	ENDIF
+REND
+
+;能力補正
+;화술の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:15
+REND
+E /= FLAG:42
+IF E == 0
+	V = 100
+ELSEIF E == 1
+	V = 110
+ELSEIF E == 2
+	V = 120
+ELSEIF E == 3
+	V = 130
+ELSEIF E == 4
+	V = 140
+ELSEIF E == 5
+	V = 150
+ELSEIF E == 6
+	V = 160
+ELSEIF E == 7
+	V = 170
+ELSEIF E == 8
+	V = 180
+ELSEIF E == 9
+	V = 190
+ELSEIF E >= 10
+	V = 200
+ENDIF
+PRINT 화술
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;피사技能の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:70
+REND
+E /= FLAG:42
+IF E == 0
+	V = 70
+ELSEIF E == 1
+	V = 80
+ELSEIF E == 2
+	V = 85
+ELSEIF E == 3
+	V = 90
+ELSEIF E == 4
+	V = 95
+ELSEIF E == 5
+	V = 100
+ELSEIF E == 6
+	V = 110
+ELSEIF E == 7
+	V = 120
+ELSEIF E == 8
+	V = 130
+ELSEIF E == 9
+	V = 140
+ELSEIF E >= 10
+	V = 150
+ENDIF
+PRINT 피사 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;무용기능の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:72
+REND
+E /= FLAG:42
+IF E == 0
+	V = 50
+ELSEIF E == 1
+	V = 70
+ELSEIF E == 2
+	V = 100
+ELSEIF E == 3
+	V = 110
+ELSEIF E == 4
+	V = 120
+ELSEIF E == 5
+	V = 130
+ELSEIF E == 6
+	V = 140
+ELSEIF E == 7
+	V = 150
+ELSEIF E == 8
+	V = 160
+ELSEIF E == 9
+	V = 180
+ELSEIF E >= 10
+	V = 200
+ENDIF
+PRINT 무용 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;매력치の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += BASE:COUNT:31
+REND
+E /= FLAG:42
+V = E
+PRINT 매력치
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+E = 0
+
+;特殊チケット
+IF FLAG:50 == 1
+	V = 150
+	;V使用不可キャラがいると減る
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF CFLAG:COUNT:54
+			TIMES V , 0.70
+	REND
+	PRINT 특수티켓 
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;共通する獲得資金処理
+CALL WORK_SP_MONEY_CM
+
+PRINTFORML 이번 콘서트에는 {Q}포인트의 티켓을 {G}명에게 판매하여, 
+
+;チケット一枚あたりの金額×客の人数が収入となる
+Q *= G
+
+PRINTFORML 합계 {Q}포인트 벌었다
+MONEY += Q
+
+;素質【가희】の判定
+;コンサート終了時に生きていて, 기교LV5以上, 가창기능LV5以上で가창경험1000以上かつ【무희】【미희】をもっていない場合に通常コンサートをした時に取得
+
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	IF BASE:COUNT:0 > 0 && ABL:COUNT:12 >= 5 && ABL:COUNT:71 >= 5 && EXP:COUNT:71 >= 1000 && TALENT:COUNT:185 == 0 && TALENT:COUNT:186 == 0 && TALENT:COUNT:187 == 0 && FLAG:50 == 0
+		PRINTFORMW %CALLNAME:COUNT%의 노래의 훌륭함이 세계적으로도 유명해진 것 같다……
+		PRINTFORMW 소질【가희】를 습득했습니다
+		TALENT:COUNT:185 = 1
+	ENDIF
+REND
+
+;特殊営業終了処理
+CALL WORK_SP_AFTER
+
+WAIT
+
+BEGIN TURNEND
+
+RETURN 1

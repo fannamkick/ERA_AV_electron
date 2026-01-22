@@ -1,0 +1,64 @@
+﻿;===========================================================
+;レーベル名の処理
+;===========================================================
+@LABELNAME
+LOCAL = RAND:7
+
+IF LOCAL == 0
+	PRINTFORM 메디터레니언・컴퍼니
+	CSTR:MASTER:5 = 메디터레니언・컴퍼니
+ELSEIF LOCAL == 1
+	PRINTFORM SkyPrincess Ent.
+	CSTR:MASTER:5 = SkyPrincess Ent
+ELSEIF LOCAL == 2
+	PRINTFORM 아시안 드림
+	CSTR:MASTER:5 = 아시안 드림
+ELSEIF LOCAL == 3
+	PRINTFORM Infinite Ent.
+	CSTR:MASTER:5 = Infinite Ent
+ELSEIF LOCAL == 4
+	PRINTFORM 일본열
+	CSTR:MASTER:5 = 일본열
+ELSEIF LOCAL == 5
+	PRINTFORM BlueCold Ent.
+	CSTR:MASTER:5 = BlueCold Ent.
+ELSEIF LOCAL == 6
+	PRINTFORM S-1 Pictures
+	CSTR:MASTER:5 = S-1 Pictures
+ELSE
+	PRINTFORM 닌자 포르노
+	CSTR:MASTER:5 = 닌자 포르노
+ENDIF
+;===========================================================
+;レーベル名の処理
+;===========================================================
+@PRODUCER_DEBUT
+IF EXP:MASTER:9 == 0
+	PRINTFORM %CALLNAME:MASTER% 감독의 첫 작품은 {P} 포인트의 매상이 예상되었고, 순조로운 첫 비행이라고 
+	PRINTFORML 할 수 있을 것 같다
+	PRINTFORMW 조만간에, AV를 출시할 레이블명을 결정해야 한다
+	PRINTFORMW %플레이어는()% 사무소 직원 모두와 상담하여, 레이블명을 정하기로 했다
+	$INPUT_LOOP_1
+	PRINTFORM 직원이 내놓은 방안인 【
+	CALL LABELNAME
+	PRINTFORML 】로 결정하시겠습니까?
+	PRINTL [0] - 예
+	PRINTL [1] - 스스로 정한다
+	PRINTL [2] - 더 의논 한다
+	INPUT
+	IF RESULT == 0
+		PRINTFORML 레이블명을 【%CSTR:MASTER:5%】%조사만처리(CSTR:MASTER:5,"로")% 결정했습니다
+	ELSEIF RESULT == 1
+		PRINTFORML 레이블명을 입력해주십시오
+		INPUTS
+			IF RESULTS == ""
+				PRINTFORML 레이블 명이 없어서는 곤란하므로 다시 한번 의논 하는 것으로 했다
+				GOTO INPUT_LOOP_1
+			ENDIF
+			PRINTFORML 라벨명을 【%RESULTS%】%조사만처리(RESULTS,"로")% 결정했습니다
+			CSTR:MASTER:5 = %RESULTS%
+	ELSE
+		GOTO INPUT_LOOP_1
+	ENDIF
+ENDIF
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥

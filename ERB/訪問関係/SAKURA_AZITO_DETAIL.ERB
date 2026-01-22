@@ -1,0 +1,1071 @@
+﻿;-------------------------------------------------
+;정조개혁: 정조관념
+;-------------------------------------------------
+@CHASTITY_UP
+C = 1000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 정조관념이 강한 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;정조관념は排除
+ELSEIF TALENT:RESULT:30
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이미 강한 정조관념을 가지고 있습니다
+	GOTO INPUT_LOOP
+;정조무관심は排除
+ELSEIF TALENT:RESULT:31
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 순결한 여성을 좋아하는 남자고 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 정조관념이 강해졌다
+	TALENT:T:30 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;정조개혁: 정조무관심
+;-------------------------------------------------
+@CHASTITY_DOWN
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 마구 들이대는 육식계 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;임신중は排除
+ELSEIF TALENT:RESULT:30
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+;정조무관심は排除
+ELSEIF TALENT:RESULT:31
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이미 한창 육식계입니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 들이대는 여자에게 약한 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 정조관념은【%TALENTNAME:31%】이 됐다
+	TALENT:T:31 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;정조개혁: 뉴트럴
+;-------------------------------------------------
+@CHASTITY_NEUTRAL
+C = 100000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 자연스러운 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;自然体は排除
+ELSEIF TALENT:RESULT:30 == 0 && TALENT:RESULT:31 == 0
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 자연스러운 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 정조관념이 보통이 됐다
+	TALENT:T:30 = 0
+	TALENT:T:31 = 0
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;수치개혁: 수줍음
+;-------------------------------------------------
+@SHAME_UP
+C = 1000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 수줍어하는 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;수줍음は排除
+ELSEIF TALENT:RESULT:35 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 벌써 수줍어하고 있습니다
+	GOTO INPUT_LOOP
+;부끄럼 없음は排除
+ELSEIF TALENT:RESULT:36 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 부끄러워하는 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %조사처리(CALLNAME:T,"는")%【%TALENTNAME:35%】을 배웠다
+	TALENT:T:35 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;수치개혁: 부끄럼 없음
+;-------------------------------------------------
+@SHAME_DOWN
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 남들 앞에서도 부끄럼없이 애정행각을 펼치는 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;수줍음は排除
+ELSEIF TALENT:RESULT:35 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+;부끄럼 없음は排除
+ELSEIF TALENT:RESULT:36 == 1
+	PRINTFORMW %CALLNAME:RESULT%에게 부끄러운 것은 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORM 이 세상엔 남들 앞에서도 부끄럼없이 애정행각을 펼치는 여자를 좋아하는 
+	PRINTFORML 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %조사처리(CALLNAME:T,"는")%【%TALENTNAME:36%】이 됐다
+	TALENT:T:36 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+PRINTW
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;수치개혁: 뉴트럴
+;-------------------------------------------------
+@SHAME_NEUTRAL
+C = 100000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 자연스러운 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+
+$INPUT_LOOP
+DRAWLINE
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;自然体は排除
+ELSEIF TALENT:RESULT:35 == 0 && TALENT:RESULT:36 == 0
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 자연스러운 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 수치의식이 보통이 됐다
+	TALENT:T:35 = 0
+	TALENT:T:36 = 0
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;성격개혁: 솔직함
+;-------------------------------------------------
+@PERSONALITY_GENTLE
+C = 500000
+
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 솔직한 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;솔직함は排除
+ELSEIF TALENT:RESULT:13 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이미 솔직합니다
+	GOTO INPUT_LOOP
+;건방짐は排除
+ELSEIF TALENT:RESULT:11 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 솔직한 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 성격이【%TALENTNAME:13%】이 됐다
+	TALENT:T:13 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;성격개혁: 건방짐
+;-------------------------------------------------
+@PERSONALITY_BRAZEN
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 건방진 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;솔직함は排除
+ELSEIF TALENT:RESULT:13 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+;건방짐は排除
+ELSEIF TALENT:RESULT:11 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 상당히 건방집니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 건방진 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 성격이【%TALENTNAME:11%】이 됐다
+	TALENT:T:11 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;성격개혁: 얌전함
+;-------------------------------------------------
+@PERSONALITY_QUIET
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 얌전한 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;얌전함は排除
+ELSEIF TALENT:RESULT:14 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 얌전합니다
+	GOTO INPUT_LOOP
+;활발함は排除
+ELSEIF TALENT:RESULT:16 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 얌전한 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 성격이【%TALENTNAME:14%】이 됐다
+	TALENT:T:14 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;성격개혁: 활발함
+;-------------------------------------------------
+@PERSONALITY_LIVELY
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 활발한 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;얌전함は排除
+ELSEIF TALENT:RESULT:14 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+;활발함は排除
+ELSEIF TALENT:RESULT:16 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 활발합니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 활발한 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 성격이【%TALENTNAME:16%】이 됐다
+	TALENT:T:16 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;성격개혁: 뉴트럴
+;-------------------------------------------------
+@PERSONALITY_NEUTRAL
+C = 100000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 자연스러운 여자다!　……아마도」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;얌전함は排除
+ELSEIF TALENT:RESULT:11 == 0 && TALENT:RESULT:13 == 0 && TALENT:RESULT:14 == 0 && TALENT:RESULT:16 == 0
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 자연스러운 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %CALLNAME:T%의 성격이 평범해졌다
+	TALENT:T:16 = 0
+	TALENT:T:14 = 0
+	TALENT:T:11 = 0
+	TALENT:T:13 = 0
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+
+;-------------------------------------------------
+;성격개혁: 갸루계
+;-------------------------------------------------
+@PERSONALITY_GAL
+C = 3000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 갸루계다!」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:432
+	PRINTFORMW 【%TALENTNAME:432%】는 세미나에 참가해도 소용 없습니다
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+ELSEIF ABL:RESULT:10 <= 2 || TALENT:RESULT:209 == 1
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 갸루계인 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %조사처리(CALLNAME:T,"는")% 갸루계가 됐다
+	TALENT:T:432 = 1
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+
+;-------------------------------------------------
+;성격개혁: 뉴트럴
+;-------------------------------------------------
+@GAL_NEUTRAL
+C = 3000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「인기있는 여자란, 곧 평범한 여자다!」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】는 그쪽 전문가에 의뢰해 주세요
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상은 세미나에 참가할 수 없습니다
+	GOTO INPUT_LOOP
+;사쿠라코は排除
+ELSEIF NO:RESULT == 26
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 해당 세미나의 강사입니다
+	GOTO INPUT_LOOP
+;얌전함は排除
+ELSEIF ABL:RESULT:10 <= 2
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 이번 세미나에 관심이 없나봅니다
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:432 == 0 && TALENT:RESULT:209 == 0
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 평범합니다
+	GOTO INPUT_LOOP
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %CALLNAME:T%에게 세미나를 듣게 할까요?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %조사처리(NAME:T,"는")% RB단이 주최한 세미나에 참가했다……
+	PRINTFORML 이 세상엔 평범한 여자를 좋아하는 남자가 많다는 것을 알고, 느낀 점이 있어보인다
+	PRINTFORMW %조사처리(CALLNAME:T,"는")% 평범해졌다
+	TALENT:T:432 = 0
+	TALENT:T:209 = 0
+	EXP:T:110 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+
+
+;-------------------------------------------------
+;工作活動: 킥킹 호스
+;-------------------------------------------------
+@KICKINGHORSE
+C = 100000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 인싸에게 벌을 내리는 거구나!　성공할지는…… 음, 반반이려나?」
+RESETCOLOR
+SETFONT ""
+
+$INPUT_LOOP_3
+PRINTFORML  커플의 연애를 방해합니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	REPEAT CHARANUM
+		SIF COUNT == 0
+			CONTINUE
+			CFLAG:COUNT:629 += RAND:3
+				IF CFLAG:COUNT:629 == 2 && TALENT:COUNT:184 == 1 && CFLAG:COUNT:621 == 1
+					PRINTFORMW 《RB단의 방해공작에 의해 %조사처리(NAME:COUNT,"는")% %CSTR:COUNT:7% %조사처리(CSTR:COUNT:8,"와")% 헤어졌습니다》
+					TALENT:COUNT:184 = 0
+					TALENT:COUNT:190 = 0
+					CFLAG:COUNT:619 = 0
+					CFLAG:COUNT:621 = 2
+					CFLAG:COUNT:629 = 0
+					IF CFLAG:15 == 8 && CFLAG:624 == 0
+						CSTR:0 = %CSTR:7% %CSTR:8%(전 남친)
+						CFLAG:624 += 1
+					ENDIF
+
+					IF CFLAG:16 == 3 && CFLAG:628 == 0
+						CSTR:1 = %CSTR:7% %CSTR:8%(전 남친)
+						CFLAG:628 += 1
+					ENDIF
+					EXP:COUNT:109 += 1
+				ELSEIF CFLAG:COUNT:629 == 1
+					PRINTFORMW 《RB단의 방해공작에 의해 %NAME:COUNT%에게 작업거는 남자를 쫓아냈습니다》
+					CFLAG:COUNT:619 -= 30
+					SIF CFLAG:COUNT:619 <= 0
+						CFLAG:COUNT:619 = 0
+					CFLAG:COUNT:629 = 0
+				ELSE
+					PRINTFORMW 《RB단의 방해공작은 실패했습니다》
+					CFLAG:COUNT:629 = 0
+				ENDIF
+	REND
+ELSE
+	GOTO INPUT_LOOP_3
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;

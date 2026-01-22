@@ -1,0 +1,35 @@
+﻿;===========================================================
+;実績・여동생 파라다이스!
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_3
+RESULTS = 여동생 파라다이스!
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_3
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF TALENT:COUNT:320 && TALENT:COUNT:85 == 1
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:3 == 0 && DIFFICULTY_CHECK() && LOCAL >= 4
+	GLOBAL:3 = 1
+RETURN GLOBAL:3
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_3
+; 解説文
+PRINTFORML 수많은 여동생 속성 소녀들과 꺄아꺄아 우후후 한 적 있는 %CALLNAME:MASTER%에게 딱 맞는 실적이로군요
+PRINTFORM 어떤 명작 야겜 타이틀 같은 시추에이션이 취향인 것 같으므로
+PRINTFORMW 앞으로도『여동생』들과 마음껏 즐겨주세요
+; ボーナスなどの処理はここ以降に記述する
+IF TALENT:MASTER:162 == 0
+	PRINTFORML 피가 섞이지 않았어도『여동생』들에 대한 애정은 진짜인 모양이군요
+	PRINTFORML 그런 %CALLNAME:MASTER%에겐【시스콘】의 칭호를 수여합니다
+	TALENT:MASTER:162 = 1
+ENDIF

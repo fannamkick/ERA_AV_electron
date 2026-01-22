@@ -1,0 +1,85 @@
+﻿;===========================================================
+;キャラ契約時の処理
+;===========================================================
+@CALC_BEAUTY
+IF TALENT:0 == 0
+	BASE:31 -= 10
+ELSEIF TALENT:2 == 0
+	BASE:31 -= 5
+ELSEIF TALENT:47 == 1
+	BASE:31 -= 5
+ELSEIF TALENT:64 == 1
+	BASE:31 -= 5
+ELSEIF TALENT:115 == 1
+	BASE:31 -= 20
+ELSEIF TALENT:128 == 1
+	BASE:31 -= 5
+ELSEIF TALENT:180 == 1
+	BASE:31 -= 5
+ELSEIF TALENT:181 == 1
+	BASE:31 -= 10
+ELSEIF TALENT:184 == 1
+	BASE:31 -= 5
+ELSEIF TALENT:321 == 1
+	BASE:31 -= 5
+ELSEIF TALENT:424 == 1
+	BASE:31 -= 10
+ELSEIF CFLAG:16 == 1
+	BASE:31 -= 5
+ENDIF
+
+;===========================================================
+;매력치の減少
+;===========================================================
+@CALC_B_TRAINEND
+
+X = 0
+
+X += 5
+
+IF TFLAG:136 == 1
+	X += 10
+ENDIF
+IF TFLAG:131 == 1
+	X += 5
+ENDIF
+IF TFLAG:134 == 1
+	X += 5
+ENDIF
+IF TFLAG:135 == 1
+	X += 10
+ENDIF
+IF TFLAG:137 == 1
+	X += 5
+ENDIF
+IF BASE:0 <= 500
+	X += RAND:6
+ENDIF
+
+BASE:31 -= X
+IF BASE:31 <= 0
+	BASE:31 = 0
+ENDIF
+
+;===========================================================
+;翌月処理
+;===========================================================
+@CALC_B_NEXTMONTH
+
+X = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSE
+		X += RAND:6
+		SIF TALENT:COUNT:326 == 1
+			X += RAND:6
+		X += ABL:COUNT:50
+		BASE:COUNT:31 += X
+		IF BASE:COUNT:31 >= MAXBASE:COUNT:31
+			BASE:COUNT:31 = MAXBASE:COUNT:31
+		ENDIF
+		X = 0
+	ENDIF
+REND

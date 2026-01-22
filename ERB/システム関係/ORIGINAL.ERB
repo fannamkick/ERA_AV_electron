@@ -1,0 +1,227 @@
+﻿;-------------------------------------------------
+;奴隷の평가액算出
+;-------------------------------------------------
+@PRINT_BODYPIERCE
+A = CFLAG:40
+CALL WEARING_CLOTH_ALL
+B = CFLAG:40
+CFLAG:40 = A
+
+IF (CFLAG:40 & 4)
+	IF (CFLAG:40 & 2) == 0 && (B & 2) && (TALENT:109 == 0 && TALENT:116 == 0)
+		PRINT 노브라의 유방이 옷의 아래에서 흔들리고 있는 모습이 
+		IF TALENT:110 || TALENT:114
+			PRINT 분명히 
+		ELSE
+			PRINT 희미하게 
+		ENDIF
+		PRINTL 느껴져, 눈을 즐겁게 해준다.
+	ENDIF
+ENDIF
+
+
+
+;乳房ピアスでノーブラの場合
+IF (CFLAG:7 & 1) && (CFLAG:40 & 2) == 0
+	IF (CFLAG:40 & 4) == 1
+		PRINTFORML 옷의 천 너머로, %CALLNAME:TARGET%의 양 유두에 채워진 피어스의 형태가 떠오르고 있었다.
+	ELSE
+		PRINTFORML %타겟이()% 몸을 움직일 때 마다, 그 양 유두에 달린 피어스가 작게 흔들렸다.
+	ENDIF
+ENDIF
+
+;ノーパンで下半身着衣, かつ노출벽Lv3未満の場合
+IF  (CFLAG:40 & 1) == 0 && ((CFLAG:40 & 8) || (CFLAG:40 & 16))
+	SIF (B & 1) && TALENT:135 == 0 && ABL:17 < 3
+		PRINTL 노팬티인 하반신이 불안한 듯이, 끊임없이 사타구니 부근을 신경 쓰고 있다……
+ENDIF
+
+;ノーパンでスカートタイプ, かつ노출벽Lv3以上の場合
+IF  (CFLAG:40 & 1) == 0 && (CFLAG:40 & 8)
+	SIF (B & 1) && ABL:17 >= 3
+		PRINTFORML %타겟은()% 스커트의 옷자락을 걷어 붙이고, 속옷을 입지 않은 비부를 드러내 보였다.
+ENDIF
+
+;下半身ピアスでノーパン, かつズボンタイプでない場合
+IF (CFLAG:7 & 4) || (CFLAG:7 & 8) && (CFLAG:40 & 1) == 0 && (CFLAG:40 & 16) == 0
+	IF (CFLAG:40 & 8) == 1
+		PRINT 스커트의 사이에서 들여다 보이는 
+	ELSE
+		PRINT 벌거벗은 
+	ENDIF
+	PRINT 비부의 
+		SIF (CFLAG:7 & 4)
+			PRINT 양쪽의 음순
+		SIF (CFLAG:7 & 4) && (CFLAG:7 & 8)
+			PRINT 과
+		SIF (CFLAG:7 & 8)
+			PRINT 클리토리스
+	PRINTL 에서 부드러운 살을 꿰뚫은 금속제의 피어스가 빛나고 있다……
+ENDIF
+;乳房ピアスでノーブラの場合
+IF (CFLAG:7 & 16)
+		PRINTFORML 손님에게 자기 어필을 하는 %CALLNAME:TARGET%의 혀에는 피어스가 박혀있다……
+ENDIF
+;乳房ピアスでノーブラの場合
+IF (CFLAG:7 & 2) && (CFLAG:40 & 4) == 0
+		PRINTFORML %CALLNAME:TARGET%의 배꼽에 박힌 피어스가 금속의 빛을 발하고 있었다……
+ENDIF
+
+;---------------------------------------------------------
+;営業内容によって得た経験や素質の変化を計算
+;---------------------------------------------------------
+@WORK_EXP2
+;特殊営業の参加人数(FLAG:42)が多いと, 一人あたりの娼館人気上昇は下がる
+IF FLAG:42 >= 3 && I >= 1
+	IF A >= 5
+		I = 1
+	ELSE 
+		I = 0
+	ENDIF
+ELSEIF FLAG:42 == 2 && I >= 1
+	IF A >= 4
+		I = 1
+	ELSE 
+		I = 0
+	ENDIF
+ENDIF
+
+;人気の上限は100
+SIF EXP:91 + J >= 100
+	J = 100 - EXP:91
+SIF EXP:MASTER:91 + I >= 100
+	I = 100 - EXP:MASTER:91
+
+;人気の下限は0
+SIF EXP:91 + J <= 0
+	J = 0 - EXP:91
+SIF EXP:MASTER:91 + I <= 0
+	I = 0 - EXP:MASTER:91
+
+;人気・娼館人気変化の表示
+IF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+	PRINT  인기　　　　:
+	N = EXP:91
+	CALL FIGURE_INDENT
+	PRINTV EXP:91
+	IF J >= 0
+		PRINT  + 
+		N = J
+		CALL FIGURE_INDENT
+		PRINTV J
+	ELSE
+		PRINT  - 
+		;eraBASICはマイナス演算子を扱えないのでわざとこうしています
+		J = 0 - J
+		N = J
+		CALL FIGURE_INDENT
+		PRINTV J
+		J = 0 - J
+	ENDIF
+	PRINT  = 
+	N = EXP:91 + J
+	CALL FIGURE_INDENT
+	PRINTVL EXP:91 + J
+
+	PRINT  창관인기　　:
+	N = EXP:MASTER:91
+	CALL FIGURE_INDENT
+	PRINTV EXP:MASTER:91
+	IF I >= 0
+		PRINT  + 
+		N = I
+		CALL FIGURE_INDENT
+		PRINTV I
+	ELSE
+		PRINT  - 
+		;eraBASICはマイナス演算子を扱えないのでわざとこうしています
+		I = 0 - I
+		N = I
+		CALL FIGURE_INDENT
+		PRINTV I
+		I = 0 - I
+	ENDIF
+	PRINT  = 
+	N = EXP:MASTER:91 + I
+	CALL FIGURE_INDENT
+	PRINTVL EXP:MASTER:91 + I
+ELSE
+	PRINTFORML (인기:{EXP:91 + J})
+ENDIF
+
+EXP:91 += J
+EXP:MASTER:91 += I
+
+;満足度最高の場合단골손님が付くことあり
+IF A >= 4
+	IF TALENT:183 == 0 && (C == 0 || CFLAG:12 == 3 || CFLAG:12 == 4 || CFLAG:12 == 5) && TALENT:27 == 0
+		PRINTFORML 손님 중 한 사람은 %타겟을()% 굉장히 마음에 들어한 듯 하다…
+		PRINTFORMW %CALLNAME:TARGET%에게【%TALENTNAME:183%】이 붙었다
+		TALENT:183 = 1
+	ENDIF
+ENDIF
+
+SIF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;V경험増加量=客に질내사정された回数と解釈して임신フラグを加算
+SIF T:0 && CFLAG:13 == 0 
+	CFLAG:105 += T:0
+
+;『T:X』のXの値に応じて経験が上昇します
+REPEAT 76
+	IF T:COUNT
+		IF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+			PRINTFORM  %EXPNAME:COUNT%
+			IF COUNT == 0 || COUNT == 1
+				PRINT 　　　
+			ELSEIF COUNT == 11 || COUNT == 21 || COUNT == 30 || COUNT == 33 || COUNT == 73 || COUNT == 75
+				PRINT 
+			ELSEIF COUNT == 22 || COUNT == 32 || COUNT == 52 || COUNT == 53
+				PRINT 　
+			ELSE
+				PRINT 　　
+			ENDIF
+			PRINT :
+			N = EXP:COUNT
+			CALL FIGURE_INDENT
+			PRINTV EXP:COUNT
+			PRINTFORM  + 
+			N = T:COUNT
+			CALL FIGURE_INDENT
+			PRINTV T:COUNT
+			PRINTFORM  = 
+			N = EXP:COUNT + T:COUNT
+			CALL FIGURE_INDENT
+			PRINTVL EXP:COUNT + T:COUNT
+		ENDIF
+		EXP:COUNT += T:COUNT
+		T:COUNT = 0
+	ENDIF
+REND
+
+SIF CFLAG:12 == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;『U:X』のXの値に応じて珠を獲得します
+REPEAT 101
+	IF U:COUNT
+		IF (FLAG:6 & 2) == 0 || CFLAG:12 == 0
+			PRINTFORM  %PALAMNAME:COUNT%의 구슬　　
+			PRINT :
+			N = JUEL:COUNT
+			CALL FIGURE_INDENT
+			PRINTV JUEL:COUNT
+			PRINTFORM  + 
+			N = U:COUNT
+			CALL FIGURE_INDENT
+			PRINTV U:COUNT
+			PRINTFORM  = 
+			N = JUEL:COUNT + U:COUNT
+			CALL FIGURE_INDENT
+			PRINTVL JUEL:COUNT + U:COUNT
+		ENDIF
+		JUEL:COUNT += U:COUNT
+		U:COUNT = 0
+	ENDIF
+REND

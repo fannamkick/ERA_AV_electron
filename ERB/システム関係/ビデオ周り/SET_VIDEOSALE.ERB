@@ -1,0 +1,164 @@
+﻿;===========================================================
+;売れ筋のランダム生成
+;===========================================================
+@SET_VIDEOSALE
+
+;どうせ即代入してたので
+FLAG:560 = RAND:31
+
+
+						;****미야코ラボ追加ここから****
+IF FLAG:120 == 3
+	SIF FLAG:125 == 1
+		FLAG:560 = FLAG:126
+	FLAG:121 = RAND:31
+	FLAG:122 = RAND:31
+	FLAG:123 = RAND:31
+	FLAG:124 = RAND:100
+	FLAG:125 = 0
+	FLAG:126 = 0
+ENDIF
+						;****미야코ラボ追加ここまで****
+;===========================================================
+;売れ筋の反映
+;===========================================================
+@VIDEOSALE_CALC
+						;****미야코ラボ追加ここから****
+IF FLAG:560 == -1 && NO:TARGET == 10
+	TIMES P , 5.00
+						;****미야코ラボ追加ここまで****
+ELSEIF FLAG:560 == 0 && TALENT:505 == 0 && TALENT:504 == 0 && (BASE:9 <= 15  || TALENT:414 == 1)
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 1 && BASE:9 >= 23
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 2 && (TALENT:220 == 1 || TALENT:221 == 1)
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 3 && BASE:22 <= 78
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 4 && FLAG:22 & 4
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 5 && (TALENT:205 == 1 || TALENT:208 == 1 || TALENT:407 == 1)
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 6 && BASE:22 >= 85
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 7 && FLAG:22 & 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 8 && (TALENT:408 == 1 || TALENT:409 == 1 || TALENT:410 == 1)
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 9 && (TALENT:203 == 1 || TALENT:506 == 1)
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 10 && TALENT:432 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 11 && (TFLAG:32 & 1 || TFLAG:132 & 1)
+	TIMES P , 2.00
+ELSEIF FLAG:560 == 12 && TALENT:206
+	TIMES P , 2.00
+ELSEIF FLAG:560 == 13 && 촬영경향SM
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 14 && TALENT:421
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 15 && 촬영특수레즈
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 16 && (TALENT:180 == 1 || TALENT:181 == 1)
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 17 && TALENT:413
+	TIMES P , 2.00
+ELSEIF FLAG:560 == 18 && 촬영경향자위
+	TIMES P , 1.20
+ELSEIF FLAG:560 == 19 && 촬영부위A && 촬영내용성교
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 20 && TALENT:153 == 1
+	TIMES P , 2.00
+ELSEIF FLAG:560 == 21 && TALENT:121 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 22 && TALENT:430 == 1
+	TIMES P , 2.00
+ELSEIF FLAG:560 == 23 && CFLAG:40 >= 64 && CFLAG:42 == 80
+	TIMES P , 2.00
+ELSEIF FLAG:560 == 24 && CFLAG:6 < 6
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 25 && TALENT:432 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 26 && TALENT:402 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 27 && TALENT:417 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 28 && TALENT:411 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 29 && TALENT:412 == 1
+	TIMES P , 1.50
+ELSEIF FLAG:560 == 30 && TALENT:415 == 1
+	TIMES P , 1.50
+ENDIF
+
+;===========================================================
+;売れ筋の表示
+;===========================================================
+@VIDEOSALE_PRINT
+						;****미야코ラボ追加ここから****
+IF FLAG:560 == -1
+	PRINTFORM 카논 누님
+						;****미야코ラボ追加ここまで****
+ELSEIF FLAG:560 == 0
+	PRINTFORM 로리계
+ELSEIF FLAG:560 == 1
+	PRINTFORM 누나계
+ELSEIF FLAG:560 == 2
+	PRINTFORM 여고생계
+ELSEIF FLAG:560 == 3
+	PRINTFORM 빈유
+ELSEIF FLAG:560 == 4
+	PRINTFORM 코스프레계
+ELSEIF FLAG:560 == 5
+	PRINTFORM 섹프계
+ELSEIF FLAG:560 == 6
+	PRINTFORM 거유
+ELSEIF FLAG:560 == 7
+	PRINTFORM 야외노출
+ELSEIF FLAG:560 == 8
+	PRINTFORM 외국인・혼혈・쿼터
+ELSEIF FLAG:560 == 9
+	PRINTFORM 연예인
+ELSEIF FLAG:560 == 10
+	PRINTFORM 유부녀
+ELSEIF FLAG:560 == 11
+	PRINTFORM 처녀상실
+ELSEIF FLAG:560 == 12
+	PRINTFORM 서큐버스
+ELSEIF FLAG:560 == 13
+	PRINTFORM SM
+ELSEIF FLAG:560 == 14
+	PRINTFORM 캬바레녀
+ELSEIF FLAG:560 == 15
+	PRINTFORM 레즈게
+ELSEIF FLAG:560 == 16
+	PRINTFORM 업소여성
+ELSEIF FLAG:560 == 17
+	PRINTFORM 여장소년
+ELSEIF FLAG:560 == 18
+	PRINTFORM 자위계
+ELSEIF FLAG:560 == 19
+	PRINTFORM 애널SEX계
+ELSEIF FLAG:560 == 20
+	PRINTFORM 임신
+ELSEIF FLAG:560 == 21
+	PRINTFORM 후타나리
+ELSEIF FLAG:560 == 22
+	PRINTFORM 순애SEX
+ELSEIF FLAG:560 == 23
+	PRINTFORM 안경
+ELSEIF FLAG:560 == 24
+	PRINTFORM 음모 없음
+ELSEIF FLAG:560 == 25
+	PRINTFORM 갸루계
+ELSEIF FLAG:560 == 26
+	PRINTFORM 모델
+ELSEIF FLAG:560 == 27
+	PRINTFORM 메이드
+ELSEIF FLAG:560 == 28
+	PRINTFORM 간호사
+ELSEIF FLAG:560 == 29
+	PRINTFORM 여교사
+ELSEIF FLAG:560 == 30
+	PRINTFORM OL
+ENDIF

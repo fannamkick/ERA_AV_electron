@@ -1,0 +1,433 @@
+﻿;=================================================
+;역강간
+;セックス系コマンド: 調教者의 %CSTR:81%の中へ調教対象의 %CSTR:80%を挿入させる
+;=================================================
+@COM24
+
+PRINTL 역강간
+SAVESTR:0 = 역강간
+
+;-------------------------------------------------
+;調教時メッセージ
+;-------------------------------------------------
+IF (FLAG:6 & 1) == 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥ 
+
+	;前回と今回の調教者が同じで, 前回の調教が역강간であり, 抜かないフラグがある場合
+	IF TFLAG:60 && PREVCOM == 24 && ((ASSIPLAY && TFLAG:50) || (ASSIPLAY == 0 && TFLAG:50 == 0))
+		PRINTFORML %플레이어는()% %CALLNAME:TARGET%의 페니스를 꽉 잡은채 집요하게 허리를 흔들었다…
+	ELSE
+		PRINTFORM %플레이어는()%  
+		SIF TEQUIP:44
+			PRINT 단단히 묶인 
+		PRINTFORM %CALLNAME:TARGET%의 몸 위에 올라타 %CALLNAME:TARGET%의 페니스를 강제로 
+		SIF EXP:PLAYER:0 == 0
+			PRINT 남자를 모르는 
+		PRINTFORML 질내에 삽입했다…
+	ENDIF
+
+	WAIT
+ENDIF
+
+;調教者の처녀を与えるどうかの確認
+$INPUT_LOOP_01
+IF TALENT:PLAYER:0
+	PRINTFORML %CALLNAME:PLAYER%의 처녀를 %CALLNAME:TARGET%에게 줍니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 1
+		RETURN 0
+	ELSEIF RESULT != 0
+		GOTO INPUT_LOOP_01
+	ENDIF
+ENDIF
+;콘돔を使うかの確認
+$INPUT_LOOP_02
+IF TEQUIP:37 == 0 && ITEM:24 && (TALENT:TARGET:121 || TALENT:TARGET:122) && CFLAG:26 != 2
+	PRINTFORML %CALLNAME:TARGET%에게 콘돔을 끼웁니까?
+	PRINTL  [0] - 끼운다
+	PRINTL  [1] - 그냥 한다
+	INPUT
+	IF RESULT == 0
+		PRINTFORML %플레이어는()% %CALLNAME:TARGET%의 페니스에 콘돔을 씌었다
+		ITEM:24 -= 1
+		TEQUIP:37 = 1
+	ELSEIF RESULT == 1
+		$INPUT_LOOP_04
+		PRINTFORML 앞으로도 %CALLNAME:TARGET%의 콘돔 사용을 확인합니까?
+		PRINTL  [0] - 확인한다
+		PRINTL  [1] - 확인하지 않는다
+		INPUT
+		IF RESULT == 1
+			PRINTFORML 앞으로 %타겟은()% 콘돔을 사용하지 않습니다
+			CFLAG:26 = 2
+		ELSEIF RESULT != 0
+			GOTO INPUT_LOOP_04
+		ENDIF	
+	ELSE
+		GOTO INPUT_LOOP_02
+	ENDIF
+ENDIF
+
+;-------------------------------------------------
+;調教者の사정게이지チェック(후타나리の場合)
+;-------------------------------------------------
+B = 0
+
+;ABL:기교をみる
+IF ABL:12 == 0
+	B = 50
+ELSEIF ABL:12 == 1
+	B = 300
+ELSEIF ABL:12 == 2
+	B = 800
+ELSEIF ABL:12 == 3
+	B = 1500
+ELSEIF ABL:12 == 4
+	B = 2000
+ELSE
+	B = 3200
+ENDIF
+
+;ABL:従順をみる
+IF ABL:10 == 0
+	TIMES B , 0.80
+ELSEIF ABL:10 == 1
+	TIMES B , 0.90
+ELSEIF ABL:10 == 2
+	TIMES B , 1.00
+ELSEIF ABL:10 == 3
+	TIMES B , 1.10
+ELSEIF ABL:10 == 4
+	TIMES B , 1.20
+ELSE
+	TIMES B , 1.30
+ENDIF
+
+;ABL:봉사정신をみる
+IF ABL:16 == 0
+	TIMES B , 0.50
+ELSEIF ABL:16 == 1
+	TIMES B , 0.80
+ELSEIF ABL:16 == 2
+	TIMES B , 1.20
+ELSEIF ABL:16 == 3
+	TIMES B , 1.50
+ELSEIF ABL:16 == 4
+	TIMES B , 1.80
+ELSE
+	TIMES B , 2.40
+ENDIF
+
+;調教者のABL:V감각をみる
+IF ABL:PLAYER:2 == 0
+	TIMES B , 0.50
+ELSEIF ABL:PLAYER:2 == 1
+	TIMES B , 0.80
+ELSEIF ABL:PLAYER:2 == 2
+	TIMES B , 1.00
+ELSEIF ABL:PLAYER:2 == 3
+	TIMES B , 1.20
+ELSEIF ABL:PLAYER:2 == 4
+	TIMES B , 1.50
+ELSE
+	TIMES B , 2.00
+ENDIF
+
+;調教者のEXP:V경험をみる
+IF EXP:PLAYER:0 < EXPLV:1
+	TIMES B , 0.20
+ELSEIF EXP:PLAYER:0 < EXPLV:2
+	TIMES B , 0.50
+ELSEIF EXP:PLAYER:0 < EXPLV:3
+	TIMES B , 0.80
+ELSEIF EXP:PLAYER:0 < EXPLV:4
+	TIMES B , 1.00
+ELSEIF EXP:PLAYER:0 < EXPLV:5
+	TIMES B , 1.20
+ELSE
+	TIMES B , 1.40
+ENDIF
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	TIMES B , 1.00
+ELSEIF ABL:0 == 1
+	TIMES B , 1.50
+ELSEIF ABL:0 == 2
+	TIMES B , 2.00
+ELSEIF ABL:0 == 3
+	TIMES B , 2.50
+ELSEIF ABL:0 == 4
+	TIMES B , 3.50
+ELSE
+	TIMES B , 5.00
+ENDIF
+
+SIF TALENT:PLAYER:121 || TALENT:PLAYER:122
+	BASE:PLAYER:2 += B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 40
+LOSEBASE:1 += 75
+
+SOURCE:3 = 550
+SOURCE:13 = 1000
+SOURCE:14 = 800
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	SOURCE:0 = 800
+	TIMES SOURCE:14 , 3.00
+ELSEIF ABL:0 == 1
+	SOURCE:0 = 1400
+	TIMES SOURCE:14 , 2.00
+ELSEIF ABL:0 == 2
+	SOURCE:0 = 2000
+	TIMES SOURCE:14 , 1.50
+ELSEIF ABL:0 == 3
+	SOURCE:0 = 2500
+	TIMES SOURCE:14 , 1.00
+ELSEIF ABL:0 == 4
+	SOURCE:0 = 2900
+	TIMES SOURCE:14 , 0.80
+ELSE
+	SOURCE:0 = 3200
+	TIMES SOURCE:14 , 0.60
+ENDIF
+
+;調教者のABL:기교をみる
+IF ABL:PLAYER:12 == 0
+	TIMES SOURCE:0 , 0.50
+	SOURCE:4 = 1600
+ELSEIF ABL:PLAYER:12 == 1
+	TIMES SOURCE:0 , 0.80
+	SOURCE:4 = 1900
+ELSEIF ABL:PLAYER:12 == 2
+	TIMES SOURCE:0 , 1.00
+	SOURCE:4 = 2300
+ELSEIF ABL:PLAYER:12 == 3
+	TIMES SOURCE:0 , 1.50
+	SOURCE:4 = 2700
+ELSEIF ABL:PLAYER:12 == 4
+	TIMES SOURCE:0 , 2.50
+	SOURCE:4 = 3100
+ELSEIF ABL:PLAYER:12 == 5
+	TIMES SOURCE:0 , 3.00
+	SOURCE:4 = 3500
+ELSE
+	TIMES SOURCE:0 , 4.00
+	SOURCE:4 = 4000
+ENDIF
+
+;調教者のABL:V감각をみる
+IF ABL:PLAYER:4 == 0
+	TIMES SOURCE:0 , 0.50
+ELSEIF ABL:PLAYER:4 == 1
+	TIMES SOURCE:0 , 0.80
+ELSEIF ABL:PLAYER:4 == 2
+	TIMES SOURCE:0 , 1.00
+ELSEIF ABL:PLAYER:4 == 3
+	TIMES SOURCE:0 , 1.20
+ELSEIF ABL:PLAYER:4 == 4
+	TIMES SOURCE:0 , 1.50
+ELSEIF ABL:PLAYER:4 == 5
+	TIMES SOURCE:0 , 2.00
+ELSE
+	TIMES SOURCE:0 , 3.00
+ENDIF
+
+;調教対象がオトコではない
+IF TALENT:122 == 0
+	SOURCE:12 = 1200
+	TIMES SOURCE:14 , 6.00
+ENDIF
+
+;調教者が처녀
+IF TALENT:PLAYER:0
+	TIMES SOURCE:13 , 20.00
+	TIMES SOURCE:14 , 3.00
+ENDIF
+
+;-------------------------------------------------
+;汚れの処理
+;-------------------------------------------------
+;奴隷のP⇔調教者のVの汚れが移動
+STAIN:2 |= STAIN:PLAYER:3
+STAIN:PLAYER:3 |= STAIN:2
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;レズ・ホモ経験
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +4
+	EXP:40 += 4
+ELSEIF TALENT:122 == 1 && TALENT:PLAYER:122 == 1
+	PRINTS EXPNAME:41
+	PRINTL +4
+	EXP:41 += 4
+ENDIF
+
+EXP:5 += 1
+PRINTL 성교경험 +1
+
+
+S = 0
+;V감각が高いほどV경험が入る
+IF ABL:PLAYER:2 <= 1
+	S += 2
+ELSEIF ABL:PLAYER:2 <= 4
+	S += 3
+ELSEIF ABL:PLAYER:2 <= 7
+	S += 4
+ELSE
+	S += 5
+ENDIF
+EXP:PLAYER:0 += S
+PRINTFORML V경험 +{S}(%CALLNAME:PLAYER%)
+S = 0
+
+EXP:PLAYER:5 += 1
+PRINTFORML 성교경험 +1(%CALLNAME:PLAYER%)
+
+CALL EVENT_SEITSU_REVRAPE
+
+;이상경험
+Z = 0
+TFLAG:14 = 0
+CALL INCEST
+;역강간で동정상실の場合이상경험に＋1
+SIF TALENT:1
+	Z += 1
+;동정상실の相手が母親なら이상경험に＋2
+IF TALENT:1 && TFLAG:14 == 1
+	Z += 2
+;동정상실の相手が祖母なら이상경험に＋1
+ELSEIF TALENT:1 && TFLAG:14 == 5
+	Z += 1
+;동정상실の相手が姉妹なら이상경험に＋1
+ELSEIF TALENT:1 && (TFLAG:14 == 3 || TFLAG:14 == 4)
+	Z += 1
+ENDIF
+IF Z
+	EXP:50 += Z
+	PRINTFORML %EXPNAME:50% +{Z}
+ENDIF
+
+Z = 0
+;역강간で처녀상실の場合, 調教者の이상경험に＋1
+SIF TALENT:PLAYER:0
+	Z += 1
+IF Z
+	EXP:PLAYER:50 += Z
+	PRINTFORML %EXPNAME:50% +{Z}(%CALLNAME:PLAYER%)
+ENDIF
+
+TFLAG:14 = 0
+
+;애정경험
+;調教者が처녀で調教対象が동정
+IF TALENT:PLAYER:0 && TALENT:1
+	E = 100
+;調教対象が동정
+ELSEIF TALENT:1
+	E = 50
+;調教対象がオトコ
+ELSEIF TALENT:122
+	E = 4
+ELSE
+	E = 3
+ENDIF
+IF CFLAG:2 >= 1000 && ASSIPLAY == 0
+	PRINTFORML %EXPNAME:23%+{E}
+	EXP:23 += E
+ENDIF
+E = 0
+
+;親族関係の判定
+TFLAG:14 = 0
+CALL INCEST
+
+;調教対象が동정なら동정상실
+IF TALENT:1
+	TALENT:1 = 0
+	SETCOLOR 0xF58F98
+	PRINTFORML 【동정상실】
+	RESETCOLOR
+	IF NO:TARGET == 1 && TALENT:432 == 0 && NO:PLAYER == 0 && TALENT:PLAYER:122 == 1
+		CSTR:2 = 오빠
+	ELSEIF NO:TARGET == 1 && TALENT:432 == 0 && NO:PLAYER == 0 && TALENT:PLAYER:122 == 0
+		CSTR:2 = 언니
+	ELSEIF NO:TARGET == 1 && TALENT:432 == 1 && NO:PLAYER == 0 && TALENT:PLAYER:122 == 1
+		CSTR:2 = 형님
+	ELSEIF NO:TARGET == 1 && TALENT:432 == 1 && NO:PLAYER == 0 && TALENT:PLAYER:122 == 1
+		CSTR:2 = 누님
+	ELSE
+		CSTR:2 = %NAME:PLAYER%
+	ENDIF
+	IF CFLAG:611 == 2
+		CFLAG:611 = 3
+	ENDIF
+	TFLAG:133 = 1
+	SIF CFLAG:18 == 0
+		CFLAG:18 = 1
+ENDIF
+
+;調教者が처녀なら처녀상실
+IF TALENT:PLAYER:0
+	TALENT:PLAYER:0 = 0
+	SETCOLOR 0xF58F98
+	PRINTFORML 【처녀상실(%CALLNAME:PLAYER%)】
+	RESETCOLOR
+	IF CFLAG:PLAYER:15 == 0
+		CFLAG:PLAYER:15 =  1
+		CSTR:PLAYER:0 = %NAME:TARGET%
+	ENDIF
+	CFLAG:PLAYER:160 = BASE:9
+	CFLAG:PLAYER:161 = DAY:1
+	CFLAG:PLAYER:162 = DAY:2
+	CFLAG:PLAYER:163 = 13
+	CFLAG:PLAYER:164 = 1
+ENDIF
+
+TFLAG:14 = 0
+
+RETURN 1
+;
+;-------------------------------------------------
+;=================================================
+;精通
+;=================================================
+@EVENT_SEITSU_REVRAPE
+A = NO:PLAYER
+;【남성】か【후타나리】であり【미숙함】
+;△って미숙함見てないやんか。えー
+SIF (TALENT:121 == 0 && TALENT:122 == 0) || EXP:3 != 0
+	RETURN 0
+;更に［C感度］5以上で촉수調教や獣姦でなく
+SIF TEQUIP:90 || TEQUIP:89
+	RETURN 0
+;「調教対象」から「調教者」への関係が150以上
+SIF RELATION:TARGET:A < 150
+	RETURN 0
+PRINTL
+SIF TALENT:PLAYER:232 && (EXP:PLAYER:101 >= 1 || EXP:PLAYER:104 >= 1)
+	PRINTFORM 수많은 남자들의 정액을 짜온 
+PRINTFORM %NAME:PLAYER%의 
+
+SIF TALENT:PLAYER:232
+	PRINTFORM 음탕하게 %CALLNAME:TARGET%의 육봉을 빨아들이는 
+PRINTFORM 질내에서 
+SIF TALENT:1
+	PRINTFORM 동정
+
+PRINTFORML 페니스를 자극당해 %타겟은()% 사정했다…
+TALENT:135 = 0
+
+PRINTL
+RETURN 1

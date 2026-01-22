@@ -1,0 +1,31 @@
+﻿;-------------------------------------------------
+;現在生きている調教対象キャラのリスト
+;-------------------------------------------------
+@LIFE_LIST_AV
+DRAWLINE
+PRINTFORML  [0] %NAME:MASTER% (지도자)
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	PRINTFORM  [{COUNT}] %NAME:COUNT%(예명: %NICKNAME:COUNT%)
+	PRINT (체력: 
+	A = BASE:COUNT:0
+	SIF BASE:COUNT:0 < 0
+		A = 0
+	PRINTFORM {A}/{MAXBASE:COUNT:0})
+	
+	IF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+		PRINT [산월]
+	ELSEIF TALENT:COUNT:153
+		PRINT [임신]
+	ELSEIF TALENT:COUNT:154
+		PRINT [육아]
+	ENDIF
+	PRINTL 
+REND
+DRAWLINE

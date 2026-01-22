@@ -1,0 +1,230 @@
+﻿;===========================================================
+;불량 강간・계산
+;===========================================================
+@BADBOY_RAPE_CALC
+#DIM DYNAMIC C_NUM
+#DIM DYNAMIC DANGER_VALUE
+
+;치안도가 너무 좋으면 스킵
+SIF FLAG:301 == 0
+	RETURN 1
+
+FOR C_NUM, 1, CHARANUM
+	;オトコ
+	SIF TALENT:C_NUM:122
+		CONTINUE
+	;호위
+	SIF CFLAG:C_NUM:633
+		CONTINUE
+	;임신
+	SIF TALENT:C_NUM:153
+		CONTINUE
+	;육아 중
+	SIF TALENT:C_NUM:154
+		CONTINUE
+	;경찰관
+	SIF TALENT:C_NUM:429
+		CONTINUE
+	;야쿠자의 딸
+	SIF TALENT:C_NUM:502
+		CONTINUE
+	;호신술
+	SIF TALENT:C_NUM:503
+		CONTINUE
+	;안드로이드
+	SIF TALENT:C_NUM:504
+		CONTINUE
+	;음마
+	SIF TALENT:C_NUM:505
+		CONTINUE
+	;그랜드마스터
+	SIF TALENT:C_NUM:512
+		CONTINUE
+	;천사
+	SIF TALENT:C_NUM:511
+		CONTINUE
+	;야쿠자의 아내
+	SIF TALENT:C_NUM:516
+		CONTINUE
+	;영원한 사랑
+	SIF TALENT:C_NUM:430
+		CONTINUE
+	;탐정
+	SIF TALENT:C_NUM:517
+		CONTINUE
+	;유령
+	SIF TALENT:C_NUM:521
+		CONTINUE
+	;ONLY ONE EMPRESS
+	SIF TALENT:C_NUM:553
+		CONTINUE
+	;정조대
+	SIF CFLAG:C_NUM:40 >= 64 && CFLAG:C_NUM:42 == 79
+		CONTINUE
+	;초기치는 0~99에서 랜덤수치
+	DANGER_VALUE += RAND:100
+	;운동능력이 높으면 뿌리치기 쉽다
+	;해도 큰 차이가 나지 않을 것이다?
+	DANGER_VALUE -= ABL:C_NUM:51
+	;겁쟁이
+	SIF TALENT:C_NUM:10
+		DANGER_VALUE += RAND:10
+	;얌전함
+	SIF TALENT:C_NUM:14
+		DANGER_VALUE += RAND:10
+	;정조무관심
+	SIF TALENT:C_NUM:31
+		DANGER_VALUE += RAND:10
+	;음란
+	SIF TALENT:C_NUM:76
+		DANGER_VALUE += RAND:10
+	;다부짐
+	SIF TALENT:C_NUM:12
+		DANGER_VALUE -= RAND:5
+	;활발함
+	SIF TALENT:C_NUM:16
+		DANGER_VALUE -= RAND:5
+	;튀고 싶어함……어째서냐
+	SIF TALENT:C_NUM:28
+		DANGER_VALUE -= RAND:5
+	;보이시
+	SIF TALENT:C_NUM:79
+		DANGER_VALUE -= RAND:5
+	;남성불신
+	SIF TALENT:C_NUM:82
+		DANGER_VALUE -= RAND:5
+	;카리스마
+	SIF TALENT:C_NUM:93
+		DANGER_VALUE -= RAND:5
+	;치안 본가 0.30에서는 FLAG:300으로 되어 있는데 여기는 301이어야 한다
+	;치안 상태에 따라 변을 당할 확률이 올라간다
+	SIF FLAG:301 == 1
+		DANGER_VALUE += 10
+	SIF FLAG:301 == 2
+		DANGER_VALUE += 20
+	SIF FLAG:301 == 3
+		DANGER_VALUE += 30
+	;메구루回強化してれば起こらない。
+	;って処理なはずなんだけど本家0.30では肝心の아야노ラボが未完成だった
+	;수치가 98이상이면 변을 당한다
+	SIF DANGER_VALUE >= 98 && FLAG:600 == 0
+		CALL BADBOY_RAPE, C_NUM
+	DANGER_VALUE = 0
+NEXT
+
+;===========================================================
+;불량 강간・본체
+;ARG-캐릭번호
+;===========================================================
+@BADBOY_RAPE, ARG
+#DIM DYNAMIC C_NUM
+#DIM DYNAMIC V_EXP_VALUE
+#DIM DYNAMIC FELLA_EXP_VALUE
+#DIM DYNAMIC A_EXP_VALUE
+#DIM DYNAMIC DRUG_EXP_VALUE
+#DIM DYNAMIC WEIRD_EXP_VALUE
+
+;캐릭번호 대입
+C_NUM = ARG
+
+V_EXP_VALUE = 1
+FELLA_EXP_VALUE = 5
+A_EXP_VALUE = 0
+DRUG_EXP_VALUE = 1
+WEIRD_EXP_VALUE = 0
+
+PRINTFORML 오늘은 %조사처리(CALLNAME:C_NUM,"를")% 지도하는 날인데……
+PRINTFORML 지금까지 한번도 지도를 빠진적이 없던 %조사처리(CALLNAME:C_NUM,"가")%, 오늘은 아무리 기다려도 사무소에 나타나질 않는다
+PRINTFORML 몸이 아프거나 급한 일이 있다면 문자라도 할텐데, %조사처리(CALLNAME:C_NUM,"가")% 무소식이라니 별일이다
+PRINTFORML 그러고보니 요즘, 근처 역 주변에 불량배들이 모여있는 걸 봤는데…… 혹시 시비가 잡혔는지도 모른다
+PRINTFORML 만에 하나의 경우를 고려해, 실력에 자신있는 사무소 스탭들을 데리고 %플레이어는()% %조사처리(CALLNAME:C_NUM,"를")% 역까지 마중나갔다……
+PRINTW
+PRINTFORML 역 주변엔 %CALLNAME:C_NUM%의 모습은 커녕, 평소 보이던 불량배들까지 보이지 않는다
+PRINTFORML %플레이어는()% 역 앞의, %조사처리(CALLNAME:C_NUM,"가")% 사무소에 오기 전에 자주 들러 과자를 사오는 편의점에 들어가, 
+PRINTFORMW 휴대폰에 들어있는 %CALLNAME:C_NUM%의 사진을 보여주며, 오늘은 %조사처리(CALLNAME:C_NUM,"가")% 오지 않았나 물어봤다……
+PRINTFORML 그러자 한시간 전에 %조사처리(CALLNAME:C_NUM,"와")% 닮은 여자가 가게 앞에 몰려있던 불량배에게 둘러쌓여서, 
+PRINTFORML 강제로 어딘가에 끌려가는 걸 봤다, 라고 대답했다
+PRINTFORML %플레이어는()% 가슴이 술렁거려 편의점을 뛰쳐나와, 불량배들이 모일만한 곳을 닥치는 대로 찾아다니다……
+PRINTFORMW 불경기로 문을 닫은 폐공장에서 간신히, 심한 몰골인 %조사처리(CALLNAME:C_NUM,"를")% 발견했다
+PRINTFORML 억지로 벗겨졌는지 바닥에 팽개쳐져있는 %CALLNAME:C_NUM%의 옷은 군데군데 뜯겨있고, 
+PRINTFORML 벽에 몸을 기대고 있는 %CALLNAME:C_NUM%의 눈은 텅 빈데다 몸 여기저기에 정액이 달라붙어 있으며, 팔에는 주사자국까지 나있다……
+PRINTFORM 빨갛게 충혈된, %CALLNAME:C_NUM%의 질에선 
+	IF TALENT:C_NUM:0
+		PRINTFORM 처녀혈이 섞인 
+	ENDIF
+PRINTFORML 정액이 뚝뚝 떨어져 지면에 자국을 남기고 있다……
+PRINTFORMW %조사처리(CALLNAME:C_NUM,"는")% 불량배들에게 강간당했다……
+
+V_EXP_VALUE += RAND:5
+FELLA_EXP_VALUE += RAND:10
+A_EXP_VALUE += RAND:3
+DRUG_EXP_VALUE += RAND:3
+
+PRINTFORML V경험 +{V_EXP_VALUE}
+IF CFLAG:C_NUM:15 == 0 && TALENT:C_NUM:0
+	SETCOLOR 0xF58F98
+	PRINTFORML 【처녀상실】
+	CFLAG:C_NUM:15 = 11
+	TALENT:C_NUM:0 = 0
+	CSTR:C_NUM:0 = 불량배
+	WEIRD_EXP_VALUE += 1
+	RESETCOLOR
+	BASE:C_NUM:31 -= 10
+	CFLAG:C_NUM:160 = BASE:C_NUM:9
+	CFLAG:C_NUM:161 = DAY:1
+	CFLAG:C_NUM:162 = DAY:2
+	CFLAG:C_NUM:163 = 6
+	CFLAG:C_NUM:164 = 4
+ENDIF
+IF A_EXP_VALUE > 0
+	PRINTFORML A경험 +{A_EXP_VALUE}
+	IF TALENT:C_NUM:2 == 1
+		SETCOLOR 0xF58F98
+		PRINTFORML 【애널처녀상실】
+		TALENT:C_NUM:2 = 0
+		CSTR:C_NUM:3 = 불량배
+		RESETCOLOR
+		WEIRD_EXP_VALUE += 1
+		BASE:C_NUM:31 -= 5
+		CFLAG:C_NUM:616 = 11
+		CFLAG:C_NUM:830 = BASE:C_NUM:9
+		CFLAG:C_NUM:831 = DAY:1
+		CFLAG:C_NUM:832 = DAY:2
+		CFLAG:C_NUM:833 = 6
+		CFLAG:C_NUM:834 = 4
+	ENDIF
+ENDIF
+;첫윤간으로 이상경험+1
+SIF EXP:C_NUM:105 == 0
+	WEIRD_EXP_VALUE += 1 
+PRINTFORML 성교경험 +{V_EXP_VALUE}
+PRINTFORML 펠라경험 +{FELLA_EXP_VALUE}
+IF CFLAG:C_NUM:16 == -1
+	SETCOLOR 0xDDBBCC
+	PRINTFORML 첫 키스
+	CFLAG:C_NUM:16 = 11
+	CSTR:C_NUM:1 = 불량배
+	RESETCOLOR
+	BASE:C_NUM:31 -= 10
+	CFLAG:C_NUM:820 = BASE:C_NUM:9
+	CFLAG:C_NUM:821 = DAY:1
+	CFLAG:C_NUM:822 = DAY:2
+	CFLAG:C_NUM:823 = 6
+	CFLAG:C_NUM:824 = 1
+ENDIF
+PRINTFORML 정액경험 +{A_EXP_VALUE+V_EXP_VALUE+FELLA_EXP_VALUE}
+PRINTFORML 약물경험 +{DRUG_EXP_VALUE}
+SIF WEIRD_EXP_VALUE > 0
+	PRINTFORML 이상경험 +{WEIRD_EXP_VALUE}
+
+CFLAG:C_NUM:651 = 0 
+
+EXP:COUNT:0 += V_EXP_VALUE
+EXP:C_NUM:1 += A_EXP_VALUE
+EXP:C_NUM:5 += A_EXP_VALUE
+EXP:C_NUM:20 += V_EXP_VALUE + A_EXP_VALUE + FELLA_EXP_VALUE
+EXP:C_NUM:50 += WEIRD_EXP_VALUE
+EXP:C_NUM:57 += DRUG_EXP_VALUE
+EXP:C_NUM:105 += 1
+BASE:C_NUM:31 -= 5
+PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥

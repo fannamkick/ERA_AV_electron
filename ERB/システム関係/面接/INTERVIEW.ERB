@@ -1,0 +1,2007 @@
+﻿;面接サブルーチン
+;TFLAG:400番台を使用
+@INTERVIEW
+
+REPEAT 100
+	TFLAG:(COUNT+400) = 0
+REND
+
+;면접 상대の性別
+PRINTL
+PRINTL 이번 면접 상대는……
+PRINTL [0] - 여자
+;PRINTL [1] - オトコ
+;PRINTL [2] - 男の娘
+
+$INPUT_LOOP_INTERVIEW
+INPUT
+
+;TFLAG:400:で性別を決定(0=オンナ, 1=オトコ, 2=男の娘)
+IF RESULT == 0
+	TFLAG:400 = 0
+ELSEIF RESULT == 1
+	TFLAG:400 = 1
+ELSEIF RESULT == 2
+	TFLAG:400 = 2
+ELSE
+	GOTO INPUT_LOOP_INTERVIEW
+ENDIF
+CALL INTERVIEW_2nd
+RETURN 0
+
+
+@INTERVIEW_2nd
+
+;TFLAG:401で연령を決定
+;変動幅の真ん中が多く端は少なくなるように(8~30, 確率上最多20)
+TFLAG:401 = 8 + RAND:13 + RAND:13
+
+;TFLAG:402, TFLAG:403で誕生日を決定
+TFLAG:402 = RAND:11 + 1
+
+IF TFLAG:402 == 1 || TFLAG:402 == 3 || TFLAG:402 == 5 || TFLAG:402 == 7 || TFLAG:402 == 8 || TFLAG:402 == 10 || TFLAG:402 == 12
+	TFLAG:403 = RAND:30 + 1
+ELSEIF TFLAG:402 == 4 || TFLAG:402 == 6 || TFLAG:402 == 9 || TFLAG:402 == 11
+	TFLAG:403 = RAND:29 + 1
+ELSEIF TFLAG:402 == 2
+	TFLAG:403 = RAND:28 + 1
+ENDIF
+
+;TFLAG:404で血液型を決定
+TFLAG:404 = RAND:3 + 1
+
+;TFLAG:405で職業を決定(15歳までなら学生固定)
+IF TFLAG:401 <= 15
+	TFLAG:405 = 0
+ELSE
+	TFLAG:405 = RAND:9 + 1
+ENDIF
+
+;TFLAG:406で髪の色を決定
+;11までは地毛, それ以上は染めている
+TFLAG:406 = RAND:21
+
+;TFLAG:407で髪型を決定
+TFLAG:407 = RAND:100	;確率の調整のため母数を大きくしている。
+
+;TFLAG:408で胸のサイズを決定
+;LOCAL:0は作業用
+;0~4で절벽, 5~19で빈유, 70~94で거유, 95~99で폭유
+LOCAL:0 = 0
+IF TFLAG:400 == 0
+	;真ん中の値(=50)に数値が集中するように変更
+	LOCAL:0 = RAND:51 + RAND:51
+ELSEIF TFLAG:400 == 2 && RAND:3 == 0
+	;1/3のさらに半数以上が無, それ以外は大きいほど少数
+	LOCAL:0 = RAND:101 - RAND:101
+	SIF LOCAL:0 < 0
+		LOCAL:0 = 0	
+ENDIF
+IF LOCAL:0 <= 4
+	TFLAG:408 = 1
+ELSEIF LOCAL:0 >= 5 && LOCAL:0 <= 19
+	TFLAG:408 = 2
+ELSEIF LOCAL:0 >= 70 && LOCAL:0 <= 94
+	TFLAG:408 = 3
+ELSEIF LOCAL:0 >= 95 && LOCAL:0 <= 99
+	TFLAG:408 = 4
+ELSE
+	TFLAG:408 = 0
+ENDIF
+
+;TFLAG:409で恋人を決定
+TFLAG:409 = RAND:10
+
+;TFLAG:410でNTR進行度の上限を決定
+TFLAG:410 = 100 + RAND:100
+
+;TFLAG:411で첫 키스の有無を決定
+;LOCAL:0は作業用
+LOCAL:0 = 0
+LOCAL:0 = RAND:100
+IF LOCAL:0 < (TFLAG:401 * 2)	;LOCAL:0が연령の2倍より小さければキス経験有
+	TFLAG:411 = 1
+ELSEIF ( TFLAG:405 == 7 && RAND:10 > 0 )
+	;未経験と判定されたうち主婦(既婚者)のうち1/10以外はキス経験済(結婚式の誓いのキスとか)
+ELSE
+	TFLAG:411 = 0
+ENDIF
+
+
+;TFLAG:412でセックス経験の有無を決定
+;LOCAL:0は作業用
+LOCAL:0 = 0
+LOCAL:0 = RAND:100
+IF ( TFLAG:409 >= 2 && TFLAG:409 <= 7 ) || TFLAG:405 == 7	;恋人あり(or既婚)の場合
+	IF LOCAL:0 < (TFLAG:401 * 3)	;LOCAL:0が연령の3倍より小さければセックス経験有
+		TFLAG:412 = 1
+	ELSE
+		TFLAG:412 = 0
+	ENDIF
+ELSE					;恋人がいない場合
+	IF LOCAL:0 < (TFLAG:401 * 1)	;LOCAL:0が연령より小さければセックス経験有
+		TFLAG:412 = 1
+	ELSE
+		TFLAG:412 = 0
+	ENDIF
+ENDIF
+
+;TFLAG:413でアナル経験の有無を決定
+;LOCAL:0は作業用
+LOCAL:0 = 0
+LOCAL:0 = RAND:100
+IF ( TFLAG:409 >= 2 && TFLAG:409 <= 7 ) || TFLAG:405 == 7	;恋人あり(or既婚者)の場合
+	IF LOCAL:0 < (TFLAG:401 * 1)	;LOCAL:0が연령より小さければアナル経験有
+		TFLAG:413 = 1
+	ELSEIF TFLAG:400 == 2			;男の娘の場合, LOCAL:0が연령の3倍より小さければアナル経験有
+		IF LOCAL:0 >= (TFLAG:401 * 3)
+			TFLAG:413 = 1
+		ELSE
+			TFLAG:413 = 0
+		ENDIF
+	ELSE
+		TFLAG:413 = 0
+	ENDIF
+ELSE					;恋人がいない場合
+	IF LOCAL:0 < (TFLAG:401 / 4)	;LOCAL:0が연령の4分の1より小さければアナル経験有
+		TFLAG:413 = 1
+	ELSE
+		TFLAG:413 = 0
+	ENDIF
+ENDIF
+
+;TFLAG:414で性格を決定
+TFLAG:414 = RAND:19
+
+;TFLAG:415で陰毛の状態を決定
+;0-1:永久脱毛, 2-5:生えてない, 18-19:伸び放題
+IF TFLAG:400 < 16 && TFLAG:400 >= RAND:7 + 9
+	TFLAG:415 = 1
+ELSE
+	TFLAG:415 = RAND:20
+ENDIF
+
+;TFLAG:415 = RAND:20
+
+;TFLAG:416で乙女心系素質を決定
+IF TFLAG:400 == 0 || TFLAG:400 == 2
+	;50%で何も無い
+	TFLAG:416 = 23 + RAND:15
+ELSEIF TFLAG:400 == 1
+	;9割は普通, 1割がお姉
+	TFLAG:416 = 20 + RAND:11
+ENDIF
+
+;TFLAG:417で아픔에 약함|아픔에 강함を決定
+
+LOCAL:0 = 0
+LOCAL:0 = RAND:100
+
+IF LOCAL:0 <= 4
+	TFLAG:417 = 40
+ELSEIF LOCAL:0 >= 95
+	TFLAG:417 = 41
+ELSE
+	TFLAG:417 = 0
+ENDIF
+
+;TFLAG:418で濡れやすい|濡れにくいを決定
+LOCAL:0 = 0
+LOCAL:0 = RAND:100
+
+IF LOCAL:0 <= 4
+	TFLAG:418 = 42
+ELSEIF LOCAL:0 >= 95
+	TFLAG:418 = 43
+ELSE
+	TFLAG:418 = 0
+ENDIF
+
+;TFLAG:419で큰체구|小柄を決定
+LOCAL:0 = 0
+LOCAL:0 = RAND:100
+
+IF LOCAL:0 <= 4
+	TFLAG:419 = 99
+ELSEIF LOCAL:0 >= 95
+	TFLAG:419 = 100
+ELSE
+	TFLAG:419 = 0
+ENDIF
+
+;ここから面接内容表示
+PRINT 약속했던 카페에 
+IF TFLAG:401 <= 14
+	PRINT 너무 어려보이고 
+ELSEIF TFLAG:401 >= 15 && TFLAG:401 <=18
+	PRINT 어린티가 남아있고 
+ELSEIF TFLAG:401 >= 19
+	PRINT 성숙해보이고 
+ENDIF
+
+;비만, 痩せ設定
+TFLAG:421 = RAND:6 - RAND:6
+
+IF TFLAG:421 <= -5
+	PRINT 걱정될 정도로 가는 
+ELSEIF TFLAG:421 <= -3
+	PRINT 살이 너무 빠진 
+ELSEIF TFLAG:421 == -2
+	PRINT 가냘픈 
+ELSEIF TFLAG:421 == -1
+	PRINT 날씬한 
+ELSEIF TFLAG:421 < 2
+;表記しない
+	;PRINT 標準的な体つきの
+ELSEIF TFLAG:421 == 2
+	PRINT 약간 통통한 
+ELSEIF TFLAG:421 == 3
+	PRINT 통통한 
+ELSEIF TFLAG:421 <= 5
+	PRINT 살집있는 
+ELSEIF TFLAG:421 >= 6
+	PRINT 비만이 걱정되는 
+ENDIF
+;큰체구|小柄を表示
+IF TFLAG:419 == 99
+	PRINT 큰 
+ELSEIF TFLAG:419 == 100
+	PRINT 작은 
+ENDIF
+
+;ギャラ要求額を設定
+;화술レベルで補正をつける?
+TFLAG:420 = (RAND:10 + 1) *100
+
+;性別を表示
+IF TFLAG:400 == 0 && TFLAG:401 <= 14
+	PRINT 소녀가
+ELSEIF TFLAG:400 == 0
+	PRINT 여자가
+ELSEIF TFLAG:400 == 1 && TFLAG:401 <= 14
+	PRINT 소년이
+ELSEIF TFLAG:400 == 1
+	PRINT 남자가
+ELSEIF TFLAG:400 == 2
+	PRINT 낭자애가
+ENDIF
+PRINTL  찾아왔다.
+
+;髪の色表示
+IF TFLAG:406 == 0 || TFLAG:406 == 11
+	PRINT 검은 
+ELSEIF TFLAG:406 == 1 || TFLAG:406 == 12
+	PRINT 짙은 
+ELSEIF TFLAG:406 == 2 || TFLAG:406 == 13
+	PRINT 금빛 
+ELSEIF TFLAG:406 == 3 || TFLAG:406 == 14
+	PRINT 은빛 
+ELSEIF TFLAG:406 == 4 || TFLAG:406 == 15
+	PRINT 붉은 
+ELSEIF TFLAG:406 == 5 || TFLAG:406 == 16
+	PRINT 푸른 
+ELSEIF TFLAG:406 == 6 || TFLAG:406 == 17
+	PRINT 녹색 
+ELSEIF TFLAG:406 == 7 || TFLAG:406 == 18
+	PRINT 핑크빛 
+ELSEIF TFLAG:406 == 8 || TFLAG:406 == 19
+	PRINT 보라빛 
+ELSEIF TFLAG:406 == 9
+	PRINT 하얀 
+ELSEIF TFLAG:406 == 10 || TFLAG:406 == 21
+	PRINT 갈색 
+ELSEIF TFLAG:406 == 20
+	PRINT 탈색한 
+ENDIF
+
+PRINT 머리를 
+
+;髪型表示
+;연령ごとに出現確率を変えてある。
+;ツインテールは幼いほど出やすく, アップは幼いほど出にくいなど。
+IF TFLAG:401 <= 15	;中○生以下を想定。
+	IF TFLAG:407 <= 10
+	TFLAG:407 = 0	;ここで元の髪型用フラグに戻す
+		PRINT 쇼트로 
+	ELSEIF TFLAG:407 <= 28
+	TFLAG:407 = 1
+		PRINT 세미 롱으로 
+	ELSEIF TFLAG:407 <= 43
+	TFLAG:407 = 2
+		PRINT 보브로 
+	ELSEIF TFLAG:407 <= 58
+	TFLAG:407 = 3
+		PRINT 포니테일로 
+	ELSEIF TFLAG:407 <= 68
+	TFLAG:407 = 4
+		PRINT 트윈테일로 
+	ELSEIF TFLAG:407 <= 78
+	TFLAG:407 = 5
+		PRINT 스트레이트 롱으로 
+	ELSEIF TFLAG:407 <= 83
+	TFLAG:407 = 6
+		PRINT 올림머리로 
+	ELSEIF TFLAG:407 <= 93
+	TFLAG:407 = 7
+		PRINT 풍성한 파마로 
+	ELSEIF TFLAG:407 <= 98
+	TFLAG:407 = 8
+		PRINT 롱 웨이브로 
+	ELSEIF TFLAG:407 == 99	;一応1%の確率で出るようにした。なお, もともとこの値である。
+		PRINT 승천 페가서스MIX 올림으로 
+	ENDIF
+ELSEIF TFLAG:401 <=18	;高○生を想定。
+	IF TFLAG:407 <= 10
+	TFLAG:407 = 0	;ここで元の髪型用フラグに戻す
+		PRINT 쇼트로 
+	ELSEIF TFLAG:407 <= 25
+	TFLAG:407 = 1
+		PRINT 세미 롱으로 
+	ELSEIF TFLAG:407 <= 40
+	TFLAG:407 = 2
+		PRINT 보브로 
+	ELSEIF TFLAG:407 <= 50
+	TFLAG:407 = 3
+		PRINT 포니테일로 
+	ELSEIF TFLAG:407 <= 55
+	TFLAG:407 = 4
+		PRINT 트윈테일로 
+	ELSEIF TFLAG:407 <= 73
+	TFLAG:407 = 5
+		PRINT 스트레이트 롱으로 
+	ELSEIF TFLAG:407 <= 78
+	TFLAG:407 = 6
+		PRINT 올림머리로 
+	ELSEIF TFLAG:407 <= 88
+	TFLAG:407 = 7
+		PRINT 풍성한 파마로 
+	ELSEIF TFLAG:407 <= 98
+	TFLAG:407 = 8
+		PRINT 롱 웨이브로 
+	ELSEIF TFLAG:407 == 99	;一応1%の確率で出るようにした。なお, もともとこの値である。
+		PRINT 승천 페가서스MIX 올림으로 
+	ENDIF
+ELSEIF TFLAG:401 <=22	;대학생を想定。
+	IF TFLAG:407 <= 10
+	TFLAG:407 = 0	;ここで元の髪型用フラグに戻す
+		PRINT 쇼트로 
+	ELSEIF TFLAG:407 <= 25
+	TFLAG:407 = 1
+		PRINT 세미 롱으로 
+	ELSEIF TFLAG:407 <= 40
+	TFLAG:407 = 2
+		PRINT 보브로 
+	ELSEIF TFLAG:407 <= 45
+	TFLAG:407 = 3
+		PRINT 포니테일로 
+	ELSEIF TFLAG:407 <= 47
+	TFLAG:407 = 4
+		PRINT 트윈테일로 
+	ELSEIF TFLAG:407 <= 62
+	TFLAG:407 = 5
+		PRINT 스트레이트 롱으로 
+	ELSEIF TFLAG:407 <= 68
+	TFLAG:407 = 6
+		PRINT 올림머리로 
+	ELSEIF TFLAG:407 <= 83
+	TFLAG:407 = 7
+		PRINT 풍성한 파마로 
+	ELSEIF TFLAG:407 <= 98
+	TFLAG:407 = 8
+		PRINT 롱 웨이브로 
+	ELSEIF TFLAG:407 == 99	;一応1%の確率で出るようにした。なお, もともとこの値である。
+		PRINT 승천 페가서스MIX 올림으로 
+	ENDIF
+ELSE	;社会人を想定。
+	IF TFLAG:407 <= 10
+	TFLAG:407 = 0	;ここで元の髪型用フラグに戻す
+		PRINT 쇼트로 
+	ELSEIF TFLAG:407 <= 25
+	TFLAG:407 = 1
+		PRINT 세미 롱으로 
+	ELSEIF TFLAG:407 <= 35
+	TFLAG:407 = 2
+		PRINT 보브로 
+	ELSEIF TFLAG:407 <= 38
+	TFLAG:407 = 3
+		PRINT 포니테일로 
+	ELSEIF TFLAG:407 <= 39	;社会人のツインテはさすがに痛いと思うので1%。
+	TFLAG:407 = 4
+		PRINT 트윈테일로 
+	ELSEIF TFLAG:407 <= 59
+	TFLAG:407 = 5
+		PRINT 스트레이트 롱으로 
+	ELSEIF TFLAG:407 <= 68
+	TFLAG:407 = 6
+		PRINT 올림머리로 
+	ELSEIF TFLAG:407 <= 83
+	TFLAG:407 = 7
+		PRINT 풍성한 파마로 
+	ELSEIF TFLAG:407 <= 98
+	TFLAG:407 = 8
+		PRINT 롱 웨이브로 
+	ELSEIF TFLAG:407 == 99	;一応1%の確率で出るようにした。なお, もともとこの値である。
+		PRINT 승천 페가서스MIX 올림으로 
+	ENDIF
+ENDIF
+
+PRINTL 하고 있다.
+
+;胸のサイズ表示
+IF TFLAG:400 == 0 && TFLAG:408 > 0
+	PRINT 가슴에 눈길을 주니 
+	IF TFLAG:408 == 1
+		PRINTL 완전히 납작하지만, 수요는 있을지 모른다.
+	ELSEIF TFLAG:408 == 2
+		PRINTL 겸손하게 부풀어 있었다.
+	ELSEIF TFLAG:408 == 3
+		PRINTL 옷 너머로도 알 수 있는 풍요함이 있었다.
+	ELSEIF TFLAG:408 == 4
+		PRINTL 지금이라도 옷에서 삐져나올 것만 같았다.
+	ENDIF
+ELSEIF TFLAG:400 == 2 && TFLAG:408 != 0
+	PRINT 자신도 모르게 눈길이 간 가슴은 
+	IF TFLAG:408 == 1
+		PRINTL 약간 부푼 느낌이 든다. 그럴리가 없는데…
+	ELSEIF TFLAG:408 == 2
+		PRINTL 살짝 부풀어 오른게 보인다. 저건 가짜일까?
+	ELSEIF TFLAG:408 == 3
+		PRINTL 이상하게도 옷 너머로도 알 수 있을만큼 부풀어있다.
+	ELSEIF TFLAG:408 == 4
+		PRINTL 성별이 의심될 정도로 위대했다.
+	ENDIF
+ENDIF
+
+
+
+;職業表示
+PRINT 직업은 
+IF TFLAG:405 == 0 && TFLAG:401 <= 12
+	PRINT 초●학생이
+ELSEIF TFLAG:405 == 0 && TFLAG:401 >= 13 && TFLAG:401 <= 15
+	PRINT 중●생이
+ELSEIF TFLAG:405 == 1
+	IF TFLAG:400 == 0 || TFLAG:400 == 2
+		PRINT 간호사
+	ELSEIF TFLAG:400 == 1
+		PRINT 간호사
+	ENDIF
+ELSEIF TFLAG:405 == 2
+	PRINT 교사
+ELSEIF TFLAG:405 == 3
+	IF TFLAG:400 == 0 || TFLAG:400 == 2
+		PRINT 메이드
+	ELSEIF TFLAG:400 == 1
+		PRINT 집사
+	ENDIF
+ELSEIF TFLAG:405 == 4
+	PRINT 성우
+ELSEIF TFLAG:405 == 5
+	IF TFLAG:400 == 0
+		PRINT 업소여성이
+	ELSEIF TFLAG:400 == 1
+		PRINT 업소남성이
+	ELSEIF TFLAG:400 == 2
+		PRINT 업소여성(♂)이
+	ENDIF
+ELSEIF TFLAG:405 == 6
+	PRINT 아이돌이
+ELSEIF TFLAG:405 == 7
+	IF TFLAG:400 == 0 || TFLAG:400 == 2
+		PRINT 주부
+	ELSEIF TFLAG:400 == 1
+		PRINT 주부
+	ENDIF
+ELSEIF TFLAG:405 == 8
+	PRINT 패션모델이
+ELSEIF TFLAG:405 == 9
+	PRINT 아르바이트
+ELSEIF TFLAG:405 == 10
+	PRINT 무직이
+ENDIF
+
+SIF TFLAG:409 <= 1
+	PRINTL 라고 한다.
+
+;恋人の職業表示
+SIF TFLAG:409 >= 2
+	PRINT 고 
+SIF TFLAG:409 >= 2 && TFLAG:409 < 7
+	PRINT 어느 
+IF TFLAG:409 == 2
+	PRINT 고등학생과 
+ELSEIF TFLAG:409 == 3
+	PRINT 중학생과 
+ELSEIF TFLAG:409 == 4
+	PRINT 대학생과 
+ELSEIF TFLAG:409 == 5
+	PRINT 회사원과 
+ELSEIF TFLAG:409 == 6
+	PRINT 호스트와 
+ELSEIF TFLAG:409 == 7
+	PRINT 누군가와 배덕적인 관계를 
+ELSEIF TFLAG:409 > 7
+	IF TFLAG:405 == 7
+		PRINT 배우자가 아닌 이성과 
+	ELSE
+		PRINT 이성과 
+	ENDIF
+	PRINTL 사귄 경험은 없다고 한다.
+ENDIF
+SIF TFLAG:405 == 7
+	PRINT 배우자 몰래 
+IF TFLAG:409 >= 2 && TFLAG:409 < 7
+	PRINTL 사귀고 있다고 한다.
+ELSEIF TFLAG:409 == 7
+	PRINTL 가지고 있다고 한다.
+ENDIF
+
+;출연료の要求表示
+
+PRINTFORML AV데뷔를 한다면 출연료로 {TFLAG:420}를 요구했다.
+
+;フラグ用変数LOCAL:1, LOCAL:2, LOCAL:3を初期化
+LOCAL:1 = 0
+LOCAL:2 = 0
+LOCAL:3 = 0
+
+REPEAT CHARANUM
+	;화술1以上のキャラがいると, 相手の性格傾向がわかる
+	IF ABL:COUNT:15 >= 1 && LOCAL:1 == 0
+		PRINTFORM %조사처리(CALLNAME:COUNT, "는")% 상대의 
+		IF TFLAG:414 == 10
+			PRINT 검쟁이인 
+		ELSEIF TFLAG:414 == 11
+			PRINT 건방진 
+		ELSEIF TFLAG:414 == 12
+			PRINT 다부진 
+		ELSEIF TFLAG:414 == 13
+			PRINT 솔직한 
+		ELSEIF TFLAG:414 == 14
+			PRINT 얌전한 
+		ELSEIF TFLAG:414 == 15
+			PRINT 프라이드가 높은 
+		ELSEIF TFLAG:414 == 16
+			PRINT 활발한 
+		ELSEIF TFLAG:414 == 17
+			PRINT 프라이드가 낮은 
+		ELSEIF TFLAG:414 == 18
+			PRINT 츤데레같은 
+		ELSE
+			PRINT 평범한 
+		ENDIF
+
+		IF TFLAG:416 >= 30
+			PRINT 성격과 
+		ELSE
+			PRINTL 점을 신경쓰고 있다.
+		ENDIF
+
+		IF TFLAG:416 == 30
+			PRINTL 정조관념이 강한 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 31
+			PRINTL 경박해 보이는 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 32
+			PRINTL 욕망을 억누르고 있는 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 33
+			PRINTL 성에 개방적인 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 34
+			PRINTL 면접을 보는것도 싫어하는 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 35
+			PRINTL 바로 얼굴이 빨개지는 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 36
+			PRINTL 노출도가 높은 의상인 점을 신경쓰고 있다.
+		ELSEIF TFLAG:416 == 37
+			PRINTL 벌벌 떨고 있는 점을 신경쓰고 있다.
+		ENDIF
+
+	LOCAL:1 = 1
+	ENDIF
+
+	;화술3以上のキャラがいると, より詳しい情報を表示する
+	IF ABL:COUNT:15 >= 3 && LOCAL:2 == 0
+		PRINTFORM 말을 잘하는 %조사처리(CALLNAME:COUNT, "가")% 긴장을 풀어주고 이야기를 자세하게 들어보니 
+		IF TFLAG:411 == 0 && TFLAG:412 == 0 && TFLAG:413 == 0
+			PRINTL 섹스는 물론이고 키스도 한적이 없다고 한다.
+		ELSEIF TFLAG:411 == 0 && TFLAG:412 == 1 && TFLAG:413 == 0
+			PRINTL 섹스는 해봤어도 키스는 한적이 없다고 한다.
+		ELSEIF TFLAG:411 == 0 && TFLAG:412 == 0 && TFLAG:413 == 1
+			PRINTL 애널로 한 경험이 있다고 한다……
+		ELSEIF TFLAG:411 == 0 && TFLAG:412 == 1 && TFLAG:413 == 1
+			PRINTL 키스만 빼고 대부분 해봤다고 한다……
+		ELSEIF TFLAG:411 == 1 && TFLAG:412 == 0 && TFLAG:413 == 0
+			PRINTL 키스는 해봤지만, 그 이상은 한적이 없다고 한다.
+		ELSEIF TFLAG:411 == 1 && TFLAG:412 == 1 && TFLAG:413 == 0
+			PRINTL 연인과 섹스해본 적이 있다고 한다.
+		ELSEIF TFLAG:411 == 1 && TFLAG:412 == 0 && TFLAG:413 == 1
+			PRINTL 앞쪽 정조는 지켜왔다고 한다……
+		ELSEIF TFLAG:411 == 1 && TFLAG:412 == 1 && TFLAG:413 == 1
+			PRINTL 키스와 섹스는 물론 애널경험도 있다고 한다.
+		ENDIF
+		IF TFLAG:415 <= 1
+			PRINTL 아래쪽 털은 영구제모 했다고 한다.
+		ELSEIF TFLAG:415 >= 2 && TFLAG:415 <= 5
+			PRINTL 아래쪽에 털이 없는게 컴플렉스라고 한다.
+		ELSEIF TFLAG:415 >= 6 && TFLAG:415 <= 7
+			PRINTL 음모를 정리해본 적이 없다고 한다……
+		ENDIF
+		IF TFLAG:417 == 40
+			PRINTL 아픈 건 못 견딘다고 한다.
+		ELSEIF TFLAG:417 == 41
+			PRINTL 아파도 참을 줄 안다고 한다.
+		ENDIF
+		IF TFLAG:418 == 42
+			PRINTL 금방 젖어버리는 체질이라고 한다.
+		ELSEIF TFLAG:418 == 43
+			PRINTL 잘 젖지 않는 체질이라고 한다.
+		ENDIF
+	LOCAL:2 = 1
+	ENDIF
+
+	;화술5以上で追加素質のチャンス(未実装)
+	IF ABL:COUNT:15 >= 5 && LOCAL:3 == 0
+	LOCAL:3 = 1
+	ENDIF
+REND
+
+;キャラ登録
+@INTERVIEW_ADD
+;キャラ番号をLOCAL4に格納
+LOCAL:4 = CHARANUM - 1
+
+;TFLAG:430に初期체력を格納
+TFLAG:430 = 1500
+;TFLAG:431に初期기력を格納
+TFLAG:431 = 1500
+
+;性別による체력補正
+IF TFLAG:400 == 1
+	;男は체력はあるが기력は低い
+	TFLAG:431 -= 100
+	SIF TFLAG:402 > 12
+		TFLAG:430 += 100	;女性との差=200
+	SIF TFLAG:402 > 15
+		TFLAG:430 += 200	;さらに加算
+ENDIF
+
+;性別を登録
+IF TFLAG:400 == 1
+	TALENT:(LOCAL:4):122 = 1
+ELSEIF TFLAG:400 == 2
+	TALENT:(LOCAL:4):122 = 1
+	TALENT:(LOCAL:4):413 = 1
+ENDIF
+
+;基本的なプロフィールを登録
+BASE:(LOCAL:4):9 = TFLAG:401
+BASE:(LOCAL:4):11 = TFLAG:402
+BASE:(LOCAL:4):12 = TFLAG:403
+BASE:(LOCAL:4):13 = TFLAG:404
+
+;職業を登録(ついでに衣装も登録)
+;小●生は아동복, 기력, 체력ダウン
+IF TFLAG:405 == 0 && TFLAG:401 <= 12
+	TALENT:(LOCAL:4):222 = 1
+	CFLAG:(LOCAL:4):41 = 22
+	TFLAG:430 -= 100
+	TFLAG:431 -= 100
+;中●生は制服
+ELSEIF TFLAG:405 == 0 && TFLAG:401 >= 13 && TFLAG:401 <= 15
+	TALENT:(LOCAL:4):221 = 1
+	CFLAG:(LOCAL:4):41 = 18
+;간호사は간호사복, 체력アップ
+ELSEIF TFLAG:405 == 1
+	TALENT:(LOCAL:4):411 = 1
+	CFLAG:(LOCAL:4):41 = 24
+	TFLAG:430 += 100
+;교사はスーツ, 기력アップ
+ELSEIF TFLAG:405 == 2
+	TALENT:(LOCAL:4):412 = 1
+	CFLAG:(LOCAL:4):41 = 21
+	TFLAG:431 += 100
+;메이드は메이드복
+ELSEIF TFLAG:405 == 3
+	TALENT:(LOCAL:4):417 = 1
+	CFLAG:(LOCAL:4):41 = 25
+;성우は普段着, 기력アップ
+ELSEIF TFLAG:405 == 4
+	TALENT:(LOCAL:4):506 = 1
+	CFLAG:(LOCAL:4):41 = 1
+	TFLAG:430 += 100
+;업소여성はカクテルドレス
+ELSEIF TFLAG:405 == 5
+	TALENT:(LOCAL:4):180 = 1
+	CFLAG:(LOCAL:4):41 = 203
+;아이돌はステージ衣装, 기력アップ
+ELSEIF TFLAG:405 == 6
+	TALENT:(LOCAL:4):203 = 1
+	CFLAG:(LOCAL:4):41 = 30
+	TFLAG:430 += 100
+;主婦は普段着に에이프런
+ELSEIF TFLAG:405 == 7
+	TALENT:(LOCAL:4):206 = 1
+	CFLAG:(LOCAL:4):41 = 101
+	CFLAG:(LOCAL:4):42 = 1
+;패션모델はブランド服
+ELSEIF TFLAG:405 == 8
+	TALENT:(LOCAL:4):402 = 1
+	CFLAG:(LOCAL:4):41 = 23
+;フリーターはキャミとデニムショート, 체력アップ
+ELSEIF TFLAG:405 == 9
+	TALENT:(LOCAL:4):403 = 1
+	CFLAG:(LOCAL:4):41 = 140
+	TFLAG:430 += 100
+;無職はジャージ
+ELSEIF TFLAG:405 == 10
+	TALENT:(LOCAL:4):405 = 1
+	CFLAG:(LOCAL:4):41 = 103
+ENDIF
+IF TFLAG:400 == 1
+;男はとりあえずジャージ
+	CFLAG:(LOCAL:4):41 = 103
+ENDIF
+
+;髪の色を登録
+;IF TFLAG:406 == 0
+;	CFLAG:(LOCAL:4):600 = 0
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 1
+;	CFLAG:(LOCAL:4):600 = 1
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 2
+;	CFLAG:(LOCAL:4):600 = 2
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 3
+;	CFLAG:(LOCAL:4):600 = 3
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 4
+;	CFLAG:(LOCAL:4):600 = 4
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 5
+;	CFLAG:(LOCAL:4):600 = 5
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 6
+;	CFLAG:(LOCAL:4):600 = 6
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 7
+;	CFLAG:(LOCAL:4):600 = 7
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 8
+;	CFLAG:(LOCAL:4):600 = 8
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 9
+;	CFLAG:(LOCAL:4):600 = 9
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 10
+;	CFLAG:(LOCAL:4):600 = 10
+;	CFLAG:(LOCAL:4):601 = 0
+;ELSEIF TFLAG:406 == 11
+;	CFLAG:(LOCAL:4):600 = 0
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 12
+;	CFLAG:(LOCAL:4):600 = 1
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 13
+;	CFLAG:(LOCAL:4):600 = 2
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 14
+;	CFLAG:(LOCAL:4):600 = 3
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 15
+;	CFLAG:(LOCAL:4):600 = 4
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 16
+;	CFLAG:(LOCAL:4):600 = 5
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 17
+;	CFLAG:(LOCAL:4):600 = 6
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 18
+;	CFLAG:(LOCAL:4):600 = 7
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 19
+;	CFLAG:(LOCAL:4):600 = 8
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 20
+;	CFLAG:(LOCAL:4):600 = 9
+;	CFLAG:(LOCAL:4):601 = 1
+;ELSEIF TFLAG:406 == 21
+;	CFLAG:(LOCAL:4):600 = 10
+;	CFLAG:(LOCAL:4):601 = 1
+;ENDIF
+
+IF TFLAG:406 < 11
+	CFLAG:(LOCAL:4):600 = TFLAG:406
+	CFLAG:(LOCAL:4):601 = 0
+	CFLAG:(LOCAL:4):603 = TFLAG:406
+ELSE
+	CFLAG:(LOCAL:4):600 = (TFLAG:406 - 11)
+	CFLAG:(LOCAL:4):601 = 1
+	CFLAG:(LOCAL:4):603 = RAND:11
+ENDIF
+
+;髪型を登録
+CFLAG:(LOCAL:4):602 = TFLAG:407
+
+
+;*******************************************
+;ここから身長設定の変更追加箇所
+;*******************************************
+
+;158cm 48kgが基準
+;身長を登録
+LOCAL:0 = 0
+;男女分岐(LOCAL:0を一時的に借りる)
+IF TFLAG:400 == 2
+	;男の娘の場合1/3で各々男子女子身長を採用, 残りの1/3で特製値を使用
+	S = RAND:3
+ELSE
+	;男子女子はそのまま
+	S = TFLAG:400
+ENDIF
+;평균身長の設定(性別ごとに分岐)
+IF S == 0
+	;女子
+	IF TFLAG:401 == 8
+		LOCAL:0 = 128	;8歳女子の평균身長
+	ELSEIF TFLAG:401 == 9
+		LOCAL:0 = 133	;9歳女子の평균身長
+	ELSEIF TFLAG:401 == 10
+		LOCAL:0 = 140	;10歳女子の평균身長
+	ELSEIF TFLAG:401 == 11
+		LOCAL:0 = 147	;11歳女子の평균身長
+	ELSEIF TFLAG:401 == 12
+		LOCAL:0 = 152	;12歳女子の평균身長
+	ELSEIF TFLAG:401 == 13
+		LOCAL:0 = 133	;13歳女子の평균身長
+	ELSEIF TFLAG:401 == 14
+		LOCAL:0 = 156	;14歳女子の평균身長
+	ELSEIF TFLAG:401 == 15
+		LOCAL:0 = 157	;15歳女子の평균身長
+	ELSE
+		LOCAL:0 = 158	;16歳以降の女子평균身長
+	ENDIF
+ELSEIF S == 1
+	;男子
+	IF TFLAG:401 == 8
+		LOCAL:0 = 128	;8歳男子の평균身長
+	ELSEIF TFLAG:401 == 9
+		LOCAL:0 = 133	;9歳男子の평균身長
+	ELSEIF TFLAG:401 == 10
+		LOCAL:0 = 139	;10歳男子の평균身長
+	ELSEIF TFLAG:401 == 11
+		LOCAL:0 = 145	;11歳男子の평균身長
+	ELSEIF TFLAG:401 == 12
+		LOCAL:0 = 152	;12歳男子の평균身長
+	ELSEIF TFLAG:401 == 13
+		LOCAL:0 = 159	;13歳男子の평균身長
+	ELSEIF TFLAG:401 == 14
+		LOCAL:0 = 165	;14歳男子の평균身長
+	ELSEIF TFLAG:401 == 15
+		LOCAL:0 = 168	;15歳男子の평균身長
+	ELSEIF TFLAG:401 == 16
+		LOCAL:0 = 170	;16歳男子の평균身長
+	ELSE
+		LOCAL:0 = 171	;17歳以降の男子평균身長
+	ENDIF
+ELSE	;IF S == 2
+	;男の娘
+	;([同年代の男子]+[同年代の女子]+[男女の低いほう])/3で出した身長で仮設定。疑問が残る場合は変更してくれい
+	IF TFLAG:401 == 8
+		LOCAL:0 = 128	;8歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 9
+		LOCAL:0 = 133	;9歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 10
+		LOCAL:0 = 139	;10歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 11
+		LOCAL:0 = 145	;11歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 12
+		LOCAL:0 = 151	;12歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 13
+		LOCAL:0 = 156	;13歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 14
+		LOCAL:0 = 159	;14歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 15
+		LOCAL:0 = 161	;15歳男の娘の仮想평균身長(仮)
+	ELSEIF TFLAG:401 == 16
+		LOCAL:0 = 162	;16歳男の娘の仮想평균身長(仮)
+	ELSE
+		LOCAL:0 = 162	;17歳以降の男の娘の평균身長(仮)
+	ENDIF
+ENDIF
+
+;*******************************************
+;ここまで身長設定の変更追加箇所
+;*******************************************
+
+BASE:(LOCAL:4):20 = LOCAL:0
+
+;큰체구小柄補正＆個人差補正
+IF TFLAG:419 == 99	;큰체구(+5%~+25％で増減)
+	LOCAL:0 = 105 + RAND:21
+ELSEIF TFLAG:419 == 100	;小柄(-15%~-5％で増減,増減なしが最多)
+	LOCAL:0 = RAND:11 - RAND:11
+	SIF LOCAL:0 > 0		;0以上の値を反転(0から離れた数字を最少とするため。問題点としてグラフで並べた場合の0だけが少なくなる1以降は順当に減少)
+		LOCAL:0 = 0 - LOCAL:0
+	LOCAL:0 = 95 + LOCAL:0
+ELSE			;普通(-5%~+5％で増減,増減なしが最多)
+	LOCAL:0 = 100 + RAND:6 - RAND:6
+ENDIF
+BASE:(LOCAL:4):20 = BASE:(LOCAL:4):20 * LOCAL:0 / 100
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;以前の체중＆3サイズ計算
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;체중を登録
+;;基準算出
+;LOCAL:5 = BASE:(LOCAL:4):20 * BASE:(LOCAL:4):20 * BASE:(LOCAL:4):20 * 1217 
+;;プラマイ15％
+;LOCAL:6 = RAND:31
+
+;BASE:(LOCAL:4):21 = LOCAL:5 * (85 + LOCAL:6) / 10000000000
+
+
+;;허리のサイズを登録 身長*0.38基準 체중影響
+;BASE:(LOCAL:4):23 = BASE:(LOCAL:4):20 * 38 * (85 + RAND:20 + (LOCAL:6 / 3)) / 10000 
+;;サバ	
+;BASE:(LOCAL:4):23 -= BASE:(LOCAL:4):23 / 20
+
+;;엉덩이のサイズを登録 身長*0.54基準 체중影響  
+;BASE:(LOCAL:4):24 = BASE:(LOCAL:4):20 * 54 * (85 + RAND:20 + (LOCAL:6 / 3)) / 10000 	
+
+;;胸のサイズを登録 身長*0.54 Dカップ 基準 체중影響
+;BASE:(LOCAL:4):22 = BASE:(LOCAL:4):20 * 54 * (90 + RAND:10 + (LOCAL:6 / 3)) / 100
+;;ウエスト補正
+;↓ここBASE:(LOCAL:4):23のまちがいじゃない?
+;BASE:(LOCAL:4):22 -= ((BASE:(LOCAL:4):20 * 38) - (BASE:(LOCAL:4):23 * 100)) * 250 / 342
+
+;BASE:(LOCAL:4):22 /= 100
+
+;IF TFLAG:408 == 1						;절벽
+;	TALENT:(LOCAL:4):116 = 1
+;	BASE:(LOCAL:4):22 -= 10 			;AAカップ相当を想定。測定不能になっても泣かない。
+;	BASE:(LOCAL:4):21 -= RAND:2			;胸重さ
+;ELSEIF TFLAG:408 == 2					;빈유
+;	TALENT:(LOCAL:4):109 = 1
+;	BASE:(LOCAL:4):22 -= 5				;A-Bカップ相当を想定
+;ELSEIF TFLAG:408 == 3					;거유
+;	TALENT:(LOCAL:4):110 = 1
+;	BASE:(LOCAL:4):22 += 5 				;E-Fカップ相当を想定
+;	BASE:(LOCAL:4):21 += RAND:2			;胸重さ
+;ELSEIF TFLAG:408 == 4					;폭유
+;	TALENT:(LOCAL:4):114 = 1
+;	TFLAG:430 += 100					;폭유は微妙に체력アップ
+;	BASE:(LOCAL:4):22 += 10 			;G-Iカップ相当を想定
+;	BASE:(LOCAL:4):21 += 1 + RAND:2		;胸重さ
+;ENDIF
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;以前の3サイズ計算ここまで
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;**********************************************************************
+;ここから新規分の체중＆3サイズ計算
+;**********************************************************************
+
+;体脂肪(1000分率)
+	F = RAND:101 - RAND:101
+	IF TFLAG:400 == 0
+		;女性:8歳=17%~16歳=25%
+		IF TFLAG:401 > 16
+			F = 16 - 8
+		ELSE
+			F = TFLAG:401 - 8
+		ENDIF
+		F = 160 + (F * 12) + RAND:121 - RAND:121
+	ELSEIF TFLAG:400 == 1
+		;男性:16.5%で一定
+		F = 165 + RAND:121 - RAND:121
+	ELSEIF TFLAG:400 == 2
+		;男の娘(女性を参考に연령増減をやや少なめ)
+		IF TFLAG:401 > 16
+			F = 16
+		ELSE
+			F = TFLAG:401 - 8
+		ENDIF
+		F = 160 + (F * 8)
+;		F += RAND:121 - RAND:121
+	ENDIF
+	;痩せすぎ, 비만気味補正
+	;TFLAG:421 :  비만ランク, マイナスは痩せ
+	IF TFLAG:421 == 0
+		F += RAND:11
+		F -= RAND:11
+	ELSEIF TFLAG:421 > 0
+		F += TFLAG:421 * 20 + RAND:20
+	ELSEIF TFLAG:421 < 0
+		F -= TFLAG:421 * 20 + RAND:20
+	ENDIF
+
+
+;成熟度
+	IF TFLAG:400 == 0 || TFLAG:400 == 2
+		IF TFLAG:401 < 10
+			;10歳未満
+			IF RAND:20 == 0
+				;1/20で最大60の成熟度に達する稀有な存在(･･･が大半は10止まり)
+				X = 10 + RAND:51 - RAND:51
+				SIF X < 10
+					X = 10
+			ELSE
+				X = RAND:11 - RAND:11
+				SIF X < 10
+					X = 10
+			ENDIF
+			E = 100
+		ELSEIF (TFLAG:401 > 10 && TFLAG:401 < 16)
+			;11歳~15歳
+			IF RAND:10 == 0
+				;1/10の確率でほぼ成長していない相手
+				X = 10 + (TFLAG:401 - 10) * 1
+			ELSE
+				X = 10 + (TFLAG:401 - 10) * 15
+			ENDIF
+			X = X + RAND:31 - RAND:31
+			SIF X < 15
+				X = 15
+			;SIF X > 100
+			;	X = 100
+			;100オーバーしたらしたでいいや
+			;成長度の差で身長が±3割増減
+			E = 100 + ( 30 * ( X - ( 10 + (TFLAG:401 - 10) * 15 ) ) / 100 )
+		ELSE
+			;16歳以上
+			IF RAND:10 == 0
+				;1/10の確率でで成長していない相手
+				X = 15
+			ELSE
+				X = 85
+			ENDIF
+			X = X + RAND:31 - RAND:31
+			SIF X < 15
+				X = 15
+			;SIF X > 100
+			;	X = 100
+			;100オーバーしたらしたでいいや
+			;成長度の差で身長が±3割増減
+			E = 100 + ( 30 * ( X - 85 ) / 100 )
+		ENDIF
+	ELSEIF TFLAG:400 == 1
+		IF TFLAG:401 < 12
+			;10歳未満
+			X = RAND:11 - RAND:11
+			SIF X < 10
+				X = 10
+			E = 100
+		ELSEIF (TFLAG:401 > 12 && TFLAG:401 < 17)
+			;12歳~17歳
+			X = 10 + (TFLAG:401 - 10) * 15
+			X = X + RAND:31 - RAND:31
+			SIF X < 15
+				X = 15
+			;成長度の差で身長が±3割増減
+			E = 100 + ( 30 * ( X - ( 10 + (TFLAG:401 - 10) * 15 ) ) / 100 )
+		ELSE
+			;17歳以上
+			X = 85
+			X = X + RAND:31 - RAND:31
+			SIF X < 15
+				X = 15
+			;成長度の差で身長が±3割増減
+			E = 100 + ( 30 * ( X - 85 ) / 100 )
+		ENDIF
+	ENDIF
+
+;筋肉度(＆체력加算)
+	IF TFLAG:400 == 0		;女子
+		;結果: M=10~60(最多:30~40[同数:11パターン])
+		M = 30 + RAND:31 - RAND:21
+	ELSEIF TFLAG:400 == 1		;男子
+		;結果: M=15~95(最多:45~65[同数:21パターン])
+		M = 45 + RAND:51 - RAND:31
+	ELSEIF TFLAG:400 == 2		;男の娘
+		;結果: M=10~70(最多:26~45[同数:11パターン])
+		M = 35 + RAND:36 - RAND:26
+	ENDIF
+	TFLAG:430 = TFLAG:430 + ( M - 50 ) * 10
+	BASE:(LOCAL:4):21 += BASE:(LOCAL:4):20 * M / 100	;체중筋肉分加算(指数1に対して身長の2％で設定)
+
+;成熟度で身長を補正
+BASE:(LOCAL:4):20 = BASE:(LOCAL:4):20 * E / 100
+
+;基準체중(筋肉･脂肪抜き):身長(cm)*身長(cm)*身長(cm)*係数(4.7)
+BASE:(LOCAL:4):21 = BASE:(LOCAL:4):20 * BASE:(LOCAL:4):20 * BASE:(LOCAL:4):20 * 47 / 100 / 100 / 100 / 10
+;女性と男の娘は基礎체중に8割掛け
+SIF TFLAG:400 == 0 || TFLAG:400 == 2
+	BASE:(LOCAL:4):21 = BASE:(LOCAL:4):21 * 8 / 10
+
+;체중の加算(筋肉量):(15(%)+M(%))*身長(m)*係数(0.23)
+BASE:(LOCAL:4):21 += (15 + M) * BASE:(LOCAL:4):20 * 23 / 100 / 100
+
+;체중の加算(体脂肪):体脂肪(%)*身長(m)*係数(0.5)
+BASE:(LOCAL:4):21 += F * 50 * BASE:(LOCAL:4):20 / 1000 / 100
+
+
+
+
+;허리のサイズを登録 身長*0.38基準 체중影響
+;身長×(基礎値:32％+脂肪(F):[体脂肪1%あたり0.1%] + 筋肉(M):[M=1あたり0.1%]
+;女性:38%[ウエスト基準] = 32% + 2.5%[体脂肪평균値250] + 3.5[筋力평균35]
+	E = BASE:(LOCAL:4):20 * (3200 + F + (M * 10) )
+	E = E / 100 * 10 / 100
+	BASE:(LOCAL:4):23 = E / 10
+	E = E + BASE:(LOCAL:4):20 * (RAND:16 - RAND:16) / 100
+	BASE:(LOCAL:4):24 = E / 10
+	IF E % 10 >= 5
+		BASE:(LOCAL:4):23 += 1
+	ELSE
+		;特になし
+	ENDIF
+
+;가슴(チェスト)サイズ
+;	;基本:身長 * (基礎値:40％ + 脂肪(F):([胸囲加算]体脂肪1%あたり0.2%加算) + 筋肉(M):([M]0%~100%=[胸囲加算]0%~3%)
+;	BASE:(LOCAL:4):22 = BASE:(LOCAL:4):20 * (4000 + (F * 2) + (M * 3) ) / 10000
+;	;↑としたかったがカップ計算とかの整合のため既存のものに近くなるよう↓
+	;基本:身長 * 0.44
+	BASE:(LOCAL:4):22 = BASE:(LOCAL:4):20 * 44
+	IF TFLAG:400 == 0
+		;女(おっぱい) (※ 成熟度(X)で補正 だいたい±1.5cmの範囲)
+		X = (X - 60) * 3
+		;想定カップサイズはジャストより1cm程度~余裕を持たせておく(大きくなると余裕はより大きめに)
+		IF TFLAG:408 == 1		;절벽
+			;BT - BU = 3.5cm~7.0cm(AA未満)を想定
+			E = 350 + RAND:350 + X
+			TFLAG:431 += 100	;절벽はかわいそう補正。기력アップ;
+		ELSEIF TFLAG:408 == 2		;빈유
+			;BT - BU = 7.0cm~11.5cm(AA~A)を想定
+			E = 700 + RAND:450 + X
+		ELSEIF TFLAG:408 == 0		;普乳
+			;BT - BU = 11.5cm~16.5cm(B~C)を想定
+			E = 1150 + RAND:500 + X
+		ELSEIF TFLAG:408 == 3		;거유
+			;BT - BU = 16.5cm~23.0cm(D~F)を想定
+			E = 1650 + RAND:650 + X
+		ELSEIF TFLAG:408 == 4		;폭유
+			;BT - BU = 23.0cm~31.0cm(G~I)を想定
+			E = 2300 + RAND:851 + X
+			TFLAG:430 += 100	;폭유は체력アップ
+		ELSE				;普乳
+			;BT - BU = 7.0cm~11.5cm(B~D)を想定
+			E = 700 + RAND:500 + X
+
+		ENDIF
+		BASE:(LOCAL:4):21 += E / 1250		;(체중加算)おっぱい重さ(+25cmで+2kgとしてみる)
+	ELSEIF TFLAG:400 == 1
+		;男:筋肉分を身長*2％加算
+		E = M * 2 * BASE:(LOCAL:4):20
+		BASE:(LOCAL:4):21 += M / 50		;筋肉重さ加算(M=100あたり2として計算)
+	ELSE
+		;男の娘:特に補正しない
+	ENDIF
+
+	E = E + BASE:(LOCAL:4):22
+	BASE:(LOCAL:4):22 = E / 100
+	IF E % 100 >= 5
+		BASE:(LOCAL:4):22 += 1
+	ELSE
+		;特になし
+	ENDIF
+
+
+
+;엉덩이サイズ
+	;가슴サイズを基準に身長の数%の補正
+	;暫定的に-1.5%~+1.5&とした(胸設定で細身+절벽+乱数最小のとき, さらに-1.5%とかになると変に細くなるかもしれない)
+	E = E + BASE:(LOCAL:4):20 * (RAND:16 - RAND:16) / 100
+	BASE:(LOCAL:4):24 = E / 100
+	IF E % 100 >= 5
+		BASE:(LOCAL:4):24 += 1
+	ELSE
+		;特になし
+	ENDIF
+
+;**********************************************************************
+;ここまで新規分の체중＆3サイズ計算
+;**********************************************************************
+
+
+
+
+;恋人を登録
+IF TFLAG:409 >= 2 && TFLAG:409 <= 6
+	TALENT:(LOCAL:4):184 = 1
+	CFLAG:(LOCAL:4):621 = 1
+	CFLAG:(LOCAL:4):622 = TFLAG:409
+ENDIF
+
+;NTR進行度の上限を登録
+CFLAG:(LOCAL:4):620 = TFLAG:410
+
+S = 0				;妄想のカレカノの経験(一時的投入先)用の変数リセット
+;첫 키스を登録
+IF TFLAG:411 == 0
+	CFLAG:(LOCAL:4):16 = -1
+ELSEIF TFLAG:411 == 1
+	CFLAG:(LOCAL:4):16 = 1
+	E = RAND:10
+	IF TFLAG:409 >= 2 && TFLAG:409 <= 6		;彼氏が居る場合
+		E = RAND:10
+		IF E < 5			;半分の確率で恋人
+			IF TFLAG:405 == 7
+				CSTR:(LOCAL:4):1 = 남편
+			ELSEIF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):1 = 여자친구
+			ELSE
+				CSTR:(LOCAL:4):1 = 남자친구
+			ENDIF
+		ELSEIF E < 7
+			IF TFLAG:405 == 7
+				CSTR:(LOCAL:4):1 = 남편의 자지
+			ELSEIF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):1 = 여자친구의 가슴
+			ELSE
+				CSTR:(LOCAL:4):1 = 남자친구의 자지
+			ENDIF
+		ELSEIF E == 7
+			IF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):1 = 모르는 여자
+			ELSE
+				CSTR:(LOCAL:4):1 = 모르는 남자
+			ENDIF
+		ELSE
+			IF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):1 = 전 여친
+			ELSE
+				CSTR:(LOCAL:4):1 = 전 남친
+			ENDIF
+		ENDIF
+	ELSEIF TFLAG:409 == 7
+		E = RAND:8
+		IF E == 0		;兄姉
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 오빠
+				ELSE
+					CSTR:(LOCAL:4):1 = 의붓오빠
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 언니
+				ELSE
+					CSTR:(LOCAL:4):1 = 의붓언니
+				ENDIF
+			ENDIF
+		ELSEIF E == 1		;弟妹
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 남동생
+				ELSE
+					CSTR:(LOCAL:4):1 = 의붓남동생
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 여동생
+				ELSE
+					CSTR:(LOCAL:4):1 = 의붓여동생
+				ENDIF
+			ENDIF
+		ELSEIF E == 2
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 아빠
+				ELSE
+					CSTR:(LOCAL:4):1 = 새아빠
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 엄마
+				ELSE
+					CSTR:(LOCAL:4):1 = 새엄마
+				ENDIF
+			ENDIF
+		ELSEIF E == 3		;おじいちゃんおばあちゃん
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				CSTR:(LOCAL:4):1 = 조부
+			ELSE
+				CSTR:(LOCAL:4):1 = 조모
+			ENDIF
+		;※息子/娘とか孫/孫娘とかは分岐がめんどくさいのでパス
+		ELSEIF E == 4		;おじおば
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 숙부
+				ELSE
+					CSTR:(LOCAL:4):1 = 백부
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):1 = 숙모
+				ELSE
+					CSTR:(LOCAL:4):1 = 백모
+				ENDIF
+			ENDIF
+		ELSEIF E == 5		;先生と呼ばれる相手
+			E = RAND:5
+			IF E == 0
+				CSTR:(LOCAL:4):1 = 전 담임교사
+			ELSEIF E == 1
+				CSTR:(LOCAL:4):1 = 체육교사
+			ELSEIF E == 2
+				CSTR:(LOCAL:4):1 = 교장
+			ELSEIF E == 3
+				CSTR:(LOCAL:4):1 = 용무원
+			ELSEIF E == 4
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):1 = 가정교사 오빠
+				ELSE
+					CSTR:(LOCAL:4):1 = 가정교사 언니
+				ENDIF
+			ELSEIF E == 5
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):1 = 가정교사 아저씨
+				ELSE
+					CSTR:(LOCAL:4):1 = 가정교사 아줌마
+				ENDIF
+			ELSEIF E == 6
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):1 = 의사
+				ELSE
+					CSTR:(LOCAL:4):1 = 간호사
+				ENDIF
+			ENDIF
+		ELSEIF E == 6		;使用人
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				CSTR:(LOCAL:4):1 = 집사
+			ELSE
+				CSTR:(LOCAL:4):1 = 메이드
+			ENDIF
+		ELSE			;ペット, 動物(現状犬のみ)
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				E = RAND:5
+				IF E == 0
+					CSTR:(LOCAL:4):1 = 들개(♂)
+				ELSE
+					CSTR:(LOCAL:4):1 = 애완견(♂)
+				ENDIF
+			ELSE
+				E = RAND:10
+				IF E < 2
+					CSTR:(LOCAL:4):1 = 들개(♀)
+				ELSEIF E < 9
+					CSTR:(LOCAL:4):1 = 애완견(♀)
+				ELSE
+					CSTR:(LOCAL:4):1 = 들개(♂)
+					;※ごめん, 魔が差した
+				ENDIF
+				EXP:(LOCAL:4):56 = EXP:(LOCAL:4):56 + 1 + RAND:26
+			ENDIF
+		ENDIF
+	ELSEIF E == 0		;空想喪失(25%),見知らぬ相手(75%)
+		IF RAND:5 == 0
+			E = RAND:4
+			IF E == 3 || (S == 1 && E == 2)
+				S = 1				;仮想彼で処理したか?
+				TFLAG:411 = 0
+				CFLAG:(LOCAL:4):16 = -1
+				IF TFLAG:400 == 0
+					CSTR:(LOCAL:4):1 = 남자친구(사실 미경험)
+				ELSEIF TFLAG:400 == 1
+					CSTR:(LOCAL:4):1 = 여자친구(사실 미경험)
+				ELSEIF TFLAG:400 == 2
+					IF RAND:3 == 0
+						CSTR:(LOCAL:4):1 = 남자친구(사실 미경험)
+					ELSE
+						CSTR:(LOCAL:4):1 = 여자친구(사실 미경험)
+					ENDIF
+				ENDIF
+			ENDIF
+		ELSE
+			IF TFLAG:405 == 7 && RAND:5 == 0
+				CSTR:(LOCAL:4):1 = 남편
+			ELSEIF TFLAG:400 == 0 && (TFLAG:400 == 2 && RAND:3 == 0)
+				CSTR:(LOCAL:4):1 = 모르는 남자
+			ELSE
+				CSTR:(LOCAL:4):1 = 모르는 여자
+			ENDIF
+		ENDIF
+	ELSE
+		IF TFLAG:400 == 0 && (TFLAG:400 == 2 && RAND:3 == 0)
+			CSTR:(LOCAL:4):1 = 전 남친
+		ELSE
+			CSTR:(LOCAL:4):1 = 전 여친
+		ENDIF
+	ENDIF
+ENDIF
+
+
+;セックス経験を登録
+IF TFLAG:412 == 0
+	TALENT:(LOCAL:4):0 = 1
+ELSEIF TFLAG:412 == 1
+	;経験が有る場合, 回数を適当に決定
+;	IF TFLAG:400 == 0	;キャラが女性の場合
+		EXP:(LOCAL:4):0 += 1 + RAND:20
+		EXP:(LOCAL:4):2 += 1 + RAND:(EXP:(LOCAL:4):0)
+;	ENDIF
+	CFLAG:(LOCAL:4):15 = 1
+	E = RAND:10
+	IF TFLAG:409 >= 2 && TFLAG:409 <= 6		;남자친구/彼女が居る場合
+		E = RAND:10
+		IF E < 5			;半分の確率で恋人
+			IF TFLAG:405 == 7
+				CSTR:(LOCAL:4):0 = 남편
+			ELSEIF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):0 = 여자친구
+			ELSE
+				CSTR:(LOCAL:4):0 = 남자친구
+			ENDIF
+		ELSEIF E < 7 && TFLAG:400 == 0		;2割が道具による喪失(女性のみ)
+			E = RAND:3
+			ELSEIF E == 0
+				CSTR:(LOCAL:4):0 = 바이브
+			ELSEIF E == 1
+				CSTR:(LOCAL:4):0 = 딜도
+			ELSE
+				CSTR:(LOCAL:4):0 = 로터
+			ENDIF
+		ELSEIF E < 7 && TFLAG:400 != 0		;女性以外(동정戻し)
+			TALENT:(LOCAL:4):1 = 1
+		ELSEIF E == 7
+			IF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):0 = 모르는 여자
+			ELSE
+				CSTR:(LOCAL:4):0 = 모르는 남자
+			ENDIF
+		ELSE
+			IF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):0 = 전 여친
+			ELSE
+				CSTR:(LOCAL:4):0 = 전 남친
+			ENDIF
+		ENDIF
+	ELSEIF TFLAG:409 == 7				;背徳的肉体関係
+		E = RAND:8
+		IF E == 0		;兄姉
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 오빠
+				ELSE
+					CSTR:(LOCAL:4):0 = 의붓오빠
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 언니
+				ELSE
+					CSTR:(LOCAL:4):0 = 의붓언니
+				ENDIF
+			ENDIF
+		ELSEIF E == 1		;弟妹
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 남동생
+				ELSE
+					CSTR:(LOCAL:4):0 = 의붓남동생
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 여동생
+				ELSE
+					CSTR:(LOCAL:4):0 = 의붓여동생
+				ENDIF
+			ENDIF
+		ELSEIF E == 2
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 아빠
+				ELSE
+					CSTR:(LOCAL:4):0 = 새아빠
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 엄마
+				ELSE
+					CSTR:(LOCAL:4):0 = 새엄마
+				ENDIF
+			ENDIF
+		ELSEIF E == 3		;おじいちゃんおばあちゃん
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				CSTR:(LOCAL:4):0 = 조부
+			ELSE
+				CSTR:(LOCAL:4):0 = 조모
+			ENDIF
+		;※息子/娘とか孫/孫娘とかは分岐がめんどくさいのでパス
+		ELSEIF E == 4		;おじおば
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 숙부
+				ELSE
+					CSTR:(LOCAL:4):0 = 백부
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):0 = 숙모
+				ELSE
+					CSTR:(LOCAL:4):0 = 백모
+				ENDIF
+			ENDIF
+		ELSEIF E == 5		;先生と呼ばれる相手
+			E = RAND:5
+			IF E == 0
+				CSTR:(LOCAL:4):0 = 전 담임교사
+			ELSEIF E == 1
+				CSTR:(LOCAL:4):0 = 체육교사
+			ELSEIF E == 2
+				CSTR:(LOCAL:4):0 = 교장
+			ELSEIF E == 3
+				CSTR:(LOCAL:4):0 = 용무원
+			ELSEIF E == 4
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):0 = 가정교사 오빠
+				ELSE
+					CSTR:(LOCAL:4):0 = 가정교사 언니
+				ENDIF
+			ELSEIF E == 5
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):0 = 가정교사 아저씨
+				ELSE
+					CSTR:(LOCAL:4):0 = 가정교사 아줌마
+				ENDIF
+			ELSEIF E == 6
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					IF RAND:2 == 0
+						CSTR:(LOCAL:4):0 = 의사
+					ELSE
+						CSTR:(LOCAL:4):0 = 의료기구
+					ENDIF
+				ELSE
+					E = RAND:5
+					IF E == 0
+						CSTR:(LOCAL:4):0 = 의료기구
+					ELSEIF E < 4
+						CSTR:(LOCAL:4):0 = 간호사
+					ELSE
+						CSTR:(LOCAL:4):0 = 여의사
+					ENDIF
+				ENDIF
+			ENDIF
+		ELSEIF E == 6		;使用人
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				CSTR:(LOCAL:4):0 = 집사
+			ELSE
+				CSTR:(LOCAL:4):0 = 메이드
+			ENDIF
+		ELSE			;ペット, 動物(現状犬のみ)
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				E = RAND:5
+				IF E == 0
+					CSTR:(LOCAL:4):0 = 들개(♂)
+				ELSE
+					CSTR:(LOCAL:4):0 = 애완견(♂)
+				ENDIF
+			ELSE
+				E = RAND:10
+				IF E < 2
+					CSTR:(LOCAL:4):0 = 들개(♀)
+				ELSEIF E < 9
+					CSTR:(LOCAL:4):0 = 애완견(♀)
+				ELSE
+					CSTR:(LOCAL:4):0 = 들개(♂)
+					;※ごめん, 魔が差した
+				ENDIF
+				EXP:(LOCAL:4):56 = EXP:(LOCAL:4):56 + 1 + RAND:26
+			ENDIF
+		ENDIF
+	ELSEIF ( E == 0 && TFLAG:400 == 0)	;자위による喪失
+	;동정の자위での喪失扱いの判定はしない
+		E = RAND:3
+		IF E == 0			;日用品等
+			CSTR:(LOCAL:4):0 = 필기도구
+		ELSEIF E == 1			;野菜など
+			E = RAND:3
+			SIF E == 0
+				CSTR:(LOCAL:4):0 = 송이버섯
+			SIF E == 1
+				CSTR:(LOCAL:4):0 = 바나나
+			SIF E == 2
+				CSTR:(LOCAL:4):0 = 오이
+			SIF E == 3
+				CSTR:(LOCAL:4):0 = 당근
+			SIF E == 4
+				CSTR:(LOCAL:4):0 = 계란
+		ELSE
+			CSTR:(LOCAL:4):0 = 기다란 무언가
+		ENDIF
+	ELSEIF ( E == 1 || S == 1 && E < 7 )		;妄想喪失
+		IF TFLAG:400 == 0
+			E = RAND:4
+			IF E == 3 || (S == 1 && E == 2)
+				S = 1				;仮想彼で処理したか?
+				E = RAND:3
+				IF TFLAG:400 == 0
+					IF E == 0
+						CSTR:(LOCAL:4):0 = 이차원 남친(사실 미경험)
+						TALENT:(LOCAL:4):0 = 1
+					ELSEIF E == 1
+						CSTR:(LOCAL:4):0 = 망상속 남친(자위: 손가락)
+					ELSE
+						CSTR:(LOCAL:4):0 = 가상 남친(자위: 기다란 무언가)
+					ENDIF
+				ELSEIF TFLAG:400 == 1
+					E = RAND:10
+					IF E == 0
+						CSTR:(LOCAL:4):0 = 망상속 여친(사실 미경험)
+						TALENT:(LOCAL:4):1 = 1
+					ELSEIF E < 9
+						CSTR:(LOCAL:4):0 = 이차원 여친(자위)
+					ELSE
+						CSTR:(LOCAL:4):0 = 해삼
+					ENDIF
+				ELSEIF TFLAG:400 == 2
+					E = RAND:10
+					IF E == 0
+						IF RAND:3 == 0
+							CSTR:(LOCAL:4):0 = 망상속 여친(사실 미경험)
+						ELSE
+							CSTR:(LOCAL:4):0 = 망상속 남친(사실 미경험)
+						ENDIF
+						TALENT:(LOCAL:4):1 = 1
+					ELSEIF E < 6
+						CSTR:(LOCAL:4):0 = 망상속 여친(자위)
+					ELSE
+						CSTR:(LOCAL:4):0 = 망상속 남친(자위)
+					ENDIF
+			ELSE
+				IF TFLAG:400 == 0 && (TFLAG:400 == 2 && RAND:3 == 0)
+					CSTR:(LOCAL:4):0 = 모르는 남자
+				ELSEIF TFLAG:400 == 1
+					CSTR:(LOCAL:4):0 = 모르는 여자
+				ENDIF
+			ENDIF
+		ENDIF
+	ELSEIF E == 2
+		CSTR:(LOCAL:4):0 = 자고있어서 처녀상실이유 불명
+	ELSEIF E == 3
+		CSTR:(LOCAL:4):0 = 강간당함
+	ELSE
+		IF TFLAG:405 == 7 && RAND:3 == 0		;主婦のうち1/3が夫にそれ以外は元恋人に捧げた
+			CSTR:(LOCAL:4):0 = 남편
+		ELSE						;主婦以外と上記に該当しなかった
+			IF TFLAG:400 == 0 && (TFLAG:400 == 2 && RAND:3 == 0)
+				CSTR:(LOCAL:4):0 = 전 남친
+			ELSEIF TFLAG:400 == 1
+				CSTR:(LOCAL:4):0 = 전 여친
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+;アナル経験を登録
+IF TFLAG:413 == 0
+	TALENT:(LOCAL:4):2 = 1
+ELSEIF TFLAG:413 == 1
+	;経験が有る場合, 回数を適当に決定
+	IF TFLAG:400 == 0	;キャラが女性の場合
+		EXP:(LOCAL:4):1 += 1 + RAND:10
+		EXP:(LOCAL:4):2 += 1 + RAND:(EXP:(LOCAL:4):1)
+	ENDIF
+	IF TFLAG:409 >= 2 && TFLAG:409 <= 6		;남자친구/彼女が居る場合
+		E = RAND:10
+		IF E < 5			;半分の確率で恋人
+			IF TFLAG:405 == 7
+				CSTR:(LOCAL:4):2 = 남편
+			ELSEIF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):2 = 여자친구
+			ELSE
+				CSTR:(LOCAL:4):2 = 남자친구
+			ENDIF
+		ELSEIF E < 7 && TFLAG:400 == 0		;2割が道具による喪失
+			E = RAND:3
+			IF E == 0
+				CSTR:(LOCAL:4):2 = 애널바이브
+			ELSEIF E == 1
+				CSTR:(LOCAL:4):2 = 애널비즈
+			ELSEIF E == 2
+				CSTR:(LOCAL:4):2 = 구슬
+			ENDIF
+		ELSEIF E == 7
+			IF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):2 = 모르는 여자
+			ELSE
+				CSTR:(LOCAL:4):2 = 모르는 남자
+			ENDIF
+		ELSE
+			IF TFLAG:400 == 1 || ( TFLAG:400 == 2 && RAND:3 == 0 )
+				CSTR:(LOCAL:4):2 = 전 여친
+			ELSE
+				CSTR:(LOCAL:4):2 = 전 남친
+			ENDIF
+		ENDIF
+	ELSEIF TFLAG:409 == 7
+		E = RAND:8
+		IF E == 0		;兄姉
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 오빠
+				ELSE
+					CSTR:(LOCAL:4):3 = 의붓오빠
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 언니
+				ELSE
+					CSTR:(LOCAL:4):3 = 의붓언니
+				ENDIF
+			ENDIF
+		ELSEIF E == 1		;弟妹
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 남동생
+				ELSE
+					CSTR:(LOCAL:4):3 = 의붓남동생
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 여동생
+				ELSE
+					CSTR:(LOCAL:4):3 = 의붓여동생
+				ENDIF
+			ENDIF
+		ELSEIF E == 2
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 아빠
+				ELSE
+					CSTR:(LOCAL:4):3 = 새아빠
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 엄마
+				ELSE
+					CSTR:(LOCAL:4):3 = 새엄마
+				ENDIF
+			ENDIF
+		ELSEIF E == 3		;おじいちゃんおばあちゃん
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				CSTR:(LOCAL:4):3 = 조부
+			ELSE
+				CSTR:(LOCAL:4):3 = 조모
+			ENDIF
+		;※息子/娘とか孫/孫娘とかは分岐がめんどくさいのでパス
+		ELSEIF E == 4		;おじおば
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 숙부
+				ELSE
+					CSTR:(LOCAL:4):3 = 백부
+				ENDIF
+			ELSE
+				IF RAND:3 == 0
+					CSTR:(LOCAL:4):3 = 숙모
+				ELSE
+					CSTR:(LOCAL:4):3 = 백모
+				ENDIF
+			ENDIF
+		ELSEIF E == 5		;先生と呼ばれる相手
+			E = RAND:5
+			IF E == 0
+				CSTR:(LOCAL:4):3 = 전 담임교사
+			ELSEIF E == 1
+				CSTR:(LOCAL:4):3 = 체육교사
+			ELSEIF E == 2
+				CSTR:(LOCAL:4):3 = 교장
+			ELSEIF E == 3
+				CSTR:(LOCAL:4):3 = 용무원
+			ELSEIF E == 4
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):3 = 가정교사 오빠
+				ELSE
+					CSTR:(LOCAL:4):3 = 가정교사 언니
+				ENDIF
+			ELSEIF E == 5
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					CSTR:(LOCAL:4):3 = 가정교사 아저씨
+				ELSE
+					CSTR:(LOCAL:4):3 = 가정교사 아줌마
+				ENDIF
+			ELSEIF E == 6
+				IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+					IF RAND:2 == 0
+						CSTR:(LOCAL:4):3 = 의사
+					ELSE
+						CSTR:(LOCAL:4):3 = 의료기구
+					ENDIF
+				ELSE
+					E = RAND:5
+					IF E == 0
+						CSTR:(LOCAL:4):3 = 의료기구
+					ELSEIF E < 4
+						CSTR:(LOCAL:4):3 = 강호사
+					ELSE
+						CSTR:(LOCAL:4):3 = 여의사
+					ENDIF
+				ENDIF
+			ENDIF
+		ELSEIF E == 6		;使用人
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				CSTR:(LOCAL:4):3 = 집사
+			ELSE
+				CSTR:(LOCAL:4):3 = 메이드
+			ENDIF
+		ELSE			;ペット, 動物(現状犬のみ)
+			IF TFLAG:400 == 0 || (TFLAG:400 == 2 && RAND:2 == 0) 
+				E = RAND:5
+				IF E == 0
+					CSTR:(LOCAL:4):3 = 들개(♂)
+				ELSE
+					CSTR:(LOCAL:4):3 = 애완견(♂)
+				ENDIF
+			ELSE
+				E = RAND:10
+				IF E < 2
+					CSTR:(LOCAL:4):3 = 들개(♀)
+				ELSEIF E < 9
+					CSTR:(LOCAL:4):3 = 애완견(♀)
+				ELSE
+					CSTR:(LOCAL:4):3 = 들개(♂)
+					;※ごめん, 魔が差した
+				ENDIF
+				EXP:(LOCAL:4):56 = EXP:(LOCAL:4):56 + 1 + RAND:26
+			ENDIF
+		ENDIF
+	ELSEIF ( E == 1 || S == 1 && E < 7 )		;妄想喪失
+		IF TFLAG:400 == 0
+			E = RAND:4
+			IF E == 3 || (S == 1 && E == 2)
+				S = 1				;仮想彼で処理したか?
+				E = RAND:3
+				IF TFLAG:400 == 0
+					IF E == 0
+						CSTR:(LOCAL:4):3 = 이차원 남친(사실 미경험)
+						TALENT:(LOCAL:4):2 = 1
+					ELSEIF E == 1
+						CSTR:(LOCAL:4):3 = 망상속 남친(자위: 손가락)
+					ELSE
+						CSTR:(LOCAL:4):3 = 가상 남친(자위: 기다란 무언가)
+					ENDIF
+				ELSEIF TFLAG:400 == 1
+					E = RAND:10
+					IF E == 0
+						CSTR:(LOCAL:4):3 = 망상속 여친(사실 미경험)
+						TALENT:(LOCAL:4):2 = 1
+						EXP:(LOCAL:4):1 = 0
+						EXP:(LOCAL:4):2 = 0
+					ELSE
+						CSTR:(LOCAL:4):3 = 이차원 여친(자위)
+					ENDIF
+				ELSEIF TFLAG:400 == 2
+					E = RAND:10
+					IF E == 0
+						IF RAND:3 == 0
+							CSTR:(LOCAL:4):3 = 망상속 여친(사실 미경험)
+						ELSE
+							CSTR:(LOCAL:4):3 = 망상속 남친(사실 미경험)
+						ENDIF
+						TALENT:(LOCAL:4):2 = 1
+						EXP:(LOCAL:4):1 = 0
+						EXP:(LOCAL:4):2 = 0
+					ELSEIF E < 6
+						CSTR:(LOCAL:4):3 = 망상속 여친(자위)
+					ELSE
+						CSTR:(LOCAL:4):3 = 망상속 남친(자위)
+					ENDIF
+				ENDIF
+			ELSE
+				IF TFLAG:400 == 0 && (TFLAG:400 == 2 && RAND:3 == 0)
+					CSTR:(LOCAL:4):3 = 모르는 남자
+				ELSEIF TFLAG:400 == 1
+					CSTR:(LOCAL:4):3 = 모르는 여자
+				ENDIF
+			ENDIF
+		ENDIF
+	ELSE
+		IF TFLAG:405 == 7 && RAND:3 == 0		;主婦のうち1/3が夫にそれ以外は元恋人に捧げた
+			CSTR:(LOCAL:4):3 = 남편
+		ELSE						;主婦以外と上記に該当しなかった
+			IF TFLAG:400 == 0 && (TFLAG:400 == 2 && RAND:3 == 0)
+				CSTR:(LOCAL:4):3 = 전 남친
+			ELSEIF TFLAG:400 == 1
+				CSTR:(LOCAL:4):3 = 전 여친
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+;性格を登録
+IF TFLAG:414 >= 10
+	TALENT:(LOCAL:4):(TFLAG:414) = 1
+ENDIF
+
+;陰毛を登録
+IF TFLAG:415 <= 1
+	CFLAG:(LOCAL:4):6 = -2 
+ELSEIF TFLAG:415 >= 2 && TFLAG:415 <= 5
+	CFLAG:(LOCAL:4):6 = -1
+ELSEIF TFLAG:415 >= 6 && TFLAG:415 <= 7
+	CFLAG:(LOCAL:4):6 = 15
+ELSEIF TFLAG:415 >= 8
+	CFLAG:(LOCAL:4):6 = 12
+ENDIF
+
+;乙女心系素質を登録
+IF TFLAG:416 >= 30
+	TALENT:(LOCAL:4):(TFLAG:416) = 1
+ENDIF
+
+;아픔에 약함|아픔에 강함を登録
+IF TFLAG:417 == 40
+	TALENT:(LOCAL:4):(TFLAG:417) = 1
+ELSEIF TFLAG:417 == 41
+	TALENT:(LOCAL:4):(TFLAG:417) = 1
+ENDIF
+
+;濡れやすい|濡れにくいを登録
+IF TFLAG:418 == 42
+	TALENT:(LOCAL:4):(TFLAG:418) = 1
+ELSEIF TFLAG:418 == 43
+	TALENT:(LOCAL:4):(TFLAG:418) = 1
+ENDIF
+
+;가슴サイズの素質を登録
+IF TFLAG:408 == 1
+	TALENT:(LOCAL:4):116 = 1
+ELSEIF TFLAG:408 == 2
+	TALENT:(LOCAL:4):109 = 1
+ELSEIF TFLAG:408 == 3
+	TALENT:(LOCAL:4):110 = 1
+ELSEIF TFLAG:408 == 4
+	TALENT:(LOCAL:4):114 = 1
+ENDIF
+
+;体型の素質を登録
+;身長が150cm未満で[작은체형], 170cm以上で[큰체구]に
+IF BASE:(LOCAL:4):20 < 150
+	TALENT:(LOCAL:4):100 = 1
+ELSEIF BASE:(LOCAL:4):20 >= 170
+	TALENT:(LOCAL:4):99 = 1
+ENDIF
+
+;補正後の체력, 기력を登録
+MAXBASE:(LOCAL:4):0 = TFLAG:430
+MAXBASE:(LOCAL:4):1 = TFLAG:431
+
+BASE:(LOCAL:4):0 = TFLAG:430
+BASE:(LOCAL:4):1 = TFLAG:431
+
+;ギャラを登録
+BASE:(LOCAL:4):30 = TFLAG:420
+
+;NTR進行度の上限フラグ設定
+
+
+;名前を決定する
+$NAME_CHECK	;名前チェック用ラベル
+
+CALL FAMILY_NAME_JAPAN
+CALL LAST_NAME_JAPAN_FEMALE
+
+NAME:(LOCAL:4) = 
+NAME:(LOCAL:4) += TSTR:50 + " " + TSTR:51
+
+CALLNAME:(LOCAL:4) += TSTR:51
+NICKNAME:(LOCAL:4) += TSTR:51
+
+LOCAL:6	= 0	;同名チェックフラグLOCAL:6をリセット
+
+REPEAT CHARANUM
+	IF CALLNAME:COUNT == CALLNAME:(LOCAL:4)
+		;同名があればLOCAL:6に加算
+		LOCAL:6	+= 1
+	ENDIF
+REND
+
+IF LOCAL:6 >= 2
+	GOTO NAME_CHECK
+ENDIF
+
+RETURN 0

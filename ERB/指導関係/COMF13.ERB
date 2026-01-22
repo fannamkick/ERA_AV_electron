@@ -1,0 +1,387 @@
+﻿;-------------------------------------------------
+;애널바이브
+;道具使用コマンド: 調教対象のアナルを애널바이브で刺激
+;-------------------------------------------------
+@COM13
+;애널처녀を奪うかどうかの確認
+CALL CONFIRM_LOST_ANALVIRGIN
+SIF RESULT == 0
+	RETURN 0
+
+IF TEQUIP:90
+	PRINTL 애널촉수
+	SAVESTR:0 = 애널촉수
+ELSE
+	PRINTL 애널바이브
+	SAVESTR:0 = 애널바이브
+ENDIF
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 60
+LOSEBASE:1 += 150
+
+SOURCE:14 = 300
+
+;ABL:A감각をみる
+IF ABL:3 == 0
+	SOURCE:2 = 80
+	SOURCE:13 = 300
+ELSEIF ABL:3 == 1
+	SOURCE:2 = 250
+	SOURCE:13 = 800
+ELSEIF ABL:3 == 2
+	SOURCE:2 = 600
+	SOURCE:13 = 1400
+ELSEIF ABL:3 == 3
+	SOURCE:2 = 1000
+	SOURCE:13 = 1800
+ELSEIF ABL:3 == 4
+	SOURCE:2 = 1300
+	SOURCE:13 = 2100
+ELSE
+	SOURCE:2 = 1700
+	SOURCE:13 = 2400
+ENDIF
+
+;EXP:A경험をみる
+IF EXP:1 < EXPLV:1
+	TIMES SOURCE:2 , 0.50
+	SOURCE:6 = 2000
+	SOURCE:14 += 200
+ELSEIF EXP:1 < EXPLV:2
+	TIMES SOURCE:2 , 1.00
+	SOURCE:6 = 300
+	SOURCE:14 += 100
+ELSEIF EXP:1 < EXPLV:3
+	TIMES SOURCE:2 , 1.10
+	SOURCE:6 = 50
+	SOURCE:14 += 50
+ELSEIF EXP:1 < EXPLV:4
+	TIMES SOURCE:2 , 1.20
+	SOURCE:6 = 10
+ELSEIF EXP:1 < EXPLV:5
+	TIMES SOURCE:2 , 1.40
+	SOURCE:6 = 0
+ELSE
+	TIMES SOURCE:2 , 1.60
+	SOURCE:6 = 0
+ENDIF
+
+;PALAM:윤활をみる
+IF PALAM:3 < PALAMLV:1
+	TIMES SOURCE:2 , 0.40
+	SOURCE:6 += 800
+ELSEIF PALAM:3 < PALAMLV:2
+	TIMES SOURCE:2 , 0.80
+	SOURCE:6 += 500
+ELSEIF PALAM:3 < PALAMLV:3
+	TIMES SOURCE:2 , 1.00
+	SOURCE:6 += 300
+ELSEIF PALAM:3 < PALAMLV:4
+	TIMES SOURCE:2 , 1.40
+	SOURCE:6 += 120
+ELSEIF PALAM:3 >= PALAMLV:4
+	TIMES SOURCE:2 , 1.80
+	SOURCE:6 += 100
+ENDIF
+
+;PALAM:욕정をみる
+IF PALAM:5 < PALAMLV:1
+	TIMES SOURCE:2 , 0.80
+ELSEIF PALAM:5 < PALAMLV:2
+	TIMES SOURCE:2 , 0.90
+ELSEIF PALAM:5 < PALAMLV:3
+	TIMES SOURCE:2 , 1.00
+ELSEIF PALAM:5 < PALAMLV:4
+	TIMES SOURCE:2 , 1.10
+ELSEIF PALAM:5 >= PALAMLV:4
+	TIMES SOURCE:2 , 1.20
+ENDIF
+
+;ABL:従順をみる
+IF ABL:10 == 0
+	TIMES SOURCE:2 , 0.80
+	TIMES SOURCE:14 , 2.00
+ELSEIF ABL:10 == 1
+	TIMES SOURCE:2 , 0.90
+	TIMES SOURCE:14 , 1.50
+ELSEIF ABL:10 == 2
+	TIMES SOURCE:14 , 1.00
+ELSEIF ABL:10 == 3
+	TIMES SOURCE:14 , 0.80
+ELSEIF ABL:10 == 4
+	TIMES SOURCE:14 , 0.60
+ELSE
+	TIMES SOURCE:14 , 0.30
+ENDIF
+
+;큰체구
+SIF TALENT:99
+	TIMES SOURCE:6 , 0.80
+;작은체형
+SIF TALENT:100
+	TIMES SOURCE:6 , 2.00
+;미숙함
+SIF TALENT:135
+	TIMES SOURCE:6 , 2.00
+
+;A민감, 鈍感をみる
+;快A自体のチェックは後でまとめてやる
+IF TALENT:105
+	TIMES SOURCE:6 , 1.50
+	TIMES SOURCE:13 , 1.50
+	TIMES SOURCE:14 , 1.50
+ELSEIF TALENT:106
+	TIMES SOURCE:6 , 0.60
+	TIMES SOURCE:13 , 0.60
+	TIMES SOURCE:14 , 0.60
+ENDIF
+
+IF EXP:0 == 0 && TALENT:30
+	SOURCE:13 /= 3
+ENDIF
+
+						;****슬라임パッチ追加ここから****
+IF ITEM:203 >= 1 && TEQUIP:90 == 0
+	TIMES LOSEBASE:0 , 0.80
+	TIMES LOSEBASE:1 , 0.80
+	TIMES SOURCE:2 , 1.20
+	TIMES SOURCE:6 , 0.80
+	TIMES SOURCE:13 , 1.20
+	TIMES SOURCE:14 , 0.80
+ENDIF
+						;****슬라임パッチ追加ここまで****
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+S = 0
+;A감각が高いほどA경험が入る
+IF ABL:3 <= 1
+	S = 1
+ELSEIF ABL:3 <= 4
+	S = 2
+ELSEIF ABL:3 <= 7
+	S = 3
+ELSE
+	S = 4
+ENDIF
+EXP:1 += S
+PRINTFORML A경험 +{S}
+
+;レズ・ホモ経験
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +1
+	EXP:40 += 1
+ELSEIF TALENT:122 == 1 && TALENT:PLAYER:122 == 1
+	PRINTS EXPNAME:41
+	PRINTL +1
+	EXP:41 += 1
+ENDIF
+
+;-------------------------------------------------
+;애널바이브の着脱
+;-------------------------------------------------
+TEQUIP:13 = 1 - TEQUIP:13
+SIF TEQUIP:90
+	T = 0
+
+;-------------------------------------------------
+;汚れ(촉수)
+;-------------------------------------------------
+IF TEQUIP:90 && TEQUIP:13
+	STAIN:4 |= 2
+	STAIN:4 |= 4
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;-------------------------------------------------
+;애널바이브 삽입중
+;-------------------------------------------------
+@EQUIP_COM13
+
+IF TEQUIP:90
+	PRINTL ＜애널촉수 삽입중＞
+ELSE
+	PRINTL ＜애널바이브 삽입중＞
+ENDIF
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 30
+LOSEBASE:1 += 80
+
+SOURCE:14 = 200
+
+;ABL:A감각をみる
+IF ABL:3 == 0
+	A = 40
+	B = 300
+ELSEIF ABL:3 == 1
+	A = 120
+	B = 800
+ELSEIF ABL:3 == 2
+	A = 300
+	B = 1400
+ELSEIF ABL:3 == 3
+	A = 500
+	B = 1800
+ELSEIF ABL:3 == 4
+	A = 650
+	B = 2100
+ELSE
+	A = 850
+	B = 2400
+ENDIF
+
+;EXP:A경험をみる
+IF EXP:1 < EXPLV:1
+	TIMES A , 0.50
+	C = 2000
+ELSEIF EXP:1 < EXPLV:2
+	TIMES A , 1.00
+	C = 300
+ELSEIF EXP:1 < EXPLV:3
+	TIMES A , 1.10
+	C = 50
+ELSEIF EXP:1 < EXPLV:4
+	TIMES A , 1.20
+	C = 10
+ELSEIF EXP:1 < EXPLV:5
+	TIMES A , 1.40
+	C = 0
+ELSE
+	TIMES A , 1.60
+	C = 0
+ENDIF
+
+;PALAM:윤활をみる
+IF PALAM:3 < PALAMLV:1
+	TIMES A , 0.40
+	C += 800
+ELSEIF PALAM:3 < PALAMLV:2
+	TIMES A , 0.80
+	C += 500
+ELSEIF PALAM:3 < PALAMLV:3
+	TIMES A , 1.00
+	C += 300
+ELSEIF PALAM:3 < PALAMLV:4
+	TIMES A , 1.40
+	C += 120
+ELSEIF PALAM:3 >= PALAMLV:4
+	TIMES A , 1.80
+	C += 100
+ENDIF
+
+;PALAM:욕정をみる
+IF PALAM:5 < PALAMLV:1
+	TIMES A , 0.80
+ELSEIF PALAM:5 < PALAMLV:2
+	TIMES A , 0.90
+ELSEIF PALAM:5 < PALAMLV:3
+	TIMES A , 1.00
+ELSEIF PALAM:5 < PALAMLV:4
+	TIMES A , 1.10
+ELSEIF PALAM:5 >= PALAMLV:4
+	TIMES A , 1.20
+ENDIF
+
+;ABL:従順をみる
+IF ABL:10 == 0
+	TIMES A , 0.80
+	TIMES SOURCE:14 , 2.00
+ELSEIF ABL:10 == 1
+	TIMES A , 0.90
+	TIMES SOURCE:14 , 1.50
+ELSEIF ABL:10 == 2
+	TIMES SOURCE:14 , 1.00
+ELSEIF ABL:10 == 3
+	TIMES SOURCE:14 , 0.80
+ELSEIF ABL:10 == 4
+	TIMES SOURCE:14 , 0.60
+ELSE
+	TIMES SOURCE:14 , 0.30
+ENDIF
+
+;큰체구
+SIF TALENT:99
+	TIMES C , 0.80
+;작은체형
+SIF TALENT:100
+	TIMES C , 2.00
+;미숙함
+SIF TALENT:135
+	TIMES SOURCE:6 , 2.00
+
+;A민감, 鈍感をみる
+;快A自体のチェックは後でまとめてやる
+IF TALENT:105
+	TIMES SOURCE:6 , 1.50
+	TIMES SOURCE:13 , 1.50
+	TIMES SOURCE:14 , 1.50
+ELSEIF TALENT:106
+	TIMES SOURCE:6 , 0.60
+	TIMES SOURCE:13 , 0.60
+	TIMES SOURCE:14 , 0.60
+ENDIF
+
+SOURCE:2 += A
+SOURCE:13 += B
+SOURCE:6 += C
+
+;처녀で정조관념
+IF TALENT:0 && TALENT:30
+	TIMES SOURCE:13 , 0.80
+	TIMES SOURCE:14 , 0.50
+ENDIF
+
+						;****슬라임パッチ追加ここから****
+IF ITEM:203 >= 1 && TEQUIP:90 == 0
+	LOSEBASE:0 -= 6
+	LOSEBASE:1 -= 16
+	TIMES SOURCE:2 , 1.20
+	TIMES SOURCE:6 , 0.80
+	TIMES SOURCE:13 , 1.20
+	TIMES SOURCE:14 , 0.80
+ENDIF
+						;****슬라임パッチ追加ここまで****
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+S = 0
+;자위実行時は経験 +1
+SIF SELECTCOM == 3
+	S = 1
+;A감각が高いほどA경험が入る
+IF ABL:3 <= 1
+	S += 1
+ELSEIF ABL:3 <= 4
+	S += 2
+ELSEIF ABL:3 <= 7
+	S += 3
+ELSE
+	S += 4
+ENDIF
+EXP:1 += S
+PRINTFORML A경험 +{S}
+
+;アナル挿入フラグ
+TFLAG:101 = 1
+S = 0
+
+;-------------------------------------------------
+;その他の処理
+;-------------------------------------------------
+SIF TEQUIP:90
+	T += 1
+
+RETURN 1
+;
+;
+;

@@ -1,0 +1,284 @@
+
+> erav-web-port@0.1.0 build
+> tsc && vite build
+
+src/modules/brothel/generated/work_result.ts(468,10): error TS1005: ')' expected.
+src/modules/brothel/generated/work_result.ts(468,20): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(485,14): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(487,25): error TS1005: ',' expected.
+src/modules/brothel/generated/work_result.ts(489,35): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(491,50): error TS1005: ',' expected.
+src/modules/brothel/generated/work_result.ts(493,30): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(501,10): error TS1005: ')' expected.
+src/modules/brothel/generated/work_result.ts(501,20): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(509,14): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(511,25): error TS1005: ',' expected.
+src/modules/brothel/generated/work_result.ts(513,36): error TS1005: ';' expected.
+src/modules/brothel/generated/work_result.ts(515,51): error TS1005: ',' expected.
+src/modules/brothel/generated/work_result.ts(517,31): error TS1005: ';' expected.
+src/modules/brothel/generated/work_s_kbplay.ts(580,27): error TS1109: Expression expected.
+src/modules/brothel/generated/work_s_strip.ts(522,31): error TS1109: Expression expected.
+src/modules/clear_bonus/generated/clearbonus_boyfriend.ts(111,80): error TS1109: Expression expected.
+src/modules/clear_bonus/generated/clearbonus_boyfriend.ts(114,80): error TS1109: Expression expected.
+src/modules/clear_bonus/generated/clearbonus_boyfriend.ts(575,74): error TS1109: Expression expected.
+src/modules/clear_bonus/generated/clearbonus_boyfriend.ts(576,74): error TS1109: Expression expected.
+src/modules/clear_bonus/generated/clearbonus_boyfriend.ts(577,74): error TS1109: Expression expected.
+src/modules/events/generated/blackgirl.ts(375,69): error TS1109: Expression expected.
+src/modules/events/generated/blackgirl.ts(375,104): error TS1005: ';' expected.
+src/modules/events/generated/event_k.ts(81,32): error TS1005: ';' expected.
+src/modules/events/generated/event_pregnancy.ts(468,62): error TS1109: Expression expected.
+src/modules/events/generated/event_turnend.ts(231,22): error TS1005: ')' expected.
+src/modules/events/generated/event_turnend.ts(231,61): error TS1005: ';' expected.
+src/modules/events/generated/event_work_message_sp.ts(47,31): error TS1109: Expression expected.
+src/modules/events/generated/gettalent_gal.ts(22,93): error TS1005: ']' expected.
+src/modules/events/generated/gettalent_gal.ts(22,108): error TS1005: ')' expected.
+src/modules/events/generated/gettalent_gal.ts(22,109): error TS1128: Declaration or statement expected.
+src/modules/events/generated/gettalent_gal.ts(22,111): error TS1109: Expression expected.
+src/modules/events/generated/gettalent_gal.ts(22,250): error TS1005: ';' expected.
+src/modules/filming/generated/shop_av.ts(271,44): error TS1127: Invalid character.
+src/modules/filming/generated/shop_av.ts(271,46): error TS1005: ';' expected.
+src/modules/filming/generated/shop_av.ts(271,63): error TS1005: ';' expected.
+src/modules/filming/generated/shop_av.ts(271,65): error TS1161: Unterminated regular expression literal.
+src/modules/missions/generated/mission.ts(147,44): error TS1127: Invalid character.
+src/modules/missions/generated/mission.ts(147,46): error TS1005: ';' expected.
+src/modules/missions/generated/mission.ts(147,63): error TS1005: ';' expected.
+src/modules/missions/generated/mission.ts(147,65): error TS1161: Unterminated regular expression literal.
+src/modules/missions/generated/mission.ts(279,36): error TS1127: Invalid character.
+src/modules/missions/generated/mission.ts(279,38): error TS1005: ';' expected.
+src/modules/missions/generated/mission.ts(282,72): error TS1127: Invalid character.
+src/modules/missions/generated/mission.ts(282,74): error TS1005: ';' expected.
+src/modules/missions/generated/mission.ts(304,19): error TS1005: ',' expected.
+src/modules/missions/generated/mission.ts(314,34): error TS1005: ')' expected.
+src/modules/missions/generated/mission.ts(314,48): error TS1005: ';' expected.
+src/modules/missions/generated/mission.ts(326,19): error TS1005: ',' expected.
+src/modules/system/generated/autosave.ts(28,46): error TS1109: Expression expected.
+src/modules/system/generated/autosave.ts(30,46): error TS1109: Expression expected.
+src/modules/system/generated/autosave.ts(39,65): error TS1109: Expression expected.
+src/modules/system/generated/info.ts(864,30): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(864,44): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(867,30): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(867,44): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(870,30): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(870,44): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(873,30): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(873,44): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(876,30): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(876,45): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(879,30): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(879,45): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(955,28): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(955,42): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(958,28): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(958,42): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(961,28): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(961,42): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(964,28): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(964,42): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(967,28): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(967,43): error TS1005: ';' expected.
+src/modules/system/generated/info.ts(970,28): error TS1005: ')' expected.
+src/modules/system/generated/info.ts(970,43): error TS1005: ';' expected.
+src/modules/system/generated/lycee.ts(571,40): error TS1005: ']' expected.
+src/modules/system/generated/lycee.ts(571,55): error TS1005: ')' expected.
+src/modules/system/generated/lycee.ts(571,56): error TS1128: Declaration or statement expected.
+src/modules/system/generated/lycee.ts(571,58): error TS1109: Expression expected.
+src/modules/system/generated/lycee.ts(571,65): error TS1005: ';' expected.
+src/modules/system/generated/lycee.ts(573,9): error TS1128: Declaration or statement expected.
+src/modules/system/generated/lycee.ts(574,104): error TS1005: ']' expected.
+src/modules/system/generated/lycee.ts(574,119): error TS1005: ')' expected.
+src/modules/system/generated/lycee.ts(574,120): error TS1128: Declaration or statement expected.
+src/modules/system/generated/lycee.ts(574,122): error TS1109: Expression expected.
+src/modules/system/generated/lycee.ts(574,128): error TS1005: ';' expected.
+src/modules/system/generated/lycee.ts(637,11): error TS1128: Declaration or statement expected.
+src/modules/system/generated/lycee.ts(641,35): error TS1005: ']' expected.
+src/modules/system/generated/lycee.ts(641,50): error TS1005: ')' expected.
+src/modules/system/generated/lycee.ts(641,51): error TS1128: Declaration or statement expected.
+src/modules/system/generated/lycee.ts(641,53): error TS1109: Expression expected.
+src/modules/system/generated/lycee.ts(641,59): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(162,10): error TS1005: ')' expected.
+src/modules/system/generated/original.ts(162,20): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(179,14): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(181,25): error TS1005: ',' expected.
+src/modules/system/generated/original.ts(183,35): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(185,50): error TS1005: ',' expected.
+src/modules/system/generated/original.ts(187,30): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(195,10): error TS1005: ')' expected.
+src/modules/system/generated/original.ts(195,20): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(203,14): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(205,25): error TS1005: ',' expected.
+src/modules/system/generated/original.ts(207,36): error TS1005: ';' expected.
+src/modules/system/generated/original.ts(209,51): error TS1005: ',' expected.
+src/modules/system/generated/original.ts(211,31): error TS1005: ';' expected.
+src/modules/system/generated/please.ts(234,36): error TS1121: Octal literals are not allowed. Use the syntax '0o1'.
+src/modules/system/generated/sell_chara.ts(80,17): error TS1005: ')' expected.
+src/modules/system/generated/sell_chara.ts(80,33): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara.ts(82,9): error TS1128: Declaration or statement expected.
+src/modules/system/generated/sell_chara.ts(312,34): error TS1005: ')' expected.
+src/modules/system/generated/sell_chara.ts(312,63): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara.ts(313,12): error TS1005: ')' expected.
+src/modules/system/generated/sell_chara.ts(313,29): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara.ts(316,7): error TS1128: Declaration or statement expected.
+src/modules/system/generated/sell_chara.ts(317,12): error TS1005: ')' expected.
+src/modules/system/generated/sell_chara.ts(317,34): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara.ts(317,51): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara_estimate.ts(620,10): error TS1005: ')' expected.
+src/modules/system/generated/sell_chara_estimate.ts(620,27): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara_estimate.ts(621,13): error TS1005: ';' expected.
+src/modules/system/generated/sell_chara_estimate.ts(630,44): error TS1005: ')' expected.
+src/modules/system/generated/sell_chara_estimate.ts(630,112): error TS1005: ';' expected.
+src/modules/system/generated/shop_charabuy.ts(134,17): error TS1005: ')' expected.
+src/modules/system/generated/shop_charabuy.ts(134,18): error TS1434: Unexpected keyword or identifier.
+src/modules/system/generated/shop_charabuy.ts(134,24): error TS1128: Declaration or statement expected.
+src/modules/system/generated/shop_item.ts(137,54): error TS1005: ')' expected.
+src/modules/system/generated/shop_item.ts(137,70): error TS1005: ';' expected.
+src/modules/system/generated/shop_item.ts(153,13): error TS1005: ')' expected.
+src/modules/system/generated/shop_item.ts(153,28): error TS1005: ';' expected.
+src/modules/system/generated/shop_item.ts(175,54): error TS1005: ')' expected.
+src/modules/system/generated/shop_item.ts(175,70): error TS1005: ';' expected.
+src/modules/system/generated/shop_item.ts(259,15): error TS1005: ';' expected.
+src/modules/system/generated/shop_item.ts(279,23): error TS1005: ';' expected.
+src/modules/system/generated/shop_item.ts(331,23): error TS1005: ';' expected.
+src/modules/system/generated/shop_main.ts(104,22): error TS1005: ')' expected.
+src/modules/system/generated/shop_main.ts(104,61): error TS1005: ';' expected.
+src/modules/system/generated/shop_main.ts(202,22): error TS1005: ')' expected.
+src/modules/system/generated/shop_main.ts(202,61): error TS1005: ';' expected.
+src/modules/system/generated/shop_main.ts(783,25): error TS1005: ';' expected.
+src/modules/system/generated/shop_yuukaku.ts(666,44): error TS1005: ')' expected.
+src/modules/system/generated/shop_yuukaku.ts(666,86): error TS1005: ';' expected.
+src/modules/system/generated/system_charasort.ts(210,27): error TS1005: ')' expected.
+src/modules/system/generated/system_charasort.ts(210,33): error TS1005: ';' expected.
+src/modules/system/generated/system_charasort.ts(212,29): error TS1005: ';' expected.
+src/modules/system/generated/system_charasort.ts(361,20): error TS1005: ';' expected.
+src/modules/system/generated/system_gamestart.ts(52,20): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+src/modules/system/generated/system_gamestart.ts(69,20): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+src/modules/system/generated/system_newgame.ts(272,18): error TS1005: ']' expected.
+src/modules/system/generated/system_newgame.ts(272,19): error TS1434: Unexpected keyword or identifier.
+src/modules/system/generated/system_newgame.ts(272,23): error TS1128: Declaration or statement expected.
+src/modules/system/generated/system_newgame.ts(272,34): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1545,11): error TS1005: ')' expected.
+src/modules/system/generated/system_source.ts(1545,25): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1545,31): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1550,13): error TS1005: ')' expected.
+src/modules/system/generated/system_source.ts(1550,19): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1552,15): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1554,30): error TS1005: '}' expected.
+src/modules/system/generated/system_source.ts(1554,32): error TS1005: ',' expected.
+src/modules/system/generated/system_source.ts(1562,26): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1569,24): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1569,37): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1569,46): error TS1005: ';' expected.
+src/modules/system/generated/system_source.ts(1786,1): error TS1160: Unterminated template literal.
+src/modules/tips/generated/tips.ts(169,20): error TS1109: Expression expected.
+src/modules/tips/generated/tips.ts(169,21): error TS1109: Expression expected.
+src/modules/training/commands/generated/comf64.ts(68,21): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+src/modules/training/commands/generated/comseq_register.ts(109,29): error TS1161: Unterminated regular expression literal.
+src/modules/training/commands/generated/comseq_register.ts(143,10): error TS1161: Unterminated regular expression literal.
+src/modules/training/commands/generated/comseq_register.ts(224,39): error TS1005: ',' expected.
+src/modules/training/commands/generated/comseq_register.ts(224,73): error TS1005: ')' expected.
+src/modules/training/commands/generated/comseq_register.ts(240,22): error TS1005: ',' expected.
+src/modules/training/commands/generated/comseq_register.ts(240,34): error TS1005: ',' expected.
+src/modules/training/commands/generated/comseq_register.ts(240,50): error TS1005: ';' expected.
+src/modules/training/commands/generated/comseq_register.ts(278,24): error TS1005: ',' expected.
+src/modules/training/commands/generated/comseq_register.ts(278,34): error TS1005: ',' expected.
+src/modules/training/commands/generated/comseq_register.ts(278,50): error TS1005: ';' expected.
+src/modules/training/commands/generated/train_main.ts(565,33): error TS1005: ')' expected.
+src/modules/training/commands/generated/train_main.ts(565,34): error TS1434: Unexpected keyword or identifier.
+src/modules/training/commands/generated/train_main.ts(565,35): error TS1128: Declaration or statement expected.
+src/modules/training/commands/generated/train_main.ts(565,36): error TS1161: Unterminated regular expression literal.
+src/modules/unknown/generated/arbeit.ts(39,44): error TS1127: Invalid character.
+src/modules/unknown/generated/arbeit.ts(39,46): error TS1005: ';' expected.
+src/modules/unknown/generated/arbeit.ts(39,63): error TS1005: ';' expected.
+src/modules/unknown/generated/arbeit.ts(39,65): error TS1161: Unterminated regular expression literal.
+src/modules/unknown/generated/arbeit.ts(247,34): error TS1005: ')' expected.
+src/modules/unknown/generated/arbeit.ts(247,48): error TS1005: ';' expected.
+src/modules/unknown/generated/arbeit.ts(261,19): error TS1005: ',' expected.
+src/modules/unknown/generated/boyfriend.ts(55,68): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(82,68): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(129,12): error TS1005: ')' expected.
+src/modules/unknown/generated/boyfriend.ts(129,27): error TS1005: ';' expected.
+src/modules/unknown/generated/boyfriend.ts(174,21): error TS1005: ',' expected.
+src/modules/unknown/generated/boyfriend.ts(183,19): error TS1005: ',' expected.
+src/modules/unknown/generated/boyfriend.ts(386,32): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(396,34): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(399,34): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(417,19): error TS1005: ',' expected.
+src/modules/unknown/generated/boyfriend.ts(541,32): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(552,34): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend.ts(554,34): error TS1109: Expression expected.
+src/modules/unknown/generated/boyfriend_lookschange.ts(55,19): error TS1005: ',' expected.
+src/modules/unknown/generated/c_club_girlname.ts(116,66): error TS1109: Expression expected.
+src/modules/unknown/generated/idol_produce.ts(129,35): error TS1005: ']' expected.
+src/modules/unknown/generated/idol_produce.ts(129,50): error TS1005: ')' expected.
+src/modules/unknown/generated/idol_produce.ts(129,51): error TS1128: Declaration or statement expected.
+src/modules/unknown/generated/idol_produce.ts(129,53): error TS1109: Expression expected.
+src/modules/unknown/generated/idol_produce.ts(129,59): error TS1005: ';' expected.
+src/modules/unknown/generated/idol_produce.ts(198,37): error TS1005: ']' expected.
+src/modules/unknown/generated/idol_produce.ts(198,52): error TS1005: ')' expected.
+src/modules/unknown/generated/idol_produce.ts(198,53): error TS1128: Declaration or statement expected.
+src/modules/unknown/generated/idol_produce.ts(198,55): error TS1109: Expression expected.
+src/modules/unknown/generated/idol_produce.ts(198,61): error TS1005: ';' expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(101,29): error TS1005: ']' expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(101,44): error TS1005: ')' expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(101,45): error TS1128: Declaration or statement expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(101,47): error TS1109: Expression expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(101,53): error TS1005: ';' expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(104,29): error TS1005: ']' expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(104,44): error TS1005: ')' expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(104,45): error TS1128: Declaration or statement expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(104,47): error TS1109: Expression expected.
+src/modules/unknown/generated/mission_13_tomoko.ts(104,53): error TS1005: ';' expected.
+src/modules/unknown/generated/mission_17_kurstina.ts(171,28): error TS1005: ',' expected.
+src/modules/unknown/generated/mission_17_kurstina.ts(171,30): error TS1005: ']' expected.
+src/modules/unknown/generated/mission_17_kurstina.ts(171,40): error TS1005: ';' expected.
+src/modules/unknown/generated/mission_17_kurstina.ts(175,28): error TS1005: ',' expected.
+src/modules/unknown/generated/mission_17_kurstina.ts(175,30): error TS1005: ']' expected.
+src/modules/unknown/generated/mission_17_kurstina.ts(175,40): error TS1005: ';' expected.
+src/modules/unknown/generated/mission_30_lieselotte.ts(13,23): error TS1127: Invalid character.
+src/modules/unknown/generated/mission_30_lieselotte.ts(13,24): error TS1127: Invalid character.
+src/modules/unknown/generated/mission_30_lieselotte.ts(118,29): error TS1005: ']' expected.
+src/modules/unknown/generated/mission_30_lieselotte.ts(118,44): error TS1005: ')' expected.
+src/modules/unknown/generated/mission_30_lieselotte.ts(118,45): error TS1128: Declaration or statement expected.
+src/modules/unknown/generated/mission_30_lieselotte.ts(118,47): error TS1109: Expression expected.
+src/modules/unknown/generated/mission_30_lieselotte.ts(118,53): error TS1005: ';' expected.
+src/modules/unknown/generated/randchoose.ts(21,21): error TS1005: ')' expected.
+src/modules/unknown/generated/randchoose.ts(21,32): error TS1005: ';' expected.
+src/modules/unknown/generated/randchoose.ts(23,5): error TS1128: Declaration or statement expected.
+src/modules/unknown/generated/randchoose.ts(36,42): error TS1005: ',' expected.
+src/modules/unknown/generated/randchoose.ts(38,30): error TS1005: ';' expected.
+src/modules/unknown/generated/randchoose.ts(47,42): error TS1005: ',' expected.
+src/modules/unknown/generated/randchoose.ts(49,33): error TS1005: ';' expected.
+src/modules/unknown/generated/randchoose.ts(58,54): error TS1005: ',' expected.
+src/modules/unknown/generated/randchoose.ts(74,21): error TS1005: ')' expected.
+src/modules/unknown/generated/randchoose.ts(74,57): error TS1005: ';' expected.
+src/modules/unknown/generated/shop_slave1.ts(16,44): error TS1005: ';' expected.
+src/modules/unknown/generated/special_title.ts(479,23): error TS1005: ';' expected.
+src/modules/unknown/generated/special_title.ts(479,28): error TS1434: Unexpected keyword or identifier.
+src/modules/unknown/generated/special_title.ts(479,35): error TS1109: Expression expected.
+src/modules/unknown/generated/special_title.ts(479,74): error TS1109: Expression expected.
+src/modules/unknown/generated/special_title.ts(479,103): error TS1005: ';' expected.
+src/modules/unknown/generated/special_title.ts(479,107): error TS1434: Unexpected keyword or identifier.
+src/modules/unknown/generated/special_title.ts(479,113): error TS1109: Expression expected.
+src/modules/unknown/generated/special_title.ts(771,23): error TS1005: ';' expected.
+src/modules/unknown/generated/special_title.ts(771,28): error TS1434: Unexpected keyword or identifier.
+src/modules/unknown/generated/special_title.ts(771,35): error TS1109: Expression expected.
+src/modules/unknown/generated/special_title.ts(771,74): error TS1109: Expression expected.
+src/modules/unknown/generated/special_title.ts(771,103): error TS1005: ';' expected.
+src/modules/unknown/generated/special_title.ts(771,107): error TS1434: Unexpected keyword or identifier.
+src/modules/unknown/generated/special_title.ts(771,113): error TS1109: Expression expected.
+src/modules/unknown/generated/video_title.ts(440,22): error TS1109: Expression expected.
+src/modules/unknown/generated/video_title.ts(478,22): error TS1109: Expression expected.
+src/modules/unknown/generated/video_title.ts(478,52): error TS1005: ';' expected.
+src/modules/unknown/generated/video_title.ts(517,24): error TS1109: Expression expected.
+src/modules/unknown/generated/video_title.ts(981,22): error TS1109: Expression expected.
+src/modules/unknown/generated/video_title.ts(1019,22): error TS1109: Expression expected.
+src/modules/unknown/generated/video_title.ts(1058,24): error TS1109: Expression expected.
+src/modules/visits/generated/kanon_order_detail.ts(81,54): error TS1109: Expression expected.
+src/modules/visits/generated/kanon_order_detail.ts(84,54): error TS1109: Expression expected.
+src/modules/visits/generated/kanon_order_detail.ts(88,54): error TS1109: Expression expected.
+src/modules/visits/generated/kanon_order_detail.ts(92,54): error TS1109: Expression expected.
+src/modules/visits/generated/miyako_labo.ts(103,45): error TS1005: ';' expected.
+src/modules/visits/generated/miyako_labo.ts(104,45): error TS1005: ';' expected.
+src/modules/visits/generated/miyako_labo.ts(105,45): error TS1005: ';' expected.
+src/modules/visits/generated/miyako_labo.ts(112,41): error TS1005: ';' expected.
+src/modules/visits/generated/miyako_labo.ts(120,41): error TS1005: ';' expected.
+src/modules/visits/generated/miyako_labo.ts(128,41): error TS1005: ';' expected.

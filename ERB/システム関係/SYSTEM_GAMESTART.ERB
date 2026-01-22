@@ -1,0 +1,195 @@
+﻿;このバリアントはeratohoRR v1.31.6およびeratohoA ver1,204およびeraIm@s_ver.0.17βdから
+;多数のスクリプトやルーチンを使用させてもらっています。
+;さらにeraIm@s(ver.poke)仮はeraIm@s, erapokeを元に作らせて戴いています。
+;
+;↑そんなバリアントを元にできたerAVを元に適当に手を入れたのがerAV_Hoです
+;
+;=================================================
+;ニューゲームスタート後最初に呼び出されるイベント関数
+;=================================================
+@EVENTFIRST
+
+LOADGLOBAL
+
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL 
+PRINTL 　　　　　　　 이 게임은 성적으로 과격한 묘사가 다수 포함되어 있어,
+PRINTL 　　　　　　　18세 미만인 분이나, 현실과 가상의 구별을 할 수 없는 분,
+PRINTL 　　　　　　 자신의 행동에 책임을 가질 수 없는 분의 플레이는 금지합니다.
+PRINTL 　　　　또한 이 게임에 등장하는 모든 등장인물들은 모두 만 19세 이상입니다.　
+PRINTL                이상의 사항을 확인하신 후, 게임을 시작해주십시오.
+PRINTL 
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+WAIT
+
+;一日目の午後からスタート(DAYは初期値で0)
+DAY = 0
+TIME = 0
+
+;調教対象と助手を空白にしておく
+TARGET = -1
+ASSI = -1
+
+;前回の調教対象と助手フラグも空白に
+FLAG:1 = -1
+FLAG:2 = -1
+
+;erapokeプレイ中フラグ
+FLAG:200 = 1
+
+;デフォルトでは通常主人公
+FLAG:201 = 0
+
+;デフォルトでは陰毛設定使用
+FLAG:36 = 1
+;デフォルトでは着衣設定使用
+FLAG:37 = 1
+;デフォルトでは임신設定使用
+FLAG:60 = 0
+
+FLAG:70 = 1
+
+CALL CHARA_PRICE
+
+$BEFORE_MODE_SELECT
+;ゲームモード選択
+PRINTL 
+PRINTL ★★모드를 선택해주십시오★★
+PRINTL [0] EASY     (120주 제한, 목표 금액 3000000Pt)
+PRINTL [1] NORMAL   (100주 제한, 목표 금액 5000000Pt)
+PRINTL [9] 모드 설명을 읽는다
+;PRINTL [2] HARD     ( 90일 기한, 목표 금액 $2400000)
+;PRINTL [3] POWERFUL ( 80일 기한, 목표 금액 $3600000)
+;旧Verでの難易度パワフル。一応参考に残しておきます
+;PRINTL [4] SUPER-PW ( 70일 기한, 목표 금액 $8000000)
+$INPUT_LOOP_0
+INPUT
+IF RESULT == 0
+	FLAG:3 = 120
+	FLAG:4 = 3000000
+	FLAG:5 = 1
+	FLAG:35 = 1
+	ITEM:6 = 1
+;	ITEM:28 = 1
+	MONEY = 2000
+	MASTER = NO:0
+	DAY:1 = 4
+	DAY:2 = 1
+	FLAG:23 = 10
+	FLAG:24 = 1
+	ADDCHARA 151
+	LOADGLOBAL
+	GLOBAL:351 += 1
+	SAVEGLOBAL
+	ABL:MASTER:12 += 1
+ELSEIF RESULT == 1
+	FLAG:3 = 100
+	FLAG:4 = 5000000
+	FLAG:5 = 2
+	FLAG:35 = 1
+	ITEM:6 = 1
+;	ITEM:28 = 1
+	MONEY = 1000
+	MASTER = NO:0
+	DAY:1 = 4
+	DAY:2 = 1
+	FLAG:23 = 10
+;ELSEIF RESULT == 2
+;	FLAG:3 = 90
+;	FLAG:4 = 2400000
+;	FLAG:5 = 3
+;	MONEY = 2500
+;	CALL START_SELECT_MASTER
+;ELSEIF RESULT == 3
+;	FLAG:3 = 80
+;	FLAG:4 = 3600000
+;	FLAG:5 = 4
+;	MONEY = 2000
+;	CALL START_SELECT_MASTER
+;	ABL:MASTER:12 -= 1
+ELSEIF RESULT == 9
+	PRINTL  EASY모드는 기한 120주(행동횟수 +40회), 목표 금액 3000000Pt(NORMAL의 3/5)이며
+	PRINTL  초기 포인트가 2000pt, 주인공 기교가 +1, 여배우후보「타카나시 노에미」가입한 상태로 시작합니다
+	PRINT  그러나 
+	CALL HINT_CHARA("EASY모드를 경유한 데이터")
+	PRINTL 는 실적을 당성할 수 없습니다
+	PRINTL  실적 달성을 목표한다면 NORMAL모드로 시작하길 바랍니다
+	PRINTL  그리고 캐릭터 클리어 보너스는 EASY모드에서도 습득 가능합니다
+	PRINTL  NORMAL로 놀기 전에 EASY를 탐구하는 것도 헛된 일은 아닐 겁니다…… 노력에 걸맞을지는 몰라도요
+	PRINTW
+	GOTO BEFORE_MODE_SELECT
+ELSE
+	GOTO INPUT_LOOP_0
+ENDIF
+
+;ここで「開始前にコンフィグを変更しますか?」あたりにしたい。要検討
+PRINTL  네토라레 기능을 ON으로 설정합니까?
+$INPUT_LOOP_2
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+PRINTL [2] - 그게 뭐야?
+INPUT
+	IF RESULT == 0
+		PRINTL  네토라레 기능을 ON으로 설정했습니다
+		PRINTL
+		FLAG:540 = 0
+	ELSEIF RESULT == 1
+		PRINTL  네토라레 기능을 OFF로 설정했습니다
+		PRINTL
+		FLAG:540 = 1
+	ELSEIF RESULT == 2
+		PRINTL  등장하는 여성 캐릭터들은 항상 다른 남자들에게 수작을 당할 가능성이 있게 됩니다
+		PRINTL  그것은 동급생이거나, 호스트이거나, 치한이거나……
+		PRINTL  여성 캐릭터들이 다른 남성의 소유가 되는 것이 싫은 분께서는 OFF하시는 것을 권장합니다
+		PRINTW
+		GOTO INPUT_LOOP_2
+	ELSE
+		GOTO INPUT_LOOP_2
+	ENDIF
+
+IF GLOBAL:200 > 0
+	CALL CLEARBONUS
+ENDIF
+
+CALL SET_VIDEOSALE
+
+SIF FLAG:5 == 1
+	PRINTFORMW 《키류 조직으로부터 업소녀「타카나시 노에미」가 파견되었습니다》
+CALL START_SELECT_OPENING
+BEGIN SHOP
+
+RETURN 0
+
+;オープニング表示
+@START_SELECT_OPENING
+
+$INPUT_LOOP_2
+PRINTL ★오프닝 스토리를 생략합니까?★
+PRINTL [0] - 생략한다
+PRINTL [1] - 생략하지 않는다
+PRINTL [2] - 세줄요약
+INPUT
+IF RESULT == 0
+	DRAWLINE
+	PRINTL  (오프닝 스토리를 생략합니다)
+	;DRAWLINE
+	;$INPUT_LOOP_3
+	;PRINTL  정기 이벤트를 생략합니까?
+	;PRINTL [0] - 생략한다
+	;PRINTL [1] - 생략하지 않는다
+	;INPUT
+	;IF RESULT == 0
+	;	FLAG:8 = 0
+	;ELSEIF RESULT == 1
+	;	FLAG:8 = 1
+	;ELSE
+	;	GOTO INPUT_LOOP_3
+	;ENDIF
+ELSEIF RESULT == 1
+	CALL OPENING
+ELSEIF RESULT == 2
+	CALL SIMPLE_OPENING
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+

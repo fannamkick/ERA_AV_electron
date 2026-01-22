@@ -1,0 +1,157 @@
+﻿;===========================================================
+;ヴァギナの形状
+;===========================================================
+@VAGINAFORM
+IF CFLAG:608 == 1 && FLAG:140 == 0
+	PRINT 소음순이 삐져나와 있습니다
+ELSEIF CFLAG:608 == 2 && FLAG:140 == 0
+	PRINT 까맣게 변한 소음순이 삐져나와 있습니다
+ELSE
+	PRINT 예쁜 도끼자국입니다
+ENDIF
+;===========================================================
+;ヴァギナの形状変更
+;===========================================================
+@VAGINAFORM_CHANGE
+V = 0
+
+REPEAT CHARANUM
+	IF TALENT:COUNT:122
+		CONTINUE
+	ELSEIF TALENT:COUNT:122 == 0
+		V = EXP:COUNT:0 + EXP:COUNT:10
+		IF V >= 120 && V < 300
+			CFLAG:COUNT:608 = 1
+		ELSEIF V >= 300
+			CFLAG:COUNT:608 = 2
+		ENDIF
+		V = 0
+	ENDIF
+REND
+		
+;===========================================================
+;페니스の形状
+;===========================================================
+@PENISFORM
+IF CFLAG:609 == 0
+	PRINT 조그마한 
+ELSEIF CFLAG:609 == 1
+	PRINT 
+ELSEIF CFLAG:609 == 2
+	PRINT 극태 
+ENDIF
+
+IF CFLAG:611 == 0
+	PRINTFORM 진성포경
+ELSEIF CFLAG:611 == 1
+	PRINTFORM 가성포경
+ELSEIF CFLAG:611 == 2 && TALENT:1 == 1
+	PRINTFORM 가성포경
+ELSEIF CFLAG:611 == 2 && TALENT:1 == 0
+	PRINTFORM 벗겨진
+ELSEIF CFLAG:611 == 3
+	PRINTFORM 벗겨진
+ELSE
+	PRINTFORM 가성포경
+ENDIF
+
+;===========================================================
+;자지사이즈
+;===========================================================
+@DECIDE_PENISSIZE
+
+IF CFLAG:T:609 == 0
+	BASE:T:50 = 9 + RAND:4
+ELSEIF CFLAG:T:609 == 1
+	BASE:T:50 = 13 + RAND:4
+ELSEIF CFLAG:T:609 == 2
+	BASE:T:50 = 17 + RAND:4
+ENDIF
+
+;===========================================================
+;자지사이즈任意選択
+;===========================================================
+@DECIDE_PENISSELECT
+
+$INPUTLOOP_START
+PRINTL 《자지사이즈를 선택해주십시오》
+
+PRINTL [0] - 작음
+PRINTL [1] - 평균
+PRINTL [2] - 거근
+
+$INPUTLOOP_1
+INPUT
+
+IF RESULT == 0
+	CFLAG:T:609 = 0
+	BASE:T:50 = 9 + RAND:4
+ELSEIF RESULT == 1
+	CFLAG:T:609 = 1
+	BASE:T:50 = 13 + RAND:4
+ELSEIF RESULT == 2
+	CFLAG:T:609 = 2
+	BASE:T:50 = 17 + RAND:4
+ELSE
+	GOTO INPUTLOOP_1
+ENDIF
+
+PRINTL 《포경 상태를 선택해주십시오》
+
+PRINTL [0] - 진성포경
+PRINTL [1] - 가성포경(영속적)
+PRINTL [2] - 가성포경(동정상실 후 「벗겨지」게 됨)
+PRINTL [3] - 벗겨진 상태
+
+$INPUTLOOP_2
+INPUT
+
+IF RESULT == 0
+	CFLAG:T:611 = 0
+ELSEIF RESULT == 1
+	CFLAG:T:611 = 1
+ELSEIF RESULT == 2
+	CFLAG:T:611 = 2
+ELSEIF RESULT == 3
+	CFLAG:T:611 = 3
+ELSE
+	GOTO INPUTLOOP_2
+ENDIF
+
+PRINTFORM %NAME:T%에게 달린 후타나리 페니스를 {BASE:T:50}cm인 
+
+IF CFLAG:T:609 == 0
+	PRINTFORM 작은 
+ELSEIF CFLAG:T:609 == 1
+	PRINTFORM 
+ELSEIF CFLAG:T:609 == 2
+	PRINTFORM 극태 
+ENDIF
+
+IF CFLAG:T:611 == 0
+	PRINTFORM 진성포경 
+ELSEIF CFLAG:T:611 == 1
+	PRINTFORM 가성포경 
+ELSEIF CFLAG:T:611 == 2
+	PRINTFORM 가성포경 
+ELSEIF CFLAG:T:611 == 3
+	PRINTFORM 벗겨진 
+ENDIF
+
+PRINTFORML 페니스로 합니까?
+
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUTLOOP_3
+INPUT
+
+IF RESULT == 0
+	PRINTFORMW 《%조사처리(CALLNAME:T,"는")%【%TALENTNAME:121%】가 되었다》
+	TALENT:T:121 = 1
+	TALENT:T:1 = 1
+ELSEIF RESULT == 1
+	PRINTFORML 다시 선택해주십시오
+	GOTO INPUTLOOP_START
+ELSE
+	GOTO INPUTLOOP_3
+ENDIF

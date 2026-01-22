@@ -1,0 +1,41 @@
+﻿;===========================================================
+;実績・GOLD RUSH
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_10
+RESULTS = GOLD RUSH
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_10
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:10 == 0 && DIFFICULTY_CHECK() && MONEY:2 >= 5000000
+	GLOBAL:10 = 1
+RETURN GLOBAL:10
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_10
+; 解説文
+PRINTFORML 당신이 여자아이를 지도하고, 촬영해온 AV는 훌륭한 총매상을 올렸습니다
+PRINTFORML 그런 당신의 뒤를 따라, 신규 라벨을 발매하는 사람들이 끊이지 않는 것 같습니다
+PRINTFORMW 이 현상을 업계에서는, 역사를 모방해『골드 러시』라고 부르고 있다 합니다
+; ボーナスなどの処理はここ以降に記述する
+IF FLAG:550 == 0
+	PRINTFORML 골드 러시의 주역인 당신에게 키류 조직으로부터 보수가 있습니다
+	PRINTFORML 《보수를 받습니까?》
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	PRINTL ※보수를 받으면 일부 실적의 해금・사용이 불가능해집니다!
+	$INPUTLOOP
+	INPUT
+	IF RESULT == 0
+		PRINTFORMW 《키류 조직으로부터 보수 10만 포인트를 받았습니다》
+		FLAG:550 = 1
+		MONEY += 100000
+	ELSEIF RESULT == 1
+		PRINTFORMW 《키류 조직으로부터 보수를 받지 않았습니다》
+		RETURN
+	ELSE
+		GOTO INPUTLOOP
+	ENDIF
+ENDIF

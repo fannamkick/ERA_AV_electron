@@ -1,0 +1,65 @@
+.titlebar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: 32px;
+  background: #0a0a0a;
+  border-bottom: 1px solid #333;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.titlebar-drag-region {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  -webkit-app-region: drag;
+}
+
+.titlebar-title {
+  font-size: 0.875rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.titlebar-controls {
+  display: flex;
+  align-items: stretch;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.titlebar-button:hover {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+.titlebar-button.close:hover {
+  background: #e81123;
+  color: #ffffff;
+}
+
+.titlebar-button svg {
+  pointer-events: none;
+}
+
+/* 브라우저 환경에서는 숨김 */
+body:not(.electron) .titlebar {
+  display: none;
+}

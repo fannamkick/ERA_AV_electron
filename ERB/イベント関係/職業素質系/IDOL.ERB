@@ -1,0 +1,73 @@
+﻿;===========================================================
+;아이돌絡みのイベント
+;===========================================================
+@IDOL_EVENT
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:203 == 1
+		CALL START_IDOLEVENT
+	ENDIF
+REND
+;===========================================================
+;イベント開始
+;===========================================================
+@START_IDOLEVENT
+IF RAND:8 == 0
+	CALL NOTHING
+ELSEIF RAND:7 == 0
+	CALL EVENT_IDOLCONCERT
+ELSEIF RAND:6 == 0
+	CALL EVENT_IDOLCONCERT
+ELSEIF RAND:5 == 0
+	CALL EVENT_IDOLGRAVURE
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSEIF RAND:4 == 0
+	CALL NOTHING
+ELSEIF RAND:3 == 0
+	CALL EVENT_IDOLGRAVURE
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSEIF RAND:2 == 0 && FLAG:540 == 0
+	CALL EVENT_IDOLCONCERT
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSEIF RAND:1 == 0
+	CALL NOTHING
+ELSE
+	CALL NOTHING
+ENDIF
+
+;===========================================================
+;グラビア撮影
+;===========================================================
+@EVENT_IDOLGRAVURE
+PRINTFORML 휴일을 이용해, %NAME:COUNT%의 그라비아 촬영을 했다……
+;グラビア撮影口上
+TARGET = COUNT
+TFLAG:13 = 7
+CALL SELF_KOJO
+PRINTL
+;実際にお外で水着になることも当然あるので…
+IF RAND:2 == 0
+	EXP:COUNT:12 += 1
+	PRINTL 야외노출경험 +1
+ENDIF
+PRINTL 피사경험 +5
+EXP:COUNT:70 += 5
+;どうせたまにしか発生しないイベントだし…あーいいっすね~(適当)
+EXP:COUNT:120 += 1
+;===========================================================
+;歌唱練習(いきなりコンサートも変だと思ったので)
+;===========================================================
+@EVENT_IDOLCONCERT
+PRINTFORML 휴일을 이용해, %NAME:COUNT%의 가창 트레이닝을 했다……
+;歌唱練習口上
+TARGET = COUNT
+TFLAG:13 = 8
+CALL SELF_KOJO
+PRINTL
+PRINTL 무용경험 +5
+PRINTL 가창경험 +5
+EXP:COUNT:71 += 5
+EXP:COUNT:72 += 5
+;どうせたまにしか発生しないイベントだし…あーいいっすね~(適当)
+EXP:COUNT:121 += 1

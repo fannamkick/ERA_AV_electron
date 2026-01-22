@@ -1,0 +1,49 @@
+﻿;=================================================
+;아야노ラボ
+;=================================================
+@AYANO_ORDER
+
+$INPUT_LOOP
+DRAWLINE
+PRINTL XX시 경찰서
+PRINTL 《아야노에게 다양한『부탁』을 할 수 있습니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+;IF FLAG:300 != 0
+;	PRINTL  [ 0] - 治安取締を強化してもらう     　   (의뢰료:   10000포인트)
+;ENDIF
+IF FLAG:600 == 0
+	PRINTL  [ 0] - 치안단속을 강화해달라     　    (의뢰료:  10000포인트)
+ELSE
+	PRINTL  [ 0] - 치안단속을 약화해달라　     　  (의뢰료:  10000포인트)
+ENDIF
+IF CFLAG:MASTER:761 == 0
+	PRINTL  [ 1] - 아야노가의 메이드를 소개해달라  (의뢰료:  100000포인트)
+ENDIF
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0 && FLAG:600 == 0
+	CALL SECURITY_UP
+ELSEIF RESULT == 0 && FLAG:600 == 1
+	CALL SECURITY_DOWN
+ELSEIF RESULT == 1 && CFLAG:761 == 0
+	CALL ADD_FUMIKA
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+GOTO INPUT_LOOP

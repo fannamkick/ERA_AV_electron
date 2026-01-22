@@ -1,0 +1,648 @@
+﻿;========================================================
+;IWS(この아이돌はわしが育てた)システム関連
+;言うまでもなく某erastaのパクリ
+;========================================================
+;スリーサイズを表示したり, おっぱいを大きくしたりします。
+;魔改造や임신時の処理もここで。
+
+;使用フラグ
+;FLAG:38 IWSシステム強度
+;CFLAG:36 カップサイズ
+;CFLAG:121 임신時の増加체중
+;CFLAG:122 임신時の増加가슴(IWSによるボーナス除く)
+;CFLAG:123 임신時の増加허리
+;CFLAG:124 임신時の増加엉덩이
+
+;自分用覚え書き
+;その他のファイルで改造したところ
+;INFO.ERB スリーサイズ表示@SHOW_INFO_BODYSIZEへリンク
+;SYSTEM_CONFIG.ERB コンフィグにIWS設定をプラス
+;SYSTEM_SOURCE.ERB 절정時の成長処理@CHECK_IWSへリンク
+;SHOP_LABO.ERB 거유化@MODIFY_BUSTUP_IWS・빈유化@MODIFY_BUSTDOWN_IWSへリンク
+;EVENT_PREGNANCY.ERB 임신発覚時の処理に分岐を作った(複数箇所)
+;EVENT_NEXTDAY.ERB 임신時の成長処理@GROW_3_SIZE_IWSへリンク
+
+;-------------------------------------------------
+;スリーサイズの表示
+;-------------------------------------------------
+@SHOW_INFO_BODYSIZE
+IF BASE:20 == 0 
+	PRINTFORM 신장: 불명
+ELSE 
+	PRINTFORM 신장: {BASE:20}cm
+ENDIF
+
+IF BASE:21 == 0 
+	PRINTFORM   체중: 불명
+ELSE 
+	PRINTFORM   체중: {BASE:21}kg
+ENDIF
+
+IF BASE:22 == 0 
+	PRINTFORM   B: 불명
+ELSEIF FLAG:38 == 0
+	PRINTFORM   B: {BASE:22}cm
+ELSE
+	PRINTFORM   B: {BASE:22}.
+		SIF BASE:32 < 10
+		PRINT 0
+	PRINTFORM {BASE:32}cm
+ENDIF
+PRINT (
+CALL SHOW_CUPSIZE
+PRINT )
+
+IF BASE:23 == 0 
+	PRINTFORM   W: 불명
+ELSE 
+	PRINTFORM   W: {BASE:23}cm
+ENDIF
+
+IF BASE:24 == 0 
+	PRINTFORM   H: 불명
+ELSE 
+	PRINTFORM   H: {BASE:24}cm
+ENDIF
+PRINTL
+IF TALENT:121 == 1 || TALENT:122 == 1
+	PRINTFORM 　
+	PRINTFORM 발기시 자지사이즈: {BASE:50}cm(
+	IF CFLAG:611 == 3
+		PRINTFORM 자연포경
+	ELSEIF CFLAG:611 == 2
+		PRINTFORM 가성포경
+	ELSEIF CFLAG:611 == 1
+		PRINTFORM 가성포경
+	ELSE
+		PRINTFORM 진성포경
+	ENDIF
+	PRINTFORML )
+ENDIF
+
+;-------------------------------------------------
+;カップサイズ測定
+;-------------------------------------------------
+@CHECK_CUPSIZE
+;Sはカップサイズ用変数, Xは가슴補正値, Yは허리補正値, Zは身長補正値
+X = ((((BASE:22 * 100) - (BASE:20 * 54)) * 100) / 250)
+Y = ((((BASE:20 * 38) - (BASE:23 * 100)) * 100) / 342)
+;임신時は임신発覚時の허리から計算
+SIF TALENT:153
+	Y = ((((BASE:20 * 38) - ((BASE:23 - (CFLAG:123 / 100)) * 100)) * 100) / 342)
+Z = ((((BASE:20 * 100) - 15880) * 100) / 2300)
+S = X + Y + Z
+CFLAG:36 = 0
+	$CHECK_LOOP
+	IF S > -450
+		CFLAG:36 += 1
+		S -= 100
+		GOTO CHECK_LOOP
+	ELSE
+		X = 0
+		Y = 0
+		Z = 0
+		S = 0
+	ENDIF
+
+
+;-------------------------------------------------
+;カップサイズ表示
+;-------------------------------------------------
+@SHOW_CUPSIZE
+CALL CHECK_CUPSIZE
+	IF CFLAG:36 == 0
+		PRINT 측정불가
+	ELSEIF CFLAG:36 == 1
+		PRINT AA
+	ELSEIF CFLAG:36 == 2
+		PRINT A
+	ELSEIF CFLAG:36 == 3
+		PRINT B
+	ELSEIF CFLAG:36 == 4
+		PRINT C
+	ELSEIF CFLAG:36 == 5
+		PRINT D
+	ELSEIF CFLAG:36 == 6
+		PRINT E
+	ELSEIF CFLAG:36 == 7
+		PRINT F
+	ELSEIF CFLAG:36 == 8
+		PRINT G
+	ELSEIF CFLAG:36 == 9
+		PRINT H
+	ELSEIF CFLAG:36 == 10
+		PRINT I
+	ELSEIF CFLAG:36 == 11
+		PRINT J
+	ELSEIF CFLAG:36 == 12
+		PRINT K
+	ELSEIF CFLAG:36 == 13
+		PRINT L
+	ELSEIF CFLAG:36 == 14
+		PRINT M
+	ELSEIF CFLAG:36 == 15
+		PRINT N
+	ELSEIF CFLAG:36 == 16
+		PRINT O
+	ELSEIF CFLAG:36 == 17
+		PRINT P
+	ELSEIF CFLAG:36 == 18
+		PRINT Q
+	ELSEIF CFLAG:36 == 19
+		PRINT R
+	ELSEIF CFLAG:36 == 20
+		PRINT S
+	ELSEIF CFLAG:36 == 21
+		PRINT T
+	ELSEIF CFLAG:36 == 22
+		PRINT ∪
+	ELSEIF CFLAG:36 == 23
+		PRINT V
+	ELSEIF CFLAG:36 == 24
+		PRINT W
+	ELSEIF CFLAG:36 == 25
+		PRINT X
+	ELSEIF CFLAG:36 == 26
+		PRINT Y
+	ELSEIF CFLAG:36 == 27
+		PRINT Z
+	ELSE
+		PRINT 측정불가
+	ENDIF
+
+;-------------------------------------------------
+;절정時の成長処理
+;-------------------------------------------------
+@CHECK_IWS
+;가슴成長計算
+U = 0
+IF B
+	U = ((B + ABL:1) * FLAG:38)
+		;절벽持ちは成長しない。それが自然の摂理。
+		SIF TALENT:116
+			U = 0
+	BASE:32 += U
+;가슴成長処理
+	IF BASE:32 >= 100
+			BASE:22 += BASE:32 /100
+			BASE:32 = BASE:32 % 100
+	ENDIF
+;가슴成長表示
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	IF U % 100 < 10
+		PRINTFORML %CALLNAME:TARGET%의 가슴은 {U / 100}.{U % 100}cm 성장했다.
+	ELSE
+		PRINTFORML %CALLNAME:TARGET%의 가슴은 {U / 100}.{U % 100}cm 성장했다.
+	ENDIF
+	CALL BUST_RANKUP
+ENDIF
+
+;-------------------------------------------------
+;部位のランク変化処理
+;-------------------------------------------------
+@BUST_RANKUP
+CALL CHECK_CUPSIZE
+	IF CFLAG:36 > 1 && TALENT:116
+		TALENT:116 = 0
+		TALENT:109 = 1
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【절벽】에서【빈유】가 되었다.
+	ELSEIF CFLAG:36 > 3 && TALENT:109
+		TALENT:109 = 0
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【빈유】가 아니게 되었다.
+	ELSEIF CFLAG:36 > 5 && TALENT:110 == 0 && TALENT:114 == 0 && TALENT:251 == 0 && TALENT:252 == 0 && TALENT:253 == 0
+		TALENT:110 = 1
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【거유】가 되었다.
+	ELSEIF CFLAG:36 > 7  && TALENT:110
+		TALENT:110 = 0
+		TALENT:114 = 1
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【거유】에서【폭유】가 되었다.
+	ELSEIF CFLAG:36 > 10 && TALENT:114 && TALENT:251 == 0 && TALENT:252 == 0 && TALENT:253 == 0
+		TALENT:251 = 1
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【폭유】에서【초유】가 되었다.
+	ELSEIF CFLAG:36 > 14 && TALENT:251
+		TALENT:251 = 0
+		TALENT:252 = 1
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【초유】에서【마유】가 되었다.
+	ELSEIF CFLAG:36 > 19 && TALENT:252
+		TALENT:252 = 0
+		TALENT:253 = 1
+		PRINTL ＊바스트 랭크 업!＊
+		PRINTFORMW %타겟은()%【마유】에서【신유】가 되었다.
+	ENDIF
+	
+@BUST_RANKDOWN
+CALL CHECK_CUPSIZE
+	IF CFLAG:36 <= 19 && TALENT:253
+		TALENT:252 = 1
+		TALENT:253 = 0
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【신유】에서【마유】가 되었다.
+	ELSEIF CFLAG:36 <= 14 && TALENT:252
+		TALENT:251 = 1
+		TALENT:252 = 0
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【마유】에서【초유】가 되었다.
+	ELSEIF CFLAG:36 <= 10 && TALENT:251
+		TALENT:114 = 1
+		TALENT:251 = 0
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【초유】에서【폭유】가 되었다.
+	ELSEIF CFLAG:36 <= 7  && TALENT:114
+		TALENT:110 = 1
+		TALENT:114 = 0
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【폭유】에서【거유】가 되었다.
+	ELSEIF CFLAG:36 <= 5 && TALENT:110
+		TALENT:110 = 0
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【거유】가 아니게 되었다.
+	ELSEIF CFLAG:36 <= 3 && TALENT:109 == 0 && TALENT:116 == 0
+		TALENT:109 = 1
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【빈유】가 되었다.
+	ELSEIF CFLAG:36 <= 1 && TALENT:109
+		TALENT:116 = 1
+		TALENT:109 = 0
+		PRINTL ＊바스트 랭크 다운!＊
+		PRINTFORMW %타겟은()%【빈유】에서【절벽】이 되었다.
+	ENDIF
+
+;-------------------------------------------------
+;魔改造時の가슴カップ変更処理
+;-------------------------------------------------
+;完全に別仕様。カップサイズを1個引き上げなので元より効果少。ただし無制限。
+
+@MODIFY_BUSTUP_IWS
+;変更対象を一時TARGETに。動作的には不安だが･･･
+A = TARGET
+TARGET = RESULT
+
+;価格決定。育成システムがあるので値段は高め。
+CALL CHECK_CUPSIZE
+C = (20000 + (CFLAG:36 * 3000))
+
+$INPUT_LOOP
+
+PRINTFORML %타겟을(1)% 거유화시키려면, {C}포인트 필요합니다
+PRINTFORML %타겟을(1)% 거유화시킵니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	TARGET = A
+	RETURN 0
+ELSEIF RESULT == 0
+	IF MONEY < C
+		PRINTW 소지금이 부족합니다
+		TARGET = A
+		RETURN 0
+	ENDIF
+	;カップサイズが1個上がるまで1cmずつ成長させる。
+	P = CFLAG:36
+	$LOOP_BUSTUP
+	IF CFLAG:36 == P
+		BASE:22 += 1
+		CALL CHECK_CUPSIZE
+		GOTO LOOP_BUSTUP
+	ELSE
+		IF BASE:32 < 10 
+			PRINTFORM 《%NAME:TARGET%의 가슴은 {BASE:22}.0{BASE:32}cm(
+		ELSE
+			PRINTFORM 《%NAME:TARGET%의 가슴은 {BASE:22}.{BASE:32}cm(
+		ENDIF
+		CALL SHOW_CUPSIZE
+		PRINTFORMW 컵)이 되었다》
+		CALL BUST_RANKUP
+		P = 0
+		MONEY -= C
+		TARGET = A
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+@MODIFY_BUSTDOWN_IWS
+;変更対象を一時TARGETに。動作的には不安だが･･･
+A = TARGET
+TARGET = RESULT
+CALL CHECK_CUPSIZE
+
+;無いモノは減らせない
+IF CFLAG:36 <= 1
+	PRINTFORMW %NAME:TARGET%의 가슴은 이 이상 작아질 수 없습니다.
+	TARGET = A
+	RETURN 0
+ENDIF
+
+;価格決定。基本的には安い。
+C = 10000
+	;빈유は希少価値。
+	SIF CFLAG:36 <= 4 
+		C = 160000 - (CFLAG:36 * 30000)
+
+$INPUT_LOOP
+
+PRINTFORML %타겟을(1)% 빈유화시키려면, {C}포인트 필요합니다
+PRINTFORML %타겟을(1)% 빈유화시킵니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	TARGET = A
+	RETURN 0
+ELSEIF RESULT == 0
+	IF MONEY < C
+		PRINTW 소지금이 부족합니다
+		TARGET = A
+		RETURN 0
+	ENDIF
+	;カップサイズが1個下がるまで1cmずつ縮ませる。
+	P = CFLAG:36
+	$LOOP_BUSTDOWN
+	IF CFLAG:36 == P
+		BASE:22 -= 1
+		CALL CHECK_CUPSIZE
+		GOTO LOOP_BUSTDOWN
+	ELSE
+		IF BASE:32 < 10 
+			PRINTFORM 《%NAME:TARGET%의 가슴은 {BASE:22}.0{BASE:32}cm(
+		ELSE
+			PRINTFORM 《%NAME:TARGET%의 가슴은 {BASE:22}.{BASE:32}cm(
+		ENDIF
+		CALL SHOW_CUPSIZE
+		PRINTFORMW 컵)이 되었다》
+		CALL BUST_RANKDOWN
+		P = 0
+		MONEY -= C
+		TARGET = A
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+;-------------------------------------------------
+;임신・出産時のスリーサイズ変更処理
+;-------------------------------------------------
+@GROW_3_SIZE_IWS
+;毎日ちょっとずつ成長する。
+
+A = TARGET
+TARGET = COUNT
+
+;체중増加
+IF TALENT:153
+	U = 10 + RAND:5
+	BASE:35 += U
+	CFLAG:121 += U
+	IF BASE:35 >= 100
+		BASE:21 += BASE:35 / 100
+		BASE:35 = BASE:35 % 100
+	ENDIF
+ENDIF
+
+;가슴成長
+U = 15 + RAND:5
+;IWSがオンの場合成長値にボーナスが付く。
+;ボーナス分は出産육아後にも維持される。
+BASE:32 += U + (FLAG:38 * (RAND:5 + 5))
+CFLAG:122 += U
+IF BASE:32 >= 100
+		BASE:22 += BASE:32 /100
+		BASE:32 = BASE:32 % 100
+ENDIF
+CALL BUST_RANKUP
+
+;허리成長
+IF TALENT:153
+	U = 70 + RAND:20
+	BASE:33 += U
+	CFLAG:123 += U
+	IF BASE:33 >= 100
+		BASE:23 += BASE:33 /100
+		BASE:33 = BASE:33 % 100
+	ENDIF
+ENDIF
+
+;엉덩이成長
+IF TALENT:153
+	U = 10 + RAND:5
+	BASE:34 += U
+	CFLAG:124 += U
+	IF BASE:34 >= 100
+		BASE:24 += BASE:34 /100
+		BASE:34 = BASE:34 % 100
+	ENDIF
+ENDIF
+
+TARGET = A
+
+@REVERSE_3_SIZE_IWS
+;引き下げは一気に行う
+
+A= TARGET
+TARGET = C
+
+;체중減少
+BASE:35 -= CFLAG:121
+IF BASE:35 < 0
+	BASE:21 += BASE:35 / 100
+	BASE:35 = 0 - (BASE:35 % 100)
+ENDIF
+CFLAG:121 = 0
+
+;가슴縮小
+IF TALENT:154 == 1
+ELSE
+	BASE:32 -= CFLAG:122
+	IF BASE:32 < 0
+		BASE:22 += BASE:32 / 100
+		BASE:32 = 0 - (BASE:32 % 100)
+	ENDIF
+	CFLAG:122 = 0
+	;複数ランクダウンが有り得る
+	CALL BUST_RANKDOWN
+	CALL BUST_RANKDOWN
+
+ENDIF
+;허리縮小
+BASE:33 -= CFLAG:123
+IF BASE:33 < 0
+	BASE:23 += BASE:33 / 100
+	BASE:33 = 0 - (BASE:33 % 100)
+ENDIF
+CFLAG:123 = 0
+
+;엉덩이縮小
+BASE:34 -= CFLAG:124
+IF BASE:34 < 0
+	BASE:24 += BASE:34 / 100
+	BASE:34 = 0 - (BASE:34 % 100)
+ENDIF
+CFLAG:124 = 0
+
+TARGET = A
+
+;-------------------------------------------------
+;スリーサイズの手動設定
+;-------------------------------------------------
+@MANUAL_SET_3SIZE
+$INPUT_LOOP
+DRAWLINE
+PRINTL 쓰리 사이즈를 수동으로 설정합니다
+PRINTL 설정 가능한 것은 쓰리 사이즈 미설정인 캐릭터에 한정됩니다
+PRINTL 어느 캐릭터를 설정하시겠습니까?
+REPEAT CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF BASE:COUNT:20 == 0
+		PRINTFORML [{COUNT}] - %CALLNAME:COUNT%
+REND
+DRAWLINE
+PRINTL  [999] - 그만둔다
+
+INPUT
+IF RESULT == 999
+		RETURN 0
+ELSEIF BASE:RESULT:20 == 0
+
+	A = TARGET
+	TARGET = RESULT
+
+	;身長
+	$INPUT_LOOP_1
+	PRINTFORML %NAME:TARGET%의 신장을 설정해주세요(140-180)
+	INPUT
+	IF RESULT < 140 || RESULT > 180
+		PRINTL 부적절한 값입니다. 다시 입력해주세요
+		GOTO INPUT_LOOP_1
+	ELSE
+		B = RESULT
+		BASE:20 = RESULT
+	ENDIF
+
+	;체중
+	$INPUT_LOOP_2
+	PRINTFORML %NAME:TARGET%의 체중을 설정해주세요({B * 25 / 100}-{B * 30 / 100}) 
+	INPUT
+	IF RESULT < B * 25 / 100 || RESULT > B * 30 / 100
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_2
+	ELSE
+		BASE:21 = RESULT
+	ENDIF
+
+	;가슴
+	$INPUT_LOOP_3
+	PRINTFORML %NAME:TARGET%의 가슴 사이즈를 설정해주세요({B * 45 / 100}-{B * 55 / 100})
+	INPUT
+	IF RESULT < B * 45 / 100 || RESULT > (B * 55 / 100)
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_3
+	ELSE
+		C = RESULT
+		BASE:22 = RESULT
+	ENDIF
+
+	;허리
+	$INPUT_LOOP_4
+	PRINTFORML %NAME:TARGET%의 허리 사이즈를 설정해주세요({B * 35 / 100}-{B * 40 / 100})
+	INPUT
+	IF RESULT < B * 35 / 100 || RESULT > B * 40 / 100
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_4
+	ELSE
+		BASE:23 = RESULT
+	ENDIF
+
+	;엉덩이
+	$INPUT_LOOP_5
+	PRINTFORML %NAME:TARGET%의 엉덩이 사이즈를 설정해주세요({C * 95 / 100}-{C * 105 / 100})
+	INPUT
+	IF RESULT < C * 95 / 100 || RESULT > C * 105 / 100
+		PRINTL 부적절한 값입니다. 다시 설정해주세요
+		GOTO INPUT_LOOP_5
+	ELSE
+		BASE:24 = RESULT
+	ENDIF
+	
+	;設定の確認
+	PRINTFORML %NAME:TARGET%의 쓰리 사이즈 설정은 다음과 같습니다
+	CALL SHOW_INFO_BODYSIZE
+	PRINTL 이렇게 변경합니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 다시 설정한다
+	PRINTL [2] - 이 캐릭터의 설정을 그만둔다
+	$INPUT_LOOP_6
+	INPUT
+	IF RESULT == 0
+		PRINTFORMW %NAME:TARGET%의 쓰리 사이즈를 설정했습니다
+		TARGET = A
+		GOTO INPUT_LOOP
+	ELSEIF RESULT == 1
+		PRINTW 다시 설정하겠습니다
+		GOTO INPUT_LOOP_1
+	ELSEIF RESULT == 2
+		PRINTW 이 캐릭터의 설정을 중지하겠습니다
+		BASE:20 = 0
+		BASE:21 = 0
+		BASE:22 = 0
+		BASE:23 = 0
+		BASE:24 = 0
+		TARGET = A
+		GOTO INPUT_LOOP
+	ELSE
+		GOTO INPUT_LOOP_6
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+;-------------------------------------------------
+;途中導入時のCSVデータ読み込み
+;-------------------------------------------------
+@READ_CSV_IWS
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL CSV 파일로부터 쓰리 사이즈 정보를 불러옵니다.
+	PRINTL 불러올 캐릭터의 분류를 선택해주세요.
+	PRINTL 
+	PRINTL  [0] - 미설정 캐릭터만(패치를 하였을 때 사용해주세요)
+	PRINTL  [1] - 등록된 캐릭터 전부(모두의 사이즈가 리셋됩니다!)
+	PRINTL  [9] - 그만둔다
+	INPUT
+	IF RESULT == 9
+		RETURN 0
+	ELSEIF RESULT == 0
+			REPEAT CHARANUM
+			IF BASE:COUNT:20 == 0
+				BASE:COUNT:20 = CSVBASE(NO:COUNT, 20, 0)
+				BASE:COUNT:21 = CSVBASE(NO:COUNT, 21, 0)
+				BASE:COUNT:22 = CSVBASE(NO:COUNT, 22, 0)
+				BASE:COUNT:23 = CSVBASE(NO:COUNT, 23, 0)
+				BASE:COUNT:24 = CSVBASE(NO:COUNT, 24, 0)
+			ENDIF
+			REND
+	ELSEIF RESULT == 1	
+		REPEAT CHARANUM
+			BASE:COUNT:20 = CSVBASE(NO:COUNT, 20, 0)
+			BASE:COUNT:21 = CSVBASE(NO:COUNT, 21, 0)
+			BASE:COUNT:22 = CSVBASE(NO:COUNT, 22, 0)
+			BASE:COUNT:23 = CSVBASE(NO:COUNT, 23, 0)
+			BASE:COUNT:24 = CSVBASE(NO:COUNT, 24, 0)
+		REND
+	ELSE
+			GOTO INPUT_LOOP
+	ENDIF
+PRINTW 완료했습니다
+

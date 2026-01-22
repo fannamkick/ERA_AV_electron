@@ -1,0 +1,38 @@
+﻿;===========================================================
+;実績・미야마가
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_16
+RESULTS = 미야마가
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_16
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF (NO:COUNT == 1 || NO:COUNT == 17 || NO:COUNT == 91) && NO:MASTER == 0 && TALENT:COUNT:430 == 1 && PBAND:141 == 3
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:16 == 0 && DIFFICULTY_CHECK() && LOCAL == 3
+	GLOBAL:16 = 1
+RETURN GLOBAL:16
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_16
+; 解説文
+PRINTFORML 여동생인 미야마 카나데, 안드로이드인 미야마 미이, 카나데의 클론인 미야마 카나……
+PRINTFORML 카나데를 제외한 두 사람도 어느새 미야마가에 눌러앉아, 그리고 어느새 진짜『가족』이 됐습니다
+PRINTFORML 이 일을 시작하지 않았다면 이런 가족의 형태는 없었을지도 모릅니다
+PRINTFORML 상냥한 장녀 미이, 똑부러지고 우등생인 차녀 카나데, 껄렁하지만 사실 착한 막내 카나
+PRINTFORMW 앞으로도 모두를 행복하게 해주세요
+IF FLAG:562 == 0 && GLOBAL:52 == 1
+	IF GETCHARA(91, 0) >= 0
+		PRINTFORML 《실적 해금 보너스로 실적「내 여동생이 이렇게 빗치일 리 없어」의 보너스 사용 플래그가 리셋 됐습니다》
+		FLAG:562 = 1
+		FLAG:555 = 0
+	ENDIF
+ENDIF

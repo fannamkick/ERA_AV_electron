@@ -1,0 +1,100 @@
+﻿;DAY:1は現在の月
+;DAY:2は現在の日
+;2月のうるう月は考えてません
+;存在しない日付を弾く部分, 初心者丸出しの処理です……
+;もっとスマートなやり方がきっとあるはずorz
+;-------------------------------------------------
+;各日の末日ならば月が替わる
+;EVENT_TURNEND.ERBから呼び出される関数
+;-------------------------------------------------
+@EVENT_NEXTMONTH
+
+G = 0
+E = 0
+M = 0
+
+REPEAT CHARANUM
+	IF TALENT:COUNT:400 == 0
+		CONTINUE
+	ELSE
+		G += BASE:COUNT:30
+			IF TALENT:COUNT:504
+				E += 1
+			ENDIF
+	ENDIF
+REND	
+
+IF DAY:2 > 4 && (DAY:1 == 1 || DAY:1 == 2 || DAY:1 == 6 || DAY:1 == 7 || DAY:1 == 9 || DAY:1 == 11 )
+	DAY:1 = DAY:1 + 1
+	DAY:2 = 1
+	PRINTFORML 다음주부터는 {DAY:1}월이다……
+	PRINTFORM 여배우와 스탭의 급료
+		IF E > 0
+			PRINTFORM 와 전기세
+		ENDIF
+	PRINTFORMW 로 {G}포인트 지불했습니다
+		MONEY -= G
+		CALL ENDING_CHECK
+ELSEIF DAY:1 == 4 && DAY:2 > 4 && DAY:3 == 0
+	DAY:1 = DAY:1 + 1
+	DAY:2 = 1
+	PRINTFORML 다음주부터는 {DAY:1}월이다……
+ELSEIF DAY:1 == 4 && DAY:2 > 4 && DAY:3 != 0
+	DAY:1 = DAY:1 + 1
+	DAY:2 = 1
+	PRINTFORML 다음주부터는 {DAY:1}월이다……
+	PRINTFORM 여배우와 스탭의 급료
+		IF E > 0
+			PRINTFORM 와 전기세
+		ENDIF
+	PRINTFORMW 로 {G}포인트 지불했습니다
+		MONEY -= G
+		CALL ENDING_CHECK
+ELSEIF DAY:2 > 5 && ( DAY:1 == 3 || DAY:1 == 5 ||  DAY:1 == 8 || DAY:1 == 10 )
+	DAY:1 = DAY:1 + 1
+	DAY:2 = 1
+	PRINTFORML 다음주부터는 {DAY:1}월이다……
+	PRINTFORM 여배우와 스탭의 급료
+		IF E > 0
+			PRINTFORM 와 전기세
+		ENDIF
+	PRINTFORMW 로 {G}포인트 지불했습니다
+		MONEY -= G
+		CALL ENDING_CHECK
+ELSEIF DAY:2 > 4 && DAY:1 == 12
+	DAY:1 = 1
+	DAY:2 = 1
+	PRINTFORML 다음주부터 새로운 해가 시작된다……
+	DAY:3 += 1
+	PRINTFORM 여배우와 스탭의 급료
+		IF E > 0
+			PRINTFORM 와 전기세
+		ENDIF
+	PRINTFORMW 로 {G}포인트 지불했습니다
+		MONEY -= G
+		CALL ENDING_CHECK
+ENDIF
+IF FLAG:557 > 0
+	MONEY -= FLAG:557 * 10000
+ENDIF
+FLAG:300 += RAND:11
+FLAG:300 -= RAND:6
+
+SIF DAY:1 == 3  || DAY:1 == 6 || DAY:1 == 10 || DAY:1 == 12
+	FLAG:300 -= (10 + RAND:11)
+
+SIF FLAG:300 <= 0
+	FLAG:300 = 0
+
+IF FLAG:300 <= 24
+	FLAG:301 = 0
+ELSEIF FLAG:300 <= 49
+	FLAG:301 = 1
+ELSEIF FLAG:300 <= 75
+	FLAG:301 = 2
+ELSE
+	FLAG:301 = 3
+ENDIF	
+
+CALL SET_VIDEOSALE
+CALL CALC_B_NEXTMONTH

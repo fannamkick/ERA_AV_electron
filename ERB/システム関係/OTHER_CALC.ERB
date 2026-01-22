@@ -1,0 +1,204 @@
+﻿;===========================================================
+;主にフレーバーの計算
+;===========================================================
+;===========================================================
+;タバコの銘柄の決定
+;===========================================================
+@CIGARETTES
+CFLAG:618 = RAND:21
+	IF CFLAG:618 == 0
+		CSTR:6 = 세븐스타
+	ELSEIF CFLAG:618 == 1
+		CSTR:6 = 블랙스톤
+	ELSEIF CFLAG:618 == 2
+		CSTR:6 = 세일럼 피아니시모
+	ELSEIF CFLAG:618 == 3
+		CSTR:6 = 베블 플레어 멘톨
+	ELSEIF CFLAG:618 == 4
+		CSTR:6 = 말보로 멘톨 라이트
+	ELSEIF CFLAG:618 == 5
+		CSTR:6 = 세븐스타 멘톨
+	ELSEIF CFLAG:618 == 6
+		CSTR:6 = 빨간 라크
+	ELSEIF CFLAG:618 == 7
+		CSTR:6 = 하이라이트
+	ELSEIF CFLAG:618 == 8
+		CSTR:6 = 럭키 스트라이크
+	ELSEIF CFLAG:618 == 9
+		CSTR:6 = KENT
+	ELSEIF CFLAG:618 == 10
+		CSTR:6 = KOOL
+	ELSEIF CFLAG:618 == 11
+		CSTR:6 = 아메리칸 스피릿
+	ELSEIF CFLAG:618 == 12
+		CSTR:6 = 키스 아로마 메르티
+	ELSEIF CFLAG:618 == 13
+		CSTR:6 = 가람
+	ELSEIF CFLAG:618 == 14
+		CSTR:6 = 중남해
+	ELSEIF CFLAG:618 == 15
+		CSTR:6 = 골루아즈
+	ELSEIF CFLAG:618 == 16
+		CSTR:6 = JPS
+	ELSEIF CFLAG:618 == 17
+		CSTR:6 = 블랙 데빌
+	ELSEIF CFLAG:618 == 18
+		CSTR:6 = DEATH
+	ELSEIF CFLAG:618 == 19
+		CSTR:6 = 와카바
+	ELSE
+		CSTR:6 = 말보로 레드
+	ENDIF
+;===========================================================
+;彼氏による削除
+;===========================================================
+@KILL_TARGET_4COUNT
+;助手の情報を取得
+;N = -1
+;SIF ASSI >= 0
+;	N = NO:ASSI
+
+;キャラ削除
+CALL キャラ削除, G
+
+;;前回の助手・調教対象だった場合はフラグを空に
+;SIF FLAG:1 == G
+;	FLAG:1 = -1
+;SIF FLAG:2 == G
+;	FLAG:2 = -1
+
+;;前回の助手・調教対象より前だった場合はフラグを減算
+;SIF FLAG:1 > G
+;	FLAG:1 -= 1
+;SIF FLAG:2 > G
+;	FLAG:2 -= 1
+
+;;調教対象を空に
+;TARGET = -1
+
+;;助手を戻す
+;ASSI = -1
+;REPEAT CHARANUM
+;	SIF NO:COUNT == N
+;		ASSI = COUNT
+;REND
+;	
+;===========================================================
+;위험일算出
+;===========================================================
+@OVULATION_CALC
+REPEAT CHARANUM
+	IF TALENT:COUNT:122 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:504
+		CONTINUE
+		IF CFLAG:COUNT:30 > 5
+			CFLAG:COUNT:18 = 0
+		ELSEIF DAY:2 == 1 && CFLAG:COUNT:30 == 1
+			CFLAG:COUNT:20 = 1
+		ELSEIF DAY:2 == 2 && CFLAG:COUNT:30 == 2
+			CFLAG:COUNT:20 = 1
+		ELSEIF DAY:2 == 3 && CFLAG:COUNT:30 == 3
+			CFLAG:COUNT:20 = 1
+		ELSEIF DAY:2 == 4 && CFLAG:COUNT:30 == 4
+			CFLAG:COUNT:20 = 1
+		ELSEIF DAY:2 == 5 && CFLAG:COUNT:30 == 5
+			CFLAG:COUNT:20 = 1
+		ELSEIF DAY:2 == 5 && CFLAG:COUNT:30 == 0
+			CFLAG:COUNT:20 = 1
+		ELSEIF DAY:2 == 1 && CFLAG:COUNT:30 == 3
+			CFLAG:COUNT:20 = 2
+		ELSEIF DAY:2 == 2 && CFLAG:COUNT:30 == 4
+			CFLAG:COUNT:20 = 2
+		ELSEIF DAY:2 == 3 && CFLAG:COUNT:30 == 5
+			CFLAG:COUNT:20 = 2
+		ELSEIF DAY:2 == 3 && CFLAG:COUNT:30 == 0
+			CFLAG:COUNT:20 = 2
+		ELSEIF DAY:2 == 3 && CFLAG:COUNT:30 == 1
+			CFLAG:COUNT:20 = 2
+		ELSEIF DAY:2 == 4 && CFLAG:COUNT:30 == 2
+			CFLAG:COUNT:20 = 2
+		ENDIF
+	ENDIF
+REND
+;===========================================================
+;タバコの銘柄の決定
+;===========================================================
+@CIGARETTES_4COUNT
+CFLAG:COUNT:618 = RAND:21
+	IF CFLAG:COUNT:618 == 0
+		CSTR:COUNT:6 = 세븐스타
+	ELSEIF CFLAG:COUNT:618 == 1
+		CSTR:COUNT:6 = 블랙스톤
+	ELSEIF CFLAG:COUNT:618 == 2
+		CSTR:COUNT:6 = 세일럼 피아니시모
+	ELSEIF CFLAG:COUNT:618 == 3
+		CSTR:COUNT:6 = 베블 플레어 멘톨
+	ELSEIF CFLAG:COUNT:618 == 4
+		CSTR:COUNT:6 = 말보로 멘톨 라이트
+	ELSEIF CFLAG:COUNT:618 == 5
+		CSTR:COUNT:6 = 세븐스타 멘톨
+	ELSEIF CFLAG:COUNT:618 == 6
+		CSTR:COUNT:6 = 빨간 라크
+	ELSEIF CFLAG:COUNT:618 == 7
+		CSTR:COUNT:6 = 하이라이트
+	ELSEIF CFLAG:COUNT:618 == 8
+		CSTR:COUNT:6 = 럭키 스트라이크
+	ELSEIF CFLAG:COUNT:618 == 9
+		CSTR:COUNT:6 = KENT
+	ELSEIF CFLAG:COUNT:618 == 10
+		CSTR:COUNT:6 = KOOL
+	ELSEIF CFLAG:COUNT:618 == 11
+		CSTR:COUNT:6 = 아메리칸 스피릿
+	ELSEIF CFLAG:COUNT:618 == 12
+		CSTR:COUNT:6 = 키스 아로마 메르티
+	ELSEIF CFLAG:COUNT:618 == 13
+		CSTR:COUNT:6 = 가람
+	ELSEIF CFLAG:COUNT:618 == 14
+		CSTR:COUNT:6 = 중남해
+	ELSEIF CFLAG:COUNT:618 == 15
+		CSTR:COUNT:6 = 골루아즈
+	ELSEIF CFLAG:COUNT:618 == 16
+		CSTR:COUNT:6 = JPS
+	ELSEIF CFLAG:COUNT:618 == 17
+		CSTR:COUNT:6 = 블랙 데빌
+	ELSEIF CFLAG:COUNT:618 == 18
+		CSTR:COUNT:6 = DEATH
+	ELSEIF CFLAG:COUNT:618 == 19
+		CSTR:COUNT:6 = 와카바
+	ELSE
+		CSTR:COUNT:6 = 말보로 레드
+	ENDIF
+;===========================================================
+;AVパートの計算
+;===========================================================
+@AV_CALC
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+F = 0
+G = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 1 && TALENT:COUNT:422 == 1 && CFLAG:COUNT:1 == 2 && TALENT:COUNT:400 == 1
+		A = 1
+			IF FLAG:506 == 1 && TALENT:COUNT:121 == 1
+				E = 1
+			ENDIF
+	ELSEIF NO:COUNT == 5 && CFLAG:COUNT:1 == 2 && TALENT:COUNT:400 == 1
+		B = 1
+			IF FLAG:505 == 1 && TALENT:COUNT:121 == 1
+				F = 1
+			ENDIF
+	ELSEIF TALENT:COUNT:507 == 1
+		C = 1
+	ELSEIF NO:COUNT == 13 && CFLAG:COUNT:1 == 2
+		D = 1
+	ELSEIF TALENT:COUNT:422 == 1
+		G = 1
+	ENDIF
+REND

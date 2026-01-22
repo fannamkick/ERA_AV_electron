@@ -1,0 +1,153 @@
+﻿;C感覚のLvUP処理とその可否判定
+;eratohoA ver1,204のスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;C感覚のLvUP
+;-------------------------------------------------
+@ABLUP0
+;最大Lvは5, [자위광]が付いている場合はLv10まで해방
+DRAWLINE
+;IF TALENT:122
+;	PRINT 페니스
+;ELSEIF TALENT:121
+;	PRINT 페니스と클리토리스
+;ELSE
+;	PRINT 클리토리스
+;ENDIF
+;PRINTL の感度をUPします
+;PRINTL C感覚が高まると, 펠라치오や커닐링구스, 자위行為からより大きな快楽が得られます
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+IF ABL:0 >= 5 && TALENT:74 == 0
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:0 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要な快C의 구슬
+A = 0
+
+;条件別にOKかダメかを記録する
+;快C의 구슬による可否(I=0:可, I&1:珠不足, I&2:経験不足)
+I = 0
+
+CALL DECIDE_ABLUP0
+
+PRINTFORM [0] - %PALAMNAME:0%의 구슬×{JUEL:0}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+
+PRINTL [100] - 그만둔다
+
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:0 += 1
+
+IF RESULT == 0
+	JUEL:0 -= A
+ENDIF
+
+PRINTFORML %ABLNAME:0%의 레벨이 %조사처리(ABL:0,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;C感覚LvUP判定
+;-------------------------------------------------
+@DECIDE_ABLUP0
+;C感覚はLv5が上限, [자위광]が付いている場合はLv10まで해방
+SIF ABL:0 >= 5 && TALENT:74 == 0
+	RETURN 0
+SIF ABL:0 >= 10
+	RETURN 0
+
+;判定変数を空に
+A = 0
+I = 0
+
+IF ABL:0 == 0
+	A = 1
+ELSEIF ABL:0 == 1
+	A = 20
+ELSEIF ABL:0 == 2
+	A = 400
+ELSEIF ABL:0 == 3
+	A = 8000
+ELSEIF ABL:0 == 4
+	A = 20000
+ELSEIF ABL:0 == 5
+	A = 40000
+ELSEIF ABL:0 == 6
+	A = 60000
+ELSEIF ABL:0 == 7
+	A = 90000
+ELSEIF ABL:0 == 8
+	A = 120000
+ELSEIF ABL:0 == 9
+	A = 180000
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	SIF ABL:0 == 4
+		TIMES A , 2.00
+	SIF ABL:0 == 5
+		TIMES A , 2.50
+	SIF ABL:0 >= 6
+		TIMES A , 3.00
+ENDIF
+;음마
+IF TALENT:505
+	TIMES A , 0.01
+ENDIF
+;C둔감
+SIF TALENT:101
+	TIMES A , 1.20
+
+;C민감
+SIF TALENT:102
+	TIMES A , 0.80
+;음란
+SIF TALENT:76
+	TIMES A , 0.80
+;색정광
+SIF TALENT:440
+	TIMES A , 0.20
+;자위광
+SIF TALENT:74
+	TIMES A , 0.80
+
+;最低でも1個は必要
+SIF A < 1
+	A = 1
+
+;快C의 구슬で上げる
+SIF JUEL:0 < A
+	I |= 1
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+;
+;
+;

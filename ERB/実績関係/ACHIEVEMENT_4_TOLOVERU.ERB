@@ -1,0 +1,74 @@
+﻿;===========================================================
+;実績・트러블 서큐버스
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_4
+RESULTS = 트러블 서큐버스
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_4
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF TALENT:COUNT:505 && TALENT:COUNT:85 == 1
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:4 == 0 && DIFFICULTY_CHECK() && LOCAL >= 4
+	GLOBAL:4 = 1
+RETURN GLOBAL:4
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_4
+; 解説文
+PRINTFORML  수많은 음마 여자아이들과 꺄꺄우후후 했던 %CALLNAME:MASTER%에게 딱 맞는 실적이군요
+PRINTFORM 어떤 에로게임 타이틀과 같은 시추에이션을 좋아하는 것 같으니
+PRINTFORMW 앞으로도『서큐버스』들과의 트러블을 기대해 주세요
+; ボーナスなどの処理はここ以降に記述する
+IF FLAG:559 == 0
+	PRINTL
+	PRINTFORML 「후후, 거기 아가야……나와 좋은 거 하지 않을래?」
+	PRINTFORML 어느 날, %플레이어가()% 거리를 걷고 있을 때, 노출도 높은 요염한 미녀가 갑자기 말을 걸었다
+	PRINTFORM 풍속점 여자라기엔 소행 하나하나에 기품이 서려있어, 
+	PRINTFORML 단지 그자리에 있는 것만으로 벌레등처럼 남자를 끌어들이는 마성의 매력이 있다 
+	PRINTFORML 지금까지 수십명의 음마와 접해왔던 %CALLNAME:MASTER%에게는, 그녀의 정체가 음마라는게 명확했다
+	PRINTFORMW 오늘도 몹시 쥐어짜진지 얼마 안되서, 별로 상대하고 싶지는 않지만……
+	PRINTFORML 「어머 유감이네
+	PRINTFORML 　모처럼 인간여자로는 맛볼 수 없는 극상의 쾌락을 아가에게 맛보여주려고 했더니……랄까 뭔가요?
+	PRINTFORM 　아가, 
+	IF GETCHARA(81) > 0
+		PRINTFORM 에리스
+	ELSEIF GETCHARA(82) > 0
+		PRINTFORM 리리스
+	ELSE
+		PRINTFORM 음마의 존재
+	ENDIF
+	PRINTFORML 를 알고 있었어!?
+	PRINTFORML 　……그래, 그렇다면 얘기가 빠르겠네
+	PRINTFORMW 　나는 아이리스, 동포를 찾기위해 이 세계에 온 음마야」
+	PRINTFORM 아이리스라 자칭한 음마여성이 말하길, 다른 세계……즉 이 세계에서 음마의 존재가 관측됐기에
+	PRINTFORML 동포를 맞아들이기 위해서 그녀가 왔다고 한다
+	PRINTFORML 「과연……즉 아가가 알고 있는 음마는 남자의 정령을 효율좋게 빨아들인다는 거지?
+	PRINTFORML 　그리고 아가에게는 음마에 대한 항체……라고 할만한게 있다, 라
+	PRINTFORML 　특히나, 항체소유자인 아가의 정령은 음마에게 있어서 극상의 맛이기도 한다라……
+	PRINTFORML 　그걸 가지고 아가가 음마를 몇 명이나 길들이고 울린다라……과연
+	PRINTFORML 　후후, 흥미롭네요……아가, 나를 다른 음마처럼 길들여 보지 않을래?
+	PRINTFORMW 　뭐, 아가가 안된다 말해도 맘대로 따라갈테지만♪」
+	PRINTFORML ……아무래도 이상한 곳에서 마음에 든 것 같았다
+	PRINTFORM 자세한 사정은 잠시 후에 설명해도 좋겠지, 라고 생각하면서,
+	PRINTFORML %플레이어는()% 예정을 변경해서 이 일을 보고하기 위해 카논에게로 향하기로 했다……
+	PRINTL
+	PRINTFORML 《아이리스가 여배우 후보가 되었습니다》
+	PRINTW
+	ADDCHARA 84
+	GLOBAL:284 = 1
+	SAVEGLOBAL
+	FLAG:559 = 1
+		IF GLOBAL:200 >= 0
+			TARGET = GETCHARA(84)
+			CALL CLEARBONUS_CALL
+		ENDIF
+ENDIF

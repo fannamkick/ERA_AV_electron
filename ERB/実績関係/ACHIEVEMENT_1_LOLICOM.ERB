@@ -1,0 +1,38 @@
+﻿;===========================================================
+;実績・로리콘
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_1
+RESULTS = 로리큐브
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_1
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF (TALENT:COUNT:414 || BASE:COUNT:9 <= 15) && TALENT:COUNT:505 == 0 && TALENT:COUNT:504 == 0 && TALENT:COUNT:511 == 0 && CFLAG:COUNT:1 == 2
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:1 == 0 && DIFFICULTY_CHECK() && LOCAL >= 4
+	GLOBAL:1 = 1
+RETURN GLOBAL:1
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_1
+; 解説文
+PRINTFORML 수많은 고○학생 아래의 소녀들과 꺄아꺄아 우후후 한 적 있는 %CALLNAME:MASTER%에게 딱 맞는 실적이군요
+PRINTFORM 어떤 위대한 
+FONTSTYLE 4
+PRINTFORM 로리콘
+FONTSTYLE 0
+PRINTFORML 선지자께선 말씀하셨습니다
+PRINTFORML 「정말이지, 초○학생은 최고야!!」
+PRINTFORMW ……라고
+; ボーナスなどの処理はここ以降に記述する
+IF TALENT:MASTER:163 == 0
+	PRINTFORMW 그런 %CALLNAME:MASTER%에겐【로리콘】이라는 칭호를 수여합니다
+	TALENT:MASTER:163 = 1
+ENDIF

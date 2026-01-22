@@ -1,0 +1,939 @@
+﻿;=========================================================
+;コンフィグ設定
+;=========================================================
+@SYSTEM_CONFIGURATION
+DRAWLINE
+PRINTL 어떤 설정을 변경하시겠습니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINT  [0] - 대사 표시 빈도　　　　　　　　　　　　　　　　　　
+IF FLAG:7 == 2
+	PRINTL 　　항상 표시
+ELSEIF FLAG:7 == 1
+	PRINTL 처음에만 표시
+ELSEIF FLAG:7 == 0 - 2 || FLAG:7 == 0
+	PRINTL 표시하지 않음
+ENDIF
+PRINT  [1] - 지도시 텍스트의 요약　　　　　　　　　　　　　　　
+IF (FLAG:6 & 1)
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [2] - 영업 결과 간략화 　　　　　　　　　　　　　　　　 
+IF (FLAG:6 & 2)
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [3] - 소모 아이템 자동구입　　　　　　　　　　　　　　　
+IF FLAG:34
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [4] - 빈사시 지도 자동 종료 　　　　　　　　　　　　　　
+IF FLAG:35
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [5] - 캐릭터의 음모를 자라게 한다 　　　　　　　　　　　
+IF FLAG:36
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [6] - 착의 시스템 사용 　　　　　　　　　　　　　　　　 
+IF FLAG:37
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [7] - 임신 시스템 사용 　　　　　　　　　　　　　　　　 
+IF FLAG:60 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [8] - IWS(이 아이돌은 내가 키웠다) 시스템 사용 　　
+IF FLAG:38 > 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [9] - 실신 시스템 사용 　　　　　　　　　　　　　　　　 
+IF FLAG:70 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [10] - 추가 커맨드 사용　　　　　　　　　　　　　　　　 
+IF FLAG:71 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [11] - 정음절정 시스템 사용　　　　　　　　　　　　　　 
+IF FLAG:72 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [12] - 소질강화　　　　　　　　　　　　　　　　　　　　 
+IF FLAG:73 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [13] - 나이먹기 시스템 사용·생일 등의 도입 　　　　　　 
+IF FLAG:74 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [14] - 로리콘 시스템 사용　　　　　　　　　　　　　　　 
+IF FLAG:39 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINT  [15] - 항상발정 시스템 사용　　　　　　　　　　　　　　 
+IF FLAG:75 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+
+PRINT  [16] - 네토라레 시스템 사용　　　　　　　　　　　　　　 
+IF FLAG:540 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+
+PRINT  [17] - 정조대 자동탈착 시스템 사용 　　　　　　　　　　 
+IF FLAG:549 == 1
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+
+PRINT  [18] - 약품계 아이템의 자동투여 　　　　　　　　　　　　　　　
+IF FLAG:76
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+
+PRINT  [19] - 성기형태 변화시스템 사용　 　　　　　　　　　　　
+IF FLAG:140 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+
+PRINT  [20] - 음어시스템 사용　　　　　　　 　　　　　　　　　　 　
+IF FLAG:160 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+
+PRINTL  [21] - 첫 체험 필터
+PRINT  [22] - 갸루화 이벤트 적용　　　　　　　　　　　　　　　 
+IF FLAG:85 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	CALL CONFIG_KOJO
+ELSEIF RESULT == 1
+	CALL CONFIG_TRAINTEXT
+ELSEIF RESULT == 2
+	CALL CONFIG_WORKING
+ELSEIF RESULT == 3
+	CALL CONFIG_AUTOBUYING
+ELSEIF RESULT == 4
+	FLAG:35 = 1 - FLAG:35
+ELSEIF RESULT == 5
+	CALL CONFIG_PUBLICHAIR
+ELSEIF RESULT == 6
+	CALL CONFIG_CLOTHING
+ELSEIF RESULT == 7
+	CALL CONFIG_V_F
+ELSEIF RESULT == 8
+	CALL CONFIG_IWS
+ELSEIF RESULT == 9
+	CALL CONFIG_PASSOUT
+ELSEIF RESULT == 10
+	CALL CONFIG_EX_COM
+ELSEIF RESULT == 11
+	CALL CONFIG_SEIIN
+ELSEIF RESULT == 12
+	CALL CONFIG_TALENT_EX	
+ELSEIF RESULT == 13
+	CALL CONFIG_BIRTHDAY	
+ELSEIF RESULT == 14
+	CALL CONFIG_LOLI
+ELSEIF RESULT == 15
+	CALL CONFIG_HATSUJO
+ELSEIF RESULT == 16
+	CALL CONFIG_NTR
+ELSEIF RESULT == 17
+	CALL CONFIG_AUTOEQUIP
+ELSEIF RESULT == 18
+	CALL CONFIG_ITEMUSE
+ELSEIF RESULT == 19
+	CALL CONFIG_GENITALFORM
+ELSEIF RESULT == 20
+	CALL CONFIG_SLUNG
+ELSEIF RESULT == 21
+	CALL CONFIG_FIRSTPLAY
+ELSEIF RESULT == 22
+	CALL CONFIG_INFECTION
+ELSEIF RESULT == 999
+	;決定後の消耗아이템自動購入はここで行う
+	CALL AUTO_BUYING
+	RETURN 0
+ENDIF
+
+RESTART
+
+;---------------------------------------------------------
+;口上の表示頻度 FLAG:7使用
+;---------------------------------------------------------
+@CONFIG_KOJO
+DRAWLINE
+IF FLAG:7 == 0
+	PRINTL ※대사 이벤트 관리 파일을 찾을 수 없습니다
+	WAIT
+	RETURN 0
+ENDIF
+
+
+PRINTL 대사 표시 빈도를 설정합니다
+IF FLAG:7 == 2
+	PRINTL 현재 설정은《항상 표시》입니다
+ELSEIF FLAG:7 == 1
+	PRINTL 현재 설정은《처음에만 표시》입니다
+ELSEIF FLAG:7 == -2
+	PRINTL 현재 설정은《표시하지 않음》입니다
+ENDIF
+
+PRINTL  [0] - 항상 표시
+PRINTL  [1] - 표시하지 않음
+PRINTL  [2] - 처음에만 표시
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	FLAG:7 = 2
+ELSEIF RESULT == 1
+	FLAG:7 = -2
+ELSEIF RESULT == 2
+	FLAG:7 = 1
+ELSEIF RESULT != 999
+	RESTART
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;調教時テキストの表示 FLAG:6使用
+;---------------------------------------------------------
+@CONFIG_TRAINTEXT
+IF (FLAG:6 & 1)
+	FLAG:6 -= 1
+ELSE
+	FLAG:6 |= 1
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;영업 결과の簡略化 FLAG:6使用
+;---------------------------------------------------------
+@CONFIG_WORKING
+IF (FLAG:6 & 2)
+	FLAG:6 -= 2
+ELSE
+	FLAG:6 |= 2
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;消耗아이템の自動購入 FLAG:34使用
+;---------------------------------------------------------
+@CONFIG_AUTOBUYING
+DRAWLINE
+PRINTL 소모품 아이템의 자동보충을 설정합니다
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINT  [0] - 로션　　　　　　　　　　　　　　　　　　　　　　
+IF (FLAG:34 & 1)
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+;IF ITEM:6
+;	PRINT  [1] - 비디오테이프　　　　　　　　　　　　　　　　　　　　　
+;	IF (FLAG:34 & 2)
+;		PRINTL 　　　　　ON
+;	ELSE
+;		PRINTL 　　　　 OFF
+;	ENDIF
+;ENDIF
+PRINT  [2] - 콘돔　　　　　　　　　　　　　　　　　　　　　　
+IF (FLAG:34 & 8)
+	PRINTL 10개씩 구입
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	IF (FLAG:34 & 1)
+		FLAG:34 -= 1
+	ELSE
+		FLAG:34 |= 1
+	ENDIF
+	RESTART
+;ELSEIF RESULT == 1 && ITEM:6
+;	IF (FLAG:34 & 2)
+;		FLAG:34 -= 2
+;	ELSE
+;		FLAG:34 |= 2
+;	ENDIF
+;	RESTART
+ELSEIF RESULT == 2
+	IF (FLAG:34 & 8)
+		FLAG:34 -= 8
+	ELSE
+		FLAG:34 |= 8
+	ENDIF
+	RESTART
+ELSEIF RESULT != 999
+	RESTART
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;キャラに陰毛を生やす FLAG:36使用
+;---------------------------------------------------------
+@CONFIG_PUBLICHAIR
+IF FLAG:36
+	FLAG:36 = 0
+ELSE
+	FLAG:36 = 1
+
+	;初期状態のキャラがいたら陰毛を設定する
+	REPEAT CHARANUM
+		;既に生えてるならそのまま
+		SIF CFLAG:COUNT:6 != 0
+			CONTINUE
+		
+
+		;음모 없음なら-1に設定
+		IF TALENT:COUNT:125
+			CFLAG:COUNT:6 = -1
+		;유치・미숙함なら7に設定
+		ELSEIF TALENT:COUNT:132 || TALENT:COUNT:135
+			CFLAG:COUNT:6 = 7
+		;중학생なら7に設定
+		ELSEIF TALENT:COUNT:221
+			CFLAG:COUNT:6 = 7
+		;고등학생なら9に設定
+		ELSEIF TALENT:COUNT:220
+			CFLAG:COUNT:6 = 9
+		;それ以外なら12に設定
+		ELSE
+			CFLAG:COUNT:6 = 12
+		ENDIF
+	REND
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;着衣システムの使用 FLAG:37使用
+;---------------------------------------------------------
+@CONFIG_CLOTHING
+IF FLAG:37 == 0
+	FLAG:37 = 1
+ELSE
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTFORML 착의 시스템을 OFF로 하면 모든 캐릭터의 착의 플래그가 사라집니다
+	PRINTFORML 사라진 착의 플래그는 착의 시스템을 다시 ON으로 하더라도 복구되지 않습니다.
+	PRINTL 
+	PRINTFORML 착의 시스템을 OFF로 합니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 1
+		RETURN 0
+	ELSEIF RESULT != 0
+		GOTO INPUT_LOOP
+	ENDIF
+
+	;着衣フラグ初期化
+	REPEAT CHARANUM
+		CFLAG:COUNT:40 = 0
+		CFLAG:COUNT:41 = 0
+		CFLAG:COUNT:42 = 0
+		CFLAG:COUNT:43 = 0
+		CFLAG:COUNT:44 = 0
+		CFLAG:COUNT:45 = 0
+		CFLAG:COUNT:46 = 0
+		CFLAG:COUNT:47 = 0
+	REND
+	
+	FLAG:37 = 0
+
+	DRAWLINE
+	PRINTL 모든 캐릭터의 착의 플래그를 소거했습니다
+	DRAWLINE
+
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;임신設定の使用 FLAG:60使用
+;---------------------------------------------------------
+@CONFIG_V_F
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTFORML 임신설정이 온 상태라면, 여배우(후보)가 임신할 가능성이 있습니다
+	PRINTL 
+	PRINTFORML 임신 설정을 사용합니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 1
+		FLAG:60 = 1
+		RETURN 0
+	ELSEIF RESULT != 0
+		GOTO INPUT_LOOP
+	ELSE
+		FLAG:60 = 0
+		RETURN 0
+	ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;IWSシステムの使用 FLAG:38及びFLAG:58使用
+;---------------------------------------------------------
+@CONFIG_IWS
+
+$INPUT_LOOP
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINT 실행 레벨을 선택해주세요(현재Lv
+PRINTV FLAG:38
+PRINTL 실행중)
+PRINTL [1] - Lv1＊보통 　　　　　　　　　　=평범하게 성장합니다
+PRINTL [2] - Lv2＊빠르게 　　　　　　　　　=빠르게 성장합니다
+PRINTL [3] - Lv3＊이상할 정도로　　　　　　=이상하게 성장합니다
+PRINTL [4] - Lv4＊위험한 정도로　　　　　　=위험할 정도로 성장합니다
+PRINTL [5] - Lv5＊터무니없이 　　　　　　　=더 이상 인간이 아니게 됩니다
+PRINTL [99] - IWS을 사용하지 않는다
+PRINTL [200] - 쓰리사이즈 수동설정
+PRINTL [300] - CSV파일 불러오기
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL [999] - 돌아간다
+
+INPUT
+
+IF RESULT > 0 && RESULT < 99
+	FLAG:38 = RESULT
+	PRINTFORMW IWS 시스템을 ON으로 했습니다(Lv{FLAG:38})
+	PRINTW 절정시 지도대상의 체형이 변합니다
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 99
+	FLAG:38 = 0
+	PRINTW IWS 시스템을 OFF로 했습니다
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 200
+	CALL MANUAL_SET_3SIZE
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 300
+	CALL READ_CSV_IWS
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;失神パッチの適応 FLAG:70使用
+;---------------------------------------------------------
+@CONFIG_PASSOUT
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTFORML 실신 시스템을 ON으로 하면 대상이 일정 이상의 쾌락, 공포, 고통으로 실신하게 됩니다
+	PRINTL 
+	PRINTFORML 실신 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:70 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:70 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+;---------------------------------------------------------
+;追加コマンドの使用 FLAG:71使用
+;---------------------------------------------------------
+@CONFIG_EX_COM
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTFORML 추가 커맨드를 ON으로 하면 지도시의 커맨드가 늘어납니다
+	PRINTL 
+	PRINTFORML 추가 커맨드를 사용합니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:71 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:71 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+;---------------------------------------------------------
+;精飲절정パッチの適応 FLAG:72使用
+;---------------------------------------------------------
+@CONFIG_SEIIN
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTFORML 정음 절정 시스템을 ON으로 하면 대상이 정액을 마셨을 때 절정할 수 있게 됩니다
+	PRINTL 
+	PRINTFORML 정음 절정 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:72 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:72 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+;---------------------------------------------------------
+;素質強化の適応 FLAG:73使用
+;---------------------------------------------------------
+@CONFIG_TALENT_EX
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTFORML 소질강화을 ON으로 하면 각 감도가 큰 폭으로 상승하는 소질을 습득할 수 있게 됩니다
+	PRINTL 
+	PRINTFORML 소질강화을 사용합니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:73 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:73 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+;---------------------------------------------------------
+;加齢システムの使用 FLAG:74使用
+;---------------------------------------------------------
+@CONFIG_BIRTHDAY
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL 나이먹기 시스템을 ON으로 하면, 생일을 맞이할 때마다 나이를 먹습니다(일부 캐릭터 제외)
+	PRINTL ※생일 안내 메시지는 OFF일 때도 표시됩니다。
+	PRINTL
+	PRINTL 나이먹기 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	PRINTL  [200] - 나이・생일・혈액형 수동설정
+	PRINTL  [300] - CSV파일 불러오기(나이・생일・혈액형을 불러옵니다)
+	PRINTL  [400] - 정신과 시간의 방에 간다 (오늘 날짜를 수동으로 설정합니다)
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTL  [999] - 돌아간다
+	INPUT
+	IF RESULT == 0
+		FLAG:74 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:74 = 1
+		RETURN 0
+	ELSEIF RESULT == 200
+		CALL MANUAL_SET_BIRTHDAY
+		GOTO INPUT_LOOP
+	ELSEIF RESULT == 300
+		CALL READ_CSV_BIRTHDAY
+		GOTO INPUT_LOOP
+	ELSEIF RESULT == 400
+		CALL MANUAL_SET_DATE
+		GOTO INPUT_LOOP
+	ELSEIF RESULT == 999
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+;---------------------------------------------------------
+;로리콘システム FLAG:39使用
+;---------------------------------------------------------
+@CONFIG_LOLI
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL 로리콘 시스템을 사용하면 중학생 이하의 지도대상에 한해 지도 효과가 올라갑니다。
+	PRINTL 대신, 중학생도 고등학생도 아닌 경우 지도 효과가 내려갑니다。
+	PRINTL 
+	PRINTL 로리콘 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:39 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:39 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;항상발정システム FLAG:75使用
+;---------------------------------------------------------
+@CONFIG_HATSUJO
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL 항상발정 시스템을 사용하면 지도가 진행되면 에로해집니다。
+	PRINTL 
+	PRINTL 항상발정 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:75 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:75 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;寝取られシステム FLAG:540使用
+;---------------------------------------------------------
+@CONFIG_NTR
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL 네토라레 시스템을 사용하면 여자 캐릭터가 NTR될 수 있습니다.
+	PRINTL 
+	PRINTL 네토라레 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:540 = 0
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:540 = 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;정조대の自動着脱システム FLAG:549使用
+;---------------------------------------------------------
+@CONFIG_AUTOEQUIP
+	$INPUT_LOOP
+	DRAWLINE
+	PRINTL 정조대 자동탈착을 ON으로 하면 지도 시작시 정조대를 벗고 끝나면 다시 입습니다
+	PRINTL 
+	PRINTL 정조대 자동탈착 시스템을 사용하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		FLAG:549 = 1
+		RETURN 0
+	ELSEIF RESULT == 1
+		FLAG:549 = 0
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+RETURN 0
+
+
+;---------------------------------------------------------
+;消耗아이템の自動購入 FLAG:76使用
+;---------------------------------------------------------
+@CONFIG_ITEMUSE
+DRAWLINE
+PRINTL 턴끝에 약품계 아이템을 자동으로 투여 할 수 있습니다
+PRINTL (소지수에서 감소하지 않고, 포인트가 떨어집니다)
+PRINTL 단, MASTER가【조합지식】을 지니고 있을 필요가 있습니다
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+IF TALENT:MASTER:55
+	PRINT  [0] - 영양제　　　　　　　　　　　　　　　　　　　　　　　　
+	IF (FLAG:76 & 1)
+		PRINTL 　　　　　ON
+	ELSE
+		PRINTL 　　　　 OFF
+	ENDIF
+	PRINT  [1] - 배란유발제　　　　　　　　　　　　　　　　　　　　　　
+	IF (FLAG:76 & 2)
+		PRINTL 　　　　　ON
+	ELSE
+		PRINTL 　　　　 OFF
+	ENDIF
+	PRINT  [2] - 배란억제제　　　　　　　　　　　　　　　　　　　　　　
+	IF (FLAG:76 & 4)
+		PRINTL 　　　　　ON
+	ELSE
+		PRINTL 　　　　 OFF
+	ENDIF
+	PRINT  [3] - 향　　　　　　　　　　　　　　　　　　　　　　　　　
+	IF (FLAG:76 & 8)
+		PRINTL 　　　　　ON
+	ELSE
+		PRINTL 　　　　 OFF
+	ENDIF
+ENDIF
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	IF (FLAG:76 & 1)
+		FLAG:76 -= 1
+	ELSE
+		FLAG:76 |= 1
+	ENDIF
+	RESTART
+ELSEIF RESULT == 1 && ITEM:6
+	IF (FLAG:76 & 2)
+		FLAG:76 -= 2
+	ELSE
+		FLAG:76 |= 2
+	ENDIF
+	RESTART
+ELSEIF RESULT == 2
+	IF (FLAG:76 & 4)
+		FLAG:76 -= 4
+	ELSE
+		FLAG:76 |= 4
+	ENDIF
+	RESTART
+ELSEIF RESULT == 3
+	IF (FLAG:76 & 8)
+		FLAG:76 -= 8
+	ELSE
+		FLAG:76 |= 8
+	ENDIF
+	RESTART
+ELSEIF RESULT != 999
+	RESTART
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;淫語生成システム FLAG:160使用
+;でも実際にFLAG:160で見てるのって仕込むかどうかで。
+;---------------------------------------------------------
+@CONFIG_SLUNG
+DRAWLINE
+PRINTL 음어생성시스템의 사용을 설정합니다
+PRINT [0] - 음어생성시스템의 사용
+IF FLAG:160 == 0
+	PRINTL 　　　　　ON
+ELSE
+	PRINTL 　　　　 OFF
+ENDIF	
+PRINTL [1] - 음어 일괄설정
+PRINTL [2] - 음어설정 초기화
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0 && FLAG:160 == 0
+	FLAG:160 = 1
+ELSEIF RESULT == 0 && FLAG:160 == 1
+	FLAG:160 = 0
+ELSEIF RESULT == 1
+	PRINTL 《남성기의 호칭을 결정해 주세요》
+	$INPUT_LOOP_00
+	INPUTS
+	IF RESULTS == ""
+		GOTO INPUT_LOOP_00
+	ELSE
+		CSTR:MASTER:80 = %RESULTS%
+	ENDIF
+	PRINTL 《여성기의 호칭을 결정해 주세요》
+	$INPUT_LOOP_01
+	INPUTS
+	IF RESULTS == ""
+		GOTO INPUT_LOOP_01
+	ELSE
+		CSTR:MASTER:81 = %RESULTS%
+	ENDIF
+	PRINTL 《항문의 호칭을 결정해 주세요》
+	$INPUT_LOOP_02
+	INPUTS
+	IF RESULTS == ""
+		GOTO INPUT_LOOP_02
+	ELSE
+		CSTR:MASTER:82 = %RESULTS%
+	ENDIF
+	PRINTFORMW 《남성기를 %CSTR:MASTER:80%, 여성기를 %CSTR:MASTER:81%, 항문을 %CSTR:MASTER:82% 라고 부르게끔 설정했습니다》
+	REPEAT CHARANUM
+		IF NO:COUNT == 0
+			CONTINUE
+		ELSE
+			CSTR:COUNT:80 = %CSTR:MASTER:80%
+			CSTR:COUNT:81 = %CSTR:MASTER:81%
+			CSTR:COUNT:82 = %CSTR:MASTER:82%
+		ENDIF
+	REND
+ELSEIF RESULT == 2
+	PRINTFORML 각 캐릭터에게 현재 설정되어 있는 음어를 초기화합니다
+	PRINTFORML ※단 현재의 소질에 영향을 받습니다
+	PRINTFORML 괜찮으시겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	INPUT
+	$INPUTLOOP
+	IF RESULT == 0
+		PRINTFORMW 《음어설정을 초기화 했습니다》
+		REPEAT CHARANUM
+			IF NO:COUNT == 0
+				CONTINUE
+			ELSE
+				TARGET = COUNT
+				CALL DEFOLT_GENITALCALL
+			ENDIF
+		REND
+	ELSEIF RESULT == 1
+		PRINTFORMW 《음어설정을 초기화 했습니다》
+		CALL CONFIG_SLUNG
+	ELSE
+		GOTO INPUTLOOP
+	ENDIF
+ELSEIF RESULT == 3
+	REPEAT CHARANUM
+		IF NO:COUNT == 0
+			CONTINUE
+		ELSE
+			CSTR:COUNT:80 = 자지
+			CSTR:COUNT:81 = 흠뻑 젖은 음란보지
+			CSTR:COUNT:82 = 똥구녕
+		ENDIF
+	REND
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+;---------------------------------------------------------
+;形状変化 FLAG:140使用
+;---------------------------------------------------------
+@CONFIG_GENITALFORM
+IF FLAG:140 == 0
+	FLAG:140 = 1
+ELSE
+	FLAG:140 = 0
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;初体験フィルタ系 FLAG:80-82 設定なしなら全フィルタonからにする
+;---------------------------------------------------------
+@CONFIG_FIRSTPLAY
+DRAWLINE
+PRINTL 첫 체험이 기록되는 커맨드 실행시 따로 확인할지를 설정합니다
+PRINT  [0] 처녀 필터
+IF !FLAG:80
+	PRINTL - ON
+ELSE
+	PRINTL - OFF
+ENDIF
+PRINT  [1] A처녀 필터
+IF !FLAG:81
+	PRINTL - ON
+ELSE
+	PRINTL - OFF
+ENDIF
+PRINT  [2] 첫 키스 필터
+IF !FLAG:82
+	PRINTL - ON
+ELSE
+	PRINTL - OFF
+ENDIF
+PRINTL [999] 돌아간다
+INPUT
+IF RESULT == 0
+	FLAG:80 = ~FLAG:80
+	RESTART
+ELSEIF RESULT == 1
+	FLAG:81 = ~FLAG:81
+	RESTART
+ELSEIF RESULT == 2
+	FLAG:82 = ~FLAG:82
+	RESTART
+ELSEIF RESULT != 999
+	RESTART
+ENDIF
+
+RETURN 0
+
+;---------------------------------------------------------
+;ギャル化阻止 FLAG:85で。最初はオフから
+;---------------------------------------------------------
+@CONFIG_INFECTION
+FLAG:85 = ~FLAG:85
+RETURN 0

@@ -1,0 +1,1174 @@
+﻿;=================================================
+;비밀 연구소
+;=================================================
+@SECRET_LABO
+
+$INPUT_LOOP
+
+DRAWLINE
+PRINTL 비밀 연구소
+PRINTL 《여배우 후보들의 육체와 정신을 마개조합니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL □육체개조
+PRINTL  [0] - 거유로 만든다           (20000포인트)
+PRINTL  [1] - 빈유로 만든다           (10000포인트)
+PRINTL  [2] - 모유가 나오게 한다      (50000포인트)
+PRINTL  [3] - 후타나리로 만든다       (50000포인트)
+PRINTL  [4] - 후타나리를 지운다       (10000포인트)
+PRINTL  [5] - 동물귀를 붙인다         ( 2000포인트)
+PRINTL  [6] - 동물귀를 지운다         ( 1000포인트)
+PRINTL  [7] - 미숙함을 지운다         (10000포인트)
+SIF FLAG:36
+	PRINTL  [9] - 음모 영구탈모           ( 5000포인트)
+PRINTL 
+PRINTL  [10] - 모유가 안나오게 한다   (10000포인트)
+PRINTL  [11] - 오줌싸게를 지운다      (10000포인트)
+PRINTL  [12] - 처녀막을 재생한다      (100000포인트)
+PRINTL
+PRINTL □세뇌 (조수용)
+PRINTL  [30] -【불결무시】로 만든다   ( 5000포인트)
+PRINTL  [31] -【조루】로 만든다       ( 8000포인트)
+PRINTL  [32] -【유치】로 만든다       (10000포인트)
+;PRINTL  [33] -【새드】にする(10000포인트)
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	CALL MODIFY_BUSTUP
+ELSEIF RESULT == 1
+	CALL MODIFY_BUSTDOWN
+ELSEIF RESULT == 2
+	CALL MODIFY_BONYU
+ELSEIF RESULT == 3
+	CALL MODIFY_FUTANARI
+ELSEIF RESULT == 4
+	CALL MODIFY_FUTANARI_ERASE
+ELSEIF RESULT == 5
+	CALL MODIFY_ANIMAL
+ELSEIF RESULT == 6
+	CALL MODIFY_ANIMAL_ERASE
+ELSEIF RESULT == 7
+	CALL MODIFY_DEIMMATURITY
+ELSEIF RESULT == 9 && FLAG:36
+	CALL MODIFY_REMOVEHAIR
+ELSEIF RESULT == 10
+	CALL MODIFY_BONYU_ERASE
+ELSEIF RESULT == 11
+	CALL MODIFY_OMORASHI_ERASE
+ELSEIF RESULT == 12
+	CALL SHOJO_SAISEI
+ELSEIF RESULT == 30
+	C = 5000
+	B = 64
+	CALL BRAIN_WASHING
+ELSEIF RESULT == 31
+	C = 8000
+	B = 133
+	CALL BRAIN_WASHING
+ELSEIF RESULT == 32
+	C = 10000
+	B = 132
+	CALL BRAIN_WASHING
+;ELSEIF RESULT == 33
+;	C = 10000
+;	B = 83
+;	CALL BRAIN_WASHING
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+GOTO INPUT_LOOP
+;
+;-------------------------------------------------
+;거유화
+;-------------------------------------------------
+@MODIFY_BUSTUP
+C = 20000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 유방을 강제로 확대시킵니다
+PRINTL 누구를 거유화 시킵니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;가슴が設定されているキャラはIWS用処理へ
+ELSEIF BASE:RESULT:22 > 0 && FLAG:38 > 0
+	CALL MODIFY_BUSTUP_IWS
+	RETURN 1
+ELSEIF TALENT:RESULT:122
+	PRINTFORMW 【%TALENTNAME:122%】는 거유화 시킬 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:114
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 더 이상 거유화 시킬 수 없습니다
+	RETURN 0
+ENDIF
+
+IF TALENT:RESULT:110
+	PRINTFORML %NAME:RESULT%의 가슴을 더 크게 만들려면 50000포인트가 필요합니다
+	C = 50000
+	SIF MONEY < C
+		GOTO INPUT_LOOP
+	PRINTL 그래도 진행합니까?
+ELSE
+	PRINTFORML %조사처리(NAME:RESULT,"를")% 거유화 시킵니까?
+ENDIF
+
+T = RESULT
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 && TALENT:T:116
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:109%】가 됐다》
+	TALENT:T:116 = 0
+	TALENT:T:109 = 1
+ELSEIF RESULT == 0 && TALENT:T:109
+	PRINTFORMW 《%NAME:T%의 가슴사이즈가 보통이 됐다》
+	TALENT:T:109 = 0
+ELSEIF RESULT == 0 && TALENT:T:110
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:114%】가 됐다》
+	TALENT:T:110 = 0
+	TALENT:T:114 = 1
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:110%】가 됐다》
+	TALENT:T:110 = 1
+ELSE
+	RETURN 0
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;빈유化
+;-------------------------------------------------
+@MODIFY_BUSTDOWN
+C = 10000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 유방을 강제로 축소시킵니다
+PRINTL 누구를 빈유화 시킵니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;가슴が設定されているキャラはIWS用処理へ
+ELSEIF BASE:RESULT:22 > 0 && FLAG:38 > 0
+	CALL MODIFY_BUSTDOWN_IWS
+	RETURN 1
+ELSEIF TALENT:RESULT:122
+	PRINTFORMW 【%TALENTNAME:122%】는 빈유화 시킬 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:116
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 더 이상 빈유화 시킬 수 없습니다
+	RETURN 0
+ENDIF
+
+PRINTFORML %조사처리(NAME:RESULT,"를")% 빈유화 시킵니까?
+
+T = RESULT
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 && TALENT:T:114
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:110%】가 됐다》
+	TALENT:T:114 = 0
+	TALENT:T:110 = 1
+ELSEIF RESULT == 0 && TALENT:T:110
+	PRINTFORMW 《%NAME:T%의 가슴사이즈가 보통이 됐다》
+	TALENT:T:110 = 0
+ELSEIF RESULT == 0 && TALENT:T:109
+	PRINTFORMW 《%NAME:T%의 가슴은 완전히 평평해졌다》
+	TALENT:T:109 = 0
+	TALENT:T:116 = 1
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:109%】가 됐다》
+	TALENT:T:109 = 1
+ELSE
+	RETURN 0
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;모유체질化
+;-------------------------------------------------
+@MODIFY_BONYU
+C = 50000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 유선을 활성화시켜 모유 분비를 촉진시킵니다
+PRINTL 누구를 모유체질로 만듭니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:122
+	PRINTFORMW 【%TALENTNAME:122%】은 모유체질화 시킬 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:109 || TALENT:RESULT:116
+	PRINTFORMW %AME:RESULT%의 가슴크기로는 모유체질화 시킬 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:130
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 이미 모유체질입니다
+	RETURN 0
+ENDIF
+
+PRINTFORML %조사처리(NAME:RESULT,"를")% 모유체질화 시킵니까?
+
+T = RESULT
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")% 모유가 나오게 됐다》
+	TALENT:T:130 = 1
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;フタナリ化
+;-------------------------------------------------
+@MODIFY_FUTANARI
+C = 50000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 클리토리스를 변형시켜 페니스를 형성합니다
+PRINTL 난소에서 의사정액을 만들어 사정도 가능합니다
+PRINTL 누구를 후타나리로 만듭니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:121 || TALENT:RESULT:122
+	PRINTFORMW %NAME:RESULT%에겐 이미 페니스가 있습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %조사처리(NAME:RESULT,"를")% 후타나리로 만듭니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	IF FLAG:564 == 0
+		PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:121%】가 됐다》
+		TALENT:T:121 = 1
+		TALENT:T:326 = 0
+		SIF CFLAG:T:18 == 0
+			TALENT:T:1 = 1
+		CFLAG:T:609 = RAND:3
+		CFLAG:T:611 = RAND:4
+			IF CFLAG:T:609 >= 2
+				CFLAG:T:609 = 2
+			ENDIF
+			IF CFLAG:T:611 >= 3
+				CFLAG:T:611 = 3
+			ENDIF
+		CALL DECIDE_PENISSIZE
+		EXP:T:50 += 1
+		PRINTL 이상경험 +1
+	ELSEIF FLAG:564 == 1
+		CALL DECIDE_PENISSELECT
+		EXP:T:50 += 1
+		PRINTL 이상경험 +1
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;フタナリ消去
+;-------------------------------------------------
+@MODIFY_FUTANARI_ERASE
+C = 10000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 후타나리를 지웁니다
+PRINTL 누구의 페니스를 지웁니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:122
+	PRINTFORMW 그걸 버린다니 당치도 않다!
+	RETURN 0
+ELSEIF TALENT:RESULT:121 == 0
+	PRINTFORMW 지울 페니스가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:511 == 1 && TALENT:RESULT:505 == 0
+	PRINTFORMW 【천사】는【후타나리】를 지울 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:511 == 1 && TALENT:RESULT:505 == 1
+	PRINTFORMW 【타천사】는【후타나리】를 지울 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %NAME:RESULT%의 페니스를 지웁니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:121%】가 아니게 됐다》
+	TALENT:T:121 = 0
+	SIF TALENT:T:1 == 0
+		CFLAG:T:610 = 1
+	TALENT:T:1 = 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;동물귀を付ける
+;-------------------------------------------------
+@MODIFY_ANIMAL
+C = 2000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 유전자 일부를 동물 유전자로 교체합니다
+PRINTL 누구를 동물귀로 만듭니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:124
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 이미 동물귀입니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %조사처리(NAME:RESULT,"를")% 동물귀로 만듭니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:124%】가 됐다》
+	TALENT:T:124 = 1
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;동물귀を消去
+;-------------------------------------------------
+@MODIFY_ANIMAL_ERASE
+C = 1000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 동물귀를 지웁니다
+PRINTL 누구의 동물귀를 지웁니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:124 == 0
+	PRINTFORMW 지울 동물귀가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %NAME:RESULT%의 동물귀를 지웁니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:124%】가 아니게 됐다》
+	TALENT:T:124 = 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;음모 없음にする
+;-------------------------------------------------
+@MODIFY_REMOVEHAIR
+C = 5000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 성기에서 음모의 모근을 제거합니다
+PRINTL 누구의 음모를 영구탈모 시킵니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:125
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 이미 음모가 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %NAME:RESULT%의 음모를 영구탈모 시킵니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	IF TALENT:T:128
+		PRINTFORML 《%조사처리(NAME:T,"는")%【%TALENTNAME:128%】이 아니게 됐다》
+		TALENT:T:128 = 0
+	ENDIF
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:125%】이 됐다》
+	TALENT:T:125 = 1
+	CFLAG:T:6 = -2
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;
+;-------------------------------------------------
+;미숙함を除去
+;-------------------------------------------------
+@MODIFY_DEIMMATURITY
+C = 10000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 성기만 발육시켜 성교가 가능하게 만듭니다
+PRINTL 누구의 미숙함을 지웁니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:135 == 0
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 미숙함이 아닙니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %NAME:RESULT%의 미숙함을 지웁니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:135%】이 아니게 됐다》
+	TALENT:T:135 = 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;記憶を消去
+;-------------------------------------------------
+@MODIFY_AMNESIA
+P = 100000
+
+IF MONEY < P
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 개조대상의 육체와 감각은 그대로 두고
+PRINTL 기억을 지도 시작 이전의 상태로 되돌립니다
+PRINTL 누구의 기억을 지웁니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+C = RESULT
+
+PRINTFORML %NAME:C%의 기억을 지웁니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	D = CHARANUM
+	ADDCHARA NO:C
+
+	;購入時に行われる初期設定
+	CALL CHARA_BUY_SETTING
+
+	;체력, 기력
+	BASE:D:0 = BASE:C:0
+	MAXBASE:D:0 = MAXBASE:C:0
+	BASE:D:1 = BASE:C:1
+	MAXBASE:D:1 = MAXBASE:C:1
+	;처녀
+	TALENT:D:0 = TALENT:C:0
+	CFLAG:D:15 = CFLAG:C:15
+	;동정
+	TALENT:D:1 = TALENT:C:1
+	;陰毛の状態
+	CFLAG:D:6 = CFLAG:C:6
+	;후타나리
+	TALENT:D:121 = TALENT:C:121
+	TALENT:D:326 = TALENT:C:326
+	;모유체질
+	TALENT:D:130 = TALENT:C:130
+	;乳サイズ	
+	TALENT:D:109 = TALENT:C:109
+	TALENT:D:110 = TALENT:C:110
+	TALENT:D:114 = TALENT:C:114
+	TALENT:D:116 = TALENT:C:116
+	;비만
+	TALENT:D:115 = TALENT:C:115
+	;性感
+	ABL:D:0 = ABL:C:0
+	ABL:D:1 = ABL:C:1
+	ABL:D:2 = ABL:C:2
+	ABL:D:3 = ABL:C:3
+	;経験
+	EXP:D:0 = EXP:C:0
+	EXP:D:1 = EXP:C:1
+	EXP:D:3 = EXP:C:3
+	EXP:D:5 = EXP:C:5
+	EXP:D:10 = EXP:C:10
+	EXP:D:20 = EXP:C:20
+	EXP:D:30 = EXP:C:30
+	EXP:D:31 = EXP:C:31
+	EXP:D:32 = EXP:C:32
+	EXP:D:33 = EXP:C:33
+	EXP:D:40 = EXP:C:40
+	EXP:D:41 = EXP:C:41
+	EXP:D:52 = EXP:C:52
+	EXP:D:53 = EXP:C:53
+	EXP:D:54 = EXP:C:54
+	EXP:D:57 = EXP:C:57
+	EXP:D:60 = EXP:C:60
+	;임신関連
+	TALENT:D:153 = TALENT:C:153
+	TALENT:D:154 = TALENT:C:154
+	CFLAG:D:101 = CFLAG:C:101
+	CFLAG:D:102 = CFLAG:C:102
+	CFLAG:D:103 = CFLAG:C:103
+	CFLAG:D:104 = CFLAG:C:104
+	CFLAG:D:105 = CFLAG:C:105
+	CFLAG:D:106 = CFLAG:C:106
+	CFLAG:D:109 = CFLAG:C:109
+	CFLAG:D:110 = CFLAG:C:110
+	CFLAG:D:111 = CFLAG:C:111
+	;しあわせ草中毒
+	TALENT:D:46 = TALENT:C:46
+	CFLAG:D:31 = CFLAG:C:31
+	CFLAG:D:32 = CFLAG:C:32
+	;現在の着衣状況
+	CFLAG:D:40 = CFLAG:C:40
+	CFLAG:D:41 = CFLAG:C:41
+	CFLAG:D:42 = CFLAG:C:42
+	CFLAG:D:43 = CFLAG:C:43
+	CFLAG:D:44 = CFLAG:C:44
+	CFLAG:D:45 = CFLAG:C:45
+	CFLAG:D:46 = CFLAG:C:46
+	CFLAG:D:47 = CFLAG:C:47
+	CFLAG:D:48 = CFLAG:C:48
+	;性転換関連
+	CFLAG:D:70 = CFLAG:C:70
+	TALENT:D:122 = TALENT:C:122
+	
+	DELCHARA C
+
+	D = C
+	;キャラを元の位置に戻しておく
+	IF C < CHARANUM -1
+		A = CHARANUM - C - 1
+		REPEAT A
+			B = D
+			CALL CHARA_SORT_2
+		REND
+	ENDIF
+	C = D
+
+	TARGET = C
+	PRINTFORML 《%조사처리(NAME:C,"는")% 지도를 받은 기억이 없어졌다》
+
+	WAIT
+
+	;임신していた場合
+	IF TALENT:C:153 
+		PRINTFORML 그녀의 인식으로는 갑자기 부풀어오른 배를 내려다보고, 
+		PRINTFORML %조사처리(CALLNAME:C,"는")% 멍하니 서있다……
+		WAIT
+		IF TALENT:C:155 == 0 && TALENT:C:12 == 0
+			PRINTFORML %CALLNAME:C%의 머리속에서 뭔가가 부서져 버렸다……
+			PRINTFORML %CALLNAME:C%의 정신은【%TALENTNAME:9%】했다
+			TALENT:C:9 = 1
+			WAIT
+		ENDIF
+	ENDIF
+	;육아 중だった場合
+	IF TALENT:C:154
+		PRINTFORML %CALLNAME:C%에게, 육아 중이던 그녀의 아기를 데려왔다……
+		WAIT
+		IF TALENT:C:155 || TALENT:C:63
+			PRINTFORML 자신의 가슴에 달라붙는 처음보는 아기를, %조사처리(CALLNAME:C,"는")% 신기한 듯이 바라보다가,
+			PRINTFORML 무언가를 결심한 듯이 아기를 안아들고, 젖을 물렸다
+			PRINTFORML 《육아를 계속합니다》
+			WAIT
+		ELSE
+			PRINTFORML 자신의 가슴에 달라붙는 처음보는 아기를, %조사처리(CALLNAME:C,"는")% 의아하게 바라보고 있다
+			PRINTFORML %플레이어는()% 어쩔 수 없이, 아기를 입양보냈다
+			WAIT
+			TALENT:C:154 = 0
+			;임신時に減った체력の最大値が回復
+			MAXBASE:C:0 += 500
+			;임신時に大きくなった胸のサイズを一段小さくする
+			CALL REVERSE_B_SIZE
+			;임신パッチまわりのフラグをリセット
+			CALL CLEAR_FLAG
+		ENDIF
+	ENDIF
+
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= P
+
+RETURN 1
+;
+;-------------------------------------------------
+;모유체질を消去
+;-------------------------------------------------
+@MODIFY_BONYU_ERASE
+C = 10000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 모유가 안나오게 만듭니다
+PRINTL 누구의 모유체질를 지웁니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:130 == 0
+	PRINTFORMW 모유체질이 아닙니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:153
+	PRINTFORMW 임신중인 캐릭터의 모유체질은 지울 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:154
+	PRINTFORMW 육아 중인 캐릭터의 모유체질은 지울 수 없습니다
+	RETURN 0
+ENDIF
+
+PRINTFORML %NAME:RESULT%의 모유체질를 지웁니까?
+
+T = RESULT
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")% 모유가 안나오게 됐습니다》
+	TALENT:T:130 = 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;오줌싸개を消去
+;-------------------------------------------------
+@MODIFY_OMORASHI_ERASE
+C = 10000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 오줌싸개를 치료합니다
+PRINTL 누구의 오줌싸개를 지웁니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:57 == 0
+	PRINTFORMW 오줌싸개가 아닙니다
+	RETURN 0
+ELSEIF TALENT:RESULT:199
+	PRINTFORMW 【%TALENTNAME:199%】인 캐릭터는 개조할 수 없습니다
+	RETURN 0
+ENDIF
+
+PRINTFORML %NAME:RESULT%의 오줌싸개를 지웁니까?
+
+T = RESULT
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")% 오줌싸개가 아니게 됐다》
+	TALENT:T:57 = 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;처녀膜再生
+;-------------------------------------------------
+@SHOJO_SAISEI
+C = 100000
+;金がなければ終了
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTFORML 대상의 처녀막을 재생합니다
+PRINTFORML 누구의 처녀막을 재생시킵니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT <0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;【남성】は除外
+ELSEIF TALENT:RESULT:122
+	PRINTW 물리적으로 불가능합니다, 감솨함다!
+	RETURN 0
+;【처녀】は除外
+ELSEIF TALENT:RESULT:0
+	PRINTFORM %조사처리(NAME:RESULT,"는")% 처녀입니다
+	RETURN 0
+ENDIF
+
+PRINTFORML %NAME:RESULT%의 처녀막을 재생시킵니까?
+
+T = RESULT
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORMW 《%조사처리(NAME:T,"는")%【%TALENTNAME:0%】가 됐다》
+	TALENT:T:0 = 1
+	CFLAG:T:71 += 1
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+
+;
+;-------------------------------------------------
+;性転換
+;-------------------------------------------------
+@TRANS_SEX
+C = 200000
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTFORML 대상을 성전환시킵니다
+PRINTFORML 한번 전환하면 원래대로 돌릴 수 없습니다
+PRINTFORML 누구를 성전환 시킵니까?
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT <0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;既に性転換済のキャラは除外
+ELSEIF CFLAG:RESULT:70
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 이미 성전환을 했습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %조사처리(NAME:RESULT,"를")% 성전환 시킵니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	;オトコならそれを外す
+	IF TALENT:T:122
+		PRINTFORML 《%조사처리(NAME:T,"는")%【%TALENTNAME:122%】이 아니게 됐다》
+		TALENT:T:122 = 0
+		TALENT:T:0 = 1
+		TALENT:T:1 = 0
+	;オトコでなければオトコをつける
+	ELSE
+		;후타나리ならそれを外す
+		IF TALENT:T:121
+			PRINTFORML 《%조사처리(NAME:T,"는")%【%TALENTNAME:121%】가 아니게 됐다》
+			TALENT:T:121 = 0
+		ENDIF
+		PRINTFORML 《%조사처리(NAME:T,"는")%【%TALENTNAME:122%】이 됐다》
+		TALENT:T:122 = 1
+		TALENT:T:0 = 0
+		TALENT:T:1 = 1
+	ENDIF
+	Z = 1
+	PRINTFORMW %EXPNAME:50% +{Z}
+	EXP:T:50 += Z
+	CFLAG:T:70 = 1
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;洗脳
+;-------------------------------------------------
+;C:費用
+;B:追加する素質
+;-------------------------------------------------
+@BRAIN_WASHING
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTFORML 세뇌대상의 심층심리를 외부에서 덮어씁니다
+PRINTFORML 누구를【%TALENTNAME:B%】로 만듭니까?
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:B
+	PRINTFORMW %조사처리(NAME:RESULT,"는")% 이미【%TALENTNAME:B%】입니다
+	RETURN 0
+ELSEIF RESULT != 0 && CFLAG:RESULT:1 < 2
+	PRINTFORMW 조수가 아닌 캐릭터는 세뇌할 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:121 == 0 && TALENT:RESULT:122 == 0 && B == 133
+	PRINTFORMW 【%TALENTNAME:122%】이나【%TALENTNAME:121%】가 아니면【조루】로 만들 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:152
+	PRINTFORMW 【%TALENTNAME:152%】인 캐릭은 세뇌할 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORML %조사처리(NAME:RESULT,"를")%【%TALENTNAME:B%】로 만듭니까?
+
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0 
+	PRINTFORML %조사처리(NAME:T,"는")%【%TALENTNAME:B%】가 됐다
+	TALENT:T:B = 1
+	WAIT
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;

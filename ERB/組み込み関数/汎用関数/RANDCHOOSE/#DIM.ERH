@@ -1,0 +1,6 @@
+﻿;使用時には以下の2つの定義をERHに加えてください。
+;RANDCHOOSE_MAXは抽選候補の最大数, RANDCHOOSE_NUMは実際に処理を行うための配列です。
+
+;ランダム処理用
+#DIM CONST RANDCHOOSE_MAX = 10000
+#DIM RANDCHOOSE_NUM,RANDCHOOSE_MAX

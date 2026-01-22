@@ -1,0 +1,369 @@
+﻿;노출벽のLvUP処理とその可否判定
+;eratohoA ver1,204のスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;노출벽のLvUP
+;-------------------------------------------------
+@ABLUP17
+DRAWLINE
+;PRINTL 노예의 노출벽을 늘립니다
+;PRINTL 노출벽이 높아지면, 수치스러운 행위와 굴욕적인 행위로부터 쾌락을 얻을 수 있게 됩니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;노출벽はLv5が上限
+;[솔직함][해방][튀고 싶어함][노출광]が付いている場合はLv10まで해방
+;[쾌감에 솔직]も。
+IF ABL:17 >= 5 && (TALENT:13 == 0 && TALENT:33 == 0 && TALENT:28 == 0 && TALENT:89 == 0 && TALENT:70 == 0)
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:17 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要な습득의 구슬
+A = 0
+;必要な이상경험回数
+B = 0
+;必要な절정경험回数
+C = 0
+;必要な지도자위경험回数
+D = 0
+;必要な야외노출경험回数
+E = 0
+
+;条件別にOKかダメかを記録する
+;습득의 구슬による可否(I=0:可, I&1:珠不足, I&2:経験不足)
+I = 0
+
+CALL DECIDE_ABLUP17
+
+;욕망が노출벽＋1レベルでないといけない([愛]がない場合)
+IF TALENT:85 == 0
+	PRINTFORM %ABLNAME:11%{ABL:17+1}LV이상 (현재{ABL:11}LV) 그리고
+	PRINTL 
+ELSEIF TALENT:85 == 1
+;従順が노출벽＋1レベルでないといけない([愛]がある場合)
+	PRINTFORM %ABLNAME:10%{ABL:17+1}LV이상 (현재{ABL:10}LV) 그리고
+	PRINTL
+ENDIF
+
+;이상경험が必要か
+SIF B > 0
+	PRINTFORML %EXPNAME:50%{B}이상 (현재{EXP:50}) 그리고
+
+PRINTFORM [0] - %PALAMNAME:8%의 구슬×{JUEL:8}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+	SIF I & 4
+		PRINT 능력부족 
+ENDIF
+PRINTL 
+;절정경험
+SIF C > 0
+	PRINTFORML 　　　%EXPNAME:2%　{EXP:2}/{C}
+;지도자위경험
+SIF D > 0
+	PRINTFORML 　　　%EXPNAME:11%　{EXP:11}/{D}
+;지도자위경험
+SIF E > 0
+	PRINTFORML 　　　%EXPNAME:12%　{EXP:12}/{E}
+
+PRINTL [100] - 그만둔다
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다。
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:17 += 1
+
+IF RESULT == 0
+	JUEL:8 -= A
+ENDIF
+
+PRINTFORML %ABLNAME:17%의 레벨이 %조사처리(ABL:17,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;노출벽のLvUP可否判定
+;-------------------------------------------------
+@DECIDE_ABLUP17
+SIF ABL:17 >= 10
+	RETURN 0
+SIF ABL:17 >= 5 && (TALENT:13 == 0 && TALENT:33 == 0 && TALENT:28 == 0 && TALENT:89 == 0 && TALENT:70 == 0)
+	RETURN 0
+
+;判定変数を空に
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+I = 0
+J = 0
+
+IF ABL:17 == 0
+	A = 100
+	C = 1
+ELSEIF ABL:17 == 1
+	A = 1000
+	D = 1
+ELSEIF ABL:17 == 2
+	A = 3000
+	D = 10
+ELSEIF ABL:17 == 3
+	A = 6000
+	D = 30
+ELSEIF ABL:17 == 4
+	A = 12000
+	D = 50
+	E = 5
+ELSEIF ABL:17 == 5
+	A = 25000
+	D = 75
+	E = 10
+ELSEIF ABL:17 == 6
+	A = 50000
+	D = 100
+	E = 20
+ELSEIF ABL:17 == 7
+	A = 80000
+	D = 200
+	E = 40
+ELSEIF ABL:17 == 8
+	A = 120000
+	D = 300
+	E = 50
+ELSEIF ABL:17 == 9
+	A = 150000
+	D = 500
+	E = 100
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	SIF ABL:17 == 3
+		TIMES A , 1.50
+	SIF ABL:17 == 4
+		TIMES A , 2.00
+	SIF ABL:17 == 5
+		TIMES A , 2.50
+	SIF ABL:17 >= 6
+		TIMES A , 3.00
+ENDIF
+
+;LV3以上に上げるときは이상경험必要(素質: [튀고 싶어함][해방][음란][도착적][마조][광기]なら無視できる)
+IF ABL:17 >= 3 && (TALENT:28 == 0 && TALENT:33 == 0 && TALENT:70 == 0 && TALENT:76 == 0 && TALENT:80 == 0 && TALENT:88 == 0 && TALENT:123 == 0)
+	B = ABL:17 - 2
+ENDIF
+
+;겁쟁이
+SIF TALENT:10
+	TIMES A , 1.20
+;反抗的
+SIF TALENT:11
+	TIMES A , 1.50
+;다부짐
+SIF TALENT:12
+	TIMES A , 1.10
+;자제심
+SIF TALENT:20
+	TIMES A , 1.10
+;무관심
+SIF TALENT:21
+	TIMES A , 1.10
+;감정부족
+SIF TALENT:22
+	TIMES A , 1.50
+;튀고 싶어함
+IF TALENT:28
+	TIMES A , 0.50
+	TIMES D , 0.50
+	TIMES E , 0.50
+ENDIF
+;정조관념
+IF TALENT:30
+	TIMES A , 1.20
+	TIMES D , 1.20
+	TIMES E , 1.20
+ENDIF
+;정조무관심
+IF TALENT:31
+	TIMES A , 0.80
+	TIMES D , 0.80
+	TIMES E , 0.80
+ENDIF
+
+
+;억압
+IF TALENT:32
+	TIMES A , 1.20
+	TIMES D , 1.20
+	TIMES E , 1.20
+;해방
+ELSEIF TALENT:33
+	TIMES A , 0.80
+	TIMES D , 0.80
+	TIMES E , 0.80
+ENDIF
+
+;저항
+IF TALENT:34
+	TIMES A , 1.50
+	TIMES D , 1.50
+	TIMES E , 1.50
+ENDIF
+
+;수줍음
+IF TALENT:35
+	TIMES A , 1.10
+	TIMES D , 1.10
+	TIMES E , 1.10
+;부끄럼 없음
+ELSEIF TALENT:36
+	TIMES A , 0.90
+	TIMES D , 0.90
+	TIMES E , 0.90
+ENDIF
+
+;약점
+SIF TALENT:37
+	TIMES A , 0.80
+
+;자위하기쉬움
+IF TALENT:60
+	TIMES A , 0.90
+	TIMES D , 0.90
+	TIMES E , 0.90
+ENDIF	
+
+;쾌감에 솔직
+IF TALENT:70
+	TIMES A , 0.90
+	TIMES D , 0.90
+	TIMES E , 0.90
+;쾌감을 부정
+ELSEIF TALENT:71
+	TIMES A , 1.20
+	TIMES D , 1.20
+	TIMES E , 1.20
+ENDIF
+
+;중독되기쉬움
+IF TALENT:72
+	TIMES A , 0.80
+	TIMES D , 0.80
+	TIMES E , 0.80
+ENDIF
+;즉각함락
+IF TALENT:73
+	TIMES A , 0.90
+	TIMES D , 0.90
+	TIMES E , 0.90
+ENDIF
+;음란
+IF TALENT:76
+	TIMES A , 0.75
+	TIMES D , 0.75
+	TIMES E , 0.75
+ENDIF
+
+;색정광
+IF TALENT:440
+	TIMES A , 0.40
+	TIMES D , 0.40
+	TIMES E , 0.40
+ENDIF
+;도착적
+SIF TALENT:80
+	TIMES A , 0.75
+	TIMES D , 0.75
+	TIMES E , 0.75
+;새드
+SIF TALENT:83
+	TIMES A , 1.20
+;마조
+SIF TALENT:88
+	TIMES A , 0.75
+;노출광
+IF TALENT:89
+	TIMES A , 0.10
+	TIMES D , 0.10
+	TIMES E , 0.10
+ENDIF
+;광기
+SIF TALENT:123
+	TIMES A , 0.50
+;붕괴
+SIF TALENT:9
+	TIMES A , 0.80
+;아이돌
+SIF TALENT:203
+	TIMES A , 0.80
+;야마토 나데시코
+IF TALENT:209
+	TIMES A , 1.25
+	TIMES D , 1.25
+	TIMES E , 1.25
+ENDIF
+IF TALENT:505
+	TIMES A , 0.10
+	TIMES D , 0.10
+	TIMES E , 0.10
+ENDIF
+
+;욕망が노출벽＋1レベルでないといけない([愛]がない場合)
+IF TALENT:85 == 0
+	IF ABL:11 < ABL:17+1
+		;욕망が不足
+		I |= 4
+	ENDIF
+ELSEIF TALENT:85 == 1
+;従順が노출벽＋1レベルでないといけない([愛]がある場合)
+	IF ABL:10 < ABL:17+1
+		;従順が不足
+		I |= 4
+	ENDIF
+ENDIF
+
+;最低でも1個は必要
+SIF A < 1
+	A = 1
+
+;이상경험が不足
+SIF EXP:50 < B
+	I |= 2
+;절정경험が不足
+SIF EXP:2 < C
+	I |= 2
+;지도자위경험が不足
+SIF EXP:11 < D
+	I |= 2
+;지도자위경험が不足
+SIF EXP:12 < E
+	I |= 2
+
+;습득의 구슬は足りている?
+SIF JUEL:8 < A
+	I |= 1
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+;
+;
+;

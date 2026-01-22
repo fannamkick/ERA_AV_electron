@@ -1,0 +1,591 @@
+﻿;=================================================
+;아이템購入用スクリプト
+;=================================================
+;eratohoRR1317系列スクリプトを流用し改造
+;>複数調教と大人数対応を合成。複数調教用キャラカードチェックを削除
+;>コマンドメニュー及び条件を変更
+;>｢@SELECT_TARGET｣を削除
+;>｢@SHOW_CHALADATA｣=ステータス表示
+;>｢@CHARA_SALE｣=キャラ売却
+;>｢@SALEITEM_CHECK｣｢@USE_ITEM｣=아이템の購入と使用
+
+;=================================================
+;아이템購入・売却処理画面
+;=================================================
+@ITEM_SHOP
+DRAWLINE
+PRINTL 어덜트 샵『NIGHT LOVE STORE』
+PRINTL 《지도에 사용하는 아이템을 구입할 수 있습니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+
+PRINT_ITEM
+
+DRAWLINE
+
+CALL SALEITEM_CHECK
+;所持포인트を一時保存
+TFLAG:15 = MONEY
+
+$INPUT_LOOP
+;以下に自動的に売り物が表示される
+PRINT_SHOPITEM
+
+PRINTL 《구입할 아이템의 번호를 입력해주세요》
+
+DRAWLINE
+
+PRINTL [999] - 돌아간다
+;
+;=================================================
+;아이템購入時に呼び出される関数
+;=================================================
+@EVENTBUY
+;購入確認
+;複数持てる아이템
+IF BOUGHT == 24 || BOUGHT == 25 || BOUGHT == 26 || BOUGHT == 27 || BOUGHT == 29 || BOUGHT == 28 || BOUGHT == 34
+	CALL BUY_PLURAL
+	RETURN 1
+;その場で使う아이템
+ELSEIF BOUGHT == 30 || BOUGHT == 31 || BOUGHT == 32 || BOUGHT == 33 || BOUGHT == 40 || BOUGHT == 41 || BOUGHT == 43
+	CALL USE_ITEM
+	ITEM:BOUGHT = 0
+	RETURN 1
+ENDIF
+
+$INPUT_LOOP
+PRINTFORML %조사처리(ITEMNAME:BOUGHT,"를")% 구입하시겠습니까?
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+INPUT
+IF RESULT == 1
+	ITEM:BOUGHT -= 1
+	BOUGHT = 0
+	;退避していた포인트を戻す
+	MONEY = TFLAG:15
+	RETURN 0
+ELSEIF RESULT != 0
+	GOTO INPUT_LOOP
+ENDIF
+
+PRINTFORML 《%조사처리(ITEMNAME:BOUGHT,"를")% 구입했습니다》
+
+;素質아이템・ラブダイナミックス
+IF BOUGHT == 38
+	PRINTFORML 《%플레이어는(1)%【%TALENTNAME:91%】을 몸에 익혔다》
+	TALENT:MASTER:91 = 1
+	ITEM:BOUGHT = 0
+ENDIF
+;素質아이템【비밀지식】
+IF BOUGHT == 39
+	TALENT:MASTER:325 = 1
+	ITEM:BOUGHT = 0
+ENDIF
+;素質아이템【조합지식】
+IF BOUGHT == 42
+	TALENT:MASTER:55 = 1
+	ITEM:BOUGHT = 0
+ENDIF
+;素質아이템【기교LV】
+IF BOUGHT == 52
+	;EASYなら1つで1Lv上がる
+	IF FLAG:5 == 1
+		CALL TECHNIQUE_OF_MASTER_UP
+	;NORMAL/EXTRAならLv3までは1つで1Lv上がり, それ以降は기교Lv-1分必要になる
+	ELSEIF FLAG:5 == 2 || FLAG:5 == 9
+		IF ABL:MASTER:12 >= 3
+			F = ABL:MASTER:12 - 1
+			CALL TECHNIQUE_OF_MASTER
+		ELSE
+			CALL TECHNIQUE_OF_MASTER_UP
+		ENDIF
+	;HARDならLv2までは1つで1Lv上がり, それ以降は기교Lv*2分必要になる
+	ELSEIF FLAG:5 == 3
+		IF ABL:MASTER:12 >= 2
+			F = ABL:MASTER:12
+			F *= 2
+			CALL TECHNIQUE_OF_MASTER
+		ELSE
+			CALL TECHNIQUE_OF_MASTER_UP
+		ENDIF
+	;POWERFULならLv1までは1つで1Lv上がり, それ以降は기교Lv*5分必要になる
+	ELSEIF FLAG:5 == 4
+		IF ABL:MASTER:12 >= 1
+			F = ABL:MASTER:12
+			F *= 5
+			CALL TECHNIQUE_OF_MASTER
+		ELSE
+			CALL TECHNIQUE_OF_MASTER_UP
+		ENDIF
+	;PHANTASM以上なら기교Lv*100分必要になる
+	ELSE
+		F = ABL:MASTER:12
+		F *= 100
+		CALL TECHNIQUE_OF_MASTER
+	ENDIF
+	;撮影可能シーン数らしいよ
+	MAXBASE:MASTER:60 += 4
+ENDIF
+
+WAIT
+
+RETURN 1
+;
+;-------------------------------------------------
+;아이템出現条件
+;-------------------------------------------------
+@SALEITEM_CHECK
+;初期状態で販売されている아이템
+REPEAT 24
+	SIF COUNT == 22
+		CONTINUE
+	ITEMSALES:COUNT = 1
+REND
+
+;에이프런, 전극플러그, 본디지スーツはEXTRAでのみ
+;実際には[카리스마](【威圧感】)を見ている。
+ITEMSALES:21 = 0
+ITEMSALES:23 = 0
+IF TALENT:MASTER:93 == 1
+	ITEMSALES:21 = 1
+	ITEMSALES:23 = 1
+ENDIF
+
+;영양제は【조합지식】所持でEXTRAでのみ
+;とあるがEXTRA条件は外れている。조합지식は助手経験者が持てばよい。
+ITEMSALES:30 = 0
+M = 0
+IF TALENT:MASTER:55
+	M = 1
+ENDIF
+REPEAT CHARANUM
+	SIF COUNT == 0
+		CONTINUE
+	IF CFLAG:COUNT:1 >= 1 && ISASSI:COUNT == 1
+		SIF TALENT:COUNT:55
+			M = 1
+	ENDIF
+REND
+IF M == 1
+	ITEMSALES:30 = 1
+ENDIF
+
+;비디오카메라・착유기・애널비즈はEXTRAかNORMAL以下でのみ
+;비디오카메라は失わないので消した
+ITEMSALES:17 = 0
+ITEMSALES:20 = 0
+IF FLAG:5 == 9 || FLAG:5 <= 2
+	ITEMSALES:17 = 1
+	ITEMSALES:20 = 1
+ENDIF
+
+;もう持っている非消耗아이템を消す
+REPEAT 24
+	SIF ITEM:COUNT == 1
+		ITEMSALES:COUNT = 0
+REND
+
+;消耗系아이템を追加
+ITEMSALES:24 = 1
+ITEMSALES:25 = 1
+ITEMSALES:29 = 1
+ITEMSALES:34 = 1
+
+;主人か助手経験者の誰かが【조합지식】を持っているなら
+;薬品系아이템追加
+ITEMSALES:26 = 0
+ITEMSALES:27 = 0
+ITEMSALES:31 = 0
+ITEMSALES:40 = 0
+ITEMSALES:41 = 0
+ITEMSALES:43 = 0
+M = 0
+IF TALENT:MASTER:55
+	M = 1
+ENDIF
+REPEAT CHARANUM
+	SIF COUNT == 0
+		CONTINUE
+	IF CFLAG:COUNT:1 >= 1 && ISASSI:COUNT == 1
+		SIF TALENT:COUNT:55
+			M = 1
+	ENDIF
+REND
+IF M == 1
+	ITEMSALES:26 = 1
+	ITEMSALES:27 = 1
+	ITEMSALES:31 = 1
+	ITEMSALES:40 = 1
+	SIF FLAG:36
+		ITEMSALES:41 = 1
+	ITEMSALES:43 = 1
+ENDIF
+
+;お香はHARDでは1日3個, POWERFULでは1個まで
+SIF (FLAG:5 == 3 && FLAG:61 >= 3) || (FLAG:5 == 4 && FLAG:61 >= 1)
+	ITEMSALES:31 = 0
+
+;;主人か助手経験者の誰かが【비밀지식】を持っているなら
+;;秘密아이템追加
+;;WGバッテリーはerAV世界にはない
+;ITEMSALES:33 = 0
+;M = 0
+;IF TALENT:MASTER:325
+;	M = 1
+;ENDIF
+;REPEAT CHARANUM
+;	SIF COUNT == 0
+;		CONTINUE
+;	IF CFLAG:COUNT:1 >= 1 && ISASSI:COUNT == 1
+;		SIF TALENT:COUNT:325
+;			M = 1
+;	ENDIF
+;REND
+;IF M == 1
+;	ITEMSALES:33 = 1
+;ENDIF
+
+;콘돔, 로션, 미약, 이뇨제, 비디오테이프, ピアスリングは99個まで
+SIF ITEM:24 >= 99
+	ITEMSALES:24 = 0
+SIF ITEM:25 >= 99
+	ITEMSALES:25 = 0
+SIF ITEM:26 >= 99
+	ITEMSALES:26 = 0
+SIF ITEM:27 >= 99
+	ITEMSALES:27 = 0
+;SIF ITEM:28 >= 99
+;	ITEMSALES:28 = 0
+SIF ITEM:29 >= 99
+	ITEMSALES:29 = 0
+SIF ITEM:34 >= 99
+	ITEMSALES:34 = 0
+	
+;러브스코프
+ITEMSALES:37 = 1
+SIF ITEM:37
+	ITEMSALES:37 = 0
+
+
+;素質아이템「ラブダイナミックス」
+ITEMSALES:38 = 1
+SIF TALENT:MASTER:91 == 1
+	ITEMSALES:38 = 0
+;ラブダイナミックスはHARD・POWERFULでは販売しない
+SIF FLAG:5 == 3 || FLAG:5 == 4
+	ITEMSALES:38 = 0
+
+;素質아이템【비밀지식】
+ITEMSALES:39 = 1
+SIF TALENT:MASTER:325 == 1
+	ITEMSALES:39 = 0
+
+;素質아이템【조합지식】
+ITEMSALES:42 = 1
+SIF TALENT:MASTER:55 == 1
+	ITEMSALES:42 = 0
+
+;素質아이템【기교Lv】
+ITEMSALES:52 = 1
+;기교Lvの上限は10, また堕とした人数+2までしか上げられない
+SIF ABL:MASTER:12 >= 10 || ABL:MASTER:12 > FLAG:30 + 1
+	ITEMSALES:52 = 0
+
+;-------------------------------------------------
+;複数個所持可能な아이템の処理
+;-------------------------------------------------
+@BUY_PLURAL
+;현재 구매가능 수량, B는 소지 가능 최대수(현재100개), C는 소지금によるもの
+;A는 아이템의 단가, D는 B와 C중 작은쪽, E는 B<=C라면 0, B>C라면 1
+;콘돔
+SIF BOUGHT == 24
+	A = 10
+;로션
+SIF BOUGHT == 25
+	A = 200
+;프린세스포이즌
+SIF BOUGHT == 26
+	A = 2000
+;싸인펜
+SIF BOUGHT == 29
+	A = 100
+;이뇨제
+SIF BOUGHT == 27
+	A = 1000
+;=====================
+;;비디오테이프 - 없음
+;SIF BOUGHT == 28
+;	A = 500
+;=====================
+;피어스링
+SIF BOUGHT == 34
+	A = 5000
+B = 100-ITEM:BOUGHT
+C = MONEY/A+1
+IF B <= C
+	D = B
+	E = 0
+ELSE
+	D = C
+	E = 1
+ENDIF
+DRAWLINE
+PRINTFORM %조사처리(ITEMNAME:BOUGHT,"를")% 얼마나 삽니까? (1-
+PRINTV D
+PRINTL , 0은 메뉴로 복귀)
+
+;1個買い, 大人買い, キャンセルをマウス操作で可能に
+PRINT [1]
+PRINTFORM [{D}]
+PRINT [0]
+
+$INPUT_LOOP
+INPUT
+IF RESULT == 0
+	ITEM:BOUGHT -= 1
+						;****使用아이템連続購入改造ここから****
+	;払い戻し
+	MONEY += ITEMPRICE:BOUGHT
+						;****使用아이템連続購入改造ここまで****
+	RETURN 0
+ELSEIF RESULT < 0
+	GOTO INPUT_LOOP
+ELSEIF RESULT > D
+	IF RESULT > D && E == 0
+		PRINTL 그렇게 많이 가질 수 없습니다
+	ELSEIF RESULT > D && E == 1
+		PRINTL 소지금이 부족합니다
+	ENDIF
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 1
+	PRINTFORML 《%조사처리(ITEMNAME:BOUGHT,"를")% 구입했습니다》
+	WAIT
+	RETURN 0
+ELSE
+	PRINTFORML 《%조사처리(ITEMNAME:BOUGHT,"를")% {RESULT}개 구입했습니다》
+	WAIT
+	ITEM:BOUGHT += RESULT-1
+	MONEY -= A*(RESULT-1)
+	RETURN 0
+ENDIF
+
+;-------------------------------------------------
+;その場で使用する아이템の処理
+;-------------------------------------------------
+@USE_ITEM
+DRAWLINE
+;아이템の効果を表示する
+						;****使用아이템連続購入改造ここから****
+SIF BOUGHT == 30
+	PRINTFORML %ITEMNAME:BOUGHT%:체력을 회복시킵니다
+SIF BOUGHT == 31
+	PRINTFORML %ITEMNAME:BOUGHT%:부정의 구슬을 절반 없앱니다
+SIF BOUGHT == 33
+	PRINTFORML %ITEMNAME:BOUGHT%:세계의 역사를 바꾼 에너지원입니다
+SIF BOUGHT == 40
+	PRINTFORML %ITEMNAME:BOUGHT%:임신 확률을 높게 만듭니다
+SIF BOUGHT == 41
+	PRINTFORML %ITEMNAME:BOUGHT%:음모의 성장을 빠르게 합니다
+SIF BOUGHT == 43
+	PRINTFORML %ITEMNAME:BOUGHT%:임신 확률을 낮춥니다
+$INPUT_LOOP
+PRINTFORML %조사처리(ITEMNAME:BOUGHT,"를")% 누구에게 사용합니까? 소지금: {MONEY+(ITEMPRICE:BOUGHT)}포인트
+						;****使用아이템連続購入改造ここまで****
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	ITEM:BOUGHT = 0
+						;****使用아이템連続購入改造ここから****
+	;払い戻し
+	MONEY += ITEMPRICE:BOUGHT
+						;****使用아이템連続購入改造ここまで****
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;主人公は排除
+ELSEIF  RESULT == 0
+	GOTO INPUT_LOOP
+;売却済み・臨死中のキャラは排除
+ELSEIF  BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;체력MAXのキャラに영양제は使えない
+ELSEIF BOUGHT == 30 && BASE:RESULT:0 == MAXBASE:RESULT:0
+	PRINTFORML 이미 %NAME:RESULT%의 체력은 MAX입니다
+	WAIT
+	GOTO INPUT_LOOP
+;부정의 구슬を持ってないキャラにお香は使えない
+ELSEIF BOUGHT == 31 && JUEL:RESULT:100 < 1
+	PRINTFORML %조사처리(NAME:RESULT,"는")% %PALAMNAME:100%의 구슬을 가지고 있지 않습니다
+	WAIT 
+	GOTO INPUT_LOOP
+;;【愛】持ちかつ수명持ちでないとWGバッテリーは使えない
+;ELSEIF BOUGHT == 33 && (BASE:RESULT:10 == 0 || TALENT:RESULT:85 == 0)
+;	PRINTFORML %NAME:RESULT%にWGバッテリーを使う必要はありません
+;	WAIT 
+;	GOTO INPUT_LOOP
+;임신중・육아 중のキャラに排卵促進剤は使えない
+ELSEIF BOUGHT == 40 && TALENT:RESULT:153 || TALENT:RESULT:154
+	PRINTFORM %조사처리(NAME:RESULT,"는")%
+	IF TALENT:RESULT:153
+		PRINTL 이미 임신한 상태입니다
+	ELSEIF TALENT:RESULT:154
+		PRINTL 육아 중입니다
+	ENDIF
+	WAIT 
+	GOTO INPUT_LOOP
+;임신중・육아 중のキャラに排卵促進剤は使えない
+ELSEIF BOUGHT == 43 && TALENT:RESULT:153 || TALENT:RESULT:154
+	PRINTFORM %조사처리(NAME:RESULT,"는")%
+	IF TALENT:RESULT:153
+		PRINTL 이미 임신한 상태입니다
+	ELSEIF TALENT:RESULT:154
+		PRINTL 육아 중입니다
+	ENDIF
+	WAIT 
+	GOTO INPUT_LOOP
+ENDIF
+
+;체력回復
+IF BOUGHT == 30
+	PRINTFORML 《%NAME:RESULT%의 체력이 회복되었습니다》
+	BASE:RESULT:0 += 500
+	SIF BASE:RESULT:0 > MAXBASE:RESULT:0
+		BASE:RESULT:0 = MAXBASE:RESULT:0
+	WAIT
+						;****使用아이템連続購入改造ここから****
+	IF MONEY >= 1000
+		MONEY -= 1000
+		GOTO INPUT_LOOP
+	ELSE
+		PRINTL 돈이 부족해서 이 이상 살 수 없습니다
+	ENDIF
+						;****使用아이템連続購入改造ここまで****
+;부정의 구슬半減
+ELSEIF BOUGHT == 31
+	PRINTFORML 《%조사처리(NAME:RESULT,"가") 가진 부정의 구슬이 반으로 줄었습니다》
+	PRINTFORML  부정의 구슬:{JUEL:RESULT:100} -> {JUEL:RESULT:100 / 2}
+	JUEL:RESULT:100 /= 2
+	FLAG:61 += 1
+	WAIT
+						;****使用아이템連続購入改造ここから****
+	IF MONEY >= 3000
+		MONEY -= 3000
+		GOTO INPUT_LOOP
+	ELSE
+		PRINTL 돈이 부족해서 이 이상 살 수 없습니다
+	ENDIF
+						;****使用아이템連続購入改造ここまで****
+;;수명制限削除
+;ELSEIF BOUGHT == 33
+;	PRINTFORML 《%NAME:RESULT%の수명制限がなくなりました》
+;	BASE:RESULT:10 = 0
+;	WAIT
+;						;****使用아이템連続購入改造ここから****
+;	IF MONEY >= 100000
+;		MONEY -= 100000
+;		GOTO INPUT_LOOP
+;	ELSE
+;		PRINTL お金が足りないのでこれ以上買えません
+;	ENDIF
+;						;****使用아이템連続購入改造ここまで****
+;排卵促進
+ELSEIF BOUGHT == 40
+	PRINTFORML 《%조사처리(NAME:RESULT,"는")% 임신하기 쉬워졌습니다》
+	CFLAG:RESULT:109 = 1
+	CFLAG:RESULT:645 = 1
+	SIF PBAND:303 == 3
+		CFLAG:RESULT:109 += RAND:2
+	WAIT
+						;****使用아이템連続購入改造ここから****
+	IF MONEY >= 2000
+		MONEY -= 2000
+		GOTO INPUT_LOOP
+	ELSE
+		PRINTL 돈이 부족해서 이 이상 살 수 없습니다
+	ENDIF
+						;****使用아이템連続購入改造ここまで****
+;剛毛剤
+ELSEIF BOUGHT == 41
+	PRINTFORML 《%NAME:RESULT%의 음모 성장이 빨라졌습니다》
+	CFLAG:RESULT:34 = 1
+	WAIT
+						;****使用아이템連続購入改造ここから****
+	IF MONEY >= 1000
+		MONEY -= 1000
+		GOTO INPUT_LOOP
+	ELSE
+		PRINTL 돈이 부족해서 이 이상 살 수 없습니다
+	ENDIF
+						;****使用아이템連続購入改造ここまで****
+;排卵抑制
+ELSEIF BOUGHT == 43
+	PRINTFORML 《%조사처리(NAME:RESULT,"는")% 임신하기 어려워졌습니다》
+	CFLAG:RESULT:109 = -1
+	CFLAG:RESULT:645 = 1
+	WAIT
+						;****使用아이템連続購入改造ここから****
+	IF MONEY >= 50000
+		MONEY -= 50000
+		GOTO INPUT_LOOP
+	ELSE
+		PRINTL 돈이 부족해서 이 이상 살 수 없습니다
+	ENDIF
+						;****使用아이템連続購入改造ここまで****
+ENDIF
+
+
+;-------------------------------------------------
+;素質아이템【기교Lv】処理
+;-------------------------------------------------
+@TECHNIQUE_OF_MASTER
+IF FLAG:33 == F - 1
+	CALL TECHNIQUE_OF_MASTER_UP
+ELSE
+	FLAG:33 += 1
+	PRINTL 
+	PRINTFORML 기교LV을 올리기 위해 앞으로  {F - FLAG:33} 개 필요합니다
+	PRINTL 나머지를 대량으로 구입하시겠습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+	IF RESULT == 0
+		IF MONEY < (F - FLAG:33) * 5000
+			PRINTL 소지금이 부족합니다
+		ELSE
+			MONEY -= (F - FLAG:33) * 5000
+			CALL TECHNIQUE_OF_MASTER_UP
+		ENDIF
+	ELSEIF RESULT == 1
+		RETURN 0
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+ENDIF
+
+@TECHNIQUE_OF_MASTER_UP
+ABL:MASTER:12 += 1
+FLAG:33 = 0
+ITEM:BOUGHT = 0
+PRINTFORML 《%NAME:MASTER%의 기교가 LV%조사처리(ABL:MASTER:12,"가")% 되었다》
+
+;-------------------------------------------------
+;販売아이템フラグ全削除処理
+;-------------------------------------------------
+@CLEAR_SHOP
+
+;一旦購入可能아이템を空に
+REPEAT 100
+	ITEMSALES:COUNT = 0
+REND
+;
+;
+;

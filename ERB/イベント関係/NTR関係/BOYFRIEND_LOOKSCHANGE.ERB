@@ -1,0 +1,242 @@
+﻿;===========================================================
+;見た目変更呼び出し
+;===========================================================
+@EVENT_LOOKSCHANGE
+
+VARSET TCVAR, 0
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:184 == 1
+		IF TALENT:COUNT:423 == 0 && EXP:COUNT:111 >= 9
+			CONTINUE
+		ELSEIF EXP:COUNT:111 >= 11
+			CONTINUE
+		ELSEIF CFLAG:COUNT:622 != 0
+			CONTINUE
+		ELSEIF CFLAG:COUNT:140 == 1 && (FLAG:101 & 128)
+			CONTINUE
+		ELSE
+			LOCAL = RAND:100
+			SIF TALENT:COUNT:423 == 1 || TALENT:COUNT:405 == 1
+				LOCAL = 100
+			SIF LOCAL >= 80
+				CALL EVENT_LOOKSCHANGE_DETAIL
+				VARSET TCVAR, 0
+			LOCAL = 0
+		ENDIF
+	ENDIF
+REND
+
+;===========================================================
+;見た目変更表示
+;===========================================================
+@EVENT_LOOKSCHANGE_DETAIL
+
+TARGET = COUNT
+LOCAL = CFLAG:622
+VARSET TCVAR, 0
+
+PRINTFORMW 주말이 지나고 월요일, 사무소에 들어온 %NAME:TARGET%에게 %플레이어는()% 위화감을 느꼈다……
+PRINTFORM %타겟을()% 주의깊게 관찰해보니 
+
+CALLFORM PARSONAL_CHANGE
+
+PRINTFORML 것이 위화감의 원인이었다
+PRINTFORML %CALLNAME:TARGET%에게 이야기를 들어보니, 사귀고 있는 남친인 %CSTR:7%의 취향이라고 한다
+PRINTFORML %타겟은()% %CALLNAME:MASTER%에게 어울리는지 물어봤지만, %플레이어는()% 뭐라고 대답해야 좋을지 몰라 말이 나오지 않았다……
+
+EXP:111 += 1
+
+VARSET LOCAL:3
+FOR LOCAL:3, 0 ,90
+	IF TCVAR:(LOCAL:3)
+		; 経験値の加算処理
+		; 経験名が定義されているのみ加算処理を行う
+		IF STRLENS(EXPNAME:(LOCAL:3)) > 0
+			EXP:(LOCAL:3) += TCVAR:(LOCAL:3)
+		ELSE
+			DEBUGPRINTFORML %조사처리(EXP:{(LOCAL:3)},"는")% 정의되지 않았기에 가속처리를 스킵합니다
+		ENDIF
+			SIF TCVAR:(LOCAL:3) != 101
+				PRINTFORML %EXPNAME:(LOCAL:3)% + {TCVAR:(LOCAL:3)}
+	ENDIF
+NEXT
+
+VARSET TCVAR
+WAIT
+CUSTOMDRAWLINE ･･
+
+
+;===========================================================
+;中身仮。
+;とりあえず汎用として, 分岐できる形を取れたら。
+;TRYCCALLFORMだなあ……
+;===========================================================
+@PARSONAL_CHANGE
+IF EXP:111 == 0 && CFLAG:600 != 1 && CFLAG:600 != 10
+	CALL PRINT_HAIRCOLOR_TAILOR
+	PRINTFORM 색이었던 머리가 짙은색으로 변한 
+	CFLAG:600 = 1
+	CFLAG:601 = 1
+ELSEIF EXP:111 == 0 && CFLAG:600 == 1
+	CALL PRINT_HAIRCOLOR_TAILOR
+	PRINTFORM 색이었던 머리가 갈색으로 변한 
+	CFLAG:600 = 10
+	CFLAG:601 = 1
+ELSEIF EXP:111 == 0 && CFLAG:600 == 10
+	CALL PRINT_HAIRCOLOR_TAILOR
+	PRINTFORM 색이었던 머리가 탈색했는지 인공적인 플라티나 브라운으로 변한 
+	CFLAG:600 = 9
+	CFLAG:601 = 1
+ENDIF
+IF EXP:111 == 1 && CFLAG:602 != 1 && CFLAG:602 != 8 && CFLAG:602 != 5
+	CALL PRINT_HAIRSTYLE_TAILOR
+	PRINTFORM %조사만처리(RESULT+2,"였")%던 머리가 어깨에서 정리된 세미 롱으로 바뀐 
+	CFLAG:602 = 1
+ELSEIF EXP:111 == 1 && (CFLAG:602 == 1 || CFLAG:602 == 5) && CFLAG:602 != 8 
+	CALL PRINT_HAIRSTYLE_TAILOR
+	PRINTFORM %조사만처리(RESULT+2,"였")%던 머리에 풍성한 파마를 한 
+	CFLAG:602 = 7
+ELSEIF EXP:111 == 1 && CFLAG:602 == 8
+	PRINTFORM 허리까지 내려왔던 
+	CALL PRINT_HAIRSTYLE_TAILOR
+	PRINTFORM %조사만처리(RESULT+2,"를")% 중강까지 잘라 풍성한 파마를 한 
+	CFLAG:602 = 7
+ENDIF
+IF EXP:111 == 2 && CFLAG:41 != 30
+	PRINTFORM 항상 사무소에 올때는 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM %조사만처리(RESULT+2,"였")%던 %타겟이()% 노출이 많은 펑크 로리타 패션을 한 
+	CFLAG:41 = 30
+ELSEIF EXP:111 == 2 && CFLAG:41 == 30
+	PRINTFORM 항상 사무소에 올때는 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM %조사만처리(RESULT+2,"였")%던 %타겟이()% 노출이 많은 캐미솔과 데님미니스커트를 입은 
+	CFLAG:41 = 40
+ENDIF
+	IF EXP:111 == 3 && CFLAG:600 != 9
+	CALL PRINT_HAIRCOLOR_TAILOR
+	PRINTFORM 색이었던 머리가 탈색했는지 인공적인 플라티나 브라운으로 변한 머리끝을 만지작거리고 있는 
+	CFLAG:600 = 9
+	CFLAG:601 = 1
+ELSEIF EXP:111 == 3 && CFLAG:600 == 9
+	PRINTFORM 탈색한 머리에 희미하게 밝은 핑크색 메쉬를 넣은 머리끝을 만지작거리고 있는 
+ENDIF
+	IF EXP:111 == 4 && (CFLAG:7 & 2) == 0
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM  틈새로 보이는 배꼽에 희미한 핑크색 쥬얼리가 박힌 피어스가 빛나고 있는 
+	CFLAG:7 |= 2
+ELSEIF EXP:111 == 4 && (CFLAG:7 & 2)
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM  틈새로 보이는 배꼽에 달린 피어스에 크롬제 벨리 체인이 걸려있는 
+ENDIF
+
+IF EXP:111 == 5 && CFLAG:606 != 15
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM 에서 삐져나온 오른팔에 호랑나비 타투가 새겨진 
+	IF CFLAG:606 == 0
+		CSTR:70 = 오른팔
+		CSTR:71 = 호랑나비 모양의
+		CFLAG:606 |= 1
+	ELSEIF CFLAG:606 == 1
+		CSTR:72 = 오른팔
+		CSTR:73 = 호랑나비 모양의
+		CFLAG:606 |= 2
+	ELSEIF CFLAG:606 == 3
+		CSTR:74 = 오른팔
+		CSTR:75 = 호랑나비 모양의
+		CFLAG:606 |= 4
+	ELSEIF CFLAG:606 == 7
+		CSTR:76 = 오른팔
+		CSTR:77 = 호랑나비 모양의
+		CFLAG:606 |= 8
+	ENDIF
+	TCVAR:50 = 1
+ELSEIF EXP:111 == 5 && CFLAG:606 == 15
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM  틈새로 보이는 문신이 늘어난 
+ENDIF
+IF EXP:111 == 6 && TALENT:432 == 0
+	PRINTFORML 지금까지 자연스러운 화장을 고집하던 %타겟이()%
+	PRINTFORML 마스카라에 립글로스도 사용한【갸루계】화장을 하고 있는 
+	TALENT:432 = 1
+	TALENT:209 = 0
+ELSEIF EXP:111 == 6 && TALENT:432
+	PRINTFORM 화장이 더 진해진 
+ENDIF
+	IF EXP:111 == 7 && TALENT:422 == 0
+	PRINTFORM 태닝 살롱에 다녔는지, 탱탱한 피부가 구릿빛으로 탄 
+	TALENT:422 = 1
+ELSEIF EXP:111 == 7 && TALENT:422 == 1
+	PRINTFORM 갈색 피부를 유감없이 드러내고 있는 
+ENDIF
+IF EXP:111 == 8 && CFLAG:41 != 205
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORML %조사만처리(RESULT+2,"였")%던 %타겟이()% 노출이 더 심한 보디콘풍 마이크로 미니타이트 원피스, 형광색 망사스타킹에 
+	PRINTFORM 팔에는 뱅글과 링 브레이슬릿으로 바뀐 
+	CFLAG:41 = 205
+	CFLAG:42 = 74
+	CFLAG:170 = 8
+ELSEIF EXP:111 == 8 && CFLAG:41 == 205
+	PRINTFORM 안그래도 대담한 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM %조사만처리(RESULT+2,"가")% 더 아슬아슬한 디자인으로 바뀐 
+ENDIF
+IF EXP:111 == 9 && CFLAG:606 != 15
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM 에서 삐져나온 왼허벅지 안쪽에 트라이벌 패턴 타투가 새겨져 있는 
+	IF CFLAG:606 == 0
+		CSTR:70 = 왼허벅지 안쪽
+		CSTR:71 = 트라이벌 패턴
+		CFLAG:606 |= 1
+	ELSEIF CFLAG:606 == 1
+		CSTR:72 = 왼허벅지 안쪽
+		CSTR:73 = 트라이벌 패턴
+		CFLAG:606 |= 2
+	ELSEIF CFLAG:606 == 3
+		CSTR:74 = 왼허벅지 안쪽
+		CSTR:75 = 트라이벌 패턴
+		CFLAG:606 |= 4
+	ELSEIF CFLAG:606 == 7
+		CSTR:76 = 왼허벅지 안쪽
+		CSTR:77 = 트라이벌 패턴
+		CFLAG:606 |= 8
+	ENDIF
+	TCVAR:50 = 1
+ELSEIF EXP:111 == 9 && CFLAG:606 == 15
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORM  틈새로 보이는 타투가 더 늘어나 있는 
+ENDIF
+IF EXP:111 == 10
+	PRINTFORM 남친인 %CSTR:7%에게 완전히 물들었는지, 말투도 바보같아지고, 
+	PRINTFORM 찰나의 쾌락을 갈구하는, 전형적인【갸루계】가 되어버린 
+	TALENT:14 = 0
+	TALENT:23 = 1
+	TALENT:24 = 0
+	TALENT:25 = 1
+	TALENT:26 = 0
+	TALENT:27 = 0
+	TALENT:28 = 1
+	TALENT:30 = 0
+	TALENT:31 = 1
+	TALENT:33 = 1
+	TALENT:35 = 0
+	TALENT:36 = 1
+	TALENT:87 = 1
+	TALENT:113 = 0
+	TALENT:132 = 0
+	TALENT:134 = 0
+	TALENT:209 = 0
+	TALENT:416 = 1
+	IF ABL:11 < 3
+		ABL:11 = 3
+	ENDIF
+	BASE:30 *= 3
+	CSTR:80 = 자지
+	IF RAND:2 == 0
+		CSTR:9 = 난
+	ELSE
+		CSTR:9 = 나
+	ENDIF
+ENDIF

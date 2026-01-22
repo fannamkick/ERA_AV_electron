@@ -1,0 +1,19 @@
+﻿;-------------------------------------------------
+;처녀を奪うかどうかの確認
+;-------------------------------------------------
+@CONFIRM_FIRSTKISS
+SIF FLAG:82
+	RETURN 1
+$INPUT_LOOP_01
+IF CFLAG:16 == -1
+	PRINTFORML %CALLNAME:TARGET%의 첫 키스를 빼았습니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 1
+		RETURN 0
+	ELSEIF RESULT != 0
+		GOTO INPUT_LOOP_01
+	ENDIF
+ENDIF
+RETURN 1

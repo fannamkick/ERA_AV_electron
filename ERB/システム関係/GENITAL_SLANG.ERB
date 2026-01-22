@@ -1,0 +1,337 @@
+﻿;===========================================================
+;淫語の処理
+;===========================================================
+@GENITAL_SLANG
+
+;コンフィグで切れます
+;口上で機能殺したい場合には先にCFLAG:8に1を入れておくとよい
+;ってこれもフラグまとめに書いてないし
+SIF FLAG:160 == 1
+	RETURN
+
+PRINTL
+IF EXP:112 == 0
+	PRINTFORM %CALLNAME:TARGET%에게도 꽤나 신뢰받게 되어, 
+	PRINTFORML 지도의 성과인지 이제 %타겟은()% 성행위에 대한 수치심도 옅어진 것 같다……
+	PRINTFORM 그리하여 %플레이어는()% 다음 스텝을 위해 %CALLNAME:TARGET%에게 
+	PRINTFORML AV에서 수요가 있는 요소――음어를 가르쳐주기로 했다
+	PRINTL
+ENDIF
+
+PRINTFORML 《%NAME:TARGET%에게 음어를 가르쳐 주겠습니까?》
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUT_LOOP1
+
+INPUT
+
+IF RESULT == 1
+	RETURN
+ELSEIF RESULT == 0
+	CALL DECIDE_GENITAL_SLANG
+ELSE
+	GOTO INPUT_LOOP1
+ENDIF
+
+;===========================================================
+;淫語の設定
+;===========================================================
+@DECIDE_GENITAL_SLANG
+
+$INPUT_LOOP00
+PRINTFORML 현재 %타겟은()% 남성기를 %CSTR:80%, 여성기를 %CSTR:81%, 항문을 %조사처리(CSTR:82,"라")%고 부르고 있습니다
+
+PRINTFORML 남성기를――
+PRINTL [0] - 그대로 부르게 한다
+PRINTL [1] - 랜덤하게 설정한다
+PRINTL [2] - 스스로 생각한다
+
+$INPUT_LOOP01
+INPUT
+
+IF RESULT == 0
+	CSTR:83 = %CSTR:80%
+ELSEIF RESULT == 1
+	CALL GENERATE_CALLPENIS
+ELSEIF RESULT == 2
+	PRINTL 《입력해주세요(입력하지 않을 경우 바꾸지 않습니다)》
+	$INPUTLOOP_CALLPENIS
+	INPUTS
+	
+	IF RESULTS == ""
+		RESULTS = %CSTR:80%
+		CSTR:83 = %RESULTS%
+	ELSE
+		CSTR:83 = %RESULTS%
+		PRINTFORML 남성기를『%CSTR:83%』%조사만처리(CSTR:83,"라")%고 부르게 합니까?
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		$INPUT_LOOP02
+		INPUT
+		
+		IF RESULT == 0
+			PRINTL
+		ELSEIF RESULT == 1
+			PRINTFORML 《재입력해주세요(입력하지 않을 경우 바꾸지 않습니다)》
+			GOTO INPUTLOOP_CALLPENIS
+		ELSE
+			GOTO INPUT_LOOP02
+		ENDIF
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP01
+ENDIF
+
+PRINTFORML 남성기를《%CSTR:83%》, 여성기를――
+PRINTL [0] - 그대로 부르게 한다
+PRINTL [1] - 랜덤하게 설정한다
+PRINTL [2] - 스스로 생각한다
+
+$INPUT_LOOP03
+INPUT
+
+IF RESULT == 0
+	CSTR:84 = %CSTR:81%
+ELSEIF RESULT == 1
+	CALL GENERATE_CALLVAGINA
+ELSEIF RESULT == 2
+	PRINTL 《입력해주세요(입력하지 않을 경우 바꾸지 않습니다)》
+	$INPUTLOOP_CALLVAGINA
+	INPUTS
+	
+	IF RESULTS == ""
+		RESULTS = %CSTR:81%
+		CSTR:84 = %RESULTS%
+	ELSE
+		CSTR:84 = %RESULTS%
+		PRINTFORML 여성기를『%CSTR:84%』%조사만처리(CSTR:84,"라")%고 부르게 합니까?
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		$INPUT_LOOP04
+		INPUT
+		
+		IF RESULT == 0
+			PRINTL
+		ELSEIF RESULT == 1
+			PRINTFORML 《재입력해주세요(입력하지 않을 경우 바꾸지 않습니다)》
+			GOTO INPUTLOOP_CALLVAGINA
+		ELSE
+			GOTO INPUT_LOOP04
+		ENDIF
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP03
+ENDIF
+
+PRINTFORML 남성기를《%CSTR:83%》, 여성기를《%CSTR:84%》, 항문을――
+PRINTL [0] - 그대로 부르게 한다
+PRINTL [1] - 랜덤하게 설정한다
+PRINTL [2] - 스스로 생각한다
+
+$INPUT_LOOP05
+INPUT
+
+IF RESULT == 0
+	CSTR:85= %CSTR:82%
+ELSEIF RESULT == 1
+	CALL GENERATE_CALLANAL
+ELSEIF RESULT == 2
+	PRINTL 《입력해주세요(입력하지 않을 경우 바꾸지 않습니다)》
+	$INPUTLOOP_CALLANAL
+	INPUTS
+	
+	IF RESULTS == ""
+		RESULTS = %CSTR:82%
+		CSTR:85 = %RESULTS%
+	ELSE
+		CSTR:85 = %RESULTS%
+		PRINTFORML 항문을『%CSTR:85%』%조사만처리(CSTR:85,"라")%고 부르게 합니까?
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		$INPUT_LOOP06
+		INPUT
+		
+		IF RESULT == 0
+			PRINTL
+		ELSEIF RESULT == 1
+			PRINTFORML 《재입력해주세요(입력하지 않을 경우 바꾸지 않습니다)》
+			GOTO INPUTLOOP_CALLANAL
+		ELSE
+			GOTO INPUT_LOOP06
+		ENDIF
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP05
+ENDIF
+
+PRINTFORML %CALLNAME:TARGET%에게 남성기를《%CSTR:83%》, 여성기를《%CSTR:84%》, 항문을《%CSTR:85%》%조사만처리(CSTR:85,"라")%고 부르게 합니다
+PRINTFORML 실행하시겠습니까?
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUT_LOOP07
+INPUT
+
+IF RESULT == 0
+	PRINTFORM %타겟은()% 남성기를《%CSTR:83%》, 여성기를《%CSTR:84%》, 
+	PRINTFORML 항문을《%CSTR:85%》%조사만처리(CSTR:85,"라")%고 부르게 했습니다
+	CSTR:80 = %CSTR:83%
+	CSTR:81 = %CSTR:84%
+	CSTR:82 = %CSTR:85%
+	
+	PRINTFORML 다음「대화한다」선택시 단어지도를 안하도록 설정하겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP08
+	INPUT
+
+	IF RESULT == 0
+		PRINTFORML 《앞으로 단어지도를 하지 않습니다》
+		CFLAG:8 = 1
+	ELSEIF RESULT == 1
+		PRINTFORML 《앞으로도 단어지도를 계속합니다》
+		PRINTFORML (단어지도를 하기 위해선 다시「대화한다」를 선택해 주세요)
+	ELSE
+		GOTO INPUT_LOOP08
+	ENDIF
+ELSEIF RESULT == 1
+	PRINTFORML 《재입력해주세요》
+	GOTO INPUT_LOOP00
+ELSE
+	GOTO INPUT_LOOP07
+ENDIF
+
+EXP:112 += 1
+
+
+;===========================================================
+;淫語ランダム生成・P
+;===========================================================
+@GENERATE_CALLPENIS
+
+LOCAL = 0
+LOCAL = RAND:17
+
+IF LOCAL ==  0
+	CSTR:83 = 자○
+ELSEIF LOCAL ==  1
+	CSTR:83 = 자지
+ELSEIF LOCAL ==  2
+	CSTR:83 = 좆
+ELSEIF LOCAL ==  3
+	CSTR:83 = 거시기
+ELSEIF LOCAL ==  4
+	CSTR:83 = 고○
+ELSEIF LOCAL ==  5
+	CSTR:83 = 고추
+ELSEIF LOCAL ==  6
+	CSTR:83 = 물건
+ELSEIF LOCAL ==  7
+	CSTR:83 = 막대
+ELSEIF LOCAL ==  8
+	CSTR:83 = 육봉
+ELSEIF LOCAL ==  9
+	CSTR:83 = 남근
+ELSEIF LOCAL ==  10
+	CSTR:83 = 페○스
+ELSEIF LOCAL ==  11
+	CSTR:83 = 페니스
+ELSEIF LOCAL ==  12
+	CSTR:83 = 꼬○
+ELSEIF LOCAL ==  13
+	CSTR:83 = 꼬추
+ELSEIF LOCAL ==  14
+	CSTR:83 = 대물
+ELSEIF LOCAL ==  15
+	CSTR:83 = 딸꾹
+ELSEIF LOCAL ==  16
+	CSTR:83 = 자지
+ENDIF
+
+;===========================================================
+;淫語ランダム生成・V
+;===========================================================
+@GENERATE_CALLVAGINA
+
+LOCAL = 0
+LOCAL = RAND:12
+
+IF LOCAL ==  0
+	CSTR:84 = 보○
+ELSEIF LOCAL ==  1
+	CSTR:84 = 보지
+ELSEIF LOCAL ==  2
+	CSTR:84 = 음○
+ELSEIF LOCAL ==  3
+	CSTR:84 = 음부
+ELSEIF LOCAL ==  4
+	CSTR:84 = 거기
+ELSEIF LOCAL ==  5
+	CSTR:84 = 아랫도리
+ELSEIF LOCAL ==  6
+	CSTR:84 = 암구멍
+ELSEIF LOCAL ==  7
+	CSTR:84 = 육항아리
+ELSEIF LOCAL ==  8
+	CSTR:84 = 그곳
+ELSEIF LOCAL ==  9
+	CSTR:84 = 질
+ELSEIF LOCAL ==  10
+	CSTR:84 = 자○구멍
+ELSEIF LOCAL ==  11
+	CSTR:84 = 자지구멍
+ENDIF
+
+LOCAL = 0
+
+;===========================================================
+;淫語ランダム生成・A
+;===========================================================
+@GENERATE_CALLANAL
+
+LOCAL = 0
+LOCAL = RAND:6
+
+IF LOCAL ==  0
+	CSTR:85 = 엉덩이구멍
+ELSEIF LOCAL ==  1
+	CSTR:85 = 엉덩이
+ELSEIF LOCAL ==  2
+	CSTR:85 = 똥꼬
+ELSEIF LOCAL ==  3
+	CSTR:85 = 뒷구멍
+ELSEIF LOCAL ==  4
+	CSTR:85 = 항문
+ELSEIF LOCAL ==  5
+	CSTR:85 = 애널
+ENDIF
+
+LOCAL = 0
+
+;===========================================================
+;呼称一括生成(素質から)
+;===========================================================
+@DEFOLT_GENITALCALL
+
+IF TALENT:TARGET:432 == 1
+	CSTR:80 = 자지
+	CSTR:81 = 보지
+	CSTR:82 = 애널
+ELSEIF TALENT:TARGET:76 == 1
+	CSTR:80 = 자지
+	CSTR:81 = 보지
+	CSTR:82 = 엉덩이
+;호기심
+ELSEIF TALENT:TARGET:23 == 1
+	CSTR:80 = 고추
+	CSTR:81 = 거기
+	CSTR:82 = 엉덩이
+;外国人。優先度設定これでいいのか謎
+ELSEIF TALENT:TARGET:408
+	CSTR:80 = 페니스
+	CSTR:81 = 질
+	CSTR:82 = 애널
+ELSE
+	CSTR:80 = 거시기
+	CSTR:81 = 그곳
+	CSTR:82 = 엉덩이구멍
+ENDIF

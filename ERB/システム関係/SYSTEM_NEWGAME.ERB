@@ -1,0 +1,408 @@
+﻿;============================================================
+;強くてニューゲーム関連
+;============================================================
+;グッドエンド以上の場合, 継続してEXTRAモードで遊ぶか強くてニューゲームを選択
+@GAME_CONTINUE
+
+DRAWLINE
+
+$INPUT_LOOP
+PRINTL 강하게 뉴게임을 실행하시겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	$INPUT_LOOP2
+	PRINTL 
+	PRINTL 주인공의 능력 및【연심】or【음란】을 습득한 여배우 및 후보를 인계하여, 
+	PRINTL 처음부터 다시 플레이합니다.
+	WAIT
+	CALL START_NEWGAME
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN 1
+
+;-----------------------------------------------------------
+;強くてニューゲームの処理開始
+;-----------------------------------------------------------
+@START_NEWGAME
+
+$INPUT_LOOP_01
+
+X = 0
+
+;引継ぎキャラの「お願いする」フラグクリア
+REPEAT CHARANUM
+	CFLAG:COUNT:680 = 0
+	CFLAG:COUNT:681 = 0
+	CFLAG:COUNT:682 = 0
+	CFLAG:COUNT:683 = 0
+	CFLAG:COUNT:684 = 0
+	CFLAG:COUNT:60 = 0
+	CFLAG:COUNT:613 = 0
+	CFLAG:COUNT:671 = 0
+REND
+
+;それに伴い起こす人がいるフラグクリア
+;一応検索したけどほかのところでやってるようではないので。
+CFLAG:MASTER:65 = 0
+
+FLAG:556 = 0
+FLAG:557 = 0
+
+;引継ぎ인수クリア
+J = 0
+
+;引継ぎキャラのフラグクリア
+REPEAT CHARANUM
+	CFLAG:COUNT:130 = 0
+REND
+
+;引継ぎキャラの選択
+CALL NEWGAME_SUCCEEDED
+
+$INPUT_LOOP_02
+IF J > 0
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	REPEAT CHARANUM
+		SIF COUNT == 0
+			CONTINUE
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		TARGET = COUNT
+		PRINTFORML  %NAME:TARGET%
+	REND
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTL 이상의 노예를 인계하여 새 게임을 시작하시겠습니까?
+ELSE
+	PRINTL 배우를 인계하지 않고 새 게임을 시작하시겠습니까?
+ENDIF
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+INPUT
+IF RESULT == 1
+	GOTO INPUT_LOOP_01
+ELSEIF RESULT != 0
+	GOTO INPUT_LOOP_02
+ENDIF
+
+;引き継ぐ奴隷以外を全削除する
+IF CHARANUM > 1
+	J = CHARANUM - 1
+	REPEAT CHARANUM - 1
+		SIF CFLAG:J:130 == 0
+			DELCHARA J
+		J -= 1
+	REND
+ENDIF
+
+;奴隷の価格フラグクリア
+REPEAT 99
+	A = 1000 + COUNT
+	FLAG:A = 0
+REND
+
+;++++++++++++++++++++++++++++++++++++++++++++++
+;奴隷引き継ぎ処理
+;++++++++++++++++++++++++++++++++++++++++++++++
+REPEAT CHARANUM
+	SIF COUNT == 0
+		CONTINUE
+
+	;임신・육아 중なら出産予定日をずらす
+	IF TALENT:COUNT:153 || TALENT:COUNT:154
+		CFLAG:COUNT:110 -= DAY
+	;それ以外なら임신関連のフラグは消去
+	ELSE
+		CFLAG:COUNT:101 = 0
+		CFLAG:COUNT:102 = 0
+		CFLAG:COUNT:103 = 0
+		CFLAG:COUNT:104 = 0
+		CFLAG:COUNT:105 = 0
+		CFLAG:COUNT:106 = 0
+		CFLAG:COUNT:109 = 0
+		CFLAG:COUNT:110 = 0
+		CFLAG:COUNT:111 = 0
+	ENDIF
+
+	;衣服が洗濯中なら戻ってくる
+	SIF CFLAG:COUNT:43 > 0
+		CFLAG:COUNT:43 = 0
+	SIF CFLAG:COUNT:44 > 0
+		CFLAG:COUNT:44 = 0
+	SIF CFLAG:COUNT:45 > 0
+		CFLAG:COUNT:45 = 0
+	SIF CFLAG:COUNT:46 > 0
+		CFLAG:COUNT:46 = 0
+	SIF CFLAG:COUNT:47 > 0
+		CFLAG:COUNT:47 = 0
+
+	;労役フラグ解除
+	CFLAG:COUNT:12 = 0
+	CFLAG:COUNT:13 = 0
+		
+	;引き継ぎキャラに購入フラグを立てる
+	A = NO:COUNT + 999
+	FLAG:A = -1
+
+	;初体験を奪った主人公の記録
+	IF CFLAG:COUNT:14 == 0 && CFLAG:COUNT:15 == 1
+		IF FLAG:201
+			CFLAG:COUNT:14 = FLAG:201
+		ELSE
+			CFLAG:COUNT:14 = 99
+		ENDIF
+	ENDIF
+
+	;첫 키스を奪った主人公の記録
+	IF CFLAG:COUNT:18 == 0 && (CFLAG:COUNT:16 % 100) == 1
+		IF FLAG:201
+			CFLAG:COUNT:18 = FLAG:201
+		ELSE
+			CFLAG:COUNT:18 = 99
+		ENDIF
+	ENDIF
+
+REND
+
+;奴隷の価格フラグの初期化
+CALL CHARA_PRICE
+
+;++++++++++++++++++++++++++++++++++++++++++++++
+;設定引き継ぎ処理
+;++++++++++++++++++++++++++++++++++++++++++++++
+;공헌도, 娼館人気を0に
+
+;周回数を+1する
+FLAG:10 += 1
+
+;所持아이템及び아이템購入履歴のリセット
+REPEAT 99
+	SIF COUNT == 60
+		CONTINUE
+	SIF COUNT == 61
+		CONTINUE
+	SIF COUNT == 62
+		CONTINUE
+	SIF COUNT == 63
+		CONTINUE
+	SIF COUNT == 90
+		CONTINUE
+	SIF COUNT == 22
+		CONTINUE
+	ITEM:COUNT = 0
+	ITEMSALES:COUNT = 1
+REND
+
+;ビデオ撮影バリアントなので, 開始時入手できるのと同じだけ残す(20120724望崎)
+	ITEM:6 = 1
+;	ITEM:28 = 1
+
+;日付, 時間, 調教対象や助手のリセット
+DAY = 0
+TIME = 0
+TARGET = -1
+ASSI = -1
+FLAG:1 = -1
+FLAG:2 = -1
+
+;調教対象・助手を空に
+TARGET = -1
+ASSI = -1
+FLAG:1 = -1
+FLAG:2 = -1
+
+;引き継がれないフラグのクリア
+FLAG:0 = 0
+FLAG:1 = 0
+FLAG:2 = 0
+FLAG:3 = 0
+FLAG:4 = 0
+FLAG:5 = 0
+
+FLAG:200 = 1
+
+;娼館の拡張状況をクリア
+FLAG:40 = 0
+FLAG:48 = 0
+
+;로리콘フラグの引継ぎ
+IF FLAG:39 == 0
+	PRINTL 로리콘 플래그를 계승하시겠습니까?
+	PRINTL [0] 계승한다
+	PRINTL [1] 계승하지 않는다
+	PRINTL [9] 로리콘 시스템을 사용하지 않는다
+	$INPUT_LOOP_LOLI
+	INPUT
+	IF RESULT == 1
+		FLAG:68 = 0
+		TALENT:MASTER:163 = 0
+	ELSEIF RESULT == 9
+		FLAG:68 = 0
+		TALENT:MASTER:163 = 0
+		FLAG:39 = 1
+	ELSEIF RESULT != 0
+		GOTO INPUT_LOOP_LOLI
+	ENDIF
+ENDIF
+
+;++++++++++++++++++++++++++++++++++++++++++++++
+;ゲームモード選択
+;++++++++++++++++++++++++++++++++++++++++++++++
+PRINTL 
+PRINTL ★★모드를 선택해주세요★★
+PRINTL [0] EASY     (120주 제한, 목표 금액 3000000pt)
+PRINTL [1] NORMAL   (100주 제한, 목표 금액 5000000pt)
+;PRINTL [2] HARD     ( 90일 기한, 목표 금액$2400000)
+;PRINTL [3] POWERFUL ( 80일 기한, 목표 금액$3600000)
+;PRINTL [4] SUPER-PW ( 50일 기한, 목표 금액$8000000)
+$INPUT_LOOP_0
+INPUT
+IF RESULT == 0
+	FLAG:3 = 120
+	FLAG:4 = 3000000
+	FLAG:5 = 1
+	FLAG:24 = 1
+	MONEY = 5000
+	IF GETCHARA(151, 0) < 0
+		ADDCHARA 151
+		LOADGLOBAL
+		GLOBAL:351 += 1
+		SAVEGLOBAL
+		PRINTFORMW 《키류 조직으로부터 업소녀「타카나시 노에미」가 파견되었습니다》
+	ENDIF
+ELSEIF RESULT == 1
+	FLAG:3 = 100
+	FLAG:4 = 5000000
+	FLAG:5 = 2
+	FLAG:35 = 1
+	MONEY = 2000
+;ELSEIF RESULT == 2
+;	FLAG:3 = 90
+;	FLAG:4 = 2400000
+;	FLAG:5 = 3
+;	MONEY = 2500
+;	CALL NEWGAME_SELECT_MASTER
+;ELSEIF RESULT == 3
+;	FLAG:3 = 80
+;	FLAG:4 = 3600000
+;	FLAG:5 = 4
+;	MONEY = 2000
+;	CALL NEWGAME_SELECT_MASTER
+;ELSEIF RESULT == 4
+;	FLAG:3 = 50
+;	FLAG:4 = 8000000
+;	FLAG:5 = 4
+;	MONEY = 1000
+;	CALL NEWGAME_SELECT_MASTER
+ELSE
+	GOTO INPUT_LOOP_0
+ENDIF
+
+
+CALL START_SELECT_OPENING
+
+BEGIN SHOP
+
+RETURN 0
+
+;-------------------------------------------------
+;強くてニューゲーム引継ぎキャラ選択
+;-------------------------------------------------
+@NEWGAME_SUCCEEDED
+;大幅改変
+#DIM 인수
+;ここまで要らなかったと思うけどこのぐらい持っておく
+#DIM 후보리스트,500
+#DIM CNUM
+#DIM LINENUM
+
+;リストを構築する
+;変数のリセット
+VARSET 후보리스트
+인수 = 0
+
+;候補抽出
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	;臨死中のキャラは排除
+	SIF BASE:COUNT:0 < 1
+		CONTINUE
+	;【연심】【음란】持ちでないキャラは排除
+	SIF TALENT:COUNT:85 == 0 && TALENT:COUNT:76 == 0
+		CONTINUE
+	후보리스트:인수 = COUNT
+	인수++
+REND
+
+;描画
+
+PRINTFORML 인계할 배우를 선택해주세요
+DRAWLINE
+;セーブ포인트
+$REFRESH_POINT
+;行数を覚えておく
+LINENUM = LINECOUNT
+
+FOR CNUM,0,인수
+	PRINTFORM [{후보리스트:CNUM}]  %NAME:(후보리스트:CNUM)%
+	SIF CFLAG:(후보리스트:CNUM):130 == 1
+	PRINT  (선택됨)
+	PRINTL 
+NEXT
+PRINTFORML  [999] - 선택완료 / [1000] - 전원 선택/선택 해제
+
+INPUT
+
+IF RESULT == 999
+	RETURN 1
+ELSEIF RESULT == 1000
+	J = 0
+	;最初の一人を見てそれに合わせる
+	IF CFLAG:(후보리스트:0):130 == 0
+		FOR CNUM,0,인수
+			CFLAG:(후보리스트:CNUM):130 = 1
+			J++
+		NEXT
+	ELSE
+		FOR CNUM,0,인수
+			CFLAG:(후보리스트:CNUM):130 = 0
+		NEXT
+	ENDIF
+	GOTO RESET_POINT
+ELSEIF RESULT == 0
+	PRINTW 잘못된 입력값입니다
+	GOTO RESET_POINT
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	PRINTW 잘못된 입력값입니다
+	GOTO RESET_POINT
+;【연심】【음란】持ちでないキャラは排除
+ELSEIF TALENT:RESULT:85 == 0 && TALENT:RESULT:76 == 0
+	PRINTW 잘못된 입력값입니다
+	GOTO RESET_POINT
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	PRINTW 잘못된 입력값입니다
+	GOTO RESET_POINT
+ENDIF
+
+IF CFLAG:RESULT:130 == 0
+	CFLAG:RESULT:130 = 1
+	J += 1
+ELSEIF CFLAG:RESULT:130 == 1
+	CFLAG:RESULT:130 = 0
+	J -= 1
+ENDIF
+
+$RESET_POINT
+;これで元のリストが消えてちょうどよく表示される予定
+CLEARLINE LINECOUNT-LINENUM
+GOTO REFRESH_POINT

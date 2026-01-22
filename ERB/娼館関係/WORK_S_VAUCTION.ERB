@@ -1,0 +1,472 @@
+﻿;===========================================================
+;처녀オークション関係の処理はここで
+;===========================================================
+;eraIm@s_ver.0.17βdより流用して改造(pawapokya-)
+;===========================================================
+@V_AUCTION
+DRAWLINE
+
+;콘돔使用フラグ外す
+CFLAG:13 = 0
+
+;ローカル変数初期化
+A = 0
+B = 0
+C = 0
+G = 0
+M = 0
+N = 0
+O = 0
+L = 0
+
+REPEAT 101
+	T:COUNT = 0
+	U:COUNT = 0
+REND
+
+;調教対象と助手を空に
+TARGET = -1
+ASSI = -1
+;対象キャラをTARGETに代入
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		TARGET = COUNT
+REND
+
+;客の数を計算
+C = EXP:91
+C /= 5
+IF C
+	REPEAT C
+		G += RAND:2
+	REND
+ENDIF
+
+;娼館自体の人気による加算
+D = EXP:MASTER:91
+D /= 5
+IF D
+	REPEAT D
+		G += RAND:2
+	REND
+ENDIF
+
+;特定の素質を持っていた場合ボーナス
+;인기인
+SIF TALENT:126
+	G += 1
+;娼婦
+SIF TALENT:180
+	G += 2
+;娼婦
+SIF TALENT:180
+	G += 6
+;傾城
+SIF TALENT:181
+	G += 3
+;아이돌
+SIF TALENT:203
+	G += 10
+;아가씨
+SIF TALENT:205
+	G += 5
+;귀족
+SIF TALENT:208
+	G += 8
+;귀족
+SIF TALENT:400
+	G += 5
+;귀족
+SIF TALENT:401
+	G += 20
+;광기
+SIF TALENT:123
+	G -= 5
+;붕괴
+SIF TALENT:9
+	G -= 15
+
+;10人以下だった場合, 10人にします
+SIF G < 10
+	G = 10
+
+PRINTFORML %NAME:TARGET%의 처녀 옥션을 열었다……
+	CALL PRINT_CLOTHTYPE
+PRINTFORML 인 %타겟이(1)% 회장으로 끌려왔다…
+	CALL PRINT_BODYPIERCE
+PRINTFORM 
+PRINTFORML 
+	IF TALENT:76
+		PRINTFORM %타겟은()%
+		PRINTFORM 지금부터 이름도 모르는 누군가에게 당하는 미지의 쾌락에 흥분했는지, 
+		PRINTFORML 음란한 소리를 내며 비소를 만지작거리기 시작했다…
+		PRINTFORM 미소녀가 다른 사람들의 시선에도 아랑곳없이 자위에 빠진 모습에 손님들은 
+		PRINTFORM 흥분한듯이 한숨이 새어나오고 있다…　
+		PRINTW 　　　　　 
+	ENDIF
+
+;	IF TALENT:400
+;		PRINTFORM %CALLNAME:TARGET%の汗にまみれ日焼けした肌は
+;		PRINTFORM スポットライトを浴びて淫靡に照らされている…　　　
+;		PRINTW 　　　　　 
+;	ENDIF
+
+
+	IF TALENT:121
+		PRINTFORM %CALLNAME:TARGET% 같은 미소녀에게는 너무나 언밸런스한, 
+		PRINTFORM 육체 개조에 의해 자라난 극태 후타나리 페니스가 
+		PRINTFORM 관객의 시선을 받아 %타겟은()% 흥분했는지, 
+			SIF CFLAG:6 >= 2
+				PRINT 음모가 우거진 
+		PRINTFORML 사타구니에서 발기하기 시작했다…　　
+		PRINTW 　　　　　 
+	ENDIF
+
+	;인기 AV배우が取得できるようになったのでそっちで
+	IF TALENT:401
+		SIF CFLAG:28 == 1
+			PRINT 아이돌을 은퇴하고 
+		PRINTFORM 인기 AV 여배우가 된 %타겟이었()%지만, 
+		PRINTFORML 아직도 실전을 촬영한 비디오는 발매되지 않았다
+		PRINTFORML 이번 옥션은 그 %CALLNAME:TARGET%의 처녀 상실 씬 촬영도 겸하고 있었다
+		PRINTFORM AV여배우의 처녀를 빼앗을 수 있다는 드문 경험에 흥분한 손님들은 
+		PRINTFORM 스테에지 위에서 
+		CALL PRINT_CLOTHTYPE
+		PRINTFORM 인 %타겟을()% 보며 자지를 세우고
+		PRINTFORM 삽입할 준비를 갖추고 있었다…
+		PRINTW 　　　　　 
+	ENDIF
+;口上
+TFLAG:13 = 108
+CALL SELF_KOJO
+
+WAIT
+
+REPEAT (G / 5)
+	M = COUNT * 5000 + 5000
+	;다부짐
+	SIF TALENT:12
+		TIMES M , 1.10
+	;솔직함
+	SIF TALENT:13
+		TIMES M , 1.10
+	;수줍음
+	SIF TALENT:35
+		TIMES M , 1.10
+	;헌신적
+	SIF TALENT:63
+		TIMES M , 1.10
+	;음란
+	SIF TALENT:76
+		TIMES M , 2.00
+	;매혹
+	SIF TALENT:91
+		TIMES M , 1.50
+	;수수께끼의 매력
+	SIF TALENT:92
+		TIMES M , 2.00
+	;인기인
+	SIF TALENT:126
+		TIMES M , 1.50
+	;유치
+	SIF TALENT:132
+		TIMES M , 1.10
+	;광기
+	SIF TALENT:123
+		TIMES M , 0.50
+	;붕괴
+	SIF TALENT:9
+		TIMES M , 0.10
+	;娼婦
+	SIF TALENT:180
+		TIMES M , 1.30
+	;傾城
+	SIF TALENT:181
+		TIMES M , 1.50
+	;아이돌
+	SIF TALENT:203
+		TIMES M , 1.50
+	;아가씨
+	SIF TALENT:205
+		TIMES M , 1.50
+	;귀족
+	SIF TALENT:208
+		TIMES M , 2.00
+	;귀족
+;	SIF TALENT:400
+;		TIMES M , 2.00
+	;AV배우
+	SIF TALENT:400
+		TIMES M , 5.00
+	PRINTFORML 「{M}포인트!」
+	PRINTW 　　……
+REND
+PRINTW 　…………
+PRINTW ………………
+PRINTFORMW 아무래도 낙찰자가 나온 모양이다
+
+;落札額算出
+M = 1000
+
+M *= G
+
+;素質によるボーナス
+;다부짐
+SIF TALENT:12
+	TIMES M , 1.10
+;솔직함
+SIF TALENT:13
+	TIMES M , 1.10
+;수줍음
+SIF TALENT:35
+	TIMES M , 1.10
+;헌신적
+SIF TALENT:63
+	TIMES M , 1.10
+;음란
+SIF TALENT:76
+	TIMES M , 2.00
+;매혹
+SIF TALENT:91
+	TIMES M , 1.50
+;수수께끼의 매력
+SIF TALENT:92
+	TIMES M , 2.00
+;인기인
+SIF TALENT:126
+	TIMES M , 1.50
+;유치
+SIF TALENT:132
+	TIMES M , 1.10
+;광기
+SIF TALENT:123
+	TIMES M , 0.50
+;붕괴
+SIF TALENT:9
+	TIMES M , 0.10
+;娼婦
+SIF TALENT:180
+	TIMES M , 1.30
+;傾城
+SIF TALENT:181
+	TIMES M , 1.50
+;아이돌
+SIF TALENT:203
+	TIMES M , 1.50
+;아가씨
+SIF TALENT:205
+	TIMES M , 1.50
+;귀족
+SIF TALENT:208
+	TIMES M , 2.00
+;귀족
+;SIF TALENT:400
+;	TIMES M , 2.00
+;귀족
+SIF TALENT:400
+	TIMES M , 5.00
+
+PRINTFORML %CALLNAME:TARGET%의 처녀는 {M} 포인트로 낙찰되었습니다
+	IF TALENT:121
+		PRINTFORM %CALLNAME:TARGET%의 페니스는 너무 흥분해 완전히 발기해버려 
+		PRINTFORML 끝 부분에서 쿠퍼액을 계속 흘려보내고 있었다……
+	ENDIF
+PRINTFORML %CALLNAME:TARGET%의 처녀는 낙찰자에게 바쳐졌다……
+PRINTFORML  
+PRINTFORML ……다음날 아침.
+PRINTFORM 낙찰자가 회장을 떠난 후 플레이 룸에서 나오지 않는 %타겟을()% 데리러 가자 
+PRINTFORML %타겟은()% 침대 위에서 정액 투성이가 된 채, 텅 빈 눈으로 누워있었다…
+
+MONEY += M
+
+	
+
+WAIT
+
+PRINTFORML 【처녀상실】
+CFLAG:50 = 1
+TALENT:0 = 0
+;初体験の相手(처녀オークション)を記録
+IF CFLAG:15 == 0
+	CFLAG:15 = 2
+	CSTR:0 = 모르는 남자
+ENDIF
+IF CFLAG:16 == -1
+	PRINTFORML %타겟은()% 낙찰자에게 첫 키스를 빼앗겼다……
+	;CFLAG:16を2にするより現行ままのがいいかな……
+	;場所は娼館のプレイルームという前提で娼館フラグ立ててます
+	CFLAG:16 = 1
+	CSTR:1 = 모르는 남자
+	CFLAG:820 = BASE:9
+	CFLAG:821 = DAY:1
+	CFLAG:822 = DAY:2
+	CFLAG:823 = 7
+	;異常体験に＋1
+	T:50 += 1
+ENDIF
+;口上
+TFLAG:13 = 109
+CALL SELF_KOJO
+
+;V경험
+T:0 = RAND:10 > 1
+;정액경험
+T:20 = T:0
+;성교경험
+T:5 = T:0
+;매춘경험
+T:74 = 1
+;이상경험
+T:50 = 2
+
+;売春中毒のレベルに応じてちょっとずつ減る
+IF ABL:37 == 1
+	TIMES U:100 , 0.90
+ELSEIF ABL:37 == 2
+	TIMES U:100 , 0.80
+ELSEIF ABL:37 == 3
+	TIMES U:100 , 0.70
+ELSEIF ABL:37 == 4
+	TIMES U:100 , 0.60
+ELSEIF ABL:37 >= 5
+	TIMES U:100 , 0.50
+ENDIF
+
+;素質補正
+;反抗的だと増える
+SIF TALENT:11
+	TIMES U:100 , 1.20
+;프라이드 높음と増える
+SIF TALENT:15
+	TIMES U:100 , 1.50
+;프라이드 낮음と少なくなる
+SIF TALENT:17
+	TIMES U:100 , 0.90
+;무관심だと少なくなる
+SIF TALENT:21
+	TIMES U:100 , 0.90
+;감정부족と少なくなる
+SIF TALENT:22
+	TIMES U:100 , 0.90
+;보수적だと増える
+SIF TALENT:24
+	TIMES U:100 , 1.30
+;튀고 싶어함だと少なくなる
+SIF TALENT:28
+	TIMES U:100 , 0.80
+;정조관념だと凄く増える
+SIF TALENT:30
+	TIMES U:100 , 2.50
+;정조무관심だと少なくなる
+SIF TALENT:31
+	TIMES U:100 , 0.90
+;억압だと増える
+SIF TALENT:32
+	TIMES U:100 , 1.20
+;해방だと少なくなる
+SIF TALENT:33
+	TIMES U:100 , 0.80
+;저항だと増える
+SIF TALENT:34
+	TIMES U:100 , 2.00
+;수줍음だと増える
+SIF TALENT:35
+	TIMES U:100 , 1.10
+;음란だとぐっと少なくなる
+SIF TALENT:76
+	TIMES U:100 , 0.20
+;도착적だとわりと少なくなる
+SIF TALENT:80
+	TIMES U:100 , 0.80
+;마조だと凄く少なくなる
+SIF TALENT:88
+	TIMES U:100 , 0.30
+;질투してると破滅的
+SIF TALENT:84
+	U:100 *= 200
+;愛してると破滅的
+SIF TALENT:85
+	U:100 *= 100
+;망신してるとわりと少なくなる
+SIF TALENT:86
+	TIMES U:100 , 0.70
+;娼婦だとかなり少なくなる
+SIF TALENT:180
+	TIMES U:100 , 0.60
+;傾城だと一気に少なくなる
+SIF TALENT:181
+	TIMES U:100 , 0.10
+;求愛だと破滅的
+SIF TALENT:184
+	U:100 *= 100
+
+;客は처녀を散らす目的で来ているので, 奴隷が처녀であるだけで満足を得る
+A = 5
+
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+CALL WORK_EXP
+
+
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;체력減少の計算
+LOSEBASE:0 = 500 + G * 2
+
+;売春中毒のレベルに応じてちょっとずつ減る
+IF ABL:37 == 1
+	TIMES LOSEBASE:0 , 0.90
+ELSEIF ABL:37 == 2
+	TIMES LOSEBASE:0 , 0.80
+ELSEIF ABL:37 == 3
+	TIMES LOSEBASE:0 , 0.70
+ELSEIF ABL:37 == 4
+	TIMES LOSEBASE:0 , 0.60
+ELSEIF ABL:37 >= 5
+	TIMES LOSEBASE:0 , 0.50
+ENDIF
+
+SIF LOSEBASE:0 >= BASE:0
+	LOSEBASE:0 = BASE:0
+
+PRINT  체력소비　　: 
+N = BASE:0
+CALL FIGURE_INDENT
+PRINTV BASE:0
+PRINT  - 
+N = LOSEBASE:0
+CALL FIGURE_INDENT
+PRINTV LOSEBASE:0
+PRINT  = 
+N = BASE:0 - LOSEBASE:0
+CALL FIGURE_INDENT
+PRINTVL BASE:0 - LOSEBASE:0
+
+BASE:0 -= LOSEBASE:0
+
+PRINT  체력　　　　:
+BAR BASE:0, MAXBASE:0, 32
+PRINTFORML ({BASE:0}/{MAXBASE:0})
+
+;フラグリセット
+CALL WORK_SP_AFTER
+
+;체력が0以下になった場合の処理
+IF BASE:0 <= 0
+	PRINTFORML 처녀를 빼앗긴 %타겟은()%, 미동조차 보이질 않는다
+	PRINTFORML 무슨 짓을 해도 반응이 없다……
+	WAIT
+	;キャラの死亡確認
+	CALL CHARADEAD_CHECK
+ENDIF
+
+
+;처녀オークションに伴う임신チェック
+;通常のセックスより임신リスクがかなり高い(理由: その方が面白いから)
+CFLAG:105 += 100
+
+WAIT
+
+BEGIN TURNEND
+
+RETURN 1

@@ -1,0 +1,43 @@
+﻿;===========================================================
+;ヘアスタイルの処理
+;===========================================================
+@PRINT_TATTO
+
+PRINT  
+IF (CFLAG:606 & 1)
+	PRINTFORM %CSTR:70%에 %CSTR:71%
+	LOCAL = 1
+ENDIF
+IF (CFLAG:606 & 2)
+	IF LOCAL
+		PRINTL 문신과, 
+		PRINT  
+	ENDIF
+	PRINTFORM %CSTR:72%에 %CSTR:73%
+	LOCAL = 1
+ENDIF
+IF (CFLAG:606 & 4)
+	IF LOCAL
+		PRINTL 문신과, 
+		PRINT  
+	ENDIF
+	PRINTFORM %CSTR:74%에 %CSTR:75%
+	LOCAL = 1
+ENDIF
+IF (CFLAG:606 & 8)
+	IF LOCAL
+		PRINTL 문신과, 
+		PRINT  
+	ENDIF
+	PRINTFORM %CSTR:76%에 %CSTR:77%
+	LOCAL = 1
+ENDIF
+IF (CFLAG:606 & 16)
+	IF LOCAL
+		PRINTL 문신과, 
+		PRINT  
+	ENDIF
+	PRINTFORM %CSTR:78%에 %CSTR:79%
+	LOCAL = 1
+ENDIF
+

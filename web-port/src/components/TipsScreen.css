@@ -1,0 +1,134 @@
+.tips-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.tips-screen h2 {
+  color: #4CAF50;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.tips-menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.tips-menu button {
+  padding: 0.8rem;
+  background: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.tips-menu button:hover {
+  background: #3a3a3a;
+  border-color: #4CAF50;
+}
+
+.tips-detail h3 {
+  color: #4CAF50;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.tips-detail h4 {
+  color: #66BB6A;
+  font-size: 0.9rem;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.tips-detail p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+}
+
+.tips-detail ul {
+  margin-left: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.tips-detail li {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  color: #ccc;
+}
+
+.achievement-item,
+.talent-item {
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: #2a2a2a;
+  border-left: 2px solid #4CAF50;
+  border-radius: 3px;
+}
+
+.achievement-item strong,
+.talent-item strong {
+  display: block;
+  color: #4CAF50;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-item p,
+.talent-item p {
+  font-size: 0.8rem;
+  margin: 0.3rem 0;
+}
+
+.note {
+  color: #999;
+  font-size: 0.75rem;
+}
+
+.notice {
+  color: #FF9800;
+  padding: 0.6rem;
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 2px solid #FF9800;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+}
+
+.back-btn {
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.back-btn:hover {
+  background: #4a4a4a;
+}
+
+.main-back-btn {
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  background: #4CAF50;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  align-self: center;
+}
+
+.main-back-btn:hover {
+  background: #45a049;
+}

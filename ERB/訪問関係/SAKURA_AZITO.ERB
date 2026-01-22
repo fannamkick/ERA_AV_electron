@@ -1,0 +1,96 @@
+﻿;=================================================
+;RB団
+;=================================================
+@SAKURA_AZITO
+
+$INPUT_LOOP
+
+DRAWLINE
+PRINTL RB단 아지트
+PRINTL 《인기만점☆인싸가 될 수 있는 다양한 세미나에 참가할 수 있습니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 0] - 정조개혁: 정조관념        　(참가비: 1000000포인트)
+PRINTL  [ 1] - 정조개혁: 뉴트럴　        　(참가비:  100000포인트)
+PRINTL  [ 2] - 정조개혁: 정조무관심      　(참가비:  500000포인트)
+PRINTL  [ 3] - 수치개혁: 수줍음         　(참가비: 1000000포인트)
+PRINTL  [ 4] - 수치개혁: 뉴트럴　       　(참가비:  100000포인트)
+PRINTL  [ 5] - 수치개혁: 부끄럼 없음　     (참가비:  500000포인트)
+PRINTL  [ 6] - 성격개혁: 솔직함　　     　 (참가비:  500000포인트)
+PRINTL  [ 7] - 성격개혁: 건방짐        　 (참가비:  500000포인트)
+PRINTL  [ 8] - 성격개혁: 얌전함        　 (참가비:  500000포인트)
+PRINTL  [ 9] - 성격개혁: 활발함　　     　 (참가비:  500000포인트)
+PRINTL  [10] - 성격개혁: 뉴트럴  　       (참가비:  100000포인트)
+PRINTL  [11] - 방해공작: 킥킹 호스        (의뢰료:  100000포인트)
+SIF PBAND:76 == 3
+	PRINTL  [12] - 개성개혁: 갸루계 　   　　　(참가비: 3000000포인트)
+SIF PBAND:76 == 3
+	PRINTL  [13] - 개성개혁: 뉴트럴           (참가비: 3000000포인트)
+;SIF PBAND:65 == 4
+;	PRINTL  [14] - 개성개혁: 야마토 나데시코　　　　 (참가비: 3000000포인트)
+;REPEAT CHARANUM
+;	IF CFLAG:MASTER:720 == 1
+;		FLAG:544 = 1
+;	ELSEIF TALENT:COUNT:511 == 1 && FLAG:544 == 1
+;		PRINTL　[99] - 種族改革: 타천사化 (참가비: 5000000포인트)
+;	ENDIF
+;REND
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	CALL CHASTITY_UP
+ELSEIF RESULT == 1
+	CALL CHASTITY_NEUTRAL
+ELSEIF RESULT == 2
+	CALL CHASTITY_DOWN
+ELSEIF RESULT == 3
+	CALL SHAME_UP
+ELSEIF RESULT == 4
+	CALL SHAME_NEUTRAL
+ELSEIF RESULT == 5
+	CALL SHAME_DOWN
+ELSEIF RESULT == 6
+	CALL PERSONALITY_GENTLE
+ELSEIF RESULT == 7
+	CALL PERSONALITY_BRAZEN
+ELSEIF RESULT == 8
+	CALL PERSONALITY_QUIET
+ELSEIF RESULT == 9
+	CALL PERSONALITY_LIVELY
+ELSEIF RESULT == 10
+	CALL PERSONALITY_NEUTRAL
+ELSEIF RESULT == 11
+	CALL KICKINGHORSE
+ELSEIF RESULT == 12 && PBAND:76 == 3
+	CALL PERSONALITY_GAL
+ELSEIF RESULT == 13 && PBAND:76 == 3
+	CALL GAL_NEUTRAL
+;ELSEIF RESULT == 14
+;	CALL INTEREST_UP
+;ELSEIF RESULT == 15
+;	CALL INTEREST_DOWN
+;ELSEIF RESULT == 16
+;	CALL INTEREST_NEUTRAL
+;ELSEIF RESULT == 99 && FLAG:544 ==1
+;	CALL FALLDOWN
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN 0
+;

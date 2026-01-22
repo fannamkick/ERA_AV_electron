@@ -1,0 +1,232 @@
+﻿;욕망のLvUP処理とその可否判定
+;eratohoA ver1,204のスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;욕망のLvUP
+;-------------------------------------------------
+@ABLUP11
+DRAWLINE
+;PRINTL 노예의 성욕 강도를 높입니다
+;PRINTL 욕망이 높아지면, 보다 큰 쾌락을 얻을 수 있으며, 쾌락에 의해 온순함이 늘어나게 됩니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;욕망はLv5が上限
+;[즉각함락][음란]が付いている場合は10まで上昇可能
+IF ABL:11 >= 5 && (TALENT:73 == 0 && TALENT:76 == 0)
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:11 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要な욕정의 구슬
+A = 0
+
+;条件別にOKかダメかを記録する
+;욕정의 구슬による可否(I=0:可, I&1:珠不足, I&2:経験不足)
+I = 0
+
+;이상경험が必要か
+E = 0
+
+CALL DECIDE_ABLUP11
+
+;이상경험が必要か
+SIF E > 0
+	PRINTFORML %EXPNAME:50%{E}이상 (현재{EXP:50}) 그리고
+
+;욕정의 구슬で上げる
+PRINTFORM [0] - %PALAMNAME:5%의 구슬×{JUEL:5}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+
+PRINTL [100] - 그만둔다
+
+INPUT
+IF (RESULT < 0 || RESULT > 0) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:11 += 1
+
+IF RESULT == 0
+	JUEL:5 -= A
+ENDIF
+
+PRINTFORML %ABLNAME:11%의 레벨이 %조사처리(ABL:11,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;욕망のLvUP可否判定
+;-------------------------------------------------
+@DECIDE_ABLUP11
+;욕망はLv5が上限, 
+;[즉각함락][음란]が付いている場合は10まで上昇可能
+SIF ABL:11 >= 5 && (TALENT:73 == 0 && TALENT:76 == 0)
+	RETURN 0
+SIF ABL:11 >= 10
+	RETURN 0
+
+;判定変数を空に
+A = 0
+E = 0
+I = 0
+
+IF ABL:11 == 0
+	A = 5
+ELSEIF ABL:11 == 1
+	A = 50
+ELSEIF ABL:11 == 2
+	A = 1000
+ELSEIF ABL:11 == 3
+	A = 5000
+ELSEIF ABL:11 == 4
+	A = 12000
+ELSEIF ABL:11 == 5
+	A = 20000
+ELSEIF ABL:11 == 6
+	A = 30000
+ELSEIF ABL:11 == 7
+	A = 50000
+ELSEIF ABL:11 == 8
+	A = 80000
+ELSEIF ABL:11 == 9
+	A = 150000
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	SIF ABL:11 == 3
+		TIMES A , 1.50
+	SIF ABL:11 == 4
+		TIMES A , 2.00
+	SIF ABL:11 == 5
+		TIMES A , 2.50
+	SIF ABL:11 >= 6
+		TIMES A , 3.00
+ENDIF
+
+;자제심
+IF TALENT:20
+	TIMES A , 1.20
+ENDIF
+
+;보수적
+IF TALENT:24
+	TIMES A , 1.10
+ENDIF
+
+;정조관념
+IF TALENT:30
+	TIMES A , 1.50
+;정조무관심
+ELSEIF TALENT:31
+	TIMES A , 0.95
+ENDIF
+
+;억압
+IF TALENT:32
+	TIMES A , 1.50
+;해방
+ELSEIF TALENT:33
+	TIMES A , 0.90
+ENDIF
+
+;저항
+SIF TALENT:34
+	TIMES A , 1.50
+
+;수줍음
+IF TALENT:35
+	TIMES A , 1.10
+;부끄럼 없음
+ELSEIF TALENT:36
+	TIMES A , 0.95
+ENDIF
+
+;쾌감에 솔직
+IF TALENT:70
+	TIMES A , 0.80
+;쾌감을 부정
+ELSEIF TALENT:71
+	TIMES A , 1.50
+ENDIF
+
+;중독되기쉬움
+SIF TALENT:72
+	TIMES A , 0.95
+;즉각함락
+SIF TALENT:73
+	TIMES A , 0.50
+;음란
+SIF TALENT:76
+	TIMES A , 0.70
+;색정광
+SIF TALENT:440
+	TIMES A , 0.20
+;색정광
+SIF TALENT:553
+	TIMES A , 0.40
+;야마토 나데시코
+SIF TALENT:209
+	TIMES B , 1.50
+;娼婦
+SIF TALENT:180
+	TIMES A , 0.90
+;갈색피부
+SIF TALENT:422
+	TIMES A , 0.70
+;갸루계
+SIF TALENT:432
+	TIMES A , 0.50
+;傾城
+SIF TALENT:181
+	TIMES A , 0.80
+;미망인
+SIF TALENT:206
+	TIMES A , 0.80
+IF TALENT:505
+	TIMES A , 0.01
+ENDIF
+
+;LV4から5に上げるときは이상경험必要(素質: [해방][쾌감에 솔직][즉각함락][음란][광기]なら無視できる)
+IF ABL:11 == 4 && (TALENT:33 == 0 && TALENT:70 == 0 && TALENT:73 == 0 && TALENT:76 == 0 && TALENT:123 == 0)
+	E = 1
+;LV7から8に上げるときは이상경험が3以上必要(素質: [해방][쾌감에 솔직][즉각함락][음란][광기]なら無視できる)
+ELSEIF ABL:11 == 7 && (TALENT:33 == 0 && TALENT:70 == 0 && TALENT:73 == 0 && TALENT:76 == 0 && TALENT:123 && TALENT:505 == 0)
+	E = 3
+ENDIF
+
+;最低でも1個は必要
+SIF A < 1
+	A = 1
+
+;욕정의 구슬は足りている?
+SIF JUEL:5 < A
+	I |= 1
+
+;이상경험は足りている?
+SIF E > EXP:50
+	I |= 2
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+;
+;
+;

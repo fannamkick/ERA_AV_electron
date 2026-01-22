@@ -1,0 +1,128 @@
+﻿;===========================================================
+;ヘアスタイルの処理
+;===========================================================
+;eraIm@s_ver.0.17βdより流用して改造(pawapokya-)
+;===========================================================
+@SHOW_PROF
+
+IF EXP:76 == 0 && TALENT:400 == 0
+	PRINTFORML  아직 데뷔하지 않았습니다.
+ELSEIF EXP:76 <= 10 && TALENT:400 == 1
+	PRINTFORML  %조사처리(NICKNAME:TARGET,"는")% AV 여배우로 데뷔했습니다.
+	PRINTFORML  지금까지 {EXP:76}개의 작품을 릴리즈했습니다。	
+ELSEIF EXP:76 >= 10 && EXP:76 <= 30 && TALENT:400 == 1
+	PRINTFORML  %조사처리(NICKNAME:TARGET,"는")% 인기 AV 여배우 중 한명입니다.
+	PRINTFORML  지금까지 {EXP:76}개의 작품을 릴리즈했습니다。
+ELSEIF EXP:76 >= 30 && TALENT:400 == 1
+	PRINTFORML  %조사처리(NICKNAME:TARGET,"는")% AV역사에 이름을 남길 정도의 초대형물 AV 여배우입니다.
+	PRINTFORML  지금까지 {EXP:76}개의 작품을 릴리즈했습니다。
+ENDIF
+IF TALENT:184
+	PRINT  현재 
+	CALL PRINT_BOYFRIEND
+	IF RESULT == 0
+		PRINT 와
+	ELSE
+		PRINT 과
+	ENDIF
+	PRINTL  교제하고 있습니다。  
+ENDIF
+IF EXP:101 >= 1
+	PRINT  
+	IF CFLAG:621 == 1
+		PRINTFORM 남자친구와 
+			SIF EXP:109 >= 1
+				PRINTFORM 전 남친 합계 
+	ELSE
+		PRINTFORM 전 남친과 
+	ENDIF
+	PRINTFORM {EXP:101}회 섹스한 적 있
+			IF CFLAG:15 == 8 && CFLAG:167 == 1
+				PRINTFORM 고 전 남친으로 처녀상실 했
+			ELSEIF CFLAG:15 == 8 && CFLAG:621 == 1
+				PRINT 고 남친의 
+				IF CFLAG:15 == 8 && CFLAG:622 == 0
+					PRINT 흑
+				ELSEIF CFLAG:15 == 8 && CFLAG:622 == 3
+					PRINT 포경
+				ELSEIF CFLAG:15 == 8 && CFLAG:622 == 6
+					PRINT 극태
+				ENDIF
+				IF TALENT:76 == 1
+					PRINT 자○
+				ELSE
+					PRINT 페니스
+				ENDIF
+				PRINT 로 처녀상실 했
+			ELSE
+				PRINT 
+			ENDIF
+	PRINTL 습니다.
+ENDIF
+IF EXP:104 >= 1
+	PRINTFORM  섹프와 {EXP:104}회 콘돔 없이 섹스한 적 있
+	IF CFLAG:15 == 9
+		PRINT 고 
+		PRINT 섹파의 
+		PRINT 극태 검은 자○로 처녀상실 했
+	ELSE
+		PRINT 
+	ENDIF
+	PRINTL 습니다.
+ENDIF
+
+IF EXP:109 >= 1
+	PRINTFORM  이전에 {EXP:109}명의 남성과 교제한 적 있
+	IF CFLAG:621 == 1
+		PRINTFORM 고, 현재 남친인 
+		CALL PRINT_BOYFRIEND
+		IF RESULT == 0
+			PRINT 는
+		ELSE
+			PRINT 은
+		ENDIF
+		PRINTFORM  {EXP:109 + 1}명째의 남친입 
+	ELSE
+		PRINTFORM 습
+	ENDIF
+	PRINTFORML 니다.
+ENDIF
+
+;ギャルたちの間で카리스마, なのに何で갈색피부見てたんだ……
+IF TALENT:432 == 1 && TALENT:203 == 1 && TALENT:509 == 1 && TALENT:519 == 1
+	PRINTFORML  현역 아이돌인만큼 소녀들 사이에서 카리스마적인 존재입니다。
+ELSEIF TALENT:422 == 1 && TALENT:203 == 0 && TALENT:509 == 0 && TALENT:519 == 0 && TALENT:432 == 1 && ABL:72 >= 4
+	PRINTFORML  어떤 DJ바의 레게 파티에서는 약간 유명한 댄서인 것 같습니다。
+ENDIF
+IF EXP:103 >= 1
+	PRINTFORM  치한을 {EXP:103}회 만난 적 있
+	IF CFLAG:15 == 7
+		PRINT 고, 
+		PRINT 치한의 
+		PRINT 페니스로 처녀상실 했
+	ELSE
+		PRINT 
+	ENDIF
+	PRINTL 습니다.
+ENDIF
+IF EXP:60 >= 1
+	PRINTFORML  %타겟은()% {EXP:60}명의 엄마입니다.
+ENDIF
+IF TALENT:424 == 1
+	PRINTFORML  %타겟이()% 애연하고 있는 담배는 %CSTR:6%입니다.
+ENDIF
+
+SIF CFLAG:661 != 1 && (CFLAG:15 != 0 || CFLAG:16 != -1 || CFLAG:616 != 0) 
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥ 
+;;;;下段側の表示を消してみる
+;;;;SIF CFLAG:661 != 1 && CFLAG:15 != 0
+;;;;	CALL LOSTVIRGIN_DETAIL
+;;;;SIF CFLAG:661 != 1 && CFLAG:16 != -1
+;;;;	CALL FIRSTKISS_DETAIL
+;;;;SIF CFLAG:661 != 1 && CFLAG:616 != 0
+;;;;	CALL LOSTANALVIRGIN_DETAIL
+
+
+;===========================================================
+;出演タイトル
+;===========================================================

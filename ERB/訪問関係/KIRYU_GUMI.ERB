@@ -1,0 +1,157 @@
+﻿@KIRYU_GUMI
+$INPUT_LOOP
+
+DRAWLINE
+PRINTL 키류 조직 사무소
+PRINTL 《키류 조직과 계열사에 다양한 일을 부탁합니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+;1と2逆じゃね……という説はある。
+;普通のとこには頼めないので系列と見てよいだろう
+SIF FLAG:100 == 0
+	PRINTL  [1] - 여자 기숙사를 건설한다(700000포인트)
+PRINTL  [2] - 사무소를 확장한다(150000포인트)
+;ビデオ撮らなくてもクリアできちゃう対策
+;PRINTL  [3] - 娼館への参入許可をもらう
+;一番売ってそうだった。価格は今のところ適当。
+SIF ITEM:22 == 0
+	PRINTL  [4] - 촬영용 개를 구입한다(5000포인트)
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 10
+		IF CFLAG:COUNT:1 == 2
+			PRINTL  [10] - 카논에게 상당한다
+			LOCAL:1 = 1
+		ENDIF
+	ENDIF
+REND
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 95
+		IF TALENT:COUNT:430 == 1
+			PRINTL  [11] - 엘렌을 만나러 간다
+			LOCAL:2 = 1
+		ENDIF
+	ENDIF
+REND
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+IF RESULT == 1 && FLAG:100 == 0
+	CALL BOUGHT_LYCEE
+ELSEIF RESULT == 2
+	CALL BOUGHT_ROOM
+ELSEIF RESULT == 4 && ITEM:22 == 0
+	CALL BOUGHT_DOG
+ELSEIF RESULT == 10 && LOCAL:1 == 1
+	CALL KANON_ORDER
+ELSEIF RESULT == 11 && LOCAL:2 == 1
+	CALL ELLEN_MISSION
+ELSEIF RESULT == 999
+	RETURN 0
+ENDIF
+GOTO INPUT_LOOP
+;-------------------------------------------------
+;事務所拡大
+;-------------------------------------------------
+@BOUGHT_ROOM
+;C = 300000
+C = 150000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+$INPUT_LOOP
+
+PRINTFORML  현재 사무소의 규모로 고용 가능한 여배우의 수는 {FLAG:23}명입니다
+PRINTFORML  사무소 규모를 확장합니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+IF RESULT == 0
+	PRINTFORML 《사무소 규모를 확장했습니다》
+	FLAG:23 += 1
+	MONEY -= C
+	WAIT
+	RETURN 1
+ELSEIF RESULT == 1
+	RETURN 0
+ENDIF
+GOTO INPUT_LOOP
+;
+
+;-------------------------------------------------
+;女子寮建設
+;-------------------------------------------------
+@BOUGHT_LYCEE
+;C = 1000000
+C = 700000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+$INPUT_LOOP
+
+PRINTFORML  여자 기숙사를 건설합니까?
+PRINTFORML  ※여자 기숙사란
+PRINTFORML  　계약한 캐릭터를 입주시켜 여배우 리스트에 표시되지 않게 합니다
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+IF RESULT == 0
+	PRINTFORML 《여자 기숙사를 건설했습니다》
+	PRINTFORML ※입주, 퇴거, 시설 추가는 한 주의 시작때 처리됩니다
+	FLAG:100 += 1
+	MONEY -= C
+	WAIT
+	RETURN 1
+ELSEIF RESULT == 1
+	RETURN 0
+ENDIF
+GOTO INPUT_LOOP
+;
+;-------------------------------------------------
+;犬購入
+;-------------------------------------------------
+@BOUGHT_DOG
+;C = 15000
+C = 5000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+$INPUT_LOOP
+
+PRINTFORML  촬영용 개를 구입합니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+IF RESULT == 0
+	PRINTFORML 《개를 구입했습니다》
+	ITEM:22 += 1
+	MONEY -= C
+	WAIT
+	RETURN 1
+ELSEIF RESULT == 1
+	RETURN 0
+ENDIF
+GOTO INPUT_LOOP

@@ -1,0 +1,1143 @@
+﻿;=================================================
+;衣装関連の関数群
+;=================================================
+;-------------------------------------------------
+;使用一時フラグ
+;TFLAG:45 = パンツの状態(&1:尿まみれ &2:精液まみれ &64:調教後に処分)
+;TFLAG:46 = ブラジャーの状態(&1:尿まみれ &2:精液まみれ &64:調教後に処分)
+;TFLAG:47 = 上着上の状態(&1:尿まみれ &2:精液まみれ &64:調教後に処分)
+;TFLAG:48 = 上着下の状態(&1:尿まみれ &2:精液まみれ &64:調教後に処分)
+;TFLAG:49 = 特別コスの状態(&1:尿まみれ &2:精液まみれ &64:調教後に処分)
+;-------------------------------------------------
+;使用キャラフラグ
+;CFLAG;40 = 着衣状態(&1:パンツ &2:ブラジャー &4:上着上 &8:上着下・スカートタイプ &:16上着下・ズボンタイプ &64:特別コス)
+;CFLAG:41 = 上着のタイプ
+;CFLAG:42 = 特別コスチュームのタイプ
+;CFLAG:43 = パンツの状態(-2:廃棄 -1:没収 0:通常 1以上:洗濯中)
+;CFLAG:44 = ブラジャーの状態(-2:廃棄 -1:没収 0:通常 1以上:洗濯中)
+;CFLAG:45 = 上着上の状態(-2:廃棄 -1:没収 0:通常 1以上:洗濯中)
+;CFLAG:46 = 上着下の状態(-2:廃棄 -1:没収 0:通常 1以上:洗濯中)
+;CFLAG:47 = 特別コスチュームの状態(-1:没収 0:通常 1以上:洗濯中)
+;-------------------------------------------------
+;よく参照するシチュ早見表
+;CFLAG:40 & 3  == False;:何も下着を着けていない True:何か下着を付けている
+;CFLAG:40 & 6  == False:상반신 알몸 True:上半身に何か着ている
+;CFLAG:40 & 17 == False:性器を直に触れる状態 True:性器を触れない状態
+;CFLAG:40 & 24 == False:上着の下部分を付けていない True:上着の下部分を付けている
+;CFLAG:40 & 25 == False:하반신 알몸 True:下半身に何か着ている
+;CFLAG:40 & 28 == False:上着を上も下も一切着ていない True:何か上着を着ている
+;=================================================
+;-------------------------------------------------
+;사용중の着衣表示
+;-------------------------------------------------
+@PRINT_CLOTHTYPE
+;着衣設定を使ってない場合
+IF (CFLAG:41 == 0 && CFLAG:42 == 0) || FLAG:37 == 0
+	IF CFLAG:40 == 0
+		PRINT 전라
+		RETURN 2
+	ELSE
+		PRINT 속옷
+		RETURN 2
+	ENDIF
+ENDIF
+
+;特別コス: 즈코 인형の場合の処理
+IF CFLAG:42 == 11 && (CFLAG:40 & 64)
+	PRINT 즈코 인형
+	RETURN 1
+ENDIF
+
+;基本コスチューム処理
+CALL PRINT_CLOTHTYPE_MAIN
+LOCAL:1 = RESULT
+
+;特別コスチューム処理
+IF CFLAG:42 && (CFLAG:40 & 64)
+	PRINT  차림에 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	LOCAL:1 = RESULT
+	PRINT 
+ENDIF
+
+RETURN LOCAL:1
+
+;基本コスチューム
+@PRINT_CLOTHTYPE_MAIN
+;ふんどしの場合
+IF CFLAG:41 == 192 && (CFLAG:40 & 16)
+	PRINT 훈도시 한장
+	RETURN 1
+;체육복とブルマで半脱ぎの場合の処理
+ELSEIF CFLAG:41 == 109
+	IF (CFLAG:40 & 4) && (CFLAG:40 & 24) == 0
+		PRINT 체육복 윗옷에 
+		IF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 0
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 1
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 0
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1 
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:122 == 1 
+			PRINTFORM 팬티를 노출한
+		ELSE
+			PRINT 하반신 알몸
+		ENDIF
+		RETURN 1
+	ELSEIF (CFLAG:40 & 4) == 0 && (CFLAG:40 & 24)
+		IF (CFLAG:40 & 2) && TALENT:76 == 0 && NO:TARGET != 10
+			PRINT 부르마와 브레지어
+		ELSEIF (CFLAG:40 & 2) && TALENT:76 == 1 && NO:TARGET != 10
+			PRINT 부르마와 브레지어
+		ELSEIF (CFLAG:40 & 2) && TALENT:76 == 1 && NO:TARGET != 10
+			PRINT 부르마와 가슴붕대
+		ELSE
+			PRINT 부르마 한장
+		ENDIF
+		RETURN 1
+	ENDIF
+ENDIF
+;全身タイプで半脱ぎの場合の処理
+IF CFLAG:41 >= 201 && CFLAG:41 <= 300
+	IF (CFLAG:40 & 4) && (CFLAG:40 & 24) == 0
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINT 의 하의가 찣어져 
+		IF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 0
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 1
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 0
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1
+			PRINTFORM 팬티를 노출한
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1
+			PRINTFORM 팬티를 노출한
+		ELSE
+			PRINT 하반신 알몸
+		ENDIF
+		RETURN 1
+	ELSEIF (CFLAG:40 & 4) == 0 && (CFLAG:40 & 24)
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINT 의 가슴부분이 찣어져 
+		IF (CFLAG:40 & 2) && TALENT:76 == 0 && NO:TARGET != 10
+			PRINT 위는 브레지어 한장
+		ELSEIF (CFLAG:40 & 2) && TALENT:76 == 1 && NO:TARGET != 10
+			PRINT 위는 브레지어 한장
+		ELSEIF (CFLAG:40 & 2) && TALENT:76 == 1 && NO:TARGET != 10
+			PRINT 위는 가슴붕대만 맨
+		ELSE
+			IF TALENT:122 == 0 && TALENT:116 == 0 && (TALENT:109 == 0 || TALENT:132 == 0)
+				PRINT 가슴이 튀어나온
+			ELSE
+				PRINT 상반신 알몸
+			ENDIF
+		ENDIF
+		RETURN 1
+	ENDIF
+ENDIF
+;通常の衣服
+IF (CFLAG:40 & 28)
+	IF (CFLAG:40 & 4) && (CFLAG:40 & 24) == 0
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINT  상의에 
+		IF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 0
+			PRINTFORM 팬티 한장
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 1
+			PRINTFORM 팬티 한장
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 0
+			PRINTFORM 팬티 한장
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1
+			PRINTFORM 팬티 한장
+		ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1
+			PRINTFORM 팬티 한장
+		ELSE
+			PRINT 하반신 알몸
+		ENDIF
+	ELSEIF (CFLAG:40 & 4) == 0 && (CFLAG:40 & 24)
+		IF (CFLAG:40 & 2) && TALENT:76 == 0 && NO:TARGET != 10
+			PRINT 브래지어에 
+		ELSEIF (CFLAG:40 & 2) && TALENT:76 == 1 && NO:TARGET != 10
+			PRINT 브래지어에 
+		ELSEIF (CFLAG:40 & 2) && NO:TARGET == 10
+			PRINT 브래지어에 
+		ELSE
+			IF TALENT:122 == 0 && TALENT:116 == 0 && (TALENT:109 == 0 || TALENT:132 == 0)
+				PRINT 가슴이 드러난 
+			ELSE
+				PRINT 상반신 알몸에 
+			ENDIF
+		ENDIF
+		CALL PRINT_CLOTHTYPE_MAIN2
+		IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+			PRINT  스커트
+		ELSE
+			PRINT  하의
+		ENDIF
+	ELSE
+		CALL PRINT_CLOTHTYPE_MAIN2
+		LOCAL:1 = RESULT
+		SIF (CFLAG:40 & 64) == 0
+			PRINT 
+		RETURN LOCAL:1
+	ENDIF
+ELSEIF (CFLAG:40 & 1) && (CFLAG:40 & 2) && TALENT:76 == 0
+	PRINT 속옷
+	SIF (CFLAG:40 & 64) == 0
+		PRINT 
+ELSEIF (CFLAG:40 & 1) && (CFLAG:40 & 2) && TALENT:76 == 1 && TALENT:122 == 0
+	PRINT 속옷
+	SIF (CFLAG:40 & 64) == 0
+		PRINT 
+ELSEIF (CFLAG:40 & 1) && (CFLAG:40 & 2) && TALENT:76 == 1 && TALENT:122 == 1
+	PRINT 검은 부메랑 팬티
+	SIF (CFLAG:40 & 64) == 0
+		PRINT 
+ELSEIF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 0
+	PRINTFORM 팬티 한장
+ELSEIF (CFLAG:40 & 1) && TALENT:76 == 0 && TALENT:121 == 1
+	PRINTFORM 팬티 한장
+ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 0
+	PRINTFORM 팬티 한장
+ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1
+	PRINTFORM 팬티 한장
+ELSEIF (CFLAG:40 & 1) && TALENT:76 == 1 && TALENT:121 == 1
+	PRINTFORM 팬티 한장
+ELSEIF (CFLAG:40 & 2) && TALENT:76 == 0 && NO:TARGET != 10
+	PRINT 브래지어에 하반신 알몸
+ELSEIF (CFLAG:40 & 2) && TALENT:76 == 1 && NO:TARGET != 10
+	PRINT 브래지어에 하반신 알몸
+ELSEIF (CFLAG:40 & 2) &&  NO:TARGET == 10
+	PRINT 가슴붕대에 하반신 알몸
+ELSE
+	PRINT 전라
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;着用可能な衣装の全装着
+;-------------------------------------------------
+@WEARING_CLOTH_ABLE
+
+CALL WEARING_CLOTH_ALL
+
+SIF CFLAG:43 != 0
+	CFLAG:40 -= (CFLAG:40 & 1)
+SIF CFLAG:44 != 0
+	CFLAG:40 -= (CFLAG:40 & 2)
+SIF CFLAG:45 != 0
+	CFLAG:40 -= (CFLAG:40 & 4)
+SIF CFLAG:46 != 0
+	CFLAG:40 -= (CFLAG:40 & 8)
+SIF CFLAG:46 != 0
+	CFLAG:40 -= (CFLAG:40 & 16)
+SIF CFLAG:47 != 0
+	CFLAG:40 -= (CFLAG:40 & 64)
+
+;靴下を履く
+SIF CFLAG:170 != 0
+	CFLAG:173 = 0
+
+;-------------------------------------------------
+;着衣フラグの初期化
+;-------------------------------------------------
+@WEARING_CLOTH_ALL
+;標準衣装が設定されてない場合は戻る
+SIF CFLAG:41 == 0 && CFLAG:42 == 0
+	RETURN 0
+
+;一旦全裸に
+CFLAG:40 = 0
+
+;全裸以外の場合の標準コス処理
+IF CFLAG:41 != 0
+
+	;下着着衣フラグの初期化
+	CALL WEARING_UNDERWARE_ALL
+
+	;上着着衣フラグの初期化
+	CALL WEARING_OUTERWARE_ALL
+
+ENDIF
+
+;特別コスの装着
+SIF CFLAG:42
+	CFLAG:40 |= 64
+
+RETURN 1
+
+;-------------------------------------------------
+;下着着衣フラグの初期化
+;-------------------------------------------------
+@WEARING_UNDERWARE_ALL
+
+;パンツ装着
+CFLAG:40 |= 1
+
+;절벽, 미숙함, 유치＋빈유の場合を除きブラ装着
+SIF TALENT:116 == 0 && TALENT:135 == 0 && (TALENT:132 == 0 || TALENT:109 == 0)
+	CFLAG:40 |= 2
+;기모노・버니걸用ノーブラ化処理
+SIF CFLAG:41 == 202 || CFLAG:41 == 254
+	CFLAG:40 -= CFLAG:40 & 2
+;全裸の上にまとうタイプ(191~200or241~250or291~300)ならノーブラ・ノーパン化
+SIF CFLAG:41 >= 191 && CFLAG:41 <= 200
+	CFLAG:40 -= CFLAG:40 & 3
+SIF CFLAG:41 >= 241 && CFLAG:41 <= 250
+	CFLAG:40 -= CFLAG:40 & 3
+SIF CFLAG:41 >= 291 && CFLAG:41 <= 300
+	CFLAG:40 -= CFLAG:40 & 3
+;島の娘の服用ノーブラ・ノーパン処理
+SIF CFLAG:41 == 29
+	CFLAG:40 -= CFLAG:40 & 3
+;기저귀着用時のノーパン処理
+SIF CFLAG:42 == 69
+	CFLAG:40 -= CFLAG:40 & 1
+
+;-------------------------------------------------
+;上着着衣フラグの初期化
+;-------------------------------------------------
+@WEARING_OUTERWARE_ALL
+
+;下がスカートタイプのツーピース
+IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+	CFLAG:40 |= 4
+	CFLAG:40 |= 8
+;下がズボンタイプのツーピース
+ELSEIF CFLAG:41 >= 101 && CFLAG:41 <= 200
+	CFLAG:40 |= 4
+	CFLAG:40 |= 16
+;下がスカートタイプの全身衣装
+ELSEIF CFLAG:41 >= 201 && CFLAG:41 <= 250
+	CFLAG:40 |= 4
+	CFLAG:40 |= 8
+;下がズボンタイプの全身衣装
+ELSEIF CFLAG:41 >= 251 && CFLAG:41 <= 300
+	CFLAG:40 |= 4
+	CFLAG:40 |= 16
+ENDIF
+
+;ふんどし
+SIF CFLAG:41 == 192
+	CFLAG:40 = 16
+
+;-------------------------------------------------
+;調教後の衣類の処理
+;-------------------------------------------------
+@AFTERTRAIN_CLOTH
+;더러운 옷가지의 처리
+S = 0
+;特別コス
+IF CFLAG:42 && (TFLAG:49 & 64)
+	PRINTFORM (%NAME:TARGET%의 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINTL 를 폐기처분 했습니다)
+	ELSE
+		PRINTL 을 폐기처분 했습니다)
+	ENDIF
+	CFLAG:42 = 0
+	TFLAG:49 = 0
+	S = 1
+	SIF CFLAG:40 & 64
+		CFLAG:40 -= 64
+ELSEIF CFLAG:42 == 69 && (TFLAG:49 & 3) && CFLAG:47 == 0 && MONEY >= 50
+	;기저귀の場合の特殊処理
+	$INPUT_LOOP_01
+	PRINTFORML 50 드라크마로 %CALLNAME:TARGET%의 기저귀를 교환합니까?
+	PRINTL  [0] - 네
+	PRINTL  [1] - 아니오
+	INPUT
+	IF RESULT == 0
+		PRINTFORM (%CALLNAME:TARGET%에게 새 기저귀를 채웠습니다)
+		MONEY -= 50
+		CFLAG:47 = 0
+		TFLAG:49 = 0
+		IF TALENT:135 == 0
+			PRINTL 
+			PRINTFORM %PALAMNAME:8%의 구슬 +500
+			JUEL:8 += 500
+		ENDIF
+		WAIT
+		S = 1
+	ELSEIF RESULT == 1
+		PRINTFORMW (%NAME:TARGET%의 기저귀를 세탁하러 보냈습니다)
+		CFLAG:47 = 2
+		TFLAG:49 = 0
+		S = 1
+		SIF CFLAG:40 & 64
+			CFLAG:40 -= 64
+	ELSE
+		GOTO INPUT_LOOP_01
+	ENDIF
+ELSEIF CFLAG:42 && (TFLAG:49 & 3) && CFLAG:47 == 0
+	PRINTFORM (%NAME:TARGET%の
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINTW 를 세탁하러 보냈습니다)
+	ELSE
+		PRINTW 을 세탁하러 보냈습니다)
+	ENDIF
+	CFLAG:47 = 5
+	;기저귀の場合は洗濯速度は下着並
+	SIF CFLAG:42 == 69
+		CFLAG:47 = 2
+	TFLAG:49 = 0
+	S = 1
+	SIF CFLAG:40 & 64
+		CFLAG:40 -= 64
+ENDIF
+;상의 하의
+IF CFLAG:41 && (TFLAG:48 & 64)
+	PRINTFORM (%타겟이()% 입었던
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	IF RESULT == 0
+		PRINTW 는 폐기처분됐습니다)
+	ELSE
+		PRINTW 은 폐기처분됐습니다)
+	ENDIF
+	IF CFLAG:41 >= 201
+		CFLAG:41 = 0
+		SIF CFLAG:40 & 4
+			CFLAG:40 -= 4
+		SIF CFLAG:40 & 8
+			CFLAG:40 -= 8
+		SIF CFLAG:40 & 16
+			CFLAG:40 -= 16
+	ELSE
+		CFLAG:46 = -2
+		SIF CFLAG:40 & 8
+			CFLAG:40 -= 8
+		SIF CFLAG:40 & 16
+			CFLAG:40 -= 16
+	ENDIF
+	TFLAG:48 = 0
+	S = 1
+ELSEIF CFLAG:41 && (TFLAG:48 & 3) && CFLAG:46 == 0
+	PRINTFORM (%타겟이()% 입었던
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	IF RESULT == 0
+		PRINTW 를 세탁하러 보냈습니다)
+	ELSE
+		PRINTW 을 세탁하러 보냈습니다)
+	ENDIF
+	IF CFLAG:41 >= 201
+		CFLAG:45 = 3
+		CFLAG:46 = 3
+		SIF CFLAG:40 & 4
+			CFLAG:40 -= 4
+		SIF CFLAG:40 & 8
+			CFLAG:40 -= 8
+		SIF CFLAG:40 & 16
+			CFLAG:40 -= 16
+	ELSE
+		CFLAG:46 = 3
+		SIF CFLAG:40 & 8
+			CFLAG:40 -= 8
+		SIF CFLAG:40 & 16
+			CFLAG:40 -= 16
+	ENDIF
+	TFLAG:48 = 0
+	S = 1
+ENDIF
+;パンツ
+IF (TFLAG:45 & 64)
+	PRINTFORMW (%NAME:TARGET%의 속옷은 폐기처분됐습니다)
+	CFLAG:43 = -2
+	SIF CFLAG:40 & 1
+		CFLAG:40 -= 1
+	TFLAG:45 = 0
+	S = 1
+ELSEIF (TFLAG:45 & 3) && CFLAG:43 == 0
+	PRINTFORMW (%NAME:TARGET%의 속옷을 세탁하러 보냈습니다)
+	CFLAG:43 = 2
+	SIF CFLAG:40 & 1
+		CFLAG:40 -= 1
+	TFLAG:45 = 0
+	S = 1
+ENDIF
+
+;상하 모두 망가진 의상은 삭제
+IF CFLAG:41
+	SIF CFLAG:45 < 0 && CFLAG:46 < 0
+		CFLAG:41 = 0
+	;ふんどし用処理
+	SIF CFLAG:41 == 192 && CFLAG:46 < 0
+		CFLAG:41 = 0
+ENDIF
+;고장난 특별코스는 삭제
+IF CFLAG:42
+	SIF CFLAG:47 < 0
+		CFLAG:42 = 0
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;衣類の再着衣
+;-------------------------------------------------
+@RE_CLOTHED
+#DIM DYNAMIC T0
+#DIM DYNAMIC T1
+#DIM DYNAMIC T2
+#DIM DYNAMIC T4
+
+CALL COM110_ABLE0T
+T0 = RESULT
+CALL COM110_ABLE1T
+T1 = RESULT
+CALL COM110_ABLE2T
+T2 = RESULT
+;CALL COM110_ABLE4T
+;T4 = RESULT
+
+;순종＋노출벽3이상 이라면, 주인에게 벗겨진 상태를 유지
+;그 이외라면, 정조대를 제외하고 입을 수 있는 의류는 전부 입는다
+;IF ABL:10 + ABL:17 < 3
+	C = CFLAG:40
+	;特別コスが정조대で外した状態かチェック
+	D = 0
+	SIF CFLAG:42 == 79 && (CFLAG:40 & 64) == 0
+		D = 1
+	CALL WEARING_CLOTH_ABLE
+	SIF D
+		CFLAG:40 -= CFLAG:40 & 64
+	IF CFLAG:40 > C
+		PRINTFORML (%타겟은()% 벗긴 의상을 다시 입었습니다)
+		WAIT
+	ENDIF
+	;옷의 가슴팍이 열려있다면 복구
+	SIF T0 == 2 || T1 == 2 || T2 == 2
+		CFLAG:40 -= 128
+	;SIF T4 == 2
+	;	CFLAG:40 -= 256
+;ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;汚れた衣類の洗濯
+;-------------------------------------------------
+@WASHING_CLOTH
+S = 0
+REPEAT CHARANUM
+	TARGET = COUNT
+	;全身衣装の場合, 洗濯の進行状況は下半身部分にあわせる
+	SIF CFLAG:41 >= 200 && CFLAG:45 > 0 && CFLAG:46 > 0
+		CFLAG:45 = CFLAG:46
+	;下着の洗濯
+	IF CFLAG:43 > 0
+		CFLAG:43 -= 1
+		IF CFLAG:43 == 0
+			PRINTFORML (%NAME:TARGET%의 속옷 세탁이 끝났습니다)
+			S = 1
+		ENDIF
+	ENDIF
+	;通常コスの洗濯
+	IF CFLAG:46 > 0
+		CFLAG:46 -= 1
+		IF CFLAG:46 == 0 && CFLAG:41
+			PRINTFORM (%NAME:TARGET%의 
+			CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+			PRINTFORML 의 세탁이 끝났습니다)
+			S = 1
+			SIF CFLAG:41 >= 200 && CFLAG:45 >= 0
+				CFLAG:45 = 0
+		ENDIF
+	ENDIF
+	;特別コスの洗濯
+	IF CFLAG:47 > 0
+		CFLAG:47 -= 1
+		IF CFLAG:47 == 0 && CFLAG:42
+			PRINTFORM (%NAME:TARGET%의 
+			CALL PRINT_CLOTHTYPE_SPECIAL
+			PRINTFORML 의 세탁이 끝났습니다)
+			S = 1
+		ENDIF
+	ENDIF
+
+	;パンツのはき古し進行もここで
+	SIF (CFLAG:40 & 1)
+		CFLAG:48 += 1
+
+REND
+IF S
+	WAIT
+	DRAWLINE
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;지도중のおもらし処理(小)
+;-------------------------------------------------
+@SOILING_CLOTH_NO1
+;着衣設定でなければそのまま終了
+SIF FLAG:37 == 0
+	RETURN 0
+
+;着衣中に방뇨した場合, 着衣は一時的に使えなくなる
+IF (CFLAG:40 & 64) && (CFLAG:42 <= 50 || CFLAG:42 == 69)
+	PRINTFORM 《%CALLNAME:TARGET%의 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINTW 는 오줌으로 더러워졌다》
+	ELSE
+		PRINTW 은 오줌으로 더러워졌다》
+	ENDIF
+	TFLAG:49 |= 1
+	;기저귀着用中なら他の衣類は無事
+	SIF CFLAG:42 == 69
+		RETURN 1
+ENDIF
+IF (CFLAG:40 & 8) || (CFLAG:40 & 16)
+	PRINTFORM 《%타겟이()% 입은 
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	PRINTFORML 는 오줌으로 더러워졌다》
+	TFLAG:48 |= 1
+ENDIF
+IF (CFLAG:40 & 1)
+	PRINTFORML 《%CALLNAME:TARGET%의 속옷은 오줌으로 더러워졌다》
+	TFLAG:45 |= 1
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;지도중のおもらし処理(大)
+;-------------------------------------------------
+@SOILING_CLOTH_NO2
+;着衣設定でなければそのまま終了
+SIF FLAG:37 == 0
+	RETURN 0
+
+;着衣中に脱糞した場合, 着衣は廃棄処分になる
+IF (CFLAG:40 & 64) && (CFLAG:42 <= 50 || CFLAG:42 == 69)
+	PRINTFORM 《%CALLNAME:TARGET%의 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	IF RESULT == 0
+		PRINTW 는 오물로 더러워졌다》
+	ELSE
+		PRINTW 은 오물로 더러워졌다》
+	ENDIF
+	TFLAG:49 |= 64
+	;기저귀着用中なら他の衣類は無事
+	SIF CFLAG:42 == 69
+		RETURN 1
+ENDIF
+IF (CFLAG:40 & 8) || (CFLAG:40 & 16)
+	PRINTFORM 《%타겟이()% 입은 
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	IF RESULT == 0
+		PRINTW 는 오물로 더러워졌다》
+	ELSE
+		PRINTW 은 오물로 더러워졌다》
+	ENDIF
+	TFLAG:48 |= 64
+ENDIF
+IF (CFLAG:40 & 1)
+	PRINTFORML 《%CALLNAME:TARGET%의 속옷은 오물로 더러워졌다》
+	TFLAG:45 |= 64
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;지도중の사정処理
+;-------------------------------------------------
+@SOILING_CLOTH_EJECTION
+;着衣設定でなければそのまま終了
+SIF FLAG:37 == 0
+	RETURN 0
+
+;着衣中に방뇨した場合, 着衣は一時的に使えなくなる
+IF (CFLAG:40 & 64) && (CFLAG:42 <= 50 || CFLAG:42 == 69)
+	PRINTFORM 《%타겟은()% 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	PRINTFORML  속에 사정했다》
+	TFLAG:49 |= 2
+	;기저귀着用中なら他の衣類は無事
+	SIF CFLAG:42 == 69
+		RETURN 1
+ENDIF
+IF (CFLAG:40 & 1)
+	PRINTFORML 《%타겟은()% 팬티 속에 사정했다》
+	TFLAG:45 |= 2
+	;パンツ着用中なら上着は無事
+	RETURN 1
+ENDIF
+IF (CFLAG:40 & 8) || (CFLAG:40 & 16)
+	PRINTFORM 《%타겟은()% 
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	PRINTFORML  속에 사정했다》
+	TFLAG:48 |= 2
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;지도중のぶっかけ処理(下)
+;-------------------------------------------------
+@SOILING_SUMATA
+;着衣設定でなければそのまま終了
+SIF FLAG:37 == 0
+	RETURN 0
+
+;着衣に사정した場合, 着衣は一時的に使えなくなる
+;まずズボンタイプの判定
+IF (CFLAG:40 & 16)
+	PRINTFORM 《%타겟이()% 입은 
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	PRINTFORML 에 정액을 뿌렸다》
+	TFLAG:48 |= 2
+	;ズボンタイプの上着に사정したなら기저귀とパンツは無事
+	RETURN 1
+ENDIF
+;特別コス・기저귀の判定
+IF (CFLAG:40 & 64) && CFLAG:42 == 69
+	PRINTFORM 《%CALLNAME:TARGET%의 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	PRINTFORML 에 정액을 뿌렸다》
+	TFLAG:49 |= 2
+ENDIF
+;パンツの判定
+IF (CFLAG:40 & 1)
+	PRINTFORML 《%CALLNAME:TARGET%의 팬티에 정액을 뿌렸다》
+	TFLAG:45 |= 2
+ENDIF
+;대량사정の場合はスカートにもかかる
+IF (CFLAG:40 & 8) && TFLAG:9 >= 2
+	PRINTFORM 《%타겟이()% 입은 
+	CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+	PRINTFORML 에 정액을 뿌렸다》
+	TFLAG:48 |= 2
+ENDIF
+
+RETURN 1
+
+;-------------------------------------------------
+;着替え中の衣装表示
+;-------------------------------------------------
+;特別コス
+@PRINT_CLOTHTYPE_SPECIAL_CHANGING
+IF TFLAG:49 & 64
+	PRINT 오물로 더럽혀진 
+ELSEIF TFLAG:49 & 1
+	PRINT 오줌에 흠뻑젖은 
+ELSEIF TFLAG:49 & 2
+	PRINT 정액으로 끈적해진 
+ELSEIF TFLAG:49
+	PRINT 더러워진 
+ENDIF
+CALL PRINT_CLOTHTYPE_SPECIAL
+
+;원피스
+@PRINT_CLOTHTYPE_MAIN_ONE_CHANGING
+IF TFLAG:47 & 64 || TFLAG:48 & 64
+	PRINT 오물로 더럽혀진 
+ELSEIF TFLAG:47 & 1 || TFLAG:48 & 1
+	PRINT 오줌에 흠뻑젖은 
+ELSEIF TFLAG:47 & 2 || TFLAG:48 & 2
+	PRINT 정액으로 끈적해진 
+ELSEIF  TFLAG:47 || TFLAG:48
+	PRINT 더러워진 
+ENDIF
+CALL PRINT_CLOTHTYPE_MAIN2
+
+;ツーピース下
+@PRINT_CLOTHTYPE_MAIN_BOTTOM_CHANGING
+IF TFLAG:48 & 64
+	PRINT 오물로 더럽혀진 
+ELSEIF TFLAG:48 & 1
+	PRINT 오줌에 흠뻑젖은 
+ELSEIF TFLAG:48 & 2
+	PRINT 정액으로 끈적해진 
+ELSEIF  TFLAG:48
+	PRINT 더러워진 
+ENDIF
+CALL PRINT_CLOTHTYPE_MAIN_BOTTOM
+
+;パンツ
+@PRINT_CLOTHTYPE_PANTS_CHANGING
+IF TFLAG:45 & 64
+	PRINT 오물로 더럽혀진 
+ELSEIF TFLAG:45 & 1
+	PRINT 오줌에 흠뻑젖은 
+ELSEIF TFLAG:45 & 2
+	PRINT 정액으로 끈적해진 
+ELSEIF  TFLAG:45
+	PRINT 더러워진 
+ENDIF
+PRINT 팬티
+
+;-------------------------------------------------
+;ツーピース下の表示
+;-------------------------------------------------
+@PRINT_CLOTHTYPE_MAIN_BOTTOM
+IF CFLAG:41 == 109
+	PRINT 부르마
+ELSEIF CFLAG:41 == 192
+	PRINT 훈도시
+ELSE
+	CALL PRINT_CLOTHTYPE_MAIN2
+	IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+		PRINT   스커트
+	ELSEIF CFLAG:41 <= 200
+		PRINT   아래
+	ENDIF
+ENDIF
+
+;-------------------------------------------------
+;衣装の定義
+;-------------------------------------------------
+@PRINT_CLOTHTYPE_MAIN2
+IF CFLAG:41 == 0
+	PRINT 전라
+	RETURN 0
+;-------------------------------------
+;사타구니를 덮지 않는 투피스(1~100)
+;-------------------------------------
+ELSEIF CFLAG:41 == 1
+	PRINT 평상복+스커트
+	RETURN 1
+ELSEIF CFLAG:41 == 2
+	PRINT 고쿠아쿠 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 3
+	PRINT 히노데 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 4
+	PRINT 하나마루 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 5
+	PRINT 신세츠 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 6
+	PRINT 세이에이 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 7
+	PRINT 파라이소 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 8
+	PRINT 사립 메키메키 학원 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 17
+	PRINT 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 18
+	PRINT 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 19
+	PRINT 세일러복
+	RETURN 1
+ELSEIF CFLAG:41 == 20
+	PRINT 마호라 여자중학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 21
+	PRINT 정장+치마
+	RETURN 1
+ELSEIF CFLAG:41 == 22
+	PRINT 아동복
+	RETURN 1
+ELSEIF CFLAG:41 == 23
+	PRINT 명품옷
+	RETURN 1
+ELSEIF CFLAG:41 == 24
+	PRINT 간호사복
+	RETURN 1
+ELSEIF CFLAG:41 == 25
+	PRINT 메이드복
+	RETURN 1
+ELSEIF CFLAG:41 == 26
+	PRINT 웨이트리스복
+	RETURN 1
+ELSEIF CFLAG:41 == 27
+	PRINT 편의점 제복
+	RETURN 1
+ELSEIF CFLAG:41 == 28
+	PRINT 사무원 제복
+	RETURN 1
+ELSEIF CFLAG:41 == 29
+	PRINT CPG 유니폼
+	RETURN 1
+ELSEIF CFLAG:41 == 30
+	PRINT 펑크 로리타
+	RETURN 0
+ELSEIF CFLAG:41 == 31
+	PRINT 블레이저+스커트
+	RETURN 0
+ELSEIF CFLAG:41 == 32
+	PRINT 상복
+	RETURN 1
+ELSEIF CFLAG:41 == 40
+	PRINT 캐미솔과 데님미니스커트
+	RETURN 0
+ELSEIF CFLAG:41 == 51
+	PRINT 군복
+	RETURN 1
+ELSEIF CFLAG:41 == 52
+	PRINT 고식 로리타
+	RETURN 0
+ELSEIF CFLAG:41 == 53
+	PRINT 마호라예대 부속 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 54
+	PRINT 치어리더 의상
+	RETURN 1
+ELSEIF CFLAG:41 == 55
+	PRINT 테니스복+스커트
+	RETURN 1
+ELSEIF CFLAG:41 == 56
+	PRINT 할로윈 마녀복
+	RETURN 1
+ELSEIF CFLAG:41 == 99
+	PRINT 유리 메이드복
+	RETURN 1
+;-------------------------------------
+;사타구니를 덮는 타입의 투피스(101~200)
+;-------------------------------------
+ELSEIF CFLAG:41 == 101
+	PRINT 평상복+바지
+	RETURN 1
+ELSEIF CFLAG:41 == 102
+	PRINT 정장+바지
+	RETURN 1
+ELSEIF CFLAG:41 == 103
+	PRINT 츄리닝+바지
+	RETURN 1
+ELSEIF CFLAG:41 == 104
+	PRINT 무녀복+하카마
+	RETURN 1
+ELSEIF CFLAG:41 == 105
+	PRINT 야구 유니폼
+	RETURN 1
+ELSEIF CFLAG:41 == 106
+	PRINT 군복+바지
+	RETURN 1
+ELSEIF CFLAG:41 == 108
+	PRINT 블레이저+바지
+	RETURN 0
+ELSEIF CFLAG:41 == 109
+	PRINT 체육복+브루마
+	RETURN 1
+ELSEIF CFLAG:41 == 110
+	PRINT 닌자복
+	RETURN 1
+ELSEIF CFLAG:41 == 111
+	PRINT 왕자복
+	RETURN 1
+ELSEIF CFLAG:41 == 122
+	PRINT 아동복+반바지
+	RETURN 1
+ELSEIF CFLAG:41 == 131
+	PRINT 잠옷+바지
+	RETURN 1
+;----------------------------------------------------
+;사타구니를 덮는 타입으로 알몸으로 붙이는 투피스(191~200)
+;----------------------------------------------------
+ELSEIF CFLAG:41 == 191
+	PRINT 마이크로 비키니
+	RETURN 0
+ELSEIF CFLAG:41 == 192
+	PRINT 육상부 유니폼
+	RETURN 1
+;----------------------------------------------------
+;사타구니를 가리지 않는 타입의 전신 의상(201~240)
+;----------------------------------------------------
+ELSEIF CFLAG:41 == 201
+	PRINT 원피스
+	RETURN 0
+ELSEIF CFLAG:41 == 202
+	PRINT 기모노
+	RETURN 0
+ELSEIF CFLAG:41 == 203
+	PRINT 칵테일 드레스
+	RETURN 0
+ELSEIF CFLAG:41 == 204
+	PRINT 유카타
+	RETURN 0
+ELSEIF CFLAG:41 == 205
+	PRINT 마이크로 미니타이트 원피스
+	RETURN 0
+ELSEIF CFLAG:41 == 221
+	PRINT 차이나 드레스
+	RETURN 0
+ELSEIF CFLAG:41 == 222
+	PRINT 페미닌 원피스
+	RETURN 0
+ELSEIF CFLAG:41 == 229
+	PRINT 중학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 230
+	PRINT 성 우르술라 고등학교 교복
+	RETURN 1
+ELSEIF CFLAG:41 == 231
+	PRINT 수도복
+	RETURN 1
+ELSEIF CFLAG:41 == 232
+	PRINT 원피스정장
+	RETURN 1
+ELSEIF CFLAG:41 == 233
+	PRINT 여자 음양사복
+	RETURN 1
+ELSEIF CFLAG:41 == 240
+	PRINT 웨딩 드레스
+	RETURN 0
+;사타구니를 덮지 않는 타입으로 알몸으로 착용하는 전신 의상(241~250)
+ELSEIF CFLAG:41 == 241
+	PRINT 본디지
+	RETURN 0
+ELSEIF CFLAG:41 == 242
+	PRINT 음마의 본디지
+	RETURN 0
+ELSEIF CFLAG:41 == 243
+	PRINT 벨리댄스복
+	RETURN 1
+ELSEIF CFLAG:41 == 244
+	PRINT 구형 학교수영복
+	RETURN 1
+ELSEIF CFLAG:41 == 245
+	PRINT 라텍스 슈트
+	RETURN 0
+ELSEIF CFLAG:41 == 246
+	PRINT 슬링샷
+	RETURN 1
+;股間を覆うタイプでの全身衣装(251~290)
+ELSEIF CFLAG:41 == 251
+	PRINT 전신 타이즈
+	RETURN 0
+ELSEIF CFLAG:41 == 252
+	PRINT 멜빵바지
+	RETURN 0
+ELSEIF CFLAG:41 == 253
+	PRINT 프로페라단 코스튬
+	RETURN 1
+ELSEIF CFLAG:41 == 254
+	PRINT 버니걸
+	RETURN 1
+;股間を覆うタイプで全裸で付ける全身衣装(291~300)
+ELSEIF CFLAG:41 == 291
+	PRINT 학교수영복
+	RETURN 1
+ELSEIF CFLAG:41 == 292
+	PRINT 블랙 코스튬
+	RETURN 1
+ELSEIF CFLAG:41 == 295
+	PRINT 레오타드
+	RETURN 0
+;その他
+ELSEIF CFLAG:41 == -1
+	PRINT 속옷
+	RETURN 1
+ELSE
+	PRINT 옷
+	RETURN 1
+ENDIF
+
+;特別コス
+@PRINT_CLOTHTYPE_SPECIAL
+;通常コスの上にまとうタイプ(1~50)
+IF CFLAG:42 == 1
+	PRINT 에이프런
+	RETURN 1
+ELSEIF CFLAG:42 == 2
+	PRINT 코트
+	RETURN 0
+ELSEIF CFLAG:42 == 3
+	PRINT 백의
+	RETURN 0
+ELSEIF CFLAG:42 == 4
+	PRINT 남자용 와이셔츠
+	RETURN 0
+ELSEIF CFLAG:42 == 10
+	PRINT 수수한 조끼
+	RETURN 0
+ELSEIF CFLAG:42 == 11
+	PRINT 즈코 인형
+	RETURN 1
+ELSEIF CFLAG:42 == 12
+	PRINT 떠돌이의 망토
+	RETURN 0
+ELSEIF CFLAG:42 == 40
+	PRINT 정장 자켓
+	RETURN 1
+ELSEIF CFLAG:42 == 41
+	PRINT 마법사의 로브
+	RETURN 0
+ELSEIF CFLAG:42 == 50
+	PRINT 프릴 앞치마
+	RETURN 0
+;体にまとわず濡らせないタイプ(51~65)
+ELSEIF CFLAG:42 == 51
+	PRINT 머플러
+	RETURN 0
+ELSEIF CFLAG:42 == 52
+	PRINT 간호사 모자
+	RETURN 0
+ELSEIF CFLAG:42 == 53
+	PRINT 롱 글러브
+	RETURN 0
+ELSEIF CFLAG:42 == 54
+	PRINT 헤어리본
+	RETURN 1
+ELSEIF CFLAG:42 == 60
+	PRINT 수녀용 베일
+	RETURN 1
+ELSEIF CFLAG:42 == 61
+	PRINT 웨딩 베일
+	RETURN 1
+ELSEIF CFLAG:42 == 62
+	PRINT 
+;ELSEIF CFLAG:42 == 63
+;	PRINT 성 우르술라 高校帽子
+;ELSEIF CFLAG:42 == 64
+;	PRINT 麻帆良芸大付属中の帽子
+ELSEIF CFLAG:42 == 65
+	PRINT 고양이귀&꼬리
+	RETURN 0
+ELSEIF CFLAG:42 == 66
+	PRINT 폼폼
+	RETURN 1
+;パンツ代わりに付けるタイプ(69)
+ELSEIF CFLAG:42 == 69
+	PRINT 기저귀
+	RETURN 0
+;体にまとわず濡れても平気なタイプ(71~100)
+ELSEIF CFLAG:42 == 71
+	PRINT 개목걸이
+	RETURN 0
+ELSEIF CFLAG:42 == 72
+	PRINT 귀갑묶기
+	RETURN 0
+ELSEIF CFLAG:42 == 73
+	PRINT 카우벨과 코뚜레
+	RETURN 0
+ELSEIF CFLAG:42 == 74
+	PRINT 뱅글&링
+	RETURN 1
+ELSEIF CFLAG:42 == 79
+	PRINT 정조대
+	RETURN 0
+ELSEIF CFLAG:42 == 80
+	PRINT 안경
+	RETURN 1
+ELSEIF CFLAG:42 == 81
+	PRINT 선글라스
+	RETURN 0
+ELSEIF CFLAG:42 == 82
+	PRINT 꼬리 애널플래그
+	RETURN 0
+ELSEIF CFLAG:42 == 83
+	PRINT 레이스 파티 글러브
+	RETURN 0
+ELSEIF CFLAG:42 == 85
+	PRINT 에나멜 롱 글러브
+	RETURN 0
+ELSEIF CFLAG:42 == 99
+	PRINT 유리 고양이귀
+	RETURN 0
+ENDIF
+
+RETURN 1

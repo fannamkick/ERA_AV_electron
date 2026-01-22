@@ -1,0 +1,1341 @@
+﻿;-------------------------------------------------
+;調教時に録画したビデオの売却
+;-------------------------------------------------
+@SELL_VIDEO
+
+촬영부위C = 0
+촬영부위B = 0
+촬영부위V = 0
+촬영부위A = 0
+촬영내용애무 = 0
+촬영내용기구 = 0
+촬영내용성교 = 0
+촬영내용피스트 = 0
+촬영내용펠라 = 0
+촬영경향봉사 = 0
+촬영경향가학 = 0
+촬영경향SM = 0
+촬영경향자위 = 0
+촬영특수로션 = 0
+촬영특수약물 = 0
+촬영특수긴박 = 0
+촬영특수착유 = 0
+촬영특수스캇 = 0
+촬영특수난교 = 0
+촬영특수야외 = 0
+촬영특수촉수 = 0
+촬영특수레즈 = 0
+촬영특수후타나리 = 0
+촬영특수거품춤 = 0
+
+
+
+X = 0
+
+;録画終了の分のカウントを削る
+TFLAG:70 -= 1
+
+;有効なビデオを録画してなければここで終了
+SIF TFLAG:70 <= 0
+	RETURN 0
+
+DRAWLINE
+
+;ビデオ価格
+P = 0
+;商売人によるビデオ価格加算
+Q = 0
+
+;ビデオ촬영내용分析用フラグ
+;行われている調教
+T = 0
+;助手プレイかどうか
+U = 0
+;その調教で有利になる能力
+;△折角技術系ABLがあるので, E:1など増やすことも視野
+E = 0
+;加算額
+G = 0
+
+;撮影進行時の状況。bit値の立て方は撮影開始時の状況: FLAG:22に準拠
+F = FLAG:22
+
+;撮影回数分繰り返します
+REPEAT TFLAG:70
+	;FLAG:11~21に촬영내용が保存されている。内容はSELECTCOM+(ASSIPLAY*1000)
+	LOCAL = COUNT + 11
+	T = FLAG:LOCAL % 1000
+	U = 0
+	SIF FLAG:LOCAL >= 1000
+		U = 1
+
+	;着脱系の処理
+	;撮影中に코스프레しだしたり脱ぎだしたりしたときの処理が入っていない
+	;たぶん信念なのでCOMABLEでできなくしておいてもいいかも
+	;야외 플레이
+	IF T == 54
+		IF F & 1
+			F -= 1
+		ELSE
+			G = 500
+			촬영특수야외 += 4
+			F |= 1
+		ENDIF
+	;목욕탕 플레이
+	ELSEIF T == 58
+		IF F & 2
+			F -= 2
+		ELSE
+			F |= 2
+		ENDIF
+	;밧줄
+	ELSEIF T == 44
+		IF F & 8
+			F -= 8
+		ELSE
+			G = 500
+			촬영경향SM += 4
+			촬영특수긴박 += 4
+			F |= 8
+		ENDIF
+	;바이브
+	ELSEIF T == 11
+		G = 300
+		촬영부위V += 3
+		촬영내용기구 += 3
+		IF F & 16
+			F -= 16
+		ELSE
+			F |= 16
+		ENDIF
+	;애널바이브
+	ELSEIF T == 13
+		G = 700
+		촬영부위A += 3
+		촬영내용기구 += 3
+		IF F & 32
+			F -= 32
+		ELSE
+			F |= 32
+		ENDIF
+	;관장
+	ELSEIF T == 46
+		;관장が評価されるのは失禁時のみ
+		IF F & 64
+			G = 1500
+			촬영부위A += 3
+			촬영내용기구 += 3
+			촬영경향SM += 5
+			촬영특수스캇 += 20
+			F -= 64
+		ELSE
+			F |= 64
+		ENDIF
+	;獣姦
+	ELSEIF T == 89
+		IF F & 128
+			G = 3000
+			F -= 128
+		ELSE
+			F |= 128
+		ENDIF
+	;촉수생물
+	ELSEIF T == 100
+		IF F & 256
+			G = 5000
+			F -= 256
+		ELSE
+			G = 100
+			촬영특수촉수 += 5
+			F |= 256
+		ENDIF
+	;샤워
+	ELSEIF T == 18
+		IF F & 512
+			F -= 512
+		ELSE
+			F |= 512
+			G = 100
+		ENDIF
+	;삼각목마
+	ELSEIF T == 137
+		IF F & 8
+			F -= 1024
+		ELSE
+			G = 2000
+			촬영경향SM += 4
+			촬영경향SM += 4
+			촬영특수긴박 += 4
+			F |= 1024
+		ENDIF
+						;****슬라임パッチ追加ここから****
+	;슬라임 생성
+	ELSEIF T == 150
+		IF F & 2056
+			G = 3000
+			F -= 2056
+		ELSE
+			G = 300
+			촬영특수로션 += 5
+			F |= 2056
+		ENDIF
+						;****슬라임パッチ追加ここまで****
+	;通常の調教
+	;COM:愛撫を見る
+	ELSEIF T == 0
+		G = 50
+		촬영부위C += 2
+		촬영부위B += 2
+		촬영내용애무 += 3
+	;COM:커닐링구스を見る
+	ELSEIF T == 1
+		G = 50
+		촬영부위C += 3
+		촬영내용애무 += 3
+	;COM:애널애무を見る
+	ELSEIF T == 2
+		;애널바이브責めの場合
+		IF (F & 32)
+			G = 600
+			촬영부위A += 3
+			촬영내용애무 += 3
+			촬영내용기구 += 3
+		ELSE
+			G = 100
+			촬영부위A += 3
+			촬영내용애무 += 3
+		ENDIF
+	;COM:자위を見る
+	ELSEIF T == 3
+		E = 31
+		;両穴자위を見る
+		IF (F & 16) && (F & 32)
+			G = 1800
+			촬영부위V += 2
+			촬영부위A += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 5
+		;바이브자위を見る
+		ELSEIF (F & 16)
+			G = 1200
+			촬영부위V += 3
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;애널바이브자위を見る
+		ELSEIF (F & 32)
+			G = 1300
+			촬영부위A += 3
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;샤워자위を見る
+		ELSEIF (F & 512)
+			G = 1000
+			촬영부위C += 2
+			촬영부위B += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;通常자위を見る
+		ELSE
+			G = 500
+			촬영부위C += 2
+			촬영부위B += 2
+			촬영경향자위 += 3
+		ENDIF
+	;COM:펠라한다を見る
+	ELSEIF T == 4
+		E = 32
+		G = 200
+		촬영부위C += 3
+		촬영내용애무 += 3
+		SIF TALENT:121
+			촬영특수후타나리 += 10
+	;COM:가슴애무を見る
+	ELSEIF T == 5
+		G = 100
+		촬영부위B += 3
+		촬영내용애무 += 3
+	;COM:키스한다を見る
+	ELSEIF T == 6
+		G = 100
+		촬영경향봉사 += 3
+	;조개벌리기を見る
+	ELSEIF T == 7
+		E = 17
+		G = 300
+		촬영부위C += 2
+		촬영부위V += 2
+		촬영경향자위 += 2
+	;COM:손가락삽입を見る
+	ELSEIF T == 8
+		;바이브責めの場合
+		IF (F & 16)
+			G = 400
+			촬영부위V += 3
+			촬영내용애무 += 3
+			촬영내용기구 += 3
+		ELSE
+			G = 150
+			촬영부위V += 3
+			촬영내용애무 += 3
+		ENDIF
+	;COM:애널핥기を見る
+	ELSEIF T == 9
+		G = 150
+		촬영부위A += 3
+		촬영내용애무 += 3
+	;COM:로터を見る
+	ELSEIF T == 10
+		G = 250
+		촬영부위C += 3
+		촬영내용기구 += 3
+	;COM:E마사지기を見る
+	ELSEIF T == 12
+		G = 300
+		촬영부위C += 3
+		촬영내용기구 += 3
+	;COM:클리캡を見る
+	ELSEIF T == 14
+		G = 150
+		촬영부위C += 3
+		촬영내용기구 += 3
+	;COM:니플캡を見る
+	ELSEIF T == 15
+		G = 150
+		촬영부위B += 3
+		촬영내용기구 += 3
+	;COM:착유기を見る
+	ELSEIF T == 16
+		G = 500
+		촬영부위B += 3
+		촬영내용기구 += 3
+		촬영경향SM += 3
+		촬영특수착유 += 10
+	;COM:오나홀を見る
+	ELSEIF T == 17
+		G = 100
+		촬영부위C += 3
+		촬영내용기구 += 3
+		촬영경향자위 += 3
+		SIF TALENT:121
+			촬영특수후타나리 += 10
+	;COM:애널비즈を見る
+	ELSEIF T == 19
+		G = 700
+		촬영부위A += 3
+		촬영내용기구 += 3
+	;COM:정상위を見る
+	ELSEIF T == 20
+		E = 30
+		G = 800
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM:후배위を見る
+	ELSEIF T == 21
+		E = 30
+		G = 1300
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM:대면좌위を見る
+	ELSEIF T == 22
+		E = 30
+		G = 700
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM:배면좌위を見る
+	ELSEIF T == 23
+		E = 30
+		G = 1500
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM:역강간を見る
+	ELSEIF T == 24
+		E = 30
+		G = 2000
+		촬영부위C += 3
+		촬영내용성교 += 5
+	;COM:역강간(A)を見る
+	ELSEIF T == 25
+		E = 30
+		G = 2300
+		촬영부위C += 3
+		촬영내용성교 += 5
+	;COM:정상위애널を見る
+	ELSEIF T == 26
+		E = 30
+		G = 1300
+		촬영부위A += 3
+		촬영내용성교 += 3
+	;COM:후배위애널を見る
+	ELSEIF T == 27
+		E = 30
+		G = 1800
+		촬영부위A += 3
+		촬영내용성교 += 3
+	;COM:대면좌위애널を見る
+	ELSEIF T == 28
+		E = 30
+		G = 1200
+		촬영부위A += 3
+		촬영내용성교 += 3
+	;COM:배면좌위애널を見る
+	ELSEIF T == 29
+		E = 30
+		G = 2000
+		촬영부위A += 3
+		촬영내용성교 += 3
+	;COM:수음を見る
+	ELSEIF T == 30
+		E = 32
+		G = 300
+		촬영경향봉사 += 3
+	;COM:펠라치오を見る
+	ELSEIF T == 31
+		E = 32
+		G = 500
+		촬영경향봉사 += 3
+		촬영내용펠라 += 3
+	;COM:파이즈리を見る
+	ELSEIF T == 32
+		E = 32
+		G = 650
+		촬영부위B += 3
+		촬영경향봉사 += 3
+	;COM:스마타を見る
+	;擬似性交でとってるんだろうけどいったんCO
+	ELSEIF T == 33
+		E = 32
+		G = 770
+		촬영부위C += 3
+		;촬영내용성교 += 3
+		촬영경향봉사 += 3
+	;COM:기승위を見る
+	ELSEIF T == 34
+		E = 30
+		G = 1700
+		촬영부위V += 3
+		촬영내용성교 += 3
+		촬영경향가학 += 3
+	;COM:거품춤を見る
+	ELSEIF T == 35
+		E = 16
+		G = 1800
+		촬영부위B += 3
+		;촬영내용성교 += 3
+		촬영경향봉사 += 3
+		촬영특수거품춤 = 1
+	;COM:기승위애널を見る
+	ELSEIF T == 36
+		E = 30
+		G = 2300
+		촬영부위B += 3
+		촬영내용성교 += 3
+		촬영경향가학 += 3
+	;COM:풋잡を見る
+	ELSEIF T == 38
+		E = 20
+		G = 550
+		촬영경향가학 += 3
+	;COM:스팽킹を見る
+	ELSEIF T == 40
+		E = 21
+		G = 250
+		촬영경향SM += 3
+	;COM:채찍を見る
+	ELSEIF T == 41
+		E = 21
+		G = 450
+		촬영경향SM += 3
+	;COM:바늘を見る
+	ELSEIF T == 42
+		E = 21
+		G = 700
+		촬영경향SM += 3
+	;COM:아이마스크を見る
+	ELSEIF T == 43
+		G = 150
+		촬영경향SM += 5
+	;COM:볼개그を見る
+	ELSEIF T == 45
+		G = 100
+		촬영경향SM += 5
+	;COM:로션を見る
+	ELSEIF T == 50 && (F & 128) == 0
+		G = 100
+		촬영특수로션 += 20
+	;대화한다(자기소개)を見る
+	ELSEIF T == 56
+		G = 10
+	;COM:助手にキスを見る
+	ELSEIF T == 60
+		G = 100
+		IF TALENT:ASSI:122 == 0
+			E = 33
+			촬영특수레즈 += 3
+		ENDIF
+	;COM:커닐링구스강제を見る
+	ELSEIF T == 61
+		E = 33
+		G = 250
+		촬영내용성교 += 3
+		촬영경향봉사 += 3
+		촬영특수난교 += 3
+	;COM:조수를 범한다を見る
+	ELSEIF T == 62
+		G = 800
+	;COM:조개맞대기を見る
+	ELSEIF T == 63
+		E = 33
+		G = 1000
+		촬영부위C += 3
+		촬영내용애무 += 3
+		촬영특수레즈 += 10
+	;COM:3Pを見る
+	ELSEIF T == 64
+		G = 3000
+		촬영부위V += 2
+		촬영부위A += 2
+		촬영내용성교 += 5
+		촬영특수난교 += 3
+	;COM:조수를 범하게 한다を見る
+	ELSEIF T == 65
+		E = 33
+		G = 1200
+		촬영부위C += 3
+		촬영내용성교 += 3
+		촬영특수난교 += 3
+	;COM:두개 펠라を見る
+	ELSEIF T == 66
+		E = 32
+		G = 800
+		촬영경향봉사 += 3
+		촬영특수난교 += 3
+		촬영내용펠라 += 3
+	;COM:더블 펠라を見る
+	ELSEIF T == 68
+		E = 32
+		G = 800
+		촬영경향봉사 += 3
+		촬영특수난교 += 3
+		촬영내용펠라 += 3
+	;COM:식스나인を見る
+	ELSEIF T == 69
+		E = 32
+		G = 600
+		촬영부위C += 3
+		촬영경향봉사 += 3
+		SIF ( U == 1 && (TALENT:ASSI:121 || TALENT:ASSI:122) ) || ( U == 0 && (TALENT:MASTER:121 || TALENT:MASTER:122))
+			촬영내용펠라 += 3
+	;COM:더블 스마타を見る
+	ELSEIF T == 70
+		G = 1200
+		;ソロであるんだからあってもいいかな
+		E = 32
+		촬영부위C += 3
+		촬영경향봉사 += 3
+		촬영특수난교 += 3
+	;COM:더블 파이즈리を見る
+	ELSEIF T == 71
+		G = 1300
+		E = 32
+		촬영부위B += 3
+		촬영경향봉사 += 3
+		촬영특수난교 += 3
+		;첫 키스経験もつくしこれでいいかなって
+		촬영내용펠라 += 3
+	;COM:이라마치오を見る
+	ELSEIF T == 80
+		E = 32
+		G = 1000
+		촬영경향SM += 3
+	;COM:피스트퍽を見る
+	ELSEIF T == 81
+		E = 21
+		G = 2000
+		촬영부위V += 3
+		촬영내용피스트 += 10
+	;COM:애널피스트を見る
+	ELSEIF T == 82
+		E = 21
+		G = 2500
+		촬영부위A += 3
+		촬영내용피스트 += 10
+	;COM:양구멍피스트を見る
+	ELSEIF T == 83
+		E = 21
+		G = 3000
+		촬영부위V += 2
+		촬영부위A += 2
+		촬영내용피스트 += 20
+	;COM:방뇨を見る
+	ELSEIF T == 85
+		E = 17
+		G = 500
+		촬영특수스캇 += 5
+	;COM:飲尿を見る
+	ELSEIF T == 86
+		;飲ませる, なんで露出見るのは違うはず
+		;そこ, 存在しないとか言わない
+		E = 21
+		G = 600
+		촬영특수스캇 += 5
+						;****追加ここから****
+
+	;COM:로터자위を見る
+	ELSEIF T == 90
+		E = 31
+		;両穴자위を見る
+		IF (F & 16) && (F & 32)
+			G = 2000
+			촬영부위V += 2
+			촬영부위A += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 5
+		;바이브자위を見る
+		ELSEIF (F & 16)
+			G = 1400
+			촬영부위V += 3
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;애널바이브자위を見る
+		ELSEIF (F & 32)
+			G = 1500
+			촬영부위A += 3
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;샤워자위を見る
+		ELSEIF (F & 512)
+			G = 1200
+			촬영부위C += 2
+			촬영부위B += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;通常자위を見る
+		ELSE
+			G = 700
+			촬영부위C += 2
+			촬영부위B += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		ENDIF
+	;COM:전동마사지기자위を見る
+	ELSEIF T == 91
+		E = 31
+		;両穴자위を見る
+		IF (F & 16) && (F & 32)
+			G = 2300
+			촬영부위V += 2
+			촬영부위A += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 5
+		;바이브자위を見る
+		ELSEIF (F & 16)
+			G = 1700
+			촬영부위V += 3
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;애널바이브자위を見る
+		ELSEIF (F & 32)
+			G = 1800
+			촬영부위A += 3
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;샤워자위を見る
+		ELSEIF (F & 512)
+			G = 1500
+			촬영부위C += 2
+			촬영부위B += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		;通常자위を見る
+		ELSE
+			G = 1000
+			촬영부위C += 2
+			촬영부위B += 2
+			촬영내용기구 += 3
+			촬영경향자위 += 3
+		ENDIF
+	;COM:유두로터を見る
+	ELSEIF T == 92
+		G = 200
+		촬영부위B += 3
+		촬영내용기구 += 3
+						;****追加ここまで****
+	;COM:촉수 삽입を見る
+	ELSEIF T == 101
+		E = 41
+		G = 800
+		촬영부위V += 3
+		촬영내용성교 += 3
+		촬영특수촉수 += 5
+	;COM:애널촉수を見る
+	ELSEIF T == 102
+		E = 41
+		G = 1000
+		촬영부위A += 3
+		촬영내용성교 += 3
+		촬영특수촉수 += 5
+	;COM:촉수 클리자극を見る
+	ELSEIF T == 103
+		E = 41
+		G = 300
+		촬영부위C += 3
+		촬영내용애무 += 3
+		촬영특수촉수 += 5
+	;COM:촉수 유두자극を見る
+	ELSEIF T == 104
+		E = 41
+		G = 300
+		촬영부위B += 3
+		촬영내용애무 += 3
+		촬영특수촉수 += 5
+	;COM:촉수 착유を見る
+	ELSEIF T == 105
+		E = 41
+		G = 1000
+		촬영부위B += 3
+		촬영경향SM += 3
+		촬영특수착유 += 10
+		촬영특수촉수 += 5
+	;COM:촉수 긴박を見る
+	ELSEIF T == 106
+		E = 41
+		G = 800
+		촬영경향SM += 20
+		촬영특수긴박 += 20
+		촬영특수촉수 += 5
+	;COM:촉수 관장を見る
+	ELSEIF T == 107
+		E = 41
+		G = 1500
+		촬영부위A += 3
+		촬영경향SM += 3
+		촬영특수스캇 += 20
+		촬영특수촉수 += 5
+	;COM:촉수 구욕を見る
+	ELSEIF T == 108
+		E = 41
+		G = 800
+		촬영경향SM += 3
+		촬영특수촉수 += 5
+	;COM:촉수 페니스자극を見る
+	ELSEIF T == 109
+		E = 41
+		G = 1000
+		촬영부위C += 3
+		촬영내용애무 += 3
+		촬영특수촉수 += 5
+		SIF TALENT:121
+			촬영특수후타나리 += 10
+	;COM,삽입G스팟자극を見る
+	ELSEIF T == 120
+		E = 30
+		G = 1200
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM,삽입자궁구자극を見る
+	ELSEIF T == 121
+		E = 30
+		G = 1400
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM,투구비비기を見る
+	ELSEIF T == 122
+		E = 32
+		G = 200
+		촬영부위C += 3
+		촬영내용애무 += 3
+		SIF TALENT:121
+			촬영특수후타나리 += 10
+	;COM,파이즈리펠라を見る
+	ELSEIF T == 123
+		E = 32
+		G = 700
+		촬영부위B += 3
+		촬영경향봉사 += 3
+	;COM,딥스로트を見る
+	ELSEIF T == 124
+		E = 32
+		G = 750
+		촬영경향봉사 += 5
+	;COM,펠라자위を見る
+	ELSEIF T == 125
+		E = 32
+		G = 800
+		촬영부위C += 2
+		촬영부위B += 2
+		촬영경향봉사 += 3
+	;COM,수음펠라を見る
+	ELSEIF T == 126
+		E = 32
+		G = 600
+		촬영경향봉사 += 4
+	;COM,바큠펠라を見る
+	ELSEIF T == 127
+		E = 32
+		G = 800
+		촬영경향봉사 += 5
+	;COM,정상위・키스を見る
+	ELSEIF T == 128
+		E = 30
+		G = 800
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM,정상위・가슴애무を見る
+	ELSEIF T == 129
+		E = 30
+		G = 900
+		촬영부위B += 2
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM,정상위SPを見る
+	ELSEIF T == 130
+		E = 30
+		G = 1000
+		촬영부위V += 3
+		촬영내용성교 += 4
+	;COM,후배위・가슴애무を見る
+	ELSEIF T == 131
+		E = 30
+		G = 1300
+		촬영부위B += 2
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM,후배위・스팽킹を見る
+	ELSEIF T == 132
+		E = 30
+		G = 1400
+		촬영부위V += 3
+		촬영내용성교 += 3
+		촬영경향가학 += 3
+	;COM,서서삽입を見る
+	ELSEIF T == 133
+		E = 30
+		G = 1500
+		촬영부위V += 3
+		촬영내용성교 += 3
+	;COM,후배위SPを見る
+	ELSEIF T == 134
+		E = 30
+		G = 1500
+		촬영부위V += 3
+		촬영내용성교 += 3
+					;**追加ここから**
+	;COM:나이즈리を見る
+	ELSEIF T == 141
+		;39ではなかろう
+		E = 32
+		G = 600
+		촬영부위B += 3
+		촬영경향봉사 += 3
+	;COM:세로파이즈리を見る
+	ELSEIF T == 142
+		E = 32
+		G = 680
+		촬영부위B += 3
+		촬영경향봉사 += 3
+	;COM:가슴구멍を見る
+	ELSEIF T == 143
+		E = 32
+		G = 680
+		촬영부위B +=3
+		촬영경향가학 +=3
+;					;**追加ここまで**
+	ENDIF
+
+;코스프레중だと全部参考能力が신뢰に書き換わるようになってたのか……
+;悩んだ結果, 高い能力一個にすることに。二重にかかるよりいいかなあと
+	;야외 플레이継続中
+	IF F & 1
+	SIF (E != 0) && (ABL:E < ABL:17)
+		E = 17
+		촬영특수야외 += 1
+	ENDIF
+	;코스프레継続中
+	IF F & 4
+	SIF (E != 0) && (ABL:E < ABL:10)
+		E = 10
+	ENDIF
+
+	;수간 플레이継続中
+	IF F & 128
+		;減額。元は1000。これで様子見します
+		G += 300
+	SIF (E != 0) && (ABL:E < ABL:40)
+		E = 40
+	ENDIF
+
+	;緊縛プレイ継続中
+	IF F & 8
+	SIF (E != 0) && (ABL:E < ABL:21)
+		E = 21
+		촬영특수긴박 += 1
+	ENDIF
+						;****追加ここから****
+	;삼각목마継続中
+	IF F & 1024
+		G += 500
+	SIF (E != 0) && (ABL:E < ABL:21)
+		E = 21
+		촬영경향SM += 1
+	ENDIF
+						;****追加ここまで****
+	;助手プレイで助手が女
+	IF ASSI > 0
+		SIF U && TALENT:ASSI:122 == 0
+			촬영특수레즈 += 1
+	ENDIF
+
+	;能力ボーナス
+	IF E
+		IF ABL:E > 5
+			TIMES G , 1.50
+		ELSEIF ABL:E > 2
+			TIMES G , 1.20
+		ELSEIF ABL:E > 0
+			TIMES G , 1.10
+		ENDIF	
+	ENDIF
+
+	P += G
+
+	E = 0
+	G = 0
+
+REND
+
+
+
+;ボーナス
+;처녀상실シーンがあれば加算
+IF TFLAG:32 & 1
+	P += 5000
+	PRINTFORML 비디오엔 %CALLNAME:TARGET%의 처녀상실 장면이 기록돼있다
+	EXP:50 += 1
+	PRINTFORML %EXPNAME:50% +1
+ENDIF
+;처녀상실シーンがあれば加算
+IF TFLAG:132 & 1
+	P += 8000
+	PRINTFORML 비디오엔 %CALLNAME:TARGET%의 애널처녀상실 장면이 기록돼있다
+	EXP:50 += 1
+	PRINTFORML %EXPNAME:50% +1
+ENDIF
+
+IF FLAG:22 & 4
+	 TIMES P , 1.2
+ENDIF
+
+;자기소개シーンがあれば화술に応じてボーナス
+IF TFLAG:32 & 2
+	IF ABL:15 == 0
+		TIMES P , 0.90
+	ELSEIF ABL:15 == 1
+		TIMES P , 1.00
+	ELSEIF ABL:15 == 2
+		TIMES P , 1.05
+	ELSEIF ABL:15 == 3
+		TIMES P , 1.10
+	ELSEIF ABL:15 == 4
+		TIMES P , 1.15
+	ELSEIF ABL:15 == 5
+		TIMES P , 1.20
+	ELSE
+		TIMES P , 1.25
+	ENDIF
+ENDIF
+
+;素質:붕괴を見る
+SIF TALENT:9
+	TIMES P , 0.50
+;素質:처녀を見る
+SIF TALENT:0
+	TIMES P , 1.20
+;素質:무관심を見る
+SIF TALENT:21
+	TIMES P , 0.70
+;素質:감정부족を見る
+SIF TALENT:22
+	TIMES P , 0.70
+;素質:수줍음を見る
+SIF TALENT:35
+	TIMES P , 1.10
+;素質:음란を見る
+SIF TALENT:76
+	TIMES P , 1.50
+;素質:색정광を見る
+SIF TALENT:440
+	TIMES P , 1.50
+;素質:小柄体系を見る
+SIF TALENT:100
+	TIMES P , 1.20
+;素質:거유を見る
+SIF TALENT:110
+	TIMES P , 1.20
+;素質:폭유を見る
+SIF TALENT:114
+	TIMES P , 1.40
+;素質:비만を見る
+SIF TALENT:115
+	TIMES P , 0.50
+;素質:후타나리を見る
+SIF TALENT:121
+	TIMES P , 1.20
+;素質:광기を見る
+SIF TALENT:123
+	TIMES P , 0.80
+;素質:동물귀を見る
+SIF TALENT:124
+	TIMES P , 1.10
+;素質:인기인を見る
+SIF TALENT:126
+	TIMES P , 1.30
+;素質:수수께끼의 매력を見る
+SIF TALENT:92
+	TIMES P , 1.30
+;素質:魅力を見る
+SIF TALENT:113
+	TIMES P , 1.30
+;素質:비만を見る
+SIF TALENT:115
+	TIMES P , 0.20
+;素質:オトコを見る。オトコの娘なら大丈夫
+SIF TALENT:122 && TALENT:413 == 0
+	TIMES P , 0.20
+;素質:모유체질を見る
+SIF TALENT:130
+	TIMES P , 1.20
+;素質:미숙함を見る
+SIF TALENT:135
+	TIMES P , 1.30
+;素質:教師を見る
+SIF TALENT:201
+	TIMES P , 1.10
+;素質:아이돌を見る
+SIF TALENT:203
+	TIMES P , 1.50
+SIF TALENT:204
+	TIMES P , 1.20
+SIF TALENT:209
+	TIMES P , 1.20
+SIF TALENT:224
+	TIMES P , 1.20
+;素質:아가씨を見る
+SIF TALENT:205
+	TIMES P , 2.00
+;素質:人妻を見る
+SIF TALENT:206
+	TIMES P , 1.10
+;素質:미망인を見る
+SIF TALENT:212
+	TIMES P , 1.50
+;素質:고등학생を見る
+SIF TALENT:220
+	TIMES P , 1.20
+;素質:중학생を見る
+SIF TALENT:221
+	TIMES P , 1.30
+;素質:초등학생を見る
+SIF TALENT:222
+	TIMES P , 1.40
+;素質:패션모델を見る
+SIF TALENT:402
+	TIMES P , 1.40
+;素質:お姫様
+SIF TALENT:407
+	TIMES P , 1.50
+;素質:外国人を見る
+SIF TALENT:408
+	TIMES P , 1.40
+;素質:ハーフを見る
+SIF TALENT:409
+	TIMES P , 1.30
+;素質:クオーターを見る
+SIF TALENT:410
+	TIMES P , 1.20
+;素質:オトコの娘を見る
+SIF TALENT:413
+	TIMES P , 1.20
+;素質:동안を見る
+SIF TALENT:414
+	TIMES P , 1.50
+;素質:캬바레녀を見る
+SIF TALENT:421
+	TIMES P , 1.30
+;素質:갈색피부を見る
+SIF TALENT:422
+	TIMES P , 1.10
+;素質:聖職者を見る
+SIF TALENT:427
+	TIMES P , 1.10
+;素質:警察官を見る
+SIF TALENT:429
+	TIMES P , 1.10
+;素質:갸루계を見る
+SIF TALENT:432
+	TIMES P , 1.10
+;素質:医者を見る
+SIF TALENT:433
+	TIMES P , 1.40
+;素質:하루우라레を見る
+SIF TALENT:507
+	TIMES P , 1.50
+;素質:음마を見る
+SIF TALENT:505
+	TIMES P , 1.50
+;素質:야쿠자의 딸を見る
+SIF TALENT:502
+	TIMES P , 1.50
+;素質:야쿠자의 아내を見る
+SIF TALENT:516
+	TIMES P , 1.50
+;素質:CPGを見る
+SIF TALENT:509
+	TIMES P , 3.00
+;素質:オリジナルユニットを見る
+SIF TALENT:515
+	TIMES P , 2.50
+;素質:Mermaid girlを見る
+SIF TALENT:518
+	TIMES P , 3.0
+;素質:Triptychを見る
+SIF TALENT:519
+	TIMES P , 3.0
+;素質:Emerald Queenを見る
+SIF TALENT:522
+	TIMES P , 3.0
+;素質:Lily Princessを見る
+SIF TALENT:523
+	TIMES P , 3.0
+;素質:그랜드마스터を見る
+SIF TALENT:512
+	TIMES P , 3.00
+;素質:平和の가희?を見る
+SIF TALENT:530
+	TIMES P , 1.25
+	;オリジナルユニットと共存出来る為ボーナスは低めに
+;素質:堕ちた가희を見る
+SIF TALENT:531
+	TIMES P , 1.50
+	;オリジナルユニットと共存出来る為ボーナスは低めに
+;素質:ONLY ONE IDOLを見る
+SIF TALENT:552
+	TIMES P , 1.50
+	;CPGと共存出来る為ボーナスは低めに
+;素質:SUPER HEROINEを見る
+SIF TALENT:562
+	TIMES P , 1.50
+	;CPGと共存出来る為ボーナスは低めに
+;素質:ブースト: 미노리を見る
+SIF TALENT:604
+	TIMES P , 2.00
+;素質:ブースト: 縁を見る
+SIF TALENT:605
+	TIMES P , 1.50
+;素質:ブースト: 하루카を見る
+SIF TALENT:606
+	TIMES P , 1.50
+;素質:ブースト: 쇼코を見る
+SIF TALENT:607
+	TIMES P , 1.50
+;린코
+SIF NO:TARGET == 38
+	TIMES P , 2.50
+;유이카
+SIF NO:TARGET == 83
+	TIMES P , 2.50
+;미쿠
+SIF NO:TARGET == 209
+	TIMES P , 2.00
+;補正理由がよく分からない
+
+;ABL:피사技能をみる
+IF ABL:70 == 0
+	TIMES P , 1.00
+ELSEIF ABL:70 == 1
+	TIMES P , 1.10
+ELSEIF ABL:70 == 2
+	TIMES P , 1.20
+ELSEIF ABL:70 == 3
+	TIMES P , 1.30
+ELSEIF ABL:70 == 4
+	TIMES P , 1.40
+ELSEIF ABL:70 == 5
+	TIMES P , 1.50
+ELSEIF ABL:70 == 6
+	TIMES P , 1.60
+ELSEIF ABL:70 == 7
+	TIMES P , 1.70
+ELSEIF ABL:70 == 8
+	TIMES P , 1.80
+ELSEIF ABL:70 == 9
+	TIMES P , 1.90
+ELSE
+	TIMES P , 2.00
+ENDIF
+;ABL:노출벽をみる
+IF ABL:17 == 0
+	TIMES P , 1.00
+ELSEIF ABL:17 == 1
+	TIMES P , 1.10
+ELSEIF ABL:17 == 2
+	TIMES P , 1.20
+ELSEIF ABL:17 == 3
+	TIMES P , 1.30
+ELSEIF ABL:17 == 4
+	TIMES P , 1.40
+ELSEIF ABL:17 == 5
+	TIMES P , 1.50
+ELSEIF ABL:17 == 6
+	TIMES P , 1.60
+ELSEIF ABL:17 == 7
+	TIMES P , 1.70
+ELSEIF ABL:17 == 8
+	TIMES P , 1.80
+ELSEIF ABL:17 == 9
+	TIMES P , 1.90
+ELSE
+	TIMES P , 2.00
+ENDIF
+
+;난이도보정
+;HARD
+IF FLAG:5 == 3
+	TIMES P , 0.70
+;POWERFUL
+ELSEIF FLAG:5 == 4
+	TIMES P , 0.50
+ENDIF
+
+CALL VIDEOSALE_CALC
+
+CALL SPECIAL_TITLE_CALC
+IF TFLAG:160 == 1
+	TIMES P , 2.50
+ENDIF 
+
+;매력치
+P *= BASE:TARGET:31
+P /= 100
+
+;비디오테이프分をここで減算(暫定処置
+P -= 500
+
+
+IF P > 0
+	;ビデオが使い物にならないのにデビューするかの選択をするのもどうかと思うのでくくり入れる
+	IF TALENT:TARGET:400 == 0
+		PRINTFORML	%타겟을()%【%TALENTNAME:400%】로 데뷔시킵니까?
+		$INPUTLOOP_DEBUT
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		INPUT
+		IF RESULT == 0
+		ELSEIF RESULT == 1
+			RETURN
+		ELSE
+			GOTO INPUTLOOP_DEBUT
+		ENDIF
+	ENDIF
+
+;△利益と売上。面倒
+	PRINTFORMW 촬영한 비디오는 {P}포인트로 팔렸다.
+	TFLAG:137 = 1
+	IF ASSI > 0
+		IF TALENT:ASSI:211 && ABL:ASSI:15
+			Q = P * ABL:ASSI:15 * 5
+			Q /= 100
+;			PRINTFORMW %CALLNAME:ASSI%の巧みな編集で, ビデオは更に{Q}포인트高く売れた。
+			PRINTFORMW %CALLNAME:ASSI%의 선전활동이 효과를 발휘해 비디오는 {Q}포인트 비싸게 팔렸다.
+			P += Q
+		ENDIF
+	ENDIF
+	CALL PRODUCER_DEBUT
+	PRINTFORML 촬영한 비디오를 인터넷에 올려 {P}포인트를 손에 넣었다.
+	MONEY += P
+	PRINTFORML AV출연편수+1
+	EXP:TARGET:76 += 1
+		;갸루계は金がかかる というわけだろうから갈색피부じゃないだろう
+		IF TALENT:400 == 1 && TALENT:432 == 0 && NO:TARGET != 1 && NO:TARGET != 91
+			BASE:30 += 500
+		ELSEIF TALENT:400 == 1 && TALENT:432 == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+			BASE:30 += 100
+		ELSEIF TALENT:400 == 1 && TALENT:432 == 1 && NO:TARGET != 1 && NO:TARGET != 91
+			BASE:30 += 1000
+		ELSEIF TALENT:400 == 1 && TALENT:432 == 1 && (NO:TARGET == 1 || NO:TARGET == 91)
+			BASE:30 += 300
+		ENDIF
+	PRINTFORML 감독경험 +1 (%CALLNAME:MASTER%)
+	EXP:MASTER:9 += 1
+	CFLAG:TARGET:730 += P
+	MONEY:2 += P
+		IF TALENT:TARGET:400 == 0
+			PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+			PRINTFORML %타겟이()%【%TALENTNAME:400%】로 데뷔했다
+			$INPUTLOOP_DECIDENAME
+			PRINTFORML 《%CALLNAME:TARGET%의 예명을 정해주십시오》
+			INPUTS
+			SIF RESULTS == ""
+				RESULTS = %NICKNAME%
+			PRINTFORML %CALLNAME:TARGET%의 예명을 %조사처리(RESULTS,"로")% 합니까?
+			NICKNAME:TARGET = %RESULTS%
+				$INPUTLOOP_DECIDE
+				PRINTL [0] - 네
+				PRINTL [1] - 아니오
+				INPUT
+					IF RESULT == 0
+						PRINTFORML 본인과 상담하여 %조사처리(NICKNAME:TARGET,"로")% 결정했다
+					ELSEIF RESULT == 1
+						PRINTFORML 예명을 다시 입력해 주십시오
+						GOTO INPUTLOOP_DECIDENAME
+					ELSE
+						GOTO INPUTLOOP_DECIDE
+					ENDIF
+			PRINTFORML 
+			PRINTFORML %NICKNAME:TARGET%의 데뷔작은
+			PRINTFORM 『
+			CHKFONT "あくびん"
+			IF RESULT
+				SETFONT "あくびん"
+			ENDIF
+			SETCOLOR 0xDDBBCC
+			CALL VIDEO_TITLE_DEBUT
+			RESETCOLOR
+			SETFONT ""			
+			PRINTFORML 』
+			PRINTFORML 라는 제목으로 인터넷에 올라갔다……
+				IF P >= 10000
+					PRINTFORML 데뷔작이 대히트하여 차기작을 기다리는 댓글이 달리고 있다……
+				ENDIF
+			TALENT:TARGET:400 = 1
+			CFLAG:734 = P
+			CFLAG:733 += RAND:20
+		ELSEIF TALENT:TARGET:400 == 1
+			PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+			PRINTFORML %NICKNAME:TARGET%의 이번 작품은
+			PRINTFORM 『
+			CHKFONT "あくびん"
+			IF RESULT
+				SETFONT "あくびん"
+			ENDIF
+			SETCOLOR 0xDDBBCC
+			CALL VIDEO_TITLE_NEW
+			RESETCOLOR
+			SETFONT ""			
+			PRINTFORML 』
+			PRINTFORML 라는 제목으로 인터넷에 올라갔다……
+				IF P >= 100000
+					PRINTFORML 이 작품이 대히트하여 차기작을 기다리는 댓글이 달리고 있다……
+			ENDIF
+			CFLAG:TARGET:732 = P
+			X = P
+			IF CFLAG:TARGET:731 < X
+				CFLAG:TARGET:731 = CFLAG:TARGET:732
+				CALL CHANGE_VIDEOTITLE_REPRESENT
+			ENDIF
+			CFLAG:733 += RAND:20
+		ENDIF
+ELSE
+	PRINTL 녹화한 비디오는 상품가치가 없었습니다
+ENDIF
+
+WAIT

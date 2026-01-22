@@ -1,0 +1,774 @@
+﻿;-------------------------------------------------
+;체력増強
+;-------------------------------------------------
+@BASEHP_UP
+C = 300000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 「원하는 분의 체력을 강화하는 약이옵니까?　네, 만들 수 있습니다――만,」
+PRINTL 그리고 레이첼이 보여준 재료는 간단하게 모을 수 있는 건 아니었지만, 
+PRINTL 돈만 있다면 어떻게든 얻을 수 있는 것들이었다
+PRINTL 그러나 필요한 금액이 눈의 의심하게 되는 단위라, 자주 부탁하지는 못할 것 같다……
+PRINTL 
+PRINTL 어떻게든 자금을 확보해 모은 재료를 레이첼에게 건내주니,
+PRINTL 그녀는 잠시 공방에 틀어박혔다
+PRINTL 공방 앞을 지나가니 코를 찌르는 냄새와 함께 수상한 목소리가 들려온다……
+PRINTW  
+PRINTL 「네, 다 됐습니다」
+PRINTL 얼마 후, 레이첼이 보라빛 액체가 가득담긴 작은 병을 가지고 왔다
+PRINTL 「주의 사항이 있습니다 ……인간이 아닌 분,
+PRINTL 　예를들면 안드로이드나 음마 같은 분들에겐 효과가 없습니다.
+PRINTL 　또, 부작용으로 체질이 변화할수도 있으니 조심해 주세요」
+PRINTL 그럼, 누구에게 먹일까……
+PRINTW
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】에겐 효과가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상에겐 먹일 수 없습니다
+	RETURN 0
+;안드로이드は排除
+ELSEIF TALENT:RESULT:505
+	PRINTFORMW 【%TALENTNAME:505%】에겐 효과가 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+$INPUT_LOOP_ADD_PHYSICAL
+PRINTFORM %NAME:T%에게 체력 강화제를 먹입니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+PRINTL  [2] - 여러병 먹인다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %NAME:T%의 최대 체력이 100 늘었다
+	MAXBASE:T:0 += 100
+	CFLAG:T:700 += 1
+	MONEY -= C
+		IF CFLAG:T:700 == 5 && TALENT:T:112
+			PRINTFORMW %CALLNAME:T%의 신진대사가 개선돼, %조사처리(CALLNAME:T,"는")%【%TALENTNAME:112%】이 아니게 됐다
+			TALENT:T:112 = 0
+		ELSEIF CFLAG:T:700 == 10 && TALENT:T:111 == 0 && TALENT:T:419 == 0
+			IF TALENT:T:501 == 0
+				IF TALENT:T:511 == 0
+					PRINTFORMW %CALLNAME:T%의 신진대사가 개선돼, %조사처리(CALLNAME:T,"는")%【%TALENTNAME:111%】이 됐다
+					TALENT:T:111 = 1
+				ENDIF
+			ENDIF
+		ELSEIF CFLAG:T:700 == 15 && TALENT:T:419 == 0
+			PRINTFORML %CALLNAME:T%의 신진대사가 개선돼, %조사처리(CALLNAME:T,"는")%【%TALENTNAME:419%】이 됐다
+			PRINTFORMW %EXPNAME:50%+1
+			TALENT:T:111 = 0
+			TALENT:T:419 = 1
+			EXP:T:50 += 1
+		ENDIF
+		
+		IF CFLAG:T:700 + CFLAG:T:701 >= 21 && TALENT:T:9 == 0
+			PRINTFORMW %CALLNAME:T%의 모습이 이상하다……
+			PRINTFORML 과도한 투여에 의해 %CALLNAME:T%의 정신이 붕괴돼 버렸다……
+			CALL ADD_CATASTROPH_LABO
+		ENDIF	
+ELSEIF RESULT == 2
+	$INPUT_LOOP_BASE1
+	PRINTFORML %NAME:T%에게 체력 강화제를 몇병이나 먹입니까?
+	INPUT
+	IF RESULT == 0
+		RETURN 1
+	ELSEIF MONEY < 300000 * RESULT
+		PRINTFORMW 포인트가 부족합니다
+		GOTO INPUT_LOOP_BASE1
+	ELSE
+		PRINTFORMW %CALLNAME:T%에게 {RESULT}회 먹입니다 (필요포인트: {300000 * RESULT})
+		PRINTFORMW %CALLNAME:T%의 최대 체력이 {100 * RESULT} 늘었다
+		MAXBASE:T:0 += 100 * RESULT
+		CFLAG:T:700 += 1 * RESULT
+		MONEY -= C * RESULT
+			IF CFLAG:T:700 >= 5 && CFLAG:T:700 < 10 && TALENT:T:112
+				PRINTFORMW %CALLNAME:T%의 신진대사가 개선돼, %조사처리(CALLNAME:T,"는")%【%TALENTNAME:112%】이 아니게 됐다
+				TALENT:T:112 = 0
+			ELSEIF CFLAG:T:700 >= 10 && CFLAG:T:700 < 15 && TALENT:T:111 == 0 && TALENT:T:419 == 0
+				IF TALENT:T:501 == 0
+					IF TALENT:T:511 == 0
+						PRINTFORMW %CALLNAME:T%의 신진대사가 개선돼, %조사처리(CALLNAME:T,"는")%【%TALENTNAME:111%】이 됐다
+						TALENT:T:111 = 1
+						TALENT:T:112 = 0
+					ENDIF
+				ENDIF
+			ELSEIF CFLAG:T:700 >= 15 && TALENT:T:419 == 0
+				PRINTFORML %CALLNAME:T%의 신진대사가 개선돼, %조사처리(CALLNAME:T,"는")%【%TALENTNAME:419%】이 됐다
+				PRINTFORMW %EXPNAME:50%+1
+				TALENT:T:111 = 0
+				TALENT:T:112 = 0
+				TALENT:T:419 = 1
+				EXP:T:50 += 1
+			ENDIF
+
+			IF CFLAG:T:700 + CFLAG:T:701 >= 21 && TALENT:T:9 == 0
+				PRINTFORMW %CALLNAME:T%의 모습이 이상하다……
+				PRINTFORML 과도한 투여에 의해 %CALLNAME:T%의 정신이 붕괴돼 버렸다……
+				CALL ADD_CATASTROPH_LABO
+			ENDIF
+			
+	ENDIF		
+ELSE 
+	GOTO INPUT_LOOP_ADD_PHYSICAL
+ENDIF
+
+RETURN 1
+;
+
+;-------------------------------------------------
+;기력増強
+;-------------------------------------------------
+@BASESP_UP
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 「원하는 분의 기력을 강화하는 약이옵니까?　네, 만들 수 있습니다――만,」
+PRINTL 그리고 레이첼이 보여준 재료는 간단하게 모을 수 있는 건 아니었지만, 
+PRINTL 돈만 있다면 어떻게든 얻을 수 있는 것들이었다
+PRINTL 그러나 필요한 금액이 눈의 의심하게 되는 단위라, 자주 부탁하지는 못할 것 같다……
+PRINTL 
+PRINTL 어떻게든 자금을 확보해 모은 재료를 레이첼에게 건내주니,
+PRINTL 그녀는 잠시 공방에 틀어박혔다
+PRINTL 공방 앞을 지나가니 코를 찌르는 냄새와 함께 수상한 목소리가 들려온다……
+PRINTW  
+PRINTL 「네, 다 됐습니다」
+PRINTL 얼마 후, 레이첼이 녹색 액체가 가득담긴 작은 병을 가지고 왔다
+PRINTL 「주의 사항이 있습니다 ……인간이 아닌 분,
+PRINTL 　예를들면 안드로이드나 음마 같은 분들에겐 효과가 없습니다.
+PRINTL 　또, 부작용으로 체질이 변화할수도 있으니 조심해 주세요」
+PRINTL 그럼, 누구에게 먹일까……
+PRINTW
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】에겐 효과가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상에겐 먹일 수 없습니다
+	RETURN 0
+;안드로이드は排除
+ELSEIF TALENT:RESULT:505
+	PRINTFORMW 【%TALENTNAME:505%】에겐 효과가 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+$INPUT_LOOP_ADD_SP
+PRINTFORM %NAME:T%에게 기력 강화제를 먹입니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+PRINTL  [2] - 여러병 먹인다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORMW %NAME:T%의 최대 기력이 100 늘었다
+	MAXBASE:T:1 += 100
+	CFLAG:T:701 += 1
+	MONEY -= C
+		IF CFLAG:T:700 + CFLAG:T:701 >= 21 && TALENT:T:9 == 0
+			PRINTFORMW %CALLNAME:T%의 모습이 이상하다……
+			PRINTFORML 과도한 투여에 의해 %CALLNAME:T%의 정신이 붕괴돼 버렸다……
+			CALL ADD_CATASTROPH_LABO
+		ENDIF
+ELSEIF RESULT == 2
+	$INPUT_LOOP_BASE2
+	PRINTFORML %NAME:T%에게 기력 강화제를 몇병이나 먹입니까?
+	INPUT
+	IF RESULT == 0
+		RETURN 1
+	ELSEIF MONEY < 500000 * RESULT
+		PRINTFORMW 포인트가 부족합니다
+		GOTO INPUT_LOOP_BASE2
+	ELSE
+		PRINTFORMW %CALLNAME:T%에게 {RESULT}회 먹입니다 (필요포인트: {300000 * RESULT})
+		PRINTFORMW %CALLNAME:T%의 최대 기력이 {100 * RESULT} 늘었다
+		MAXBASE:T:1 += 100 * RESULT
+		CFLAG:T:701 += 1 * RESULT
+		MONEY -= C * RESULT
+			IF CFLAG:T:700 + CFLAG:T:701 >= 21 && TALENT:T:9 == 0
+				PRINTFORMW %CALLNAME:T%의 모습이 이상하다……
+				PRINTFORML 과도한 투여에 의해 %CALLNAME:T%의 정신이 붕괴돼 버렸다……
+				CALL ADD_CATASTROPH_LABO
+			ENDIF
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP_ADD_SP
+ENDIF
+
+RETURN 1
+;
+
+;-------------------------------------------------
+;반하는 약
+;-------------------------------------------------
+@ADD_LOVE
+C = 1500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 「반하는 약이옵니까?　네, 만들 수 있습니다――만,」
+PRINTL 그리고 레이첼이 보여준 재료는 간단하게 모을 수 있는 건 아니었지만, 
+PRINTL 돈만 있다면 어떻게든 얻을 수 있는 것들이었다
+PRINTL 그러나 필요한 금액이 눈의 의심하게 되는 단위라, 자주 부탁하지는 못할 것 같다……
+PRINTL 
+PRINTL 어떻게든 자금을 확보해 모은 재료를 레이첼에게 건내주니,
+PRINTL 그녀는 잠시 공방에 틀어박혔다
+PRINTL 공방 앞을 지나가니 코를 찌르는 냄새와 함께 수상한 목소리가 들려온다……
+PRINTW  
+PRINTL 「네, 다 됐습니다」
+PRINTL 얼마 후, 레이첼이 푸른 액체가 가득담긴 작은 병을 가지고 왔다
+PRINTL 「주의 사항이 있습니다 ……인간이 아닌 분,
+PRINTL 　예를들면 안드로이드나 음마 같은 분들에겐 효과가 없습니다.
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:500 == 1
+		IF TALENT:COUNT:85 == 0
+			PRINTL
+			PRINT 그리고…… 전 해독제를 가지고 있으니까 조심해 주세요
+		ENDIF
+	ENDIF
+REND
+PRINTL 」
+PRINTL 그럼, 누구에게 먹일까……
+PRINTW
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】에겐 효과가 없습니다
+	RETURN 0
+;안드로이드は排除
+ELSEIF TALENT:RESULT:505
+	PRINTFORMW 【%TALENTNAME:505%】에겐 효과가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상에겐 먹일 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:184
+	PRINTFORMW 【%TALENTNAME:184%】에겐 효과가 없습니다
+	RETURN 0
+;△이계 지식にはって表示されるのもどうなのよ。要修正
+ELSEIF TALENT:RESULT:500 && TALENT:RESULT:85 == 0
+	PRINTFORMW 【%TALENTNAME:500%】에겐 효과가 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORM %NAME:T%에게 반하는 약을 먹입니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML %플레이어는()% %CALLNAME:T%의 차에 몰래 반하는 약을 탔다
+	PRINTFORML %조사처리(CALLNAME:T,"는")% 아무런 의심없이 차를 마셨다……
+	PRINTW
+	PRINTFORMW %CALLNAME:T%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:T,"는")% 뺨을 상기시키고 %플레이어를()% 바라보더니,
+	PRINTFORML 사랑하는 마음을 %CALLNAME:MASTER%에게 털어놓았다
+	PRINTFORML %조사처리(CALLNAME:T,"는")%【%TALENTNAME:85%】을 가졌다
+	PRINTFORMW %EXPNAME:57%+1
+	TALENT:T:90 = 0
+	TALENT:T:85 = 1
+	EXP:T:57 += 1
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+
+;-------------------------------------------------
+;초강력 미약
+;-------------------------------------------------
+@ADD_LEWD
+C = 1500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 「청순한 소녀도 바로 음란해지는 미약이옵니까?　네, 만들 수 있습니다――만,」
+PRINTL 그리고 레이첼이 보여준 재료는 간단하게 모을 수 있는 건 아니었지만, 
+PRINTL 돈만 있다면 어떻게든 얻을 수 있는 것들이었다
+PRINTL 그러나 필요한 금액이 눈의 의심하게 되는 단위라, 자주 부탁하지는 못할 것 같다……
+PRINTL 
+PRINTL 어떻게든 자금을 확보해 모은 재료를 레이첼에게 건내주니,
+PRINTL 그녀는 잠시 공방에 틀어박혔다
+PRINTL 공방 앞을 지나가니 코를 찌르는 냄새와 함께 수상한 목소리가 들려온다……
+PRINTW  
+PRINTL 「네, 다 됐습니다」
+PRINTL 얼마 후, 레이첼이 갈색 액체가 가득담긴 작은 병을 가지고 왔다
+PRINTL 「주의 사항이 있습니다 ……인간이 아닌 분,
+PRINTL 　예를들면 안드로이드나 음마 같은 분들에겐 효과가 없습니다.
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:500 == 1
+		IF TALENT:COUNT:85 == 0
+			PRINTL
+			PRINT 그리고…… 전 해독제를 가지고 있으니까 조심해 주세요
+		ENDIF
+	ENDIF
+REND
+PRINTL 」
+PRINTL 그럼, 누구에게 먹일까……
+PRINTW
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】에겐 효과가 없습니다
+	RETURN 0
+;안드로이드は排除
+ELSEIF TALENT:RESULT:505
+	PRINTFORMW 【%TALENTNAME:505%】에겐 효과가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상에겐 먹일 수 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:500 && TALENT:RESULT:85 == 0
+	PRINTFORMW 【%TALENTNAME:500%】에겐 효과가 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORM %NAME:T%에게 초강력 미약을 먹입니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML %플레이어는()% %CALLNAME:T%의 차에 몰래 초강력 미약을 탔다
+	PRINTFORML %조사처리(CALLNAME:T,"는")% 아무런 의심없이 차를 마셨다……
+	PRINTW
+	PRINTFORMW %CALLNAME:T%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:T,"는")% 몽롱한 눈으로 %플레이어를()% 바라보더니,
+	PRINTFORM 자신의 비부를 만지며 %CALLNAME:MASTER%의 육봉을 바지 위에서 문지르기 시작했다……
+	PRINTFORML 그리고 애액으로 질척해진 비소를 두 손가락으로 벌리고,
+	PRINTFORML 열이 담긴 시선과 평소라면 절대로 하지 않을 음란한 말로 %플레이어를()% 유혹했다……
+	PRINTFORML %조사처리(CALLNAME:T,"는")%【%TALENTNAME:76%】해졌다
+	PRINTFORMW %EXPNAME:57%+1
+	TALENT:T:76 = 1
+	EXP:T:57 += 1
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+
+;-------------------------------------------------
+;若返り
+;-------------------------------------------------
+@ANTIAGING
+C = 1000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTL 「회춘약이옵니까?　네, 만들 수 있습니다――만,」
+PRINTL 그리고 레이첼이 보여준 재료는 간단하게 모을 수 있는 건 아니었지만, 
+PRINTL 돈만 있다면 어떻게든 얻을 수 있는 것들이었다
+PRINTL 그러나 필요한 금액이 눈의 의심하게 되는 단위라, 자주 부탁하지는 못할 것 같다……
+PRINTL 
+PRINTL 어떻게든 자금을 확보해 모은 재료를 레이첼에게 건내주니,
+PRINTL 그녀는 잠시 공방에 틀어박혔다
+PRINTL 공방 앞을 지나가니 코를 찌르는 냄새와 함께 수상한 목소리가 들려온다……
+PRINTW  
+PRINTL 「네, 다 됐습니다」
+PRINTL 얼마 후, 레이첼이 빨간 액체가 가득담긴 작은 병을 가지고 왔다
+PRINTL 「주의 사항이 있습니다 ……인간이 아닌 분,
+PRINTL 　예를들면 안드로이드나 음마 같은 분들에겐 효과가 없습니다.
+PRINTL 그리고, 최저 12살 아래로는 돌아갈 수 없으니 조심해주세요
+PRINTL 그리고 회춘이라고 해도 실제 연령을 낮출 뿐, 겉모습은 그대로랍니다」
+PRINTL 그럼, 누구에게 먹일까……
+PRINTW
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;안드로이드は排除
+ELSEIF TALENT:RESULT:504
+	PRINTFORMW 【%TALENTNAME:504%】에겐 효과가 없습니다
+	RETURN 0
+;안드로이드は排除
+ELSEIF TALENT:RESULT:505
+	PRINTFORMW 【%TALENTNAME:505%】에겐 효과가 없습니다
+	RETURN 0
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW 【%TALENTNAME:330%】대상에겐 먹일 수 없습니다
+	RETURN 0
+;안드로이드は排除
+ELSEIF BASE:RESULT:9 <= 12
+	PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 더 이상 젊어질 수 없습니다
+	RETURN 0
+ENDIF
+
+T = RESULT
+
+PRINTFORM %NAME:T%에게 회춘약을 먹입니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML %조사처리(NAME:T,"는")% 1살 젊어졌다
+	PRINTFORMW %EXPNAME:57%+1
+	BASE:T:9 -= 1
+	EXP:T:57 += 1
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;-------------------------------------------------
+;서큐버스소환
+;-------------------------------------------------
+@ADD_SUCCUBUS
+C = 2000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+IF CFLAG:MASTER:760 == 3
+	PRINTW 더 이상 불러낼 음마가 없습니다
+	RETURN 0
+ENDIF
+
+
+PRINTFORML 「저기, 시험해보고 싶은 의식이 있어요……」
+PRINTFORML 진지한 얼굴로 %CALLNAME:MASTER%에게 레이첼이 상담한 것은,
+PRINTFORML 쉽게 말해 소환의식에 관한 것이었다
+PRINTFORML 아무리 레이첼이 신비하고, 마법으로 밖에 안보이는 힘을 가지고 있어도
+PRINTFORML 판타지한 모든 일이 가능한 것은 아니다
+PRINTFORML 그래도, 여배우 후보 지도를 헌신적으로 도와주는 레이첼의 부탁을 무시할 수 없었기에
+PRINTFORML %플레이어는()% 일단 뭐가 필요하고 돈은 얼마나 있어야 하는지
+PRINTFORML 들어보기로 했다
+PRINTFORMW  
+PRINTFORML 필요한 자금은 키류 조직에게 변제해야하는 금액과 같고,
+PRINTFORML 거기에 의식엔「죄인의 목숨」이 필요하는 등, 금전적으로도, 윤리적으로도 상당히 부담이 큰 의식이었다
+PRINTFORML %플레이어는()% 일단 레이첼의 요청을 보류하고, 키류 조직에게 상담해 보기로 했다……
+PRINTFORMW  
+PRINTFORML 「레이첼 아가씨라면 잘 알고 있지. 우리도 아가씨에겐 비합법적인 약물제조로 신세지고 있으니까」
+PRINTFORML %CALLNAME:MASTER%의 이야기를 들은 키류 조직 수장은,
+PRINTFORML 진지하게 고개를 끄덕이더니 %CALLNAME:MASTER%에게 몇가지 조건을 제시했다
+PRINTFORMW  
+PRINTFORML ・죄인은 키류 조직에서 준비해 주겠지만, 의식에 필요한 다른 도구는 스스로 준비할 것
+PRINTFORML ・200만 P의 변재기간을 열주만 연장해준다
+PRINTFORML ・만약 의식에 실패했어도 스스로 책임을 져라
+PRINTFORMW
+PRINTFORML 여배우 후보들도 성장하고 있으니 변재기간이 열주만 연장돼도
+PRINTFORML 200만 P정도는 아슬아슬하게 준비 가능하다
+PRINTFORMW 나머진 윤리적 문제인데――
+PRINTFORML 「이제와서 말씀드리긴 그래도, 저와 같은 소녀를『지도』해서 성욕의 분출구로 다루는
+PRINTFORML 　시점에서 윤리관은 이미 버리신 게 아닌가요?」
+PRINTFORML 레이첼의 말대로, 억지로라도 이런 일을 시작한 시점에서 이미 윤리관은 버리기로 각오했었다
+PRINTFORML 
+PRINTFORML 각오를 다시 다진 %플레이어는()% 키류 조직에게 죄인을 부탁하고,
+PRINTFORML 레이첼이 원하는 재료를 모두 준비했다
+PRINTFORMW  
+PRINTFORML 레이첼의 공방의 바닥에 기묘한 도형을 짜맞춘 기하학적인 문양이 그려져있고,
+PRINTFORML 그 중심에 죄인―― 키류 조직의『돌격꾼』이 기절한 채 누워있다
+PRINTFORML 야릇한 냄새가 가득한 방에서, 진지한 표정의 레이첼은
+PRINTFORML 두꺼운 책을 위로 들고 주문을 외우기 시작했다
+PRINTFORMW  
+PRINTFORML 「소환가능한 음마는, 서큐버스와 인큐버스인 것 같아요」
+PRINTFORML 의식 내용을 조사하던 레이첼의 말로는 그러한――
+PRINTFORML 무슨 우연인지 이 일에 적합한 인외의 존재를 소환하는 의식이라고 한다
+PRINTFORML 의식은 아무런 문제없이 진행되어 갔고, 의식이 시작하고 몇십분이 경과한 지금, 
+PRINTFORML 바닥에 누워있던 남자가 고통스러운 소리를 지르기 시작했다
+PRINTFORML 바닥에서 몸부림치던 남자는,
+PRINTFORML 빨리감기를 누른 영화처럼 급속히 미라가 되어갔다
+PRINTFORML 책을 닫고, 영창을 끝낸 레이첼이 문양의 중심을 가만히 바라보고 있다……
+PRINTFORMW
+PRINTFORML 갑자기 빛이 쏟아져 나오더니 남자의 미라가 흔적도 없이 사라지고, 그곳에는――
+PRINTW
+$INPUT_LOOP
+SIF GETCHARA(81,0 ) < 0 && (CFLAG:MASTER:760 & 1) == 0
+	PRINTL  [0] - 얌전해보이는 반라의, 고●학생으로 보이는 소녀가 있었다
+SIF GETCHARA(82,0 ) < 0 && (CFLAG:MASTER:760 & 2) == 0
+	PRINTL  [1] - 건방져 보이는 전라의, 중●생으로 보이는 소녀가 있었다
+PRINTL ※CAUTION※
+PRINTL 이 의식으로 소환한 캐릭터를 은퇴시키면 재게약이 불가능합니다!
+
+INPUT
+
+IF RESULT == 0 && GETCHARA(81,0 ) < 0 && (CFLAG:MASTER:760 ^ 1)
+	PRINTFORML ここがどこなのかわかっていないのか, その少女は周囲を怯えた目できょろきょろと見回
+	PRINTFORML している
+	PRINTFORML そして%CALLNAME:MASTER%や레이첼の存在に気づくと, やたら流暢な日本語で자기소개を始めた…
+	PRINTFORML …
+	PRINTW
+	PRINTFORML よく分からないことを言っていたが, %CALLNAME:MASTER%が理解できたのはこの少女はまごうことなき
+	PRINTFORML 서큐버스で, 名前を「에리스」ということ
+	PRINTFORML そして음마の名家の아가씨で箱入り同然に育てられてきたため, なんと서큐버스だという
+	PRINTFORML のにまだ처녀だという
+	PRINTFORML %CALLNAME:MASTER%が에리스にこれからしてもらうことを説明すると, 에리스は恥ずかしがりながらも
+	PRINTFORML 容易に「食餌」が行える環境だと知ると笑顔でうなずいてみせた……
+	PRINTFORMW
+	PRINTFORML 《에리스が女優候補になりました》
+	PRINTFORMW
+		ADDCHARA 81
+		LOADGLOBAL
+		GLOBAL:281 += 1
+		SAVEGLOBAL
+		CFLAG:MASTER:760 |= 1
+ELSEIF RESULT == 1 && GETCHARA(82,0 ) < 0 && (CFLAG:MASTER:760 ^ 2)
+	PRINTFORML ここがどこなのかわかっていないのか, その少女は周囲を호기심旺盛にきょろきょろと
+	PRINTFORML 見回している
+	PRINTFORML そして%CALLNAME:MASTER%や레이첼の存在に気づくと, やたら流暢な日本語で자기소개を始めた…
+	PRINTFORML …
+	PRINTW
+	PRINTFORML よく分からないことを言っていたが, %CALLNAME:MASTER%が理解できたのはこの少女はまごうことなき
+	PRINTFORML 서큐버스で, 名前を「リリス」ということ
+	PRINTFORML 서큐버스らしく経験豊富で, 男の精を吸う技術は同世代の서큐버스と比べても優れて
+	PRINTFORML いるという
+	PRINTFORML %CALLNAME:MASTER%が에리스にこれからしてもらうことを説明すると, リリスは妖艶に舌なめずりして
+	PRINTFORML 容易に「食餌」が行える環境だと知ると笑顔でうなずいてみせた……
+	PRINTFORMW
+	PRINTFORML 《リリスが女優候補になりました》
+	PRINTFORMW
+		ADDCHARA 82
+		LOADGLOBAL
+		GLOBAL:282 += 1
+		SAVEGLOBAL
+		CFLAG:MASTER:760 |= 2
+ENDIF
+
+MONEY -= C
+CFLAG:MASTER:703 += 1
+FLAG:3 += 10
+RETURN 1
+
+;-------------------------------------------------
+;リーナ契約
+;-------------------------------------------------
+@ADD_REENA
+
+C = 500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+PRINTFORML 「당신께 부탁드릴 것이 있습니다만…… 괜찮으십니까?」
+PRINTFORML 레이첼의 공방에서, 작업중인 주인을 대신해 %플레이어를()% 대접하던 여성이, 갑자기 말을 꺼냈다
+PRINTFORML 쿨뷰티라는 말이 어울리는, 유능한 비서라는 인상인 그녀는 리나・레스피치오
+PRINTFORML 해외 유학중인 레이첼의 감시와 호위를 맡은 인물로, 공방과 사무소에서 얼굴을 마주친 적이 있다
+PRINTFORM 직접 대화한 적은 손으로 꼽을 정도인 리나가, 
+PRINTFORMW 굳은 표정으로 말하는《부탁》이란 대체 무엇일까……
+PRINTFORML 「공주님이 당신을 신뢰하는 것은…… 우리나라의 비술을 제공하시고 계신것을 통해 알고 계시겠죠?
+PRINTFORML 　그라고, 공주님이 당신을 보시는 눈이 사랑하는 소녀의 눈인 것까지도
+PRINTFORML 　……당신에게 달리 의중에 둔 분이 계시다고 해도, 파고들 생각은 없습니다
+PRINTFORML 　어떤 형식으로든, 공주님의 마음이 보답받는 날이 온다면야
+PRINTFORML 　그럼, 제가 드리는 부탁을 말씀드리죠
+PRINTFORML 　이미 아시는대로 저는 보디가드이며, 공주님의 명령을 받아 밀정과 비슷한 짓도 하고 있습니다
+PRINTFORML 　밀정, 다시 말해 스파이로 활동할 경우 몸을 사용해 정보를 끌어내야 할 가능성도 생깁니다
+PRINTFORML 　그러나 다행이라고 해야 할까요…… 지금까지 그런 경험은 없고, 부끄럽지만 저는 아직 숫처녀입니다
+PRINTFORML 　앞으로, 만에 하나라도 그런 일이 필요해질 경우, 대상을 상대로 아무것도 못해서는 밀정 실격이나 마찬가지죠
+PRINTFORML 　그래서 당신께 드릴 부탁이란…… 이 나라 말로 하자면『방중술』입니다, 그것을 제게 지도해 주세요
+PRINTFORML 　단도직입적으로 말하면, 저도 공주님처럼 포르노 배우로 고용해주시길 바랍니다
+PRINTFORML 　공주님의 허가도 떨어졌고, 저도 당신이라면 안심하고 몸을 맡길 수 있습니다
+PRINTFORML 　공주님의 의중의 상대라면 문제는 없다, 라고 믿고 있으니까요
+PRINTFORML 　그러나…… 이번 일을 위해서 공주님께선 당신에게 50만 포인트를 요구하라,고 하셨습니다
+PRINTFORML 　이 금액은 장차, 제가 당신을 위해 밀정으로서 일하게 됐을때, 조사료의 선금이라고 해석해 주시길 바랍니다
+PRINTFORML 　예를 들어, 키류 조직등 뒷세계의 조직에게 의뢰할 경우, 조사비용은 200만 포인트가 필요해집니다
+PRINTFORML 　제가 할 수 있는 건 조사 뿐이지만, 당신과 연관된 모든 사람들의 조사를 약속드립니다
+PRINTFORMW 　《부탁》이라기 보단《교섭》이 되버렸습니다만…… 어떠신가요?」
+PRINTFORML 리나의 제안은 매우 매력적이고, 뒤가 캥기는 부분도 없는 것 같다
+PRINTFORML 50만 포인트로 여배우 후보들의 신변조사가 상시 가능해진다면 싼값인데……
+PRINTFORML
+$INPUT_LOOP_REENA
+PRINTFORML 리나・레스피치오와 계약하겠습니까?
+PRINTL [0] - 계약한다
+PRINTL [1] - 그만둔다
+INPUT
+
+IF RESULT == 0 && CFLAG:MASTER:712 == 0
+	PRINTFORML 「계약해 주셔서 감사합니다
+	PRINTFORML 　저 같은 사람의 포르노가 팔릴지는 모르겠으나, 있는 힘껏 힘이 되어드리겠습니다」
+	PRINTFORMW
+	PRINTFORML 《리나・레스피치오가 여배우 후보가 됐습니다》
+	PRINTFORMW
+		ADDCHARA 96
+		CFLAG:MASTER:712 = 1
+		CALL REENA_ABLCHECK
+		LOADGLOBAL
+		GLOBAL:296 += 1
+		SAVEGLOBAL
+			IF GLOBAL:200 >= 0 && FLAG:540 == 0
+				IF GETCHARA(96, 0) >= 0
+					TARGET = GETCHARA(96)
+					CALL CLEARBONUS_CALL
+				ENDIF
+			ENDIF
+ELSEIF RESULT == 1
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP_REENA
+ENDIF
+
+MONEY -= C
+
+RETURN 0
+
+;-------------------------------------------------
+;リーナ契約
+;-------------------------------------------------
+@REENA_ABLCHECK
+K = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 9
+		K += ABL:COUNT:10
+	ENDIF
+REND
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 96
+		ABL:COUNT:10 += K - 2
+	ENDIF
+REND
+
+;-------------------------------------------------
+;리나 계약
+;-------------------------------------------------
+@REENA_SEARCH
+#DIM DYNAMIC C_NUM
+
+PRINTFORMW 《리나에게 스탭의 동향을 체크해달라고 부탁했습니다》
+CFLAG:MASTER:694 = 1
+FOR C_NUM, 1, CHARANUM
+	IF CFLAG:C_NUM:661 == 1
+		CFLAG:C_NUM:661 = 0
+		CFLAG:C_NUM:621 = 0
+	ENDIF
+NEXT
+
+;-------------------------------------------------
+;촉수소환
+;-------------------------------------------------
+@ADD_TENTACLE
+C = 75000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+$INPUT_LOOP
+
+PRINTFORML  촉수생물을 소환합니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 0
+	PRINTFORML 《촉수생물을 소환했습니다》
+	ITEM:90 += 1
+	MONEY -= C
+	WAIT
+	RETURN 1
+ELSEIF RESULT == 1
+	RETURN 0
+ENDIF
+
+GOTO INPUT_LOOP

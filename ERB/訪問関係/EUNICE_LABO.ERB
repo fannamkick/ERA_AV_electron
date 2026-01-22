@@ -1,0 +1,106 @@
+﻿;=================================================
+;유니스ラボ
+;=================================================
+@EUNICE_LABO
+
+Y = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:0 == 1
+		Y += 1
+	ENDIF
+REND
+	
+
+B = 0
+
+DRAWLINE
+PRINTL 아카샤 본부・유니스의 연구실
+PRINTL 《유니스의 은총을 받을 수 있습니다》
+
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 0] - 인격파괴:【프라이드 높음】을 습득    　　( 2000000포인트)
+PRINTL  [ 1] - 인격파괴: 뉴트럴　　　　　　　       　　( 1000000포인트)
+PRINTL  [ 2] - 인격파괴:【프라이드 낮음】을 습득    　　( 2000000포인트)
+PRINTL  [ 3] - 인격파괴:【쾌감에 솔직】을 습득      　　( 3000000포인트)
+PRINTL  [ 4] - 인격파괴: 뉴트럴    　　　　　       　　( 1500000포인트)
+PRINTL  [ 5] - 인격파괴:【쾌감을 부정】을 습득      　　( 3000000포인트)
+PRINTL  [ 6] - 인격파괴:【새드】를 습득    　 　　　　　( 3000000포인트)
+PRINTL  [ 7] - 인격파괴: 뉴트럴    　　　　　       　　( 1500000포인트)
+PRINTL  [ 8] - 인격파괴:【마조】를 습득　　       　　　( 3000000포인트)
+PRINTL  [ 9] - 사상개변:【아이돌】을 습득       　　　　( 2000000포인트)
+PRINTL  [10] - 사상개변:【패션모델】을 습득　           ( 2000000포인트)
+PRINTL  [11] - 사상개변:【캬바레녀】를 습득     　　　　( 2000000포인트)
+PRINTL  [12] - 사상개변: 뉴트럴　　　　　　　       　　( 1000000포인트)
+IF PBAND:136 >= 3 || FLAG:563 == 1
+	PRINTL  [13] - 사상개변: 처녀상실　　　　　　　　　　　(80000000포인트)
+	PRINTL  [14] - 사상개변: 애널처녀상실　　  　　　　　　(80000000포인트)
+	PRINTL  [15] - 사상개변: 첫 키스　　　　      　　　　(80000000포인트)
+ENDIF
+SIF FLAG:563 == 1 && Y >= 2
+	PRINTL  [99] - 사상개변:【타천사】습득과 전생     　　(30000000포인트)
+DRAWLINE
+PRINTL [999] - 돌아간다
+
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	CALL BREAK_PRIDE_HIGH
+ELSEIF RESULT == 1
+	CALL BREAK_PRIDE_NEUTRAL
+ELSEIF RESULT == 2
+	CALL BREAK_PRIDE_LOW
+ELSEIF RESULT == 3
+	CALL BREAK_XTC_POSITIVE
+ELSEIF RESULT == 4
+	CALL BREAK_XTC_NEUTRAL
+ELSEIF RESULT == 5
+	CALL BREAK_XTC_NEGATIVE
+ELSEIF RESULT == 6
+	CALL BREAK_SM_SADIST
+ELSEIF RESULT == 7
+	CALL BREAK_SM_NEUTRAL
+ELSEIF RESULT == 8
+	CALL BREAK_SM_MASOCHIST
+ELSEIF RESULT == 9
+	B = 203
+	CALL CHANGE_WORK
+ELSEIF RESULT == 10
+	B = 402
+	CALL CHANGE_WORK
+ELSEIF RESULT == 11
+	B = 421
+	CALL CHANGE_WORK
+ELSEIF RESULT == 12
+	B = 999
+	CALL CHANGE_WORK
+ELSEIF RESULT == 13 && (PBAND:136 >= 3 || FLAG:563 == 1)
+	B = 100
+	CALL CHANGE_VIRGINITY
+ELSEIF RESULT == 14 && (PBAND:136 >= 3 || FLAG:563 == 1)
+	B = 150
+	CALL CHANGE_VIRGINITY
+ELSEIF RESULT == 15 && (PBAND:136 >= 3 || FLAG:563 == 1)
+	B = 200
+	CALL CHANGE_VIRGINITY
+ELSEIF RESULT == 99 && FLAG:563 == 1 && Y >= 2
+	CALL CHANGE_FALLEN
+ELSEIF RESULT == 999
+	RETURN 
+ELSE
+	GOTO INPUT_LOOP
+ENDIF

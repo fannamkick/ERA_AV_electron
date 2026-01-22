@@ -1,0 +1,87 @@
+﻿;列数を複数にすると若干ずれて気持ち悪いですが
+;ヘルプ→設定の表示タブで, 描画インターフェースをGDIにするとずれなくなります
+;というか, GDI+はけっこういろんなところでずれたりするんで基本的におすすめしません
+
+;===========================================================
+;여배우명부
+;===========================================================
+@ACTRESS_LIST
+
+#DIM LIST, 250
+#DIM PAGE
+#DIM MAXPAGE
+#DIM SHOWNUM
+#DIM SHOWCOLUMN
+#DIM SHOWLENGTH
+
+LOADGLOBAL
+X = 0
+
+;1ページあたりの表示人数の定義
+SHOWNUM = 30
+;1ページあたりの列数の定義
+SHOWCOLUMN = 3
+;1行あたりの長さの定義
+SHOWLENGTH = 108
+;------------------------------------------------------------
+;リスト作成
+;------------------------------------------------------------
+VARSET LIST, -1
+LOCAL:1 = 0
+FOR LOCAL, 0, 250
+	;CSVが存在しない場合ははじく
+	SIF !EXISTCSV(LOCAL, 0)
+		CONTINUE
+	SIF LOCAL == MASTER
+		CONTINUE
+	;条件満たした番号をリストに登録
+	LIST:(LOCAL:1) = LOCAL
+	LOCAL:1++
+NEXT
+MAXPAGE = LOCAL:1 / SHOWNUM
+
+$INPUT_LOOP
+DRAWLINE
+PRINTFORML 여배우명부 page[{PAGE}/{MAXPAGE}]
+PRINTL 《지금까지 계약한 적이 있는 여배우를 확인할 수 있습니다》
+PRINTFORML %"‥" * (SHOWLENGTH / 2)%
+LOCAL:1 = 0
+FOR LOCAL, PAGE * SHOWNUM, (PAGE + 1) * SHOWNUM
+	SIF LOCAL >= 250
+		CONTINUE
+	IF LIST:LOCAL < 0
+		PRINTFORM %"", SHOWLENGTH / 3, LEFT%
+	;契約済み
+	ELSEIF GLOBAL:(200 + LIST:LOCAL)
+		PRINTFORM %@"[{LIST:LOCAL, 3}] - %CSVNAME(LIST:LOCAL, 0)%", SHOWLENGTH / 3, LEFT%
+	ELSE
+		PRINTFORM %"[ - ] - ----------", SHOWLENGTH / 3, LEFT%
+	ENDIF
+	SIF LOCAL:1 % SHOWCOLUMN == SHOWCOLUMN - 1
+		PRINTL 
+	LOCAL:1++
+NEXT
+SIF !LINEISEMPTY()
+	PRINTL 
+;こっちのほうがいいかもしれない
+;CUSTOMDRAWLINE ‥
+PRINTFORML %"‥" * (SHOWLENGTH / 2)%
+PRINTFORM %"[998] - 이전 페이지", SHOWLENGTH / 3, LEFT%
+;適当にボタンの間隔は変更してください
+PRINTFORM %"[999] - 돌아간다", SHOWLENGTH / 3, LEFT%
+PRINTFORM %"[1000] - 다음 페이지", SHOWLENGTH / 3, LEFT%
+PRINTL 
+
+INPUT
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT == 998 && PAGE > 0
+	PAGE -= 1
+ELSEIF RESULT == 1000 && PAGE < MAXPAGE
+	PAGE += 1
+ELSEIF RESULT >= 0 && RESULT < 250 && MATCH(LIST, RESULT) && GLOBAL:(200 + RESULT) > 0
+	X = RESULT
+	CALL ACTRESS_PROF
+ENDIF
+GOTO INPUT_LOOP

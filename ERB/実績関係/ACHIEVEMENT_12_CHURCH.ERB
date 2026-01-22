@@ -1,0 +1,62 @@
+﻿;===========================================================
+;実績・빚 완전 청산!
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_12
+RESULTS = 빚 완전 청산!
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_12
+; 条件を満たす人数の計算
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF (NO:COUNT == 25 || NO:COUNT == 29 || NO:COUNT == 87 || NO:COUNT == 88) && CFLAG:COUNT:1 == 2
+		LOCAL += CFLAG:COUNT:730
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:12 == 0 && DIFFICULTY_CHECK() && LOCAL >= 2000000
+	GLOBAL:12 = 1
+RETURN GLOBAL:12
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_12
+; 解説文
+PRINTFORML 빚을 갚기 위해 몸을 팔 수밖에 없었던「미카미 키요카」「아오이 하루카」「키리시마 쇼코」「아마쿠사 에리」……
+PRINTFORML 키류 조직에 진 빚도 완제하고, 분발했던 그녀들이 마침내 보답받는 날이 왔습니다
+PRINTFORML 그리고 그것이 가르침을 거역하는 것이라는걸 이해하고 있어도, 그녀들은 교회와는 다른『자신들이 있을 장소』를 찾아낸 것 같습니다
+PRINTFORMW ……과연 그것이 진짜 행복인지 어떤지는 본인들밖에 모릅니다만
+; ボーナスなどの処理はここ以降に記述する
+; △全員揃ってなくて後から乗っけたときにかわいそうなことになる
+IF FLAG:548 == 0
+	FOR LOCAL, 0, CHARANUM
+		IF LOCAL == MASTER
+			CONTINUE
+		ELSEIF CFLAG:LOCAL:1 == 2
+			IF NO:LOCAL == 25
+				TALENT:LOCAL:210 = 0
+				TALENT:LOCAL:211 = 1
+				TALENT:LOCAL:126 = 1
+				PRINTFORMW 《미카미 키요카는【가난뱅이】를 잃고【협상에 능숙함】【인기인】을 얻었다》
+			ELSEIF NO:LOCAL == 29
+				TALENT:LOCAL:210 = 0
+				TALENT:LOCAL:113 = 1
+				TALENT:LOCAL:118 = 1
+				PRINTFORMW 《아오이 하루카는【가난뱅이】를 잃고【매력】【고무】를 얻었다》
+			ELSEIF NO:LOCAL == 87
+				TALENT:LOCAL:127 = 0
+				TALENT:LOCAL:13 = 1
+				TALENT:LOCAL:63 = 1
+				PRINTFORMW 《키리시마 쇼코는【역습】를 잃고【솔직함】【헌신적】을 얻었다》
+			ELSEIF NO:LOCAL == 88
+				TALENT:LOCAL:15 = 0
+				TALENT:LOCAL:13 = 1
+				TALENT:LOCAL:93 = 1
+				PRINTFORMW 《아마쿠사 에리는【프라이드 높음】를 잃고【솔직함】【카리스마】를 얻었다》
+			ENDIF
+		ENDIF
+	NEXT
+	FLAG:548 = 1
+ENDIF

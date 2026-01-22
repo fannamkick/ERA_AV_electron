@@ -1,0 +1,56 @@
+﻿;===========================================================
+;マスターの情報
+;===========================================================
+
+@PRINT_INFORMATION
+
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+		IF TALENT:COUNT:184
+			A += 1
+		ELSEIF TALENT:COUNT:85 == 1
+			B += 1
+		ELSEIF CFLAG:COUNT:16 == 2 || CFLAG:COUNT:16 == 3 || CFLAG:COUNT:16 == 6
+			C += 1
+		ELSEIF EXP:COUNT:103 > 0
+			D += 1
+		ELSEIF EXP:COUNT:103 > 0
+			E += EXP:COUNT:103
+		ENDIF
+	ENDIF
+REND
+
+DRAWLINE
+
+PRINTFORM  이달의 히트 장르, 또는 잘 팔리는 여배우의 경향은 
+CALL VIDEOSALE_PRINT
+						;****미야코ラボ追加ここから****
+IF FLAG:560 == -1
+	PRINTFORML 에요
+ELSE
+	PRINTFORML 입니다
+ENDIF
+						;****미야코ラボ追加ここまで****
+PRINTFORML  %플레이어가()% 지금까지 찍은 AV의 총 판매량은 {MONEY:2}포인트입니다
+
+IF B > 0
+	PRINTFORML  현재, {B}명이 %CALLNAME:MASTER%에게 연심을 품고 있습니다
+ENDIF
+IF C > 0
+	PRINTFORML  현재, {C}명이 매춘으로 처녀상실을 당했습니다
+ENDIF
+IF A > 0
+	PRINTFORML  현재, {A}명의 여배우 후보에게 남자친구가 있습니다
+ENDIF
+IF D > 0
+	PRINTFORML  현재, {D}명이 치한을 당했으며, 총 횟수는 {E}번입니다
+ENDIF
+DRAWLINE
+WAIT

@@ -1,0 +1,107 @@
+﻿;===========================================================
+;ターン終了時の処理
+;===========================================================
+@START_COOCKING
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:671 == 1
+		CALL COOKING_DETAIL
+	ENDIF
+REND
+
+;===========================================================
+;イベントの内容
+;===========================================================
+@COOKING_DETAIL
+A = 1
+B = 0
+
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+PRINTFORM %플레이어가()% 사무소에 들어와 자기 책상에 앉자, 타이밍을 재듯 달려온 %조사처리(NAME:COUNT,"가")% 
+IF TALENT:COUNT:208 || TALENT:COUNT:407 || TALENT:COUNT:205
+	PRINTFORM 명품 브랜드의 작은 토트백을 
+ELSEIF TALENT:COUNT:209
+	PRINTFORM 세련된 색의 보자기를 
+ELSE
+	PRINTFORM 귀여운 바구니를 
+ENDIF
+IF TALENT:COUNT:18
+	PRINTFORM 뺨을 붉히고 옆을 보며, 뻔한 그 말과 함께 
+ENDIF
+PRINTFORML %CALLNAME:MASTER%에게 건내주었다
+PRINTFORML 내용물은 %플레이어가()% 부탁했던 도시락인 모양이다
+IF ABL:COUNT:73 <= 2
+	IF TALENT:COUNT:208 || TALENT:COUNT:407 || TALENT:COUNT:205
+		PRINTFORM 토트백 손잡이를 잡고 있는 
+	ELSEIF TALENT:COUNT:209
+		PRINTFORM 보자기를 감싼 
+	ELSE
+		PRINTFORM 바구니를 내민 
+	ENDIF
+	PRINTFORML %CALLNAME:COUNT%의 손가락엔 여기저기 반창고가 붙어있다
+ENDIF
+PRINTFORM %CALLNAME:MASTER%에게 자기가 보는 앞에서 먹어달라고 말하는 %조사처리(CALLNAME:COUNT,"는")% 
+IF ABL:COUNT:73 <= 2
+	PRINTFORM 자신이 없어 보이는 
+ELSE
+	PRINTFORM 자신이 넘치는 
+ENDIF
+PRINTFORML 표정이다……
+PRINTFORM 도시락 뚜껑을 여니, 안에는 한눈에 봐도 정성을 다해 만든 걸 알 수 있는, 
+IF ABL:COUNT:73 <= 2
+	PRINTFORM 조금 못생긴 
+ELSE
+	PRINTFORM 색색이 화려한 
+ENDIF
+IF TALENT:COUNT:85 == 0
+	IF RAND:5 == 0
+		PRINTFORM 샌드위치와 
+	ELSEIF RAND:4 == 0
+		PRINTFORM 주먹밥과 
+	ELSEIF RAND:3 == 0
+		PRINTFORM 볶음밥과 
+	ELSEIF RAND:2 == 0
+		PRINTFORM 약밥과 
+	ELSEIF RAND:1 == 0
+		PRINTFORM 나폴리탄과 
+	ENDIF
+ELSEIF TALENT:COUNT:85 == 1
+	PRINTFORM 분홍어묵으로 하트마크가 그려진 밥과 
+ENDIF
+PRINTFORML 반찬이 담겨있었다.
+PRINTFORML %플레이어가()% 고맙다고 말하자, %조사처리(CALLNAME:COUNT,"는")% 입이 귀에 걸린 것 같았다……
+PRINTFORM %조사처리(CALLNAME:COUNT,"가")% 기대의 눈빛으로 감상을 기다리고 있기에, 바로 요리를 입에 넣어보니 
+IF ABL:COUNT:73 <= 2
+	PRINTFORM 간조절이 아직 서투르지만, 그래도 먹을만 한 
+ELSE
+	PRINTFORM 식었어도 맛있게 먹어지는 
+ENDIF
+PRINTFORM 맛
+IF TALENT:COUNT:85 == 1
+	PRINTFORM 과, 무엇보다도 잔뜩 담겨있는 애정이 느껴졌다
+ELSE
+	PRINTFORM 이었다
+ENDIF
+PRINTL
+PRINTL
+
+A += RAND:6
+B += RAND:6
+
+IF TALENT:COUNT:418 == 1
+	A *= 2
+	SIF A < 5
+		A = 5
+ENDIF
+PRINTFORML 요리경험 +{A}
+EXP:COUNT:61 += A
+IF TALENT:COUNT:85 == 1
+	IF B > 0
+		PRINTFORML 애정경험 +{B}
+		EXP:COUNT:23 += B
+	ENDIF
+ENDIF
+PRINTW 

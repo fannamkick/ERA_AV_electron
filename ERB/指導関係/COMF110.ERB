@@ -1,0 +1,871 @@
+﻿;-------------------------------------------------
+;服の着脱
+;着衣・脱衣関連コマンド: 調教対象の服の着脱を行う
+;このコマンドは実行してもパラメーターは変更せず通常コマンド扱いにならない
+;-------------------------------------------------
+@COM110
+
+$INPUT_LOOP
+
+PRINTL 갈아입히기
+
+A = CFLAG:40
+CALL WEARING_CLOTH_ALL
+B = CFLAG:40
+CFLAG:40 = A
+
+;-------------------------------------------------
+;着脱の確認
+;-------------------------------------------------
+PRINTFORM 현재 %CALLNAME:TARGET%의 모습은 
+CALL PRINT_CLOTHTYPE
+PRINTFORML 입니다……
+
+;着脱判定変数をTとWに保存
+CALL COM110_ABLE0T
+T:0 = RESULT
+CALL COM110_ABLE0W
+W:0 = RESULT
+CALL COM110_ABLE1T
+T:1 = RESULT
+CALL COM110_ABLE1W
+W:1 = RESULT
+CALL COM110_ABLE2T
+T:2 = RESULT
+CALL COM110_ABLE2W
+W:2 = RESULT
+CALL COM110_ABLE3T
+T:3 = RESULT
+CALL COM110_ABLE3W
+W:3 = RESULT
+;CALL COM110_ABLE4T
+;T:4 = RESULT
+;CALL COM110_ABLE4W
+;W:4 = RESULT
+CALL COM110_ABLE5T
+T:5 = RESULT
+CALL COM110_ABLE5W
+W:5 = RESULT
+CALL COM110_ABLE6T
+T:6 = RESULT
+CALL COM110_ABLE6W
+W:6 = RESULT
+
+;특별 코스 탈의
+IF T:0	
+	IF CFLAG:42 >= 51
+		SETCOLOR 0xffcca8
+		PRINT  [0] - 
+		SETCOLOR 52,254,175
+		CALL PRINT_CLOTHTYPE_SPECIAL
+		LOCAL:1 = RESULT
+		SETCOLOR 0xffcca8
+		PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗는다
+		RESETCOLOR
+	ELSEIF T:0 == 2
+		SETCOLOR 52,254,175
+		PRINT  [8] - 
+		CALL PRINT_CLOTHTYPE_SPECIAL
+		PRINTL 의 가슴팍을 개방한다
+		RESETCOLOR
+	ELSEIF T:0 == 1
+		FONTBOLD
+		SETCOLOR 0xffcca8
+		PRINT  [9] - 
+		CALL PRINT_CLOTHTYPE_SPECIAL
+		PRINTL 의 가슴팍을 닫는다
+		RESETCOLOR
+		FONTREGULAR
+	ELSE
+		SETCOLOR 0xffcca8
+		PRINT  [0] - 
+		SETCOLOR 52,254,175
+		CALL PRINT_CLOTHTYPE_SPECIAL
+		LOCAL:1 = RESULT
+		SETCOLOR 0xffcca8
+		PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗게한다
+		RESETCOLOR
+	ENDIF
+ENDIF
+;특별 코스 장착
+IF W:0
+	SETCOLOR 0xffcca8
+	PRINT  [0] - 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	LOCAL:1 = RESULT
+	IF CFLAG:42 >= 51
+		PRINTFORML %조사만처리(LOCAL:1+2,"를")% 입는다
+	ELSE
+		PRINTFORML %조사만처리(LOCAL:1+2,"를")% 입게한다
+	ENDIF
+	RESETCOLOR
+ENDIF
+
+;투피스 상의 탈의
+IF T:2
+	SETCOLOR 52,254,175
+	PRINT  [1] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTL  위를 벗게한다
+	RESETCOLOR
+	IF T:2 == 2
+		SETCOLOR 52,254,175
+		PRINT  [8] - 
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINTL 의 가슴팍을 개방한다
+		RESETCOLOR
+	ELSEIF T:2 == 1
+		FONTBOLD
+		SETCOLOR 0xffcca8
+		PRINT  [9] - 
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINTL 의 가슴팍을 닫는다
+		RESETCOLOR
+		FONTREGULAR
+	ENDIF
+ENDIF
+;투피스 상부장착
+IF W:2
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINT  [1] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTL  위를 입힌다
+	RESETCOLOR
+	FONTREGULAR
+ENDIF
+
+;IF T:4 == 2
+;;브래지어 가슴팍 열기(닫혀있음)
+;	PRINT    [8] - 
+;	CALL PRINT_UNDERWEAR_TOPS
+;	PRINTFORML 의 가슴팍을 개방한다
+;ENDIF
+;IF T:4 == 1
+;;브래지어 가슴팍 닫기(열려있음)
+;	PRINT    [10] - 
+;	CALL PRINT_UNDERWEAR_TOPS
+;	PRINTFORML 의 가슴팍을 닫는다
+;ENDIF
+IF (CFLAG:40 & 128) || !(CFLAG:40 & 4)
+	IF (CFLAG:40 & 2)
+	;브래지어 벗기
+		FONTBOLD
+		SETCOLOR 0xffcca8
+		PRINT    [3] - 
+		FONTREGULAR
+		SETCOLOR 52,254,175
+		CALL PRINT_UNDERWEAR_TOPS
+		FONTBOLD
+		SETCOLOR 0xffcca8
+		PRINTFORML 를 벗긴다
+		RESETCOLOR
+		FONTREGULAR
+	ENDIF
+	IF (CFLAG:40 & 2) == 0
+	;브래지어 입기
+		FONTBOLD
+		SETCOLOR 0xffcca8
+		PRINT    [3] - 
+		CALL PRINT_UNDERWEAR_TOPS
+		PRINTFORML 를 입힌다
+		RESETCOLOR
+		FONTREGULAR
+	ENDIF
+ENDIF
+
+;투피스 하탈의
+IF T:3
+	SETCOLOR 52,254,175
+	PRINT  [2] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+		PRINTL 의 스커트를 벗게한다
+	ELSE
+		PRINTL  아래를 벗게한다
+	ENDIF
+	RESETCOLOR
+ENDIF
+;투피스 하부장착
+IF W:3
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINT  [2] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+		PRINTL 의 스커트를 입힌다
+	ELSE
+		PRINTL  아래를 입힌다
+	ENDIF
+	RESETCOLOR
+	FONTREGULAR
+ENDIF
+
+;원피스 탈의
+IF T:1
+	SETCOLOR 52,254,175
+	PRINT  [1] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	LOCAL:1 = RESULT
+	PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗게한다
+	RESETCOLOR
+	IF T:1 == 2
+		SETCOLOR 52,254,175
+		PRINT  [8] - 
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINTL 의 가슴팍을 개방한다
+		RESETCOLOR
+	ELSEIF T:1 == 1
+		FONTBOLD
+		SETCOLOR 0xffcca8
+		PRINT  [9] - 
+		CALL PRINT_CLOTHTYPE_MAIN2
+		PRINTL 의 가슴팍을 닫는다
+		RESETCOLOR
+		FONTREGULAR
+	ENDIF
+ENDIF
+;원피스 장착
+IF W:1
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINT  [1] - 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	LOCAL:1 = RESULT
+	PRINTFORML %조사만처리(LOCAL:1+2,"를")% 입게한다
+	RESETCOLOR
+	FONTREGULAR
+ENDIF
+
+;팬티 탈의
+IF T:5
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINT    [4] - 
+	FONTREGULAR
+	SETCOLOR 52,254,175
+	CALL PRINT_UNDERWEAR_UNDER
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINTFORML 를 벗긴다
+	RESETCOLOR
+	FONTREGULAR
+ENDIF
+;팬티 장착
+IF W:5
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINT    [4] - 
+	CALL PRINT_UNDERWEAR_UNDER
+	PRINTFORML 를 입힌다
+	RESETCOLOR
+	FONTREGULAR
+ENDIF
+;양말 탈의
+IF T:6
+	SETCOLOR 0xffcca8
+	PRINT  [5] - 
+	SETCOLOR 52,254,175
+	CALL PRINT_SHOESTYPE_MAIN
+	SETCOLOR 0xffcca8
+	LOCAL:1 = RESULT
+	PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗긴다
+	RESETCOLOR
+ENDIF
+;양말 장착
+IF W:6
+	SETCOLOR 0xffcca8
+	PRINT  [5] - 
+	CALL PRINT_SHOESTYPE_MAIN
+	LOCAL:1 = RESULT
+	PRINTFORML %조사만처리(LOCAL:1+2,"를")% 신긴다
+	RESETCOLOR
+ENDIF
+;전라로 종료
+IF CFLAG:40 != 0 || CFLAG:173 == 0
+	FONTBOLD
+	SETCOLOR 0xffcca8
+	PRINTL  [7] - 알몸으로 종료
+	FONTREGULAR
+	RESETCOLOR
+ENDIF
+PRINTL  [100] - 그만둔다
+INPUT
+
+;-------------------------------------------------
+;着脱処理
+;-------------------------------------------------
+;벗길수 없는 특별코스
+SELECTCASE RESULT
+	CASE 0
+	;-----------------
+	;특별코스
+	;-----------------
+		IF CFLAG:49
+			PRINTFORML %CALLNAME:TARGET%의 정조대 열쇠는 버려졌습니다
+			WAIT
+		;특별코스 탈의
+		ELSEIF T:0
+			PRINTFORM %CALLNAME:TARGET%에게서
+			IF TFLAG:45 & 32
+				PRINT , 잔뜩 더럽혀진 
+			ELSEIF TFLAG:45 & 16
+				PRINT , 오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_SPECIAL
+			LOCAL:1 = RESULT
+			IF CFLAG:42 >= 51
+				PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗겨냈다
+			ELSE
+				PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗게했다
+			ENDIF
+			CFLAG:40 -= 64
+		;특별코스 장착
+		ELSEIF W:0
+			;汚物まみれの場合
+			IF TFLAG:45 & 32
+				PRINTFORML 매우 더럽혀져, 도저히 사용할 수 있는 상태가 아닙니다
+				;おしっこまみれの場合
+			ELSEIF TFLAG:45 & 16
+				PRINTFORML 오줌으로 잔뜩 젖어, 사용할 수 있는 상태가 아닙니다
+			ELSE
+				PRINTFORM %CALLNAME:TARGET%에게 
+				CALL PRINT_CLOTHTYPE_SPECIAL
+				LOCAL:1 = RESULT
+				IF CFLAG:42 >= 51
+					PRINTFORML %조사만처리(LOCAL:1+2,"를")% 붙였다
+				ELSE
+					PRINTFORML %조사만처리(LOCAL:1+2,"를")% 입혔다
+				ENDIF
+				CFLAG:40 |= 64
+			ENDIF
+		ENDIF
+		
+	CASE 1
+	;-----------------
+	;원피스/투피스 상의
+	;-----------------
+		;원피스 탈의
+		IF T:1
+			PRINTFORM %CALLNAME:TARGET%에게서 
+			IF  TFLAG:45 & 8
+				PRINT 잔뜩 더럽혀진 
+			ELSEIF TFLAG:45 & 4
+				PRINT 오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_MAIN2
+			LOCAL:1 = RESULT
+			PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗게했다
+			SIF CFLAG:40 & 4
+				CFLAG:40 -= 4
+			SIF CFLAG:40 & 8
+				CFLAG:40 -= 8
+			SIF CFLAG:40 & 16
+				CFLAG:40 -= 16
+
+		;원피스 장착
+		ELSEIF W:1
+			;汚物まみれの場合
+			IF (TFLAG:45 & 8)
+				PRINTFORML 매우 더럽혀져, 도저히 사용할 수 있는 상태가 아닙니다
+			;おしっこまみれの場合
+			ELSEIF TFLAG:45 & 4
+				PRINTFORML 오줌으로 잔뜩 젖어, 사용할 수 있는 상태가 아닙니다
+			ELSE
+				PRINTFORM %CALLNAME:TARGET%에게 
+				CALL PRINT_CLOTHTYPE_MAIN2
+				LOCAL:1 = RESULT
+				PRINTFORML %조사만처리(LOCAL:1+2,"를")% 입혔다
+				SIF CFLAG:45 == 0
+					CFLAG:40 |= 4
+				IF CFLAG:46 == 0
+					IF CFLAG:41 <= 250
+						CFLAG:40 |= 8
+					ELSE
+						CFLAG:40 |= 16
+					ENDIF
+				ENDIF
+			ENDIF
+			
+		;투피스 상의
+		ELSEIF T:2
+			PRINTFORM %CALLNAME:TARGET%에게 
+			CALL PRINT_CLOTHTYPE_MAIN2
+			PRINTL  위를 벗게했다
+			CFLAG:40 -= 4
+
+		;투피스 상의 장착
+		ELSEIF W:2
+			PRINTFORM %CALLNAME:TARGET%에게 
+			CALL PRINT_CLOTHTYPE_MAIN2
+			PRINTL  위를 입혔다
+			CFLAG:40 |= 4
+		ENDIF
+	
+	CASE 2
+	;-----------------
+	;투피스 하의
+	;-----------------
+		;투피스 하의
+		IF T:3
+			;脱衣処理
+			PRINTFORM %CALLNAME:TARGET%에게서 
+			IF  TFLAG:45 & 8
+				PRINT , 잔뜩 더럽혀진 
+			ELSEIF TFLAG:45 & 4
+				PRINT , 오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_MAIN2
+			IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+				PRINTL 의 스커트를 벗게했다
+			ELSE
+				PRINTL  아래를 벗게했다
+			ENDIF
+			SIF CFLAG:40 & 8
+				CFLAG:40 -= 8
+			SIF CFLAG:40 & 16
+				CFLAG:40 -= 16
+		;투피스 하의장착
+		ELSEIF W:3
+			;汚物まみれの場合
+			IF (TFLAG:45 & 8)
+				PRINTFORML 매우 더럽혀져, 도저히 입을만한 상태가 아닙니다
+			;おしっこまみれの場合
+			ELSEIF (TFLAG:45 & 4)
+				PRINTFORML 오줌으로 잔뜩 젖어, 입을만한 상태가 아닙니다
+			ELSE
+				PRINTFORM %CALLNAME:TARGET%에게 
+				CALL PRINT_CLOTHTYPE_MAIN2
+				IF CFLAG:41 >= 1 && CFLAG:41 <= 100
+					PRINTL 의 스커트를 입게 했다
+				ELSE
+					PRINTL  아래를 입게했다
+				ENDIF
+				IF CFLAG:41 <= 100
+					CFLAG:40 |= 8
+				ELSE
+					CFLAG:40 |= 16
+				ENDIF
+			ENDIF
+		ENDIF
+		
+	CASE 3
+	;-----------------
+	;브라 착탈
+	;-----------------
+		;브래지어 탈의
+		IF (CFLAG:40 & 2)
+			PRINTFORML %CALLNAME:TARGET%의 브래지어를 벗겼다
+			CFLAG:40 -= 2
+		;브래지어 장착
+		ELSEIF (CFLAG:40 & 2) == 0
+			PRINTFORML %CALLNAME:TARGET%에게 브래지어를 입게했다
+			CFLAG:40 |= 2
+		ENDIF
+	
+	CASE 4
+	;-----------------
+	;팬티
+	;-----------------
+		;팬티 탈의
+		IF T:5
+			PRINTFORM %CALLNAME:TARGET%의 
+			IF (TFLAG:45 & 8)
+				PRINT 잔뜩 더럽혀진 
+			ELSEIF (TFLAG:45 & 4)
+				PRINT 오줌으로 흠뻑 젖은 
+			ENDIF
+			PRINTL 팬티를 벗게했다
+			CFLAG:40 -= 1
+		;팬티 장착
+		ELSEIF W:5
+			;汚物まみれの場合
+			IF TFLAG:45 & 2
+				PRINTFORML 매우 더럽혀져, 도저히 입을만한 상태가 아닙니다
+			;おしっこまみれの場合
+			ELSEIF TFLAG:45 & 1
+				PRINTFORML 오줌으로 잔뜩 젖어, 입을만한 상태가 아닙니다
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%의 팬티를 입게 했다
+				CFLAG:40 |= 1
+			ENDIF
+		ENDIF
+	CASE 5
+	;-----------------
+	;양말
+	;-----------------
+		IF T:6
+		;양말 탈의
+			PRINTFORM %CALLNAME:TARGET%에게서 
+			CALL PRINT_SHOESTYPE_MAIN
+			LOCAL:1 = RESULT
+			PRINTFORML %조사만처리(LOCAL:1+2,"를")% 벗겨냈다
+			CFLAG:173 -= 1
+		ELSEIF W:6
+		;양말 장착
+			PRINTFORM %CALLNAME:TARGET%에게 
+			CALL PRINT_SHOESTYPE_MAIN
+			LOCAL:1 = RESULT
+			PRINTFORML %조사만처리(LOCAL:1+2,"를")% 입혔다
+			CFLAG:173 += 1
+		ENDIF
+	
+	CASE 8
+	;-----------------
+	;의복 가슴팍 개방
+	;-----------------
+		IF T:0 == 2
+			PRINTFORM %조사처리(CALLNAME:TARGET,"로")%부터 
+			IF TFLAG:45 & 32
+				PRINT 、오물 투성이의 
+			ELSEIF TFLAG:45 & 16
+				PRINT 、오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_SPECIAL
+			PRINTL 의 가슴팍을 개방했다
+			CFLAG:40 += 128
+		ELSEIF T:1 == 2
+			PRINTFORM %조사처리(CALLNAME:TARGET,"로")%부터 
+			IF TFLAG:45 & 32
+				PRINT 、오물 투성이의 
+			ELSEIF TFLAG:45 & 16
+				PRINT 、오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_MAIN2
+			PRINTL 의 가슴팍을 개방했다
+			CFLAG:40 += 128
+		ELSEIF T:2 == 2
+			PRINTFORM %조사처리(CALLNAME:TARGET,"로")%부터 
+			CALL PRINT_CLOTHTYPE_MAIN2
+			PRINTL 의 가슴팍을 개방했다
+			CFLAG:40 += 128
+		;ELSEIF T:4 == 2
+		;	PRINTFORML %CALLNAME:TARGET%의 브래지어 가슴팍을 개방했다
+		;	CFLAG:40 += 256
+		ENDIF
+		
+	CASE 9
+	;-----------------
+	;의복 가슴팍 폐쇄
+	;-----------------
+		IF T:0 == 1
+			PRINTFORM %조사처리(CALLNAME:TARGET,"로")%부터 
+			IF  TFLAG:45 & 32
+				PRINT 、오물 투성이의 
+			ELSEIF TFLAG:45 & 16
+				PRINT 、오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_SPECIAL
+			PRINTL 의 가슴팍을 닫았다
+			CFLAG:40 -= 128
+		ELSEIF T:1 == 1
+			PRINTFORM %조사처리(CALLNAME:TARGET,"로")%부터 
+			IF TFLAG:45 & 32
+				PRINT 、오물 투성이의 
+			ELSEIF TFLAG:45 & 16
+				PRINT 、오줌으로 흠뻑 젖은 
+			ENDIF
+			CALL PRINT_CLOTHTYPE_MAIN2
+			PRINTL 의 가슴팍을 닫았다
+			CFLAG:40 -= 128
+		ELSEIF RESULT == 9 && T:2 == 1
+			PRINTFORM %조사처리(CALLNAME:TARGET,"로")%부터 
+			CALL PRINT_CLOTHTYPE_MAIN2
+			PRINTL 의 가슴팍을 닫았다
+			CFLAG:40 -= 128
+		ENDIF
+	
+	CASE 10
+	;-----------------
+	;브라 폐쇄
+	;-----------------
+		IF T:4 == 1
+			PRINTFORML %CALLNAME:TARGET%의 브래지어 가슴팍을 닫았다
+			CFLAG:40 -= 256
+		ENDIF
+
+	CASE 100
+	;그만둔다
+		RETURN 0
+	
+	CASE 7
+		;全裸にして終了
+		IF (CFLAG:40 != 0 || CFLAG:173 == 0)
+			;정조대は直接選ばないと外せない
+			IF CFLAG:42 == 79 && CFLAG:49 == 1 && (CFLAG:40 & 64)
+				PRINTFORMW %타겟을()% 정조대만 남기고 알몸으로 만들었다
+				CFLAG:40 = 64
+				CFLAG:173 = -1
+			ELSE
+				PRINTFORML %타겟을()% 알몸으로 만들었다
+				CFLAG:40 = 0
+				CFLAG:173 = -1
+				WAIT
+				RETURN 0
+			ENDIF
+		ENDIF
+		
+ENDSELECT
+PRINTL 
+
+GOTO INPUT_LOOP
+
+;=================================================
+;판정용 함수군
+;=================================================
+;특별 코스탈의 판정
+@COM110_ABLE0T
+;특별 코스가 설정되어 있지 않으면 안된다
+SIF CFLAG:42 == 0
+	RETURN 0
+;특별 코스를 붙이지 않으면 안 된다
+SIF (CFLAG:40 & 64) == 0
+	RETURN 0
+SIF (CFLAG:40 & 132) == 132
+	RETURN 1
+;기저귀の場合
+IF CFLAG:42 == 69
+	;上着下・ズボンタイプを穿いてるとダメ
+	SIF (CFLAG:40 & 16) 
+		RETURN 0
+	;邪魔になる特別コスを付けているとダメ
+	SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+		RETURN 0
+	;기모노の場合は上着下・スカートタイプを着ているとダメ
+	SIF CFLAG:41 == 202 && (CFLAG:40 & 8)
+		RETURN 0
+ENDIF
+RETURN 2
+
+;특별 코스 장착 판정
+@COM110_ABLE0W
+;特別コスが設定されていないとダメ
+SIF CFLAG:42 == 0
+	RETURN 0
+;特別コスを付けているとダメ
+SIF (CFLAG:40 & 64)
+	RETURN 0
+;特別コスが標準装備に含まれてないとダメ
+SIF (B & 64) == 0
+	RETURN 0
+;洗濯中だとダメ
+SIF CFLAG:47 != 0
+	RETURN 0
+;기저귀の場合
+IF CFLAG:42 == 69
+	;上着下・ズボンタイプを穿いてるとダメ
+	SIF (CFLAG:40 & 16) 
+		RETURN 0
+	;邪魔になる特別コスを付けているとダメ
+	SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+		RETURN 0
+	;기모노の場合は上着下・スカートタイプを着ているとダメ
+	SIF CFLAG:41 == 202 && (CFLAG:40 & 8)
+		RETURN 0
+ENDIF
+RETURN 1
+
+;원피스脱衣判定
+@COM110_ABLE1T
+;設定衣装が원피스でないとダメ
+SIF CFLAG:41 <= 200
+	RETURN 0
+;上着上や上着下のいずれかを着てないとダメ
+SIF (CFLAG:40 & 28) == 0
+	RETURN 0
+;邪魔になる特別コスを付けているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+	RETURN 0
+SIF (CFLAG:40 & 132) == 132
+	RETURN 1
+RETURN 2
+
+;원피스装着判定
+@COM110_ABLE1W
+;設定衣装が원피스でないとダメ
+SIF CFLAG:41 <= 200
+	RETURN 0
+;「上着上を付けているか, 上着上が洗濯中である」かつ
+;「上着下を付けているか, 上着下が洗濯中である」だとダメ
+;(↑衣装が破れた場合を想定して, こんなわかり辛い記述になっています。
+;　　要するに, 今装着してなくて洗濯中でもない上半分か下半分がないとダメってことです)
+IF (CFLAG:40 & 4) || CFLAG:45 != 0
+	SIF (CFLAG:40 & 24) || CFLAG:46 != 0
+		RETURN 0
+ENDIF
+;上着上と上着下が標準装備に含まれてないとダメ
+SIF (B & 4) == 0 || ((B & 8) == 0 && (B & 16) == 0)
+	RETURN 0
+;邪魔になる特別コスを付けているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+	RETURN 0
+RETURN 1
+
+;ツーピース上脱衣判定
+@COM110_ABLE2T
+;設定衣装がツーピースでないとダメ
+SIF CFLAG:41 >= 201
+	RETURN 0
+;上着上を付けてないとダメ
+SIF (CFLAG:40 & 132) == 132
+	RETURN 1
+SIF (CFLAG:40 & 4) == 0
+	RETURN 0
+;邪魔になる特別コスを付けているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+	RETURN 0
+RETURN 2
+
+;ツーピース上装着判定
+@COM110_ABLE2W
+;設定衣装がツーピースでないとダメ
+SIF CFLAG:41 >= 201
+	RETURN 0
+;上着上を付けているとダメ
+SIF (CFLAG:40 & 4)
+	RETURN 0
+;上着上が標準装備に含まれてないとダメ
+SIF (B & 4) == 0
+	RETURN 0
+;上着上が洗濯中だとダメ
+SIF CFLAG:45 != 0
+	RETURN 0
+;邪魔になる特別コスを付けているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+	RETURN 0
+RETURN 1
+
+;ツーピース下脱衣判定
+@COM110_ABLE3T
+;設定衣装がツーピースでないとダメ
+SIF CFLAG:41 >= 201
+	RETURN 0
+;なにか上着下を付けてないとダメ
+SIF (CFLAG:40 & 24) == 0
+	RETURN 0
+;즈코 인형を着ているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 == 11
+	RETURN 0
+RETURN 1
+
+;ツーピース下装着判定
+@COM110_ABLE3W
+;設定衣装がツーピースでないとダメ
+SIF CFLAG:41 >= 201
+	RETURN 0
+;なにか上着下を付けているとダメ
+SIF (CFLAG:40 & 24)
+	RETURN 0
+;上着下が標準装備に含まれてないとダメ
+SIF (B & 24) == 0
+	RETURN 0
+;上着下が洗濯中だとダメ
+SIF CFLAG:46 != 0
+	RETURN 0
+;즈코 인형を着ているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 == 11
+	RETURN 0
+RETURN 1
+
+;;브래지어 탈의 판정
+;@COM110_ABLE4T
+;;브래지어를 착용하지 않으면 안 된다
+;SIF (CFLAG:40 & 2) == 0
+;	RETURN 0
+;;브래지어를 착용하지 않으면 안 된다
+;IF (CFLAG:40 & 132) == 132 || (CFLAG:40 & 4) == 0
+;	SIF (CFLAG:40 & 258) == 258
+;		RETURN 1
+;	RETURN 2
+;ENDIF
+;상의를 입고 있으면 안 돼
+;SIF (CFLAG:40 & 4)
+;	RETURN 0
+;;방해가 되는 특별 코스를 붙이고 있으면 안 돼
+;SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+;	RETURN 0
+;RETURN 2
+
+;;브래지어 장착판정
+;@COM110_ABLE4W
+;;상반신 알몸이면 안됨
+;SIF (CFLAG:40 & 6)
+;	RETURN 0
+;;브래지어가 표준 장비에 포함되어 있지 않으면 안 된다
+;SIF (B & 2) == 0
+;	RETURN 0
+;;브래지어가 세탁 중이면 안 된다
+;SIF CFLAG:44 != 0
+;	RETURN 0
+;;상의를 입고 있으면 안 돼
+;SIF (CFLAG:40 & 4)
+;	RETURN 0
+;방해가 되는 특별 코스를 붙이고 있으면 안 돼
+;SIF (CFLAG:40 & 64) && CFLAG:42 <= 50
+;	RETURN 0
+;RETURN 1
+
+;パンツ脱衣判定
+@COM110_ABLE5T
+;パンツを穿いてないとダメ
+SIF (CFLAG:40 & 1) == 0
+	RETURN 0
+;上着下・ズボンタイプを穿いてるとダメ
+SIF (CFLAG:40 & 16) 
+	RETURN 0
+;즈코 인형を着ているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 == 11
+	RETURN 0
+;기모노の場合は上着下・スカートタイプを着ているとダメ
+SIF CFLAG:41 == 202 && (CFLAG:40 & 8)
+	RETURN 0
+RETURN 1
+
+;パンツ装着判定
+@COM110_ABLE5W
+;パンツをはいてるとダメ
+SIF (CFLAG:40 & 1)
+	RETURN 0
+;上着下・ズボンタイプを穿いてるとダメ
+SIF (CFLAG:40 & 16)
+	RETURN 0
+;パンツが標準装備に含まれてないとダメ
+SIF (B & 1) == 0
+	RETURN 0
+;パンツが洗濯中だとダメ
+SIF CFLAG:43 != 0
+	RETURN 0
+;즈코 인형を着ているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 == 11
+	RETURN 0
+;기모노の場合は上着下・スカートタイプを着ているとダメ
+SIF CFLAG:41 == 202 && (CFLAG:40 & 8)
+	RETURN 0
+RETURN 1
+
+
+;靴下装着判定
+@COM110_ABLE6W
+;靴下をはいてるとダメ
+SIF CFLAG:173 == 0
+	RETURN 0
+;裸足だとダメ
+SIF CFLAG:170 == 0
+	RETURN 0
+;즈코 인형を着ているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 == 11
+	RETURN 0
+RETURN 1
+
+;靴下脱衣判定
+@COM110_ABLE6T
+;靴下を穿いてないとダメ
+SIF CFLAG:173 == -1
+	RETURN 0
+;裸足だとダメ
+SIF CFLAG:170 == 0
+	RETURN 0
+;즈코 인형を着ているとダメ
+SIF (CFLAG:40 & 64) && CFLAG:42 == 11
+	RETURN 0
+RETURN 1

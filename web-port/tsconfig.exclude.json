@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "src/modules/achievements/generated/**/*",
+    "src/modules/unknown/generated/**/*",
+    "src/modules/events/generated/event_train_message_*.ts",
+    "src/modules/system/generated/actress_info.ts",
+    "src/modules/brothel/generated/work_*.ts"
+  ]
+}

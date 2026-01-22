@@ -1,0 +1,195 @@
+﻿;新版ライフリスト
+;目的: ページ分け。各種のライフリストを纏める。
+;변수 LL_MODE로 모드 구분。
+;어차피 INPUT가 필요하기 때문에 INPUT를 집어넣어 버린다。
+;그대로 INPUT의 RESULT를 돌려준다。値がおかしければ再呼び出しされる。
+;1ページ目に戻るぐらいは諦めてください。リストで出てないキャラも選択できるのも以下略。
+;キャンセル処理面倒……
+;1 = 통상(원래의 LIFE_LIST……라고 가장해서 MASTER를 뺀것)(실은 LIFE_LIST_LYCEE_IN가 등가인 것 같다)
+;2 = MASTER込み(능력 표시나 그 정도에서 사용을 상정)
+;3 = 名前のみ(원래의 LIFE_LIST_PLEASE)
+;4 = 복장(원래의 LIFE_LIST_TAILOR)
+;5 = 女子寮入寮中のみ
+;6 = 예명表示(元のLIFE_LIST_AV……と見せかけて매력치追加。撮影から呼ばれるため(なお撮影を整備する予定はない))
+;7 = 여자기숙사입 기숙사중도 포함해서 살아있는 전원
+;まとめたせいで読みにくくなった感もあるのでそのうち関数化して読みやすく……できるといいね
+
+@LIFE_LIST_NEW(LL_MODE)
+
+#DIM LL_MODE,1
+#DIM CNUM
+#DIM LL_LINE
+;行数弄る時に直す場所を一か所で済むように
+#DIM CONST LIST_LINE_NUM = 10
+
+LOCAL = 1
+
+$REFRESH_POINT
+LL_LINE = LINECOUNT
+
+DRAWLINE
+IF LL_MODE == 2 || LL_MODE == 7
+	PRINTFORML  [0] %NAME:MASTER% (지도자)
+	DRAWLINE
+ENDIF
+
+FOR CNUM, LOCAL, LOCAL+LIST_LINE_NUM
+	SIF CNUM == CHARANUM
+		BREAK
+	;주인공은 스킵
+	SIF CNUM == 0
+		CONTINUE
+	SIF !GROUPMATCH(LL_MODE, 2, 7) && ((CFLAG:CNUM:140 == 1 && LL_MODE != 5) || (CFLAG:CNUM:140 == 0 && LL_MODE == 5))
+		CONTINUE
+	;임사(臨死)중인 캐릭터는 배제
+	SIF BASE:CNUM:0 < 1
+		CONTINUE
+	PRINTFORM  [{CNUM}] %NAME:CNUM% 
+	IF LL_MODE == 1 || LL_MODE == 2 || LL_MODE == 7
+		PRINT (체력: 
+		;臨死中のキャラは排除してるので체력が0より下とかありえなかった
+		PRINTFORM {BASE:CNUM:0}/{MAXBASE:CNUM:0})
+		PRINT  / (매력치: 
+		IF BASE:CNUM:31 < 0
+			PRINTFORM 0/{MAXBASE:CNUM:31}) / 
+		ELSE
+			PRINTFORM {BASE:CNUM:31}/{MAXBASE:CNUM:31}) / 
+		ENDIF
+		IF CNUM == FLAG:1 && CFLAG:CNUM:1 >= 2
+			PRINT (전회 지도・조수 가능)
+		ELSEIF CNUM == FLAG:1
+			PRINT (전회 지도)
+		ELSEIF CNUM == FLAG:2
+			PRINT (전회 조수)
+		ELSEIF CFLAG:CNUM:1 >= 2
+			PRINT (조수 가능)
+		ENDIF
+		IF CFLAG:CNUM:110 - 2 <= DAY && TALENT:CNUM:153
+			PRINT [산월]
+		ELSEIF TALENT:CNUM:153
+			PRINT [임신]
+		ELSEIF TALENT:CNUM:154
+			PRINT [육아]
+		ENDIF
+		IF CFLAG:CNUM:12 != 0
+			IF CFLAG:CNUM:12 == 1
+				PRINT <회화
+			ELSEIF CFLAG:CNUM:12 == 2 || CFLAG:CNUM:12 == 7
+				PRINT <봉사
+			ELSEIF CFLAG:CNUM:12 == 3
+				PRINT <A영업
+			ELSEIF CFLAG:CNUM:12 == 4
+				PRINT <V영업
+			ELSEIF CFLAG:CNUM:12 == 5
+				PRINT <SM
+			ELSEIF CFLAG:CNUM:12 == 6
+				PRINT <출장
+			ENDIF
+			SIF CFLAG:CNUM:13
+				PRINT C
+			PRINT >
+		ENDIF
+	ELSEIF LL_MODE == 4
+		TARGET = CNUM
+		IF CFLAG:CNUM:41 && (CFLAG:CNUM:45 >= 0 || CFLAG:CNUM:46 >= 0)
+			PRINT / 
+			CALL PRINT_CLOTHTYPE_MAIN2
+		ELSEIF CFLAG:CNUM:40
+			PRINT / 속옷
+		ELSE
+			PRINT / 전라
+		ENDIF
+		IF CFLAG:CNUM:42 && CFLAG:CNUM:47 >= 0
+			PRINT / 
+			CALL PRINT_CLOTHTYPE_SPECIAL
+		ENDIF
+	ELSEIF LL_MODE == 5
+		PRINT (체력: 
+		PRINTFORM {BASE:CNUM:0}/{MAXBASE:CNUM:0})
+		PRINT  / (매력치: 
+		IF BASE:CNUM:31 < 0
+			PRINTFORM 0/{MAXBASE:CNUM:31}) / 
+		ELSE
+			PRINTFORM {BASE:CNUM:31}/{MAXBASE:CNUM:31}) / 
+		ENDIF
+		IF CFLAG:CNUM:110 - 2 <= DAY && TALENT:CNUM:153
+			PRINT [산월]
+		ELSEIF TALENT:CNUM:153
+			PRINT [임신]
+		ELSEIF TALENT:CNUM:154
+			PRINT [육아]
+		ENDIF
+		IF CFLAG:CNUM:141 >= 1
+			PRINT  《
+			IF CFLAG:CNUM:141 == 1
+				PRINT 에스테룸
+			ELSEIF CFLAG:CNUM:141 == 2
+				PRINT 휴게실
+			ELSEIF CFLAG:CNUM:141 == 3
+				PRINT 탁아소
+			ELSEIF CFLAG:CNUM:141 == 4
+				PRINT 고급 노래방
+			ELSEIF CFLAG:CNUM:141 == 5
+				PRINT 댄스 스튜디오
+			ENDIF
+			PRINT  이용중》
+		ENDIF
+	ELSEIF LL_MODE == 6
+		PRINTFORM (예명: %NICKNAME:CNUM%)
+		PRINT (체력: 
+		PRINTFORM {BASE:CNUM:0}/{MAXBASE:CNUM:0})
+		PRINT  / (매력치: 
+		IF BASE:CNUM:31 < 0
+			PRINTFORM 0/{MAXBASE:CNUM:31}) / 
+		ELSE
+			PRINTFORM {BASE:CNUM:31}/{MAXBASE:CNUM:31}) / 
+		ENDIF
+		IF CFLAG:CNUM:110 - 2 <= DAY && TALENT:CNUM:153
+			PRINT [산월]
+		ELSEIF TALENT:CNUM:153
+			PRINT [임신]
+		ELSEIF TALENT:CNUM:154
+			PRINT [육아]
+		ENDIF
+	ENDIF
+	PRINTL
+NEXT
+DRAWLINE
+IF LOCAL >= (LIST_LINE_NUM + 1)
+	PRINT [400] 이전 페이지　　
+ELSE
+	PRINTPLAIN [---]－－－－－
+ENDIF
+;いずれにせよ空白は挟まる
+PRINTPLAIN 　　　　
+;LOCAL+LIST_LINE_NUM=今回何人目まで表示したか
+;これをCHARANUMが超えるなら다음 페이지がある
+IF LOCAL+LIST_LINE_NUM < CHARANUM
+	PRINT [600] 다음 페이지　　
+ELSE
+	PRINTPLAIN [---]－－－－－
+ENDIF
+;いずれにせよry
+PRINTPLAIN 　　　　
+PRINTL [999] 돌아간다
+
+INPUT
+
+IF LOCAL >= (LIST_LINE_NUM+1) && RESULT == 400
+	LOCAL -= LIST_LINE_NUM
+	;この値だけCLEARLINEすると綺麗にページが切り替わるといいですね
+	CLEARLINE LINECOUNT - LL_LINE
+	GOTO REFRESH_POINT
+ELSEIF LOCAL + LIST_LINE_NUM < CHARANUM && RESULT == 600
+	LOCAL += LIST_LINE_NUM
+	CLEARLINE LINECOUNT-LL_LINE
+	GOTO REFRESH_POINT
+ELSEIF RESULT == 999
+	RETURN 999
+ELSEIF RESULT > CHARANUM
+;ページ移動, 戻る以外でキャラクター以外の値が参照されてもしょうがないので弾く
+	CLEARLINE LINECOUNT-LL_LINE
+	GOTO REFRESH_POINT
+ELSE
+	RETURN RESULT
+ENDIF

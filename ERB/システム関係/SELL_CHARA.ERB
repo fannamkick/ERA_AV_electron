@@ -1,0 +1,370 @@
+﻿;-------------------------------------------------
+;売却と助手化のチェック
+;-------------------------------------------------
+@CHECK_SELLASSIABLE
+
+;【매각 불가】を持っておらず
+SIF TALENT:199 == 1
+	RETURN 0
+;従順+욕망が6LV以上であるか
+SIF ABL:10+ABL:11 < 6
+	RETURN 0
+;C感覚・V감각・A감각・B感覚のいずれかが最低3LVであり
+SIF ABL:0 < 3 && ABL:1 < 3 && ABL:2 < 3 && ABL:3 < 3
+	RETURN 0
+;【反抗的】か【다부짐】を持っているなら従順が4LV以上になっており
+SIF ABL:10 < 4 && (TALENT:11 || TALENT:12)
+	RETURN 0
+;【자제심】【억압】【저항】を持っているなら욕망が4LV以上になっており
+SIF ABL:11 < 4 && (TALENT:20 || TALENT:32 || TALENT:34)
+	RETURN 0
+;「〈기교〉3LV以上で〈봉사정신〉3LV以上」か「〈노출벽〉3LV以上で〈자위중독〉2LV以上」か「C・V・A・B感覚の合計が13LV以上」か「従順か욕망がLV5」に達しているか
+IF ((ABL:12 >= 3 && ABL:16 >= 3) || (ABL:17 >= 3 && ABL:31 >= 2) || ABL:21 >= 3 || (ABL:0+ABL:1+ABL:2+ABL:3 >= 13) || ABL:10 >= 5 || ABL:11 >= 5) && TALENT:400 == 1
+	IF CFLAG:1 <= 0
+		PRINTFORMW %타겟이(1)% 은퇴할 수 있게 됐습니다
+		CFLAG:1 = 1
+	ENDIF
+ELSE
+	RETURN 0
+ENDIF
+
+;「〈従順〉〈욕망〉〈기교〉〈C感覚〉〈레즈끼〉がすべて3LV以上」か「〈従順〉が5LV以上かつ〈욕망〉が4LV以上」か
+IF ((ABL:10 >= 3 && ABL:11 >= 3 && ABL:12 >= 3 && ABL:0 >= 3 && (ABL:22 >= 3 || ABL:23 >= 3)) || (ABL:10 >= 5 && ABL:11 >= 4)) && TALENT:400 == 1 && EXP:76 >= 3
+	IF CFLAG:1 <= 1
+		PRINTFORMW 이제 %타겟을(1)% 조수로 쓸 수 있습니다
+		CFLAG:1 = 2
+	ENDIF
+ENDIF
+;
+;-------------------------------------------------
+;奴隷売却の処理
+;-------------------------------------------------
+@CHARA_SALE
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: ${MONEY}포인트
+DRAWLINE
+
+$INPUT_LOOP
+
+PRINTL 누구를 은퇴시키겠습니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	;매각 불가のキャラは排除
+	ELSEIF TALENT:COUNT:199
+		CONTINUE
+	;売れないキャラは排除
+	ELSEIF CFLAG:COUNT:1 < 1
+		CONTINUE
+	;臨死中のキャラは排除
+	ELSEIF  BASE:COUNT:0 < 1
+		CONTINUE
+	ELSEIF CFLAG:COUNT:1 >= 1
+		PRINTFORM [{COUNT}] %NAME:COUNT% 
+		TARGET = COUNT
+		S = 0
+		CALL ESTIMATE_CHARA
+		IF S > 0
+			PRINTFORM [평가액: {S}포인트]
+		ELSE
+			PRINTFORM [매각 불가]
+		ENDIF
+		IF ISASSI:COUNT == 1
+			PRINT (전 조수)
+		ELSEIF CFLAG:COUNT:1 == 2
+			PRINT (조수 가능)
+		ENDIF
+		PRINTL  
+	ENDIF
+REND
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTFORML [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT <= 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:199
+	GOTO INPUT_LOOP
+ELSEIF CFLAG:RESULT:1 < 1
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;営業中のキャラは排除
+ELSEIF  CFLAG:RESULT:12 && TIME == 1
+	PRINTL 이번주 영업이 끝날때까지 은퇴시킬 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP
+ENDIF
+
+;現在の調教対象の情報を取得
+SIF TARGET > 0
+	T = NO:TARGET
+
+TARGET = RESULT
+
+;売却処理
+S = 0
+CALL SALE_CHARA
+
+;売却した場合はキャラを削除
+IF S > 0
+	SIF CFLAG:684 == 1
+		FLAG:557 -= 1
+	SIF CFLAG:671 == 1
+		FLAG:556 = 0
+	SIF CFLAG:60 == 1
+		CFLAG:MASTER:65 = 0
+	T = -1
+	CALL KILL_TARGET
+	EXP:MASTER:107 += 1
+ENDIF
+
+;対象を戻す
+TARGET = -1
+REPEAT CHARANUM
+	SIF NO:COUNT == T
+		TARGET = COUNT
+REND
+
+RESTART
+;
+;-------------------------------------------------
+;現在の調教対象の削除
+;-------------------------------------------------
+@KILL_TARGET
+;助手の情報を取得
+;N = -1
+;SIF ASSI >= 0
+;	N = NO:ASSI
+
+;キャラ削除
+CALL キャラ削除, TARGET
+
+;;前回の助手・調教対象だった場合はフラグを空に
+;SIF FLAG:1 == TARGET
+;	FLAG:1 = -1
+;SIF FLAG:2 == TARGET
+;	FLAG:2 = -1
+
+;;前回の助手・調教対象より前だった場合はフラグを減算
+;SIF FLAG:1 > TARGET
+;	FLAG:1 -= 1
+;SIF FLAG:2 > TARGET
+;	FLAG:2 -= 1
+
+;;調教対象を空に
+;TARGET = -1
+
+;;助手を戻す
+;ASSI = -1
+;REPEAT CHARANUM
+;	SIF NO:COUNT == N
+;		ASSI = COUNT
+;REND
+;
+;-------------------------------------------------
+;長いお別れ
+;-------------------------------------------------
+@LONG_GOOD_BYE
+A = NO:TARGET
+
+REPEAT CHARANUM
+	SIF COUNT == 0
+		CONTINUE
+	;キャラのストレス値
+	U = 0
+	SIF A == (CFLAG:COUNT:21 % 100) && (CFLAG:COUNT:21 / 100) < 2
+		U += 40
+	SIF A == (CFLAG:COUNT:21 % 100)
+		U += 80
+	SIF A == (CFLAG:COUNT:22 % 100) && (CFLAG:COUNT:22 / 100) < 2
+		U += 40
+	SIF A == (CFLAG:COUNT:22 % 100)
+		U += 80
+	SIF A == (CFLAG:COUNT:23 % 100) && (CFLAG:COUNT:23 / 100) < 2
+		U += 40
+	SIF A == (CFLAG:COUNT:23 % 100)
+		U += 80
+	SIF A == (CFLAG:COUNT:24 % 100) && (CFLAG:COUNT:24 / 100) < 2
+		U += 40
+	SIF A == (CFLAG:COUNT:24 % 100)
+		U += 80
+	SIF A == (CFLAG:COUNT:25 % 100) && (CFLAG:COUNT:25 / 100) < 2
+		U += 40
+	SIF A == (CFLAG:COUNT:25 % 100)
+		U += 80
+	SIF RELATION:COUNT:A > 100
+		U += RELATION:COUNT:A - 100
+	IF U > 50
+		DRAWLINE
+		PRINTL 
+		PRINTFORML 그 날, %조사처리(NAME:COUNT,"는")% 팔려나가는 %타겟이(1)% 탄 차를 
+		SIF TALENT:COUNT:45 == 0 && TALENT:COUNT:310 == 0 
+			PRINT 눈물로 흐려진 
+		PRINTFORML 시야에서 안보이게 될때까지, 
+		PRINTFORML 그리고 안보이게 된 뒤에도 계속 바라보고 있었다.
+		WAIT
+		;연심
+		SIF TALENT:COUNT:85
+			U -= 120
+		;음란
+		SIF TALENT:COUNT:76
+			U -= 60
+		;다부짐
+		SIF TALENT:COUNT:12
+			U -= 20
+		;감정부족
+		SIF TALENT:COUNT:22
+			U -= 20
+		;유리멘탈
+		SIF TALENT:COUNT:134
+			U += 20
+		;ヒーロー
+		SIF TALENT:COUNT:311
+			U -= 100
+		;従順
+		U -= ABL:COUNT:10 * 10
+		;반발각인
+		U += MARK:COUNT:3 * 30
+
+		;ストレス値の累積が100を超えた場合
+		IF U >= 100 && TALENT:COUNT:9 == 0
+		DRAWLINE
+			PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 알맹이가 빠져나간 것처럼 멍하니 서있다
+			PRINTFORML %CALLNAME:COUNT%의 안에서 뭔가가 부서진것 같다……
+			PRINTFORML %CALLNAME:COUNT%의 정신이【%TALENTNAME:9%】돼 버렸다
+			WAIT
+			IF TALENT:COUNT:85
+				PRINTFORML %조사처리(CALLNAME:COUNT,"는")%【%TALENTNAME:85%】을 잃었다
+				TALENT:COUNT:85 = 0
+			ENDIF
+			IF TALENT:COUNT:76
+				PRINTFORML %조사처리(CALLNAME:COUNT,"는")%【%TALENTNAME:76%】을 잃었다
+				TALENT:COUNT:76 = 0
+			ENDIF
+			TALENT:COUNT:9 = 1
+			WAIT
+		ENDIF
+	ENDIF
+REND
+;-------------------------------------------------
+;奴隷売却
+;-------------------------------------------------
+@SALE_CHARA
+
+;売却額
+S = 0
+CALL ESTIMATE_CHARA
+
+;評価表示
+SIF A:10 > 0
+	PRINTFORML %ABLNAME:10%{ABL:10}LV +{A:10}
+SIF A:11 > 0
+	PRINTFORML %ABLNAME:11%{ABL:11}LV +{A:11}
+SIF A:12 > 0
+	PRINTFORML %ABLNAME:12%{ABL:12}LV +{A:12}
+SIF A:13 > 0
+	PRINTFORML %ABLNAME:13%{ABL:13}LV +{A:13}
+SIF A:14 > 0
+	PRINTFORML %ABLNAME:14%{ABL:14}LV +{A:14}
+SIF A:15 > 0
+	PRINTFORML %ABLNAME:15%{ABL:15}LV +{A:15}
+SIF A:30 > 0
+	PRINTFORML %ABLNAME:30%{ABL:30}LV +{A:30}
+SIF A:31 > 0
+	PRINTFORML %ABLNAME:31%{ABL:31}LV +{A:31}
+SIF A:32 > 0
+	PRINTFORML %ABLNAME:32%{ABL:32}LV +{A:32}
+SIF A:33 > 0
+	PRINTFORML %ABLNAME:33%{ABL:33}LV +{A:33}
+SIF A:39 > 0
+	PRINTFORML %ABLNAME:39%{ABL:39}LV +{A:39}
+SIF A:37 > 0
+	PRINTFORML %ABLNAME:37%{ABL:37}LV -{A:37}
+
+SIF A:0 != 100
+	PRINTFORML %ABLNAME:0%{ABL:0}LV ×{A:0/100}.{A:0%100}
+SIF A:1 != 100
+	PRINTFORML %ABLNAME:1%{ABL:1}LV ×{A:1/100}.{A:1%100}
+SIF A:2 != 100
+	PRINTFORML %ABLNAME:2%{ABL:2}LV ×{A:2/100}.{A:2%100}
+SIF A:3 != 100
+	PRINTFORML %ABLNAME:3%{ABL:3}LV ×{A:3/100}.{A:3%100}
+SIF A:16 != 100
+	PRINTFORML %ABLNAME:16%{ABL:16}LV ×{A:16/100}.{A:16%100}
+SIF A:17 != 100
+	PRINTFORML %ABLNAME:17%{ABL:17}LV ×{A:17/100}.{A:17%100}
+SIF A:20 != 100
+	PRINTFORML %ABLNAME:20%{ABL:20}LV ×{A:20/100}.{A:20%100}
+SIF A:21 != 100
+	PRINTFORML %ABLNAME:21%{ABL:21}LV ×{A:21/100}.{A:21%100}
+SIF A:22 != 100
+	PRINTFORML %ABLNAME:22%{ABL:22}LV ×{A:22/100}.{A:22%100}
+SIF A:23 != 100
+	PRINTFORML %ABLNAME:23%{ABL:23}LV ×{A:23/100}.{A:23%100}
+SIF E:60 != 100
+	PRINTFORML %EXPNAME:60%{EXP:60} ×{E:60/100}.{E:60%100}
+
+REPEAT 600
+	IF COUNT < 100 || ISASSI:TARGET || TALENT:85
+		IF T:COUNT != 100
+			PRINTFORML %TALENTNAME:COUNT% ×{T:COUNT/100}.{T:COUNT%100}
+		ENDIF
+	ELSE
+		IF T:COUNT != 100 && T:COUNT != 515
+			PRINTFORML ??? ×{T:COUNT/100}.{T:COUNT%100}
+		ENDIF
+	ENDIF
+REND
+
+IF O:1 != 100
+	PRINTFORM 가격 교섭 ×{O:1/100}.
+	SIF O:1 > 100 && O:1 < 110
+		PRINT 0
+	PRINTFORML {O:1%100}
+ENDIF
+
+;売却額表示
+PRINTFORML %NAME:TARGET%의 은퇴작은 {S}포인트 팔릴 것 같습니다.
+PRINTFORML %타겟을(1)% 은퇴시킵니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 아니오
+
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	;売却時口上
+	TFLAG:13 = 6
+	CALL SELF_KOJO
+	CALL EVENT_SELL_AFTER
+	PRINTFORMW %NAME:TARGET%의 은퇴작 매상은 {S}포인트입니다
+	IF ABL:10 < 5 && (TALENT:315 || TALENT:316)
+		PRINTFORML %타겟은(1)% 수송중 실종됐기에 
+		PRINTFORMW 예상의 1/5, {S / 5}포인트만 지급됐습니다…
+		S /= 5
+	ENDIF
+	MONEY += S
+	RETURN 1
+ELSEIF RESULT == 1
+	S = -1
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+;
+;
+;

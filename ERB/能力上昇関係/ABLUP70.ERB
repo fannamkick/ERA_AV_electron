@@ -1,0 +1,147 @@
+﻿;피사技能のLvUP処理とその可否判定
+;eratohoA ver1.204およびeraIm@s0.17βdのスクリプトをベースに作成
+
+;-------------------------------------------------
+;피사技能のLvUP
+;-------------------------------------------------
+@ABLUP70
+DRAWLINE
+;PRINTL 노예가 비주얼에 걸맞게 되는 기술을 향상시킵니다
+;PRINTL 비주얼기능이 높아지면 비디오 촬영으로부터 보다 큰 수익을 기대할 수 있게 됩니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;피사技能はLv5が上限
+;[음란]か[노출광]が付いている場合はLv10まで해방
+IF ABL:70 >= 5 && (TALENT:76 == 0 && TALENT:89 == 0)
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:70 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要な습득의 구슬
+A = 0
+;必要な피사경험
+B = 0
+
+CALL DECIDE_ABLUP70
+
+PRINTFORM [0] - %PALAMNAME:7%의 구슬×{JUEL:7}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+PRINTFORML 　　　%EXPNAME:70%　{EXP:70}/{B}
+PRINTL [100] - 그만둔다
+
+INPUT
+IF RESULT != 0 && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:70 += 1
+JUEL:7 -= A
+
+PRINTFORML %ABLNAME:70%의 레벨이 %조사처리(ABL:70,"가")% 되었습니다
+
+RETURN 0
+
+;--------------------------------------------------
+;レベルアップに必要な珠計算, レベルアップ予告処理
+;--------------------------------------------------
+@DECIDE_ABLUP70
+;피사技能はLv5が上限
+;[음란]か[노출광]が付いている場合はLv10まで해방
+SIF ABL:70 >= 10
+	RETURN 0
+SIF ABL:70 >= 5 && (TALENT:76 == 0 && TALENT:89 == 0)
+	RETURN 0
+
+A = 0
+B = 0
+
+;条件別にOKかダメかを記録する
+I = 0
+
+IF ABL:70 == 0
+	A = 100
+	B = 10
+ELSEIF ABL:70 == 1
+	A = 300
+	B = 30
+ELSEIF ABL:70 == 2
+	A = 500
+	B = 60
+ELSEIF ABL:70 == 3
+	A = 2000
+	B = 100
+ELSEIF ABL:70 == 4
+	A = 6000
+	B = 200
+ELSEIF ABL:70 == 5
+	A = 12000
+	B = 500
+ELSEIF ABL:70 == 6
+	A = 16000
+	B = 1000
+ELSEIF ABL:70 == 7
+	A = 22000
+	B = 1800
+ELSEIF ABL:70 == 8
+	A = 30000
+	B = 4000
+ELSEIF ABL:70 == 9
+	A = 35000
+	B = 10000
+ENDIF
+
+;習得早い
+IF TALENT:50
+	TIMES A , 0.80
+	TIMES B , 0.80
+;습득느림
+ELSEIF TALENT:51
+	TIMES A , 1.20
+	TIMES B , 1.20
+ENDIF
+IF TALENT:89
+	TIMES A , 0.01
+	TIMES B , 0.01
+ENDIF
+IF TALENT:505
+	TIMES A , 0.10
+	TIMES B , 0.10
+ENDIF
+;最低でも1回・1個は必要
+SIF A < 1
+	A = 1
+SIF B < 1
+	B = 1
+
+;습득의 구슬は足りている?
+SIF JUEL:7 < A
+	I |= 1
+
+;피사경험は足りている?
+SIF EXP:70 < B
+	I |= 2
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+;
+;
+;

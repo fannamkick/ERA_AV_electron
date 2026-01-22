@@ -1,0 +1,458 @@
+﻿;=================================================
+;スタッフ寝取られ・準備
+;=================================================
+@NTR_STAFF_BEGIN
+#DIM DYNAMIC C_NUM
+#DIM DYNAMIC DANGER_VALUE
+
+FOR C_NUM, 1, CHARANUM
+	;남성불신
+	SIF TALENT:C_NUM:82
+		CONTINUE
+	;オトコ
+	SIF TALENT:C_NUM:122
+		CONTINUE
+	;임신
+	SIF TALENT:C_NUM:153
+		CONTINUE
+	;육아 중
+	SIF TALENT:C_NUM:154
+		CONTINUE
+	;남친있음
+	SIF TALENT:C_NUM:184
+		CONTINUE
+	;영원한 사랑
+	SIF TALENT:C_NUM:430
+		CONTINUE
+	;야쿠자의 딸
+	SIF TALENT:C_NUM:502
+		CONTINUE
+	;안드로이드
+	SIF TALENT:C_NUM:504
+		CONTINUE
+	;음마
+	SIF TALENT:C_NUM:505
+		CONTINUE
+	;천사
+	SIF TALENT:C_NUM:511
+		CONTINUE
+	;야쿠자의 아내
+	SIF TALENT:C_NUM:516
+		CONTINUE
+	;탐정
+	SIF TALENT:C_NUM:517
+		CONTINUE
+	;Triptych 어째서?
+	SIF TALENT:C_NUM:519
+		CONTINUE
+	;유령
+	SIF TALENT:C_NUM:521
+		CONTINUE
+	;ONLY ONE EMPRESS
+	SIF TALENT:C_NUM:553
+		CONTINUE
+	;이미 진행중
+	SIF CFLAG:C_NUM:661 >= 1
+		CONTINUE
+	;호위
+	SIF CFLAG:C_NUM:633
+		CONTINUE
+	;기숙사에 들어간 상태, 경찰관
+	SIF CFLAG:C_NUM:140 && (FLAG:101 & 128)
+		CONTINUE
+	;정조대
+	SIF CFLAG:C_NUM:40 >= 64 && CFLAG:C_NUM:42 == 79
+		CONTINUE
+	;리나의 동향 조사
+	SIF CFLAG:MASTER:694 == 1
+		CONTINUE
+	SIF DAY <= 1
+		CONTINUE
+	;초기치는 0~99에서 랜덤수치
+	DANGER_VALUE += RAND:100
+	;쉬운 여자/남자
+	SIF TALENT:C_NUM:416
+		DANGER_VALUE += 20
+	;보수적
+	SIF TALENT:C_NUM:24
+		DANGER_VALUE -= 5
+	;일선을 넘지않음
+	SIF TALENT:C_NUM:27
+		DANGER_VALUE -= 5
+	;정조관념
+	SIF TALENT:C_NUM:30
+		DANGER_VALUE -= 5
+	;연심
+	SIF TALENT:C_NUM:85
+		DANGER_VALUE -= 10
+	;망신
+	SIF TALENT:C_NUM:86
+		DANGER_VALUE -= 10
+	;신앙심
+	SIF TALENT:C_NUM:428
+		DANGER_VALUE -= 5
+	;Colorful Pure Girls
+	SIF TALENT:C_NUM:509
+		DANGER_VALUE -= 10
+	;정조무관심
+	SIF TALENT:C_NUM:31
+		DANGER_VALUE += 5
+	;즉각함락
+	SIF TALENT:C_NUM:73
+		DANGER_VALUE += 50
+	;음란
+	SIF TALENT:C_NUM:76 && TALENT:C_NUM:85 == 0
+		DANGER_VALUE += 15
+	;유리멘탈
+	SIF TALENT:C_NUM:134
+		DANGER_VALUE += 5
+	;갸루계
+	SIF TALENT:C_NUM:432
+		DANGER_VALUE += 10
+	;밀어붙이는 데에 약하다
+	SIF TALENT:C_NUM:601
+		DANGER_VALUE += 20
+	;카나데 보정
+	SIF NO:C_NUM == 1 || NO:C_NUM == 91
+		DANGER_VALUE += 10
+	IF DANGER_VALUE >= 95
+		;진행 완만하게。
+		CFLAG:C_NUM:660 += 1
+		IF CFLAG:C_NUM:660 >= 5
+			CFLAG:C_NUM:661 = 1
+			CFLAG:C_NUM:619 = 0
+			CFLAG:C_NUM:621 = 1
+			CALL DECIDE_BOYFRIEND, C_NUM
+		ENDIF
+	ENDIF
+	DANGER_VALUE = 0
+NEXT
+	
+;=================================================
+;スタッフ寝取られ・ベース
+;=================================================
+@BASE_NTR_STAFF
+#DIM DYNAMIC C_NUM
+
+FOR C_NUM, 1, CHARANUM
+	;정조대
+	SIF CFLAG:C_NUM:40 >= 64 && CFLAG:C_NUM:42 == 79
+		CONTINUE
+	;호위
+	SIF CFLAG:C_NUM:633
+		CONTINUE
+	;で, 대상이라면
+	IF CFLAG:C_NUM:661 == 1
+		CALL EXP_NTR_STAFF
+		EXP:C_NUM:108 += 1
+	ENDIF
+NEXT
+
+;=================================================
+;스테프 네토라레・진행 호출
+;ARG-캐릭번호
+;=================================================
+@EXP_NTR_STAFF, ARG
+#DIM DYNAMIC C_NUM
+
+;캐릭번호 대입
+C_NUM = ARG
+
+IF EXP:C_NUM:108 == 0
+	;첫 키스 이벤트
+	CALL FIRSTKISS_NTR_STAFF, C_NUM
+ELSEIF EXP:C_NUM:108 == 1 && TALENT:C_NUM:0 == 1 && CFLAG:C_NUM:15 == 0
+	;처녀상실 이벤트
+	CALL LOSTVIRGIN_NTR_STAFF, C_NUM
+ELSEIF EXP:C_NUM:108 == 5
+	;옷이 바뀐걸 아나타가 보고 이상하게 생각함
+	CALL CHANGECLOTH_NTR_STAFF, C_NUM
+ELSEIF EXP:C_NUM:108 == 10
+	;스태프 네토라레 말로
+	CALL NTR_STAFF_LAST
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ELSE
+	;스태프 네토라레 섹스
+	CALL SEX_NTR_STAFF, C_NUM
+ENDIF
+
+;=================================================
+;스테프 네토라레・첫 키스
+;ARG-캐릭번호
+;=================================================
+@FIRSTKISS_NTR_STAFF, ARG
+#DIM DYNAMIC C_NUM
+
+;캐릭번호 대입
+C_NUM = ARG
+
+IF CFLAG:C_NUM:16 == -1
+	CFLAG:C_NUM:16 = 10
+	CSTR:C_NUM:1 = ???
+;	CALL DECIDE_BOYFRIEND
+	BASE:C_NUM:31 -= 5
+	CFLAG:C_NUM:820 = BASE:C_NUM:9
+	CFLAG:C_NUM:821 = DAY:1
+	CFLAG:C_NUM:822 = DAY:2
+ENDIF
+
+;=================================================
+;스테프 네토라레・처녀상실
+;ARG-캐릭번호
+;=================================================
+@LOSTVIRGIN_NTR_STAFF, ARG
+#DIM DYNAMIC C_NUM
+#DIM DYNAMIC V_EXP_VALUE
+#DIM DYNAMIC SEMEN_EXP_VALUE
+#DIM DYNAMIC IKU_EXP_VALUE
+
+;캐릭번호 대입
+C_NUM = ARG
+
+;각 경험 초기치
+V_EXP_VALUE = 1
+SEMEN_EXP_VALUE = 1
+IKU_EXP_VALUE = 1
+
+;각 경험 추가치 가산
+;V경험
+V_EXP_VALUE += RAND:3
+;정액경험
+SEMEN_EXP_VALUE += RAND:3
+;절정경험
+IKU_EXP_VALUE += RAND:2
+
+CFLAG:COUNT:160 = BASE:COUNT:9
+CFLAG:COUNT:161 = DAY:1
+CFLAG:COUNT:162 = DAY:2
+CFLAG:COUNT:163 = 3
+CFLAG:COUNT:164 = 3
+
+TALENT:COUNT:0 = 0
+CFLAG:COUNT:15 = 10
+CSTR:COUNT:0 = ???
+EXP:COUNT:0 += V_EXP_VALUE
+EXP:COUNT:2 += IKU_EXP_VALUE
+EXP:COUNT:5 += V_EXP_VALUE
+EXP:COUNT:20 += SEMEN_EXP_VALUE
+JUEL:COUNT:1 += 100 * V_EXP_VALUE
+JUEL:COUNT:5 += 300 * IKU_EXP_VALUE
+JUEL:COUNT:4 -= 200 * (V_EXP_VALUE + IKU_EXP_VALUE)
+IF JUEL:COUNT:4 < 0
+	ABL:COUNT:10 -= 1
+	JUEL:COUNT:4 = 0
+	IF ABL:COUNT:10 < 1
+		ABL:COUNT:10 = 0
+		BASE:COUNT:31 -= 10
+	ENDIF
+ENDIF
+;IF CFLAG:16 != 10
+;	CALL DECIDE_BOYFRIEND
+;ENDIF
+
+;=================================================
+;スタッフ寝取られ・衣装チェンジ
+;=================================================
+;金髪のゆるふわパーマ。갈색피부。
+;マイクロミニタイト원피스。
+;ニーハイネットストッキング, パールピンクミュール。
+;ARG-캐릭번호
+;-------------------------------------------------
+@CHANGECLOTH_NTR_STAFF, ARG
+#DIM DYNAMIC C_NUM
+
+;캐릭번호 대입
+C_NUM = ARG
+
+PRINTFORMW %NAME:C_NUM%의 모습이 이상하다……
+	IF CFLAG:C_NUM:600 != 2
+		PRINTFORM 머리를 갑자기 염색하거나, 
+	ENDIF
+PRINTFORML 노출도가 높은 옷을 원해서 입게 됐다
+PRINTFORM %조사처리(CALLNAME:C_NUM,"는")% 이미지 체인지라고 하지만, 듣기로는 저번 휴일에 
+PRINTFORML 스탭인 %CSTR:C_NUM:7%처럼 보이는 사람과 같이 있는 모습을 봤다고 한다
+PRINTFORML 그것도 이상할 정도로 친해보여서, 말을 걸기고 껄끄러운 분위기 였다고 한다
+PRINTFORML 그러고보니, 확실히 요즘 %조사처리(CALLNAME:C_NUM,"가")% %조사처리(CSTR:C_NUM:7,"를")% 계속 눈으로 쫓는 것도 같다
+PRINTFORML 그러나 %CALLNAME:MASTER% 이외의 스탭이 여배우에게 손대는 건 카논이 금지했을텐데……
+PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+CFLAG:C_NUM:40 = 13
+CFLAG:C_NUM:41 = 205
+CFLAG:C_NUM:170 = 8
+CFLAG:C_NUM:171 = 8
+IF CFLAG:C_NUM:600 != 2
+	CFLAG:C_NUM:600 = 2
+	CFLAG:C_NUM:601 = 1
+ENDIF
+CFLAG:C_NUM:602 = 7
+IF TALENT:C_NUM:423 == 1
+	TALENT:C_NUM:432 = 1
+	IF NO:C_NUM != 1
+		IF RAND:2 == 0
+			CSTR:C_NUM:9 = 난
+		ELSE
+			CSTR:C_NUM:9 = 나
+		ENDIF
+		IF RAND:2 == 0
+			CSTR:C_NUM:80 = 자지
+			CSTR:C_NUM:81 = 보지
+		ELSE
+			CSTR:C_NUM:80 = 자지
+			CSTR:C_NUM:81 = 보지
+		ENDIF
+	ELSE
+		CSTR:C_NUM:9 = 난
+		CSTR:C_NUM:80 = 자지
+		CSTR:C_NUM:81 = 보지
+		TALENT:C_NUM:422 = 1
+		CFLAG:C_NUM:7 |= 2
+		CFLAG:C_NUM:7 |= 16
+		CFLAG:C_NUM:174 = 11
+		CFLAG:C_NUM:175 = 6
+		CFLAG:C_NUM:176 = 11
+		CFLAG:C_NUM:177 = 6
+	ENDIF
+ENDIF
+
+CFLAG:C_NUM:662 = 1
+
+;=================================================
+;스테프 네토라레・통상섹스
+;ARG-캐릭번호
+;=================================================
+@SEX_NTR_STAFF, ARG
+#DIM DYNAMIC C_NUM
+#DIM DYNAMIC V_EXP_VALUE
+#DIM DYNAMIC SEMEN_EXP_VALUE
+#DIM DYNAMIC IKU_EXP_VALUE
+#DIM DYNAMIC FELLA_EXP_VALUE
+
+;캐릭번호 대입
+C_NUM = ARG
+
+;각 경험 초기치
+
+V_EXP_VALUE = 5
+SEMEN_EXP_VALUE = 5
+IKU_EXP_VALUE = 8
+FELLA_EXP_VALUE = 2
+
+;각 경험 추가치 가산
+;V경험
+V_EXP_VALUE += RAND:5
+;정액경험
+SEMEN_EXP_VALUE += RAND:5
+;절정경험
+IKU_EXP_VALUE += RAND:5
+;펠라경험
+FELLA_EXP_VALUE += RAND:3
+
+	EXP:COUNT:0 += V_EXP_VALUE
+	EXP:COUNT:2 += IKU_EXP_VALUE
+	EXP:COUNT:5 += V_EXP_VALUE
+	EXP:COUNT:20 += SEMEN_EXP_VALUE
+	EXP:COUNT:22 += FELLA_EXP_VALUE
+	JUEL:COUNT:1 += 400 * V_EXP_VALUE
+	JUEL:COUNT:5 += 300 * IKU_EXP_VALUE
+	JUEL:COUNT:5 += 300 * FELLA_EXP_VALUE
+	JUEL:COUNT:4 -= 200 * (V_EXP_VALUE + IKU_EXP_VALUE)
+	IF JUEL:COUNT:4 < 0
+		ABL:COUNT:10 -= 1
+		JUEL:COUNT:4 = 0
+		IF ABL:COUNT:10 < 1
+			ABL:COUNT:10 = 0
+		ENDIF
+	ENDIF
+	IF TALENT:COUNT:424 == 0
+		TALENT:COUNT:424 += RAND:2
+		IF TALENT:COUNT:424 >= 1
+			TALENT:COUNT:424 = 1
+			CALL CIGARETTES_4COUNT
+		ENDIF
+	ENDIF
+	IF TALENT:COUNT:85 == 1
+		TALENT:COUNT:85 = RAND:2
+			IF TALENT:COUNT:85 >= 1
+				TALENT:COUNT:85 = 1
+			ENDIF
+	ENDIF
+
+;=================================================
+;스테프 네토라레・라스트
+;=================================================
+@NTR_STAFF_LAST, ARG
+#DIM DYNAMIC C_NUM
+
+;캐릭번호 대입
+C_NUM = ARG
+
+PRINTFORML 밤 늦게까지 사무소에 남아있던 %플레이어가()% 사무소를 나가려고 했을 때, PC 한대의 전원이 켜져있는 걸 알아챘다
+PRINTFORML 분명 저건…… 스탭인 %CSTR:C_NUM:7%의 PC일거다
+PRINTFORM 아마 대용량 자료를 편집하다, 그대로 두고간 것일까, 
+PRINTFORML 잘 살펴보니 DVD드라이브가 열려있고, 안에는 DVD－R이 한 장 들어있다
+PRINTFORML %CSTR:C_NUM:7% 뿐만 아니라 PC 전원 끄는 걸 깜빡하거나,『자료』라며 다른 메이커의 AV를 다운로드 구입하고 그대로 돌아가는 사람도 있다
+PRINTFORML 그럴땐, 그냥 깜빡한 거라면 마지막까지 남아있던 사람이 꺼두고, 사정이 있어서 켜둬야 한다고 말했으면 그대로 둔다
+PRINTFORMW 이번엔 켜둬야 한다는 말은 듣지 못했으니 %플레이어는()% PC의 대기화면을 풀고, 전원을 끄려고 했다……
+PRINTFORM 돌아온 화면엔 몇가지 파일이 들어있는 폴더가 떠있었고, 
+PRINTFORML 그대로 폴더를 닫으려고 하다 …… %플레이어는()% 움직임을 멈췄다
+PRINTFORML 폴더에 들어있는 파일 이름은『%CALLNAME:C_NUM% 섹스촬영 Vol.{RAND:10+1}』이나『%CALLNAME:C_NUM% 정액새어나옴』등등 이었다
+PRINTFORM 가슴이 술렁거린 %플레이어는()%, 요즘 %조사처리(CALLNAME:C_NUM,"과")% %CSTR:C_NUM:7%의 모습이 어딘가 이상했던 것을 기억해내고, 
+PRINTFORML 의문이 확신으로 변하는 걸 느끼며 드라이브에 들어가있는 DVD－R을 재생했다……
+PRINTW
+
+CALL KOJO_NTR_STAFF, C_NUM
+
+PRINTFORML ……역시 파일명으로 예상했던 대로, DVD에 기록된 파일은 %CALLNAME:C_NUM%의 섹스영상이었다
+PRINTFORML 이 사무소의 스탭들은 사정이 있어 카논이 준비한 사람들로, %CALLNAME:MASTER% 이외의 스탭들이 여배우에게 손을 대는 것은 금지돼있다
+PRINTFORM 그러고보니, 카논이『만에 하나 스탭이 여자에게 손을 댔다면 바로 연락해줘』라고 한 말이 기억난 %플레이어는()% 
+PRINTFORML 휴대폰으로 카논을 부르기로 했다……
+PRINTW
+PRINTFORML 「오ー ……이거 제대로 섹스영상이네…… 그리고, 이 목소리는 틀림없이 %CSTR:C_NUM:7%인데
+PRINTFORML 　뭐, 여배우들은 모두 미소녀・미녀니까 손을 대고 싶어지는 기분도 알겠지만 말이야……
+PRINTFORML 　하지만, 여기가 정상적인 곳이 아니란 걸 잊어버렸다면 큰 문제지
+PRINTFORML 　이게 일반 예능사무소였다면 잘리고 끝일테니, %CSTR:C_NUM:7%도 정신줄을 놓아버린 건지……
+PRINTFORML 　우리 같은 놈들에게 빚을 져놓고, 이렇게 섹스영상까지 찍을 정도로 여유가 넘치는건 말야
+PRINTFORML 　지금의 생활은『이곳에 있으니까』가능한거고, 아니었다면 지금쯤 어떤 곳에 있을지 말했을텐데
+PRINTFORML 　『네놈들이 만에 하나라도 여배우들에게 손을 댄다면…… 그래, 바다 깊은 곳에 있는 콘크리트 드럼통이 하나 늘어나겠지』
+PRINTFORML 　라고 그 놈들을 모아놓고서 말이야
+PRINTFORMW 　어차피 감시가 느슨하니까 걸릴리가 없다고 배째라 했겠지…… 아무리 그래도 너무 멍청한거 아냐?
+PRINTFORML 　일단 이 일은 내가 알아서 해결할게 ……아마 원망받겠지만, 나 한명만 원망해준다면 그것도 괜찮겠지
+PRINTFORMW 　이 가업을 잇기로 했을때부터, 원망받는 건…… 그 누구보다 익숙하니까……
+PRINTFORML 　하지만, 이거 하나는 말해둘게…… 이 일은 내 실수이기도 하고, 네 실수이기도 하잖아
+PRINTFORML 　막으려고 했다면 막을 수 있었고, 애초에 네 매력이 떨어지니 이 사단이 났다는 건…… 제대로 이해하고 있겠지?
+PRINTFORML 　뭐, 다시는 이런 일 없게 더 좋은 남자가 되도록 노력하라는 거야
+PRINTFORML 　그럼 난 %CSTR:C_NUM:7%에게 우리 애들 솜씨나 보여주러 가볼까……」
+PRINTW
+PRINTFORML 다음날, %조사처리(CSTR:C_NUM:7,"가")% 없는게 신경쓰이는지, %조사처리(CALLNAME:C_NUM,"는")% 안절부절 못하며 다른 스탭들과 이야기하고 있었다
+PRINTFORM 왠지 어색한 분위기를 깨듯이, 부하들을 데리고 나타난 카논이『%CSTR:C_NUM:7%이라면 처분했다』고 말하고는, 
+PRINTFORML 갑작스러운 소식에 안색이 창백해진 %조사처리(CALLNAME:C_NUM,"를")% 불러내어, 사무소 밖으로 나갔다……
+PRINTW 
+PRINTFORML 「일단『지인』에게 데려가 봤는데, 100％ 임신은 안했다고 했어
+PRINTFORML 　의학적인 견해는 아니니까 믿기 힘들 수도 있지만, 웬만한 의사들보다 훨씬 정확한 사람이야
+PRINTFORML 　그리고 뒷처리로 %CSTR:C_NUM:7%에 관한 기억『만은』지워뒀어」
+PRINTW
+PRINTFORML 말을 마치고, 돌아온 카논은 어딘가 안심한 표정으로 차를 홀짝였다
+PRINTFORML 어쩌면, %CALLNAME:C_NUM%에게 원망받을 일 없이 끝나 다행이라고 생각하는지도 모른다……
+PRINTW
+IF CFLAG:C_NUM:15 == 10
+	PRINTFORML 《%NAME:C_NUM%의 첫 상대가 밝혀졌습니다》
+		CSTR:C_NUM:0 = %CSTR:C_NUM:7% %CSTR:C_NUM:8%(전스탭)
+		CFLAG:C_NUM:15 = 8
+		EXP:C_NUM:101 += 10
+ENDIF
+IF CFLAG:C_NUM:16 == 10
+	PRINTFORML 《%NAME:C_NUM%의 첫 키스 상대가 밝혀졌습니다》
+		IF RAND:2 == 0
+			CSTR:C_NUM:1 = %CSTR:C_NUM:7% %CSTR:C_NUM:8%(전스탭)
+		ELSE
+			CSTR:C_NUM:1 = %CSTR:C_NUM:7% %CSTR:C_NUM:8%(전스탭)
+			CFLAG:C_NUM:824 = 1
+		ENDIF
+ENDIF
+	CFLAG:C_NUM:619 = 0
+	CFLAG:C_NUM:621 = 0
+	CFLAG:C_NUM:661 = 2
+	BASE:C_NUM:31 -= 10
+	EXP:C_NUM:109 += 1
+	;△예정。사라진 스탭이 남자친구와 계속 나오는 것도 어떨까 생각하기 때문에。
+	CFLAG:C_NUM:827 = 1

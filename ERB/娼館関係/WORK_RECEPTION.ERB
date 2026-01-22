@@ -1,0 +1,1779 @@
+﻿;==================================================
+;奴隷接待関係の処理
+;==================================================
+;eraImas_stable\eraIm@s_ver.0.17βdより流用して大幅に改造(by pawapokya-)
+;↓は元作者のコメント
+;>実験的な意味も含めて大幅に改造, ですがまだテスト段階です
+;>とりあえず周りに問題を起こすことなく動けばいいという考えなので, かなり力技で作っております
+;>変数を使いまくりなのでどこで何が起きてるかとかがわかりにくいのが一番の問題か……
+;==================================================
+@RECEPTION_MAIN
+
+;使用変数
+;A == 접대상대との相性(bit値)
+;B == 満足度
+;C == 相手の사정(절정)ゲージ
+;D == 사정(절정)ゲージの上下を判定
+;E == 奴隷の절정ゲージ
+;F == 奴隷の절정ゲージの上下を判定
+;G == 相手の사정(절정)回数(まだ未使用)
+;H == 奴隷の절정回数(まだ未使用)
+;L:0~3 == 使用したコマンド回数。同じコマンドを繰り返すと成功率は下がっていく
+;N == 부정의 구슬
+;Q,U,V == 부정의 구슬の許容量計算
+;S == 各コマンド実行時の成否判定
+
+
+;使用する変数を初期化
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+F = 0
+G = 0
+H = 0
+L:0 = 0
+L:1 = 0
+L:2 = 0
+L:3 = 0
+N = 0
+Q = 0
+S = 0
+U = 0
+V = 0
+
+;--------------------------------------------------
+;접대상대の傾向を決定(ビット演算を使用)
+;--------------------------------------------------
+FLAG:49 = 0
+
+;女になる場合
+SIF RAND:3 == 0
+	FLAG:49 |= 1
+;サディストになる場合
+SIF RAND:3 == 0
+	FLAG:49 |= 2
+;マニアになる場合
+SIF RAND:3 == 0
+	FLAG:49 |= 8
+;50%の確率で연령性癖持ち
+IF RAND:2 == 0
+	;20%の確率で메이드好き
+	IF RAND:5 == 0
+		FLAG:49 |= 32
+	;40%の確率で女子高生フェチ
+	ELSEIF RAND:2 == 0
+		FLAG:49 |= 16
+	;40%の確率でペドフィリア
+	ELSE
+		FLAG:49 |= 4
+	ENDIF
+ENDIF
+;男の場合33%の確率で職業フェチ持ち
+IF (FLAG:49 & 1) == 0 && RAND:3 == 0
+	;아이돌フェチになる場合
+	IF RAND:3 == 0
+		FLAG:49 |= 64
+	;흑갸루フェチになる場合
+	ELSEIF RAND:2 == 0
+		FLAG:49 |= 128
+	;人妻フェチになる場合
+	ELSE
+		FLAG:49 |= 256
+	ENDIF
+ENDIF
+
+;--------------------------------------------------
+;接待を実行するキャラの選択
+;--------------------------------------------------
+$INPUT_LOOP
+
+PRINTFORM %플레이어가()% 입수한 정보에 따르면, 이번 접대 상대는
+SIF (FLAG:49 & 2)
+	PRINT  새디스트인 
+SIF (FLAG:49 & 8) 
+	PRINT  매니아 취미인 
+IF (FLAG:49 & 1)
+	PRINT  여성
+ELSE
+	PRINT  남성
+ENDIF
+IF (FLAG:49 & 4)
+	PRINT 으로 로리콘
+ELSEIF (FLAG:49 & 16)
+	PRINT 으로 여고생 페티쉬
+ELSEIF (FLAG:49 & 32)
+	PRINT 으로 메이드 취향
+ENDIF
+PRINTFORM 인 것 같
+IF (FLAG:49 & 64)
+	PRINT 으며, 게다가 꽤 연륜이 있는 아이돌 오타쿠인 것 같다
+ELSEIF (FLAG:49 & 128)
+	PRINT 으며, 게다가 갸루가 좋아서 견딜 수 없는 것 같다
+ELSEIF (FLAG:49 & 256)
+	PRINT 으며, 게다가 유부녀가 좋아서 참을 수 없는 것 같다
+ELSE
+	PRINT 다
+ENDIF
+WAIT
+
+DRAWLINE
+PRINTL 누구에게 접대를 맡기겠습니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+REPEAT CHARANUM
+	;主人は除外
+	SIF COUNT == 0
+		CONTINUE
+	;労役中だと不可
+	SIF TIME == 1 && CFLAG:COUNT:12 != 0
+		CONTINUE
+	;売却可でないと不可
+	SIF CFLAG:COUNT:1 == 0
+		CONTINUE
+	;체력が500未満だと不可
+	SIF BASE:COUNT:0 < 500
+		CONTINUE
+	;반발각인が付いていると不可
+	SIF MARK:COUNT:3 >= 1
+		CONTINUE
+	;従順と욕망の合計値が8以下だと不可
+	SIF ABL:COUNT:10 + ABL:COUNT:11 < 8
+		CONTINUE
+	;산월・육아 중だと不可
+	SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153	
+		CONTINUE
+	SIF TALENT:COUNT:154
+		CONTINUE
+	;素質【남성】が付いていると不可
+	SIF TALENT:COUNT:122
+		CONTINUE
+
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	PRINT (체력: 
+	A = BASE:COUNT:0
+	SIF BASE:COUNT:0 < 0
+		A = 0
+	PRINTFORML {A}/{MAXBASE:COUNT:0})
+
+REND
+DRAWLINE
+PRINTFORML  [999] - 접대를 단념한다
+
+INPUT
+
+IF RESULT == 999
+	PRINTFORML %플레이어는()% 어쩔 수 없이 접대를 단념했다
+	PRINTFORML 흥이 깨진 접대 상대는, 짜증을 내며 돌아가 버렸다……
+	WAIT
+	EXP:MASTER:90 -= 10
+	PRINTFORML 공헌도　-10
+
+	;接待終了
+	BEGIN TURNEND
+	RETURN 0
+;接待可能キャラの判定
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ELSEIF TIME == 1 && CFLAG:RESULT:12 != 0
+	GOTO INPUT_LOOP
+ELSEIF CFLAG:RESULT:1 == 0
+	GOTO INPUT_LOOP
+ELSEIF BASE:RESULT:0 < 500
+	GOTO INPUT_LOOP
+ELSEIF MARK:RESULT:3 >= 1
+	GOTO INPUT_LOOP
+ELSEIF  ABL:RESULT:10 + ABL:RESULT:11 < 8
+	GOTO INPUT_LOOP
+ELSEIF CFLAG:RESULT:110 - 2 <= DAY && TALENT:RESULT:153
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:154
+	GOTO INPUT_LOOP
+ELSEIF TALENT:RESULT:122
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+PRINTFORM %CALLNAME:MASTER%에게 이끌려 %타겟이()% 방에 들어가니, 그 곳에 한 
+IF (FLAG:49 & 1) == 1
+	PRINT 여성
+ELSEIF (FLAG:49 & 1) == 0
+	PRINT 남성
+ENDIF
+PRINTFORML 이 기다리고 있다
+PRINTFORML 이 사람이 이번의 접대 상대인 것 같다…
+WAIT
+
+A = 0
+;접대상대の性癖と奴隷の素質のマッチ
+;女同士でレズ
+SIF (FLAG:49 & 1) && ABL:22 > 0
+	A |= 1
+;サディストと마조ヒスト
+SIF (FLAG:49 & 2) && (TALENT:88 || ABL:21 >= 3)
+	A |= 2
+;ペドフィリア＋유치
+SIF (FLAG:49 & 4) && (BASE:9 <= 15 || TALENT:414 == 1)
+	A |= 4
+;女子고등학생フェチ＋女子고등학생
+SIF (FLAG:49 & 16) && TALENT:220
+	A |= 4
+;메이드好き＋메이드
+SIF (FLAG:49 & 32) && TALENT:417
+	A |= 4
+;マニア同士
+SIF (FLAG:49 & 8) && ABL:81 > 0
+	A |= 8
+;아이돌フェチ＋아이돌
+SIF (FLAG:49 & 64) && TALENT:203
+	A |= 16
+;흑갸루フェチ＋흑갸루
+SIF (FLAG:49 & 128) && TALENT:422 && TALENT:432
+	A |= 16
+;人妻フェチ＋유부녀
+SIF (FLAG:49 & 256) && TALENT:206
+	A |= 16
+
+;満足度の初期値は30ということで
+B += 30
+
+LOSEBASE:0 = 0
+
+;営業フラグ外れる
+CFLAG:12 = 0
+
+;V使用不可フラグのチェック
+;オトコである
+IF TALENT:122
+	CFLAG:54 = 1
+;정조대着用
+ELSEIF CFLAG:42 == 79 && (CFLAG:40 & 64)
+	CFLAG:54 = 1
+ELSE
+	CFLAG:54 = 0
+ENDIF
+
+;--------------------------------------------------
+;接待실행중
+;--------------------------------------------------
+CALL RECEPTION_MAIN2
+
+;--------------------------------------------------
+;接待終了
+;--------------------------------------------------
+;10ターンを過ぎたらそこで終了し接待の結果判定に移動する
+PRINTFORMW 접대를 종료합니다
+
+;最後まで接待をやり遂げてかつ満足度が100以上なら成功
+IF RESULT == 0
+	PRINTFORML 이번 접대는 대실패로 끝나고 말았다……
+	B = 10
+	EXP:MASTER:90 -= B
+	PRINTFORML 공헌도　-{B}
+ELSEIF B < 100
+	PRINTFORML 이번 접대는 실패로 끝난 것 같다……
+	B = 5
+	EXP:MASTER:90 -= B
+	PRINTFORML 공헌도　-{B}
+ELSE
+	PRINTFORML 충분히 만족해 준 것 같다
+	B /= 30
+	EXP:MASTER:90 += B
+	PRINTFORML 공헌도　+{B}
+ENDIF
+
+SIF EXP:MASTER:90 < 0
+	EXP:MASTER:90 = 0
+
+;부정의 구슬取得量の計算
+N = 200
+
+;反抗的
+SIF TALENT:11
+	TIMES N , 1.10
+;프라이드 높음
+SIF TALENT:15
+	TIMES N , 1.20
+;보수적
+SIF TALENT:24
+	TIMES N , 1.20
+;정조무관심
+SIF TALENT:31
+	TIMES N , 0.80
+;수줍음
+SIF TALENT:35
+	TIMES N , 1.10
+;부끄럼 없음
+SIF TALENT:36
+	TIMES N , 0.90
+;음란
+SIF TALENT:76
+	TIMES N , 0.60
+;도착적
+SIF TALENT:80
+	TIMES N , 0.80
+;娼婦
+SIF TALENT:180
+	TIMES N , 0.50
+;傾城
+SIF TALENT:181
+	TIMES N , 0.80
+;愛
+SIF TALENT:85 == 1
+	N *= 3
+;愛LV2
+SIF TALENT:85 >= 2
+	N *= 5
+;求愛
+SIF TALENT:184
+	N *= 2
+;질투
+SIF TALENT:84
+	N *= 10
+		
+PRINTFORML 부정의 구슬 {JUEL:100}　+　{N}
+JUEL:100 += N
+	
+;부정의 구슬の許容量を計算
+Q = ABL:10 * 100
+
+;娼婦なら許容量2倍
+IF TALENT:180
+	Q *= 2
+ELSE
+	Q += 100
+ENDIF
+
+U = Q
+TIMES U , 1.73
+V = Q
+TIMES V , 1.41
+	
+IF MARK:3 != 3 && JUEL:100 > U
+	PRINTW 반발각인 LV3을 습득
+	MARK:3 = 3
+ELSEIF MARK:3 != 2 && JUEL:100 > V
+	PRINTW 반발각인 LV2를 습득
+	MARK:3 = 2
+ELSEIF MARK:3 != 1 && JUEL:100 > Q
+	PRINTW 반발각인 LV1을 습득
+	MARK:3 = 1
+ENDIF
+
+;V使用不可フラグリセット
+CFLAG:54 = 0
+
+;접대상대の特徴はここでリセット
+FLAG:49 = 0
+
+;공헌도が300を超えたら비밀지식がもらえる
+IF EXP:MASTER:90 >= 300 && TALENT:MASTER:325 == 0
+	WAIT
+	DRAWLINE
+	PRINTL 
+	PRINTFORMW 접대에서 돌아온 %타겟이()%, 한 장의 지도를 내밀었다
+	PRINTFORMW 이번 접대 상대로부터 받아온 것 같다
+	PRINTL 
+	PRINTL 【비밀지식】을 손에 넣었습니다
+	PRINTL 이후, 비밀 연구소에 갈 수 있게 됩니다
+	TALENT:MASTER:325 = 1
+;공헌도が500を超えたら勲章がもらえる
+ELSEIF EXP:MASTER:90 >= 500 && TALENT:MASTER:398 == 0 && FLAG:47 == 0
+	WAIT
+	DRAWLINE
+	PRINTL 
+	PRINTFORMW 접대에서 돌아온 %타겟이()%, 작은 메달을 내밀었다
+	PRINTFORMW 이번 접대 상대로부터 받아온 것 같다
+	PRINTL 
+	PRINTL 【훈장】을 손에 넣었습니다
+	TALENT:MASTER:398 = 1
+	FLAG:47 = 1
+ENDIF
+
+WAIT
+
+BEGIN TURNEND
+RETURN 1
+
+;--------------------------------------------------
+;接待실행중
+;--------------------------------------------------
+@RECEPTION_MAIN2
+REPEAT 10
+	;成否判定で使う変数を0に戻す
+	S = 0
+	;접대상대の사정게이지の上下に使う変数を0に戻す
+	D = 0
+	;キャラの절정ゲージの上下に使う変数を0に戻す
+	F = 0
+	
+	DRAWLINE
+	PRINTFORM %CALLNAME:TARGET%의 
+	CALL LIFE_BAR
+	PRINTFORML 만족도:{B}/ 쾌감도(상대):{C}/ 쾌감도(%CALLNAME:TARGET%):{E}/ 남은시간:{10-COUNT}
+	DRAWLINE
+	
+	PRINTFORML 무엇을 합니까?
+	PRINTL  [0] - 대화한다
+	PRINTL  [1] - 봉사한다
+	SIF ABL:15 >= 2 && CFLAG:54 == 0
+		PRINTL  [2] - 유혹한다
+	SIF ABL:21 >= 2 && CFLAG:54 == 0
+		PRINTL  [3] - 몸을 맡긴다
+	PRINTL  [999] - 접대를 중도 포기한다
+	
+	$INPUT_LOOP
+	INPUT
+	
+	IF RESULT == 0
+		CALL RECEPTION_TALKING
+	ELSEIF RESULT == 1
+		CALL RESEPTION_SERVICE
+	ELSEIF RESULT == 2 && ABL:15 >= 2
+		CALL RECEPTION_TEMPTATION
+	ELSEIF RESULT == 3 && ABL:21 >= 2
+		CALL RECEPTION_ABANDON
+	ELSEIF RESULT == 999
+		PRINTFORML %플레이어는()% %CALLNAME:TARGET%에게 접대를 중도 포기하게 했다
+		PRINTFORML 흥이 깨진 접대 상대는, 짜증을 내며 돌아가 버렸다……
+		WAIT
+		EXP:MASTER:90 -= 10
+		PRINTFORML 공헌도　-10
+
+		;接待終了
+		RETURN 0
+
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+	;접대상대の절정判定
+	C += D
+	;절정ゲージがマイナスになるということはない
+	SIF C <= 0
+		C = 0
+	;失敗の場合は절정しない
+	SIF S < 30 && C >= 100
+		C = 99
+	IF C >= 100
+		;相手が女性の場合
+		IF (FLAG:49 & 1)
+			PRINTL 【절정(접대상대)】
+		;相手が男性の場合
+		ELSE
+			PRINTL 【사정(접대상대)】
+			EXP:20 += 1
+			PRINTL 정액경험　+ 1
+		ENDIF
+		B += 20
+		C -= 100
+	ENDIF
+
+	;奴隷の절정判定
+	E += F
+	IF E >= 100
+		PRINTFORML 【절정(%CALLNAME:TARGET%)】
+		EXP:2 += 1
+		PRINTL 절정경험　+1
+		B += 8
+		E -= 100
+	ENDIF
+
+	;체력減少量の計算
+	;겁쟁이
+	SIF TALENT:10
+		TIMES LOSEBASE:0 , 1.10
+	;억압
+	SIF TALENT:32
+		TIMES LOSEBASE:0 , 1.10
+	;음란
+	SIF TALENT:76
+		TIMES LOSEBASE:0 , 0.80
+	;娼婦
+	SIF TALENT:180
+		TIMES LOSEBASE:0 , 0.50
+
+	BASE:0 -= LOSEBASE:0
+
+	;체력が0以下になったらそこで終了
+	IF BASE:0 <= 0
+		PRINTFORML %타겟은()% 접대중에 쓰러져, 조금도 움직이지 않았다
+		PRINTFORML 무엇을 해도 반응이 없다……
+		IF TALENT:MASTER:83 || TALENT:MASTER:93
+			PRINTFORML %플레이어는()% 이 스캔들을 이용해, 접대 상대를 협박하기로 했다
+			WAIT
+			B /= 10
+			EXP:MASTER:90 += B
+			PRINTFORMW 공헌도　+{B}
+		ELSE
+			PRINTFORML 접대 상대는 시신의 처리를 %CALLNAME:MASTER%에게 맡기고, 급히 돌아가 버렸다……
+			WAIT
+		ENDIF
+
+		;キャラの死亡確認
+		CALL CHARADEAD_CHECK
+
+		;接待終了
+		RETURN 0
+
+	;체력が500以下になったらそこで終了
+	ELSEIF BASE:0 <= 500
+		PRINTFORML 가혹한 플레이에 견디지 못하고, %타겟은()% 도중에 접대를 포기했다
+		PRINTFORML 흥이 깨진 접대 상대는, 짜증을 내며 돌아가 버렸다……
+		WAIT
+
+		;接待終了
+		RETURN 0
+
+	;満足度が0以下になったらそこで終了
+	ELSEIF B <= 0
+		PRINTFORML %CALLNAME:TARGET%의 접대가 너무 서툴렀는지
+		PRINTFORML 접대 상대는 짜증을 내며 자리에서 일어나, 돌아가 버렸다……
+		WAIT
+
+		;接待終了
+		RETURN 0
+
+	ENDIF
+
+REND
+
+RETURN 1
+
+;==================================================
+;==================================================
+;以下は接待時におけるコマンドの内容を収めた関数群
+;--------------------------------------------------
+;『대화한다』に関する判定等
+;--------------------------------------------------
+@RECEPTION_TALKING
+PRINTFORML %타겟은()% 접대 상대와 가벼운 대화를 했다……
+
+;기교か화술の高い方を判定して成否判定にプラス(화술の方がプラス量が大きい)
+IF ABL:12 > ABL:15
+	S += ABL:12 * 2
+ELSEIF ABL:15 >= ABL:12
+	S += ABL:15 * 3
+ENDIF
+
+;봉사정신のレベルに応じて成否判定にプラス
+IF ABL:16 == 1
+	S += 5
+ELSEIF ABL:16 == 2
+	S += 10
+ELSEIF ABL:16 == 3
+	S += 13
+ELSEIF ABL:16 == 4
+	S += 15
+ELSEIF ABL:16 >= 5
+	S += 20
+ENDIF
+
+;従順のレベルに応じて成否判定にプラス
+IF ABL:10 == 1
+	S += 3
+ELSEIF ABL:10 == 2
+	S += 6
+ELSEIF ABL:10 == 3
+	S += 8
+ELSEIF ABL:10 == 4
+	S += 12
+ELSEIF ABL:10 >= 5
+	S += 15
+ENDIF
+
+;[광기][붕괴]だと成否判定にマイナス
+SIF TALENT:123
+	S -= 5
+SIF TALENT:9
+	S -= 10
+
+;[商売人][요설스러움]だと成否判定にプラス
+SIF TALENT:211
+	S += 5
+SIF TALENT:182
+	S += 10
+
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22
+;サディスト
+SIF (A & 2)
+	S += ABL:21
+;연령性癖合致
+SIF (A & 4)
+	S += 5
+;マニア同士
+SIF (A & 8)
+	S += ABL:81 * 2
+;職業性癖合致
+SIF (A & 16)
+	S += 10
+
+;同一コマンドの繰り返しによるペナルティ
+IF L:0 >= 9
+	S -= 100
+ELSEIF L:0 >= 8
+	S -= 50
+ELSEIF L:0 >= 7 
+	S -= 20
+ELSEIF L:0 >= 6
+	S -= 10
+ELSEIF L:0 >= 5
+	S -= 5
+ELSEIF L:0 >= 4
+	S -= 1
+ENDIF
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	;『대화한다』での満足度の基本上昇値は5
+	B += 5
+	PRINTFORML 대화가 잘 무르익고 있다……
+	IF (FLAG:49 & 4) && TALENT:132
+		PRINTFORML %CALLNAME:TARGET%의 천진난만함이 마음에 드는 것 같다
+	ELSEIF (FLAG:49 & 16) && TALENT:220
+		PRINTFORML %CALLNAME:TARGET%의 풋풋함이 마음에 드는 것 같다
+	ELSEIF (FLAG:49 & 32) && TALENT:417
+		PRINTFORML %CALLNAME:TARGET%의 헌신적인 면모가 마음에 든 것 같다
+	ELSEIF (FLAG:49 & 8) && ABL:81 > 0
+		PRINTFORML 잘은 모르겠지만, 애니메이션이나 게임의 화제로 열중하고 있는 것 같다
+	ENDIF
+	;연령性癖修正
+	SIF (A & 4)
+		B += 3
+	;マニア修正
+	SIF (A & 8)
+		B += 2 + ABL:81 + ABL:15
+	;職業フェチ修正
+	SIF (A & 16)
+		B += 5
+		IF TALENT:509 || TALENT:515 || TALENT:519
+			B += 10
+		ENDIF
+ELSE
+	B -= 5
+	PRINTFORML 대화가 그다지 무르익지 않았다……
+	SIF L:0 >= 5
+		PRINTFORML 같은 이야기만 반복하는 %CALLNAME:TARGET%에게, 상대는 지루해지기 시작했다
+ENDIF
+WAIT
+
+;체력減少
+LOSEBASE:0 = 10
+
+;実行回数増加
+L:0 += 1
+
+;--------------------------------------------------
+;『奉仕する』に関する判定等
+;--------------------------------------------------
+@RESEPTION_SERVICE
+PRINTFORM %타겟은()% 상대의 
+	IF (FLAG:49 & 1) == 0
+		PRINT 페니스에 
+	ELSEIF (FLAG:49 & 1) == 1
+		PRINT 비부에 
+	ENDIF
+PRINTFORML 혀를 감으며, 열심히 봉사했다……
+
+;기교か봉사기술の高い方を判定して成否判定にプラス(봉사기술の方がプラス量が大きい)
+IF ABL:12 > ABL:13
+	S += ABL:12 * 2
+ELSEIF ABL:13 >= ABL:12
+	S += ABL:13 * 3
+ENDIF
+
+;봉사정신のレベルに応じて成否判定にプラス
+IF ABL:16 == 1
+	S += 5
+ELSEIF ABL:16 == 2
+	S += 10
+ELSEIF ABL:16 == 3
+	S += 13
+ELSEIF ABL:16 == 4
+	S += 15
+ELSEIF ABL:16 >= 5
+	S += 20
+ENDIF
+
+;従順のレベルに応じて成否判定にプラス
+IF ABL:10 == 1
+	S += 3
+ELSEIF ABL:10 == 2
+	S += 6
+ELSEIF ABL:10 == 3
+	S += 8
+ELSEIF ABL:10 == 4
+	S += 12
+ELSEIF ABL:10 >= 5
+	S += 15
+ENDIF
+
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22
+;サディスト
+SIF (A & 2)
+	S += ABL:21 * 2
+;연령性癖合致
+SIF (A & 4)
+	S += 5
+;マニア同士
+SIF (A & 8)
+	S += ABL:81
+;職業性癖合致
+SIF (A & 16)
+	S += 10
+
+;同一コマンドの繰り返しによるペナルティ
+IF L:1 >= 8
+	S -= 100
+ELSEIF L:1 >= 7
+	S -= 50
+ELSEIF L:1 >= 6 
+	S -= 20
+ELSEIF L:1 >= 5
+	S -= 10
+ELSEIF L:1 >= 4
+	S -= 5
+ELSEIF L:1 >= 3
+	S -= 1
+ENDIF
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	;『奉仕する』での満足度の基本上昇値は10
+	B += 10
+	;相手の快感度判定(봉사기술を見る)
+	D += ABL:13
+	SIF D <= 0	
+		D = 1
+	D *= 5
+	IF (FLAG:49 & 4) && TALENT:132
+		PRINTFORML 어린 %CALLNAME:TARGET%의 필사적인 봉사에 흥분하고 있는 것 같다……
+	ELSEIF (FLAG:49 & 16) && TALENT:220
+		PRINTFORML %CALLNAME:TARGET%의 필사적인 봉사에 흥분하고 있는 것 같다……
+	ELSEIF (FLAG:49 & 32) && TALENT:417
+		PRINTFORML %CALLNAME:TARGET%의 필사적인 봉사에 흥분하고 있는 것 같다……
+	ELSE
+		PRINTFORML %CALLNAME:TARGET%의 필사적인 봉사에 만족한 것 같다……
+	ENDIF
+	;연령性癖修正
+	IF (A & 4)
+		B += 5
+		D += 5
+	ENDIF
+	;職業フェチ修正
+	IF (A & 16)
+		B += 10
+		IF TALENT:509 || TALENT:515 || TALENT:519
+			B += 10
+		ENDIF
+		D += 10
+	ENDIF
+ELSE
+	B -= 7
+	D = 0 - 10
+	PRINTFORML %CALLNAME:TARGET%의 너무 서투른 봉사에, 아무래도 흥이 식어가는 것 같다……
+	SIF L:1 >= 5
+		PRINTFORML 묵묵히 봉사만 하고 있으면 만족, 이라는 건 아닌 것 같다
+ENDIF
+
+WAIT
+
+;奉仕するのでもちろん経験が増える
+IF (FLAG:49 & 1) == 0
+	EXP:22 += 1
+	PRINTW 펠라경험　+1
+	IF CFLAG:16 == -1
+		SETCOLOR 0xF58F98
+		PRINTFORML 첫 키스
+		RESETCOLOR
+		CFLAG:16 = 4
+		IF CFLAG:16 == 4 && TALENT:76 == 0 && TALENT:432 == 0
+			CSTR:1 = 모르는 아저씨의 고○
+		ELSEIF CFLAG:16 == 4 && TALENT:76 == 1 && TALENT:432 == 0
+			CSTR:1 = 모르는 아저씨의 자○
+		ELSEIF CFLAG:16 == 4 && TALENT:432 == 1
+			CSTR:1 = 모르는 아재의 자지
+		ENDIF
+	ENDIF
+ELSEIF (FLAG:49 & 1) == 1
+	EXP:40 += 1
+	PRINTW 레즈경험　+1
+	IF CFLAG:16 == -1
+		SETCOLOR 0xF58F98
+		PRINTFORML 첫 키스
+		RESETCOLOR
+		CFLAG:16 = 4
+		IF CFLAG:16 == 4 && TALENT:76 == 0 && TALENT:432 == 0
+			CSTR:1 = 모르는 언니의 그곳
+		ELSEIF CFLAG:16 == 4 && TALENT:76 == 1 && TALENT:432 == 0
+			CSTR:1 = 모르는 언니의 보지
+		ELSEIF CFLAG:16 == 4 && TALENT:432 == 1
+			CSTR:1 = 모르는 여자의 보지
+		ENDIF
+	ENDIF
+ENDIF
+
+;체력減少
+LOSEBASE:0 = 50
+
+;実行回数増加
+L:1 += 1
+;
+;--------------------------------------------------
+;『誘惑する』に関する判定等
+;--------------------------------------------------
+@RECEPTION_TEMPTATION
+PRINTFORML %타겟은()% 도발적인 말로 상대를 유혹했다……
+WAIT
+
+;기교と화술の2倍を成否判定にプラス
+S += ABL:12
+S += ABL:15 * 2
+
+;봉사정신のレベルに応じて成否判定にプラス
+IF ABL:16 == 1
+	S += 5
+ELSEIF ABL:16 == 2
+	S += 10
+ELSEIF ABL:16 == 3
+	S += 13
+ELSEIF ABL:16 == 4
+	S += 15
+ELSEIF ABL:16 >= 5
+	S += 20
+ENDIF
+
+;従順のレベルに応じて成否判定にプラス
+IF ABL:10 == 1
+	S += 3
+ELSEIF ABL:10 == 2
+	S += 6
+ELSEIF ABL:10 == 3
+	S += 8
+ELSEIF ABL:10 == 4
+	S += 12
+ELSEIF ABL:10 >= 5
+	S += 15
+ENDIF
+
+;[광기][붕괴]だと成否判定にマイナス
+SIF TALENT:123
+	S -= 5
+SIF TALENT:9
+	S -= 10
+
+;[요설스러움]だと成否判定にプラス
+SIF TALENT:182
+	S += 5
+
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22
+;접대상대が새드の場合はペナルティ
+SIF (A & 2)
+	S -= ABL:21 * 2
+;연령性癖合致
+SIF (A & 4)
+	S += 5
+;マニア同士
+SIF (A & 8)
+	S += ABL:81 * 2
+;職業性癖合致
+SIF (A & 16)
+	S += 10
+
+;同一コマンドの繰り返しによるペナルティ
+IF L:2 >= 7
+	S -= 100
+ELSEIF L:2 >= 6
+	S -= 50
+ELSEIF L:2 >= 5 
+	S -= 20
+ELSEIF L:2 >= 4
+	S -= 10
+ELSEIF L:2 >= 3
+	S -= 5
+ELSEIF L:2 >= 2
+	S -= 1
+ENDIF
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	;『誘惑する』での満足度の基本上昇値は12
+	B += 12
+	;相手の快感度判定(봉사정신を見る)
+	D += ABL:16
+	SIF D == 0
+		D += 1
+	D *= 5
+	;처녀の場合, または접대상대が女の場合はセックスは無し
+	IF TALENT:0 || FLAG:49 & 1
+		IF (FLAG:49 & 8) && ABL:81 >= 2
+			PRINTFORML %타겟이()% 두세마디, 알 수 없는 대사를 말해버렸다고 생각했을 때
+			PRINTFORML 접대 상대도 뜻 모를 대사를 하며, %CALLNAME:TARGET%의 몸을 희롱하기 시작했다……
+			PRINTFORML 잘은 모르겠지만, 뭔가 심야 애니메이션의 주인공과 히로인 역할을 하는 것 같다
+		ELSEIF (FLAG:49 & 4) && TALENT:132
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 미성숙한 몸을 농락한다……
+		ELSEIF (FLAG:49 & 16) && TALENT:220
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 때묻지 않은 몸을 농락한다……
+		ELSEIF (FLAG:49 & 32) && TALENT:417
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 잘 익은 육체를 농락한다……
+		ELSE
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 몸을 농락한다……
+		ENDIF
+
+		WAIT
+
+		;연령性癖修正
+		IF (A & 4)
+			B += 6
+			D += 3
+		ENDIF
+		;マニア修正
+		IF (A & 8)
+			B += 10
+			D += 5
+		ENDIF
+		;職業フェチ修正
+		IF (A & 16)
+			B += 12
+			D += 6
+		ENDIF
+
+		;セックスしていないので相手は절정しない
+		SIF C + D >= 100
+			D = 99 - C
+		;奴隷の快感度判定(C, B感覚と従順, 욕망を見る)
+		F += ABL:0
+		F += ABL:1
+		F += ABL:10
+		F += ABL:11
+		F += RAND:5
+		
+		;相手が女性の場合레즈경험プラス
+		IF (FLAG:49 & 1)
+			EXP:40 += 1
+			PRINTL 레즈경험　+1
+		ENDIF
+
+		;체력減少
+		LOSEBASE:0 = 80
+
+	;비처녀の場合セックス有り, こちらの方が満足度等が高かったりする
+	ELSE
+		IF (FLAG:49 & 8) && ABL:81 >= 2
+			PRINTFORML %타겟이()% 두세마디, 알 수 없는 대사를 말해버렸다고 생각했을 때
+			PRINTFORML 접대 상대도 뜻 모를 대사를 하며, %CALLNAME:TARGET%의 몸을 희롱하기 시작했다……
+			PRINTFORML 잘은 모르겠지만, 뭔가 심야 애니메이션의 주인공과 히로인 역할을 하는 것 같다
+		ELSEIF (FLAG:49 & 4) && TALENT:132
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 미성숙한 몸을 농락한다……
+		ELSEIF (FLAG:49 & 16) && TALENT:220
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 때묻지 않은 몸을 농락한다……
+		ELSEIF (FLAG:49 & 32) && TALENT:417
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 잘 익은 육체를 농락한다……
+		ELSE
+			PRINTFORML 접대 상대는 유혹에 견디지 못하고, %CALLNAME:TARGET%의 몸을 농락한다……
+		ENDIF
+
+		WAIT
+
+		;연령性癖修正
+		IF (A & 4)
+			B += 8
+			D += 10
+		ENDIF
+		;マニア修正
+		IF (A & 8)
+			B += 12
+			D += 15
+		ENDIF
+		;職業フェチ修正
+		IF (A & 16)
+			B += 16
+			IF TALENT:509 || TALENT:515 || TALENT:519
+				B += 10
+			ENDIF
+			D += 20
+		ENDIF
+
+		;奴隷の快感度判定(C, B感覚と従順, 욕망を見る)
+		F += ABL:0
+		F += ABL:1
+		F += ABL:10
+		F += ABL:11
+		F += RAND:5
+		
+		;相手が女性の場合레즈경험プラス
+		IF (FLAG:49 & 1)
+			EXP:40 += 2
+			PRINTL 레즈경험　+2
+		ENDIF
+
+		;체력減少
+		LOSEBASE:0 = 120
+
+	ENDIF
+
+ELSE
+	B -= 10
+	D = 0 - 15
+	PRINTFORMW %CALLNAME:TARGET%의 도발이 무례하다고 느꼈는지, 그다지 좋은 기분은 아닌 것 같다……
+
+	;체력減少
+	LOSEBASE:0 = 10
+
+ENDIF
+
+;実行回数増加
+L:2 += 1
+;
+;--------------------------------------------------
+;『身を任せる』に関する判定等
+;--------------------------------------------------
+@RECEPTION_ABANDON
+PRINTFORMW %타겟은()% 상대에게 몸을 맡겼다……
+	
+;同一コマンドの繰り返しによるペナルティ
+IF L:3 >= 7
+	S -= 100
+ELSEIF L:3 >= 6
+	S -= 50
+ELSEIF L:3 >= 5 
+	S -= 20
+ELSEIF L:3 >= 4
+	S -= 10
+ELSEIF L:3 >= 3
+	S -= 5
+ELSEIF L:3 >= 2
+	S -= 1
+ENDIF
+
+;애무される
+IF RAND:4 == 0
+	CALL RECEPTION_CARESS
+;이라마치오される(相手が女性の場合は커닐링구스강제)
+ELSEIF RAND:3 == 0
+	CALL RECEPTION_IRRUMATIO
+;ヴァキナを犯される
+ELSEIF RAND:2 == 0
+	CALL RECEPTION_VAGINASEX
+;アナルを犯される
+ELSE
+	CALL RECEPTION_ANALSEX
+ENDIF
+
+;成功していれば職業フェチボーナス
+IF S >= 30
+	;職業フェチボーナス
+	SIF ((FLAG:49 & 64) && TALENT:203) || ((FLAG:49 & 128) && TALENT:207)
+		B += 10
+ENDIF
+
+;実行回数増加
+L:3 += 1
+;
+;--------------------------------------------------
+;애무される
+;--------------------------------------------------
+@RECEPTION_CARESS
+
+;従順に応じて成否判定にプラス
+IF ABL:10 <= 3
+	S += 5
+ELSEIF ABL:10 == 4
+	S += 10
+ELSEIF ABL:10 == 5
+	S += 15
+ELSE
+	S += 18
+ENDIF
+
+;C感覚に応じて成否判定にプラス
+IF ABL:0 <= 3
+	S += 2
+ELSEIF ABL:0 == 4
+	S += 3
+ELSEIF ABL:0 == 5
+	S += 5
+ELSE
+	S += 10
+ENDIF
+
+;B感覚に応じて成否判定にプラス
+IF ABL:1 <= 3
+	S += 2
+ELSEIF ABL:1 == 4
+	S += 3
+ELSEIF ABL:1 == 5
+	S += 5
+ELSE
+	S += 10
+ENDIF
+
+;마조끼に応じて成否判定にプラス
+IF ABL:21 <= 3
+	S += 5
+ELSEIF ABL:21 == 4
+	S += 8
+ELSEIF ABL:21 == 5
+	S += 12
+ELSE
+	S += 16
+ENDIF
+	
+;[마조]があれば成否判定にプラス
+SIF TALENT:88
+	S += 5
+
+;[광기][붕괴]だと成否判定にマイナス
+SIF TALENT:123
+	S -= 5
+SIF TALENT:9
+	S -= 10
+
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22 + 2
+;접대상대が새드
+SIF (A & 2)
+	S += ABL:21/2 + 1
+;연령性癖合致
+SIF (A & 4)
+	S += 3
+;マニア同士
+SIF (A & 8)
+	S += ABL:81/2 + 1
+;職業性癖合致
+SIF (A & 16)
+	S += 6
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	PRINTFORM %타겟은()% 그 
+	SIF TALENT:132 == 1
+		PRINT 미성숙한 
+	PRINTFORMW 육체를 애무 받았다……
+
+	;満足度
+	B += 5
+	;연령性癖修正
+	IF (A & 4)
+		B += 3
+	ENDIF
+	;職業フェチ修正
+	IF (A & 16)
+		B += 5
+		IF TALENT:509 || TALENT:515 || TALENT:519
+			B += 10
+		ENDIF
+	ENDIF
+
+	;奴隷の快感度判定(C・B感覚を見る)
+	F += ABL:0 * 2
+	F += ABL:1 * 2
+	F += ABL:10
+
+	;체력減少
+	LOSEBASE:0 = 80
+
+ELSE
+	PRINTFORMW 몸이 굳어있는 %CALLNAME:TARGET%에게 흥이 깨진 것 같다……
+	B -= 3
+	;奴隷の快感度判定(C・B감각, 従順を見る)
+	F += ABL:0
+	F += ABL:1
+	F += ABL:10
+	F /= 2
+
+	;失敗だと절정はしない
+	SIF E + F >= 100
+		F = 99 - E
+
+	;체력減少
+	LOSEBASE:0 = 30
+
+ENDIF
+		
+;相手が女性だった場合, 레즈경험にプラス
+IF (FLAG:49 & 1) == 1
+	EXP:40 += 1
+	PRINTW 레즈경험　+1
+ENDIF
+
+;--------------------------------------------------
+;이라마치오
+;--------------------------------------------------
+@RECEPTION_IRRUMATIO
+
+;従順に応じて成否判定にプラス
+IF ABL:10 <= 3
+	S += 2
+ELSEIF ABL:10 == 4
+	S += 5
+ELSEIF ABL:10 == 5
+	S += 7
+ELSE
+	S += 12
+ENDIF
+
+;기교か봉사기술に応じて成否判定にプラス
+IF ABL:12 > ABL:13
+	S += ABL:12
+	S += ABL:12
+ELSEIF ABL:13 >= ABL:12
+	S += ABL:13
+	S += ABL:13
+	S += ABL:13
+ENDIF
+
+;봉사정신に応じて成否判定にプラス
+
+IF ABL:16 <= 3
+	S += 2
+ELSEIF ABL:16 == 4
+	S += 3
+ELSEIF ABL:16 == 5
+	S += 5
+ELSE
+	S += 10
+ENDIF
+
+;마조끼に応じて成否判定にプラス
+IF ABL:21 <= 3
+	S += 8
+ELSEIF ABL:21 == 4
+	S += 10
+ELSEIF ABL:21 == 5
+	S += 15
+ELSE
+	S += 20
+ENDIF
+	
+;[마조]があれば成否判定にプラス
+SIF TALENT:88
+	S += 5
+
+;[광기][붕괴]だと成否判定にマイナス
+SIF TALENT:123
+	S -= 5
+SIF TALENT:9
+	S -= 10
+
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22/2 + 1
+;접대상대が새드
+SIF (A & 2)
+	S += ABL:21 + 2
+;연령性癖合致
+SIF (A & 4)
+	S += 6
+;マニア同士
+SIF (A & 8)
+	S += 0
+;職業性癖合致
+SIF (A & 16)
+	S += 12
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	PRINTFORMW %타겟은()% 머리를 잡혀, 성기에 봉사를 강요당했다……
+
+	;満足度
+	B += 12
+	;연령性癖修正
+	IF (A & 4)
+		B += 6
+		D += 6
+	ENDIF
+	;職業フェチ修正
+	IF (A & 16)
+		B += 12
+		IF TALENT:509 || TALENT:515 || TALENT:519
+			B += 10
+		ENDIF
+		D += 12
+	ENDIF
+
+	D += 13
+	SIF ABL:13 >= 3
+		D += 3
+	SIF ABL:16 >= 3
+		D += 3
+	SIF ABL:12 > 5
+		D *= 2
+ELSE
+	PRINTFORMW %타겟은()% 머리를 내리누르는 상대의 손을 뿌리치고, 얼굴을 돌렸다……
+	B -= 20
+	D = 0 - 10
+ENDIF
+
+;△CFLAG:16を13にすべきかとも思うけれど保留。4になっていたので1にしてCSTR活かす。
+;접대상대が女性だった場合
+IF (FLAG:49 & 1) == 1
+	EXP:40 += 1
+	PRINTL 레즈경험　+1
+	IF CFLAG:16 == -1
+		SETCOLOR 0xF58F98
+		PRINTFORML 첫 키스
+		RESETCOLOR
+		CFLAG:16 = 1
+		IF CFLAG:16 == 4 && TALENT:76 == 0 && TALENT:432 == 0
+			CSTR:1 = 모르는 언니의 그곳
+		ELSEIF CFLAG:16 == 4 && TALENT:76 == 1 && TALENT:432 == 0
+			CSTR:1 = 모르는 언니의 보지
+		ELSEIF CFLAG:16 == 4 && TALENT:432 == 1
+			CSTR:1 = 모르는 여자의 보지
+		ENDIF
+		CFLAG:820 = BASE:9
+		CFLAG:821 = DAY:1
+		CFLAG:822 = DAY:2
+	ENDIF
+;男性だった場合
+ELSEIF (FLAG:49 & 1) == 0
+	EXP:22 += 1
+	PRINTL 펠라경험　+1 
+	IF CFLAG:16 == -1
+		SETCOLOR 0xF58F98
+		PRINTFORML 첫 키스
+		RESETCOLOR
+		CFLAG:16 = 1
+		IF CFLAG:16 == 4 && TALENT:76 == 0 && TALENT:432 == 0
+			CSTR:1 = 모르는 아저씨의 고○
+		ELSEIF CFLAG:16 == 4 && TALENT:76 == 1 && TALENT:432 == 0
+			CSTR:1 = 모르는 아저씨의 자○
+		ELSEIF CFLAG:16 == 4 && TALENT:432 == 1
+			CSTR:1 = 모르는 아재의 자지
+		ENDIF
+		CFLAG:820 = BASE:9
+		CFLAG:821 = DAY:1
+		CFLAG:822 = DAY:2
+	ENDIF
+ENDIF
+
+;체력減少
+LOSEBASE:0 = 100
+
+;--------------------------------------------------
+;ヴァギナを犯される
+;--------------------------------------------------
+@RECEPTION_VAGINASEX
+
+;처녀で従順Lv4以下かつ욕망Lv4以下, または정조무관심が付いていない場合は強制的に失敗
+IF TALENT:0 && (ABL:10 <= 4 && ABL:11 <= 4) && TALENT:31 == 0
+	PRINTFORMW %타겟은()% 순결을 지키려고, 필사적으로 저항했다
+	PRINTFORMW 너무나도 강한 저항에, 상대도 물러설 수 밖에 없었다……
+	B -= 5
+	C -= 5
+
+	;체력減少
+	LOSEBASE:0 = 120
+
+	RETURN 0
+ENDIF
+
+PRINTFORM %타겟은()% 밀려 넘어뜨려져, 
+SIF TALENT:132 == 1
+	PRINT 그 미성숙한 
+PRINTFORMW 비부를 꿰뚫렸다……
+
+;従順に応じて成否判定にプラス
+IF ABL:10 <= 3
+	S += 6
+ELSEIF ABL:10 == 4
+	S += 10
+ELSEIF ABL:10 == 5
+	S += 14
+ELSE
+	S += 20
+ENDIF
+
+;V감각に応じて成否判定にプラス
+IF ABL:2 <= 3
+	S += 2
+ELSEIF ABL:2 == 4
+	S += 3
+ELSEIF ABL:2 == 5
+	S += 5
+ELSE
+	S += 7
+ENDIF
+
+;성교기술に応じて成否判定にプラス
+IF ABL:14 <= 3
+	S += 5
+ELSEIF ABL:14 == 4
+	S += 7
+ELSEIF ABL:14 == 5
+	S += 10
+ELSE
+	S += 11
+ENDIF
+	
+;봉사정신に応じて成否判定にプラス
+IF ABL:16 <= 3
+	S += 1
+ELSEIF ABL:10 == 4
+	S += 2
+ELSEIF ABL:10 == 5
+	S += 3
+ELSE
+	S += 5
+ENDIF
+		
+;처녀の場合は저항するので成否判定にペナルティ
+IF TALENT:0
+	;愛が付いているとさらにペナルティ
+	IF TALENT:85
+		S /= 2
+	ELSE
+		S -= 5
+	ENDIF
+ENDIF
+
+;[마조]があれば成否判定にプラス
+SIF TALENT:88
+	S += 5
+
+;[광기][붕괴]だと成否判定にマイナス
+SIF TALENT:123
+	S -= 5
+SIF TALENT:9
+	S -= 10
+
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22/2 + 1
+;접대상대が새드
+SIF (A & 2)
+	S += ABL:21/2 + 1
+;연령性癖合致
+SIF (A & 4)
+	S += 6
+;マニア同士
+SIF (A & 8)
+	S += 0
+;職業性癖合致
+SIF (A & 16)
+	S += 12
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	PRINTFORMW %타겟은()% 범해지면서 교성을 올리고 있다……
+	;처녀상실
+	IF TALENT:0
+		PRINTFORMW %CALLNAME:TARGET%의 더러움을 모르는 비부가 꿰뚫려, 그곳으로부터 피가 한줄기 흘러나왔다……
+		PRINTFORMW 처녀를 빼앗은 것으로, 상대는 몹시 흥분하고 있다
+		SETCOLOR 0xF58F98
+		PRINTL 【접대로 처녀상실】
+		RESETCOLOR
+		PRINTFORML %EXPNAME:50%+{2+(FLAG:49 & 1)}
+		EXP:50 += 2 + (FLAG:49 & 1)
+		;처녀상실の相手を記録
+		IF CFLAG:15 == 0
+			IF (FLAG:49 & 1) == 1 && TALENT:432 == 0
+				CFLAG:15 = 3
+				CSTR:0 = 모르는 여자
+			ELSEIF (FLAG:49 & 1) == 1 && TALENT:432 == 1
+				CFLAG:15 = 3
+				CSTR:0 = 모르는 여자
+			ELSEIF (FLAG:49 & 1) == 0 && TALENT:432 == 0
+				CFLAG:15 = 2
+				CSTR:0 = 모르는 아저씨
+			ELSEIF (FLAG:49 & 1) == 0 && TALENT:432 == 1
+				CFLAG:15 = 2
+				CSTR:0 = 모르는 아재
+			ENDIF
+		ENDIF
+		TALENT:0 = 0
+		B += 30
+	ENDIF
+	;相手の快感度判定(V감각・성교기술・봉사정신を見る)
+	D += 10
+	SIF ABL:2 >= 3
+		D += 5
+	SIF ABL:14 >= 3
+		D += 10
+	SIF ABL:16 >= 3
+		D += 3
+	
+	;満足度
+	;相手が女性の場合
+	IF FLAG:49 & 1
+		B += 9
+	;相手が男性の場合
+	ELSE
+		B += 13
+	ENDIF
+	;연령性癖修正
+	IF (A & 4)
+		B += 6
+		D += 8
+	ENDIF
+	;職業フェチ修正
+	IF (A & 16)
+		B += 12
+		IF TALENT:509 || TALENT:515 || TALENT:519
+			B += 10
+		ENDIF
+		D += 10
+	ENDIF
+
+	;奴隷の快感度判定(V감각・욕망を見る)
+	IF ABL:2 == 1
+		F += 5
+	ELSEIF ABL:2 == 2
+		F += 10
+	ELSEIF ABL:2 == 3
+		F += 13
+	ELSEIF ABL:2 == 4
+		F += 15
+	ELSEIF ABL:2 >= 5
+		F += 20
+	ENDIF
+	
+	IF ABL:12 == 1
+		F += 3
+	ELSEIF ABL:12 == 2
+		F += 7
+	ELSEIF ABL:12 == 3
+		F += 12
+	ELSEIF ABL:12 == 4
+		F += 14
+	ELSEIF ABL:12 >= 5
+		F += 15
+	ENDIF
+
+ELSE
+	IF TALENT:0
+		PRINTFORMW 처녀의 아픔에 견디지 못하고, %타겟은()% 격렬하게 몸을 비틀어 저항하고 말았다……
+		SETCOLOR 0xF58F98
+		PRINTL 【접대로 처녀상실】
+		RESETCOLOR
+		PRINTFORML %EXPNAME:50%+{2+(FLAG:49 & 1)}
+		EXP:50 += 2 + (FLAG:49 & 1)
+		;처녀상실の相手を記録
+		IF CFLAG:15 == 0
+			IF (FLAG:49 & 1) == 1 && TALENT:432 == 0
+				CFLAG:15 = 3
+				CSTR:0 = 모르는 여자
+			ELSEIF (FLAG:49 & 1) == 1 && TALENT:432 == 1
+				CFLAG:15 = 3
+				CSTR:0 = 모르는 여자				
+			ELSEIF (FLAG:49 & 1) == 0 && TALENT:432 == 0
+				CFLAG:15 = 2
+				CSTR:0 = 모르는 아저씨
+			ELSEIF (FLAG:49 & 1) == 0 && TALENT:432 == 1
+				CFLAG:15 = 2
+				CSTR:0 = 모르는 아재
+			ENDIF
+		ENDIF
+		TALENT:0 = 0
+		B += 10
+		D += ABL:2
+		F = 0 - 30
+	ELSE
+		PRINTFORMW 범해지면서도 저항하는 %CALLNAME:TARGET%에게, 약간 흥이 돋은 것 같다……
+		B -= 6
+		D += ABL:2
+		F = 0 - 10
+	ENDIF
+ENDIF
+
+PRINTL V경험　+1
+EXP:0 += 1
+
+;相手が女性だった場合, 레즈경험にプラス
+IF (FLAG:49 & 1)
+	EXP:40 += 2
+	PRINTW 레즈경험　+2
+ENDIF
+
+;체력減少
+LOSEBASE:0 = 120
+
+;--------------------------------------------------
+;アナルを犯される
+;--------------------------------------------------
+@RECEPTION_ANALSEX
+
+PRINTFORM %타겟은()% 밀어 넘어뜨려져, 
+	SIF TALENT:132 == 1
+		PRINT 그 미성숙한 
+PRINTFORMW 애널을 꿰뚫렸다……
+	
+;従順に応じて成否判定にプラス
+IF ABL:10 <= 3
+	S += 6
+ELSEIF ABL:10 == 4
+	S += 10
+ELSEIF ABL:10 == 5
+	S += 14
+ELSE
+	S += 20
+ENDIF
+	
+;A감각に応じて成否判定にプラス
+IF ABL:3 <= 3
+	S += 2
+ELSEIF ABL:3 == 4
+	S += 3
+ELSEIF ABL:3 == 5
+	S += 5
+ELSE
+	S += 7
+ENDIF
+	
+;성교기술に応じて成否判定にプラス
+IF ABL:14 <= 3
+	S += 5
+ELSEIF ABL:14 == 4
+	S += 7
+ELSEIF ABL:14 == 5
+	S += 10
+ELSE
+	S += 11
+ENDIF
+	
+;봉사정신に応じて成否判定にプラス
+IF ABL:16 <= 3
+	S += 1
+ELSEIF ABL:10 == 4
+	S += 2
+ELSEIF ABL:10 == 5
+	S += 3
+ELSE
+	S += 5
+ENDIF
+	
+;[마조]があれば成否判定にプラス
+SIF TALENT:88
+	S += 5
+	
+;[광기][붕괴]だと成否判定にマイナス
+SIF TALENT:123
+	S -= 5
+SIF TALENT:9
+	S -= 10
+	
+;접대상대の性癖と奴隷の素質のマッチによるボーナス
+;女同士でレズ
+SIF (A & 1)
+	S += ABL:22/2 + 1
+;접대상대が새드
+SIF (A & 2)
+	S += ABL:21/2 + 1
+;연령性癖合致
+SIF (A & 4)
+	S += 6
+;マニア同士
+SIF (A & 8)
+	S += 0
+;職業性癖合致
+SIF (A & 16)
+	S += 12
+
+;最終的にSが30以上になれば成功, ならなければ失敗
+IF S >= 30
+	PRINTFORMW %타겟은()% 애널을 범해지며 교성을 올리고 있다……
+		
+	;相手の快感度判定(A감각・성교기술・봉사정신を見る)
+	D += 10
+	SIF ABL:3 >= 3
+		D += 5
+	SIF ABL:14 >= 3
+		D += 10
+	SIF ABL:16 >= 3
+		D += 3
+			
+	;奴隷の快感度判定(A감각・욕망を見る)
+	IF ABL:3 == 1
+		F += 5
+	ELSEIF ABL:3 == 2
+		F += 10
+	ELSEIF ABL:3 == 3
+		F += 13
+	ELSEIF ABL:3 == 4
+		F += 15
+	ELSEIF ABL:3 >= 5
+		F += 20
+	ENDIF
+	
+	IF ABL:12 == 1
+		F += 3
+	ELSEIF ABL:12 == 2
+		F += 7
+	ELSEIF ABL:12 == 3
+		F += 12
+	ELSEIF ABL:12 == 4
+		F += 14
+	ELSEIF ABL:12 >= 5
+		F += 15
+	ENDIF
+	
+	;満足度
+	;相手が女性の場合
+	IF FLAG:49 & 1
+		B += 12
+	;相手が男性の場合
+	ELSE
+		B += 15
+	ENDIF
+	;연령性癖修正
+	IF (A & 4)
+		B += 8
+		D += 8
+	ENDIF
+	;職業フェチ修正
+	IF (A & 16)
+		B += 15
+		IF TALENT:509 || TALENT:515 || TALENT:519
+			B += 10
+		ENDIF
+		D += 10
+	ENDIF
+ELSE
+	PRINTFORMW 애널을 범해지면서도 저항하는 %CALLNAME:TARGET%에게, 약간 흥이 돋은 것 같다……
+	B -= 6
+	D += ABL:3
+	F = 0 - 10
+ENDIF
+
+PRINTL A경험　+1
+EXP:1 += 1		
+IF TALENT:2 == 1
+	SETCOLOR 0xF58F98
+	PRINTL 【애널처녀상실】
+	RESETCOLOR
+	TALENT:2 = 0
+			IF (FLAG:49 & 1) == 1 && TALENT:432 == 0
+				CSTR:3 = 모르는 여자
+			ELSEIF (FLAG:49 & 1) == 1 && TALENT:432 == 1
+				CSTR:3 = 모르는 여자
+			ELSEIF (FLAG:49 & 1) == 0 && TALENT:432 == 0
+				CSTR:3 = 모르는 아저씨
+			ELSEIF (FLAG:49 & 1) == 0 && TALENT:432 == 1
+				CSTR:3 = 모르는 아재
+			ENDIF
+ENDIF
+
+;相手が女性だった場合, 레즈경험にプラス
+IF (FLAG:49 & 1)
+	EXP:40 += 2
+	PRINTW 레즈경험　+2
+ENDIF
+
+;체력減少
+LOSEBASE:0 = 120
+

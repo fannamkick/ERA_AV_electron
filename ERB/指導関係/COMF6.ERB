@@ -1,0 +1,407 @@
+﻿;-------------------------------------------------
+;キス
+;애무系コマンド: 調教者が調教対象の口を口で刺激
+;-------------------------------------------------
+@COM6
+;첫 키스を奪うかどうかの確認
+CALL CONFIRM_FIRSTKISS
+SIF RESULT == 0
+	RETURN 0
+
+
+;前回と今回の調教者が同じ
+IF (ASSIPLAY && TFLAG:50) || (ASSIPLAY == 0 && TFLAG:50 == 0)
+	;前回の調教が정상위, 정상위・가슴애무, 정상위SPだと정상위・키스に
+	IF PREVCOM == 20 || PREVCOM == 129 || PREVCOM == 130
+		CALL COM_ABLE128
+		SIF RESULT == 1
+			JUMP COM128
+	ENDIF
+ENDIF
+
+;前回と今回の調教者が同じ
+IF (ASSIPLAY && TFLAG:50) || (ASSIPLAY == 0 && TFLAG:50 == 0)
+	;前回の調教が후배위・가슴애무, 후배위・스팽킹, 후배위SPだと서서삽입に
+	IF PREVCOM == 131 || PREVCOM == 132 || PREVCOM == 134
+		CALL COM_ABLE133
+		SIF RESULT == 1
+			JUMP COM133
+	ENDIF
+ENDIF
+
+PRINTL 키스한다
+
+;-------------------------------------------------
+;実行できるかの判定
+;-------------------------------------------------
+A = 0
+S = 0
+
+;汚れは自動成功判定前に算出するように
+Y = 0
+;愛液の汚れ
+SIF STAIN:PLAYER:0 & 1
+	Y += 1
+;精液の汚れ
+SIF STAIN:PLAYER:0 & 4
+	Y += 3
+;アナルの汚れ
+SIF STAIN:PLAYER:0 & 8
+	Y += 7
+;모유の汚れ
+SIF STAIN:PLAYER:0 & 16
+	Y += 1
+;尿の汚れ
+SIF STAIN:PLAYER:0 & 32
+	Y += 3
+
+;獣姦の場合は汚れ7で固定
+SIF TEQUIP:89
+	Y = 7
+
+SIF TALENT:61
+	Y /= 3
+SIF TALENT:62
+	Y *= 2
+
+;キスでは汚れがそれほど影響しない
+Y /= 2
+
+;従順が2以上か봉사정신が3以上か愛がある場合は自動成功
+SIF ABL:10 >= 2 || ABL:16 >= 3 || TALENT:85
+	GOTO AUTO_SUCCESS
+
+;すべての命令に共通の要素を考慮
+;(従順が高いと命令に従いやすいなど)
+CALL COM_ORDER
+
+;ABL:욕망
+IF ABL:11
+	SIF S
+		PRINT  + 
+	A += ABL:11 * 1
+	PRINTS ABLNAME:11
+	PRINTV 'LV,ABL:11,'(,ABL:11 * 1,')
+	S = 1
+ENDIF
+
+;ABL:봉사정신
+IF ABL:16
+	SIF S
+		PRINT  + 
+	A += ABL:16 * 4
+	PRINTS ABLNAME:16
+	PRINTV 'LV,ABL:16,'(,ABL:16 * 4,')
+	S = 1
+ENDIF
+
+;MARK:쾌락각인
+IF MARK:1
+	SIF S
+		PRINT  + 
+	A += MARK:1 * 2
+	PRINTS MARKNAME:1
+	PRINTV 'LV,MARK:1,'(,MARK:1 * 2,')
+	S = 1
+ENDIF
+
+;PALAM:욕정
+IF PALAM:5 < PALAMLV:1
+	L = 0
+ELSEIF PALAM:5 < PALAMLV:2
+	L = 1
+ELSEIF PALAM:5 < PALAMLV:3
+	L = 2
+ELSEIF PALAM:5 < PALAMLV:4
+	L = 3
+ELSEIF PALAM:5 < PALAMLV:5
+	L = 4
+ELSE
+	L = 5
+ENDIF
+IF L
+	SIF S
+		PRINT  + 
+	A += L * 1
+	PRINTS PALAMNAME:5
+	PRINTV 'LV,L,'(,L * 1,')
+	S = 1
+ENDIF
+
+;수줍음
+IF TALENT:35
+	PRINT  - 
+	A -= 1
+	PRINTS TALENTNAME:35
+	PRINTV '(,1,')
+	S = 1
+ENDIF
+;악취둔감
+IF TALENT:61
+	SIF S
+		PRINT  + 
+	A += 1
+	PRINTS TALENTNAME:61
+	PRINTV '(,1,')
+	S = 1
+ENDIF
+;악취민감
+IF TALENT:62
+	PRINT  - 
+	A -= 1
+	PRINTS TALENTNAME:62
+	PRINTV '(,1,')
+	S = 1
+ENDIF
+;헌신적
+IF TALENT:63
+	SIF S
+		PRINT  + 
+	A += 6
+	PRINTS TALENTNAME:63
+	PRINTV '(,6,')
+	S = 1
+ENDIF
+;쾌감을 부정
+IF TALENT:71
+	PRINT  - 
+	A -= 1
+	PRINTS TALENTNAME:71
+	PRINTV '(,1,')
+	S = 1
+ENDIF
+;愛
+IF TALENT:85 && ASSIPLAY == 0
+	SIF S
+		PRINT  + 
+	A += 5
+	PRINTS TALENTNAME:85
+	PRINTV '(,5,')
+	S = 5
+ENDIF
+;獣姦
+IF TEQUIP:89 && TALENT:136 == 0
+	SIF S
+		PRINT  - 
+	A -= 15
+	PRINTS ITEMNAME:22
+	PRINTV '(,10,')
+	S = 1
+ENDIF
+
+;汚れあり
+IF Y
+	PRINT  - 
+	A -= Y
+	;악취둔감
+	IF TALENT:61
+		PRINT 더러움 있음, 
+		PRINTS TALENTNAME:61
+	ELSEIF TALENT:62
+		PRINT 더러움 있음, 
+		PRINTS TALENTNAME:62
+	ELSE
+		PRINT 더러움 있음
+	ENDIF
+	PRINTV '(,Y,')
+	S = 1
+ENDIF
+
+
+;合計を表示(15以上で実行)
+PRINT  = 
+PRINTV A
+
+V = 15
+SIF A < V
+	PRINT  < 
+SIF A == V
+	PRINT  = 
+SIF A > V
+	PRINT  > 
+PRINT 실행치 
+PRINTV V
+
+WAIT
+
+;実行できない
+SIF A < V
+	RETURN 0
+
+$AUTO_SUCCESS
+
+SAVESTR:0 = 키스한다
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;実行決定
+;-------------------------------------------------
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 5
+LOSEBASE:1 += 50
+
+;上のほうで計算した汚れデータ
+SOURCE:8 = Y*20 + 10
+
+;ABL:봉사정신をみる
+IF ABL:16 == 0
+	SOURCE:4 = 50
+	SOURCE:5 = 10
+	TIMES SOURCE:8 , 4.00
+ELSEIF ABL:16 == 1
+	SOURCE:4 = 150
+	SOURCE:5 = 50
+	TIMES SOURCE:8 , 2.50
+ELSEIF ABL:16 == 2
+	SOURCE:4 = 200
+	SOURCE:5 = 100
+	TIMES SOURCE:8 , 1.50
+ELSEIF ABL:16 == 3
+	SOURCE:4 = 250
+	SOURCE:5 = 180
+	TIMES SOURCE:8 , 1.00
+ELSEIF ABL:16 == 4
+	SOURCE:4 = 300
+	SOURCE:5 = 300
+	TIMES SOURCE:8 , 0.50
+ELSE
+	SOURCE:4 = 350
+	SOURCE:5 = 500
+	TIMES SOURCE:8 , 0.10
+ENDIF
+
+;ABL:기교をみる
+IF ABL:12 == 0
+	TIMES SOURCE:4 , 0.50
+	TIMES SOURCE:5 , 0.50
+ELSEIF ABL:12 == 1
+	TIMES SOURCE:4 , 0.80
+	TIMES SOURCE:5 , 0.80
+ELSEIF ABL:12 == 2
+	TIMES SOURCE:4 , 1.00
+	TIMES SOURCE:5 , 1.00
+ELSEIF ABL:12 == 3
+	TIMES SOURCE:4 , 1.50
+	TIMES SOURCE:5 , 1.50
+ELSEIF ABL:12 == 4
+	TIMES SOURCE:4 , 2.50
+	TIMES SOURCE:5 , 2.50
+ELSE
+	TIMES SOURCE:4 , 4.00
+	TIMES SOURCE:5 , 4.00
+ENDIF
+
+;獣姦の場合はここで수간중독他を判定して終了
+IF TEQUIP:89
+	IF ABL:39 == 0
+		TIMES SOURCE:8 , 2.00
+	ELSEIF ABL:39 == 1
+		TIMES SOURCE:8 , 1.00
+	ELSEIF ABL:39 == 2
+		TIMES SOURCE:8 , 0.80
+		TFLAG:100 = 1
+	ELSEIF ABL:39 == 3
+		SOURCE:3 = 100
+		TIMES SOURCE:8 , 0.50
+		TFLAG:100 = 1
+	ELSEIF ABL:39 == 4
+		SOURCE:3 = 300
+		SOURCE:10 = 100
+		TIMES SOURCE:8 , 0.30
+		TFLAG:100 = 1
+	ELSE
+		SOURCE:3 = 800
+		SOURCE:10 = 200
+		TIMES SOURCE:8 , 0.10
+		TFLAG:100 = 1
+	ENDIF
+
+	RETURN 1
+ENDIF
+
+;プレイヤーのABL:기교をみる
+IF ABL:PLAYER:12 == 0
+	SOURCE:3 = 100
+	SOURCE:10 = 0
+	A = 0
+ELSEIF ABL:PLAYER:12 == 1
+	SOURCE:3 = 150
+	SOURCE:10 = 0
+	A = 0
+ELSEIF ABL:PLAYER:12 == 2
+	SOURCE:3 = 200
+	SOURCE:10 = 0
+	A = 0
+ELSEIF ABL:PLAYER:12 == 3
+	SOURCE:3 = 300
+	SOURCE:10 = 50
+	A = 50
+ELSEIF ABL:PLAYER:12 == 4
+	SOURCE:3 = 500
+	SOURCE:10 = 100
+	A = 100
+ELSE
+	SOURCE:3 = 800
+	SOURCE:10 = 200
+	A = 300
+ENDIF
+
+;TALENT:愛をみる
+SIF TALENT:85
+	TIMES SOURCE:3 , 2.00
+
+;-------------------------------------------------
+;汚れの処理
+;-------------------------------------------------
+;奴隷の口⇔調教者の口の汚れが移動
+STAIN:0 |= STAIN:PLAYER:0
+STAIN:PLAYER:0 |= STAIN:0
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;レズ・ホモ経験
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +3
+	EXP:40 += 3
+ELSEIF TALENT:122 == 1 && TALENT:PLAYER:122 == 1
+	PRINTS EXPNAME:41
+	PRINTL +3
+	EXP:41 += 3
+ENDIF
+
+;애정경험
+;基本値
+E = 1
+
+;愛かつ主人とのキスなら基本値に＋2
+SIF TALENT:85 && ASSIPLAY == 0
+	E += 2
+
+
+;첫 키스
+TFLAG:621 |= 1
+TFLAG:620 |= 1
+
+
+SIF TALENT:122 || TALENT:121
+	TFLAG:620 |= 2
+
+IF CFLAG:2 >= 1000 && ASSIPLAY == 0
+	PRINTFORML %EXPNAME:23%+{E}
+	EXP:23 += E
+ENDIF
+E = 0
+
+;-------------------------------------------------
+;その他の処理
+;-------------------------------------------------
+TFLAG:100 = 1
+
+SIF ASSIPLAY == 0
+	TFLAG:30 += 1
+
+RETURN 1

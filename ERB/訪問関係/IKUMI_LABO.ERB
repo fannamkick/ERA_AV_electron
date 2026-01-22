@@ -1,0 +1,57 @@
+﻿;=================================================
+;이쿠미ラボ
+;=================================================
+@IKUMI_LABO
+
+CALL IKUMI_LABO_CALC
+
+$INPUT_LOOP
+DRAWLINE
+PRINTL 이쿠미의 연구소
+PRINTL 《초☆최첨단 기술의 은총을 받을 수 있습니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [ 0] - 불임수술을 한다   　　　　　　 (      0포인트)
+;PRINTL  [ 1] - 事務所に監視カメラを設置する　(300000포인트)
+IF D >= 1 && CFLAG:MASTER:709 == 0
+	PRINTL  [ 2] - 신형 안드로이드 제작  　 　(5000000포인트)
+ENDIF
+IF CFLAG:MASTER:720 == 1
+	PRINTL  [ 3] - 유전자개조: 음마화　　　 　(5000000포인트)
+ENDIF
+IF PBAND:303 != 3 && ITEM:90 == 1
+;例によって値段は暫定。でもそれなりに高くないとという気はする
+	PRINTL  [ 4] - 약품개량: 배란유발제 강화　( 500000포인트)
+ENDIF
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	CALL KILL_PREGNANCY
+ELSEIF RESULT == 1
+;	CALL CAMERA_SET
+ELSEIF RESULT == 2 && D >= 1 && CFLAG:MASTER:709 == 0
+	CALL ADD_ANDROID
+ELSEIF RESULT == 3 && CFLAG:MASTER:720 == 1
+	CALL SUCCUBUS_CHANGE
+ELSEIF RESULT == 4 && PBAND:303 != 3 && ITEM:90 == 1
+	CALL BOOST_ITEM40
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+GOTO INPUT_LOOP

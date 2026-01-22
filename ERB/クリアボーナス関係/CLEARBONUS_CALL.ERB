@@ -1,0 +1,45 @@
+﻿;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CALL
+
+CALL ADD_CSV_BIRTHDAY
+CALL DEFOLT_GENITALCALL
+
+SIF FLAG:569 == 1
+	CALL CLEARBONUS_HENTAI
+SIF FLAG:567 == 1 && TALENT:TARGET:85 == 0
+	CALL CLEARBONUS_BOYFRIEND
+SIF FLAG:568 == 1
+	CALL CLEARBONUS_FUTANARI
+
+SIF TALENT:0 == 0
+	CALL LOSTVIRGIN_DETAIL_CALC
+
+
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CALL_MIHIRO
+IF NO:TARGET == 80
+	PRINTFORML %타겟이()%【ONLY ONE IDOL】을 습득한 상태로 시작합니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+	
+	IF RESULT == 0
+		PRINTFORMW %타겟이()%【ONLY ONE IDOL】을 습득한 상태로 시작합니다
+		TALENT:552 = 1
+		MAXBASE:31 += 80
+		BASE:31 += 80
+		PBAND:130 = 4
+		MAXBASE:1 += 1000
+		BASE:1 += 1000
+	ELSEIF RESULT == 1
+		RETURN
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+ENDIF

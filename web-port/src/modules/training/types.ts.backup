@@ -1,0 +1,295 @@
+/**
+ * Training Module 타입 정의
+ */
+
+import type { Character } from '../../types/game';
+
+// ============================================================================
+// PALAM (파라미터) - 조교 중 변화하는 수치
+// ============================================================================
+
+export interface TrainingParameters {
+  쾌C: number;      // 0: C쾌감
+  쾌V: number;      // 1: V쾌감
+  쾌A: number;      // 2: A쾌감
+  쾌B: number;      // 3: B쾌감
+  쾌감: number;     // 4: 쾌감 (일반)
+  쾌락: number;     // 5: 쾌락
+  윤활: number;     // 6: 윤활
+  굴종: number;     // 7: 굴종
+  욕정: number;     // 8: 욕정
+  굴복: number;     // 9: 굴복
+  습득: number;     // 10: 습득
+  수치심: number;   // 11: 수치심
+  고통: number;     // 12: 고통
+  공포: number;     // 13: 공포
+  반감: number;     // 14: 반감
+  불쾌: number;     // 15: 불쾌
+  억울: number;     // 16: 억울
+  불결: number;     // 17: 불결
+  절정: number;     // 18: 절정
+}
+
+export type ParameterKey = keyof TrainingParameters;
+
+// ============================================================================
+// SOURCE - 커맨드 실행 시 계산되는 파라미터 증가량
+// ============================================================================
+
+export type SourceValues = TrainingParameters;
+
+// ============================================================================
+// 커맨드 정의
+// ============================================================================
+
+export interface TrainingCommand {
+  id: number;                     // 커맨드 ID (0~152)
+  name: string;                   // 커맨드 이름
+  category: CommandCategory;      // 카테고리
+
+  // 가용성 판정 (COMABLE)
+  isAvailable: (context: TrainingContext) => boolean;
+
+  // SOURCE 계산
+  calculateSource: (context: TrainingContext) => SourceValues;
+
+  // 메시지 생성
+  generateMessage?: (context: TrainingContext, result: CommandResult) => string;
+
+  // 스태미나 소비
+  staminaCost: number;
+}
+
+// CommandPlugin - 간소화된 커맨드 인터페이스
+export interface CommandPlugin {
+  id: number;
+  name: string;
+  category: string;
+  staminaCost: number;
+  isAvailable: (context: TrainingContext) => boolean;
+  execute: (context: TrainingContext) => Promise<void>;
+}
+
+export type CommandCategory =
+  | '애무'       // 0-9
+  | '삽입'       // 10-29
+  | '펠라치오'   // 30-39
+  | '애널'       // 40-49
+  | '장비'       // 50-59
+  | '복합'       // 60-79
+  | '고급'       // 80+
+  | '특수'
+  | '봉사'       // 봉사계
+  | 'SM'         // SM계
+  | '파이즈리';  // 파이즈리계
+
+// ============================================================================
+// 조교 컨텍스트 - 커맨드 실행에 필요한 모든 정보
+// ============================================================================
+
+export interface TrainingContext {
+  // 대상 캐릭터
+  target: Character;
+  targetId: number;
+
+  // 조수 (옵션)
+  assistant?: Character;
+  assistantId?: number;
+
+  // 현재 파라미터 상태 (PALAM)
+  parameters: TrainingParameters;
+  params: number[];  // 배열 접근용
+
+  // 능력치 (ABL)
+  abilities: number[];
+
+  // 소질 (TALENT)
+  talents: number[];
+
+  // 각인 (MARK)
+  marks?: number[];
+
+  // 경험치 (EXP)
+  experience: Record<number, number>;
+  exp: number[];  // 배열 접근용
+
+  // 경험치 레벨 (EXPLV)
+  explv?: number[];
+
+  // PALAM 레벨 기준값
+  palamlv?: number[];
+
+  // BASE
+  base?: number[];
+
+  // MAXBASE
+  maxBase?: number[];
+
+  // LOSEBASE (기력/체력 소모)
+  loseBase?: number[];
+
+  // SOURCE (커맨드 실행 시 PALAM 증가량)
+  source?: number[];
+
+  // 임시 플래그 (TFLAG)
+  flags: Record<number, number>;
+  tflags: Record<number, number>;  // 배열 접근용
+
+  // 장비 활성 상태 (TEQUIP) - 토글 커맨드 상태 추적
+  equipment: Record<number, number>;
+
+  // 캐릭터 플래그 (CFLAG) - 의류, 피어싱, 음모 등
+  charFlags: Record<number, number>;
+
+  // 아이템 보유 (ITEM)
+  items: Record<number, number>;
+
+  // 전역 플래그 (FLAG)
+  globalFlags: Record<number, number>;
+
+  // 호감도 (RELATION)
+  relation: number;
+
+  // 오염 상태 (STAIN)
+  stain: Record<number, number>;
+
+  // 조수 플레이 모드 여부
+  isAssistantPlay: boolean;
+  assiPlay: number;  // 0 or 1
+
+  // 조수 관련
+  assiAbilities?: number[];
+  assiParams?: number[];
+  assiTalents?: number[];
+  assiExp?: number[];
+
+  // 플레이어 관련
+  playerAbilities?: number[];
+  playerTalents?: number[];
+  playerBase?: number[];
+  playerMaxBase?: number[];
+  playerStain?: number[];
+  playerExp?: number[];
+
+  // 이전 커맨드
+  prevCom?: number;
+
+  // 문자열 저장용
+  saveStr?: string[];
+
+  // 기타 조건
+  day: number;
+  time: number;
+
+  // 메시지 표시 함수
+  showMessage: (message: string, options?: { color?: string }) => void;
+
+  // SOURCE 적용 함수
+  applySource?: (source: SourceValues | number[]) => void;
+
+  // 플레이어 객체 (호환성)
+  player?: {
+    base?: number[];
+    maxBase?: number[];
+    abilities?: number[];
+    talents?: number[];
+    stain?: number[];
+    exp?: number[];
+  };
+}
+
+// ============================================================================
+// 커맨드 실행 결과
+// ============================================================================
+
+export interface CommandResult {
+  success: boolean;
+
+  // SOURCE 값 (파라미터 증가량)
+  source: SourceValues;
+
+  // 실제 적용된 파라미터 변화
+  parameterChanges: Partial<TrainingParameters>;
+
+  // 메시지
+  messages: string[];
+
+  // 특수 효과
+  effects?: {
+    사정?: boolean;
+    절정?: boolean;
+    실신?: boolean;
+    처녀상실?: boolean;
+  };
+
+  // 스태미나 변화
+  staminaLoss: number;
+}
+
+// ============================================================================
+// 조교 결과 (전체)
+// ============================================================================
+
+export interface TrainingResult {
+  // 획득한 구슬 (JUEL)
+  juelGained: Partial<Record<ParameterKey, number>>;
+
+  // 총 구슬
+  totalJuel: number;
+
+  // 부정의 구슬 상쇄
+  negativeOffset: number;
+
+  // 경험치 획득 (EXP)
+  expGained: Record<number, number>;
+
+  // 특수 판정
+  판매가능: boolean;
+  조수화가능: boolean;
+
+  // 메시지
+  summary: string[];
+}
+
+// ============================================================================
+// 구슬(JUEL) 타입
+// ============================================================================
+
+export interface JuelData {
+  // 파라미터별 구슬
+  C쾌감: number;
+  V쾌감: number;
+  A쾌감: number;
+  B쾌감: number;
+  윤활: number;
+  굴종: number;
+  욕정: number;
+  굴복: number;
+  습득: number;
+  수치심: number;
+  고통: number;
+  공포: number;
+  반감: number;
+  불쾌: number;
+  억울: number;
+
+  // 부정의 구슬 (100번)
+  부정: number;
+}
+
+// ============================================================================
+// 레벨 기준 (PALAMLV)
+// ============================================================================
+
+export const PALAM_LEVELS = {
+  L1: 500_000,      // 레벨 1 기준
+  L2: 1_000_000,    // 레벨 2 기준
+  L3: 5_000_000,    // 레벨 3 기준
+  L4: 10_000_000,   // 레벨 4 기준
+} as const;
+
+// ============================================================================
+// 커맨드 레지스트리
+// ============================================================================
+
+export type CommandRegistry = Record<number, TrainingCommand>;

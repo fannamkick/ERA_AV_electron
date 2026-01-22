@@ -1,0 +1,441 @@
+﻿;売春中毒のLvUP処理とその可否判定
+;eraIm@s_ver.0.17βdのスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;売春中毒のLvUP
+;-------------------------------------------------
+@ABLUP37
+DRAWLINE
+;PRINTL 노예의 매춘에 대한 집착도를 늘립니다
+;PRINTL 매춘중독이 높아지면, 매춘에 의한 섹스나 봉사행위에 대한 만족감이 깊어져,
+;PRINTL 자신의 몸을 계속 팔지 않으면 마음이 진정되지 않게 됩니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;売春中毒はLv10が上限
+;[음란][정조무관심][娼婦]が付いている場合はLv10まで해방
+IF ABL:37 >= 5 && (TALENT:76 == 0 && TALENT:31 == 0 && TALENT:180 == 0)
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:37 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+ENDIF
+
+;必要な온순의 구슬
+A = 0
+;必要な욕정의 구슬
+B = 0
+;必要な屈服의 구슬
+C = 0
+;必要な매춘경험
+D = 0
+;必要な이상경험回数
+F = 0
+
+;条件別にOKかダメかを記録する
+I = 0
+
+CALL DECIDE_ABLUP37
+
+;LV2から3, LV3から4, 4から5に上げるときは이상경험必要
+;(素質: [해방][쾌감에 솔직][즉각함락][음란][도착적][중독되기쉬움][娼婦][傾城]があると緩和, 
+;[反抗的][자제심][억압][저항][쾌감을 부정][연심][親愛][相愛][求愛]があると増加, [광기][服従][隷属][使い魔]なら無視できる)
+SIF F > 0
+	PRINTFORML %EXPNAME:50%{F}이상 (현재{EXP:50}) 그리고
+
+;욕망が必要
+PRINTFORML %ABLNAME:11%{ABL:37 + 1}LV이상 (현재{ABL:11}LV) 그리고
+
+PRINTFORM [0] - %PALAMNAME:4%의 구슬×{JUEL:4}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+	SIF I & 4
+		PRINT 능력부족 
+ENDIF
+PRINTL 
+PRINTFORML 　　　%PALAMNAME:5%의 구슬×{JUEL:5}/{B}
+PRINTFORML 　　　%PALAMNAME:6%의 구슬×{JUEL:6}/{C}
+PRINTFORML 　　　%EXPNAME:74%　{EXP:74}/{D}
+PRINTL [100] - 그만둔다
+
+INPUT
+IF RESULT != 0 && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:37 += 1
+IF RESULT == 0
+	JUEL:4 -= A
+	JUEL:5 -= B
+	JUEL:6 -= C
+ENDIF
+
+PRINTFORML %ABLNAME:37%의 레벨이 %조사처리(ABL:37,"가")% 되었습니다
+
+RETURN 0
+
+;-------------------------------------------------
+;売春中毒のLvUP可否判定
+;-------------------------------------------------
+@DECIDE_ABLUP37
+;SIF ABL:37 + ABL:38 >= 10
+;	RETURN 0
+SIF ABL:37 >= 5 && (TALENT:76 == 0 && TALENT:31 == 0 && TALENT:180 == 0)
+	RETURN 0
+
+;判定変数を空に
+I = 0
+
+A = 0
+B = 0
+C = 0
+D = 0
+F = 0
+
+IF ABL:37 == 0
+	A = 2000
+	B = 3000
+	C = 1000
+	D = 50
+ELSEIF ABL:37 == 1
+	A = 5000
+	B = 8000
+	C = 2500
+	D = 100
+ELSEIF ABL:37 == 2
+	A = 8000
+	B = 15000
+	C = 5500
+	D = 150
+ELSEIF ABL:37 == 3
+	A = 14000
+	B = 30000
+	C = 10000
+	D = 250
+ELSEIF ABL:37 == 4
+	A = 22000
+	B = 50000
+	C = 20000
+	D = 400
+ELSEIF ABL:37 == 5
+	A = 34000
+	B = 80000
+	C = 30000
+	D = 500
+ELSEIF ABL:37 == 6
+	A = 55000
+	B = 120000
+	C = 50000
+	D = 800
+ELSEIF ABL:37 == 7
+	A = 80000
+	B = 180000
+	C = 60000
+	D = 1200
+ELSEIF ABL:37 == 8
+	A = 150000
+	B = 300000
+	C = 90000
+	D = 2000
+ELSEIF ABL:37 == 9
+	A = 300000
+	B = 600000
+	C = 150000
+	D = 3000
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	IF ABL:37 == 3
+		TIMES A , 1.50
+		TIMES B , 1.50
+		TIMES C , 1.50
+		TIMES D , 1.50
+	ELSEIF ABL:37 == 4
+		TIMES A , 2.00
+		TIMES B , 2.00
+		TIMES C , 2.00
+		TIMES D , 2.00
+	ELSEIF ABL:37 == 5
+		TIMES A , 2.50
+		TIMES B , 2.50
+		TIMES C , 2.50
+		TIMES D , 2.50
+	ELSEIF ABL:37 >= 6
+		TIMES A , 3.00
+		TIMES B , 3.00
+		TIMES C , 3.00
+		TIMES D , 3.00
+	ENDIF
+ENDIF
+
+;反抗的
+IF TALENT:11
+	TIMES A , 1.50
+	TIMES B , 1.50
+	TIMES C , 1.50
+	TIMES D , 1.50
+ENDIF
+;다부짐
+IF TALENT:12
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+	TIMES D , 1.20
+ENDIF
+;자제심
+IF TALENT:20
+	TIMES A , 1.50
+	TIMES B , 1.50
+	TIMES C , 1.50
+	TIMES D , 1.50
+ENDIF
+;보수적
+IF TALENT:24
+	TIMES A , 1.50
+	TIMES B , 1.50
+	TIMES C , 1.50
+	TIMES D , 1.50
+ENDIF
+
+;悲観的
+IF TALENT:26
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+	TIMES D , 0.90
+ENDIF
+;튀고 싶어함
+IF TALENT:28
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+	TIMES D , 0.90
+ENDIF
+
+;정조관념
+IF TALENT:30
+	TIMES A , 2.00
+	TIMES B , 2.00
+	TIMES C , 2.00
+	TIMES D , 2.00
+;정조무관심
+ELSEIF TALENT:31
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+	TIMES D , 0.90
+ENDIF
+
+;억압
+IF TALENT:32
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+	TIMES D , 1.20
+;해방
+ELSEIF TALENT:33
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+	TIMES D , 0.80
+ENDIF
+
+;저항
+IF TALENT:34
+	TIMES A , 2.00
+	TIMES B , 2.00
+	TIMES C , 2.00
+	TIMES D , 2.00
+ENDIF
+
+;수줍음
+IF TALENT:35
+	TIMES A , 1.10
+	TIMES B , 1.10
+	TIMES C , 1.10
+	TIMES D , 1.10
+;부끄럼 없음
+ELSEIF TALENT:36
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+	TIMES D , 0.90
+ENDIF
+;헌신적
+IF TALENT:63
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+	TIMES D , 0.90
+ENDIF
+;중독되기쉬움
+IF TALENT:72
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES C , 0.50
+	TIMES D , 0.50
+ENDIF
+;음란
+IF TALENT:76
+	TIMES A , 0.80
+	TIMES B , 0.50
+	TIMES C , 0.80
+	TIMES D , 0.80
+ENDIF
+;남성혐오
+IF TALENT:82
+	TIMES A , 3.00
+	TIMES B , 3.00
+	TIMES C , 3.00
+	TIMES D , 3.00
+ENDIF
+;愛
+IF TALENT:85
+	TIMES A , 1.50
+	TIMES B , 1.50
+	TIMES C , 1.50
+	TIMES D , 1.50
+ENDIF
+;임신
+IF TALENT:153
+	TIMES A , 2.00
+	TIMES B , 2.00
+	TIMES C , 2.00
+	TIMES D , 2.00
+ENDIF
+;광기
+IF TALENT:123
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES C , 0.50
+	TIMES D , 0.50
+ENDIF
+;붕괴
+IF TALENT:9
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+	TIMES D , 0.80
+ENDIF
+;娼婦
+IF TALENT:180
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+	TIMES D , 0.80
+ENDIF
+;傾城
+IF TALENT:181
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES C , 0.50
+	TIMES D , 0.50
+ENDIF
+;단골손님
+IF TALENT:183
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+	TIMES D , 0.90
+ENDIF
+;求愛
+IF TALENT:184
+	TIMES A , 2.00
+	TIMES B , 2.00
+	TIMES C , 2.00
+	TIMES D , 2.00
+ENDIF
+
+
+;LV2から3, LV3から4, 4から5に上げるときは이상경험必要
+;(素質: [해방][쾌감에 솔직][즉각함락][음란][도착적][중독되기쉬움][娼婦][傾城]があると緩和, 
+;[反抗的][자제심][억압][저항][쾌감을 부정][愛][求愛]があると増加, [광기][붕괴]なら無視できる)
+IF ABL:37 >= 2 && (TALENT:123 == 0 && TALENT:9 == 0)
+	F = ABL:37 - 1
+	SIF TALENT:33
+		F -= 1
+	SIF TALENT:70
+		F -= 1
+	SIF TALENT:72
+		F -= 2
+	SIF TALENT:73
+		F -= 1
+	SIF TALENT:76
+		F -= 1
+	SIF TALENT:80
+		F -= 1
+	SIF TALENT:180
+		F -= 1
+	SIF TALENT:181
+		F -= 2
+	SIF TALENT:11
+		F += 1
+	SIF TALENT:20
+		F += 1
+	SIF TALENT:32
+		F += 1
+	SIF TALENT:34
+		F += 1
+	SIF TALENT:71
+		F += 1
+	SIF TALENT:85
+		F += 1
+	SIF TALENT:184
+		F += 2
+	
+	SIF F < 0
+		F = 0
+	IF EXP:50 < F
+		;이상경험が不足
+		I |= 2
+		J |= 2
+	ENDIF
+ENDIF
+
+;最低でも1回・1個は必要
+SIF A < 1
+	A = 1
+SIF B < 1
+	B = 1
+SIF C < 1
+	C = 1
+SIF D < 1
+	D = 1
+
+;욕망が必要
+IF ABL:11 < ABL:37 + 1
+	I |= 4
+	J |= 4
+ENDIF
+
+;온순의 구슬は足りている?
+SIF JUEL:4 < A
+	I |= 1
+;욕정의 구슬は足りている?
+SIF JUEL:5 < B
+	I |= 1
+;屈服의 구슬は足りている?
+SIF JUEL:6 < C
+	I |= 1
+;매춘경험が必要
+SIF EXP:74 < D
+	I |= 2
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+;
+;
+;

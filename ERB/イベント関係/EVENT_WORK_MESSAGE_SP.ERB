@@ -1,0 +1,501 @@
+﻿;========================================================
+;特殊営業時メッセージ
+;========================================================
+;--------------------------------------------------------
+;ストリップショー
+;--------------------------------------------------------
+@WORK_MESSAGE_STRIP_01
+;調教テキスト省略設定の場合は戻る
+SIF (FLAG:6 & 1)
+	RETURN 0
+
+;通常ストリップ
+PRINT 스포트라이트를 받으면서, 
+CALL WORK_SUB_PRINT_MEMBER
+PRINTFORML %조사만처리(RESULT+2,"는")% 관객들에게 나체를 보이고 있다……
+	
+WAIT
+	
+;공개자위
+IF FLAG:53 & 1
+	PRINT 그리고, 
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML %조사만처리(RESULT+2,"는")% 객석을 향해 다리를 열어 비밀스런 곳을 드러내고, 
+	PRINTW 야시시한 소리를 내며 성기를 휘젖기 시작했다……
+	;近親자위ショー
+	IF FLAG:53 & 8
+		PRINT 무수히 많은 눈이 지켜보는 가운데 이어서 계속해서 자위하고 있는 
+		IF TFLAG:14 == 2
+			SIF TALENT:122
+				PRINT 부
+			SIF TALENT:122 == 0
+				PRINT 모
+			SIF TALENT:ASSI:122
+				PRINT 자
+			SIF TALENT:ASSI:122 == 0
+				PRINT 녀
+		ELSEIF TFLAG:14 == 4
+			SIF TALENT:122 && TALENT:ASSI:122
+				PRINT 형제
+			SIF TALENT:122 == 0 && TALENT:ASSI:122 == 0
+				PRINT 자매
+			SIF TALENT:122 ^^ TALENT:ASSI:122
+				PRINT 남매
+		ENDIF
+		PRINTL 에게, 
+		PRINTL 객석에서 추잡한 야유가 터졌다……
+		PRINTL 에게, 
+		PRINTW 객석으로부터 음란한 야유가 흘러나왔다……
+	ENDIF
+	PRINTL 
+ENDIF
+
+;レズショー
+IF FLAG:53 & 2
+	PRINT 이윽고 
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORMW %조사만처리(RESULT+2,"는")% 서로의 알몸을 음란하게 얽기 시작했다……
+	;近親レズビアンショー
+	IF FLAG:53 & 8
+		IF TFLAG:14 == 2
+			PRINTL M자로 열린 모친의 고간에 얼굴을 붙인채, 
+			PRINT 자신이 태어난 장소를 혀로 햝는 
+			IF TALENT:ASSI:135
+				PRINT 유녀
+			ELSEIF TALENT:ASSI:132
+				PRINT 소녀
+			ELSE
+				PRINT 딸
+			ENDIF
+		ELSEIF TFLAG:14 == 4
+			PRINT 서로 반대로 붙어 상대의 성기를 서로 햝고 있는 언니와 여동생
+		ENDIF
+		PRINTL 의 모습을, 
+		PRINTW 관객은 숨을 죽이며 지켜보고 있다……
+	ENDIF
+	PRINTL 
+ENDIF
+	
+;공개セックス
+IF FLAG:53 & 4
+	PRINTW 본방 행위가 시작되었다……
+	;TARGETとASSI双方が후타나리でV使用可
+	IF TALENT:TARGET:121 && CFLAG:TARGET:54 == 0 && TALENT:ASSI:121 && CFLAG:ASSI:54 == 0
+		PRINTFORM %타겟과()% %조사처리(CALLNAME:ASSI,"는")%
+		PRINTFORMW 서로의 페니스로 서로의 보지를 교대로 꿰뚫었다
+	;TARGETがオトコor후타나리でASSIがV使用可
+	ELSEIF (TALENT:TARGET:122 || TALENT:TARGET:121) && CFLAG:ASSI:54 == 0
+		PRINTFORM %타겟은()% 발기된 자신의 페니스가 
+		PRINTFORMW %CALLNAME:ASSI%의 보지에 출납하는 모습을 손님들에게 과시했다
+	;ASSIがオトコor후타나리でTARGETがV使用可
+	ELSEIF  (TALENT:ASSI:122 || TALENT:ASSI:121) && CFLAG:54 == 0
+		PRINTFORM %타겟은()% 자신의 보지가 
+		PRINTFORMW %CALLNAME:ASSI%의 페니스로 관철당하는 모습을 손님에게 과시했다
+	ENDIF
+
+	;近親相姦ショー
+	IF FLAG:53 & 8
+		WAIT
+		IF TFLAG:14 == 2  && TALENT:122
+			PRINT 아버지
+		ELSEIF TFLAG:14 == 2  && TALENT:122 == 0
+			PRINT 어머니
+		ELSEIF TFLAG:14 == 4  && TALENT:122 && TALENT:ASSI:122
+			PRINT 형
+		ELSEIF TFLAG:14 == 4  && TALENT:122 && TALENT:ASSI:122 == 0
+			PRINT 오빠
+		ELSEIF TFLAG:14 == 4  && TALENT:122 == 0 && TALENT:ASSI:122
+			PRINT 누나
+		ELSEIF TFLAG:14 == 4  && TALENT:122 == 0 && TALENT:ASSI:122 == 0
+			PRINT 언니
+		ENDIF
+		PRINT 가 
+		IF TFLAG:14 == 2 && TALENT:ASSI:122 == 0
+			PRINT 자신의 딸
+		ELSEIF TFLAG:14 == 2 && TALENT:ASSI:122
+			PRINT 자신의 아들
+		ELSEIF TFLAG:14 == 4 && TALENT:ASSI:122 == 0
+			PRINT 자신의 여동생
+		ELSEIF TFLAG:14 == 4 && TALENT:ASSI:122
+			PRINT 자신의 남동생
+		ENDIF
+		IF TALENT:121 && CFLAG:54 == 0 && TALENT:ASSI:121 && CFLAG:ASSI:54 == 0
+			PRINT 과 서로서로 범하는 
+		ELSEIF (TALENT:122 || TALENT:121) && CFLAG:ASSI:54 == 0
+			PRINT 을 계속해서 범하는 
+		ELSEIF (TALENT:ASSI:122 || TALENT:ASSI:121) && CFLAG:54 == 0
+			PRINT 에게 계속해서 범해지는 
+		ENDIF
+		PRINTW 비정상적인 광경에, 관객석은 조용해졌다……
+	ENDIF
+	PRINTL 
+ENDIF
+
+;失敗時メッセージ
+IF A <= 1
+	PRINTFORM 수치심을 참을 수 없어졌는지  
+	IF FLAG:42 == 1 && TARGET > 0
+		PRINTFORM %타겟은()%
+	ELSEIF FLAG:42 == 2
+		PRINTFORM %타겟과()% %조사처리(CALLNAME:ASSI,"는")%
+	ELSEIF FLAG:42 ==3
+		PRINT 3명은
+	ELSE
+		PRINTFORM {FLAG:42}명은
+	ENDIF
+	PRINTFORMW  중간에 몸을 멈춰버렸다
+;成功時メッセージ
+ELSE
+	;방뇨はサービス
+	IF FLAG:42 == 2
+		IF (FLAG:53 & 8) && ABL:17 >= 4 && TALENT:57 && ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			PRINTFORML 쇼의 마지막에 %타겟이()% %CALLNAME:ASSI%의 양다리를 잡아들고 방뇨시키고, 
+			PRINTFORML 자기 자신도 그 자세 그래도 가랑이를 열어 동시에 방뇨하자, 
+			PRINTFORML 객석에서 대환성이 솟구쳐 올랐다……
+		ELSEIF (FLAG:53 & 8) && ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			PRINTFORML 쇼의 마지막에 %타겟이()% %CALLNAME:ASSI%의 양다리를 아기처럼 안아올리고, 
+			PRINTFORML 객석을 향해 방뇨시키자, 대환성이 솟구쳐 올랐다……
+		ELSEIF ABL:17 >= 4 && TALENT:57 && ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			PRINTFORML 쇼의 마지막에 %타겟과()% %조사처리(CALLNAME:ASSI,"가")% 줄지어 양다리를 열고, 
+			PRINTFORML 동시에 방뇨하자, 환성이 올랐다……
+		ELSEIF ABL:17 >= 4 && TALENT:57
+			IF ABL:22 + ABL:ASSI:22 >= 6 && ABL:20 + ABL:ASSI:21 >= 6
+				PRINTFORML 쇼의 마지막에 %타겟이()% %CALLNAME:ASSI%의 입안에 방뇨하자, 
+				PRINTFORML 대환성이 솟구쳐 올랐다……
+			ELSE
+				PRINTFORML 쇼의 마지막에 %타겟이()% 객석을 향해 방뇨하자, 환성이 올랐다……
+			ENDIF
+		ELSEIF ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			IF ABL:22 + ABL:ASSI:22 >= 6 && ABL:ASSI:20 + ABL:21 >= 6
+				PRINTFORML 쇼의 마지막에 %조사처리(CALLNAME:ASSI,"가")% %CALLNAME:TARGET%의 입안에 방뇨하자, 
+				PRINTFORML 대환성이 솟구쳐 올랐다……
+			ELSE
+				PRINTFORML 쇼의 마지막에 %조사처리(CALLNAME:ASSI,"가")% 객석을 향해 방뇨하자, 환성이 올랐다……
+			ENDIF
+		ENDIF
+		WAIT
+	ELSEIF ABL:17 >= 4 && TALENT:57
+		PRINTFORML 쇼의 마지막에 %타겟이()% 객석을 향해 방뇨하자, 환성이 올랐다……
+		WAIT
+	ENDIF
+	IF FLAG:50 == 0
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW %조사만처리(RESULT+2,"는")% 부끄러운듯이 미소지으며, 스테이지에서 내려왔다……
+	ENDIF
+ENDIF
+
+RETURN 1
+
+;--------------------------------------------------------
+;ストリップ・マナ板ショー
+;--------------------------------------------------------
+@WORK_MESSAGE_STRIP_02
+;調教テキスト省略設定の場合は戻る
+SIF (FLAG:6 & 1)
+	RETURN 0
+
+;メンバー全員が음란かつ娼婦持ちかのチェック
+E = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF TALENT:COUNT:76 == 0 || TALENT:COUNT:180 == 0
+		E = 0
+REND
+;メンバー全員がV使用不可かのチェック
+F = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF CFLAG:COUNT:54
+		CONTINUE
+	F = 0
+REND
+
+PRINT 매트 위에서 
+IF E
+	PRINT 다리가 반정도 열려있는 상태로 유혹하고 있는 
+ELSE
+	PRINT 긴장으로 몸을 딱딱하게 굳은 
+ENDIF
+CALL WORK_SUB_PRINT_MEMBER
+PRINTFORML %조사만처리(RESULT+2,"를")%
+PRINTFORML 스테이지에 오른 {G/3}명의 관객이 차례로 덮쳐,
+SIF F == 0
+	PRINT 보지와 
+PRINTFORML 항문과 입을 마음껏 맛보았다……
+
+RETURN 1
+
+;--------------------------------------------------------
+;乱交パーティー
+;--------------------------------------------------------
+@WORK_MESSAGE_ORGY_01
+;調教テキスト省略設定の場合は戻る
+SIF (FLAG:6 & 1)
+	RETURN 0
+
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+		IF TALENT:COUNT:76 == 1
+			CHKFONT "あくびん"
+			IF RESULT
+				SETFONT "あくびん"
+			ENDIF
+			SETCOLOR 0xDDBBCC
+				IF TALENT:COUNT:0 == 1
+					PRINTFORML 「%CALLNAME:COUNT%의 처녀막, 손님씨의 훌륭한 %조사처리(CSTR:COUNT:80,"로")% 뚫어줘」
+				ENDIF
+			PRINTFORML  「%CALLNAME:COUNT%의 보지에도 항문에도 입에도, 좋은 곳에 가~득 사정해줘♪」
+			RESETCOLOR
+			SETFONT ""
+		ENDIF
+	PRINTFORM %조사처리(CALLNAME:COUNT,"는")% 
+	IF CFLAG:COUNT:54 == 0
+		SIF TALENT:COUNT:0
+			PRINT 더러움을 모르는 
+		PRINTFORM 질과 
+	ENDIF
+	PRINT 항문을 꿰뚫어
+	IF TALENT:COUNT:76 || TALENT:COUNT:180
+		PRINT 지면서 입안에 든 페니스를 햝듯이 빨며 
+	ELSE
+		PRINT 지면서 입을 범해지고 
+	ENDIF
+	PRINT , 양손에 
+	IF TALENT:COUNT:76 || TALENT:COUNT:180
+		PRINTW 꽉 쥐고 있는 페니스를 음란한 손놀림으로 훑고 있다……
+	ELSE
+		PRINTW 쥐어진 페니스를 계속 훑고 있다……
+	ENDIF
+	PRINTW
+	IF TALENT:COUNT:414 == 1 && TALENT:COUNT:76 == 1
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		SETCOLOR 0xDDBBCC
+		PRINTFORML  「야아앙, %CSTR:COUNT:80% 뽑으면 안돼에……」
+		PRINTFORML  「시러시러, 거긴 오줌구멍이야…… %CSTR:COUNT:80% 안들어가는 데야♪」
+		PRINTFORML  「더는 안돼, 엉덩일 범해지며 오줌싸는게 보여져버려♪」
+		RESETCOLOR
+		SETFONT ""
+		PRINTFORM 어려보이는, 앳된 용모의 %조사처리(CALLNAME:COUNT,"가")% 적극적으로 페니스를 빨며, 스스로 허리를 흔드는 음탕한 모습에 
+		PRINTFORML 흥분한 남자들은, 티없는 몸을 더럽히려는 듯이 %CALLNAME:COUNT%의 전신에 백탁액을 뿌렸다……
+		PRINTFORM 항문에 삽입된 채로 뒤로부터 안겨져, 강제적으로 M자모양 포즈를 강요당한
+		PRINTFORML %조사처리(CALLNAME:COUNT,"는")%, 요도를 집요하게 희롱당해져
+		PRINTFORM 그 자극과 항문을 관철당하는 쾌감으로 뇨의가 한계를 맞이하여 
+		PRINTFORML 융단이 깔린 바닥을 향해 분수처럼 힘차게 방뇨하기 시작했다……
+		PRINTW
+	ELSEIF TALENT:COUNT:414 == 1 && TALENT:COUNT:76 == 0
+		PRINTFORM 어려보이는, 앳된 용모의 %조사처리(CALLNAME:COUNT,"가")% 어색하게 페니스를 입에 물고, 양구멍을 관철당하는 모습에 
+		PRINTFORML 흥분한 남자들은, 티없는 몸을 더럽히려는 듯이 %CALLNAME:COUNT%의 전신에 백탁액을 뿌렸다……
+		PRINTFORMW
+	ENDIF
+
+	IF TALENT:COUNT:509 == 1 && TALENT:COUNT:76 == 1
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		SETCOLOR 0xDDBBCC
+		PRINTFORM  「CPG 의상을 입은 %CALLNAME:COUNT%땅을 범하고 싶어, 라니……차암, 정액투성이가 되버리면 
+		PRINTFORML 클리닝 맡길 때 부끄러운데」
+		PRINTFORML  「……에, 안입으면 %CSTR:COUNT:80% 안넣어 주는거야……?」
+		PRINTFORML  「으우~……알았으니까 %CALLNAME:COUNT%의 축축한 보지에 %CSTR:COUNT:80% 넣어줘……」
+		RESETCOLOR
+		SETFONT ""
+		PRINTFORM 대중적 아이돌그룹 멤버인 %조사처리(CALLNAME:COUNT,"가")% 적극적으로 페니스를 빨며, 스스로 허리를 흔드는 음탕한 모습에 
+		PRINTFORM 흥분한 남자들은, 보통이라면 손댈 수 없는 존재를 더럽히고 싶은 탓에 %CALLNAME:COUNT%의 
+		PRINTFORML 자궁에 차례차례 질내사정했고
+		PRINTFORML 결합부에서는 역류한 정액이 방울져 흘려내리고 있다……
+		PRINTFORM 누군가가 반입한 카메라를 들이밀자, %조사처리(CALLNAME:COUNT,"는")% 양손으로 브이싸인을 만들면서 
+		PRINTFORML 단정치못한 가버린 얼굴을 비치고 있다
+		PRINTFORM 셔터가 눌릴때마다 %CALLNAME:COUNT%의 양구멍이 오므라들며, 삽입된 페니스를 억압하자 
+		PRINTFORML 더는 참지 못하고 정액을 안쪽에 쏟아넣었다……
+		PRINTW
+	ELSEIF TALENT:COUNT:509 == 1 && TALENT:COUNT:76 == 0
+		PRINTFORM 대중적 아이돌그룹 멤버인 %조사처리(CALLNAME:COUNT,"가")% 어색하게 페니스를 입에 물고, 양구멍을 관철당하는 모습에 
+		PRINTFORM 흥분한 남자들은, 보통이라면 손댈 수 없는 존재를 더럽히고 싶은 탓에 %CALLNAME:COUNT%의 
+		PRINTFORML 자궁에 차례차례 질내사정했다……
+		PRINTFORML 결합부에서는 역류한 정액이 방울져 흘려내리고 있다……
+		PRINTW
+	ENDIF
+
+	IF TALENT:COUNT:519 == 1
+		PRINTFORM 신인 기예 아이돌 그룹의 멤버, %CALLNAME:COUNT%의 타천사라는 이름에 어울리는 음란한 모습에
+		PRINTFORM 흥분한 남자들은, 보통이라면 손댈 수 없는 존재를 더럽히고 싶은 탓에 %CALLNAME:COUNT%의 
+		PRINTFORML 자궁에 차례차례 질내사정했다……
+		PRINTFORML 결합부에서는 역류한 정액이 방울져 흘려내리고 있다……
+		PRINTW
+	ENDIF
+
+	IF TALENT:COUNT:407 == 1 && TALENT:COUNT:76 == 1
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		SETCOLOR 0xDDBBCC
+		PRINTFORML  「그렇게 엉덩이만 괴롭히지 말아줘어……바보가 되버려어」
+		PRINTFORML  「그래도……모두에게 정액관장 해줬으면해서 오늘을 위해 일주일이나 참아왔어♪」
+		PRINTFORML  「그・러・니・까v%CALLNAME:COUNT%의 뒷구멍에 가~득 정액을 넣어줘♪」
+		RESETCOLOR
+		SETFONT ""
+		PRINTFORM 고귀한 존재인 %조사처리(CALLNAME:COUNT,"가")% 적극적으로 페니스를 빨며, 스스로 허리를 흔드는 음탕한 모습에 
+		PRINTFORM 흥분한 남자들은, 보통이라면 손댈 수 없는 존재를 더럽히고 싶은 탓에 %CALLNAME:COUNT%의 
+		PRINTFORML 항문에 차례차례 사정했다
+		PRINTFORM 장액투성이인 페니스를 넣고 뺄때마다 %CALLNAME:COUNT%의 결합부에서는 
+		PRINTFORML 질퍽질퍽하는 음란한 소리를 내고 있다……
+		PRINTFORM 거듭된 정액관장에 견딜 수 없어진 %조사처리(CALLNAME:COUNT,"가")% 변의를 호소하자, 손님중 한명이 
+		PRINTFORML 스카토로감상 취미용으로 준비된 변기를 가져왔고 
+		PRINTFORM 거기에 배설하도록 요구받은 %조사처리(CALLNAME:COUNT,"는")% 머리뒤에 손을 올리고, 
+		PRINTFORM 땀냄새를 물씬 풍기
+		IF CFLAG:COUNT:607 == 1
+			PRINTFORM 며 겨털이 땀에 젖어 반짝이
+		ENDIF
+		PRINTFORM 는 겨드랑이를 과시하
+		PRINTFORM 면서, 천하게 오다리모양으로 정액이 섞인, 일국의 공주 것이라고는 생각되지 않는 
+		PRINTFORML 코가 꺾일것 같을 만큼 강렬한 악취를 내는 설사를, 피슛피슛한 하는 소리를 내면서 내보낸다
+		PRINTFORM 배설행위와 자신의 오물을 노출되었다는 데에, %조사처리(CALLNAME:COUNT,"는")% 
+		PRINTFORML 부끄러워하기는 커녕 황홀한 표정을 띄우고 있다……
+		PRINTW
+	ELSEIF TALENT:COUNT:407 == 1 && TALENT:COUNT:76 == 0
+		PRINTFORM 고귀한 존재인 %조사처리(CALLNAME:COUNT,"가")% 어색하게 페니스를 입에 물고, 양구멍을 관철당하는 모습에 
+		PRINTFORM 흥분한 남자들은, 보통이라면 손댈 수 없는 존재를 더럽히고 싶은 탓에 %CALLNAME:COUNT%의 
+		PRINTFORML 항문에 차례차례 사정했다
+		PRINTFORM 장액투성이인 페니스를 넣고 뺄때마다 %CALLNAME:COUNT%의 결합부에서는 
+		PRINTFORML 질퍽질퍽하는 음란한 소리를 내고 있다……
+		PRINTW
+	ENDIF
+
+	IF TALENT:COUNT:87 == 1 && TALENT:COUNT:76 == 1
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		SETCOLOR 0xDDBBCC
+		PRINTFORML  「후훗, 손님의 %CSTR:COUNT:80%, 잔~뜩 문질문질 해줄께요♪」
+		PRINTFORML  「……에, %CALLNAME:COUNT%의 머리카락을 왜 %CSTR:COUNT:80%에 감는거야?」
+		PRINTFORM  「차암, %CALLNAME:COUNT%의 머리카락이랑 겨드랑이에 정액을 뿌려대다니…… 손님도 차암 변태씨
+		PRINTFORML 라니깐♪」
+		RESETCOLOR
+		SETFONT ""
+		PRINTFORM 일부러 천천히 혀를 사용해 페니스를 봉사하고 있는 %CALLNAME:COUNT%에게 감질난 
+		PRINTFORML 남성객은, %CALLNAME:COUNT%의 머리를 잡아, 강제로 목구멍까지 페니스를 찔러 넣었다
+		PRINTFORM 목을 범해져 숨막힌 소리를 내면서도, %조사처리(CALLNAME:COUNT,"는")% 가늘고 섬세한 손가락으로 구경만하던 
+		PRINTFORML 손님의 페니스를, 엄지와 검지로 만든 고리로 때로는 단단히 조이며 귀두부터 쓸어내리고 있다……
+		PRINTFORM %CALLNAME:COUNT%의 비단실같이 사락사락거리는 머리카락의 냄새를 맡으면서 페니스를 만지며, 차레를 기다리고 있던 
+		PRINTFORM 손님은 기다릴 수 없었는지, %CALLNAME:COUNT%의 
+		CALL PRINT_HAIRSTYLE_4COUNT
+		IF CFLAG:COUNT:602 == 5 || CFLAG:COUNT:602 == 1 || CFLAG:COUNT:602 == 2
+			PRINTFORM  머리를 
+		ELSEIF CFLAG:COUNT:602 == 4
+			PRINTFORM  머리를 한손에 들고, 그것을 
+		ELSEIF CFLAG:COUNT:602 == 6
+			PRINTFORM  머리카락을 풀어, 풀린 머리카락을 
+		ENDIF
+		PRINTFORM 딱딱하게 우뚝 솟은 거무스런 페니스에 비비며, 
+		PRINTFORML 오나홀을 대신해 자위를 시작했다
+		PRINTFORM 다른 구경만하던 손님도 거기에 동조해 %CALLNAME:COUNT%의 겨드랑이나 허벅지, 구멍주변 여기저기에 페니스를 
+		PRINTFORML 꽉 누르며, 차례차례 백탁액으로 물들였다
+		PRINTFORM 그리고 마지막에 이라마치오를 하고 있던 손님이 %CALLNAME:COUNT%의 입안에 사정하자, 정액투성이인 
+		PRINTFORM %조사처리(CALLNAME:COUNT,"는")% 혀를 내밀어 사정된지 얼마 안된 정액을 주위에 보여주고는, 일부러 소리를 내며 
+		PRINTFORML 모조리 마셨다……
+		PRINTW
+	ELSEIF TALENT:COUNT:87 == 1 && TALENT:COUNT:76 == 0
+		PRINTFORM 열심히 혀를 사용해 페니스에 봉사하고 있는 %CALLNAME:COUNT%에게 감질난 
+		PRINTFORML 남성객은, %CALLNAME:COUNT%의 머리를 잡고, 강제로 목구멍까지 페니스를 찔러넣었다
+		PRINTFORM 목을 범해져 숨막힌 소리를 내면서도, %조사처리(CALLNAME:COUNT,"는")% 가늘고 섬세한 손가락으로 구경만하던 
+		PRINTFORML 손님의 페니스를, 손님에게 지시받는대로 필사적으로 흝고 있다……
+		PRINTW
+	ENDIF
+
+	IF TALENT:COUNT:422 == 1 && TALENT:COUNT:432 == 1
+		CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+		SETCOLOR 0xDDBBCC
+		PRINTFORML  「역시 약섹스가 최고지, 아저씨의 %CSTR:COUNT:80%도 딱딱하게 꼴려있고」
+		PRINTFORM  「한 번 쌌는데도 %CSTR:COUNT:80% 뽑지않고 5번을 질내사정한다던가 흑%CSTR:COUNT:80% 주제에 도가 지나쳐. 
+		PRINTFORML 오물냄새나는 동정 포경%CSTR:COUNT:80%도 이것보단 오래가겠어♪ 아니면 내 테크닉이 너무 굉장한건가」
+		PRINTFORM  「콘돔도 안끼고 이만큼 싸대다니 아저씨 어쩔 생각이야♪ 
+		PRINTFORML 뭐, 그냥 넣어도 된다고 한 건 나지만」
+		PRINTFORM  「정액이 나오지 않게 될때까지 하고 싶다고? 뭐야, 그렇게도 내 보지가 
+		PRINTFORML 맘에 들었다면 한가할 때 10장에 범하게 해줄께♪」
+		PRINTFORM  「아핫, 그렇게 필사적으로 승락하다니…… 나야 좋지만♪ 
+		PRINTFORML 자기 자식이랑 비슷한 나이대 여자에게 돈주면서까지 중년%조사처리(CSTR:COUNT:80,"로")% 약섹스가 하고 싶구나」
+		PRINTFORM  「아저씨 돈 많아 보이니까 좋아, 그 대신 러브호텔이랑 밥은 아저씨가 쏘는거야♪」
+		RESETCOLOR
+		SETFONT ""
+		PRINTFORM 파티도 끝나갈 무렵, 키류 조직이 뒤에서 뿌리고 있는【프린세스포이즌】라는 이름의 
+		PRINTFORM 합법 약품을 흡인한 %조사처리(CALLNAME:COUNT,"가")% 지금까지의 손님에게하던 온순한『연기』를 멈추고, 
+		PRINTFORM 흑갸루를 좋아하는 중년 남성객 위에 음란하게 다리를 벌리며 걸터앉고 허리를 격렬하게 흔들며, 하얀 광택이 나는 
+		PRINTFORML 입에서 피어스가 반짝이는 혀를 내민채, 끝없이 침을 흘리면서 쾌락을 탐내고 있다
+		PRINTFORM 손님도 %조사처리(CALLNAME:COUNT,"를")% 보내버리려고, 그 잘록한 갈색 허리를 잡으면서 
+		PRINTFORM 숙련된 테크닉으로 페니스를 밑에서부터 밀어올렸지만, 
+		PRINTFORML %CALLNAME:COUNT%의 허리놀림에, %조사처리(CALLNAME:COUNT,"가")% 한번 절정할동안 삼회넘게 쏟아냈다……
+		PRINTFORM 끝없는 %CALLNAME:COUNT%의 성욕 앞에 기진맥진한 손님은, 불만족한 %CALLNAME:COUNT%에게 
+		PRINTFORML 사적인『놀이』를 제안했다
+		PRINTFORML 잠시동안 %조사처리(CALLNAME:COUNT,"는")% 품평하듯이 손님을 둘러보더니, 검지를 하나 세웠다
+		PRINTFORML 물론 1장이 아니라, 10장. 이 난교파티 참가비용과 같은 금액이다
+		PRINTFORM 손님은 잠시 골똘히 생각했지만, 이번처럼 비정상적인 섹스에 적극적으로 응해준 
+		PRINTFORM 자신의 딸과 동갑정도의『놀이상대』…… 섹스프렌드는 역시 매력적이었는지, 
+		PRINTFORML 바이브를 역수로 쥐고 자위하고 있던 %CALLNAME:COUNT%에게 연락처가 쓰여진 명함을 전했다……
+		PRINTW
+	ENDIF
+
+	IF TALENT:COUNT:121 == 1
+		PRINTFORM %CALLNAME:COUNT%의 터질듯이 발기된 후타나리 페니스는, 뒤로부터 뻗어온 손에 계속해서 잡아당겨져, 
+		PRINTFORML 끝없이 정액을 토해내고 있다……
+		PRINTFORMW 황홀한 표정을 지으며, %조사처리(CALLNAME:COUNT,"는")% 수음을 계속해주길 애원하고 있었다
+	ENDIF
+
+	PRINTL
+
+	;처녀상실
+	IF CFLAG:COUNT:54 == 0 && TALENT:COUNT:0
+		PRINTFORML 범해지는 %CALLNAME:COUNT%의 질에서는, 하얀 거품섞인 애액과 정액에 처녀혈이 섞여 흐르기 시작하고 있었다
+		SETCOLOR 0xF58F98
+		PRINTFORMW 【처녀상실】
+		RESETCOLOR
+	ENDIF
+	IF TALENT:COUNT:2 == 1
+		PRINTFORM 처음으로 페니스를 받아들여, 페니스 굵기대로 열려 있던 %CALLNAME:COUNT%의 항문은, 
+		PRINTFORML 원상태로 돌아가려 하면서도 누런 장액섞인 정액을 흘러보내고 있었다 
+		SETCOLOR 0xF58F98
+		PRINTFORMW 【애널처녀상실】
+		RESETCOLOR
+	ENDIF
+	IF TALENT:COUNT:1 == 1
+		PRINTFORM 충분히 애액이 스며든 여성손님의 질육에 삽입하며, 표피가 벗겨진지 얼마 안된 %CALLNAME:COUNT%의 
+			IF TALENT:COUNT:121 == 1
+				PRINTFORM 후타나리 페니스
+			ELSEIF TALENT:COUNT:121 == 1
+				PRINTFORM 페니스
+			ENDIF
+		PRINTFORM 는 태어나서 처음으로 맛보는, 페니스를 모조리 짜내려는 질벽의 움직임에 견디지 못하고, 
+		PRINTFORML 흘러넘칠만큼 대량의 정액을 여성손님의 질내에 사정했다
+		PRINTFORML 태어나서 첫 질내사정하는 쾌감에, %조사처리(CALLNAME:COUNT,"는")% 황홀한 표정을 짓고 있다……
+		SETCOLOR 0xF58F98
+		PRINTFORMW 【동정상실】
+		RESETCOLOR
+	ENDIF
+
+	IF TALENT:COUNT:76 == 1
+			CHKFONT "あくびん"
+			IF RESULT
+				SETFONT "あくびん"
+			ENDIF
+			SETCOLOR 0xDDBBCC
+			PRINTFORML  「%CALLNAME:COUNT%의 보지, 손님의 %CSTR:COUNT:80%모양이 되어버렸을지도……」
+			PRINTFORML  「또 %조사처리(CALLNAME:COUNT,"과")% 엣찌하러 와줘♪　약속이야」
+			RESETCOLOR
+			SETFONT ""
+	ENDIF
+	PRINTW
+REND
+
+RETURN 1
+

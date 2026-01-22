@@ -1,0 +1,920 @@
+﻿;--------------------------------------------------------
+;指導開始時メッセージ
+;--------------------------------------------------------
+@PRITRAIN_MESSAGE
+
+;新しいメッセージにすげかえるまで表示されないようにしておく
+IF 0
+	DRAWLINE
+	CFLAG:10 += 1
+	PRINTFORML %NAME:TARGET%에게 {CFLAG:10}회째 지도를 시작했다.
+	WAIT
+	DRAWLINE
+	RETURN 0
+ENDIF
+
+
+;**********改造部分************************************************
+VARSET LOCAL
+;指導経験を加算
+IF FLAG:1111
+	FOR LOCAL,0,CHARANUM
+		IF GETBIT(FLAG:1111,LOCAL)
+			CFLAG:LOCAL:10 += 1
+		ENDIF
+	NEXT
+ELSE
+	CFLAG:10 += 1
+ENDIF
+;口上部分に関しては未改造
+;複数同時の場合は特殊な口上になりそうだから分岐してしまう方が素直かな?
+;**********改造ここまで********************************************
+
+;指導テキスト省略設定の場合
+IF (FLAG:6 & 1)
+	PRINTFORML %NAME:TARGET%에게 {CFLAG:10}회째 지도를 시작했다.
+	WAIT
+	RETURN 0
+ENDIF
+
+DRAWLINE
+
+;정조대装備で鍵アリ, フラグONではここで外す
+IF FLAG:549 == 1
+	IF CFLAG:42 == 79 && CFLAG:49 == 0 && CFLAG:40 >= 64
+		CFLAG:40 -= 64
+	ENDIF
+ENDIF
+
+C = NO:TARGET + 2000
+;口上が存在すればそちらを優先
+
+;初指導時
+IF CFLAG:10 == 1 && FLAG:C == 0
+	PRINTFORML %NAME:TARGET%에게 첫 지도를 시작했다.
+	PRINTL 
+ 
+	IF FLAG:37
+		CALL PRITRAIN_MESSAGE_CLOTHED
+	ELSE
+		CALL PRITRAIN_MESSAGE_NOCLOTHES
+	ENDIF
+
+	IF TALENT:23
+		PRINTFORML 
+		PRINTFORML 그러나, %CALLNAME:TARGET%의 눈동자 깊은 곳에서
+		PRINTFORML 마치 무언가를 기대하는듯한 빛이 비치는 것도 확실해 보인다.
+	ENDIF
+
+	IF ASSI > 0
+		IF TALENT:ASSI:83
+			PRINTFORML 
+			PRINTFORML 한편, 조수인 %조수는()%, 마음껏 %타겟을()% 괴롭힐 수 있다는 것에, 
+			PRINTFORML 벌써부터 내심 기대를 감출 수 없다는 모습이었다.
+		ELSEIF TALENT:ASSI:13
+			PRINTFORML 
+			PRINTFORML 조수인 %조수는()% %CALLNAME:TARGET%의 모습을 보고,
+			PRINTFORML %CALLNAME:MASTER%의 허가를 얻어, %CALLNAME:TARGET%의 어깨에 슬며시 손을 얹었다.
+			SIF TALENT:11
+				PRINTFORML %타겟은()% 그 손을 매몰차게 뿌리치려 했다.
+		ENDIF
+	ENDIF
+
+	IF FLAG:37 == 0
+		IF TALENT:310
+			WAIT
+			PRINTFORML ――발가벗은 %NAME:TARGET%의 몸에선 확실히 위화감이 느껴졌다.
+			PRINTFORML 하지만, 어차피 지도에는 지장이 없을 것이다.
+		ELSEIF TALENT:313
+			WAIT
+			PRINTFORML ――발가벗은 %NAME:TARGET%의 몸은 어딘지 모르게 위화감을 풍겼다.
+			PRINTFORML 하지만, 어차피 지도에는 지장이 없을 것이다.
+		ELSEIF TALENT:312
+			WAIT
+			PRINTFORML 발가벗은 %CALLNAME:TARGET%의 온몸에는 빽빽하게 흉터가 아로새겨져 있었다.
+			PRINTFORML 이건 만만치 않겠군, 하고 %플레이어는()% 마음속으로 중얼거렸다.
+		ENDIF
+	ENDIF
+
+	WAIT
+	RETURN 1
+ENDIF
+
+PRINTFORML %NAME:TARGET%에게 {CFLAG:10}회째 지도를 시작했다.
+
+S = 0
+C = NO:TARGET + 2000
+
+;솔직함かおとなしいなら従順4以上, 봉사정신3以上, 반발각인無しで土下座(口上があればそちらを優先)
+IF (TALENT:13 || TALENT:14 || TALENT:88) && ABL:10 >= 4 && ABL:16 >= 3 && MARK:3 == 0 && FLAG:C == 0
+	WAIT
+	PRINTFORM %타겟은()% 
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+		PRINTFORM 로
+	ELSE
+		PRINTFORM 으로
+	ENDIF
+	PRINTFORM  침대 가장자리에 앉아 
+		IF CFLAG:171 >= 1 && CFLAG:173 == 0 && CFLAG:170 != 0 && CFLAG:40 != 0
+			CALL PRINT_SHOESTYPE_MAIN2
+			IF RESULT == 0
+				PRINTFORM 를 벗고 
+			ELSE
+				PRINTFORM 을 벗고 
+			ENDIF
+		ELSE
+			PRINTFORM
+		ENDIF
+	PRINTFORML %CALLNAME:MASTER%에게 인사를 했다.
+;	IF TALENT:MASTER:83
+;		PRINTFORML %CALLNAME:MASTER%はその後頭部を革靴で踏みにじり, %CALLNAME:TARGET%の顔面を床に擦り付けた。
+;			SIF ABL:21 >= 3
+;				PRINTFORML そしてその状況に, %CALLNAME:TARGET%は股間を濡らしているようだった……
+;	ENDIF
+;	S = 1
+;솔직함かおとなしいなら従順3以上, 반발각인1以下で指導前の挨拶(口上があればそちらを優先)
+ELSEIF (TALENT:13 || TALENT:14) && ABL:10 >= 3 && MARK:3 <= 1 && FLAG:C == 0
+	WAIT
+	PRINTFORM %타겟은()% 
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+		PRINTFORM 로
+	ELSE
+		PRINTFORM 으로
+	ENDIF
+	PRINTFORM  침대 가장자리에 앉아 
+		IF CFLAG:171 >= 1 && CFLAG:173 == 0 && CFLAG:170 != 0 && CFLAG:40 != 0
+			CALL PRINT_SHOESTYPE_MAIN2
+			IF RESULT == 0
+				PRINTFORM 를 벗고 
+			ELSE
+				PRINTFORM 을 벗고 
+			ENDIF
+		ELSE
+			PRINTFORM
+		ENDIF
+	PRINTFORML %CALLNAME:MASTER%에게 인사를 했다.
+	S = 1
+;その他(口上があればそちらを優先)
+ELSEIF FLAG:C == 0
+	WAIT
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+		PRINTFORM 로
+	ELSE
+		PRINTFORM 으로
+	ENDIF
+	PRINTFORM  침대 가장자리에 앉아 
+		IF CFLAG:171 >= 1 && CFLAG:173 == 0 && CFLAG:170 != 0 && CFLAG:40 != 0
+			CALL PRINT_SHOESTYPE_MAIN2
+			IF RESULT == 0
+				PRINTFORM 를 벗고 
+			ELSE
+				PRINTFORM 을 벗고 
+			ENDIF
+		ELSE
+			PRINTFORM
+		ENDIF
+	PRINTFORML %CALLNAME:MASTER%에게 인사를 했다.
+	S = 1
+ENDIF
+
+
+;즈코 인형を着てるならここで終了
+IF CFLAG:42 == 11 && (CFLAG:40 & 64) && FLAG:C == 0
+	SIF CFLAG:40 == 64
+		PRINTL 아무래도, 안쪽은 알몸인 것 같다……
+	WAIT
+	S = 0
+	RETURN 0
+ENDIF
+
+;임신중
+IF TALENT:153 && CFLAG:110 <= DAY+10
+	IF S == 0
+		CALL PRINT_CLOTHTYPE
+		LOCAL:1 = RESULT
+		IF CFLAG:173 == 0
+			IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+				PRINTFORM 
+			ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+				PRINTFORM 에
+			ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+				PRINTFORM 에 
+			ELSE
+				PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+			ENDIF 
+			CALL PRINT_SHOESTYPE
+			IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+				PRINTFORM 
+			ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+				PRINTFORM 
+			ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+				PRINTFORM 차림
+			ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+				PRINTFORM 차림
+				ELSE
+				PRINT 차림
+			ENDIF
+		ELSE
+			PRINTFORM 
+		ENDIF
+	ENDIF
+	PRINTFORM 인 %타겟은()% 
+	SIF TALENT:100
+		PRINT 그 작은 몸에 어울리지 않게 
+	PRINTFORML 지금도 팽팽한 배를 안고 있다.
+	PRINTFORML (과격한 지도는 피하는 게 좋을 것 같다)
+ELSEIF TALENT:153 && CFLAG:110 <= DAY+20
+	PRINTFORML %CALLNAME:TARGET%의 배는 안정기에 들어가 임산부 특유의 둥글게 부푼 라인을 드러내고 있다.
+ELSEIF TALENT:153 && CFLAG:110 <= DAY+30
+	PRINTFORML %CALLNAME:TARGET%의 배는 약간 봉긋하게 눈에 띄기 시작했다.
+ENDIF	
+
+A = CFLAG:40
+CALL WEARING_CLOTH_ALL
+B = CFLAG:40
+CFLAG:40 = A
+
+IF (CFLAG:40 & 4)
+	IF (CFLAG:40 & 2) == 0 && (B & 2) && (TALENT:109 == 0 && TALENT:116 == 0)
+		PRINT 노브라인 유방이 옷 아래에서 흔들리고 있는 모습이 
+		IF TALENT:110 || TALENT:114
+			PRINT 확실히 
+		ELSE
+			PRINT 희미하게 
+		ENDIF
+		PRINTL 드러나, 눈을 즐겁게 해주고 있다.
+	ENDIF
+ENDIF
+
+;乳房ピアスでノーブラの場合
+IF (CFLAG:7 & 1) && (CFLAG:40 & 2) == 0
+	IF (CFLAG:40 & 4) == 1
+		PRINTFORML 옷의 옷감 너머로, %CALLNAME:TARGET%의 양 유두에 매달린 피어스 형태가 솟아올라 있다.
+	ELSE
+		PRINTFORML %타겟이()% 움직일 때마다, 그 양쪽 젖꼭지에 매달린 피어스가 조금씩 흔들렸다.
+	ENDIF
+ENDIF
+
+;ノーパンで下半身着衣, かつ노출벽Lv3未満の場合
+IF  (CFLAG:40 & 1) == 0 && ((CFLAG:40 & 8) || (CFLAG:40 & 16))
+	IF (B & 1) && TALENT:135 == 0 && ABL:17 < 3
+		PRINT 노팬티인 하반신이 부끄러운지 
+		IF TALENT:121 == 1
+			IF ABL:38 >= 3
+				PRINTFORM 쿠퍼액을 질질 흘리며 발기한 
+			ENDIF
+			CALL PENISFORM
+			PRINTFORM  후타나리 페니스가 자란 
+		ENDIF
+		PRINTL 고간을 신경쓰고 있다……
+	ENDIF
+ENDIF
+
+;ノーパンでスカートタイプ, かつ노출벽Lv3以上の場合
+IF  (CFLAG:40 & 1) == 0 && (CFLAG:40 & 8)
+	IF (B & 1) && ABL:17 >= 3
+		PRINTFORM %타겟은()% 스커트를 잡아올려 속옷을 입지 않아 드러난 
+		IF TALENT:121 == 1
+			IF ABL:38 >= 3
+				PRINTFORM 쿠퍼액을 질질 흘리며 발기한 
+			ENDIF
+			CALL PENISFORM
+			PRINTFORM  후타나리 페니스
+		ELSE
+			PRINTFORM 비부
+		ENDIF
+		PRINTFORML 를 당신에게 보여줬다
+	ENDIF
+ENDIF
+
+IF CFLAG:40 == 0 && TALENT:121
+		IF ABL:38 >= 3
+			PRINTFORM 쿠퍼액을 질질 흘리며 발기한 
+		ENDIF
+		CALL PENISFORM
+	PRINTFORM 후타나리 페니스
+	IF ABL:38 >= 3 && ABL:31 >= 2
+		PRINTFORML 를, 사정의 쾌락을 기억한 %타겟이()% 무의식중에 흩고 있다……
+	ELSE
+		PRINTFORML 를 아직 받아들이지 못했는지 양손으로 감추고 있다……
+	ENDIF
+ENDIF
+
+;下半身ピアスでノーパン, かつズボンタイプでない場合
+IF (CFLAG:7 & 4) || (CFLAG:7 & 8) && (CFLAG:40 & 1) == 0 && (CFLAG:40 & 16) == 0
+	IF (CFLAG:40 & 8) == 1
+		PRINT 치마 사이로 보이는 
+	ELSE
+		PRINT 알몸의 
+	ENDIF
+		PRINT 비부에선 
+			SIF (CFLAG:7 & 4)
+				PRINT 양쪽 음순
+			SIF (CFLAG:7 & 4) && (CFLAG:7 & 8)
+				PRINT 과 
+			SIF (CFLAG:7 & 8)
+				PRINT 클리토리스
+		PRINTL 에 낀 피어스가 빛을 받아 빛나고 있다……
+ENDIF
+WAIT
+
+C = 0
+S = 0
+
+RETURN 1
+
+;--------------------------------------------------------
+;初指導時・着衣設定オフ
+;--------------------------------------------------------
+@PRITRAIN_MESSAGE_NOCLOTHES
+IF TALENT:22
+	PRINTFORML %타겟은()% %플레이어가()% 말하는대로 옷을 벗고서
+	PRINTFORML 아무런 감정도 드러내지 않고, 앞쪽마저 숨기려고 하지 않은 채 우뚝 서 있다.
+ELSEIF TALENT:132 && TALENT:135
+	PRINTFORML %타겟은()% 영문도 모른 채 옷을 벗어던지고, 알몸 상태가 되었다.
+ELSEIF TALENT:12
+	PRINTFORML 알몸으로 벗겨진 %타겟은()%, 손으로 가슴과 사타구니를 가리고 있지만, 
+	PRINTFORML 의연한 태도를 취하고 있다. 약점만은 결코 보이지 않겠다는 각오인 것 같다.
+ELSEIF TALENT:11
+	PRINTFORML %플레이어를()% 실컷 고생시킨 끝에 겨우 알몸이 된 %타겟은()% 
+	PRINTFORML 필사적으로 몸을 감추려 앞으로 숙이고 있지만, 
+	PRINTFORML 그 눈만은 무서운 기세로 %플레이어를()% 노려보고 있다.
+ELSEIF TALENT:21
+	PRINTFORML %CALLNAME:MASTER%의 명령에, %타겟은()% 어깨를 으쓱 하고 옷을 벗었다.
+	PRINTFORML 무슨 짓을 해도 상관 없으니 이런 허튼짓은 빨리 끝내버리고 싶어, 
+	PRINTFORML 하는 태도다.
+ELSEIF TALENT:132
+	PRINTFORML 알몸이 된 %타겟은()% 그저 떨기만 할 뿐이었다.
+	PRINTFORML 결국엔 그저, 평범한 어린애일 뿐이다.
+ELSEIF TALENT:20
+	PRINTFORML 알몸이 된 %타겟은()% 양 손으로 몸을 가리고 있지만, 
+	PRINTFORML 표정은 어디까지나 평정을 가장하고 있다.
+ELSEIF TALENT:10
+	PRINTFORML 알몸으로 벗겨진 %타겟은()% 자신의 어깨를 끌어안고서 떨고 있다. 
+	PRINTFORML 앞으로 자신을 기다릴 운명을 상상하고서, 공포에 이를 부딪치고 있다.
+ELSEIF TALENT:15
+	PRINTFORML %타겟은()% 전라를 드러낸 치욕과 이제부터 노예로 취급될 그 굴욕을
+	PRINTFORML 이를 악물고 어깨를 떨면서 필사적으로 참고 있다.
+ELSEIF TALENT:17
+	PRINTFORML 알몸이 된 %타겟은()% 머뭇거리며 %CALLNAME:MASTER%의 눈치를 살피고 있다.
+	PRINTFORML 말하는 것에 얌전히 따르면 아픈 꼴은 당하지 않을지도 모른다, 라고 생각하고 있는 것 같다.
+ELSEIF TALENT:13
+	PRINTFORML 알몸으로 벗겨졌지만, %타겟은()% 자신이 처한 상황을 받아들일 수 없다는 모습이다.
+	PRINTFORML 사람이 이런 심한 짓을 타인에게 할 수 있을 리 없다, 라는 생각이라도 하는 것일까.
+ELSEIF TALENT:14
+	PRINTFORML 저항해도 소용 없다고 깨달은 것인지, %타겟은()% 얌전히 옷을 벗고서 알몸이 되었다.
+	PRINTFORML 적어도, 억지로 옷을 벗겨지는 굴욕만큼은 피하고 싶었던 걸지도 모른다.
+ELSEIF TALENT:16
+	PRINTFORML %타겟은()% 두려움에 떨면서도 %플레이어를()% 노려보고 있다.
+	PRINTFORML 이런 짓으로 자신은 굴복하지 않을 것이라는 자신이 있는 것 같다.
+ELSE
+	PRINTFORML %타겟은()% 벗겨져서 알몸이 되었다.
+ENDIF
+
+RETURN 1
+
+;--------------------------------------------------------
+;初指導時・上着着用時
+;--------------------------------------------------------
+@PRITRAIN_MESSAGE_CLOTHED
+IF TALENT:22
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORML 인 %타겟은()% 아무 감정도 드러내지 않은 채 우뚝 서 있다.
+ELSEIF TALENT:132 && TALENT:135
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORML 인 %타겟은()% 무슨 짓을 당하고 있는 것인지 이해하지 못한 것 같다.
+ELSEIF TALENT:12
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 의연한 태도를 취하고 있다. 
+	PRINTFORML 약점만은 절대 보여주지 않겠다는 각오인 것 같다.
+ELSEIF TALENT:11
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORML 인 %타겟은()% %플레이어를()% 노려보고 있다.
+ELSEIF TALENT:21
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 어깨를 으쓱거리고 있다. 
+	PRINTFORM 무슨 짓을 해도 상관 없으니까 이런 허튼짓은 빨리 끝내고 싶어, 
+	PRINTFORML 하는 태도다.
+ELSEIF TALENT:132
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 그저 떨고만 있다. 
+	PRINTFORML 결국엔 그저, 평범한 어린애일 뿐이다.
+ELSEIF TALENT:20
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORML 인 %타겟은()% 표정은 어디까지나 평정을 가장하고 있다.
+ELSEIF TALENT:10
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORML 인 %타겟은()% 자신의 어깨를 끌어안고서 떨고 있다. 
+	PRINTFORML 앞으로 자신을 기다릴 운명을 상상하고서, 공포에 이를 부딪치고 있다.
+ELSEIF TALENT:15
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 앞으로 노예로서 취급될 것이라는 굴욕을 
+	PRINTFORML 이를 악물고 어깨를 떨면서 필사적으로 참고 있다.
+ELSEIF TALENT:17
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 머뭇거리며 %CALLNAME:MASTER%의 눈치를 살피고 있다. 
+	PRINTFORML 말하는 것에 얌전히 따르면 아픈 꼴은 당하지 않을지도 모른다, 라고 생각하고 있는 것 같다.
+ELSEIF TALENT:13
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 자신이 처한 상황을 받아들일 수 없다는 모습이다. 
+	PRINTFORML 사람이 이런 심한 짓을 타인에게 할 수 있을 리 없다, 라는 생각이라도 하는 것일까.
+ELSEIF TALENT:14
+	PRINTFORM 저항해도 소용 없다고 깨달은 것인지 
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+		PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORML 인 %타겟은()% 얌전하게 기다리고 있다.
+ELSEIF TALENT:16
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟은()% 두려움에 떨면서도 %플레이어를()% 노려보고 있다.
+	PRINTFORML 이런 짓으로 자신은 굴복하지 않을 것이라는 자신이 있는 것 같다.
+ELSE
+	CALL PRINT_CLOTHTYPE
+	LOCAL:1 = RESULT
+	IF CFLAG:173 == 0
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 에
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 != 0
+			PRINTFORM 에 
+		ELSE
+			PRINTFORM %조사만처리(LOCAL:1+2,"와")%
+		ENDIF 
+		CALL PRINT_SHOESTYPE
+		IF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 == 0 && CFLAG:40 != 0
+			PRINTFORM 
+		ELSEIF CFLAG:170 == 0 && CFLAG:171 != 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSEIF CFLAG:170 != 0 && CFLAG:171 == 0 && CFLAG:40 == 0
+			PRINTFORM 차림
+		ELSE
+			PRINT 차림
+		ENDIF
+	ELSE
+		PRINTFORM 
+	ENDIF
+	PRINTFORM 인 %타겟이()% 지도실로 끌려왔다. 
+ENDIF
+
+IF CFLAG:171 != 0
+	PRINTFORM 일단 %플레이어는()% %타겟이()% 신고있는 
+	CALL PRINT_SHOESTYPE_MAIN2
+	IF RESULT == 0
+		PRINT 를
+	ELSE
+		PRINT 을
+	ENDIF
+	PRINTFORM  벗고 이쪽으로 오라고 재촉했다……
+ENDIF
+
+RETURN 1

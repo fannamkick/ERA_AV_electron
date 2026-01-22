@@ -1,0 +1,59 @@
+﻿;-------------------------------------------------
+;로터
+;道具使用コマンド: 調教対象の클리토리스を로터で刺激
+;追加されるソース: 快c,露出,逸脱
+;-------------------------------------------------
+@COM10
+
+PRINTL 로터
+SAVESTR:0 = 로터
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 10
+LOSEBASE:1 += 80
+
+SOURCE:12 = 120
+SOURCE:14 = 70
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	SOURCE:0 = 200
+ELSEIF ABL:0 == 1
+	SOURCE:0 = 400
+ELSEIF ABL:0 == 2
+	SOURCE:0 = 900
+ELSEIF ABL:0 == 3
+	SOURCE:0 = 1600
+ELSEIF ABL:0 == 4
+	SOURCE:0 = 2400
+ELSE
+	SOURCE:0 = 3000
+ENDIF
+						;****슬라임パッチ追加ここから****
+IF ITEM:200 >= 1
+	TIMES LOSEBASE:0 , 0.80
+	TIMES LOSEBASE:1 , 0.80
+	TIMES SOURCE:0 , 1.20
+	TIMES SOURCE:12 , 1.20
+	TIMES SOURCE:14 , 0.80
+ENDIF
+						;****슬라임パッチ追加ここまで****
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;レズ・ホモ経験
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +1
+	EXP:40 += 1
+ELSEIF TALENT:122 == 1 && TALENT:PLAYER:122 == 1
+	PRINTS EXPNAME:41
+	PRINTL +1
+	EXP:41 += 1
+ENDIF
+
+RETURN 1

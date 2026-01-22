@@ -1,0 +1,1231 @@
+﻿;=================================================
+;프라이드 높음
+;=================================================
+@BREAK_PRIDE_HIGH
+C = 2000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이의 프라이드가 높아지도록 조정하면 되는거지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;프라이드 높음・低いは排除
+ELSEIF TALENT:RESULT:15 || TALENT:RESULT:17
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()%【%TALENTNAME:15%】이 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:15 = 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;프라이드 낮음
+;=================================================
+@BREAK_PRIDE_LOW
+C = 2000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이의 프라이드가 낮아지도록 조정하면 되는거지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;프라이드 높음・低いは排除
+ELSEIF TALENT:RESULT:15 || TALENT:RESULT:17
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()%【%TALENTNAME:17%】이 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:17 = 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;プライド・뉴트럴
+;=================================================
+@BREAK_PRIDE_NEUTRAL
+C = 1000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이의 프라이드를 평범해지게 조정하면 되는거지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;프라이드 높음・低いなしは排除
+ELSEIF TALENT:RESULT:15 == 0 && TALENT:RESULT:17  == 0
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %CALLNAME:TARGET%의 프라이드는 평범해졌다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:15 = 0
+	TALENT:17 = 0
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;쾌감에 솔직
+;=================================================
+@BREAK_XTC_POSITIVE
+C = 3000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이가 쾌감에 솔직해지게 하면 되지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;쾌감에 솔직・否定は排除
+ELSEIF TALENT:RESULT:70 || TALENT:RESULT:71
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()%【%TALENTNAME:70%】하게 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:70 = 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;快感・否定
+;=================================================
+@BREAK_XTC_NEGATIVE
+C = 3000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이가 쾌감을 부정하게 하면 되지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;쾌감에 솔직・否定は排除
+ELSEIF TALENT:RESULT:70 || TALENT:RESULT:71
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()%【%TALENTNAME:71%】하게 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:71 = 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;快感・뉴트럴
+;=================================================
+@BREAK_XTC_NEUTRAL
+C = 1500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이가 남들만큼만 쾌감을 받아들이게 하면 되지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;쾌감에 솔직・否定を持たないキャラは排除
+ELSEIF TALENT:RESULT:70 == 0 && TALENT:RESULT:71  == 0
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()% 남들만큼만 쾌감을 받아들이게 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:70 = 0
+	TALENT:71 = 0
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;새드
+;=================================================
+@BREAK_SM_SADIST
+C = 3000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이가 가학적 취향을 가지게 하면 되지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;いったん뉴트럴にもどさないとだめ
+ELSEIF TALENT:RESULT:83 || TALENT:RESULT:88
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()%【%TALENTNAME:83%】가 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:83 = 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;마조
+;=================================================
+@BREAK_SM_MASOCHIST
+C = 3000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이가 피학적 취향을 가지게 하면 되지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;いったん뉴트럴に戻さないとだめ
+ELSEIF TALENT:RESULT:83 || TALENT:RESULT:88
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %타겟은()%【%TALENTNAME:88%】가 됐다》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:88 = 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;SM・뉴트럴
+;=================================================
+@BREAK_SM_NEUTRAL
+C = 1500000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이의 성적기호를 평범하게 만들면 되지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;すでに뉴트럴
+ELSEIF TALENT:RESULT:83 == 0 && TALENT:RESULT:88  == 0
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 끌려온 %CALLNAME:TARGET%에게 귓속말로, 말 그대로 악마의 유혹을 속삭였다……
+	PRINTFORML  그 말에 영혼이 침식당한 %타겟은()% 텅 빈 눈으로 특정한 말을 읇조리고 있다
+	PRINTFORML 《유니스의 광기에 침식당한 %CALLNAME:TARGET%의 성적기호가 평범해졌다》
+	PRINTFORML
+	PRINTFORMW   %EXPNAME:50% +1
+	EXP:50 += 1
+	TALENT:83 = 0
+	TALENT:88 = 0
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;사상개변
+;=================================================
+@CHANGE_WORK
+IF B != 999
+	C = 2000000
+ELSEIF B == 999
+	C = 1000000
+ENDIF
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이의 상황을 바꾸면 되는 거지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除 니콜は特別扱い。なんでや(ほかに手段がないからです)
+ELSEIF TALENT:RESULT:330 && NO:RESULT != 217
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;変化ない場合を排除
+ELSEIF (TALENT:RESULT:203 == 1 || TALENT:RESULT:402 == 1 || TALENT:RESULT:421 == 1) && B != 999
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ELSEIF B == 999 && TALENT:RESULT:203 == 0 && TALENT:RESULT:402 == 0 && TALENT:RESULT:421 == 0
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 손가락을 한 번 튕기더니, %CALLNAME:MASTER%에게 인터넷으로 %CALLNAME:TARGET%의 이름을 검색해보라고 했다
+	PRINTFORM  검색 결과, 
+		IF B != 999
+			PRINTFORM %CALLNAME:TARGET%의 프로필이【%TALENTNAME:B%】로 변해있었다……
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%의 프로필이 달라져있다……
+		ENDIF
+	PRINTL
+	PRINTFORM 《유니스가 사상을 개변해, 
+		IF B != 999
+			PRINTFORM %타겟은()%【%TALENTNAME:B%】%조사만처리(TALENTNAME:B,"가")% 됐다
+		ELSEIF TALENT:400 == 1 && B == 999
+			PRINTFORM %타겟은()% 평범한 AV배우가 됐다
+		ELSEIF TALENT:400 == 0 && B == 999
+			PRINTFORM %타겟은()% 평범한 AV배우 후보가 됐다
+		ENDIF
+	PRINTL 》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+	IF B != 999
+		TALENT:B = 1
+		IF B == 203
+			MAXBASE:31 += 30
+			BASE:31 += 30
+		ELSEIF B == 402
+			MAXBASE:31 += 20
+			BASE:31 += 20
+		ELSEIF B == 421
+			MAXBASE:31 += 10
+			BASE:31 += 10
+		ENDIF
+		;バイト外す
+		CFLAG:801 = 0
+	ELSE
+		IF TALENT:203 == 1
+			MAXBASE:31 -= 30
+			BASE:31 -= 30
+			IF TALENT:515 == 1
+				MAXBASE:31 -= 30
+				BASE:31 -= 30
+			ENDIF
+		ELSEIF TALENT:402 == 1
+			MAXBASE:31 -= 20
+			BASE:31 -= 20
+		ELSEIF TALENT:421 == 1
+			MAXBASE:31 -= 10
+			BASE:31 -= 10
+		ENDIF
+		TALENT:203 = 0
+		TALENT:402 = 0
+		TALENT:421 = 0
+		TALENT:515 = 0
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;사상개변
+;=================================================
+@CHANGE_VIRGINITY
+
+C = 80000000
+
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이의 성경험을 바꾸면 되는 거지?
+PRINTL 　……응?　있는 그대로의 내가 귀엽다고?
+PRINTL 『당신』도 참…… 그래도 기뻐요『당신』」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+ELSEIF B == 100 && TALENT:RESULT:0 == 1 && CFLAG:RESULT:15 == 0
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ELSEIF B == 150 && TALENT:RESULT:2 == 1
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ELSEIF B == 200 && CFLAG:RESULT:16 == -1
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML 유니스는 손가락을 한 번 튕기더니, %CALLNAME:TARGET%에게 간단한 문진을 실시했다……
+	PRINTFORM 문진 도중, %타겟은()% 지금까지 한 번도 
+		IF B == 100
+			PRINTFORM 질에 뭔가를 넣었던 
+		ELSEIF B == 150
+			PRINTFORM 애널에 뭔가를 넣었던 
+		ELSEIF B == 200
+			PRINTFORM 키스를 한 
+		ENDIF
+	PRINTFORM 적이 없다고, 갑자기 물어본 성적인 화재에 
+	IF TALENT:36
+		PRINTFORM 부끄러워하는 기색도 없이 
+	ELSE
+		PRINTFORM 뺨을 붉게 물들이며 
+	ENDIF
+	PRINTFORM 대답했다……
+	PRINTL
+	PRINTFORM 《유니스가 사상을 개변해, 
+		IF B == 100
+			PRINTFORM %타겟은()% 순수한【처녀】가 됐다
+			TALENT:0 = 1
+			EXP:0 = 0
+			ABL:2 = 0
+			CFLAG:15 = 0
+			JUEL:1 = 0
+		ELSEIF B == 150
+			PRINTFORM %타겟은()%【애널처녀】가 됐다
+			TALENT:2 = 1
+			EXP:1 = 0
+			ABL:3 = 0
+			JUEL:2 = 0
+		ELSEIF B == 200
+			PRINTFORM %타겟은()% 키스 미경험이 됐다
+			CFLAG:16 = -1
+		ENDIF
+	PRINTL 》
+	PRINTFORML
+	PRINTFORMW  %EXPNAME:50% +1
+	EXP:50 += 1
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+
+;=================================================
+;사상개변: 타천사化
+;=================================================
+@CHANGE_FALLEN
+
+
+
+C = 30000000
+
+IF MONEY < C
+	PRINTW 소지금이 부족합니다
+	RETURN 0
+ENDIF
+
+CHKFONT "あくびん"
+	IF RESULT
+		SETFONT "あくびん"
+	ENDIF
+SETCOLOR 0xDDBBCC
+PRINTL 「그래, 이 아이를 타천사로 환생시키면 되는거지?」
+RESETCOLOR
+SETFONT ""
+$INPUT_LOOP
+DRAWLINE
+
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 0
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP
+;미션は排除
+ELSEIF TALENT:RESULT:330
+	PRINTFORMW  유니스는【%TALENTNAME:330%】대상에겐 흥미가 없어 보입니다
+	GOTO INPUT_LOOP
+;すでにち○こ生えてるのは排除=유니스の趣味は女にち○こ生やして사정の快楽に戸惑うのを見ること
+ELSEIF (TALENT:RESULT:121 == 1 || TALENT:RESULT:122 == 1)
+	PRINTFORMW  유니스는 자신의 취미를 방해했다며 화를 냈다
+	GOTO INPUT_LOOP
+;유니스は排除
+ELSEIF NO:RESULT == 86
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;すでに타천사
+ELSEIF (TALENT:RESULT:511 == 1 && TALENT:RESULT:505 == 1)
+	PRINTFORMW  %조사처리(CALLNAME:RESULT,"는")% 이미 타천사입니다
+	GOTO INPUT_LOOP
+;MASTERに영원한 사랑を誓ったものは타천사にできない유니스さんまじ유니스さん。
+ELSEIF TALENT:RESULT:430 == 0
+	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+	GOTO INPUT_LOOP
+;勲章特典: 人間に戻す
+;ELSEIF CFLAG:RESULT:900 == 1
+;	PRINTFORMW  %CALLNAME:RESULT%에겐 효과가 없습니다
+;	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_2
+PRINTFORML  %타겟을()% 유니스에게 데려오겠습니까?
+PRINTL  [0] - 네
+PRINTL  [1] - 그만둔다
+
+INPUT
+
+IF RESULT == 1
+	RETURN 0
+ELSEIF RESULT == 0
+	PRINTFORML  유니스는 %타겟을()% 그때처럼 범하라고 했다……
+	PRINTFORM  유니스의 광기와 거듭되는 이상한 경험에, 더러움을 모르던 %타겟은()% 몸도 마음도 범해지며, 
+	PRINTFORML 【음마】의 음탕함과【천사】의 순수함이라는, 모순된 두가지 요소를 가진 고차원의 존재로 변했다
+	PRINTFORML 《유니스의 광기와 거듭되는 이상한 경험에 몸도 마음도 범해진 %타겟은()%【타천사】가 됐다》	
+	PRINTFORMW
+	CALL CHANGE_FALLEN_TALENT
+	CALL RESULT_EXP
+	C = 30000000
+	WAIT
+ELSE
+	GOTO INPUT_LOOP_2
+ENDIF
+
+MONEY -= C
+
+RETURN 1
+;
+;=================================================
+;사상개변: 타천사化
+;=================================================
+@CHANGE_FALLEN_TALENT
+
+;達成値
+X = 0
+;成否判定
+Y = 0
+;失敗時マイナスされる포인트
+M = 0
+;成功時プラスされる포인트
+P = 0
+;공헌도
+B = 0
+;延長期間
+E = 0
+;절정경험
+Z = 0
+;V経験
+V = 0
+;A경험
+A = 0
+;성교경험
+O = 0
+;펠라경험
+F = 0
+;정액경험
+S = 0
+;이상경험
+I = 0
+;촉수경험
+T = 0
+;긴박경험
+K = 0
+;방뇨経験
+N = 0
+;乳姦経験
+C = 0
+;분유경험
+G = 0
+;레즈경험
+L = 0
+;BL経験
+H = 0
+;약물경험
+D = 0
+;수간경험
+J = 0
+;피사경험
+Q = 0
+;사정経験
+R = 0
+;複数人を対象とした素質などの追加用
+A:1 = 0
+;複数人を対象とした素質などの追加用
+B:1 = 0
+
+
+SIF TALENT:505 == 0
+	MAXBASE:31 -= 50
+CALL SUCCUBUS_STATUS_ACH
+
+TALENT:1 = 1
+TALENT:121 = 1
+TALENT:76 = 1
+TALENT:123 = 1
+TALENT:505 = 1
+TALENT:511 = 1
+TALENT:422 = 1
+TALENT:430 = 0
+TALENT:432 = 0
+
+Z += 250 + RAND:51
+V += 150 + RAND:21
+A += 150 + RAND:21
+C += 40 + RAND:21
+O += 200 + RAND:51
+G += Z / 3 + RAND:11
+L += Z / 3 + RAND:11
+D += 1 + RAND:51
+S += 500 + RAND:101
+F += 200 + RAND:26
+J += 1 + RAND:50
+I = 666
+T +=  Z / 3 + RAND:11
+K += T
+R += Z /3 - RAND:26
+
+IF TALENT:76 == 1
+	Z *= 2
+	V *= 2
+	A *= 2
+	O *= 2
+	F *= 2
+	S *= 2
+	K *= 2
+	G *= 2
+	N *= 2
+	C *= 2
+	L *= 2
+	H *= 2
+	J *= 2
+	R *= 2
+ENDIF
+
+IF TALENT:0 == 1
+	CSTR:0 = %CALLNAME:MASTER%
+	TALENT:0 = 0
+	CFLAG:15 = 16
+	CFLAG:160 = BASE:9
+	CFLAG:161 = DAY:1
+	CFLAG:162 = DAY:2
+	SETCOLOR 0xF58F98
+	PRINTL 【처녀상실】
+	RESETCOLOR
+ENDIF
+
+IF TALENT:MASTER:1 == 1
+	CSTR:MASTER:2 = %NAME:TARGET%
+	TALENT:MASTER:1 = 0
+ENDIF
+
+IF CFLAG:16 == -1
+	CFLAG:16 = 1
+	CFLAG:820 = BASE:9
+	CFLAG:821 = DAY:1
+	CFLAG:822 = DAY:2
+	CSTR:1 = 유니스・파라디수스의 극태 후타나리 자지
+	SETCOLOR 0xF58F98
+	PRINTL 【첫 키스】
+	RESETCOLOR
+ENDIF
+
+IF TALENT:1 == 1
+	TALENT:1 = 0
+	CSTR:2 = 모르는 여자아이의 처녀보지
+	SETCOLOR 0xF58F98
+	PRINTL 【동정상실】
+	RESETCOLOR
+ENDIF
+
+IF TALENT:2 == 1
+	TALENT:2 = 0
+	CFLAG:616 = 14
+	CFLAG:830 = BASE:9
+	CFLAG:831 = DAY:1
+	CFLAG:832 = DAY:2
+	CSTR:3 = 촉수생물
+	SETCOLOR 0xF58F98
+	PRINTL 【애널처녀상실】
+	RESETCOLOR
+ENDIF
+
+CFLAG:609 = 2
+CFLAG:611 = 3
+BASE:50 = 18 + RAND:6
+MAXBASE:31 += 50
+BASE:31 = MAXBASE:31
+
+;=================================================
+;미션結果測定・経験表示
+;=================================================
+@RESULT_EXP
+
+;절정경험
+IF Z > 0
+	PRINTFORML  %EXPNAME:2% +{Z}
+	EXP:2 += Z
+ENDIF
+;V経験
+IF V > 0
+	PRINTFORML  %EXPNAME:0% +{V}
+	EXP:0 += V
+ENDIF
+;A경험
+IF A > 0
+	PRINTFORML  %EXPNAME:1% +{A}
+	EXP:1 += A
+ENDIF
+;성교경험
+IF O > 0 
+	PRINTFORML  %EXPNAME:5% +{O}
+	EXP:5 += O
+ENDIF
+;정액경험
+IF S > 0
+	PRINTFORML  %EXPNAME:20% +{S}
+	EXP:20 += S
+ENDIF
+;펠라경험
+IF F > 0
+	PRINTFORML  %EXPNAME:22% +{F}
+	EXP:22 += F
+ENDIF
+;레즈경험
+IF L > 0
+	PRINTFORML  %EXPNAME:40% +{L}
+	EXP:40 += L
+ENDIF
+;BL経験
+IF H > 0
+	PRINTFORML  %EXPNAME:41% +{H}
+	EXP:41 += F
+ENDIF
+;피사경험
+IF Q > 0
+	PRINTFORML  %EXPNAME:70% +{Q}
+	EXP:70 += Q
+ENDIF
+;이상경험
+IF I > 0
+	PRINTFORML  %EXPNAME:50% +{I}
+	EXP:50 += I
+ENDIF
+;사정経験
+IF R > 0
+	PRINTFORML  %EXPNAME:3% +{R}
+	EXP:3 += R
+ENDIF
+;방뇨経験
+IF N > 0
+	PRINTFORML  %EXPNAME:31% +{N}
+	EXP:31 += N
+ENDIF
+;긴박경험
+IF K > 0
+	PRINTFORML  %EXPNAME:51% +{K}
+	EXP:51 += K
+ENDIF
+;분유경험
+IF G > 0
+	PRINTFORML  %EXPNAME:54% +{G}
+	EXP:54 += G
+ENDIF
+;촉수경험
+IF T > 0
+	PRINTFORML  %EXPNAME:55% +{T}
+	EXP:55 += T
+ENDIF
+;수간경험
+IF J > 0
+	PRINTFORML  %EXPNAME:56% +{J}
+	EXP:56 += J
+ENDIF
+;약물경험
+IF D > 0
+	PRINTFORML  %EXPNAME:57% +{D}
+	EXP:57 += D
+ENDIF
+;乳姦経験
+IF C > 0
+	PRINTFORML  %EXPNAME:58% +{C}
+	EXP:58 += C
+ENDIF

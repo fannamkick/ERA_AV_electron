@@ -1,0 +1,265 @@
+﻿;===========================================================
+;売上포인트の計算式
+;===========================================================
+@AV_POINTCALC
+
+;素質:붕괴を見る
+SIF TALENT:9
+	TIMES P , 0.50
+;素質:처녀を見る
+SIF TALENT:0
+	TIMES P , 1.20
+;素質:무관심を見る
+SIF TALENT:21
+	TIMES P , 0.70
+;素質:감정부족を見る
+SIF TALENT:22
+	TIMES P , 0.70
+;素質:수줍음を見る
+SIF TALENT:35
+	TIMES P , 1.10
+;素質:음란を見る
+SIF TALENT:76
+	TIMES P , 1.50
+;素質:색정광を見る
+SIF TALENT:440
+	TIMES P , 1.50
+;素質:小柄体系を見る
+SIF TALENT:100
+	TIMES P , 1.20
+;素質:거유を見る
+SIF TALENT:110
+	TIMES P , 1.20
+;素質:폭유を見る
+SIF TALENT:114
+	TIMES P , 1.40
+;素質:비만を見る
+SIF TALENT:115
+	TIMES P , 0.50
+;素質:후타나리を見る
+SIF TALENT:121
+	TIMES P , 1.20
+;素質:광기を見る
+SIF TALENT:123
+	TIMES P , 0.80
+;素質:동물귀を見る
+SIF TALENT:124
+	TIMES P , 1.10
+;素質:인기인を見る
+SIF TALENT:126
+	TIMES P , 1.30
+;素質:수수께끼의 매력を見る
+SIF TALENT:92
+	TIMES P , 1.30
+;素質:魅力を見る
+SIF TALENT:113
+	TIMES P , 1.30
+;素質:비만を見る
+SIF TALENT:115
+	TIMES P , 0.20
+;素質:オトコを見る。オトコの娘なら大丈夫
+SIF TALENT:122 && TALENT:413 == 0
+	TIMES P , 0.20
+;素質:모유체질を見る
+SIF TALENT:130
+	TIMES P , 1.20
+;素質:미숙함を見る
+SIF TALENT:135
+	TIMES P , 1.30
+;素質:教師を見る
+SIF TALENT:201
+	TIMES P , 1.10
+;素質:아이돌を見る
+SIF TALENT:203
+	TIMES P , 1.50
+SIF TALENT:204
+	TIMES P , 1.20
+SIF TALENT:209
+	TIMES P , 1.20
+SIF TALENT:224
+	TIMES P , 1.20
+;素質:아가씨を見る
+SIF TALENT:205
+	TIMES P , 2.00
+;素質:人妻を見る
+SIF TALENT:206
+	TIMES P , 1.10
+;素質:미망인を見る
+SIF TALENT:212
+	TIMES P , 1.50
+;素質:고등학생を見る
+SIF TALENT:220
+	TIMES P , 1.20
+;素質:중학생を見る
+SIF TALENT:221
+	TIMES P , 1.30
+;素質:초등학생を見る
+SIF TALENT:222
+	TIMES P , 1.40
+;素質:패션모델を見る
+SIF TALENT:402
+	TIMES P , 1.40
+;素質:お姫様
+SIF TALENT:407
+	TIMES P , 1.50
+;素質:外国人を見る
+SIF TALENT:408
+	TIMES P , 1.40
+;素質:ハーフを見る
+SIF TALENT:409
+	TIMES P , 1.30
+;素質:クオーターを見る
+SIF TALENT:410
+	TIMES P , 1.20
+;素質:オトコの娘を見る
+SIF TALENT:413
+	TIMES P , 1.20
+;素質:동안を見る
+SIF TALENT:414
+	TIMES P , 1.50
+;素質:캬바레녀を見る
+SIF TALENT:421
+	TIMES P , 1.30
+;素質:갈색피부を見る
+SIF TALENT:422
+	TIMES P , 1.10
+;素質:聖職者を見る
+SIF TALENT:427
+	TIMES P , 1.10
+;素質:警察官を見る
+SIF TALENT:429
+	TIMES P , 1.10
+;素質:갸루계を見る
+SIF TALENT:432
+	TIMES P , 1.10
+;素質:医者を見る
+SIF TALENT:433
+	TIMES P , 1.40
+;素質:하루우라레を見る
+SIF TALENT:507
+	TIMES P , 1.50
+;素質:음마を見る
+SIF TALENT:505
+	TIMES P , 1.50
+;素質:야쿠자의 딸を見る
+SIF TALENT:502
+	TIMES P , 1.50
+;素質:야쿠자의 아내を見る
+SIF TALENT:516
+	TIMES P , 1.50
+;素質:CPGを見る
+SIF TALENT:509
+	TIMES P , 3.00
+;素質:CPGを見る
+SIF TALENT:515
+	TIMES P , 2.50
+;素質:Mermaid girlを見る
+SIF TALENT:518
+	TIMES P , 3.0
+;素質:Triptychを見る
+SIF TALENT:519
+	TIMES P , 3.0
+;素質:Emerald Queenを見る
+SIF TALENT:522
+	TIMES P , 3.0
+;素質:Lily Princessを見る
+SIF TALENT:523
+	TIMES P , 3.0
+;素質:그랜드마스터を見る
+SIF TALENT:512
+	TIMES P , 3.00
+;素質:平和の가희?を見る
+SIF TALENT:530
+	TIMES P , 1.25
+	;オリジナルユニットと共存出来る為ボーナスは低めに
+;素質:堕ちた가희を見る
+SIF TALENT:531
+	TIMES P , 1.50
+	;オリジナルユニットと共存出来る為ボーナスは低めに
+;素質:ONLY ONE IDOLを見る
+SIF TALENT:552
+	TIMES P , 1.50
+	;CPGと共存出来る為ボーナスは低めに
+;素質:SUPER HEROINEを見る
+SIF TALENT:562
+	TIMES P , 1.50
+	;CPGと共存出来る為ボーナスは低めに
+;素質:ブースト: 미노리を見る
+SIF TALENT:604
+	TIMES P , 2.00
+;素質:ブースト: 縁を見る
+SIF TALENT:605
+	TIMES P , 1.50
+;素質:ブースト: 하루카を見る
+SIF TALENT:606
+	TIMES P , 1.50
+;素質:ブースト: 쇼코を見る
+SIF TALENT:607
+	TIMES P , 1.50
+;ブースト: 미쿠を見る
+SIF NO:TARGET == 38
+	TIMES P , 2.50
+;ブースト: 미쿠を見る
+SIF NO:TARGET == 83
+	TIMES P , 2.50
+;ブースト: 미쿠を見る
+SIF NO:TARGET == 209
+	TIMES P , 2.00
+
+;ABL:피사技能をみる
+IF ABL:70 == 0
+	TIMES P , 1.00
+ELSEIF ABL:70 == 1
+	TIMES P , 1.10
+ELSEIF ABL:70 == 2
+	TIMES P , 1.20
+ELSEIF ABL:70 == 3
+	TIMES P , 1.30
+ELSEIF ABL:70 == 4
+	TIMES P , 1.40
+ELSEIF ABL:70 == 5
+	TIMES P , 1.50
+ELSEIF ABL:70 == 6
+	TIMES P , 1.60
+ELSEIF ABL:70 == 7
+	TIMES P , 1.70
+ELSEIF ABL:70 == 8
+	TIMES P , 1.80
+ELSEIF ABL:70 == 9
+	TIMES P , 1.90
+ELSE
+	TIMES P , 2.00
+ENDIF
+;ABL:노출벽をみる
+IF ABL:17 == 0
+	TIMES P , 1.00
+ELSEIF ABL:17 == 1
+	TIMES P , 1.10
+ELSEIF ABL:17 == 2
+	TIMES P , 1.20
+ELSEIF ABL:17 == 3
+	TIMES P , 1.30
+ELSEIF ABL:17 == 4
+	TIMES P , 1.40
+ELSEIF ABL:17 == 5
+	TIMES P , 1.50
+ELSEIF ABL:17 == 6
+	TIMES P , 1.60
+ELSEIF ABL:17 == 7
+	TIMES P , 1.70
+ELSEIF ABL:17 == 8
+	TIMES P , 1.80
+ELSEIF ABL:17 == 9
+	TIMES P , 1.90
+ELSE
+	TIMES P , 2.00
+ENDIF
+
+;난이도보정
+;HARD
+IF FLAG:5 == 3
+	TIMES P , 0.70
+;POWERFUL
+ELSEIF FLAG:5 == 4
+	TIMES P , 0.50
+ENDIF

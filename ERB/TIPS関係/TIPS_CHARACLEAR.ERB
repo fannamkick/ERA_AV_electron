@@ -1,0 +1,191 @@
+﻿;===========================================================
+;TIPS 陥落系素質取得条件
+;===========================================================
+@TIPS_CHARACLEAR
+PRINTFORML 《TIPS》
+PRINTFORML 여배우 후보의 함락・은퇴 가능 조건
+CUSTOMDRAWLINE ･･
+PRINTL  [0] - 은퇴 가능 조건
+PRINTL  [1] - 조수 가능 조건
+PRINTL  [2] - 【연심】습득조건
+PRINTL  [3] - 【음란】습득조건
+PRINTL  [4] - 【영원한 사랑】습득조건
+PRINTL  [5] - 【절륜】습득조건
+PRINTL  [6] - 【섹프】습득조건
+PRINTL  [7] - 함락계 소질의 중첩 습득조건
+CUSTOMDRAWLINE ･･
+PRINTL [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	CALL TIPS_RETIRE
+ELSEIF RESULT == 1
+	CALL TIPS_ASSI
+ELSEIF RESULT == 2
+	CALL TIPS_LOVE
+ELSEIF RESULT == 3
+	CALL TIPS_LEWDNESS
+ELSEIF RESULT == 4
+	CALL TIPS_TRUELOVE
+ELSEIF RESULT == 5
+	CALL TIPS_PEERLESS
+ELSEIF RESULT == 6
+	CALL TIPS_SEXFRIEND
+ELSEIF RESULT == 7
+	CALL TIPS_OVERLAP
+ELSEIF RESULT == 999
+	CALL TIPS_MAIN
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+
+;===========================================================
+;은퇴可能条件
+;===========================================================
+@TIPS_RETIRE
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆은퇴 가능 조건◆
+PRINTFORML 【매각 불가】가 없고【AV배우】를 가지고 있고
+PRINTFORML 
+PRINTFORML ○신뢰＋욕망이 6LV이상
+PRINTFORML ○C・V・A・B감각중 하나가 최소 LV3
+PRINTFORML ○【건방짐】이나【다부짐】을 가지고 있으면 순종 LV4이상
+PRINTFORML ○【자제심】【억압】【저항】을 가지고 있으면 욕망 LV4이상
+PRINTFORML 
+PRINTFORML 위 조건을 만족하고
+PRINTFORML 
+PRINTFORML ○기교 LV3이상, 봉사정신 LV3이상
+PRINTFORML ○노출벽 LV3이상, 자위중독 LV2이상
+PRINTFORML ○C・V・A・B감각의 LV합계가 13이상
+PRINTFORML ○순종이나 욕망중 하나가 LV5
+PRINTFORML 
+PRINTFORML 중 하나를 만족한다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;조수 가능能条件
+;===========================================================
+@TIPS_ASSI
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆조수 가능 조건◆
+PRINTFORML 은퇴 가능 조건을 만족하고
+PRINTFORML 
+PRINTFORML ○신뢰・욕망・기교・C감각・레즈끼가 모두 LV3이상
+PRINTFORML ○순종 LV5이상, 욕망 LV4이상
+PRINTFORML
+PRINTFORML 중 하나를 만족하고 AV출연경험 3이상
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;연심取得条件
+;===========================================================
+@TIPS_LOVE
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆【연심】습득조건◆
+PRINTFORML 반발각인이 없고【남친있음】이 아닐때
+PRINTFORML
+PRINTFORML ○레즈경험 1200이하, 신뢰 LV3이상, 봉사경험 200이상
+PRINTFORML
+PRINTFORML 호감도 100이상이고 다른 함락소질이 없다
+PRINTFORML ※단【음마】【안드로이드】【천사】【ONLY ONE EMPRESS】를 습득했을 경우,
+PRINTFORML 　혹은 실적「Strawberry Panic!」을 사용할 경우 레즈경험을 무시한다
+PRINTFORML 　또,【음마】【안드로이드】【천사】【ONLY ONE EMPRESS】를 습득한 캐릭터는
+PRINTFORML 　다른 함락계 소질과 중첩가능
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;음란取得条件
+;===========================================================
+@TIPS_LEWDNESS
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆【음란】습득조건◆
+PRINTFORML 반발각인이 없고【비처녀】혹은【애널비처녀】이고
+PRINTFORML 
+PRINTFORML ○C・V・A・B감각의 LV합계가 10이상, 욕망 LV3이상, 이상경험 3이상
+PRINTFORML 
+PRINTFORML 호감도 100이상이고 다른 함락소질이 없다
+PRINTFORML ※단【음마】【안드로이드】【천사】【ONLY ONE EMPRESS】를 습득한 캐릭터는
+PRINTFORML 　다른 함락계 소질과 중첩가능
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;영원한 사랑取得条件
+;===========================================================
+@TIPS_TRUELOVE
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆【영원한 사랑】습득조건◆
+PRINTFORML 반발각인이 없고【연심】을 가졌고
+PRINTFORML 
+PRINTFORML ○신뢰・봉사정신 모두 LV7이상, 애정경험 500이상
+PRINTFORML 
+PRINTFORML 이고 굴복각인이 3이다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;절륜取得条件
+;===========================================================
+@TIPS_PEERLESS
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆【절륜】습득조건◆
+PRINTFORML 반발각인이 없고【음란】을 가졌고
+PRINTFORML 
+PRINTFORML ○욕망 LV7이상, C・V・A・B 감각중 하나가 LV10, 이상경험 5이상
+PRINTFORML 
+PRINTFORML 이고 쾌락각인이 3이다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;섹프取得条件
+;===========================================================
+@TIPS_SEXFRIEND
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆【섹프】습득조건◆
+PRINTFORML 반발각인이 없고【음란】【남친있음】【섹프있음】을 가졌고
+PRINTFORML 
+PRINTFORML ○신뢰 LV3이상, 욕망 LV5이상, 성교중독 LV2이상, 봉사경험 300이상
+PRINTFORML 
+PRINTFORML 이고【정조관념】이 없다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR
+
+;===========================================================
+;陥落系素質の重複取得条件
+;===========================================================
+@TIPS_OVERLAP
+
+CUSTOMDRAWLINE ･･
+PRINTFORML ◆함락계 소질의 중첩 습득조건◆
+PRINTFORML 【음마】【안드로이드】【천사】【ONLY ONE EMPRESS】를 습득하지 않은 캐릭터가
+PRINTFORML 함락계 스킬을 중첩습득하는 방법은 이하와 같다
+PRINTFORML
+PRINTFORML 레이첼・파라디수스가 조수가능하고【비밀지식】을 소지했을 경우,
+PRINTFORML 「연구소」목록에서 해방되는「레이첼의 공방에 간다」에서
+PRINTFORML 『반하는 약』또는『초강력 미약』을 투약한다
+PRINTFORML 단『반하는 약』을【남친있음】을 가진 캐릭터에게 투약할 수 없다
+PRINTFORML 또【섹프】를 가지고 있고【남친있음】을 자긴 캐릭터에게『반하는 약』을
+PRINTFORML 사용하면【섹프】가 사라지고【연심】이 된다
+CUSTOMDRAWLINE ･･
+WAIT
+CALL TIPS_CHARACLEAR

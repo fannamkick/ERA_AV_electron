@@ -1,0 +1,90 @@
+﻿;===========================================================
+;ヘアスタイルの処理
+;===========================================================
+@MODEL_EVENT_CALL
+
+LOCAL = 0
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:402
+		LOCAL = RAND:3
+		TARGET = COUNT
+		TRYCALLFORM MODEL_EVENT(LOCAL)
+	ENDIF
+REND
+
+;===========================================================
+;ヘアスタイルの処理
+;===========================================================
+@MODEL_EVENT0
+
+LOCAL = RAND:3
+CUSTOMDRAWLINE ･･
+PRINTFORML  휴일을 이용해, 스튜디오에서 %CALLNAME:TARGET%의 촬영이 시작됐다……
+PRINTFORM  이번 촬영 내용은 
+IF LOCAL == 1 && DAY:1 >= 5 && DAY:1 <= 7
+	PRINTFORM 신상 수영복
+	LOCAL:1 = 1
+ELSEIF LOCAL == 2 && ABL:17 >= 3
+	PRINTFORM 신상 속옷
+	LOCAL:1 = 2
+ELSE
+	IF DAY:1 >=4 && DAY:1 <= 6
+		PRINT 여름 신상
+	ELSEIF DAY:1 >=7 && DAY:1 <= 9
+		PRINT 가을 신상
+	ELSEIF DAY:1 >= 10 && DAY:1 <= 12
+		PRINT 겨울 신상
+	ELSE
+		PRINT 본 신상
+	ENDIF
+ENDIF	
+PRINTFORM 의 홍보라고 한다. 
+PRINTFORM 후일, 
+SIF TALENT:432 == 1
+	PRINTFORM 갸루계가 구독층인 
+PRINTFORM 패션잡지에 
+
+IF LOCAL:1 == 1
+	IF RAND:3 == 0
+		PRINTFORM 천 면적이 작은 대담한 T팬티와 톱스로 구성된 
+	ELSEIF RAND:2 == 0
+		PRINTFORM 수영복이라기 보다는 줄이나 마찬가지인, 슬링 샷 계열의 어른스러운 
+	ELSE
+		PRINTFORM 파레오와 귀여운 프릴이 달린 
+	ENDIF
+	PRINTFORM 수영복을 입은 
+ELSEIF LOCAL:1 == 2
+	IF RAND:3 == 0
+		PRINTFORM 작은 자수가 들어간 어른스러운 
+	ELSEIF RAND:2 == 0
+		PRINTFORM 중요한 부분이 보일듯말듯한 시스루 
+	ELSE
+		PRINTFORM 귀여운 프릴이 달린 
+	ENDIF
+	PRINTFORM 속옷을 입은 
+ENDIF
+
+
+PRINTFORM %타겟이()%, 
+IF ABL:17 >= 3 && ABL:17 <= 7
+	PRINTFORM 『보여지는』것에 저항이 없어진 표정의 
+ELSEIF ABL:17 >= 8
+	PRINTFORM 당당하다――기보단 오히려『보여주는』포즈를 취한 
+ELSE
+	PRINTFORM 촬영하기도 버거운 게 느껴지는, 부끄러움이 느껴지는 표정의 
+ENDIF
+PRINTFORML 사진이 실려있다……
+PRINTL
+PRINTFORML %EXPNAME:70% +5
+EXP:70 += 5
+EXP:120 += 2
+BASE:31 += RAND:6
+SIF TALENT:324 == 1
+	BASE:31 += RAND:6
+SIF BASE:31 >= MAXBASE:31
+	BASE:31 = MAXBASE:31
+WAIT
+
+RETURN 0

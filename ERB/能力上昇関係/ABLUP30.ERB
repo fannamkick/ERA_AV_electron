@@ -1,0 +1,395 @@
+﻿;성교중독のLvUP処理とその可否判定
+;eraIm@s_ver.0.17βdのスクリプトをベースに処理を簡略化
+
+;-------------------------------------------------
+;성교중독のLvUP
+;-------------------------------------------------
+;성교중독
+@ABLUP30
+DRAWLINE
+;PRINTL 노예의 성교에 대한 집착도가 높아집니다
+;PRINTL 성교중독이 높아지면, 섹스에 대한 만족감이 깊어져,
+;PRINTL 자주 섹스를 하지 않으면 마음이 진정되지 않게 됩니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;성교중독はLv5が上限
+;[愛][음란][헌신적][쾌감에 솔직][섹스광][애널광]が付いている場合はLv10まで해방
+;△どっちに合わせるか考える
+IF ABL:30 >= 5 && (TALENT:85 == 0 && TALENT:76 == 0)
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:30 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+;성교중독＋자위중독は11以上にならない
+ELSEIF ABL:30 + ABL:31 >= 15 && TALENT:505 == 0 && TALENT:511 == 0
+	PRINTFORMW 성교중독({ABL:30})＋자위중독({ABL:31})의 상한은 15입니다
+	RETURN 0
+ENDIF
+
+;必要な욕정의 구슬
+A = 0
+;必要な屈服의 구슬
+B = 0
+;必要な성교경험回数
+C = 0
+;必要な이상경험回数
+F = 0
+
+CALL DECIDE_ABLUP30
+
+;LV2から3, LV3から4, 4から5に上げるときは이상경험必要(素質: [해방][음란][중독되기쉬움][광기]なら無視できる)
+SIF F > 0
+	PRINTFORML %EXPNAME:50%{F}이상 (현재{EXP:50}) 그리고
+
+;봉사정신が성교중독+1Lv必要
+IF TALENT:85 == 0
+	PRINTFORML %ABLNAME:11%{ABL:30 + 1}LV이상(현재{ABL:11}LV) 그리고 
+ELSEIF TALENT:85 == 1
+	PRINTFORML %ABLNAME:16%{ABL:30 + 1}LV이상(현재{ABL:16}LV) 그리고 
+ENDIF
+
+;성교경험が普通に必要な場合
+PRINTFORM [0] - %PALAMNAME:5%의 구슬×{JUEL:5}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+	SIF I & 4
+		PRINT 능력부족 
+ENDIF
+PRINTL 
+PRINTFORML 　　　%PALAMNAME:6%의 구슬×{JUEL:6}/{B}
+PRINTFORML 　　　%EXPNAME:5%　{EXP:5}/{C}
+
+;半分の성교경험で上げる場合
+PRINTFORM [1] - %PALAMNAME:5%의 구슬×{JUEL:5}/{A * 3} ……
+IF J == 0
+	PRINT OK
+ELSE
+	SIF J & 1
+		PRINT 구슬부족 
+	SIF J & 2
+		PRINT 경험부족 
+	SIF J & 4
+		PRINT 능력부족 
+ENDIF
+PRINTL 
+PRINTFORML 　　　%PALAMNAME:6%의 구슬×{JUEL:6}/{B * 3}
+PRINTFORML 　　　%EXPNAME:5%　{EXP:5}/{C / 2}
+
+PRINTL [100] - 그만둔다
+
+INPUT
+IF (RESULT < 0 || RESULT > 1) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF J != 0 && RESULT == 1
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:30 += 1
+IF RESULT == 0
+	JUEL:5 -= A
+	JUEL:6 -= B
+ELSEIF RESULT == 1
+	JUEL:5 -= A*3
+	JUEL:6 -= B*3
+ENDIF
+
+PRINTFORML %ABLNAME:30%의 레벨이 %조사처리(ABL:30,"가")% 되었습니다
+
+RETURN 0
+
+;--------------------------------------------------
+;レベルアップに必要な珠計算, レベルアップ予告処理
+;--------------------------------------------------
+@DECIDE_ABLUP30
+SIF ABL:30 >= 10
+	RETURN 0
+SIF ABL:30 >= 5 && (TALENT:85 == 0 && TALENT:76 == 0)
+	RETURN 0
+;성교중독LV＋자위중독LVは10が上限
+SIF ABL:30 + ABL:31 >= 15 && TALENT:505 == 0 && TALENT:511 == 0
+	RETURN 0
+
+;条件別にOKかダメかを記録する
+A = 0
+B = 0
+C = 0
+F = 0
+I = 0
+J = 0
+
+IF ABL:30 == 0
+	A = 3000
+	B = 10000
+	C = 10
+ELSEIF ABL:30 == 1
+	A = 8000
+	B = 25000
+	C = 25
+ELSEIF ABL:30 == 2
+	A = 15000
+	B = 50000
+	C = 40
+ELSEIF ABL:30 == 3
+	A = 30000
+	B = 100000
+	C = 80
+ELSEIF ABL:30 == 4
+	A = 55000
+	B = 200000
+	C = 200
+ELSEIF ABL:30 == 5
+	A = 70000
+	B = 300000
+	C = 400
+ELSEIF ABL:30 == 6
+	A = 90000
+	B = 400000
+	C = 800
+ELSEIF ABL:30 == 7
+	A = 120000
+	B = 550000
+	C = 1200
+ELSEIF ABL:30 == 8
+	A = 150000
+	B = 700000
+	C = 1500
+ELSEIF ABL:30 == 9
+	A = 200000
+	B = 900000
+	C = 2000
+ENDIF
+
+;일선을 넘지않음
+IF TALENT:27
+	IF ABL:30 == 3
+		TIMES A , 1.50
+		TIMES B , 1.50
+		TIMES C , 1.50
+	ELSEIF ABL:30 == 4
+		TIMES A , 2.00
+		TIMES B , 2.00
+		TIMES C , 2.00
+	ELSEIF ABL:30 == 5
+		TIMES A , 2.50
+		TIMES B , 2.50
+		TIMES C , 2.50
+	ELSEIF ABL:30 >= 6
+		TIMES A , 3.00
+		TIMES B , 3.00
+		TIMES C , 3.00
+	ENDIF
+ENDIF
+
+;다부짐
+IF TALENT:12
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+ENDIF
+;자제심
+IF TALENT:20
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+ENDIF
+;무관심
+IF TALENT:21
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+ENDIF
+;보수적
+IF TALENT:24
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+ENDIF
+
+;정조관념
+IF TALENT:30
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+;정조무관심
+ELSEIF TALENT:31
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+ENDIF
+
+;억압
+IF TALENT:32
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+;해방
+ELSEIF TALENT:33
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+ENDIF
+
+;저항
+IF TALENT:34
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+ENDIF
+
+;수줍음
+IF TALENT:35
+	TIMES A , 1.10
+	TIMES B , 1.10
+	TIMES C , 1.10
+;부끄럼 없음
+ELSEIF TALENT:36
+	TIMES A , 0.95
+	TIMES B , 0.95
+	TIMES C , 0.95
+ENDIF
+
+;쾌감에 솔직
+IF TALENT:70
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+;쾌감을 부정
+ELSEIF TALENT:71
+	TIMES A , 1.20
+	TIMES B , 1.20
+	TIMES C , 1.20
+ENDIF
+;중독되기쉬움
+IF TALENT:72
+	TIMES A , 0.60
+	TIMES B , 0.60
+	TIMES C , 0.60
+ENDIF
+;즉각함락
+IF TALENT:73
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES C , 0.50
+ENDIF
+;음란
+IF TALENT:76
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+ENDIF
+
+;색정광
+IF TALENT:440
+	TIMES A , 0.40
+	TIMES B , 0.40
+	TIMES C , 0.40
+ENDIF
+;소악마
+IF TALENT:87
+	TIMES A , 0.90
+	TIMES B , 0.90
+	TIMES C , 0.90
+ENDIF
+;광기
+IF TALENT:123
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+ENDIF
+;붕괴
+IF TALENT:9
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+ENDIF
+
+;흑갸루
+IF TALENT:432 == 1
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES C , 0.50
+ENDIF
+
+IF TALENT:422 == 1
+	TIMES A , 0.80
+	TIMES B , 0.80
+	TIMES C , 0.80
+ENDIF
+
+;음마
+IF TALENT:505
+	TIMES A , 0.10
+	TIMES B , 0.10
+	TIMES C , 0.10
+ENDIF
+
+
+;最低でも1回・1個は必要
+SIF A < 1
+	A = 1
+SIF B < 1
+	B = 1
+SIF C < 1
+	C = 1
+
+;LV2から3, LV3から4, 4から5に上げるときは이상경험必要(素質: [해방][음란][중독되기쉬움][광기]なら無視できる)
+IF ABL:30 >= 2 && (TALENT:33 == 0 && TALENT:72 == 0 && TALENT:76 == 0 && TALENT:123 == 0 && TALENT:505 == 0)
+	F = ABL:30 - 1
+	IF EXP:50 < F
+		;이상경험が不足
+		I |= 2
+		J |= 2
+	ENDIF
+ENDIF
+
+;봉사정신が성교중독+1Lv必要
+IF TALENT:85 == 0
+	IF ABL:11 < ABL:30 + 1
+		I |= 4
+		J |= 4
+	ENDIF
+ELSEIF TALENT:85 == 1
+	IF ABL:16 < ABL:30 + 1
+		I |= 4
+		J |= 4
+	ENDIF
+ENDIF
+
+;욕정의 구슬は足りている?
+SIF JUEL:5 < A
+	I |= 1
+;屈服의 구슬は足りている?
+SIF JUEL:6 < B
+	I |= 1
+;성교경험が必要
+SIF EXP:5 < C
+	I |= 2
+
+;욕정의 구슬は足りている?
+SIF JUEL:5 < A * 3
+	J |= 1
+;充実의 구슬は足りている?
+SIF JUEL:6 < B * 3
+	J |= 1
+;성교경험が必要
+SIF EXP:5 < C / 2
+	J |= 2
+
+IF I == 0 || J == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+

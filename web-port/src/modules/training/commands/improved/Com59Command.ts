@@ -1,0 +1,66 @@
+/**
+ * COM59 - 임신플레이
+ * 특수 카테고리 - 임신 관련 플레이
+ */
+
+import { TrainingCommand, SourceResult } from '../CommandBase';
+import { TrainingContext } from '../../types';
+import { Character } from '../../../../types/game';
+
+export class Com59Command extends TrainingCommand {
+  getName(): string {
+    return '임신플레이';
+  }
+
+  getDescription(): string {
+    return '임신 관련 플레이를 합니다';
+  }
+
+  isAvailable(): boolean {
+    if (this.character.cflags[16] === -1) return false;
+    return true;
+  }
+
+  async execute(): Promise<void> {
+    this.message(this.getName());
+    this.ctx.saveStr[0] = this.getName();
+    const source = this.calculateSource();
+
+    this.character.source[1] = source.pleasureV || 0;
+    this.character.source[8] = source.lust || 0;
+    this.character.source[12] = 100;
+
+    await this.showTrainMessage();
+    this.gainExperience();
+
+    this.ctx.base[1] += 35;
+  }
+
+  private calculateSource(): Partial<SourceResult> {
+    const source: Partial<SourceResult> = {};
+    source.pleasureV = 800;
+    source.lust = 200;
+    source.affection = 150;
+
+    const modified = this.applySourceModifiers(source);
+    Object.assign(source, modified);
+    return source;
+  }
+
+  private async showTrainMessage(): Promise<void> {
+    this.message('임신 플레이를 한다...');
+  }
+
+  private gainExperience(): void {
+    this.addExperience(14, 3);
+  }
+}
+
+export async function com59(ctx: TrainingContext, character: Character): Promise<void> {
+  const command = new Com59Command(ctx, character);
+  if (!command.isAvailable()) {
+    ctx.showMessage('지금은 이 커맨드를 사용할 수 없습니다.');
+    return;
+  }
+  await command.execute();
+}

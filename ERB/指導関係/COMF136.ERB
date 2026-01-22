@@ -1,0 +1,96 @@
+﻿;-------------------------------------------------
+;칭찬한다
+;애무系コマンド: 調教者が調教対象を칭찬한다
+;-------------------------------------------------
+@COM136
+
+PRINTL 칭찬한다
+
+SAVESTR:0 = 칭찬한다
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 5
+LOSEBASE:1 += 50
+
+
+;ABL:봉사정신をみる
+IF ABL:16 == 0
+	SOURCE:4 = 50
+	SOURCE:5 = 10
+	TIMES SOURCE:8 , 4.00
+ELSEIF ABL:16 == 1
+	SOURCE:4 = 150
+	SOURCE:5 = 50
+	TIMES SOURCE:8 , 2.50
+ELSEIF ABL:16 == 2
+	SOURCE:4 = 200
+	SOURCE:5 = 100
+	TIMES SOURCE:8 , 1.50
+ELSEIF ABL:16 == 3
+	SOURCE:4 = 250
+	SOURCE:5 = 180
+	TIMES SOURCE:8 , 1.00
+ELSEIF ABL:16 == 4
+	SOURCE:4 = 300
+	SOURCE:5 = 300
+	TIMES SOURCE:8 , 0.50
+ELSE
+	SOURCE:4 = 350
+	SOURCE:5 = 500
+	TIMES SOURCE:8 , 0.10
+ENDIF
+;	RETURN 1
+;ENDIF
+
+;TALENT:愛をみる
+SIF TALENT:85
+	TIMES SOURCE:3 , 2.00
+
+;-------------------------------------------------
+;汚れの処理
+;-------------------------------------------------
+;奴隷の口⇔調教者の口の汚れが移動
+STAIN:0 |= STAIN:PLAYER:0
+STAIN:PLAYER:0 |= STAIN:0
+
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;レズ・ホモ経験
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +3
+	EXP:40 += 3
+ELSEIF TALENT:122 == 1 && TALENT:PLAYER:122 == 1
+	PRINTS EXPNAME:41
+	PRINTL +3
+	EXP:41 += 3
+ENDIF
+
+;애정경험
+;基本値
+E = 1
+
+;愛かつ主人なら基本値に＋2
+SIF TALENT:85 && ASSIPLAY == 0
+	E += 2
+
+
+IF CFLAG:2 >= 1000 && ASSIPLAY == 0
+	PRINTFORML %EXPNAME:23%+{E}
+	EXP:23 += E
+ENDIF
+E = 0
+
+;-------------------------------------------------
+;その他の処理
+;-------------------------------------------------
+TFLAG:100 = 1
+
+SIF ASSIPLAY == 0
+	TFLAG:30 += 1
+
+RETURN 1

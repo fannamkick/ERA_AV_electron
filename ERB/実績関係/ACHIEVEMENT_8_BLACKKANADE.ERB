@@ -1,0 +1,63 @@
+﻿;===========================================================
+;実績・내 여동생이 이렇게 빗치일 리 없어
+;===========================================================
+
+; 実績のタイトル
+@ACHIEVEMENT_TITLE_8
+RESULTS = 내 여동생이 이렇게 빗치일 리 없어
+
+; 実績の達成条件
+@ACHIEVEMENT_CALC_8
+; 条件を満たす人数の計算 (※ これは例文です)
+LOCAL = 0
+FOR COUNT, 0, CHARANUM
+	SIF COUNT == MASTER
+		CONTINUE
+	SIF NO:COUNT == 1 && TALENT:COUNT:1 ==0 && TALENT:COUNT:425 == 1 && TALENT:COUNT:440 == 1 && TALENT:COUNT:85 == 0 && TALENT:COUNT:184 == 1
+		LOCAL++
+NEXT
+; 条件を達成している場合は실적번호のグローバルを1にする
+SIF GLOBAL:8 == 0 && DIFFICULTY_CHECK() && LOCAL > 0
+	GLOBAL:8 = 1
+RETURN GLOBAL:8
+
+; 実績の説明および諸々の処理
+@ACHIEVEMENT_MAIN_8
+; 解説文
+PRINTFORML 사랑하는 여동생인『미야마 카나데』가 머리도 가랑이도 가벼워진【흑갸루】가 되어버린
+PRINTFORML %CALLNAME:MASTER%의 마음 속 절규는, 이 실적 이름과 똑같겠죠
+PRINTFORMW 순수했던『미야마 카나데』를 한번 더 만나고 싶다, 라고 원한다면 다시 처음부터 시작하는 수 밖에 없습니다……
+; ボーナスなどの処理はここ以降に記述する
+IF GETCHARA(91,0 ) < 0
+	IF GLOBAL:51 == 1 && FLAG:555 == 0
+		PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+		PRINTFORML 스노 이쿠미가 조수가 되었던 적이 있었기에, 보너스가 해금되었습니다!
+		PRINTFORM 스노 이쿠미가 가진 최첨단 과학지식에 의해 흑갸루가 된『미야마 카나데』의 
+		PRINTFORML 클론을 만들 수 있습니다
+		PRINTFORM ※클론이기에 경험은 모두 초기화됩니다
+		$INPUT_LOOP_4
+		PRINTFORML 《미야마 카나데』의 쿨론을 만듭니까?》
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		INPUT
+		IF RESULT == 0 && FLAG:543 == 0 && GLOBAL:52 == 0
+			PRINTFORMW 『미야마 카나데』의 클론을 탄생시켰습니다
+			ADDCHARA 91
+			FLAG:555 = 1
+			GLOBAL:291 = 1
+			SAVEGLOBAL
+			RETURN 0
+			IF GLOBAL:200 >= 0
+				TARGET = GETCHARA(91)
+				CALL CLEARBONUS_CALL
+			ENDIF
+		ELSEIF RESULT == 0 && FLAG:555 == 1
+			PRINTFORMW 『미야마 카나데』의 클론이 이미 있습니다
+			RETURN 0
+		ELSEIF RESULT == 1
+			RETURN 0
+		ELSE
+			GOTO INPUT_LOOP_4
+		ENDIF
+	ENDIF
+ENDIF

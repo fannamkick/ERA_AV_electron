@@ -1,0 +1,1672 @@
+﻿;===========================================================
+;ストリップショー関係の処理はここで
+;===========================================================
+;eraIm@s_ver.0.17βdのダンスショーより流用して改造(pawapokya-)
+;===========================================================
+@STRIPTEASE
+DRAWLINE
+
+;特殊チケットフラグ初期化
+FLAG:50 = 0
+
+;ショーの形式を初期化
+FLAG:53 = 0
+
+;夜の場合, 通常ストリップショーか特殊ストリップショーかを選択
+PRINTL 어떤 티켓을 판매하시겠습니까?
+PRINTL  [0] - 보통티켓
+SIF TIME == 1
+	PRINTL  [1] - 특수티켓
+PRINTL  [100] - 그만둔다
+	
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	PRINTFORMW 보통티켓을 판매합니다
+ELSEIF RESULT == 1 && TIME == 1
+	PRINTFORMW 특수티켓을 판매합니다。스트립쇼 후에 즐길거리가 있습니다
+	FLAG:50 = 1
+	;콘돔使用フラグ外す
+	CFLAG:13 = 0
+ELSEIF RESULT == 100
+	RETURN 100
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+DRAWLINE
+
+;ローカル変数初期化
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+F = 0
+
+G = 0
+H = 0
+I = 0
+J = 0
+N = 0
+O = 0
+P = 0
+Q = 0
+R = 0
+S = 0
+;L = 呼び出し元で代入される参加人数
+
+;COUNT用待避変数
+X = 0
+
+REPEAT 101
+	T:COUNT = 0
+	U:COUNT = 0
+REND
+
+
+;調教対象と助手を空に
+TARGET = -1
+ASSI = -1
+;参加人数が一人の場合はTARGETにそのキャラを代入
+IF FLAG:42 == 1
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130
+			TARGET = COUNT
+	REND
+;参加人数が二人の場合は지도자위경험の高い方をTARGETに, もう一人をASSIに代入
+ELSEIF FLAG:42 == 2
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF TARGET == -1
+			TARGET = COUNT
+		ELSEIF EXP:COUNT:11 > EXP:TARGET:11
+			ASSI = TARGET
+			TARGET = COUNT
+		ELSE
+			ASSI = COUNT
+		ENDIF
+	REND
+;参加人数が3人以上の場合は, 最も지도자위경험の高い者をTARGETに代入
+ELSEIF FLAG:42 >= 3
+	E = -1
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		IF E < EXP:COUNT:11
+			TARGET = COUNT
+			E = EXP:COUNT:11
+		ENDIF
+	REND
+	E = 0
+ENDIF
+
+;参加者が2人の場合はキャラ同志の近親チェック
+IF FLAG:42 == 2
+	PLAYER = ASSI
+	TFLAG:14 = 0
+	CALL INCEST
+ENDIF
+
+;FLAG:53でショーの形式を決定
+FLAG:53 = 0
+;&1:자위 &2:レズ &4:セックス &8:近親
+;参加者2人で近親関係なら近親ショー
+SIF FLAG:42 == 2 && ((TALENT:122 || TALENT:121) || (TALENT:ASSI:122 || TALENT:ASSI:121))
+	FLAG:53 |= 4
+E = 0
+;参加者全員が자위중독3以上か자위광なら자위ショー
+E = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF ABL:COUNT:31 < 3 && TALENT:COUNT:74 == 0
+		E = 0
+REND
+SIF E
+	FLAG:53 |= 1
+E = 0
+;参加者複数で全員が레즈끼2以上ならレズショー
+E = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF ABL:COUNT:22 < 2
+		E = 0
+REND
+SIF E && FLAG:42 >= 2
+	FLAG:53 |= 2
+E = 0
+
+;特殊営業参加キャラの相性をチェック
+CALL WORK_SUB_RELATION
+
+;客の数を計算
+;参加するキャラの人気の最大値に応じて客が来ます
+E = 0
+REPEAT CHARANUM
+	SIF E < EXP:COUNT:91 && CFLAG:COUNT:130
+		E = EXP:COUNT:91
+REND
+C = E / 4
+G = C / 2
+IF C
+	IF C < 13
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 16
+		TIMES G , 1.10
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 20
+		TIMES G , 1.30
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 24
+		TIMES G , 1.50
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSE
+		TIMES G , 2.00
+		REPEAT C
+			G += RAND:3
+		REND
+	ENDIF
+ENDIF
+
+;娼館の人気に応じてさらにプラス
+C = (EXP:MASTER:91 / 5)
+IF C
+	REPEAT C
+		G += RAND:2
+	REND
+ENDIF
+
+;参加者が特定の素質を持っていた場合ボーナス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	;社会的ステータスが影響
+	;인기인
+	SIF TALENT:COUNT:126
+		G += 10
+	;아이돌
+	SIF TALENT:COUNT:203
+		G += 5
+	;娼婦
+	SIF TALENT:COUNT:180
+		G += 2
+	;傾城
+	SIF TALENT:COUNT:181
+		G += 3
+	;요설스러움
+	SIF TALENT:COUNT:182
+		G += 2
+	;단골손님
+	SIF TALENT:COUNT:183
+		G += 2
+	;求愛
+	SIF TALENT:COUNT:184
+		G += 1
+	;가희
+	SIF TALENT:COUNT:185
+		G += 5
+	;무희
+	SIF TALENT:COUNT:186
+		G += 15
+	;미희
+	SIF TALENT:COUNT:187
+		G += 10
+	;우등생
+	SIF TALENT:COUNT:224
+		G += 5
+	;인기 AV배우
+	SIF TALENT:COUNT:401
+		G += 3
+	;패션모델
+	SIF TALENT:COUNT:402
+		G += 3
+		
+	;専用素質(まあ(差別化する必要もあるし)多少はね?)
+	;야쿠자의 딸
+	SIF TALENT:COUNT:502
+		G += 20
+	;음마
+	SIF TALENT:COUNT:505
+		G += 30
+	;성우
+	SIF TALENT:COUNT:506
+		G += 5
+	;하루우라레
+	SIF TALENT:COUNT:507
+		G += 10
+	;Colorful Pure Girls
+	SIF TALENT:COUNT:509
+		G += 15
+	;무당
+	SIF TALENT:COUNT:510
+		G += 25
+	;천사
+	SIF TALENT:COUNT:511
+		G += 25
+	;그랜드마스터
+	SIF TALENT:COUNT:512
+		G += 20
+	;야쿠자의 아내
+	SIF TALENT:COUNT:516
+		G += 15
+	;Mermaid girl
+	SIF TALENT:COUNT:518
+		G += 20
+	;FallenFallAngel
+	SIF TALENT:COUNT:519
+		G += 15
+REND
+
+	;警備員の数に応じて観客数の限界が伸びます。500000Pをケチってはいけない(戒め)
+	IF G > 50 && FLAG:40 < 10
+		IF (50 + (FLAG:40 * 5)) < G
+			G = (50 + (FLAG:40 * 5))
+		ENDIF
+	ENDIF
+
+;通常チケットなら2/3程度の人数になる
+SIF FLAG:50 == 0
+	G = G * 2 / 3
+
+;10人以下だった場合, 10人にします
+SIF G < 10
+	G = 10
+
+;次に成功か失敗かの判定を計算
+;参加者の지도자위경험の평균値によって基礎値が決定
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	E += EXP:COUNT:11
+REND
+E /= FLAG:42
+;지도자위경험によって基礎値が決定
+IF E < 10
+	D = 0 + RAND:5
+ELSEIF E < 20
+	D = 1 + RAND:5
+ELSEIF E < 30
+	D = 2 + RAND:6
+ELSEIF E < 40
+	D = 4 + RAND:6
+ELSEIF E < 50
+	D = 7 + RAND:7
+ELSEIF E < 75
+	D = 10 + RAND:8
+ELSEIF E < 100
+	D = 13 + RAND:9
+ELSEIF E < 150
+	D = 16 + RAND:10
+ELSEIF E < 200
+	D = 20 + RAND:12
+ELSEIF E < 300
+	D = 25 + RAND:14
+ELSEIF E < 500
+	D = 30 + RAND:16
+ELSEIF E < 1000
+	D = 40 + RAND:18
+ELSE
+	D = 50 + RAND:20
+ENDIF
+E = 0
+
+;参加者全員の技能・素質による修正値を加算
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+
+	;全員の노출벽をプラス
+	D += ABL:COUNT:17
+
+	;공개セックスがある場合は全員の성교중독の1/2をプラス
+	SIF FLAG:53 & 4
+		D += ABL:COUNT:30 / 2
+	;レズショーがある場合は全員の레즈중독の1/2をプラス
+	SIF FLAG:53 & 2
+		D += ABL:COUNT:33 / 2
+	;공개자위がある場合は全員の자위중독の1/2をプラス
+	SIF FLAG:53 & 1
+		D += ABL:COUNT:31 / 2
+
+	;기교と무용기능は1/3をプラス
+	D += ABL:COUNT:12 / 3
+	D += ABL:COUNT:72 / 3
+
+	;全員の미용감각をプラス
+	D += ABL:COUNT:50
+
+	;素質に応じて加減
+	;性格的な素質が影響
+	;겁쟁이
+	SIF TALENT:COUNT:10
+		D -= 1
+	;얌전함
+	SIF TALENT:COUNT:14
+		D -= 1
+	;프라이드 높음
+	SIF TALENT:COUNT:15
+		D += 2
+	;프라이드 낮음
+	SIF TALENT:COUNT:17
+		D -= 2
+	;감정부족
+	SIF TALENT:COUNT:22
+		D -= 1
+	;호기심
+	SIF TALENT:COUNT:23
+		D += 1
+	;튀고 싶어함
+	SIF TALENT:COUNT:28
+		D += 3
+	;억압
+	SIF TALENT:COUNT:32
+		D -= 2
+	;해방
+	SIF TALENT:COUNT:33
+		D += 2
+	;저항
+	SIF TALENT:COUNT:34
+		D -= 2
+	;수줍음
+	SIF TALENT:COUNT:35
+		D -= 2
+	;부끄럼 없음
+	SIF TALENT:COUNT:36
+		D += 2
+	;자위하기쉬움
+	SIF TALENT:COUNT:60
+		D += 5
+	;쾌감에 솔직
+	SIF TALENT:COUNT:70
+		D += 3
+	;음란
+	SIF TALENT:COUNT:76
+		D += 10
+	;도착적
+	SIF TALENT:COUNT:80
+		D += 2
+	;노출광
+	SIF TALENT:COUNT:89
+		D += 10
+	;수수께끼의 매력
+	SIF TALENT:COUNT:92
+		D += 15
+
+	;공개セックスがある場合
+	IF FLAG:53 & 4
+		;섹스광い
+		SIF TALENT:COUNT:75
+			D += 10
+		;性別が同じで바이
+		SIF TALENT:COUNT:81 && (TALENT:TARGET:122 == TALENT:ASSI:122)
+			D += 5
+		;片方が女で女嫌い
+		SIF TALENT:COUNT:79 && (TALENT:TARGET:122 == 0 || TALENT:ASSI:122 == 0)
+			D -= 3
+		;片方が男で남성혐오
+		SIF TALENT:COUNT:82 && (TALENT:TARGET:122 || TALENT:ASSI:122)
+			D -= 3
+	ENDIF
+
+	;レズショーがある場合
+	IF FLAG:53 & 2
+		;바이
+		SIF TALENT:COUNT:81
+			D += 5
+		;女嫌い
+		SIF TALENT:COUNT:79
+			D -= 5
+	ENDIF
+
+	;공개자위がある場合
+	IF FLAG:53 & 1
+		;자위하기쉬움
+		SIF TALENT:COUNT:60
+			D += 2
+		;자위광
+		SIF TALENT:COUNT:74
+			D += 10
+	ENDIF
+
+	;비만があると満足度半減
+	SIF TALENT:COUNT:115
+		D /= 2
+
+	;광기・붕괴があると満足度激減
+	SIF TALENT:COUNT:123 || TALENT:COUNT:9
+		D /= 5
+REND
+
+;相性による修正
+IF FLAG:51 >= 200
+	TIMES D , 2.00
+ELSEIF FLAG:51 >= 150
+	TIMES D , 1.50
+ELSEIF FLAG:51 >= 120
+	TIMES D , 1.20
+ELSEIF FLAG:51 < 100
+	TIMES D , 0.50
+ENDIF
+
+;満足度Dが目標値Pを上回れば成功, 下回れば失敗
+;2週目以降は相性値込でなければまず超成功は狙えないでしょう。
+IF FLAG:10 > 1
+	P = 41 + RAND:10
+ELSE
+	P = 21 + RAND:5
+ENDIF
+
+;特殊チケットの場合は客の目的が目的なのでちょっと下がる
+SIF FLAG:50 == 1
+	P -= 5
+
+;満足度DがPの50%未満だったら大失敗
+IF D < (P / 2)
+	A = 0
+;P未満だったら小失敗
+ELSEIF D < P
+	A = 1
+;Pの150%未満だったら普通
+ELSEIF D < (P * 3) / 2
+	A = 2
+;Pの200%未満だったら小成功
+ELSEIF D < P * 2
+	A = 3
+;Pの400%未満だったら大成功
+ELSEIF D < P * 4
+	A = 4
+;それ以上だったら超成功
+ELSE
+	A = 5
+ENDIF
+Z = 0
+Z = A
+
+;成功値が低いと一部のショーは行われない
+SIF A < 2
+	FLAG:53 -= FLAG:53 & 1
+SIF A < 3
+	FLAG:53 -= FLAG:53 & 2
+SIF A < 4
+	FLAG:53 -= FLAG:53 & 4
+
+IF FLAG:42 == 1
+	PRINTFORM %NAME:TARGET%
+ELSEIF FLAG:42 == 2
+	PRINTFORM %타겟과(1)% %NAME:ASSI%
+ELSE
+	S = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF S
+			PRINTFORM %LSTR% 
+		PRINTFORM %NAME:COUNT%
+		LSTR = %조사만처리(NAME:COUNT,"와")%
+		S = 1
+	REND
+ENDIF
+
+IF FLAG:53 & 8
+	IF TFLAG:14 == 2 && TALENT:PLAYER:122 == 0 && TALENT:ASSI:122 == 0
+		PRINT 에 의한 모녀 
+	ELSEIF TFLAG:14 == 2 && TALENT:122 == 0 && TALENT:ASSI:122
+		PRINT 에 의한 모자 
+	ELSEIF TFLAG:14 == 4 && TALENT:PLAYER:122 == 0 && TALENT:ASSI:122 == 0
+		PRINT 에 의한 자매 
+	ELSEIF TFLAG:14 == 4 && TALENT:122 == 0 && TALENT:ASSI:122
+		PRINT 에 의한 남매 
+	ELSEIF TFLAG:14 == 4 && TALENT:122 && TALENT:ASSI:122 == 0
+		PRINT 에 의한 남매 
+	ELSE
+		PRINT 에 의한 근친 
+	ENDIF
+ELSE
+	PRINT 의 
+ENDIF
+IF FLAG:53 & 4
+	PRINT 공개섹스
+ELSEIF FLAG:53 & 2
+	PRINT 레즈비언
+ELSEIF FLAG:53 & 1
+	PRINT 공개자위
+ELSE
+	PRINT 스트립
+ENDIF
+PRINTL 쇼를 열었다……
+PRINTFORML 이번의 스트립쇼에는 {G}명의 관객이 모였다
+WAIT
+
+;通常ストリップ
+PRINT 스포트라이트를 받으며, 
+CALL WORK_SUB_PRINT_MEMBER
+PRINTFORML %조사만처리(RESULT+2,"는")% 관객에게 나체를 보이고 있다……
+
+WAIT
+
+;공개자위
+IF FLAG:53 & 1
+	PRINT 그리고
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML %조사만처리(RESULT+2,"는")% 객석을 향해서 다리를 벌려 비소를 드러내고, 
+	PRINTL 음란한 소리를내며 성기를 만지기 시작했다……
+	WAIT
+	;近親자위ショー
+	IF FLAG:53 & 8
+		PRINT 무수한 눈이 지켜보는 가운데 늘어서서 자위를 계속하고 있는 
+		IF TFLAG:14 == 2
+			SIF TALENT:122
+				PRINT 부
+			SIF TALENT:122 == 0
+				PRINT 모
+			SIF TALENT:ASSI:122
+				PRINT 자
+			SIF TALENT:ASSI:122 == 0
+				PRINT 녀
+		ELSEIF TFLAG:14 == 4
+			SIF TALENT:122 && TALENT:ASSI:122
+				PRINT 형제
+			SIF TALENT:122 == 0 && TALENT:ASSI:122 == 0
+				PRINT 자매
+			SIF TALENT:122 ^^ TALENT:ASSI:122
+				PRINT 남매
+		ENDIF
+		PRINTL 에게, 
+		PRINTL 객석에서 추잡한 야유가 터졌다……
+		WAIT
+	ENDIF
+ENDIF
+
+;レズショー
+IF FLAG:53 & 2
+	PRINT 이윽고 
+	CALL WORK_SUB_PRINT_MEMBER
+	PRINTFORML %조사만처리(RESULT+2,"는")% 서로의 나체를 음란하게 얽기 시작했다……
+	WAIT
+	;近親レズビアンショー
+	IF FLAG:53 & 8
+		IF TFLAG:14 == 2
+			PRINTL M자로 벌려진 모친의 가랑이에 얼굴을 묻고, 
+			PRINT 자신이 태어났던 장소에 혀로 핥는 
+			IF TALENT:ASSI:135
+				PRINT 어린 소녀
+			ELSEIF TALENT:ASSI:132
+				PRINT 소녀
+			ELSE
+				PRINT 딸
+			ENDIF
+		ELSEIF TFLAG:14 == 4
+			PRINT 식스나인 자세가 되어 상대의 성기를 핥는 언니와 여동생
+		ENDIF
+		PRINTL 의 모습을, 
+		PRINTL 관객은 가만히 지켜보고 있다……
+		WAIT
+	ENDIF
+ENDIF
+
+;공개セックス
+IF FLAG:53 & 4
+	E = 0
+	PRINTW 본방이 시작됐다……
+	;TARGETとASSI双方が후타나리でV使用可
+	IF TALENT:TARGET:121 && CFLAG:TARGET:54 == 0 && TALENT:ASSI:121 && CFLAG:ASSI:54 == 0
+		PRINTFORM %타겟과()% %조수는()%
+		PRINTFORMW 서로의 페니스로 서로의 바기나를 교대로 꿰뚫었다
+		SIF TALENT:0
+			E |= 1
+		SIF TALENT:1
+			E |= 2
+		SIF TALENT:ASSI:0
+			E |= 4
+		SIF TALENT:ASSI:1
+			E |= 8
+		;助手→奴隷の임신フラグを加算
+		SIF CFLAG:13 == 0
+			CFLAG:103 += G / 10 + 1
+		;奴隷→助手の임신フラグを加算
+		SIF CFLAG:13 == 0
+			CFLAG:104 += G / 10 + 1
+	;TARGETがオトコor후타나리でASSIがV使用可
+	ELSEIF (TALENT:TARGET:122 || TALENT:TARGET:121) && CFLAG:ASSI:54 == 0
+		PRINTFORM %타겟은()% 발기한 자신의 페니스를
+		PRINTFORMW %CALLNAME:ASSI%의 음순에 넣다뺐다 하는 모습을 관객에게 보여주었다
+		SIF TALENT:1
+			E |= 2
+		SIF TALENT:ASSI:0
+			E |= 4
+		;奴隷→助手の임신フラグを加算
+		SIF CFLAG:13 == 0
+			CFLAG:104 += G / 10 + 1
+	;ASSIがオトコor후타나리でTARGETがV使用可
+	ELSEIF  (TALENT:ASSI:122 || TALENT:ASSI:121) && CFLAG:54 == 0
+		PRINTFORM %타겟은()% 자신의 바기나가
+		PRINTFORMW %CALLNAME:ASSI%의 음경으로 꿰뚫리는 모습을 관객에게 보여주었다
+		SIF TALENT:0
+			E |= 1
+		SIF TALENT:ASSI:1
+			E |= 8
+		;助手→奴隷の임신フラグを加算
+		SIF CFLAG:13 == 0
+			CFLAG:103 += G / 10 + 1
+	ENDIF
+
+	;近親相姦ショー
+	IF FLAG:53 & 8 
+		IF TFLAG:14 == 2 && TALENT:ASSI:122 == 0
+			PRINT 자신의 딸
+		ELSEIF TFLAG:14 == 2 && TALENT:ASSI:122
+			PRINT 자신의 아들
+		ELSEIF TFLAG:14 == 4 && TALENT:ASSI:122 == 0
+			PRINT 자신의 여동생
+		ELSEIF TFLAG:14 == 4 && TALENT:ASSI:122
+			PRINT 자신의 남동생
+		ENDIF
+		IF TALENT:121 && CFLAG:54 == 0 && TALENT:ASSI:121 && CFLAG:ASSI:54 == 0
+			PRINT 과 서로 범하는 
+		ELSEIF (TALENT:122 || TALENT:121) && CFLAG:ASSI:54 == 0
+			PRINT 을 계속 범하는
+		ELSEIF (TALENT:ASSI:122 || TALENT:ASSI:121) && CFLAG:54 == 0
+			PRINT 에게 계속 범해지는 
+		ENDIF
+		IF TFLAG:14 == 2 && TALENT:122
+			PRINT 부친
+		ELSEIF TFLAG:14 == 2 && TALENT:122 == 0
+			PRINT 모친
+		ELSEIF TFLAG:14 == 4 && TALENT:122 && TALENT:ASSI:122 == 0
+			PRINT 오빠
+		ELSEIF TFLAG:14 == 4 && TALENT:122 && TALENT:ASSI:122
+			PRINT 형
+		ELSEIF TFLAG:14 == 4 && TALENT:122 == 0 && TALENT:ASSI:122 == 0
+			PRINT 언니
+		ELSEIF TFLAG:14 == 4 && TALENT:122 == 0 && TALENT:ASSI:122
+			PRINT 누나
+		ENDIF
+		PRINTL 라는 이상한 광경에, 관객석은 아주 조용해져 있다……
+		WAIT
+	ENDIF
+
+	;TARGETの처녀・동정상실判定
+	F = 0
+	IF E & 1
+		TALENT:0 = 0
+		CFLAG:50 = 1
+		PRINTFORML %NAME:TARGET%【처녀상실】
+		F += 1
+		SIF FLAG:53 & 8
+			F += 1
+		SIF TALENT:ASSI:122 == 0
+			F += 1
+		SIF CFLAG:18 == 0
+			CFLAG:18 = 1
+		ENDIF
+	IF E & 2
+		TALENT:1 = 0
+		PRINTFORML %NAME:TARGET%【동정상실】
+		F += 1
+		SIF FLAG:53 & 8
+			F += 1
+		SIF CFLAG:18 == 0
+			CFLAG:18 = 1
+	ENDIF
+	IF E & 1 || E & 2
+		IF CFLAG:TARGET:15 == 0
+			CFLAG:TARGET:15 = NO:ASSI + 1
+			;初体験が近親相姦
+			;初体験の相手が自分の息子・娘という状況は生物学的にありえないので省く
+			IF TFLAG:14 == 4 && TALENT:ASSI:122
+				CFLAG:15 = 306
+			ELSEIF TFLAG:14 == 4 && TALENT:ASSI:122 == 0
+				CFLAG:15 = 307
+			ENDIF
+			SIF CFLAG:18 == 0
+				CFLAG:18 = 1
+		ENDIF
+	ENDIF
+	IF F
+		SIF F > 3
+			F = 3
+		PRINTFORML 이상경험 +{F}
+		EXP:50 += F
+		F = 0
+	ENDIF
+	;ASSIの처녀・동정상실判定
+	F = 0
+	IF E & 4
+		TALENT:ASSI:0 = 0
+		CFLAG:ASSI:50 = 1
+		PRINTFORML %NAME:ASSI%【처녀상실】
+		F += 1
+		SIF FLAG:53 & 8
+			F += 1
+		SIF TALENT:122 == 0
+			F += 1
+		SIF CFLAG:ASSI:18 == 0
+			CFLAG:ASSI:18 = 1
+	ENDIF
+	IF E & 8
+		TALENT:ASSI:1 = 0
+		PRINTFORML %NAME:ASSI%【동정상실】
+		F += 1
+		SIF FLAG:53 & 8
+			F += 1
+		SIF CFLAG:ASSI:18 == 0
+			CFLAG:ASSI:18 = 1
+	ENDIF
+	IF E & 4 || E & 8
+		IF CFLAG:ASSI:15 == 0
+			CFLAG:ASSI:15 = NO:TARGET + 1
+			;初体験が近親相姦
+			;初体験の相手が自分の息子・娘という状況は生物学的にありえないので省く
+			IF TFLAG:14 == 2 && TALENT:122
+				CFLAG:ASSI:15 = 300
+			ELSEIF TFLAG:14 == 2 && TALENT:122 == 0
+				CFLAG:ASSI:15 = 301
+			ELSEIF TFLAG:14 == 4 && TALENT:122
+				CFLAG:ASSI:15 = 304
+			ELSEIF TFLAG:14 == 4 && TALENT:122 == 0
+				CFLAG:ASSI:15 = 305
+			ENDIF
+		ENDIF
+		SIF CFLAG:ASSI:18 == 0
+			CFLAG:ASSI:18 = 1
+	ENDIF
+	IF F
+		SIF F > 3
+			F = 3
+		PRINTFORML 이상경험 +{F}
+		EXP:ASSI:50 += F
+		F = 0
+	ENDIF
+	SIF E
+		WAIT
+
+	E = 0
+
+	;임신チェックはここですませておく
+	CALL IN_VAGINA_ALL
+	CALL CONCEPTION_CHECK_ALL
+ENDIF
+
+PRINTL      
+;結果を一応視覚化しておく。デバッグ用なので, 消してもいい。
+PRINTFORML 만족도: {D}％
+P *= 4
+PRINTFORMW 목표 만족도: {P}％
+PRINTL      
+
+;失敗時メッセージ
+IF A <= 1
+	PRINTFORM 수치심을 견딜 수 없었는지, 도중에 
+	IF FLAG:42 == 1 && TARGET > 0
+		PRINTFORM %타겟은()%
+	ELSEIF FLAG:42 == 2
+		PRINTFORM %타겟과()% %조수는()%
+	ELSEIF FLAG:42 ==3
+		PRINT 3명은
+	ELSE
+		PRINTFORM {FLAG:42}명은
+	ENDIF
+	PRINTFORML  굳어버렸다
+	PRINTFORML 이번 쇼는 실패한것 같다……
+	WAIT
+	TFLAG:13 = 118
+;成功時メッセージ
+ELSE
+	PRINTFORML 좋은 느낌으로 성공한것 같다
+	WAIT
+	;방뇨はサービス
+	IF FLAG:42 >= 2
+		IF (FLAG:53 & 8) && ABL:17 >= 4 && TALENT:57 && ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			PRINTFORML 마지막에 %타겟이()% %CALLNAME:ASSI%의 양발을 아기처럼 안아올려서 방뇨시키고, 
+			PRINTFORML 자기자신도 그 자세를 유지한 채 다리를 게처럼 가랑이를 벌리고 동시에 방뇨하자, 
+			PRINTFORMW 객석에서 대환성이 터졌다……
+		ELSEIF (FLAG:53 & 8) && ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			PRINTFORML 마지막에 %타겟이()% %CALLNAME:ASSI%의 양발을 아기처럼 안아올려서, 
+			PRINTFORMW 객석을 향해서 방뇨시키자, 대환성이 터졌다……
+		ELSEIF ABL:17 >= 4 && TALENT:57 && ABL:ASSI:17 >= 4 && TALENT:ASSI:57
+			PRINTFORML 마지막에 %타겟과()% %조수가()% 나란히 서서 양다리를 벌리고 서서, 
+			PRINTFORMW 동시에 방뇨하자, 환성이 나왔다……
+		ELSEIF ABL:17 >= 4 && TALENT:57
+			IF ABL:22 + ABL:ASSI:22 >= 6 && ABL:20 + ABL:ASSI:21 >= 6
+				PRINTFORMW 마지막에 %타겟이()% %CALLNAME:ASSI%의 크게 벌린 입 안에 방뇨하자, 대환성이 터졌다……
+			ELSE
+				PRINTFORMW 마지막에 %타겟이()% 객석을 향해서 방뇨하자, 환성이 나왔다……
+			ENDIF
+		ENDIF
+	ELSE
+		SIF ABL:17 >= 4 && TALENT:57
+			PRINTFORMW 마지막에 %타겟이()% 객석을 향해서 방뇨하자, 환성이 나왔다……
+	ENDIF
+	IF FLAG:50 == 0
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW %조사만처리(RESULT+2,"는")% 수줍은 듯이 미소짓고, 스테이지에서 내려왔다……
+	ENDIF
+	TFLAG:13 = 119
+ENDIF
+
+;特殊コンサート用処理
+IF FLAG:50 == 1
+	IF A <= 1
+		PRINTFORM 불만을 느낀 관객들은
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW %조사만처리(RESULT+2,"를")% 향해서 쇄도했다……
+	ELSE
+		PRINTFORM %CALLNAME:TARGET%
+		SIF FLAG:42 >= 2
+			PRINT 들
+		PRINTFORML 의 치태에 매료된건지
+		PRINTFORM 흥분한 관객들은 일제히
+		CALL WORK_SUB_PRINT_MEMBER
+		PRINTFORMW 의 아래에 쇄도했다……
+	ENDIF
+	PRINTW      ･
+	PRINTW      ･
+	PRINTW      ･
+
+	CALL WORK_SP_SEX_01
+
+	;口上の判定
+	IF A <= 1
+		TFLAG:13 = 120
+	ELSE
+		TFLAG:13 = 121
+	ENDIF
+	
+	WAIT
+ENDIF
+
+;口上処理
+X = TARGET
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	TARGET = COUNT
+	CALL SELF_KOJO
+REND
+TARGET = X
+;念のため口上用フラグを空に
+TFLAG:13 = 0
+
+;/_/_/_/_/_/※ここから下の処理ではTARGETは保存されていません/_/_/_/_/_/
+
+DRAWLINE
+
+;パラメータ変化
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	
+	TARGET = COUNT
+
+	PRINTFORML %NAME:TARGET%의 패러미터가 다음과 같이 변화되었습니다
+
+	U:7 = ((G * 80 * Z) / 5 )
+	U:8 = ((G * 100 * Z) / 5 )
+	;近親ショーだった
+	SIF FLAG:53 & 8
+		U:6 = ((G * 60 * Z) / 5 )
+	;失敗時経験値
+	IF Z <= 1
+		T:72 = G / 20 + 1
+		T:70 = G / 10 + 1
+	;成功時経験値
+	ELSE
+	;今後技能が充実してくれば書き換える可能性有
+		T:72 = ((G / (7 - Z)) * ABL:72) + (G / 10)
+		T:70 = ((G / (10 - Z)) * ABL:70) + (G / 2)
+	ENDIF
+
+	;공개자위成功
+	IF FLAG:53 & 1
+		T:2 = (G / (10 - Z)) + (G / 10)
+		SIF TALENT:122 || TALENT:121
+			T:3 = (G / (10 - Z)) + (G / 10)
+		T:10 = (G / (6 - Z)) + (G / 2)
+		U:0 = G * (ABL:31 + TALENT:74 * 5) * 10
+		U:14 = G * (ABL:31 + TALENT:74 * 5) * 10
+		U:6 *= 2
+		U:7 *= 2
+		U:8 *= 2
+	ENDIF
+	;レズショー成功
+	IF FLAG:53 & 2
+		T:2 += (G / (10 - Z)) + (G / 10)
+		T:40 += (G / (6 - Z)) + (G / 2)
+		U:0 += G * (ABL:22 + ABL:33 * 2) * 10
+		U:14 += G * (ABL:22 + ABL:33 * 2) * 10
+		U:6 *= 2
+		U:8 *= 2
+	ENDIF
+	;공개セックス成功
+	IF FLAG:53 & 2
+		IF TALENT:122 == 0 && CFLAG:54 == 0
+			T:0 = (G / (10 - Z)) + (G / 10)
+			U:1 = G * (ABL:30 + TALENT:75 * 5) * 10
+			T:5 = (G / (10 - Z)) + (G / 10)
+		ENDIF
+		IF TALENT:122 || TALENT:121
+			T:3 += (G / (10 - Z)) + (G / 10)
+			U:0 += G * (ABL:30 + TALENT:75 * 5) * 10
+			T:5 +=(G / (10 - Z)) + (G / 10)
+		ENDIF
+		T:2 += (G / (10 - Z)) + (G / 10)
+		U:6 *= 2
+		U:8 *= 2
+	ENDIF
+	;ステージで방뇨した
+	IF A >= 2 && ABL:17 >= 4 && TALENT:57
+		T:31 = G / 10 + 1
+		U:8 *= 2
+	ENDIF
+
+	;参加者が複数の場合は得られる珠, 経験がやや目減り
+	IF FLAG:42 == 2
+		TIMES U:6 , 0.80
+		TIMES U:7 , 0.80
+		TIMES U:8 , 0.80
+		TIMES T:70 , 0.50
+		TIMES T:72 , 0.50
+	ELSEIF FLAG:42 >= 3
+		TIMES U:6 , 0.60
+		TIMES U:7 , 0.60
+		TIMES U:8 , 0.60
+		TIMES T:70 , 0.30
+		TIMES T:72 , 0.30
+	ENDIF
+
+	;부정의 구슬の計算(基礎値は人数ベースで, 従順に応じて減少)
+	;特殊チケットだと一気に溜まる
+	IF FLAG:50 == 1
+		M = 15 - ABL:10
+	ELSE
+		M = 9 - ABL:10
+	ENDIF
+
+	;부정의 구슬が増加しないという事はない
+	SIF M <= 0
+		M = 1
+	
+	U:100 = G * M * 2
+
+	;素質補正
+	;무관심だと少なくなる
+	SIF TALENT:21
+		TIMES U:100 , 0.90
+	;감정부족と少なくなる
+	SIF TALENT:22
+		TIMES U:100 , 0.90
+	;プライドが高いと増える
+	SIF TALENT:15
+		TIMES U:100 , 1.50
+	;튀고 싶어함だと少なくなる
+	SIF TALENT:28
+		TIMES U:100 , 0.80
+	;억압だと増える
+	SIF TALENT:32
+		TIMES U:100 , 1.20
+	;해방だと少なくなる
+	SIF TALENT:33
+		TIMES U:100 , 0.80
+	;노출광だとほとんどなくなる
+	SIF TALENT:89
+		TIMES U:100 , 0.05
+	;ストリップショー失敗かつ수줍음だと結構増える
+	SIF TALENT:35 && A <= 1
+		TIMES U:100 , 1.50
+	;공개セックスがあった場合섹스광いがないと増える
+	SIF FLAG:53 & 4 && TALENT:75 == 0
+		TIMES U:100 , 1.20
+	;レズショーがあった場合레즈중독3未満か바이がないと増える
+	SIF FLAG:53 & 2 && (ABL:33 < 3 && TALENT:81 == 0)
+		TIMES U:100 , 1.20
+	;공개자위があった場合자위광がないと増える
+	SIF FLAG:53 & 1 && TALENT:74 == 0
+		TIMES U:100 , 1.20
+
+	;近親ショーだと부정의 구슬倍増
+	SIF FLAG:53 & 8
+		U:100 *= 2
+
+	;特殊ストリップ用処理その2
+	IF FLAG:50 == 1
+		CALL WORK_SP_SEX_02
+		;客は輪姦目的で来ているので, 営業が成功しても失敗しても一定の満足を得る
+		A += 1
+	ELSE
+		;昼の部でも처녀상실だとかなり増える
+		SIF CFLAG:50
+			U:100 *= 3
+		;昼の部の参加人数による부정의 구슬補正
+		IF FLAG:42 == 2
+			TIMES U:100 , 0.80
+		ELSEIF FLAG:42 >= 3
+			TIMES U:100 , 0.60
+		ENDIF
+	ENDIF
+
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	X = COUNT
+	CALL WORK_EXP
+	COUNT = X
+
+	;반발각인取得の判定
+	;通常チケットは従順の200倍+1000まで, 特殊チケットは100倍まで許容します
+	O = ABL:10
+	IF FLAG:50 == 1
+		O *= 100
+	ELSE
+		O *= 200
+		O += 1000
+	ENDIF
+	
+	;반발각인 LV2はLV1の√3倍, LV3は√5倍で獲得
+	I = O
+	TIMES I , 2.23
+	J = O
+	TIMES J , 1.73
+	
+	IF MARK:3 != 3 && JUEL:100 > I
+		PRINTL  반발각인 LV3을 습득
+		MARK:3 = 3
+	ELSEIF MARK:3 != 2 && JUEL:100 > J
+		PRINTL  반발각인 LV2를 습득
+		MARK:3 = 2
+	ELSEIF MARK:3 != 1 && JUEL:100 > O
+		PRINTL  반발각인 LV1을 습득
+		MARK:3 = 1
+	ENDIF
+
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+	;체력減少の計算
+	LOSEBASE:0 = G * 30
+
+	;小柄だと疲労増加
+	SIF TALENT:100
+		TIMES LOSEBASE:0 , 1.20
+	;노출광だと疲労半減
+	SIF TALENT:89
+		TIMES LOSEBASE:0 , 0.50
+
+	;特殊チケットの場合
+	IF FLAG:50 == 1
+		;特殊チケットだと人数ベースでかなり疲れる
+		LOSEBASE:0 += G * 40
+
+		;売春中毒のレベルに応じてちょっとずつ減る
+		IF ABL:37 == 1
+			TIMES LOSEBASE:0 , 0.90
+		ELSEIF ABL:37 == 2
+			TIMES LOSEBASE:0 , 0.80
+		ELSEIF ABL:37 == 3
+			TIMES LOSEBASE:0 , 0.70
+		ELSEIF ABL:37 == 4
+			TIMES LOSEBASE:0 , 0.60
+		ELSEIF ABL:37 >= 5
+			TIMES LOSEBASE:0 , 0.50
+		ENDIF
+
+		;V경험, A경험が一定値以下だった場合체력소비増加
+		SIF EXP:0 <= 200 && TALENT:122 == 0
+			TIMES LOSEBASE:0 , 1.10
+		SIF EXP:1 <= 200
+			TIMES LOSEBASE:0 , 1.20
+
+	ENDIF
+	
+	;처녀상실だとかなり増える
+	SIF CFLAG:50
+		TIMES LOSEBASE:0 , 2.00
+
+	;운동능력に応じて疲労軽減
+	IF ABL:51 == 1
+		TIMES LOSEBASE:0 , 0.95
+	ELSEIF ABL:51 == 2
+		TIMES LOSEBASE:0 , 0.90
+	ELSEIF ABL:51 == 3
+		TIMES LOSEBASE:0 , 0.85
+	ELSEIF ABL:51 == 4
+		TIMES LOSEBASE:0 , 0.80
+	ELSEIF ABL:51 == 5
+		TIMES LOSEBASE:0 , 0.75
+	ELSEIF ABL:51 == 6
+		TIMES LOSEBASE:0 , 0.70
+	ELSEIF ABL:51 == 7
+		TIMES LOSEBASE:0 , 0.65
+	ELSEIF ABL:51 == 8
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF ABL:51 == 9
+		TIMES LOSEBASE:0 , 0.55
+	ELSEIF ABL:51 >= 10
+		TIMES LOSEBASE:0 , 0.50
+	ENDIF
+
+	;参加人数に応じて疲労軽減
+	IF FLAG:50
+		LOSEBASE:0 /= FLAG:42
+	ELSEIF FLAG:42 >= 3
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF FLAG:42 >= 2
+		TIMES LOSEBASE:0 , 0.80
+	ENDIF
+
+	;警備員の人数に応じてちょっとずつ減る(最大1~2割減)
+	;特殊チケットなら警備員とても大事(効果2倍)
+	LOSEBASE:0 *= 100 - FLAG:40 * (1 + FLAG:50)
+	LOSEBASE:0 /= 100
+
+	;警備員の人数に応じて即死回避
+	IF LOSEBASE:0 >= BASE:0
+		;警備員の人数*9+9%の確率で체력が1残る(救済フラグを立てる)
+		SIF RAND:100 < (FLAG:40 * 9 + 9)
+		LOSEBASE:0 = BASE:0 - 1
+	ENDIF
+
+	SIF LOSEBASE:0 >= BASE:0
+		LOSEBASE:0 = BASE:0
+
+	PRINT  체력소비　　: 
+	N = BASE:0
+	CALL FIGURE_INDENT
+	PRINTV BASE:0
+	PRINT  - 
+	N = LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTV LOSEBASE:0
+	PRINT  = 
+	N = BASE:0 - LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTVL BASE:0 - LOSEBASE:0
+	
+	BASE:0 -= LOSEBASE:0
+	
+	PRINT  체력　　　　:
+	BAR BASE:0, MAXBASE:0, 32
+	PRINTFORML ({BASE:0}/{MAXBASE:0})
+
+	;체력が0以下, または500以下だった場合の処理
+	IF BASE:0 <= 0
+		PRINTFORML %타겟은()%, 마지막 쇼 후에 쓰러지듯이 넘어졌다
+		PRINTFORML 무슨짓을 해도 반응이 없다……
+		WAIT
+		;キャラの死亡確認
+		CALL CHARADEAD_CHECK
+	ELSEIF BASE:0 <= 500
+		PRINTFORML 체력이 한계에 달했습니다. 쉬게 해주세요
+	ENDIF
+
+	DRAWLINE
+	WAIT
+REND
+
+;売上金を計算します
+Q = 0
+
+;기준액
+
+;가슴の평균値を見る
+B = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		B += BASE:COUNT:22
+REND
+B /= FLAG:42
+
+;ウエストの평균値を見る
+W = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		W += BASE:COUNT:23
+REND
+W /= FLAG:42
+
+;엉덩이の평균値を見る
+H = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		H += BASE:COUNT:24
+REND
+H /= FLAG:42
+
+;체중の평균値を見る
+T = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		T += BASE:COUNT:21
+REND
+T /= FLAG:42
+
+;키の평균値を見る
+;키ボーナス重要
+S = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		S += BASE:COUNT:20
+REND
+
+S /= FLAG:42
+IF S >= 161
+	V += S - 160
+	V *= V
+ENDIF
+IF V > 100
+	V = 100
+ENDIF
+
+L = 0
+;키の평균値によって求められる能力が変わります
+IF S < 150
+	L += (45 - T) * (45 - T)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (B - 75) * (B - 75)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (55 - W) * (55 - W)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (H - 75) * (H - 75)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+ELSEIF S < 160
+	L += (50 - T) * (50 - T)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (B - 80) * (B - 80)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (60 - W) * (60 - W)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (H - 80) * (H - 80)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+ELSEIF S < 170
+	L += (55 - T) * (55 - T)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (90 - B) * (90 - B)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (65 - W) * (65 - W)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (90 - H) * (90 - H)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+ELSE
+	L += (60 - T) * (60 - T)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (95 - B) * (95 - B)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (70 - W) * (70 - W)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+
+	L += (95 - H) * (95 - H)
+	IF L >= 100
+		L = 100
+	ELSEIF L <= 0
+		L = 0
+	ENDIF
+	V += L
+	L = 0
+ENDIF
+
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+;技能・素質による修正値を加算
+	;거유
+	SIF TALENT:COUNT:110
+		V += 3
+	;폭유
+	SIF TALENT:COUNT:114
+		V += 2
+	;빈유
+	SIF TALENT:COUNT:109
+		V -= 3
+	;절벽
+	SIF TALENT:COUNT:116
+		V -= 5
+	;매력
+	SIF TALENT:COUNT:113
+		V += 10
+	;음모 없음
+	SIF TALENT:COUNT:125
+		V += 3
+	;로리계
+	SIF TALENT:COUNT:414
+		V += 5
+
+	;음모 빽빽함
+	SIF TALENT:COUNT:128
+		V /= 2
+	;비만
+	SIF TALENT:COUNT:115
+		V /= 4
+REND
+
+PRINT 기준액
+PRINTFORML  +{V}
+Q += V
+V = 0
+
+B = 0
+W = 0
+H = 0
+S = 0
+T = 0
+
+;能力補正
+;노출벽の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:17
+REND
+E /= FLAG:42
+IF E == 0
+	V = 50
+ELSEIF E == 1
+	V = 70
+ELSEIF E == 2
+	V = 100
+ELSEIF E == 3
+	V = 110
+ELSEIF E == 4
+	V = 120
+ELSEIF E == 5
+	V = 130
+ELSEIF E == 6
+	V = 140
+ELSEIF E == 7
+	V = 150
+ELSEIF E == 8
+	V = 160
+ELSEIF E == 9
+	V = 180
+ELSEIF E >= 10
+	V = 200
+ENDIF
+PRINT 노출 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;피사技能の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:70
+REND
+E /= FLAG:42
+IF E == 0
+	V = 100
+ELSEIF E == 1
+	V = 110
+ELSEIF E == 2
+	V = 120
+ELSEIF E == 3
+	V = 130
+ELSEIF E == 4
+	V = 140
+ELSEIF E == 5
+	V = 150
+ELSEIF E == 6
+	V = 160
+ELSEIF E == 7
+	V = 170
+ELSEIF E == 8
+	V = 180
+ELSEIF E == 9
+	V = 190
+ELSEIF E >= 10
+	V = 200
+ENDIF
+PRINT 피사 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;무용기능の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:72
+REND
+E /= FLAG:42
+IF E == 0
+	V = 100
+ELSEIF E == 1
+	V = 120
+ELSEIF E == 2
+	V = 140
+ELSEIF E == 3
+	V = 160
+ELSEIF E == 4
+	V = 180
+ELSEIF E == 5
+	V = 200
+ELSEIF E == 6
+	V = 240
+ELSEIF E == 7
+	V = 280
+ELSEIF E == 8
+	V = 320
+ELSEIF E == 9
+	V = 360
+ELSEIF E >= 10
+	V = 400
+ENDIF
+PRINT 무용 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;参加キャラの素質補正
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	V = 100
+	;카리스마
+	SIF TALENT:COUNT:93
+		TIMES V , 2.00
+	;매혹
+	SIF TALENT:COUNT:92
+		TIMES V , 1.50
+	IF V != 100
+		PRINTFORML %NAME:COUNT% ×{V/100}.{V%100}
+		Q *= V
+		Q /= 100
+	ENDIF
+REND
+V = 0
+
+;매력치の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += BASE:COUNT:31
+REND
+E /= FLAG:42
+V = E
+PRINT 매력치 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+E = 0
+
+;特殊チケット
+IF FLAG:50 == 1
+	V = 150
+	;V使用不可キャラがいると減る
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF CFLAG:COUNT:54
+			TIMES V , 0.70
+	REND
+	PRINT 특수티켓
+	PRINTFORML  ×{V/100}.{V%100}
+	Q *= V
+	Q /= 100
+	V = 0
+ENDIF
+
+;共通する獲得資金処理
+CALL WORK_SP_MONEY_CM
+
+PRINTFORML 이번 스트립쇼에선 {Q}포인트의 티켓을 {G}에게 판매하고, 
+
+;チケット一枚あたりの金額×客の人数が収入となる
+Q *= G
+
+PRINTFORML 합계 {Q}포인트를 벌었습니다
+MONEY += Q
+
+;昼の部だった場合客からの질내사정フラグはクリア
+IF FLAG:50 == 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		CFLAG:COUNT:105 = 0
+	REND
+ENDIF
+
+;素質【무희】の判定
+;ストリップ終了時に生きていて, 기교LV5以上, 무용기능LV5以上で무용경험1000以上かつ【가희】【미희】をもっていない場合に通常コンサートをした時に取得
+
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	IF BASE:COUNT:0 > 0 && ABL:COUNT:12 >= 5 && ABL:COUNT:72 >= 5 && EXP:COUNT:72 >= 1000 && TALENT:COUNT:185 == 0 && TALENT:COUNT:186 == 0 && TALENT:COUNT:187 == 0 && FLAG:50 == 0
+		PRINTFORMW %CALLNAME:COUNT%의 훌륭한 춤은 높은 평판을 받은 것 같다……
+		PRINTFORMW 소질【무희】를 습득했습니다
+		TALENT:COUNT:186 = 1
+	ENDIF
+REND
+
+
+;特殊営業終了処理
+CALL WORK_SP_AFTER
+
+WAIT
+
+BEGIN TURNEND
+
+RETURN 1

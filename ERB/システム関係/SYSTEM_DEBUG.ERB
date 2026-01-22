@@ -1,0 +1,168 @@
+﻿;=========================================================
+;デバッグモード
+;=========================================================
+@DEBUG_TOP
+DRAWLINE
+PRINTL 어떤 수치를 변경합니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [0] - 난이도 설정
+PRINTL  [1] - 날짜
+PRINTL  [2] - 잔여 포인트
+PRINTL  [3] - 캐릭터 패러미터
+PRINTL  [4] - 모든 캐릭터의 체력・기력・매력치를 완전히 회복한다
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	PRINTL 어떤 난이도로 변경합니까?
+	PRINTL (1:EASY 2:NORMAL 3:HARD 4:POWERFUL 9:EXTRA)
+	INPUT
+	IF RESULT == 1
+		FLAG:3 = 120
+		FLAG:4 = 1000000
+		FLAG:5 = 1
+	ELSEIF RESULT == 2
+		FLAG:3 = 100
+		FLAG:4 = 1800000
+		FLAG:5 = 2
+	ELSEIF RESULT == 3
+		FLAG:3 = 90
+		FLAG:4 = 2400000
+		FLAG:5 = 3
+	ELSEIF RESULT == 4
+		FLAG:3 = 80
+		FLAG:4 = 3600000
+		FLAG:5 = 4
+	ELSEIF RESULT == 9
+		FLAG:3 = 0
+		FLAG:4 = 0
+		FLAG:5 = 9
+	ENDIF
+ELSEIF RESULT == 1
+	PRINTL 무슨 날짜로 변경합니까?
+	INPUT
+	DAY = RESULT
+ELSEIF RESULT == 2
+	PRINTL 몇 포인트로 변경합니까?
+	INPUT
+	MONEY = RESULT
+ELSEIF RESULT == 3
+	CALL DEBUG_SLAVE
+ELSEIF RESULT == 4
+	REPEAT CHARANUM
+		BASE:COUNT:0 = MAXBASE:COUNT:0
+		BASE:COUNT:1 = MAXBASE:COUNT:1
+		BASE:COUNT:31 = MAXBASE:COUNT:31
+	REND
+ELSEIF RESULT != 999
+	RESTART
+ENDIF
+
+RETURN 0
+
+@DEBUG_SLAVE
+DRAWLINE
+$INPUT_LOOP
+
+PRINTL 어느 캐릭터의 패러미터를 변경합니까?
+CALL LIFE_LIST_NEW,1
+
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_00
+PRINTFORML %NAME:TARGET%의 어느 패러미터를 변경시킵니까?
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [0] - TALENT
+PRINTL  [1] - ABL
+PRINTL  [2] - EXP
+PRINTL  [3] - CFLAG
+PRINTL  [4] - MARK
+PRINTL  [5] - BASE
+PRINTL  [6] - MAXBASE
+PRINTL  [7] - RELATION
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	PRINTL 어느 TALENT를 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 %조사처리(TALENTNAME:A,"는")% {TALENT:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	TALENT:A = RESULT
+ELSEIF RESULT == 1
+	PRINTL 어느 ABL을 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 %조사처리(ABLNAME:A,"는")% {ABL:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	ABL:A = RESULT
+ELSEIF RESULT == 2
+	PRINTL 어떤 EXP를 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 %조사처리(EXPNAME:A,"는")% {EXP:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	EXP:A = RESULT
+ELSEIF RESULT == 3
+	PRINTL 어떤 CFLAG를 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 CFLAG:{A}(은/)는 {CFLAG:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	CFLAG:A = RESULT
+ELSEIF RESULT == 4
+	PRINTL 어떤 MARK를 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 %조사처리(MARKNAME:A,"는")% {MARK:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	MARK:A = RESULT
+ELSEIF RESULT == 5
+	PRINTL 어떤 BASE를 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 %조사처리(BASENAME:A,"는")% {BASE:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	BASE:A = RESULT
+ELSEIF RESULT == 6
+	PRINTL 어떤 MAXBASE를 변경합니까?
+	INPUT
+	A = RESULT
+	PRINTFORML %CALLNAME:TARGET%의 %조사처리(BASENAME:A,"는")% {MAXBASE:A}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	MAXBASE:A = RESULT
+ELSEIF RESULT == 7
+	PRINTL 누구와의 RELATION을 변경합니까?
+	CALL LIFE_LIST_NEW,7
+	SIF RESULT == 999
+		GOTO INPUT_LOOP_00
+	A = RESULT
+	PRINTFORML %타겟과()% %NAME:A%의 RELATION은 {RELATION:(NO:A)}입니다.
+	PRINTL 얼마로 설정합니까?
+	INPUT
+	RELATION:(NO:A) = RESULT
+ELSEIF RESULT == 999
+	RETURN 999
+ELSE
+	GOTO INPUT_LOOP_00
+ENDIF
+
+GOTO INPUT_LOOP_00

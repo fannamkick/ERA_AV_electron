@@ -1,0 +1,227 @@
+﻿;--------------
+;仮・購入関数
+;ITEMNAMEが代入不可なので自作。
+;(카나데の処理の関係上)
+;キャラ価格・存在判定はニューゲームのタイミングに@CHARA_PRICEで行われている。
+;ITEMPRICEを読んでいるがまあそれでいいんじゃないかと思うのでそれで。
+;キャラ追加が必要なら, CSVをこさえてITEM.CSVに書き足せばだいたいいける。はず。
+;50人とか足すようなことがありそうなら大改造が要りそうな予感。
+;購入前解説は@CHARA_MANUAL, 名鑑は@ACTRESS_PROF
+;二つに分けないで使いまわしできたらいいよねとは思うがめんどいので。
+;--------------
+
+@CHARA_BUY_NEW
+#DIM XTHVIEW
+
+X = 0
+
+;TFLAG:100には奴隷リストのページ数を割り振る
+TFLAG:100 = 0
+
+$INPUT_LOOP
+
+CALL CHARA_LIST_NEW
+
+;1ページあたりに表示されるキャラは60人
+REPEAT 60
+	A = COUNT + TFLAG:100 * 60 + 200
+	B = TFLAG:A
+	CHARASALES:B = 1
+REND
+
+CALL CHARA_BUY_SHOW_NEW
+
+INPUT
+IF RESULT == 1
+	SIF TFLAG:100 > 0
+		TFLAG:100 -= 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 9
+	;最大ページ数(3)と比較
+	SIF TFLAG:100 < 3
+		TFLAG:100 += 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 999
+	CALL CHARA_BUY_AFTER
+	RETURN 0
+ENDIF
+
+;[RESULT > 100+**]の**はREPEAT数と同じくキャラ数以上の適当な数値
+SIF RESULT < 100 || RESULT > 100 + 99
+	GOTO INPUT_LOOP
+
+;C = キャラナンバー
+C = RESULT + 1 - 100
+D = RESULT + 1000 - 100
+
+;購入済みor購入不可=フラグ値が0なら再入力
+SIF FLAG:D <= 0
+	GOTO INPUT_LOOP
+
+;一度に契約しておける女優候補は事務所規模によって決まる。初期10人, 키류 조직に要請で増加。
+IF CHARANUM > FLAG:23
+	PRINTW 《이 이상 계약하려면 다른 배우를 은퇴시켜야 합니다》
+	GOTO INPUT_LOOP
+ENDIF
+
+;
+XTHVIEW = FINDELEMENT(TFLAG,C,200,300)
+
+;キャラ解説を入れる
+CALL CHARA_MANUAL(XTHVIEW)
+IF RESULT == 1
+	GOTO INPUT_LOOP
+ELSE
+ENDIF
+
+;フラグ値=売値が소지금より多いなら再入力
+IF MONEY < FLAG:D
+	PRINTW 소지금이 부족합니다
+	GOTO INPUT_LOOP
+ENDIF
+;上記処理を抜けてきた=購入可能で소지금が売値以上
+;소지금の変更
+MONEY -= FLAG:D
+
+;購入したキャラの購入フラグを立てる
+FLAG:D = -1
+
+ADDCHARA C
+
+TARGET = CHARANUM - 1
+
+;;改名処理
+;;CHARA_BUY_SETTINGじゃ間に合わなかった
+;IF NO:TARGET == 1
+;	NAME:TARGET = %LNAME+"카나데"%
+;ELSEIF NO:TARGET == 17
+;	NAME:TARGET = %LNAME+"미이"%
+;ENDIF
+
+PRINTFORMW 《%타겟과(1)% 계약했습니다》 
+
+
+;名鑑用の処理
+X = NO:TARGET + 200
+LOADGLOBAL
+GLOBAL:X += 1
+SAVEGLOBAL
+
+;RELATION未設定のキャラとの相性を100(普通)に
+
+;購入時に行われる初期設定
+CALL CHARA_BUY_SETTING
+
+;購入後イベント
+CALL CHARA_BUY_EVENT
+
+GOTO INPUT_LOOP
+;
+;-------------------------------------------------
+;購入可能な奴隷リストの表示
+;-------------------------------------------------
+@CHARA_BUY_SHOW_NEW
+DRAWLINE
+PRINTL 여배우 후보 혹은 스탭 스카우트
+PRINTL 《AV배우 혹은 스탭이 되어줄 캐릭터와 계약할 수 있습니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+
+DRAWLINE
+
+CALL PRINT_SHOPCHARALIST
+
+DRAWLINE
+PRINT 　page
+PRINTV TFLAG:100
+PRINT 　[1] 이전 페이지　
+PRINTC 
+PRINTC 　[9] 다음 페이지
+PRINTL 　
+
+DRAWLINE
+
+PRINT [999] - 돌아간다
+PRINTL 
+
+;-------------------------------------------------
+;TFLAG:2yyに現在購入可能なキャラのリストを作成する処理
+;-------------------------------------------------
+@CHARA_LIST_NEW
+F = 0
+REPEAT 100
+	;CHARASALES:xxを空に
+	CHARASALES:COUNT = 0
+	;TFLAG:2xxを空に
+	F = COUNT + 200
+	TFLAG:F = 0
+REND
+
+F = 200
+
+;FLAG:10xxに数値が入ってる(=キャラが存在する)かどうかをチェックし, 
+;TFLAG:2yyに存在するキャラの1xxを隙間なく詰め込む
+REPEAT 100
+	E = COUNT + 1000
+	IF FLAG:E > 0
+		TFLAG:F = E - 999
+		F += 1
+	ENDIF
+REND
+
+RETURN 0
+
+;-------------------
+;PRINT_SHOPITEMの代わり
+;-------------------
+@PRINT_SHOPCHARALIST
+#DIM LCOUNT
+#DIM LSCOUNT
+#DIM MOJIC
+
+FOR LCOUNT,1,60
+	IF CHARASALES:LCOUNT
+		;EXISTCSVは保険。たぶんいらない
+		IF EXISTCSV(LCOUNT)
+			LOCALS:LCOUNT = %CSVNAME(LCOUNT)%
+		ENDIF
+		SELECTCASE LOCALS:LCOUNT
+;			CASE "미야마 카나데"
+;				LOCALS:LCOUNT = %LNAME + "카나데"%
+			CASE "레이첼・파라디수스"
+				LOCALS:LCOUNT = 레이첼・I・P
+;			CASE "미야마 미이"
+;				LOCALS:LCOUNT = %LNAME + "미이"%
+			CASE "면접 상대"
+				LOCALS:LCOUNT = 【구인광고】
+		ENDSELECT
+		PRINTFORMLC [{LCOUNT+99}] %LOCALS:LCOUNT% ({FLAG:(1000+LCOUNT-1)} P)
+		;11 = STRLEN([000]  ( P))
+		;(STRLENS(LOCALS:LCOUNT)+DIGIT(FLAG:(1000+LCOUNT-1))+12)が25文字以上なら34文字まで, 以下なら9文字補う
+		;つまり差分だけ半角スペースを表示, 9文字になったら飛ばす
+		;PRINTFORML {STRLENS(LOCALS:LCOUNT)+DIGIT(FLAG:(1000+LCOUNT-1))+11}
+		FOR LSCOUNT,(STRLENS(LOCALS:LCOUNT)+DIGIT(FLAG:(1000+LCOUNT-1))+11),35
+			PRINT  
+			MOJIC ++
+			SIF MOJIC == 9
+				BREAK
+		NEXT
+		MOJIC = 0
+		LOCAL ++
+		SIF LOCAL % 3 == 0
+			PRINTL
+	ENDIF
+NEXT
+
+SIF LOCAL % 3
+	PRINTL
+
+LOCAL = 0

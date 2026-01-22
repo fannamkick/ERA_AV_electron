@@ -1,0 +1,82 @@
+﻿;=================================================
+;레이첼ラボ
+;=================================================
+@RACHEL_LABO
+
+$INPUT_LOOP
+
+DRAWLINE
+PRINTL 레이첼의 공방
+PRINTL 《레이첼이 제작한 약품등을 구입할 수 있습니다》
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  전반
+ELSE
+	PRINTL  후반
+ENDIF
+
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+
+PRINTL  [0] - 체력 강화제   (재료비: 300000포인트)
+PRINTL  [1] - 기력 강화제   (재료비: 500000포인트)
+PRINTL  [2] - 반하는 약     (재료비: 1500000포인트)
+PRINTL  [3] - 초강력 미약   (재료비: 1500000포인트)
+PRINTL  [4] - 회춘약        (재료비: 1000000포인트)
+IF CFLAG:MASTER:703 <= 2
+	PRINTL  [5] - 음마 소환     (재료비: 2000000포인트)
+ENDIF
+IF CFLAG:MASTER:712 == 0
+	PRINTL  [6] - 파라디수스의 밀정을 소개받는다 (소개료: 500000포인트)
+ENDIF
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 96
+		IF CFLAG:COUNT:1 == 2 && CFLAG:MASTER:694 == 0
+			PRINTL  [7] - 리나에게 스탭 동향을 조사해달라 한다
+		ENDIF
+	ENDIF
+REND
+;촉수扱うなら비밀지식ぐらい持っててほしい
+;そのうえで価格は適当
+IF TALENT:MASTER:325 == 1 && ITEM:90 == 0
+	PRINTL  [10] - 촉수생물 소환 (재료비: 75000포인트)
+ENDIF
+DRAWLINE
+PRINTL  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+	CALL BASEHP_UP
+ELSEIF RESULT == 1
+	CALL BASESP_UP
+ELSEIF RESULT == 2
+	CALL ADD_LOVE
+ELSEIF RESULT == 3
+	CALL ADD_LEWD
+ELSEIF RESULT == 4
+	CALL ANTIAGING
+ELSEIF RESULT == 5
+	CALL ADD_SUCCUBUS
+ELSEIF RESULT == 6
+	IF CFLAG:MASTER:712 == 0
+		CALL ADD_REENA
+	ENDIF
+ELSEIF RESULT == 7
+	IF CFLAG:MASTER:712 == 1 && CFLAG:MASTER:694 == 0
+		CALL REENA_SEARCH
+	ENDIF
+ELSEIF RESULT == 10 && TALENT:MASTER:325 == 1 && ITEM:90 == 0
+	CALL ADD_TENTACLE
+ELSEIF RESULT == 999
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+GOTO INPUT_LOOP
+

@@ -1,0 +1,285 @@
+/**
+ * COMF27 - 후배위애널 (Doggy Style Anal)
+ * 원본: ERB/指導関係/COMF27.ERB
+ *
+ * 조교 대상의 항문에 후배위 자세로 삽입
+ * 정상위애널에 비해 기력 소비가 크고 이탈이 상승하지만 굴종 상승이 높음
+ */
+
+import type { CommandPlugin } from '../../types';
+import type { TrainingContext, SourceValues } from '../../types';
+import { SourceModifier } from '../../systems/SourceModifier';
+import { AnalSexHandler } from '../common/AnalSexHandler';
+import { PlayerEjaculationHandler } from '../../systems/PlayerEjaculation';
+
+export const COMF27_doggyAnal: CommandPlugin = {
+  id: 27,
+  name: '후배위애널',
+  category: '삽입',
+  staminaCost: 120,
+
+  /**
+   * 가용성 판정
+   * 원본: COMABLE.ERB @COM_ABLE27
+   */
+  isAvailable: (context: TrainingContext) => {
+    // 촉수 지도중 불가
+    if (context.equipment[90]) return false;
+
+    // 슬라임 지도중 불가
+    if (context.equipment[150]) return false;
+
+    // 삼각목마 기승중 불가
+    if (context.equipment[70]) return false;
+
+    return true;
+  },
+
+  /**
+   * SOURCE 계산
+   * 원본: COMF27.ERB 라인 43-183
+   */
+  // TODO: Move calculateSource logic to execute
+  // calculateSource: (context: TrainingContext): SourceValues => {
+    const { target } = context;
+    const abilities = target.abl;
+    const talents = context.talents;
+
+    // A감각
+    const aSense = abilities['A감각'] || 0;
+
+    // 기본 SOURCE 설정
+    const source: number[] = new Array(19).fill(0);
+
+    // LOSEBASE 계산 (A감각에 따라 감소)
+    // 원본: COMF27.ERB 라인 45-63
+    let local2 = aSense * 3;
+    if (local2 <= 0) local2 = 1;
+    let local3 = aSense * 2;
+    if (local3 <= 0) local3 = 1;
+
+    let loseBase0 = 120 - local2;
+    if (loseBase0 <= 10) loseBase0 = 10;
+
+    let loseBase1 = 200 - local3;
+    if (loseBase1 <= 10) loseBase1 = 10;
+
+    context.loseBase[0] += Math.floor(loseBase0);
+    context.loseBase[1] += Math.floor(loseBase1);
+
+    // A감각에 따른 쾌A, 윤활, 반감 계산
+    // 원본: COMF27.ERB 라인 68-93
+    if (aSense === 0) {
+      source[2] = 10;
+      source[6] = 10;
+      source[14] = 100;
+    } else if (aSense === 1) {
+      source[2] = 30;
+      source[6] = 30;
+      source[14] = 700;
+    } else if (aSense === 2) {
+      source[2] = 500;
+      source[6] = 100;
+      source[14] = 1500;
+    } else if (aSense === 3) {
+      source[2] = 1000;
+      source[6] = 200;
+      source[14] = 3000;
+    } else if (aSense === 4) {
+      source[2] = 1700;
+      source[6] = 450;
+      source[14] = 5000;
+    } else {
+      source[2] = 2200;
+      source[6] = 750;
+      source[14] = 8000;
+    }
+
+    // A경험 레벨에 따른 쾌A 배율, 고통
+    // 원본: COMF27.ERB 라인 95-114
+    const aExpLevel = context.getExpLevel(context.exp[1] || 0);
+    if (aExpLevel < 1) {
+      source[2] *= 0.10;
+      source[12] = 20000;
+    } else if (aExpLevel < 2) {
+      source[2] *= 0.30;
+      source[12] = 12000;
+    } else if (aExpLevel < 3) {
+      source[2] *= 0.50;
+      source[12] = 5000;
+    } else if (aExpLevel < 4) {
+      source[2] *= 1.00;
+      source[12] = 1800;
+    } else if (aExpLevel < 5) {
+      source[2] *= 1.40;
+      source[12] = 1000;
+    } else {
+      source[2] *= 1.60;
+      source[12] = 600;
+    }
+
+    // 윤활도 레벨에 따른 쾌A 배율 및 고통 추가
+    // 원본: COMF27.ERB 라인 116-132
+    const lubLevel = context.getParamLevel(context.params[3] || 0);
+    if (lubLevel < 1) {
+      source[2] *= 0.40;
+      source[12] += 10000;
+    } else if (lubLevel < 2) {
+      source[2] *= 0.80;
+      source[12] += 3600;
+    } else if (lubLevel < 3) {
+      source[2] *= 1.00;
+      source[12] += 1200;
+    } else if (lubLevel < 4) {
+      source[2] *= 1.40;
+      source[12] += 200;
+    } else {
+      source[2] *= 1.80;
+      source[12] += 100;
+    }
+
+    // 욕정 레벨에 따른 쾌A, 반감 배율
+    // 원본: COMF27.ERB 라인 134-150
+    const lustLevel = context.getParamLevel(context.params[5] || 0);
+    if (lustLevel < 1) {
+      source[2] *= 0.60;
+      source[14] *= 0.60;
+    } else if (lustLevel < 2) {
+      source[2] *= 0.80;
+      source[14] *= 0.80;
+    } else if (lustLevel < 3) {
+      source[2] *= 1.00;
+      source[14] *= 1.00;
+    } else if (lustLevel < 4) {
+      source[2] *= 1.20;
+      source[14] *= 1.20;
+    } else {
+      source[2] *= 1.40;
+      source[14] *= 1.40;
+    }
+
+    // 후타나리 조수
+    // 원본: COMF27.ERB 라인 152-156
+    if (context.assiPlay === 1 && context.assiTalents?.[121] === 1) {
+      source[2] *= 2.50;
+    }
+
+    // 체격 소질
+    // 원본: COMF27.ERB 라인 158-166
+    if (talents[99]) source[12] *= 0.80; // 큰 체구
+    if (talents[100]) source[12] *= 2.00; // 소체형
+    if (talents[135]) source[12] *= 2.00; // 미숙함
+
+    // A민감/둔감 소질
+    // 원본: COMF27.ERB 라인 168-178
+    if (talents[105]) { // A민감
+      source[12] *= 1.50;
+      source[14] *= 1.50;
+      source[11] *= 1.50;
+    } else if (talents[106]) { // 둔감
+      source[12] *= 0.60;
+      source[14] *= 0.60;
+      source[11] *= 0.60;
+    }
+
+    // 처녀이고 정조관념
+    // 원본: COMF27.ERB 라인 180-183
+    if ((context.exp[0] || 0) === 0 && talents[30]) {
+      source[14] = Math.floor(source[14] / 3);
+    }
+
+    // SourceModifier로 소질/능력 보정 적용
+    source = SourceModifier.applyAll(source, context);
+
+    return source;
+  },
+
+  /**
+   * 커맨드 실행
+   * 원본: COMF27.ERB 전체
+   */
+  async execute(context: TrainingContext): Promise<void> {
+    // 1. 애널처녀 확인
+    // 원본: COMF27.ERB 라인 7-10
+    if (context.talents[76] === 1) {
+      const confirmed = await AnalSexHandler.handleVirginity(context);
+      if (!confirmed) return;
+    }
+
+    // 2. 3P 파생 체크
+    // 원본: COMF27.ERB 라인 14-30
+    const prevCom = context.prevCom || 0;
+    context.flags[42] = 0; // TFLAG:42 (3P플래그) 초기화
+
+    if (prevCom === 64) {
+      // TODO: COM_ABLE64 체크 및 COM64로 점프
+      context.showMessage('[파생] 3P로 파생 가능');
+    } else {
+      const prevTrainer = context.flags[50] || 0;
+      const trainerChanged = (context.assiPlay === 1 && prevTrainer === 0) ||
+                             (context.assiPlay === 0 && prevTrainer === 1);
+      if (trainerChanged && (prevCom === 20 || prevCom === 21 || prevCom === 31 || prevCom === 80)) {
+        // TODO: COM_ABLE64 체크 및 COM64로 점프
+        context.showMessage('[파생] 정상위/후배위/펠라치오/이라마치오 후 3P로 파생 가능');
+      }
+    }
+
+    // 3. 커맨드명 표시
+    // 원본: COMF27.ERB 라인 32-34
+    context.showMessage('후배위애널');
+
+    // 4. TODO: TRAIN_MESSAGE_B 호출
+
+    // 5. A경험 플래그 설정
+    // 원본: COMF27.ERB 라인 36-37
+    context.flags[101] = 1; // TFLAG:101 (A경험 플래그)
+
+    // 6. 사정 처리
+    // 원본: COMF27.ERB 라인 39-40
+    const ejacResult = await PlayerEjaculationHandler.checkAnal(context);
+    if (ejacResult.ejaculated) {
+      await AnalSexHandler.handleEjaculation(context, ejacResult);
+    }
+
+    // 7. SOURCE 계산 및 적용
+    const source = this.calculateSource(context);
+    // TODO: applySource 메서드 호출
+
+    // 8. 애널섹스 후 처리
+    // 원본: COMF27.ERB 라인 186
+    // TODO: CALL COM_AFTER_ANAL_SEX
+
+    // 9. PREVCOM/TFLAG 업데이트
+    context.flags[59] = context.flags[50] || 0;
+    context.flags[50] = context.assiPlay === 1 ? 1 : 0;
+    context.prevCom = 27;
+
+    // 10. 더럽힘 처리
+    if (ejacResult.ejaculated) {
+      context.stain[4] |= 4; // STAIN:4 |= 4 (A에 정액)
+    } else {
+      context.stain[4] |= 2; // STAIN:4 |= 2 (A에 애액)
+    }
+  },
+
+  /**
+   * 메시지 생성
+   * 원본: TRAIN_MESSAGE_B.ERB (후배위애널 관련 부분)
+   */
+  // TODO: Move generateMessage logic to execute
+  // generateMessage: (context: TrainingContext) => {
+    const targetName = context.target.name;
+
+    let msg = `${targetName}을(를) 후배위 자세로 항문에 삽입했다.`;
+
+    // A감각에 따른 반응
+    const aSense = context.target.abl[3] || 0;
+    if (aSense >= 4) {
+      msg += ` ${targetName}의 항문이 강하게 조여왔다.`;
+    } else if (aSense === 0) {
+      msg += ` ${targetName}은(는) 항문의 압박감에 신음을 흘렸다.`;
+    }
+
+    return msg;
+  },
+};

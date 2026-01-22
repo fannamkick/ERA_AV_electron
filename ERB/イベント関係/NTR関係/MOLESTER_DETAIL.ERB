@@ -1,0 +1,254 @@
+﻿;===========================================================
+;痴漢発生の処理
+;===========================================================
+@MOLESTER_BRUNCH
+LOCAL += RAND:6
+IF LOCAL == 0
+	TFLAG:13 = 16
+ELSEIF LOCAL == 1
+	TFLAG:13 = 16
+ELSEIF LOCAL == 2
+	TFLAG:13 = 17
+ELSEIF LOCAL == 3
+	TFLAG:13 = 18
+ELSEIF LOCAL == 4
+	TFLAG:13 = 19
+ELSEIF LOCAL == 5
+	TFLAG:13 = 20
+ENDIF
+						;****痴漢誘惑修正追加ここから****
+TARGET = COUNT
+						;****痴漢誘惑修正追加ここまで****
+CALL SELF_KOJO
+PRINTFORM %플레이어가()% 사무소를 나가려 했을 때, 이미 돌아갔을 터인 %CALLNAME:COUNT%에게서 전화가 걸려왔다.
+PRINTFORM 무슨 일인가 싶어 %플레이어가()% 전화를 받으니, 
+	IF TALENT:COUNT:76 == 1
+		PRINTFORM 요염한 목소리로 
+	ELSE
+		PRINTFORM 울먹거리며 
+	ENDIF
+PRINTFORML 전차로 돌아가던 중에 치한을 만났다고 말했다……
+PRINTW  
+PRINTFORM %플레이어가()% %CALLNAME:COUNT%에게 자세하게 물어보니, 
+		IF LOCAL == 0
+			PRINTFORM 엉덩이와 가슴을 야하게 문지르며 
+			PRINTFORML 치한의 발기한 페니스를 억지로 만지게 했다고 한다.
+			PRINTFORML 그리고 그대로 온몸에 대량의 정액이 쏟아졌다고 했다……
+			PRINTFORMW  
+			PRINTFORML %EXPNAME:20% +2
+			PRINTFORML %PALAMNAME:8%의 구슬 +500
+			PRINTFORML %PALAMNAME:10%의 구슬 +100
+				IF TALENT:COUNT:76 == 0
+					PRINTFORMW %PALAMNAME:12%의 구슬 +1000
+				ENDIF
+			EXP:COUNT:20 += 2
+			EXP:COUNT:103 += 1
+			JUEL:COUNT:8 += 500
+			JUEL:COUNT:10 += 100
+				IF TALENT:COUNT:76 == 0
+					JUEL:COUNT:12 += 1000
+				ENDIF
+			BASE:COUNT:31 -= 2
+		ELSEIF LOCAL == 1
+			PRINTFORM 엉덩이와 가슴을 야하게 문지르며 
+			PRINTFORML 치한의 발기한 페니스를 억지로 만지게 했다고 한다.
+			PRINTFORML 그리고 그대로 온몸에 대량의 정액이 쏟아졌다고 했다……
+			PRINTFORMW  
+			PRINTFORML %EXPNAME:20% +2
+			PRINTFORML %PALAMNAME:8%의 구슬 +500
+			PRINTFORML %PALAMNAME:10%의 구슬 +100
+				IF TALENT:COUNT:76 == 0
+					PRINTFORMW %PALAMNAME:12%의 구슬 +1000
+				ENDIF
+			EXP:COUNT:20 += 2
+			EXP:COUNT:103 += 1
+			JUEL:COUNT:8 += 500
+			JUEL:COUNT:10 += 100
+				IF TALENT:COUNT:76 == 0
+					JUEL:COUNT:12 += 1000
+				ENDIF
+			LOCAL = 0
+			BASE:COUNT:31 -= 2
+		ELSEIF LOCAL == 2
+			PRINTFORM 엉덩이와 가슴을 야하게 문지르며 
+			PRINTFORML 치한의 발기한 페니스를 억지로 만지게 했다고 한다.
+			PRINTFORM %CALLNAME:COUNT%에게 대딸을 강요하면서 
+			PRINTFORM 속옷 너머로 클리토리스와 유두를 집요하게 문지르고 
+			PRINTFORM %조사처리(CALLNAME:COUNT,"가")% 절정하는 것과 동시에 
+			PRINTFORML 치한이 대량의 정액을 %CALLNAME:COUNT%의 손에 사정했다고 했다…
+			PRINTFORMW  
+			PRINTFORML %EXPNAME:2% +1
+			PRINTFORML %EXPNAME:20% +2
+			PRINTFORML %PALAMNAME:8%의 구슬 +800
+			PRINTFORML %PALAMNAME:10%의 구슬 +200
+				IF TALENT:COUNT:76 == 0
+					PRINTFORMW %PALAMNAME:12%의 구슬 +1500
+				ENDIF
+			EXP:COUNT:20 += 2
+			EXP:COUNT:103 += 1
+			EXP:COUNT:2 += 1
+			JUEL:COUNT:8 += 800
+			JUEL:COUNT:10 += 200
+				IF TALENT:COUNT:76 == 0
+					JUEL:COUNT:12 += 1500
+				ENDIF
+			LOCAL = 0
+			BASE:COUNT:31 -= 3
+		ELSEIF LOCAL == 3
+			PRINTFORM 엉덩이와 가슴을 야하게 문지르며 
+			PRINTFORML 치한의 발기한 페니스를 억지로 만지게 했다고 한다.
+			PRINTFORM %CALLNAME:COUNT%에게 대딸을 강요하면서 
+			PRINTFORML 속옷 안에 손을 넣어 엉덩이 구멍을 휘저었다고 한다…
+			PRINTFORM %조사처리(CALLNAME:COUNT,"가")% 
+				IF TALENT:COUNT:77
+					PRINTFORM 황홀한 표정으로 치한의 손가락을 아누스로 조이며 
+					PRINTFORM 교성과 함께 절정하자 
+				ELSEIF ABL:COUNT:3 >= 3
+					PRINTFORM 절정하자 
+				ELSEIF EXP:COUNT:1 == 0
+					PRINTFORM 처음 느끼는 이물감에 저항하는 모습에 흥분한 
+				ELSE
+					PRINTFORM 이물감에 저항하는 모습에 흥분한 
+				ENDIF
+			PRINTFORML 치한이 대량의 정액을 %CALLNAME:COUNT%의 손에 사정했다고 했다……
+			PRINTFORMW  
+				IF ABL:COUNT:3 >= 3
+					PRINTFORML %EXPNAME:2%+1
+				ENDIF
+			PRINTFORML %EXPNAME:1% +1
+			PRINTFORML %EXPNAME:20% +2
+			PRINTFORML %PALAMNAME:8%의 구슬 +1000
+			PRINTFORML %PALAMNAME:10%의 구슬 +300
+				IF TALENT:COUNT:76 == 0
+					PRINTFORMW %PALAMNAME:12%의 구슬 +2000
+				ENDIF
+			EXP:COUNT:20 += 2
+			EXP:COUNT:103 += 1
+			EXP:COUNT:1 += 1
+				IF ABL:COUNT:3 >= 3
+					EXP:COUNT:2 += 1
+				ENDIF
+			JUEL:COUNT:8 += 1000
+			JUEL:COUNT:10 += 300
+				IF TALENT:COUNT:76 == 0
+					JUEL:COUNT:12 += 2000
+				ENDIF
+			LOCAL = 0
+			BASE:COUNT:31 -= 4
+		ELSEIF LOCAL == 4
+			PRINTFORM 엉덩이와 가슴을 야하게 문지르며 
+			PRINTFORML 치한의 발기한 페니스를 억지로 만지게 했다고 한다.
+			PRINTFORM %CALLNAME:COUNT%에게 대딸을 강요하면서 
+			PRINTFORML 속옷 안에 손을 넣어 질 속을 휘저었다고 한다…
+			PRINTFORM %조사처리(CALLNAME:COUNT,"가")% 
+				IF TALENT:COUNT:232
+					PRINTFORM 황홀한 표정으로 치한의 손가락을 조이며 
+					PRINTFORM 교성과 함께 절정하자 
+				ELSEIF ABL:COUNT:2 >= 3
+					PRINTFORM 절정하자 
+				ELSEIF EXP:COUNT:0 == 0
+					PRINTFORM 처음 느끼는 이물감에 저항하는 모습에 흥분한 
+				ELSE
+					PRINTFORM 이물감에 저항하는 모습에 흥분한 
+				ENDIF
+			PRINTFORML 치한이 대량의 정액을 %CALLNAME:COUNT%의 손에 사정했다고 했다……
+			PRINTFORMW  
+				IF ABL:COUNT:2 >= 3
+					PRINTFORML %EXPNAME:2% +1
+				ENDIF
+			PRINTFORML %EXPNAME:20% +2
+			PRINTFORML %PALAMNAME:8%의 구슬 +1000
+			PRINTFORML %PALAMNAME:10%의 구슬 +300
+				IF TALENT:COUNT:76 == 0
+					PRINTFORMW %PALAMNAME:12%의 구슬 +2000
+				ENDIF
+			EXP:COUNT:20 += 2
+			EXP:COUNT:103 += 1
+				IF ABL:COUNT:2 >= 3
+					EXP:COUNT:2 += 1
+				ENDIF
+			JUEL:COUNT:8 += 1000
+			JUEL:COUNT:10 += 300
+				IF TALENT:COUNT:76 == 0
+					JUEL:COUNT:12 += 2000
+				ENDIF
+			LOCAL = 0
+			BASE:COUNT:31 -= 5
+		ELSEIF LOCAL >= 4
+			PRINTFORM 엉덩이와 가슴을 야하게 문지르며 
+			PRINTFORML 치한의 발기한 페니스를 억지로 만지게 했다고 한다.
+			PRINTFORM %CALLNAME:COUNT%에게 대딸을 강요하면서 
+			PRINTFORML 속옷 안에 손을 넣어 질 속을 휘저었다고 한다…
+			PRINTFORM 그리고 %CALLNAME:COUNT%의 질이 애액으로 젖은 걸 확인하고는 
+			PRINTFORM %CALLNAME:COUNT%의 속옷을 제끼고, %CALLNAME:COUNT%에게 만져져 발딱 선 육봉을 
+				IF TALENT:COUNT:0 == 1
+					PRINTFORM 처녀인 
+				ELSEIF TALENT:COUNT:271 == 1
+					PRINTFORM 손가락으로 휘저어져 발정한 
+				ENDIF
+			PRINTFORML 구멍에 집어넣었다……
+			PRINTFORM %CALLNAME:COUNT%
+				IF TALENT:COUNT:0 == 1
+					PRINTFORM %조사만처리(CALLNAME:COUNT,"가")% 처음보는 남자에게 처녀를 뺐기고, 우는 모습
+				ELSEIF EXP:COUNT:1 >= 10
+					PRINTFORM 의 구멍이 육봉을 받아들이고, 
+					PRINTFORM 반응해주는 %CALLNAME:COUNT%의 모습
+				ELSE
+					PRINTFORM 의 처녀는 아니지만, 아직 미숙한 
+					PRINTFORM %CALLNAME:COUNT%의 구멍
+				ENDIF
+			PRINTFORML 에 흥분한 치한의 피스톤이 빨라졌다……
+			PRINTFORM 그리고 %조사처리(CALLNAME:COUNT,"가")% 
+				IF EXP:COUNT:0 == 0
+					PRINTFORML 처음 느끼는 이물감에 저항하는 모습에 
+				ELSEIF TALENT:COUNT:76
+					PRINTFORM 황홀한 표정으로 치한의 페니스를 직접 허리를 써서 
+					PRINTFORML 조이고, 교셩과 함께 절정하자 동시에 
+				ELSEIF EXP:COUNT:1 >= 10
+					PRINTFORML 절정하자 동시에 
+				ELSE
+					PRINTFORML 아직 익숙하지 않은 이물감에 저항하는 모습에 
+				ENDIF
+			PRINTFORM 한계를 맞이한 치한이 대량의 정액을 %CALLNAME:COUNT%의 
+			PRINTFORML 자궁에 쌌다고 했다……
+			PRINTFORM 만족한 치한이 페니스를 뽑으니, %CALLNAME:COUNT%의 음순에서 
+				IF TALENT:COUNT:0 == 1
+					PRINTFORM 처녀혈이 섞인 
+				ENDIF
+			PRINTFORM 정액이 떨어져 작은 웅덩이가 생길만큼, 
+			PRINTFORML 대량으로 질내사정 당한 모양이다……
+			PRINTFORMW  
+				IF TALENT:COUNT:0
+					PRINTFORML 【처녀상실】
+				ENDIF
+				IF ABL:COUNT:1 >= 10
+					PRINTFORML %EXPNAME:2% +1
+				ENDIF
+			PRINTFORML %EXPNAME:0%+2
+				IF TALENT:COUNT:0
+					TALENT:COUNT:0 = 0
+					CFLAG:COUNT:15 = 7
+					CSTR:COUNT:0 = 痴漢
+					PRINTFORML %EXPNAME:50% +2
+					EXP:COUNT:50 += 2
+				ENDIF
+			PRINTFORML %PALAMNAME:8%의 구슬 +1000
+			PRINTFORML %PALAMNAME:10%의 구슬 +300
+				IF TALENT:COUNT:76 == 0
+					PRINTFORMW %PALAMNAME:12%의 구슬 +2000
+				ENDIF
+			EXP:COUNT:20 += 2
+			EXP:COUNT:103 += 1
+			EXP:COUNT:0 += 2
+				IF ABL:COUNT:2 >= 3
+					EXP:COUNT:2 += 1
+				ENDIF
+			JUEL:COUNT:8 += 1000
+			JUEL:COUNT:10 += 300
+				IF TALENT:COUNT:76 == 0
+					JUEL:COUNT:12 += 2000
+				ENDIF
+			LOCAL = 0
+			BASE:COUNT:31 -= 15
+		ENDIF
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥

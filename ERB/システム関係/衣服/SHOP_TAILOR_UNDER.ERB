@@ -1,0 +1,252 @@
+﻿;===========================================================
+;下着購入時の処理
+;===========================================================
+@TAILOR_UNDER_MAIN
+
+IF TALENT:116 == 0 && TALENT:135 == 0 && (TALENT:132 == 0 || TALENT:109 == 0)
+	CALL CHOICE_TOPS
+ELSE
+	CALL CHOICE_UNDER
+ENDIF
+
+;===========================================================
+;トップスの種類
+;===========================================================
+@CHOICE_TOPS
+
+X = 0
+Y = 19
+
+PRINTFORML □브래지어 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+PRINTFORML [ 0] - 기본 브래지어
+PRINTFORML [ 1] - 하프컵 브래지어
+PRINTFORML [ 2] - 프릴 브래지어
+PRINTFORML [ 3] - 스포츠 브래지어
+PRINTFORML [ 4] - 자수 브래지어
+PRINTFORML [ 5] - 실크 브래지어
+PRINTFORML [ 6] - 마이크로 비키니 브래지어
+PRINTFORML [ 7] - 줄무늬 브래지어
+PRINTFORML [ 8] - 스팽글 브래지어
+PRINTFORML [ 9] - 튜브 탑 브래지어
+PRINTFORML [10] - 반창고
+PRINTFORML [11] - 니플리스
+PRINTFORML [12] - 페더 모티브 브라
+PRINTFORML [13] - 가죽 브래지어
+PRINTFORML [14] - 붕대
+PRINTFORML [15] - 체크무늬 브래지어
+PRINTFORML [16] - 오픈 브래지어
+PRINTFORML [17] - 시스루 레이스 브래지어
+PRINTFORML [18] - 실크 뷔스티에
+PRINTFORML [19] - 가죽 뷔스티에
+DRAWLINE
+PRINTFORML [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+X = RESULT
+
+	IF RESULT == X && X != 999 && X <= Y
+		CFLAG:175 = X
+		PRINTFORM 《브래지어 디자인은 
+		CALL PRINT_UNDERWEAR_TOPS
+		PRINTFORMW  입니다》
+		IF CFLAG:175 != 12 && CFLAG:175 != 11 && CFLAG:175 != 14 && CFLAG:175 != 10
+			CALL CHOICE_TOPS_COLOR
+		ELSE
+			CFLAG:174 = 99
+			CALL CHOICE_UNDER
+		ENDIF
+	ELSEIF RESULT == 999
+		RETURN 999
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+;===========================================================
+;トップスの色
+;===========================================================
+@CHOICE_TOPS_COLOR
+
+X = 0
+Y = 21
+
+DRAWLINE
+PRINTFORML □브래지어 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+PRINTFORML [ 0] - 흰색
+PRINTFORML [ 1] - 검은색
+PRINTFORML [ 2] - 핑크색
+PRINTFORML [ 3] - 연보라색
+PRINTFORML [ 4] - 물색
+PRINTFORML [ 5] - 빨간색
+PRINTFORML [ 6] - 보라색
+PRINTFORML [ 7] - 주황색
+PRINTFORML [ 8] - 노란색
+PRINTFORML [ 9] - 베이지색
+PRINTFORML [10] - 회색
+PRINTFORML [11] - 샴페인골드색
+PRINTFORML [12] - 은색
+PRINTFORML [13] - 체리핑크색
+PRINTFORML [14] - 페일블루색
+PRINTFORML [15] - 펄화이트색
+PRINTFORML [16] - 라임그린색
+PRINTFORML [17] - 터코이즈블루색
+PRINTFORML [18] - 로얄블루색
+PRINTFORML [19] - 와인레드색
+PRINTFORML [20] -블랙퍼플색
+SIF CFLAG:175 != 8 && CFLAG:175 != 12 && CFLAG:175 != 15
+	PRINTFORML [21] - 표범무늬
+DRAWLINE
+PRINTFORML [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+X = RESULT
+
+	IF RESULT == X && X != 999 && X <= Y && X != 21
+		CFLAG:174 = X
+		PRINTFORM 《브래지어 색은 
+		CALL PRINT_UNDERWEAR_COLOR_TOPS
+		PRINTFORMW  입니다》
+		CALL CHOICE_UNDER
+	ELSEIF RESULT == 21 && CFLAG:175 != 8 && CFLAG:175 != 12 && CFLAG:175 != 15
+		CFLAG:174 = X
+		PRINTFORM 《브래지어 색은 
+		CALL PRINT_UNDERWEAR_COLOR_TOPS
+		PRINTFORMW  입니다》
+		CALL CHOICE_UNDER
+	ELSEIF RESULT == 999
+		RETURN 999
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+;===========================================================
+;トップスの種類
+;===========================================================
+@CHOICE_UNDER
+
+X = 0
+Y = 20
+
+PRINTFORML □팬티 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+PRINTFORML [ 0] - 평범한 팬티
+PRINTFORML [ 1] - 하이레그 팬티
+PRINTFORML [ 2] - 프릴 팬티
+PRINTFORML [ 3] - 로우라이즈＆로우레그
+PRINTFORML [ 4] - 자수팬티
+PRINTFORML [ 5] - 실크 팬티
+PRINTFORML [ 6] - 마이크로 비키니 팬티
+PRINTFORML [ 7] - 줄무늬 팬티
+PRINTFORML [ 8] - 스팽글 팬티
+PRINTFORML [ 9] - 프린트 팬티
+PRINTFORML [10] - 반창고
+PRINTFORML [11] - 드로워즈
+PRINTFORML [12] - 페더 모티브 팬티
+PRINTFORML [13] - 가죽 팬티
+PRINTFORML [14] - 훈도시
+PRINTFORML [15] - 체크모양 팬티
+PRINTFORML [16] - 오픈 팬티
+PRINTFORML [17] - 시스루 레이스 팬티
+IF TALENT:122 == 1
+	PRINTFORML [18] - 트렁크
+	PRINTFORML [19] - 복서 팬티
+	PRINTFORML [20] - 부메랑 팬티
+ENDIF
+DRAWLINE
+PRINTFORML [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+X = RESULT
+
+	IF RESULT == X && X != 999 && X <= Y && X != 18 && X != 19 && X != 20
+		CFLAG:177 = X
+		PRINTFORM 《
+		PRINTFORM 팬티 디자인은 
+		CALL PRINT_UNDERWEAR_UNDER
+		PRINTFORMW  입니다》
+		IF CFLAG:177 != 12 && CFLAG:177 != 11 && CFLAG:177 != 14 && CFLAG:177 != 10
+			CALL CHOICE_UNDER_COLOR
+		ELSE
+			CFLAG:176 = 99
+		ENDIF
+	ELSEIF RESULT >= 18 && X <= Y && X != 999 && TALENT:122 == 1
+		CFLAG:177 = X
+		PRINTFORM 《
+		PRINTFORM 팬티 디자인은 
+		CALL PRINT_UNDERWEAR_UNDER
+		PRINTFORMW  입니다》
+		IF CFLAG:177 != 12 && CFLAG:177 != 11 && CFLAG:177 != 14 && CFLAG:177 != 10
+			CALL CHOICE_UNDER_COLOR
+		ENDIF
+	ELSEIF RESULT == 999
+		RETURN 999
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+;===========================================================
+;トップスの色
+;===========================================================
+@CHOICE_UNDER_COLOR
+
+X = 0
+Y = 21
+
+DRAWLINE
+PRINTFORML □팬티 일람
+PRINTFORML 소지금: {MONEY}포인트
+DRAWLINE
+PRINTFORML [ 0] - 흰색
+PRINTFORML [ 1] - 검은색
+PRINTFORML [ 2] - 핑크색
+PRINTFORML [ 3] - 연보라색
+PRINTFORML [ 4] - 물색
+PRINTFORML [ 5] - 빨간색
+PRINTFORML [ 6] - 보라색
+PRINTFORML [ 7] - 주황색
+PRINTFORML [ 8] - 노란색
+PRINTFORML [ 9] - 베이지색
+PRINTFORML [10] - 회색
+PRINTFORML [11] - 샴페인골드색
+PRINTFORML [12] - 은색
+PRINTFORML [13] - 체리핑크색
+PRINTFORML [14] - 페일블루색
+PRINTFORML [15] - 펄화이트색
+PRINTFORML [16] - 라임그린색
+PRINTFORML [17] - 터코이즈블루색
+PRINTFORML [18] - 로얄블루색
+PRINTFORML [19] - 와인레드색
+PRINTFORML [20] - 블랙퍼플색
+SIF CFLAG:177 != 7 && CFLAG:177 != 9 && CFLAG:177 != 15
+	PRINTFORML [21] - 표범무늬
+DRAWLINE
+PRINTFORML [999] - 돌아간다
+$INPUT_LOOP
+INPUT
+
+X = RESULT
+
+	IF RESULT == X && X != 999 && X <= Y && X != 21
+		CFLAG:176 = X
+		PRINTFORM 《
+		PRINTFORM 팬티는 
+		CALL PRINT_UNDERWEAR_COLOR_UNDER
+		PRINTFORMW  입니다》
+	ELSEIF RESULT == 21 && CFLAG:177 != 7 && CFLAG:177 != 9 && CFLAG:177 != 15
+		CFLAG:176 = X
+		PRINTFORM 《
+		PRINTFORM 팬티 색은 
+		CALL PRINT_UNDERWEAR_COLOR_UNDER
+		PRINTFORMW  입니다》
+	ELSEIF RESULT == 999
+		RETURN 999
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF

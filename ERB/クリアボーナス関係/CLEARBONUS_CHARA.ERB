@@ -1,0 +1,206 @@
+﻿;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CALL_CHARA
+TRYCALLFORM CLEARBONUS_CHARA_{(NO:TARGET)}
+LOADGLOBAL
+SIF GLOBAL:200 >= 500
+	CALL CLEARBONUS_CHARA_EXTEND
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CHARA_2
+
+	PRINTFORML %타겟이()%【Mermaid girl】을 미션 대성공으로 습득한 상태로 시작합니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+	
+	IF RESULT == 0
+		PRINTFORMW %타겟이()%【Mermaid girl】을 미션 대성공으로 습득한 상태로 시작합니다
+		TALENT:203 = 1
+		TALENT:518 = 1
+		TALENT:126 = 1
+		TALENT:113 = 1
+		MAXBASE:1 += 1200
+		BASE:1 += 1200
+		MAXBASE:31 += 80
+		BASE:31 += 80
+		PBAND:52 = 4
+		CFLAG:MASTER:132 = 10
+	ELSEIF RESULT == 1
+		RETURN
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CHARA_80
+
+	PRINTFORML %타겟이()%【ONLY ONE IDOL】을 습득한 상태로 시작합니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+	
+	IF RESULT == 0
+		PRINTFORMW %타겟이()%【ONLY ONE IDOL】을 습득한 상태로 시작합니다
+		TALENT:552 = 1
+		MAXBASE:31 += 80
+		BASE:31 += 80
+		PBAND:130 = 4
+		MAXBASE:1 += 1000
+		BASE:1 += 1000
+	ELSEIF RESULT == 1
+		RETURN
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CHARA_230
+TALENT:520 = 0
+LOCAL:10 = 0
+LOCAL:10 = BASE:9
+	PRINTFORML %타겟이()% 건강한 상태로 시작합니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUT_LOOP
+	INPUT
+	
+	IF RESULT == 0
+	PRINTFORML %타겟이()% 건강한 상태로 시작합니다
+		TALENT:434 = 0
+		TALENT:520 = 0
+		MAXBASE:0 += 1000
+		BASE:0 = MAXBASE:0
+		BASE:31 = MAXBASE:31
+		TALENT:330 = 0
+		PRINTFORMW
+		PRINTFORMW ………………
+		PRINTFORMW …………
+		PRINTFORML ……
+		PRINTFORMW 
+		PRINTFORML %타겟이()%【LUXURIA】로 각성한 상태로 시작합니까?
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		$INPUT_LOOP2
+		INPUT
+			
+			IF RESULT == 0
+				PRINTFORMW %타겟이()%【LUXURIA】로 각성한 상태로 시작합니다
+				CALL SUCCUBUS_STATUS_ACH
+					TALENT:15 = 1
+					TALENT:83 = 1
+					TALENT:74 = 1
+					TALENT:75 = 1
+					TALENT:77 = 1
+					TALENT:78 = 1
+					TALENT:554 = 1
+					MAXBASE:31 = 500
+					BASE:31 = 500
+					MAXBASE:0 += 1500
+					MAXBASE:1 += 1500
+					BASE:0 += 1500
+					BASE:1 += 1500
+					BASE:9 = LOCAL:10
+					TALENT:560 = 1
+			ELSEIF RESULT == 1
+				RETURN
+			ELSE
+				GOTO INPUT_LOOP2
+			ENDIF
+	ELSEIF RESULT == 1
+		RETURN
+	ELSE
+		GOTO INPUT_LOOP
+	ENDIF
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CHARA_85
+
+PRINTFORML %타겟이()%【타천사】로 미션을 성공한 상태로 시작합니까?
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUT_LOOP
+INPUT
+	
+IF RESULT == 0
+	CALL SUCCUBUS_STATUS_ACH
+	TALENT:76 = 1
+	TALENT:123 = 1
+	TALENT:505 = 1
+	TALENT:422 = 1
+	TALENT:430 = 0
+	TALENT:432 = 0
+	EXP:50 = 666
+	ABL:11 = 10
+	ABL:12 = 10
+	ABL:15 = 10
+	ABL:20 = 10
+	ABL:21 = 10
+	ABL:22 = 10
+	ABL:32 = 10
+	ABL:33 = 10
+	CFLAG:609 = 2
+	CFLAG:611 = 3
+	BASE:50 = 18 + RAND:6
+ELSEIF RESULT == 1
+	RETURN
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CHARA_EXTEND
+
+PRINTFORML 클리어 보너스 포인트를 500사용하여 %CALLNAME:TARGET%에게【영원한 사랑】을 붙일 수 있습니다
+PRINTFORML ※이 보너스를 사용하면 【일선을 넘지않음】이 사라집니다
+PRINTFORML %CALLNAME:TARGET%에게【영원한 사랑】을 습득시킵니까?
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 1
+	RETURN
+ELSEIF RESULT == 0
+	PRINTFORMW 《%타겟이()%【영원한 사랑】을 습득한 상태로 시작합니다》
+	CFLAG:1 = 2
+	TALENT:27 = 0
+	TALENT:85 = 1
+	TALENT:430 = 1
+	CFLAG:2 = 5000
+	ABL:10 = 7
+	ABL:16 = 7
+	MARK:2 = 3
+	LOADGLOBAL
+		GLOBAL:200 -= 500
+	SAVEGLOBAL
+	X += 500
+	EXP:23 = 500
+	RETURN
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN
+
+;===========================================================
+;クリアボーナス
+;===========================================================
+@CLEARBONUS_CHARA_EXTEND_DETAIL
+
+REPEAT 600
+	PRINT
+REND

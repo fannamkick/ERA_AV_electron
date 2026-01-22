@@ -1,0 +1,167 @@
+﻿;요리기능のLvUP処理とその可否判定
+;eratohoA ver1.204のスクリプトをベースに作成
+
+;-------------------------------------------------
+;요리기능のLvUP
+;-------------------------------------------------
+@ABLUP73
+DRAWLINE
+;PRINTL 노예의 요리 기술을 향상시킵니다
+;PRINTL 요리기능이 높아지면 포장마차의 요리 판매로부터 보다 큰 수익을 기대할 수 있게 됩니다
+;PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+;요리기능はLv5が上限
+;[愛]か[요리잘함]が付いている場合はLv10まで해방
+IF ABL:73 >= 5 && (TALENT:85 == 0 && TALENT:418 == 0)
+	PRINTW 이 이상 올리려면 소질이 필요합니다
+	RETURN 0
+ELSEIF ABL:73 >= 10
+	PRINTW 이미 MAX입니다
+	RETURN 0
+;가창기능＋무용기능＋요리기능は15以上にならない
+ELSEIF ABL:71 + ABL:72 + ABL:73 >= 15
+	PRINTFORMW 가창기능({ABL:71})＋무용기능({ABL:72})＋요리기능({ABL:73})의 상한은 15입니다
+	RETURN 0
+ENDIF
+
+;必要な습득의 구슬
+A = 0
+;必要な요리경험
+B = 0
+;必要な애정경험
+C = 0
+
+CALL DECIDE_ABLUP73
+
+PRINTFORM [0] - %PALAMNAME:7%의 구슬×{JUEL:7}/{A} ……
+IF I == 0
+	PRINT OK
+ELSE
+	SIF I & 1
+		PRINT 구슬부족 
+	SIF I & 2
+		PRINT 경험부족 
+ENDIF
+PRINTL 
+PRINTFORML 　　　%EXPNAME:61%　{EXP:61}/{B}
+SIF C
+	PRINTFORML 　　　%EXPNAME:23%　{EXP:23}/{C}
+PRINTL [100] - 그만둔다
+
+INPUT
+IF RESULT != 0 && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 조건을 만족하지 않았습니다
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:73 += 1
+JUEL:7 -= A
+
+PRINTFORML %ABLNAME:73%의 레벨이 %조사처리(ABL:73,"가")% 되었습니다
+
+RETURN 0
+
+;--------------------------------------------------
+;レベルアップに必要な珠計算, レベルアップ予告処理
+;--------------------------------------------------
+@DECIDE_ABLUP73
+;요리기능はLv5が上限
+;[愛]か[요리잘함]が付いている場合はLv10まで해방
+SIF ABL:73 >= 10
+	RETURN 0
+SIF ABL:73 >= 5 && (TALENT:85 == 0 && TALENT:418 == 0)
+	RETURN 0
+;가창기능＋무용기능＋요리기능は上限15
+SIF ABL:71 + ABL:72 + ABL:73 >= 15
+	RETURN 0
+
+A = 0
+B = 0
+C = 0
+
+;条件別にOKかダメかを記録する
+I = 0
+
+IF ABL:73 == 0
+	A = 75
+	B = 10
+ELSEIF ABL:73 == 1
+	A = 500
+	B = 30
+ELSEIF ABL:73 == 2
+	A = 3000
+	B = 50
+	C = 20
+ELSEIF ABL:73 == 3
+	A = 9000
+	B = 100
+	C = 50
+ELSEIF ABL:73 == 4
+	A = 24000
+	B = 200
+	C = 100
+ELSEIF ABL:73 == 5
+	A = 30000
+	B = 300
+	C = 200
+ELSEIF ABL:73 == 6
+	A = 35000
+	B = 400
+	C = 300
+ELSEIF ABL:73 == 7
+	A = 40000
+	B = 600
+	C = 500
+ELSEIF ABL:73 == 8
+	A = 45000
+	B = 800
+	C = 800
+ELSEIF ABL:73 == 9
+	A = 50000
+	B = 1500
+	C = 1200
+ENDIF
+
+;習得早い
+IF TALENT:50
+	TIMES A , 0.80
+	TIMES B , 0.80
+;습득느림
+ELSEIF TALENT:51
+	TIMES A , 1.20
+	TIMES B , 1.20
+ELSEIF TALENT:418
+	TIMES A , 0.40
+	TIMES B , 0.40
+	TIMES C , 0.40
+ENDIF
+
+;最低でも1回・1個は必要
+SIF A < 1
+	A = 1
+SIF B < 1
+	B = 1
+
+;습득의 구슬は足りている?
+SIF JUEL:7 < A
+	I |= 1
+
+;요리경험は足りている?
+SIF EXP:61 < B
+	I |= 2
+;애정경험は足りている?
+SIF EXP:23 < C
+	I |= 2
+
+IF I == 0
+	RETURN 1
+ELSE
+	RETURN 0
+ENDIF
+
+;
+;
+;

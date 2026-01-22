@@ -1,0 +1,196 @@
+﻿;===========================================================
+;スカウトの発生
+;===========================================================
+
+@EVENT_SCOUT
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:203 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:421 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:402 == 1
+		CONTINUE
+	ELSEIF EXP:MASTER:9 == 0
+		CONTINUE
+	ELSEIF EXP:COUNT:76 == 0
+		CONTINUE
+	ELSEIF NO:COUNT == 10
+		CONTINUE
+	ELSE
+		IF RAND:100 >= 80
+			SELECTCASE RAND:3
+			CASE 0
+				CALL SCOUT_IDOL
+			CASE 1
+				CALL SCOUT_C_CLUB
+			CASE 2
+				CALL SCOUT_MODEL
+			ENDSELECT
+			PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+		ENDIF
+	ENDIF
+REND
+;===========================================================
+;スカウトの処理・아이돌
+;===========================================================
+@SCOUT_IDOL
+PRINTFORMW 어느 날, 키류 조직이 운영하는『정상적인』예능 프로덕션의 스카우트맨이 카논과 함께 사무소에 찾아왔다……
+PRINTFORML 용건을 들어보니, %조사처리(NAME:COUNT,"를")% 일반 미디어에 그라비아 아이돌로 데뷔시키고 싶다고 했다.
+	IF BASE:COUNT:22 < 80
+		PRINTFORM 스카우트맨은 %조사처리(CALLNAME:COUNT,"는")% 거유도 아니고 오히려 미유・빈유에 가까운 스타일이지만, 
+		PRINTFORML 오히려 그쪽이 수요가 있다, 라며 강하게 설파했다
+	ELSEIF BASE:COUNT:22 >= 80 && BASE:COUNT:22 < 85
+		PRINTFORM 스카우트맨은 %조사처리(CALLNAME:COUNT,"는")% 거유는 아니지만, 균형잡힌 몸매는 남성을 자극하는 것이 있다, 
+		PRINTFORML 라며 강하게 설파했다
+	ELSE
+		PRINTFORM %CALLNAME:COUNT%의 박력있는 거유는 남자의 마음을 잡고 놔주지 않는다, 라며 강하게 설파했다
+	ENDIF
+PRINTFORM 일반 미디어에 노출시키면 %CALLNAME:COUNT%의 작품에『현역 그라비아 아이돌』이라는 부가가치가 붙겠지만, 
+PRINTFORML 그래서『이쪽』활동이 어려워진다면 오히려 본말전도다
+PRINTFORM 그러자 스카우트맨은 힐쭉 웃으며, 그런 문제는 생기지 않도록 뒷공작을 완벽히 했다고 가슴을 피고, 
+PRINTFORML 거기다 이번 %CALLNAME:COUNT%의 그라비아 데뷔는 카논의 지시라고 말했다
+PRINTFORML 확실히 카논이 공작을 지시했다면, 아무런 문제 없이 일이 원만히 굴러갈 것이다
+PRINTFORML 그러나 이쪽에만 이득이 있는 이야기는 반드시 캥기는 뒤가 있는 법인데……
+PRINTW
+PRINTFORML 「뒤? 있다면 있고, 없다면 없지
+PRINTFORML 　너는 연예인물로 팔아재낄 수 있고, 우리는 일급품 소재를 그냥 얻어가는 거니까
+PRINTFORML 　한마디로 WIN－WIN관계라고 할 수 있어
+PRINTFORML 　아, 굳이 말하자면 우리 손님중에 아이돌을 좋아하는 사람이 있으니, 그땐 잘 부탁하겠지만
+PRINTFORML 　참고로 이번 일은 서로 WIN－WIN인데다가, 상대가 너니까 숨기는 거 없이 전부 털어놓은거야
+PRINTFORML 　필요 이상으로 의심받다가 귀찮아지는 건 우리도 싫으니까」
+PRINTW
+PRINTFORML 겨우 입을 연 카논의 진지한 눈은, 다른 일을 꾸미는 사람으로 보이지는 않는다
+$INPUT_LOOP_SCOUT_01
+PRINTFORML 그럼, 어떻게 해야하나
+PRINTFORML [0] - %조사처리(CALLNAME:COUNT,"를")% 그라비아 아이돌로 데뷔시킨다
+PRINTFORML [1] - 그만둔다
+INPUT
+IF RESULT == 0
+	PRINTFORM 본인에게 동의는 구해야 겠지만, %플레이어는()% 일단 일을 
+	PRINTFORML 진행해보자고 카논에게 전했다……
+	PRINTW
+	PRINTFORM 얼마 뒤, 사무소에 온 %CALLNAME:COUNT%에게 이 일을 알리자, %조사처리(CALLNAME:COUNT,"는")% 갑작스러운 이야기에 눈을 동그랗게 떴지만, 
+	PRINTFORML 그라비아 아이돌 데뷔를 받아들였다
+		TALENT:COUNT:203 = 1
+		MAXBASE:COUNT:31 += 30
+		BASE:COUNT:31 += 30
+		;ニート
+		TALENT:COUNT:405 = 0
+		;バイト
+		CFLAG:COUNT:801 = 0
+ELSEIF RESULT == 1
+	PRINTFORML 이번 이야기는 거절하겠다고 카논에게 전했다……
+ELSE
+	GOTO INPUT_LOOP_SCOUT_01
+ENDIF
+;===========================================================
+;スカウトの処理・キャバクラ
+;===========================================================
+@SCOUT_C_CLUB
+PRINTFORMW 어느 날, 키류 조직이 운영하는『정상적인』캬바쿠라의 스카우트맨이 카논과 함께 사무소에 찾아왔다……
+PRINTFORML 용건을 들어보니, %조사처리(NAME:COUNT,"를")% 캬바레녀로 고용하고 싶다고 한다
+	IF TALENT:COUNT:63 == 1
+		PRINTFORM 마음씨 고운 아가씨에게 치유받고 싶어, 라는 주문이 
+	ELSEIF TALENT:COUNT:18 == 1
+		PRINTFORM 가끔은 튕겨도, 사이가 좋아지면 어리광을 부려주는 아가씨와 술을 마시고 싶어, 라는 주문이 
+	ELSEIF TALENT:COUNT:15
+		PRINTFORM 프라이드가 높은, 절벽 위의 꽃같은 아가씨에게 매도받고 싶어, 라는 주문이 
+	ELSE
+		PRINTFORM 초 A급 미소녀・미녀와 술을 마시고 싶어, 라는 주문이 
+	ENDIF
+PRINTFORML 단골손님에게서 들어와, %조사처리(NAME:COUNT,"가")% 눈에 띄었다고 한다
+PRINTFORM 캬바레녀로 데뷔시키면 %CALLNAME:COUNT%의 작품에『현역 캬바레녀』라는 부가가치가 붙겠지만, 
+PRINTFORML 그래서『이쪽』활동이 어려워진다면 오히려 본말전도다
+PRINTFORM 그러자 스카우트맨은 힐쭉 웃으며, 그런 문제는 생기지 않도록 뒷공작을 완벽히 했다고 가슴을 피고, 
+PRINTFORML 거기다 이번 %CALLNAME:COUNT%의 캬바레녀 데뷔는 카논의 지시라고 말했다
+PRINTFORML 확실히 카논이 공작을 지시했다면, 아무런 문제 없이 일이 원만히 굴러갈 것이다
+PRINTFORML 그러나 이쪽에만 이득이 있는 이야기는 반드시 캥기는 뒤가 있는 법인데……
+PRINTW
+PRINTFORML 「뒤? 있다면 있고, 없다면 없지
+PRINTFORML 　너는 캬바레녀물로 팔아재낄 수 있고, 우리는 일급품 소재를 그냥 얻어가는 거니까
+PRINTFORML 　한마디로 WIN－WIN관계라고 할 수 있어
+PRINTFORML 　아, 굳이 말하자면 우리 손님중에 캬바레녀를 좋아하는 사람이 있으니, 그땐 잘 부탁하겠지만
+PRINTFORML 　참고로 이번 일은 서로 WIN－WIN인데다가, 상대가 너니까 숨기는 거 없이 전부 털어놓은거야
+PRINTFORML 　필요 이상으로 의심받다가 귀찮아지는 건 우리도 싫으니까」
+PRINTW
+PRINTFORML 겨우 입을 연 카논의 진지한 눈은, 다른 일을 꾸미는 사람으로 보이지는 않는다
+$INPUT_LOOP_SCOUT_02
+PRINTFORML 그럼, 어떻게 해야하나
+PRINTFORML [0] - %조사처리(CALLNAME:COUNT,"를")% 캬바레녀로 데뷔시킨다
+PRINTFORML [1] - 그만둔다
+INPUT
+IF RESULT == 0
+	PRINTFORM 본인에게 동의는 구해야 겠지만, %플레이어는()% 일단 일을 
+	PRINTFORML 진행해보자고 카논에게 전했다……
+	PRINTW
+	PRINTFORM 얼마 뒤, 사무소에 온 %CALLNAME:COUNT%에게 이 일을 알리자, %조사처리(CALLNAME:COUNT,"는")% 갑작스러운 이야기에 눈을 동그랗게 떴지만, 
+	PRINTFORML 캬바레녀 데뷔를 받아들였다
+		TALENT:COUNT:421 = 1
+		MAXBASE:COUNT:31 += 10
+		BASE:COUNT:31 += 10
+		;ニート外す
+		TALENT:COUNT:405 = 0
+		;バイトも
+		CFLAG:COUNT:801 = 0
+ELSEIF RESULT == 1
+	PRINTFORML 이번 이야기는 거절하겠다고 카논에게 전했다……
+ELSE
+	GOTO INPUT_LOOP_SCOUT_02
+ENDIF
+
+;===========================================================
+;スカウトの処理・モデル
+;===========================================================
+@SCOUT_MODEL
+PRINTFORMW 어느 날, 키류 조직이 운영하는『정상적인』출판사의 스카우트맨이 카논과 함께 사무소에 찾아왔다……
+PRINTFORML 용건을 들어보니, %조사처리(NAME:COUNT,"를")% 일반 미디어에 패션모델로 데뷔시키고 싶다고 했다.
+	IF TALENT:COUNT:99 == 1
+		PRINTFORM 스카우트맨은 %CALLNAME:COUNT%의 장신은 모델에 걸맞고, 연령대가 높은 패션 잡지에 딱이다
+		PRINTFORML , 라며 강하게 설파했다
+	ELSEIF TALENT:COUNT:100 == 1
+		PRINTFORM 스카우트맨은 %조사처리(CALLNAME:COUNT,"는")% 모델을 하기엔 작지만, 반대로 그게 로틴용 패션 잡지에 딱이다
+		PRINTFORML , 라며 강하게 설파했다
+	ELSE
+		PRINTFORM %CALLNAME:COUNT%처럼 평균적인 스타일은, 하이틴용 페션 잡지에 딱이다
+		PRINTFORML , 라며 강하게 설파했다
+	ENDIF
+PRINTFORM 일반 미디어에 노출시키면 %CALLNAME:COUNT%의 작품에『현역 모델』이라는 부가가치가 붙겠지만, 
+PRINTFORML 그래서『이쪽』활동이 어려워진다면 오히려 본말전도다
+PRINTFORM 그러자 스카우트맨은 힐쭉 웃으며, 그런 문제는 생기지 않도록 뒷공작을 완벽히 했다고 가슴을 피고, 
+PRINTFORML 거기다 이번 %CALLNAME:COUNT%의 모델 데뷔는 카논의 지시라고 말했다
+PRINTFORML 확실히 카논이 공작을 지시했다면, 아무런 문제 없이 일이 원만히 굴러갈 것이다
+PRINTFORML 그러나 이쪽에만 이득이 있는 이야기는 반드시 캥기는 뒤가 있는 법인데……
+PRINTW
+PRINTFORML 「뒤? 있다면 있고, 없다면 없지
+PRINTFORML 　너는 모델물로 팔아재낄 수 있고, 우리는 일급품 소재를 그냥 얻어가는 거니까
+PRINTFORML 　한마디로 WIN－WIN관계라고 할 수 있어
+PRINTFORML 　아, 굳이 말하자면 우리 손님중에 아이돌을 좋아하는 사람이 있으니, 그땐 잘 부탁하겠지만
+PRINTFORML 　참고로 이번 일은 서로 WIN－WIN인데다가, 상대가 너니까 숨기는 거 없이 전부 털어놓은거야
+PRINTFORML 　필요 이상으로 의심받다가 귀찮아지는 건 우리도 싫으니까」
+PRINTW
+PRINTFORML 겨우 입을 연 카논의 진지한 눈은, 다른 일을 꾸미는 사람으로 보이지는 않는다
+$INPUT_LOOP_SCOUT_03
+PRINTFORML 그럼, 어떻게 해야하나
+PRINTFORML [0] - %조사처리(CALLNAME:COUNT,"를")% 모델로 데뷔시킨다
+PRINTFORML [1] - 그만둔다
+INPUT
+IF RESULT == 0
+	PRINTFORM 본인에게 동의는 구해야 겠지만, %플레이어는()% 일단 일을 
+	PRINTFORML 진행해보자고 카논에게 전했다……
+	PRINTW
+	PRINTFORM 얼마 뒤, 사무소에 온 %CALLNAME:COUNT%에게 이 일을 알리자, %조사처리(CALLNAME:COUNT,"는")% 갑작스러운 이야기에 눈을 동그랗게 떴지만, 
+	PRINTFORML 모델 데뷔를 받아들였다
+		TALENT:COUNT:402 = 1
+		MAXBASE:COUNT:31 += 20
+		BASE:COUNT:31 += 20
+		;ニート外す
+		TALENT:COUNT:405 = 0
+		;バイト外す
+		CFLAG:COUNT:801 = 0
+ELSEIF RESULT == 1
+	PRINTFORML 이번 이야기는 거절하겠다고 카논에게 전했다……
+ELSE
+	GOTO INPUT_LOOP_SCOUT_03
+ENDIF

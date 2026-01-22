@@ -1,0 +1,203 @@
+﻿;===========================================================
+;朝起こしてもらうキャラのピックアップ
+;===========================================================
+@EVENT_MORNING_PICKUP
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:60 == 1
+		SIF TALENT:COUNT:122 == 0
+			CALL EVENT_MORNING_DECIDE
+			BREAK
+	ENDIF
+REND
+
+;===========================================================
+;朝起こしてもらうイベントの決定
+;===========================================================
+@EVENT_MORNING_DECIDE
+
+;△割合制にしたい。
+IF ABL:COUNT:32 >= 1 && HAVE_PENIS(MASTER)
+	CALL EVENT_MORNING_FELLATIO
+ELSE
+	CALL EVENT_MORNING_NORMAL
+ENDIF
+
+;===========================================================
+;朝起こしてもらうイベント・通常
+;===========================================================
+@EVENT_MORNING_NORMAL
+
+X = 1 + RAND:5
+SIF TALENT:COUNT:85 == 1
+	X *= 2
+SIF TIME == 1
+	X *= 2
+
+;瀕死, あるいは死んでしまった
+SIF BASE:COUNT:0 <= 500
+	RETURN
+;육아 중
+SIF TALENT:COUNT:154
+	RETURN
+;산월
+SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+	RETURN
+;봉사 안함
+SIF TALENT:COUNT:151
+	RETURN
+;반발각인
+SIF MARK:COUNT:3 > 0
+	RETURN
+
+DRAWLINE
+PRINTFORMW 누군가가 %플레이어를()% 부르는 소리가 난다……
+PRINTFORML 그리고 동시에 몸이 흔들리는 느낌에, %플레이어가()% 눈을 뜨니, 부탁한 대로 %조사처리(NAME:COUNT,"가")% 일으키러 와준 듯 하다
+PRINTFORM %플레이어가()% 잠에 취해 눈을 비비면서 고맙다고 하니, %조사처리(CALLNAME:COUNT,"는")% 
+IF CFLAG:COUNT:16 == -1
+	PRINTFORM 수줍은듯이 부끄러워 했다. 
+ELSE
+	PRINTFORM 가볍게 뺨에 키스를 하고 미소지었다. 
+ENDIF
+
+IF TALENT:COUNT:87 == 1 && CFLAG:COUNT:16 != -1
+	PRINTFORML 평소처럼 장난인 모양이다……
+ELSEIF TALENT:COUNT:85 == 1 && TALENT:COUNT:87 == 0 && CFLAG:COUNT:16 != -1
+	PRINTFORML 나름의 애정표현 인 것 같다……
+ENDIF
+PRINTL
+PRINTFORML 온순의 구슬 +{X*100}
+PRINTFORML 습득의 구슬 +{X*50}
+SIF TALENT:COUNT:85 == 1
+	PRINTFORML 애정경험 +{X}
+
+WAIT
+
+JUEL:COUNT:4 += X*100
+JUEL:COUNT:7 += X*50
+
+SIF TALENT:COUNT:85 == 1
+	EXP:COUNT:23 += X
+
+;===========================================================
+;朝起こしてもらうイベント・朝フェラ
+;===========================================================
+@EVENT_MORNING_FELLATIO
+
+X = 3 + RAND:4
+SIF ABL:COUNT:32 >= 3
+	X *= ABL:COUNT:32
+SIF X >= 13
+	X = 12
+SIF TIME == 1
+	X *= 2
+
+Y = X - RAND:4
+SIF Y >= 25
+	Y = 24
+;"すでに0回も"防止で高めに 
+SIF Y <= 2
+	Y = 3
+
+
+;;主人がオトコまたは후타나리でなかったら通常朝イベントへ
+;分岐時に弾きましょうということで。
+;SIF TALENT:MASTER:122 == 0 && TALENT:MASTER:121 == 0 
+;	RETURN
+;瀕死, あるいは死んでしまった
+SIF BASE:COUNT:0 <= 500
+	RETURN
+;육아 중
+SIF TALENT:COUNT:154
+	RETURN
+;산월
+SIF CFLAG:COUNT:110 - 2 <= DAY && TALENT:COUNT:153
+	RETURN
+;봉사 안함
+SIF TALENT:COUNT:151
+	RETURN
+;반발각인
+SIF MARK:COUNT:3 > 0
+	RETURN
+
+DRAWLINE
+PRINTFORMW %CALLNAME:MASTER%는 고간에 온기를 느껴 눈이 떠졌다……
+PRINTFORM 묘하게 봉긋히 솟아오른 이불을 걷어 보면, %CALLNAME:MASTER%의 발기한 육봉을 %조사처리(NAME:COUNT,"가")% 
+IF TALENT:COUNT:47 == 1
+	PRINTFORM 정액을 빨아내기 위해 열심히 빨고
+ELSEIF ABL:COUNT:13 >= 3
+	PRINTFORM 귀두나 힘줄을 혀로 핥고, 입안에 넣으며 봉사하고 
+ELSE
+	PRINTFORM 아직 어색하지만, 열심히 입에 페니스를 머금어 펠라치오하고 
+ENDIF
+PRINTFORML 있다
+PRINTFORML %CALLNAME:COUNT%의 펠라로 이미 {Y-1}회나 사정해 버린 듯, 아침 햇빛을 받아 자신의 타액과 
+PRINTFORM %CALLNAME:MASTER%의 정액으로 요염하게 빛나는 %CALLNAME:COUNT%의 입술
+IF X >= 7
+	PRINTFORM 뿐만 아니라, 얼굴 전체까지가 쏟아진 정액에 백탁으로 물들었
+ELSE
+	PRINTFORM 에서 정액이 늘어져 있
+ENDIF
+PRINTFORML 다
+PRINTFORM %CALLNAME:COUNT%의 요망한 모습에 사정감이 한계까지 차오른 %플레이어는()%, 
+IF TALENT:COUNT:88 == 1
+	PRINTFORM %CALLNAME:COUNT%의 머리를 잡아 목 안쪽에 페니스를 찔러 넣으
+ELSE
+	PRINTFORM %CALLNAME:COUNT%의 펠라를 충분히 만끽하
+ENDIF
+PRINTFORML 면서 욕망을 털어 놓았다……
+
+PRINTFORM 그리고 %조사처리(CALLNAME:COUNT,"는")% 입안에 모인 정액을 
+IF ABL:COUNT:32 >= 3
+	PRINTFORM 혀를 내밀고 과시하듯이, 일부러 소리를 내면서
+ELSE
+	PRINTFORM 아직 정액의 맛에 익숙해 지지 못한듯 천천히 
+ENDIF
+PRINTFORML  삼키기 시작했다……
+PRINTL
+
+EXP:COUNT:22 += X
+PRINTFORML %EXPNAME:22% +{X}
+EXP:COUNT:20 += X
+PRINTFORML %EXPNAME:20% +{Y}
+PRINTFORML %PALAMNAME:4%의 구슬 +{X*50}
+PRINTFORML %PALAMNAME:6%의 구슬 +{X*30}
+PRINTFORML %PALAMNAME:7%의 구슬 +{X*40}
+
+;△SLANGとの整合性
+IF CFLAG:COUNT:16 == -1
+	IF TALENT:COUNT:432 == 1 && (NO:COUNT == 1 || NO:COUNT == 91)
+		CSTR:COUNT:1 = 형님의 자지
+	ELSEIF TALENT:COUNT:76 == 1 && (NO:COUNT == 1 || NO:COUNT == 91)
+		CSTR:COUNT:1 = 오빠의 자○
+	ELSEIF TALENT:COUNT:76 == 0 && (NO:COUNT == 1 || NO:COUNT == 91)
+		CSTR:COUNT:1 = 오빠의 고○
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:432 == 1
+		CSTR:COUNT:1 = %CALLNAME:MASTER%의 자지
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:76 == 1
+		CSTR:COUNT:1 = %CALLNAME:MASTER%의 자○
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:76 == 0
+		CSTR:COUNT:1 = %CALLNAME:MASTER%의 고○
+	;ここに来るのはどんなとき?
+	ELSE
+		CSTR:COUNT:1 = %CALLNAME:MASTER%의 자지님v
+	ENDIF
+	;△CFLAG諸々未設定　→　とりあえず日付まわりとか設定してしまおう
+	;できれば場所にあなたの部屋と入れたり自分からとか入れたりしたい
+	CFLAG:COUNT:16 = 1
+	CFLAG:COUNT:820 = BASE:COUNT:9
+	CFLAG:COUNT:821 = DAY:1
+	CFLAG:COUNT:822 = DAY:2
+	SETCOLOR 0xF58F98
+	PRINTL 【첫 키스】
+	RESETCOLOR
+	BASE:COUNT:31 -= 5
+ENDIF
+
+WAIT
+
+JUEL:COUNT:4 += X*50
+JUEL:COUNT:6 += X*30
+JUEL:COUNT:7 += X*40

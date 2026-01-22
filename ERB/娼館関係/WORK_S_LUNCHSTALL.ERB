@@ -1,0 +1,1171 @@
+﻿;===========================================================
+;屋台で定食を売って回る労役コマンド
+;奴隷の料理の腕だけでなく, 奴隷の能力が高いとフェロモンで売り上げが上がる
+;ただし, 基本的には厳しい
+;===========================================================
+;eratohoA ver1.204より流用して改造(pawapokya-)するつもりが, 結局ほとんど別物に
+;===========================================================
+@LUNCH_STALL
+DRAWLINE
+
+;特殊チケットフラグ初期化
+FLAG:50 = 0
+;相性フラグ初期化
+FLAG:51 = 0
+;お揃いフラグ初期化
+FLAG:52 = 0
+
+;参加者が複数の場合, 最初に厨房担当を選択
+$INPUT_LOOP_01
+IF FLAG:42 >= 2
+	PRINTL 누구에게 요리를 만들게 합니까?
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		PRINTFORML  [{COUNT}] - %NAME:COUNT%
+	REND
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	PRINTL  [100] - 그만둔다
+	
+	INPUT
+
+	IF RESULT < 0 || RESULT >= CHARANUM
+		GOTO INPUT_LOOP_01
+	ELSEIF CFLAG:RESULT:130 == 0
+		GOTO INPUT_LOOP_01
+	;厨房担当には最低でも요리기능1必要
+	ELSEIF ABL:RESULT:73 < 1
+		PRINTFORMW %조사처리(CALLNAME:RESULT,"는")% 손님에게 낼만한 요리를 만들지 못 합니다
+		GOTO INPUT_LOOP_01
+	ELSEIF RESULT == 100
+		RETURN 100
+	ENDIF
+
+	TARGET = RESULT
+
+	DRAWLINE
+;一人だけならその一人が自動的に厨房担当に
+ELSE
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+	TARGET = COUNT
+	REND
+ENDIF
+
+;接客係の中に男性・절벽が一人もいない
+F = 1
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF TARGET == COUNT
+		CONTINUE
+	SIF TALENT:COUNT:122 || TALENT:COUNT:116
+		F = 0
+REND
+
+;参加者複数かつおっぱい持ちなら特殊屋台が選択可能
+IF FLAG:42 >= 2 && F
+	$INPUT_LOOP_02
+	;通常屋台か特殊屋台かを選択
+	PRINTL 어떤 포장마차를 여시겠습니까?
+	PRINTL  [0] - 일반 포장마차
+	PRINTL  [1] - 슴가 포장마차
+	PRINTL  [100] - 그만둔다
+		
+	INPUT
+	
+	IF RESULT == 0
+		PRINTFORMW 일반 포장마차를 엽니다
+	ELSEIF RESULT == 1
+		PRINTFORMW 슴가 포장마차를 엽니다
+		FLAG:50 = 1
+	ELSEIF RESULT == 100
+		RETURN 100
+	ELSE
+		GOTO INPUT_LOOP_02
+	ENDIF
+	
+	DRAWLINE
+ENDIF
+
+;ローカル変数初期化
+A = 0
+B = 0
+F = 0
+S = 0
+V = 0
+C = 0
+D = 0
+;L = 呼び出し元で代入される参加人数
+
+;COUNT用待避変数
+X = 0
+Y = 0
+
+REPEAT 101
+	T:COUNT = 0
+	U:COUNT = 0
+REND
+
+;特殊営業参加キャラの相性をチェック
+CALL WORK_SUB_RELATION
+
+;厨房担当を除くキャラの衣装がお揃いかをチェック
+IF FLAG:42 >= 3 && FLAG:37
+	FLAG:52 = 1
+	E = -1
+	F = 0
+	S = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF COUNT == TARGET
+			CONTINUE
+		IF E == -1
+			S = CFLAG:COUNT:40
+			E = CFLAG:COUNT:41
+			F = CFLAG:COUNT:42
+		;すっぱだか
+		ELSEIF S == 0 && CFLAG:COUNT:40 == 0
+			CONTINUE
+		;裸＋特別コス
+		ELSEIF F == CFLAG:COUNT:42 && S == 64 && CFLAG:COUNT:40 == 64
+			CONTINUE
+		;下着姿。ランナウェイズ……
+		ELSEIF S > 0 && S < 4 && CFLAG:COUNT:40 > 0 && CFLAG:COUNT:40 < 4
+			CONTINUE
+		;下着＋特別コス
+		ELSEIF F == CFLAG:COUNT:42 && S > 64 && S < 68 && CFLAG:COUNT:40 > 64 && CFLAG:COUNT:40 < 68
+			CONTINUE
+		ELSEIF (CFLAG:COUNT:45 || CFLAG:COUNT:46 || CFLAG:COUNT:47)
+			FLAG:52 = 0
+		ELSEIF (CFLAG:COUNT:40 & 92) == 0
+			FLAG:52 = 0
+		ELSEIF E != CFLAG:COUNT:41 || F != CFLAG:COUNT:42
+			FLAG:52 = 0
+		ELSEIF ((S & 92) != (CFLAG:COUNT:40 & 92))
+			FLAG:52 = 0
+		ENDIF
+	REND
+	E = 0
+	F = 0
+	S = 0
+ELSEIF FLAG:37
+	FLAG:52 = 1
+ENDIF
+
+;客の数を計算
+;参加するキャラの人気の最大値に応じて客が来ます
+E = 0
+REPEAT CHARANUM
+	SIF E < EXP:COUNT:91 && CFLAG:COUNT:130
+		E = EXP:COUNT:91
+REND
+C = E / 4
+G = C / 2
+IF C
+	IF C < 13
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 16
+		TIMES G , 1.50
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 20
+		TIMES G , 2.00
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSEIF C < 24
+		TIMES G , 2.50
+		REPEAT C
+			G += RAND:2
+		REND
+	ELSE
+		TIMES G , 3.00
+		REPEAT C
+			G += RAND:3
+		REND
+	ENDIF
+ENDIF
+
+;娼館の人気に応じてさらにプラス
+C = (EXP:MASTER:91 / 5)
+IF C
+	REPEAT C
+		G += RAND:2
+	REND
+ENDIF
+
+;接客係(最大3人)が少ないと目減り
+IF FLAG:42  - 1 == 0
+	TIMES G , 0.25
+ELSEIF  FLAG:42 - 1 == 1
+	TIMES G , 0.50
+ELSEIF  FLAG:42 - 1 == 2
+	TIMES G , 0.75
+ENDIF
+
+;接客係が特定の素質を持っていた場合ボーナス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+
+	;社会的ステータスが影響
+	;인기인
+	SIF TALENT:COUNT:126
+		G += 3
+	;아이돌
+	SIF TALENT:COUNT:203
+		G += 5
+	;娼婦
+	SIF TALENT:COUNT:180
+		G += 1
+	;傾城
+	SIF TALENT:COUNT:181
+		G += 2
+	;요설스러움
+	SIF TALENT:COUNT:182
+		G += 5
+	;단골손님
+	SIF TALENT:COUNT:183
+		G += 2
+	;求愛
+	SIF TALENT:COUNT:184
+		G += 1
+	;가희
+	SIF TALENT:COUNT:185
+		G += 5
+	;무희
+	SIF TALENT:COUNT:186
+		G += 5
+	;미희
+	SIF TALENT:COUNT:187
+		G += 10
+	;우등생
+	SIF TALENT:COUNT:224
+		G += 2
+	;패션모델
+	SIF TALENT:COUNT:402
+		G += 1
+		
+	;専用素質(まあ(差別化する必要もあるし)多少はね?)
+	;야쿠자의 딸
+	SIF TALENT:COUNT:502
+		G += 20
+	;음마
+	SIF TALENT:COUNT:505
+		G += 5
+	;성우
+	SIF TALENT:COUNT:506
+		G += 10
+	;하루우라레
+	SIF TALENT:COUNT:507
+		G += 15
+	;Colorful Pure Girls
+	SIF TALENT:COUNT:509
+		G += 25
+	;무당
+	SIF TALENT:COUNT:510
+		G += 15
+	;천사
+	SIF TALENT:COUNT:511
+		G += 30
+	;그랜드마스터
+	SIF TALENT:COUNT:512
+		G += 15
+	;야쿠자의 아내
+	SIF TALENT:COUNT:516
+		G += 25
+	;Mermaid girl
+	SIF TALENT:COUNT:518
+		G += 20
+	;FallenFallAngel
+	SIF TALENT:COUNT:519
+		G += 25
+
+REND
+
+;接客係全員の接客技能をプラス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+	G += ABL:COUNT:74
+REND
+
+;5人以下だった場合, 5人にします
+SIF G < 5
+	G = 5
+
+PRINTFORM %NAME:TARGET%
+SIF FLAG:42 >= 2
+	PRINT 들
+PRINTW 에게 정식 포장마차를 열게 했다……
+
+;次に成功か失敗かの判定を計算
+;厨房担当の요리경험によって基礎値が決定
+IF EXP:61 < 10
+	D = 0 + RAND:5
+ELSEIF EXP:61 < 50
+	D = 1 + RAND:5
+ELSEIF EXP:61 < 100
+	D = 2 + RAND:6
+ELSEIF EXP:61 < 200
+	D = 4 + RAND:6
+ELSEIF EXP:61 < 300
+	D = 7 + RAND:7
+ELSEIF EXP:61 < 500
+	D = 10 + RAND:7
+ELSEIF EXP:61 < 800
+	D = 13 + RAND:8
+ELSEIF EXP:61 < 1200
+	D = 16 + RAND:10
+ELSEIF EXP:61 < 1600
+	D = 20 + RAND:12
+ELSEIF EXP:61 < 2000
+	D = 25 + RAND:14
+ELSEIF EXP:61 < 2500
+	D = 30 + RAND:16
+ELSEIF EXP:61 < 3000
+	D = 40 + RAND:18
+ELSE
+	D = 50 + RAND:20
+ENDIF
+
+;厨房担当の요리기능の3倍をプラス
+D += ABL:73 * 3
+
+;接客係全員の화술と봉사정신の1/2をプラス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+	D += ABL:COUNT:15 / 2
+	D += ABL:COUNT:16 / 2
+REND
+
+;接客係全員の미용감각をプラス
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+	D += ABL:COUNT:50
+REND
+
+;おっぱい屋台なら接客係全員のB感覚の1/2をプラス
+IF FLAG:50
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF COUNT == TARGET && FLAG:42 >= 2
+			CONTINUE
+		D += ABL:COUNT:1 / 2
+	REND
+ENDIF
+
+;厨房担当の素質に応じて加減
+;反抗的
+SIF TALENT:11
+	D -= 1
+;다부짐
+SIF TALENT:12
+	D += 1
+;감정부족
+SIF TALENT:22
+	D -= 1
+;호기심
+SIF TALENT:23
+	D += 1
+;素質
+SIF TALENT:50
+	D += 2
+;습득느림
+SIF TALENT:51
+	D -= 2
+;악취둔감
+SIF TALENT:61
+	D -= 3
+;악취민감
+SIF TALENT:62
+	D += 3
+;헌신적
+SIF TALENT:63
+	D += 3
+;모성
+SIF TALENT:155
+	D += 10
+;요리잘함
+SIF TALENT:418
+	D *= 2
+
+;광기・붕괴があると満足度激減
+SIF TALENT:123 || TALENT:9
+	D /= 5
+
+;接客係全員の素質に応じて加減
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+	;헌신적
+	SIF TALENT:COUNT:63
+		D += 3
+	;불결무시
+	SIF TALENT:COUNT:64
+		D -= 6
+	;매혹
+	SIF TALENT:COUNT:91
+		D += 3
+	;수수께끼의 매력
+	SIF TALENT:COUNT:92
+		D += 5
+
+	;おっぱい屋台
+	IF FLAG:50
+		;거유
+		SIF TALENT:COUNT:110
+			D += 3
+		;폭유
+		SIF TALENT:COUNT:114
+			D += 5
+		;빈유
+		SIF TALENT:COUNT:109
+			D -= 2
+		;절벽
+		SIF TALENT:COUNT:116
+			D -= 5
+		;모유체질
+		SIF TALENT:COUNT:130
+			D += 5
+		;가슴광
+		SIF TALENT:COUNT:78
+			D += 10
+	ENDIF
+
+	;광기・붕괴があると満足度激減
+	SIF TALENT:COUNT:123 || TALENT:COUNT:9
+		D /= 5
+REND
+
+;満足度Dが目標値Pを上回れば成功, 下回れば失敗
+;2週目以降は요리잘함の女優がいなければまず超成功は狙えないでしょう。
+IF FLAG:10 > 1
+	P = 41 + RAND:10
+ELSE
+	P = 21 + RAND:5
+ENDIF
+
+;満足度DがPの50%未満だったら大失敗
+IF D < (P / 2)
+	A = 0
+;P未満だったら小失敗
+ELSEIF D < P
+	A = 1
+;Pの150%未満だったら普通
+ELSEIF D < (P * 3) / 2
+	A = 2
+;Pの200%未満だったら小成功
+ELSEIF D < P * 2
+	A = 3
+;Pの400%未満だったら大成功
+ELSEIF D < P * 4
+	A = 4
+;それ以上だったら超成功
+ELSE
+	A = 5
+ENDIF
+Z = 0
+Z = A
+
+IF FLAG:42 >= 2
+	PRINTFORM %타겟이()% 주방에서 
+	CALL LUNCH_NAME
+	PRINTFORM %조사만처리(RESULT+2,"를")% 요리하고, 
+	X = TARGET
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF COUNT != X
+			TARGET = COUNT
+	REND
+	IF FLAG:42 >= 2 && FLAG:52
+		IF CFLAG:40 == 0
+			PRINT 실오라기 하나 걸치지 않은 모습의 
+		ELSEIF CFLAG:40 < 4
+			PRINT 속옷 차림의 
+		ELSE
+			SIF FLAG:50 && (CFLAG:40 & 4)
+				PRINT 가슴을 풀어헤친 
+			CALL PRINT_CLOTHTYPE_MAIN2
+			IF CFLAG:42
+				PRINT 에 
+				CALL PRINT_CLOTHTYPE_SPECIAL
+			ENDIF
+			PRINT 차림의 
+		ENDIF
+	ENDIF
+	TARGET = X
+	S = 0
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF COUNT == X && FLAG:42 >= 2
+			CONTINUE
+		SIF S
+			PRINTFORM %LOCALS:1% 
+		PRINTFORM %CALLNAME:COUNT%
+		LOCALS:1 = %조사만처리(NAME:COUNT,"와")%
+		S = 1
+	REND
+	S = 0
+	IF LOCALS:1 == "와"
+		PRINT 가 
+	ELSE
+		PRINT 이 
+	ENDIF
+	SIF FLAG:50
+		PRINT 드러낸 유방을 희롱당하면서, 
+	PRINTFORML 방문한 {G}명의 손님에게 요리를 날랐다……
+ELSE
+	PRINTFORM %타겟은()% 정식 포장마차를 방문한 {G}명의 손님에게 
+	CALL LUNCH_NAME
+	PRINTFORML %조사만처리(RESULT+2,"를")% 대접했다……
+ENDIF
+
+WAIT
+
+PRINTL      
+;結果を一応視覚化しておく。デバッグ用なので, 消してもいい。
+PRINTFORML 만족도: {D}％
+P *= 4
+PRINTFORMW 목표 만족도: {P}％
+PRINTL      
+
+
+;失敗時メッセージ
+IF A <= 1
+	PRINTFORM 불행하게도, %CALLNAME:TARGET%의 요리
+	IF FLAG:50
+		PRINT 와 
+		SIF FLAG:42 >= 2
+			PRINT 접객원
+		SIF FLAG:42 >= 3
+			PRINT 들의 
+		PRINT 가슴
+	ENDIF
+	PRINTW 에 대한 평판은 매우 형편 없었다……
+	TFLAG:13 = 122
+;成功時メッセージ
+ELSE
+	PRINTFORM 손님들은 %CALLNAME:TARGET%의 요리
+	IF FLAG:50
+		PRINT 와 
+		SIF FLAG:42 >= 2
+			PRINT 접객원
+		SIF FLAG:42 >= 3
+			PRINT 들의 
+		PRINT 가슴
+	ENDIF
+	PRINTW 에 만족한 것 같다……
+	TFLAG:13 = 123
+ENDIF
+
+;口上
+CALL SELF_KOJO
+
+DRAWLINE
+
+;パラメータ変化
+X = TARGET
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	
+	TARGET = COUNT
+
+	PRINTFORML %NAME:TARGET%의 패러미터가 다음과 같이 변화되었습니다
+
+	;失敗時経験値
+	IF Z <= 1
+		;厨房担当
+		IF TARGET == X
+			T:61 = G / 10 + 1
+			U:7 = G * 30
+			U:4 = G * 10
+			U:8 = G * 30
+		ENDIF
+		;接客係
+		IF TARGET != X
+			U:7 = G * 15
+			U:4 = G * 5
+			U:8 = G * 30
+			;おっぱい屋台
+			IF FLAG:50
+				U:14 = (G * 50) / FLAG:42
+				T:20 = G / (10 * FLAG:42) + 1
+				T:22 = G / (10 * FLAG:42) + 1
+				T:74 = G / (10 * FLAG:42) + 1
+			ENDIF
+		ENDIF
+	;成功時経験値
+	ELSE
+		;厨房担当
+		IF TARGET == X
+			T:23 = (G / (6 - Z)) + 1
+			T:61 = ((G / (7 - Z)) * ABL:73)
+			U:7 = G * 30 * Z
+			U:4 = G * 30 * Z
+			U:8 = G * 5 * Z
+		ENDIF
+		;接客係
+		IF TARGET != X
+			T:61 = (G / (10 - Z)) + (ABL:X:73 / (6 - Z))
+			T:73 = (G / (6 - Z)) + 1
+			T:78 = (G / (6 - Z)) + 1
+			U:7 = G * 15 * Z
+			U:4 = G * 15 * Z
+			U:8 = G * 10 * Z
+			;おっぱい屋台
+			IF FLAG:50
+				U:14 = (G * 100) / FLAG:42
+				T:20 = G / ((5 * FLAG:42) - Z + 1) + 1
+				T:22 = G / ((5 * FLAG:42) - Z + 1) + 1
+				T:74 = G / ((5 * FLAG:42) - Z + 1) + 1
+			ENDIF
+		ENDIF
+	ENDIF
+
+	;부정의 구슬の計算(基礎値は人数ベースで, 従順に応じて減少)
+	;おっぱい屋台だと一気に溜まる
+	IF FLAG:50 == 1
+		M = 15 - ABL:10
+	ELSE
+		M = 7 - ABL:10
+	ENDIF
+	
+	;부정의 구슬が増加しないという事はない
+	SIF M <= 0
+		M = 1
+	
+	U:100 = G * M
+	
+	;素質補正
+	;솔직함だと少なくなる
+	SIF TALENT:22
+		TIMES U:100 , 0.80
+	;감정부족と少なくなる
+	SIF TALENT:22
+		TIMES U:100 , 0.90
+	;プライドが高いとかなり増える
+	SIF TALENT:15
+		TIMES U:100 , 1.80
+	;튀고 싶어함だと少なくなる
+	SIF TALENT:28
+		TIMES U:100 , 0.80
+	;건방짐だと増える
+	SIF TALENT:16
+		TIMES U:100 , 1.20
+	;헌신적だと少なくなる
+	SIF TALENT:63
+		TIMES U:100 , 0.80
+	;매니저だと少なくなる
+	SIF TALENT:202
+		TIMES U:100 , 0.80
+	;모성だとぐっと少なくなる
+	SIF TALENT:155
+		TIMES U:100 , 0.50
+	;屋台영업실패かつ수줍음だと結構増える
+	SIF TALENT:35 && A <= 1
+		TIMES U:100 , 1.50
+	;おっぱい屋台だと接客係はすごく増える(가슴광なら平気)
+	SIF FLAG:50 && TARGET != X && TALENT:78 == 0
+		TIMES U:100 , 3.00
+	
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	
+	Y = COUNT
+	CALL WORK_EXP
+	COUNT = Y
+
+	;반발각인取得の判定
+	;従順の200倍+1000まで許容
+	O = ABL:10 * 200 + 1000
+	
+	;반발각인 LV2はLV1の√3倍, LV3は√5倍で獲得
+	I = O
+	TIMES I , 2.23
+	J = O
+	TIMES J , 1.73
+	
+	IF MARK:3 != 3 && JUEL:100 > I
+		PRINTL  반발각인 LV3을 습득
+		MARK:3 = 3
+	ELSEIF MARK:3 != 2 && JUEL:100 > J
+		PRINTL  반발각인 LV2를 습득
+		MARK:3 = 2
+	ELSEIF MARK:3 != 1 && JUEL:100 > O
+		PRINTL  반발각인 LV1을 습득
+		MARK:3 = 1
+	ENDIF
+	
+	PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	
+	;체력減少の計算
+	LOSEBASE:0 = G * 20
+	
+	;小柄だと疲労増加
+	SIF TALENT:100
+		TIMES LOSEBASE:0 , 1.20
+
+	;おっぱい屋台なら接客係はかなり疲れる
+	SIF FLAG:50 && TARGET != X 
+		TIMES LOSEBASE:0 , 4.00
+
+	;接客係なら人数に応じて疲労軽減
+	SIF TARGET != X && FLAG:42 >= 2
+		LOSEBASE:0 /= (FLAG:42 - 1)
+
+	;厨房担当は요리기능に応じて疲労減
+	IF TARGET == X
+		IF ABL:73 == 0
+			TIMES LOSEBASE:0 , 1.00
+		ELSEIF ABL:73 == 1
+			TIMES LOSEBASE:0 , 0.90
+		ELSEIF ABL:73 == 2
+			TIMES LOSEBASE:0 , 0.80
+		ELSEIF ABL:73 == 3
+			TIMES LOSEBASE:0 , 0.70
+		ELSEIF ABL:73 == 4
+			TIMES LOSEBASE:0 , 0.60
+		ELSEIF ABL:73 >= 5
+			TIMES LOSEBASE:0 , 0.50
+		ENDIF
+	ENDIF
+
+	;운동능력に応じて疲労軽減
+	IF ABL:51 == 1
+		TIMES LOSEBASE:0 , 0.95
+	ELSEIF ABL:51 == 2
+		TIMES LOSEBASE:0 , 0.90
+	ELSEIF ABL:51 == 3
+		TIMES LOSEBASE:0 , 0.85
+	ELSEIF ABL:51 == 4
+		TIMES LOSEBASE:0 , 0.80
+	ELSEIF ABL:51 == 5
+		TIMES LOSEBASE:0 , 0.75
+	ELSEIF ABL:51 == 6
+		TIMES LOSEBASE:0 , 0.70
+	ELSEIF ABL:51 == 7
+		TIMES LOSEBASE:0 , 0.65
+	ELSEIF ABL:51 == 8
+		TIMES LOSEBASE:0 , 0.60
+	ELSEIF ABL:51 == 9
+		TIMES LOSEBASE:0 , 0.55
+	ELSEIF ABL:51 >= 10
+		TIMES LOSEBASE:0 , 0.50
+	ENDIF
+	
+	SIF LOSEBASE:0 >= BASE:0
+		LOSEBASE:0 = BASE:0
+	
+	PRINT  체력소비　　: 
+	N = BASE:0
+	CALL FIGURE_INDENT
+	PRINTV BASE:0
+	PRINT  - 
+	N = LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTV LOSEBASE:0
+	PRINT  = 
+	N = BASE:0 - LOSEBASE:0
+	CALL FIGURE_INDENT
+	PRINTVL BASE:0 - LOSEBASE:0
+	
+	BASE:0 -= LOSEBASE:0
+	
+	PRINT  체력　　　　:
+	BAR BASE:0, MAXBASE:0, 32
+	PRINTFORML ({BASE:0}/{MAXBASE:0})
+	
+	;체력が0以下, または500以下だった場合の処理
+	IF BASE:0 <= 0
+		PRINTFORML %타겟은()%, 포장마차를 연 직후 넙죽 엎드리듯 쓰러져버렸다
+		PRINTFORML 무슨짓을 해도 반응이 없다……
+		WAIT
+		;キャラの死亡確認
+		CALL CHARADEAD_CHECK
+	ELSEIF BASE:0 <= 500
+		PRINTFORML 체력이 한계에 달했습니다. 쉬게 해주세요
+	ENDIF
+	
+	DRAWLINE
+	WAIT
+REND
+TARGET = X
+
+;売上金を計算します
+Q = 0
+
+;기준액は厨房担当の요리기능に左右されます
+IF ABL:73 == 0
+	V = 15
+ELSEIF ABL:73 == 1
+	V = 30
+ELSEIF ABL:73 == 2
+	V = 100
+ELSEIF ABL:73 == 3
+	V = 200
+ELSEIF ABL:73 == 4
+	V = 350
+ELSEIF ABL:73 == 5
+	V = 500
+ELSEIF ABL:73 == 6
+	V = 700
+ELSEIF ABL:73 == 7
+	V = 900
+ELSEIF ABL:73 == 8
+	V = 1100
+ELSEIF ABL:73 == 9
+	V = 1300
+ELSEIF ABL:73 >= 10
+	V = 1500
+ENDIF
+PRINTFORM 요리(%CALLNAME:TARGET%) 
+PRINTFORML {ABL:73}LV +{V}
+Q += V
+V = 0
+
+;参加キャラの素質補正
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	;카리스마
+	SIF TALENT:COUNT:93
+		V += 100
+	;치료
+	SIF TALENT:COUNT:117
+		V += 500
+	IF V
+		PRINTFORML %NAME:COUNT% +{V}
+		Q += V
+		V = 0
+	ENDIF
+REND
+
+
+;能力補正
+;厨房担当の기교を見る
+IF ABL:12 == 0
+	V = 50
+ELSEIF ABL:12 == 1
+	V = 70
+ELSEIF ABL:12 == 2
+	V = 100
+ELSEIF ABL:12 == 3
+	V = 110
+ELSEIF ABL:12 == 4
+	V = 120
+ELSEIF ABL:12 == 5
+	V = 130
+ELSEIF ABL:12 == 6
+	V = 140
+ELSEIF ABL:12 == 7
+	V = 150
+ELSEIF ABL:12 == 8
+	V = 160
+ELSEIF ABL:12 == 9
+	V = 180
+ELSEIF ABL:12 >= 10
+	V = 200
+ENDIF
+PRINTFORM 기교(%CALLNAME:TARGET%) 
+PRINTFORML {ABL:12}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;全員の봉사정신の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130
+		E += ABL:COUNT:16
+REND
+E /= FLAG:42
+IF E == 0
+	V = 100
+ELSEIF E == 1
+	V = 110
+ELSEIF E == 2
+	V = 120
+ELSEIF E == 3
+	V = 130
+ELSEIF E == 4
+	V = 140
+ELSEIF E == 5
+	V = 150
+ELSEIF E == 6
+	V = 160
+ELSEIF E == 7
+	V = 170
+ELSEIF E == 8
+	V = 180
+ELSEIF E == 9
+	V = 190
+ELSEIF E >= 10
+	V = 200
+
+ENDIF
+PRINT 봉사정신 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;能力補正
+;接客係の화술の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+	E += ABL:COUNT:15
+REND
+SIF FLAG:42 >= 2
+	E /= (FLAG:42 - 1)
+IF E == 0
+	V = 100
+ELSEIF E == 1
+	V = 110
+ELSEIF E == 2
+	V = 120
+ELSEIF E == 3
+	V = 130
+ELSEIF E == 4
+	V = 140
+ELSEIF E == 5
+	V = 150
+ELSEIF E == 6
+	V = 160
+ELSEIF E == 7
+	V = 170
+ELSEIF E == 8
+	V = 180
+ELSEIF E == 9
+	V = 190
+ELSEIF E >= 10
+	V = 200
+
+ENDIF
+PRINT 화술
+IF FLAG:42 == 1
+	PRINTFORM (%CALLNAME:TARGET%)
+ELSE
+	PRINT (접객원)
+ENDIF
+PRINTFORML {E}LV ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+
+;接客係の매력치の평균値を見る
+E = 0
+REPEAT CHARANUM
+	SIF CFLAG:COUNT:130 == 0
+		CONTINUE
+	SIF COUNT == TARGET && FLAG:42 >= 2
+		CONTINUE
+	E += BASE:COUNT:31
+REND
+SIF FLAG:42 >= 2
+	E /= (FLAG:42 - 1)
+V = E
+PRINT 매력치 
+SIF FLAG:42 >= 2
+	PRINT 평균 
+PRINTFORML ×{V/100}.{V%100}
+Q *= V
+Q /= 100
+V = 0
+E = 0
+
+;おっぱい屋台の場合
+IF FLAG:50 == 1
+	;参加キャラのおっぱい補正
+	REPEAT CHARANUM
+		SIF CFLAG:COUNT:130 == 0
+			CONTINUE
+		SIF COUNT == TARGET && FLAG:42 >= 2
+			CONTINUE
+		V = 100
+		;폭유
+		IF TALENT:COUNT:114
+			V = 120
+			PRINTFORML %TALENTNAME:114%(%CALLNAME:COUNT%) ×{V/100}.{V%100}
+			Q *= V
+			Q /= 100
+		;거유
+		ELSEIF TALENT:COUNT:110
+			V = 110
+			PRINTFORML %TALENTNAME:110%(%CALLNAME:COUNT%) ×{V/100}.{V%100}
+			Q *= V
+			Q /= 100
+		;빈유
+		ELSEIF TALENT:COUNT:109
+			V = 80
+			PRINTFORML %TALENTNAME:109%(%CALLNAME:COUNT%) ×{V/100}.{V%100}
+			Q *= V
+			Q /= 100
+		;빈유
+		ELSEIF TALENT:COUNT:116
+			V = 50
+			PRINTFORML %TALENTNAME:116%(%CALLNAME:COUNT%) ×{V/100}.{V%100}
+			Q *= V
+			Q /= 100
+		ENDIF
+		;모유체질
+		IF TALENT:COUNT:130
+			V = 130
+			PRINTFORML %TALENTNAME:130%(%CALLNAME:COUNT%) ×{V/100}.{V%100}
+			Q *= V
+			Q /= 100
+		ENDIF
+	REND
+V = 0
+ENDIF
+
+;共通する獲得資金処理
+CALL WORK_SP_MONEY_CM
+
+PRINTFORML 이번 포장마차 영업으로 한 끼 {Q}포인트의 요리를 {G}명에게 접대하여, 
+
+;チケット一枚あたりの金額×客の人数が収入となる
+Q *= G
+
+PRINTFORML 도합 {Q}포인트를 벌었습니다
+MONEY += Q
+
+;特殊営業終了処理
+CALL WORK_SP_AFTER
+
+WAIT
+
+BEGIN TURNEND
+
+RETURN 1
+
+;-----------------------------------------------------------
+;料理기교に応じたデフォルト料理名関数
+;-----------------------------------------------------------
+@LUNCH_NAME
+;CALL LUNCH_NAME_PAWAPOKE
+LOCAL:1 = RESULT
+IF LOCAL:1
+	LOCAL:1 -= 1
+	RETURN LOCAL:1
+ENDIF
+IF ABL:73 == 0
+	PRINT 수박 카레
+	RETURN 0
+ELSEIF ABL:73 == 1
+	PRINT 삼색 빵
+	RETURN 1
+ELSEIF ABL:73 == 2
+	PRINT 라멘
+	RETURN 1
+ELSEIF ABL:73 == 3
+	PRINT 수제 카레
+	RETURN 0
+ELSEIF ABL:73 == 4
+	PRINT 햄버그 정식
+	RETURN 1
+ELSEIF ABL:73 <= 9 && ABL:73 >= 5
+	PRINT 스테이크 정식
+	RETURN 1
+ELSEIF ABL:73 >= 10
+	PRINT 셰프의 전문 요리
+	RETURN 0
+ENDIF
+
+;パワポケ固有料理名関数
+;im@sにするときにコピペして別関数に直せよ!とはAV_Hoの人の慟哭
+@LUNCH_NAME_PAWAPOKE
+
+IF NO:TARGET == 1
+	;春香
+	IF RAND:2 == 0
+		PRINT 케이크
+	ELSE
+		PRINT 쿠키
+	ENDIF
+	RETURN 1
+ELSEIF NO:TARGET == 3
+	;雪歩
+	IF RAND:2 == 0
+		PRINT 특선 녹차
+	ELSE
+		PRINT 수제 교자만두
+	ENDIF
+	RETURN 1
+ELSEIF NO:TARGET == 6
+	;伊織
+	PRINT 까맣게 탄 뫼니에르
+	RETURN 1
+ELSEIF NO:TARGET == 9
+	;亜美
+	IF RAND:2 == 0
+		PRINT 경단
+		RETURN 2
+	ELSE
+		PRINT 카오스한 물체
+	ENDIF
+	RETURN 1
+ELSEIF NO:TARGET == 10
+	;真美
+	IF RAND:2 == 0
+		PRINT 찜고구마
+	ELSE
+		PRINT 카오스한 물체
+	ENDIF
+	RETURN 1
+ELSEIF NO:TARGET == 11
+	;미키
+	PRINT 주먹밥
+	RETURN 2
+ELSEIF NO:TARGET == 13
+	;히비키
+	PRINT 오키나와 요리
+	RETURN 1
+ELSEIF NO:TARGET == 15
+	;타카네
+	PRINT 컵라면
+	RETURN 2
+ELSEIF NO:TARGET == 15
+	;愛
+	PRINT 남국 카레 비스무레한 것
+	RETURN 2
+ELSEIF NO:TARGET == 18
+	;마이
+	PRINT 히다카네 집 특제 카레
+	RETURN 1
+ELSEIF NO:TARGET == 19
+	;유메코
+	PRINT 특제 사탕(죽을 정도로 매운 맛)
+	RETURN 2
+ENDIF
+
+RETURN 0
+

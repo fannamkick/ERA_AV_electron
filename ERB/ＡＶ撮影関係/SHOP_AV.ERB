@@ -1,0 +1,536 @@
+﻿;===========================================================
+;メイン画面の決定
+;===========================================================
+@AV_TOP
+
+BASE:MASTER:60 = MAXBASE:MASTER:60
+
+VARSET P, 0, 0
+VARSET TFLAG, 0, 0
+
+CALL AV_CALC
+$DRAW
+DRAWLINE
+PRINTL AV촬영
+PRINTL 《지도하는 여배우 후보의 AV를 촬영해 포인트를 법니다》
+;PRINTL ※指導時のビデオ撮影より収入が多くなります
+PRINTL ※이 기능은 미완성입니다
+PRINTL 　시스템이 완성되면 지도의 비디오 촬영보다 많은 수입을 얻도록 조정할 계획입니다
+DRAWLINE
+PRINTV DAY+1
+PRINT 주차
+IF TIME == 0
+	PRINTL  平日
+ELSE
+	PRINTL  週末
+ENDIF
+
+;撮影可能な女優数の確認
+T = 0
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF ABL:COUNT:10 >= 3 
+		T += 1
+	ENDIF
+REND
+
+PRINTFORML 소지금: {MONEY}포인트
+PRINTFORM 이번달 유행: 
+CALL VIDEOSALE_PRINT
+PRINTL
+
+$INPUT_LOOP
+
+DRAWLINE
+IF T >= 1
+	PRINTL  [0] - 촬영 시작
+ELSE
+	PRINTL  [-] - －－－－－－－
+ENDIF
+;PRINTL  [1] - 남배우와 계약한다
+DRAWLINE
+PRINTFORML  [999] - 돌아간다
+
+INPUT
+
+IF RESULT == 0
+;	IF ITEM:6 == 1 && ITEM:28 > 0 && T >= 1
+	IF ITEM:6 == 1 && T >= 1
+		CALL CHARA_SELECT_AV
+		;
+		SIF RESULT == 1
+			GOTO DRAW
+	ELSE
+		PRINTL 촬영에 필요한 기재가 없습니다
+		RETURN
+	ENDIF
+;ELSEIF RESULT == 1
+;	CALL AV_LABO
+ELSEIF RESULT == 999
+	RETURN
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RETURN 0
+;-----------------------------------------------------------
+;通常営業の営業内容を決定します
+;-----------------------------------------------------------
+@CHARA_SELECT_AV
+
+$INPUT_LOOP_0
+
+DRAWLINE
+PRINTL 누구를 촬영합니까?
+CALL LIFE_LIST_NEW,6
+IF RESULT == 999
+	RETURN 1
+;	CALL AV_TOP
+ELSEIF RESULT < 0 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_0
+ENDIF
+
+;以下営業させられる条件
+;主人だと不可
+IF RESULT == MASTER
+	PRINTFORML %플레이어는()% 감독입니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+
+;체력が500未満だと不可
+IF BASE:RESULT:0 < 500
+	PRINTL 촬영하기엔 체력이 부족합니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;반발각인2以上が付いていると不可
+IF MARK:RESULT:3 >= 2
+	PRINTL 반발각인이 높아 촬영할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;従順と욕망の合計値が6以下だと不可
+B = ABL:RESULT:10
+B += ABL:RESULT:11
+IF B < 3
+	PRINTL 능력이 부족합니다. 추가적인 지도가 필요합니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;산월だと不可
+IF CFLAG:RESULT:110 - 2 <= DAY && TALENT:RESULT:153
+	PRINTL 배가 너무 무거워 촬영할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+IF TALENT:RESULT:154
+	PRINTL 육아 중에는 촬영할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+;素質【남성】が付いていると不可
+IF TALENT:RESULT:122
+	PRINTL 호모는 취급하지 않습니다!
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+IF TIME == 1 && CFLAG:RESULT:12 != 0
+	PRINTL 영업이 끝날때까지 촬영할 수 없습니다
+	WAIT
+	GOTO INPUT_LOOP_0
+ENDIF
+
+TARGET = RESULT
+
+;まだデビュー前の場合, ここで예명を決定する
+IF TALENT:400 == 0
+	PRINTL
+	$INPUTLOOP_DECIDENAME
+	PRINTFORML 《%CALLNAME:TARGET%의 예명을 정해주세요》
+
+	INPUTS
+		SIF RESULTS == ""
+			RESULTS = %NICKNAME%
+	PRINTFORML %CALLNAME:TARGET%의 예명을 %조사처리(RESULTS,"로")% 합니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUTLOOP_DECIDE
+	INPUT
+		IF RESULT == 0
+				NICKNAME:TARGET = %RESULTS%
+				PRINTFORML 본인과 상담한 결과, %조사처리(NICKNAME:TARGET,"로")% 정해졌다
+		ELSEIF RESULT == 1
+			PRINTFORML 예명을 다시 입력해 주세요
+			GOTO INPUTLOOP_DECIDENAME
+		ELSE
+			GOTO INPUTLOOP_DECIDE
+		ENDIF
+	PRINTL
+ENDIF
+
+CALL AV_LIST
+
+;-----------------------------------------------------------
+;通常営業の営業内容を決定します
+;-----------------------------------------------------------
+@AV_LABO
+$INPUT_LOOP_02
+PRINTL 누구와 계약합니까?
+DRAWLINE
+IF FLAG:500 == 0
+	PRINTL [0] - 유명 AV남배우【무카이 유우야】와 계약한다  (1000000포인트)
+ELSE
+	PRINTL [-] - －－－－－－－
+ENDIF
+IF C == 1 && FLAG:501 == 0
+	PRINTL [1] - 【이가라시 료】와 계약한다                (2000000포인트)
+ELSE
+	PRINTL [-] - －－－－－－－
+ENDIF
+IF G == 1 && FLAG:504 == 0
+	PRINTL [2] - 흑인 AV남배우【로버트 파머】와 계약한다    (1000000포인트)
+ELSE
+	PRINTL [-] - －－－－－－－
+ENDIF
+IF D == 1 && FLAG:502 == 0
+	PRINTL [3] - 【사카키 아유무】를 남배우로 쓴다
+ELSE
+	PRINTL [-] - －－－－－－－
+ENDIF
+IF B == 1 && FLAG:505 == 0
+	PRINTL [4] - 여배우로 데뷔한【와타라이 키쿄우】를 남배우로 쓴다
+ELSE
+	PRINTL [-] - －－－－－－－
+ENDIF
+IF A == 1 && FLAG:506 == 0
+	PRINTL [5] - 여배우로 데뷔한【미야마 카나데】를 남배우로 쓴다
+ELSE
+	PRINTL [-] - －－－－－－－
+ENDIF
+DRAWLINE
+PRINTL [999] - 돌아간다
+INPUT
+
+IF RESULT == 999
+	RETURN 999
+ELSEIF RESULT == 0 
+	IF MONEY >= 1000000 && FLAG:500 == 0
+		PRINTL 유명 AV남배우【무카이 유우야】와 계약했습니다
+		FLAG:500 = 1
+		WAIT
+		GOTO INPUT_LOOP_02
+	ELSE
+		PRINTL 포인트가 부족합니다
+		WAIT
+		GOTO INPUT_LOOP_02
+	ENDIF
+ELSEIF RESULT == 1 
+	IF MONEY >= 2000000 && FLAG:501 == 0
+		PRINTL 【이가라시 료】와 계약했습니다
+		FLAG:501 = 1
+		WAIT
+		GOTO INPUT_LOOP_02
+	ELSE
+		PRINTL 포인트가 부족합니다
+		WAIT
+		GOTO INPUT_LOOP_02
+	ENDIF
+ELSEIF RESULT == 2
+	IF MONEY >= 1000000 && FLAG:504 == 0
+		PRINTL 흑인 AV남배우【로버트 파머】와 계약했습니다
+		FLAG:504 = 1
+		WAIT
+		GOTO INPUT_LOOP_02
+	ELSE
+		PRINTL 포인트가 부족합니다
+		WAIT
+		GOTO INPUT_LOOP_02
+	ENDIF
+ELSEIF RESULT == 3 && FLAG:502 == 0
+	PRINTL 【사카키 아유무】를 남배우로 기용했다
+	FLAG:502 = 1
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 4 && FLAG:505 == 0
+	PRINTL 여배우로 데뷔한【와타라이 키쿄우】를 남배우로 기용했다
+	FLAG:505 = 1
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 5 && FLAG:506 == 0
+	PRINTL 여배우로 데뷔한【미야마 카나데】를 남배우로 기용했다
+	FLAG:506 = 1
+	WAIT
+	GOTO INPUT_LOOP_02
+ELSE
+	GOTO INPUT_LOOP_02
+ENDIF
+;===========================================================
+;男優の決定
+;===========================================================
+@AV_LIST
+; 変数の定義と初期化
+; LOCAL		一時変数(要素数2)
+; LIST		存在する미션番号を格納する変数(要素数250)
+; PAGE		現在の表示ページ番号を格納する変数 (要素数1)
+; PAGE_END	ページ番号の最大値を格納する変数 (要素数1)
+#LOCALSIZE 50
+#DIM LIST, 250
+#DIM PAGE
+#DIM PAGE_END
+VARSET LIST, -1
+PAGE = 0
+VARSET LOCAL, 0
+VARSET TCVAR, 0
+; 미션の存在判定
+K = 0
+FOR LOCAL, 0, 50
+	; 미션の存在チェック
+	; 存在する미션タイトルを戻す関数の番号をリスト変数に格納し, 
+	; リストの要素番号を格納するカウンタ変数LOCAL:1をインクリメントする
+	; 存在しない場合は次のループへ移る
+	TRYCCALLFORM SCENE_TITLE_{LOCAL}
+		DEBUGPRINTFORML 리스트번호 {LOCAL:1}에 미션번호 {LOCAL} %조사처리(RESULTS,"를")% 등록합니다
+		LIST:(LOCAL:1) = LOCAL
+		LOCAL:1++
+	CATCH
+		CONTINUE
+	ENDCATCH
+NEXT
+; ページ終端の計算
+PAGE_END = (LOCAL:1 - 1 < 0 ? 0 # LOCAL:1 - 1) / 10
+; ここからリスト表示処理
+$SCENE_LIST
+PRINTFORML 《%NICKNAME:TARGET%의 촬영씬을 정해주세요》
+PRINTFORML 남은 씬: {BASE:MASTER:60} / {MAXBASE:MASTER:60}
+DRAWLINE
+; リストヘッダーの表示
+; リスト本体の表示
+FOR LOCAL, PAGE * 10, PAGE * 10 + 10
+	; リスト終端ならループ終了
+	SIF LIST:LOCAL < 0
+		BREAK
+	; リスト描画
+	CALLFORM SCENE_VISIBLE_{LIST:LOCAL}
+	IF  RESULT == 1
+		; 미션タイトルの取得
+		CALLFORM SCENE_TITLE_{LIST:LOCAL}
+		PRINTFORML [{LOCAL, 3}] - %RESULTS%
+	ELSE
+		PRINTFORML [ - ] - －－－－－
+	ENDIF
+NEXT
+DRAWLINE
+; リストフッターの表示
+IF PAGE > 0
+	PRINT [997] - 이전 페이지　　
+ELSE
+	; PRINTPLAINでボタン化を防止
+	PRINTPLAIN [ - ] - －－－－－　　
+ENDIF
+IF TFLAG:700 == 0
+	PRINT [998] - 돌아간다
+ELSE
+	PRINT [998] - 촬영 시작
+ENDIF
+IF PAGE < PAGE_END
+	PRINT 　　[999] - 다음 페이지
+ELSE
+	; PRINTPLAINでボタン化を防止
+	PRINTPLAIN 　　[ - ] - －－－－－
+ENDIF
+; ここから入力処理
+$INPUT_LOOP
+INPUT
+; 既に미션を請け負っていて, 
+; なおかつ請け負っている미션ではない場合は弾く
+IF RESULT >= 0 && RESULT < 250 && P:1 < MAXBASE:MASTER:60
+	LOCAL = (LIST:RESULT)
+	CALLFORM SCENE_INFO_{LOCAL}
+	CALLFORM SCENE_FEE_{LOCAL}
+	BASE:MASTER:60 -= P:1
+	IF (BASE:MASTER:60 < 0)
+		CLEARLINE 1
+		PRINTFORML 더 이상 촬영할 수 없습니다
+			BASE:MASTER:60 += P:1
+			P:1 = 0
+			GOTO SCENE_LIST
+	ELSE
+		$INPUT_LOOP_RECEIVE
+		PRINTFORML 이 씬을 촬영합니까?
+		PRINT [  1] - 네
+		PRINTL 　　[  0] - 아니오
+		INPUT
+		IF RESULT == 1
+			PRINTFORML 이 씬을 촬영합니다
+			TFLAG:(500 + K) = LOCAL
+			TFLAG:700 += 1
+			K++
+			P:1 = 0
+			GOTO SCENE_LIST
+		ELSE
+			BASE:MASTER:60 += P:1
+			P:1 = 0
+			GOTO SCENE_LIST
+		ENDIF
+	ENDIF
+ELSEIF RESULT >= 0 && RESULT < 250 && P:1 >= MAXBASE:MASTER:60
+
+ELSEIF RESULT == 997 && PAGE > 0
+	PAGE--
+	GOTO SCENE_LIST
+ELSEIF RESULT == 998 && TFLAG:700 == 0
+	RETURN
+ELSEIF RESULT == 998
+	CALL AV_CHOOSE
+ELSEIF RESULT == 999 && PAGE < PAGE_END
+	PAGE++
+	GOTO SCENE_LIST
+ELSE
+	CLEARLINE 1
+	REUSELASTLINE 잘못된 입력값입니다
+	GOTO INPUT_LOOP
+ENDIF
+
+;=================================================
+; 미션リストの表示
+;--------------------------------------------
+;=================================================
+@AV_CHOOSE
+
+M = 0
+
+CUSTOMDRAWLINE ･･
+PRINTL 《이번 촬영씬은 다음과 같습니다》
+PRINTL
+
+VARSET LOCAL, 0, 0
+
+FOR LOCAL, 0, 100
+	IF TFLAG:(500 + LOCAL)
+		PRINTFORM ・
+		CALLFORM SCENE_TITLE_{TFLAG:(500 + LOCAL)}
+		PRINTFORML %RESULTS%
+	ENDIF
+NEXT
+
+PRINTL
+PRINTFORML 《이상의 씬을 촬영합니다. 실행합니까?》
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 0
+	PRINTFORML 《촬영을 시작합니다》
+	CALL AV_RESULT
+ELSEIF RESULT == 1
+	PRINTW 《다시 설정해 주십시오》
+	VARSET P, 0, 0
+	VARSET TFLAG, 0, 0
+	BASE:MASTER:60 = MAXBASE:MASTER:60
+	CALL AV_LIST
+ELSE
+	GOTO INPUT_LOOP
+ENDIF	
+
+
+
+;=================================================
+; 미션リストの表示
+;--------------------------------------------
+;=================================================
+@AV_RESULT
+
+
+DRAWLINE
+
+VARSET LOCAL, 0, 0
+
+FOR LOCAL, 0, 100
+	IF TFLAG:(500 + LOCAL)
+		LOCAL:1++
+	ENDIF
+NEXT
+
+FOR LOCAL, 0, 100
+	IF TFLAG:(500 + LOCAL)
+		PRINTFORML ◆촬영씬 ({LOCAL + 1} / {LOCAL:1})
+		CALLFORM SCENE_TITLE_{TFLAG:(500 + LOCAL)}
+		PRINTFORML 《%RESULTS%》
+		CUSTOMDRAWLINE ･･
+		CALLFORM SCENE_RESULT_START_{TFLAG:(500 + LOCAL)}
+
+		CALLFORM SCENE_CALC_{TFLAG:(500 + LOCAL)}
+		IF RESULT == 2
+			CALLFORM SCENE_RESULT_PERFECT_{TFLAG:(500 + LOCAL)}
+			PRINTFORML 《촬영 대성공》
+		ELSEIF RESULT == 1
+			CALLFORM SCENE_RESULT_SUCCESS_{TFLAG:(500 + LOCAL)}
+			PRINTFORML 《촬영 성공》
+		ELSE
+			CALLFORM SCENE_RESULT_FAILED_{TFLAG:(500 + LOCAL)}
+			PRINTFORML 《촬영 실패》
+		ENDIF
+		CALLFORM SCENE_EXP_{TFLAG:(500 + LOCAL)}
+		P += P:10 
+		M += P:4
+		CUSTOMDRAWLINE ･･
+		WAIT
+	ENDIF
+NEXT
+
+PRINTFORML 《모든 씬을 촬영했습니다》
+PRINTL
+PRINTFORML ・%NAME:TARGET%
+PRINTFORM 체력소비　　　　:　　　  
+PRINTFORML {BASE:0} - {P:2}
+BASE:0 -= P:2
+PRINTFORM 기력소비　　　　:　　　  
+PRINTFORML {BASE:1} - {P:3}
+BASE:1 -= P:3
+PRINTL
+FOR LOCAL:3, 0, 90
+	IF TCVAR:(LOCAL:3)
+		; 経験値の加算処理
+		; 経験名が定義されているのみ加算処理を行う
+		IF STRLENS(EXPNAME:(LOCAL:3)) > 0
+			EXP:(LOCAL:3) += TCVAR:(LOCAL:3)
+		ELSE
+			DEBUGPRINTFORML %조사처리(EXP:{(LOCAL:3)},"는")% 정의되지 않았기에 가속처리를 스킵합니다
+		ENDIF
+		SIF TCVAR:(LOCAL:3) != 101
+			PRINTFORML %EXPNAME:(LOCAL:3)% + {TCVAR:(LOCAL:3)}
+	ENDIF
+NEXT
+SIF TALENT:400 == 0
+	TALENT:400 = 1
+PRINTL
+
+CALL AV_POINTCALC
+
+
+BASE:31 -= 10
+
+IF EXP:76 == 0
+	CFLAG:734 = P
+ELSE
+	CFLAG:TARGET:732 = P
+	X = P
+	IF CFLAG:TARGET:731 < X
+		CFLAG:TARGET:731 = CFLAG:TARGET:732
+	ENDIF
+ENDIF
+
+EXP:76 += 1
+EXP:MASTER:9 += 1
+CFLAG:733 += RAND:20
+;ITEM:28 -= 1
+
+
+PRINTFORML 습득 포인트: {P}포인트
+PRINTFORML 　습득 메달: {M}개
+MONEY += P
+WAIT
+BEGIN TURNEND

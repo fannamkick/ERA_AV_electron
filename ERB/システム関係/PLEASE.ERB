@@ -1,0 +1,343 @@
+﻿;=================================================
+;お願い
+;=================================================
+@PLEASE_MAIN
+
+$INPUT_LOOP_01
+
+DRAWLINE
+PRINTL 부탁한다
+PRINTL 《여배우 후보에게 여러가지 일을 부탁합니다》
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+PRINTL 누구에게 부탁합니까?　
+DRAWLINE
+CALL LIFE_LIST_NEW,3
+
+IF RESULT == 999
+	A = 0
+	C = 0
+	R = 0
+	RETURN 0
+ELSEIF RESULT < 1 || RESULT >= CHARANUM
+	GOTO INPUT_LOOP_01
+;臨死中のキャラは排除
+ELSEIF BASE:RESULT:0 < 1
+	GOTO INPUT_LOOP_01
+ELSEIF ABL:RESULT:10 < 3
+	PRINTFORMW 《좀 더 사이 좋아진 뒤에 합시다》
+	GOTO INPUT_LOOP_01
+ENDIF
+
+TARGET = RESULT
+
+$INPUT_LOOP_02
+
+A = 0
+C = 0
+R = 0
+S = 0
+
+DRAWLINE
+
+PRINTFORML %CALLNAME:TARGET%에게 어떤 걸 부탁할까요?
+DRAWLINE
+
+IF CFLAG:684 == 0
+	PRINTL  [ 0] - 에스테틱에 다니게한다　　　(월당: 10000포인트)
+ENDIF
+IF CFLAG:684 == 0
+	PRINTL  [ 1] - 체육관에 다니게한다　　　　(월당: 10000포인트)
+ENDIF
+IF (BASE:9 <= 18 && CFLAG:684 == 0) && (TALENT:220 == 1 || TALENT:221 == 1 || TALENT:222 == 1)
+	PRINTL  [ 2] - 학원에 다니게한다　　　　　(월당: 10000포인트)
+ENDIF
+IF CFLAG:684 == 1
+	PRINTL  [ 3] - 다니던 것을 그만두게한다
+ENDIF
+IF FLAG:556 == 0 && CFLAG:671 == 0
+	PRINTL  [ 4] - 도시락을 만들게한다
+ENDIF
+IF FLAG:556 == 1 && CFLAG:671 == 1
+	PRINTL  [ 4] - 도시락 만드는 것을 그만두게한다
+ENDIF
+IF CFLAG:607 == 0
+	PRINTL  [ 5] - 제모를 그만두게한다　　　　(굴복의 구슬×5000)
+ENDIF
+IF CFLAG:613 == 0 && CFLAG:621 != 1 && TALENT:184 == 0 && TALENT:85 == 0 && FLAG:540 == 0
+	PRINTL  [ 6] - 미팅에 참가하게한다
+ELSEIF CFLAG:613 == 1 && CFLAG:621 != 1 && TALENT:184 == 0 && TALENT:85 == 0 && FLAG:540 == 0
+	PRINTL  [ 6] - 미팅 참가를 중지시킨다
+ENDIF
+IF CFLAG:683 == 0
+	PRINTL  [ 7] - 신작 애니나 만화를 체크하게 한다
+ENDIF
+IF CFLAG:683 == 1
+	PRINTL  [ 7] - 신작 애니나 만화를 체크하는 것을 그만두게한다
+ENDIF
+IF CFLAG:60 == 0 && CFLAG:MASTER:65 == 0
+	PRINTL  [ 8] - 매일 아침 일으켜 준다
+ENDIF
+IF CFLAG:60 == 1 && CFLAG:MASTER:65 == 1
+	PRINTL  [ 8] - 매일 아침 일으키는 것을 그만두게한다
+ENDIF
+PRINTL  [ 9] - 예명을 변경시킨다
+						;****痴漢誘惑追加ここから****
+IF CFLAG:690 == 0 && JUEL:5 >= 5000
+	PRINTL  [10] - 치한을 당하게 한다(욕정의 구슬×5000)
+ELSEIF CFLAG:690 == 1
+	PRINTL  [10] - 치한 상대를 그만두게 한다
+ENDIF
+						;****痴漢誘惑追加ここまで****
+IF TALENT:203 == 0 && TALENT:402 == 0 && TALENT:421 == 0
+	PRINTL  [11] - 아르바이트를 시킨다
+ENDIF
+
+IF CFLAG:691 == 0 && ABL:11 >= 4 && TALENT:425 == 0 && TALENT:85 == 0 && TALENT:76 == 1
+	PRINTL  [12] - 섹프를 소개해준다
+ELSEIF CFLAG:691 == 0 && ABL:11 >= 4 && TALENT:425 == 0 && TALENT:85 == 0 && TALENT:76 == 0
+	PRINTFORML  [12] - %타겟을()% 다른 남자가 안게한다
+ELSEIF CFLAG:691 == 0 && ABL:11 >= 4 && TALENT:85 == 1 && TALENT:76 == 0
+	PRINTFORML  [12] - %타겟을()% 다른 남자가 안게한다
+ELSEIF CFLAG:691 == 0 && ABL:11 >= 4 && TALENT:85 == 1 && TALENT:76 == 1
+	PRINTFORML  [12] - 바람SEX를 허가한다
+ELSEIF CFLAG:691 == 1
+	PRINTL  [12] - 섹프와 인연을 끊게한다
+ENDIF
+PRINTL  [13] - 일인칭을 바꾸게 한다
+
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;/////2012/09/23改造部分ここから/////
+;TARGETをTに退避
+T = TARGET
+
+;前後のキャラボタンを用意する
+PRINTFORMLC \@(T <= 1) ? %" " * 16% # [1001] 이전 캐릭터\@
+PRINTLC [999] 리스트로 돌아간다
+PRINTFORMLC \@(T >= CHARANUM - 1) ? %" " * 16% # [1003] 다음 캐릭터\@
+PRINTL
+PRINTFORMLC %" " * 24% [1000] 메인 화면으로 돌아간다
+
+;/////2012/09/23改造部分ここまで/////
+
+INPUT
+
+IF RESULT == 0 && CFLAG:684 == 0
+	PRINTFORMW 《%CALLNAME:TARGET%에게 에스테틱에 다녀달라고 부탁했습니다》
+	CFLAG:680 = 1
+	CFLAG:684 = 1
+	FLAG:557 += 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 1 && CFLAG:684 == 0
+	PRINTFORMW 《%CALLNAME:TARGET%에게 체육관에 다녀달라고 부탁했습니다》
+	CFLAG:681 = 1
+	CFLAG:684 = 1
+	FLAG:557 += 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 2 && ((BASE:9 <= 18 && CFLAG:684 == 0) && (TALENT:220 == 1 || TALENT:221 == 1 || TALENT:222 == 1))
+	PRINTFORMW 《%CALLNAME:TARGET%에게 학원에 다녀달라고 부탁했습니다》
+	CFLAG:682 = 1
+	CFLAG:684 = 1
+	FLAG:557 += 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 3 && CFLAG:684 == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 다니던 곳을 그만두어달라고 부탁했습니다》
+	CFLAG:680 = 0
+	CFLAG:681 = 0
+	CFLAG:682 = 0
+	CFLAG:684 = 0
+	FLAG:557 -= 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 4 && FLAG:556 == 0 && CFLAG:671 == 0
+	PRINTFORMW %플레이어는()% %CALLNAME:TARGET%에게 도시락을 만들어달라고 부탁했다……
+	PRINTFORM %타겟은()% 
+	IF ABL:73 <= 2
+		PRINTFORM 자신없는 표정으로 
+	ELSEIF ABL:73 >= 3
+		PRINTFORM %플레이어가()% 먹고 싶어하는 것을 메모하면서 
+	ENDIF
+	PRINTFORML 끄덕이고, 내일부터 곧바로 만들어오겠다고했다
+	IF TALENT:85 == 1
+		PRINTFORML 좋아하는 사람에게 도시락을 만들어 줄 수 있는 것이 기쁜것인지, 뺨을 붉히고 있다
+	ENDIF
+	PRINTFORMW 《%CALLNAME:TARGET%에게 도시락을 만들어달라고 부탁했습니다》
+	FLAG:556 = 1
+	CFLAG:671 = 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 4 && FLAG:556 == 1 && CFLAG:671 == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 도시락 만드는 것을 그만두어달라고 부탁했습니다》
+	FLAG:556 = 0
+	CFLAG:671 = 0
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 5 && CFLAG:607 == 0 && JUEL:4 > 4999
+	PRINTFORMW %플레이어는()% %CALLNAME:TARGET%에게 겨털 제모를 그만두라고 부탁했다……
+	PRINTFORM 그런 엉뚱한 부탁을 하는 %플레이어를()%, %타겟은()% 차가운 눈으로 응시했지만 
+	PRINTFORML 신뢰하고 있는 %CALLNAME:MASTER%의 부탁을 무시할수도 없었는지, 마지못해 수긍했다
+	PRINTFORMW 《%타겟은()% 제모를 그만두었습니다》
+	CFLAG:607 = 1
+	JUEL:4 -= 5000
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 5 && (CFLAG:607 == 1 || JUEL:4 < 5000)
+	PRINTFORMW  당신의 부탁은 거절당했습니다……
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 6 && CFLAG:613 == 0 && CFLAG:621 != 1 && TALENT:184 == 0 && TALENT:85 == 0 && FLAG:540 == 0
+	PRINTFORMW 《%CALLNAME:TARGET%에게 미팅에 참가해달라고 부탁했습니다》
+	CFLAG:613 = 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 6 && CFLAG:613 == 1 && CFLAG:621 != 1 && TALENT:184 == 0 && TALENT:85 == 0 && FLAG:540 == 0
+	PRINTFORMW 《%CALLNAME:TARGET%에게 미팅에 나가지 말아달라고 부탁했습니다》
+	CFLAG:613 = 0
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 7 && CFLAG:683 == 0
+	PRINTFORMW 《%CALLNAME:TARGET%에게 신작 애니나 만화를 체크하도록 부탁했습니다》
+	CFLAG:683 = 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 7 && CFLAG:683 == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 신작 애니나 만화를 체크하는 것을 그만두어 달라고 부탁했습니다》
+	CFLAG:683 = 0
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 8 && CFLAG:60 == 0 && CFLAG:MASTER:65 == 0
+	PRINTFORMW 《%CALLNAME:TARGET%에게 매일 아침 일으켜 주도록 부탁했습니다》
+	CFLAG:60 = 1
+	CFLAG:MASTER:65 = 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 8 && CFLAG:60 == 1 && CFLAG:MASTER:65 == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 매일 아침 일으키는 것을 그만두어 달라고 부탁했습니다》
+	CFLAG:60 = 0
+	CFLAG:MASTER:65 = 0
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 9
+	PRINTFORML %CALLNAME:TARGET%의 현재 예명은 %NICKNAME:TARGET%입니다
+	PRINTFORML 변경시킬 예명을 입력해주십시오
+	$INPUTLOOP_NICKNAME
+	INPUTS
+	IF RESULTS == ""
+		PRINTW 변경하지 않습니다
+		GOTO INPUT_LOOP_02
+	ENDIF
+	NICKNAME:TARGET = %RESULTS%
+	PRINTFORML %CALLNAME:TARGET%의 새로운 예명은 %조사처리(RESULTS,"으로")% 괜찮습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUTLOOP_NAMEDECIDE
+	INPUT
+	IF RESULT == 0
+		PRINTFORMW 《%CALLNAME:TARGET%의 예명을 %조사처리(NICKNAME:TARGET,"으로")% 변경했습니다》
+	ELSEIF RESULT == 1
+		PRINTFORML 다시 입력해주십시오
+		GOTO INPUTLOOP_NICKNAME
+	ELSE
+		GOTO INPUTLOOP_NAMEDECIDE
+	ENDIF
+	GOTO INPUT_LOOP_02
+						;****痴漢誘惑追加ここから****
+ELSEIF RESULT == 10 && CFLAG:690 == 0 && JUEL:5 >= 5000
+	PRINTFORMW 《%CALLNAME:TARGET%에게 치한을 유혹해달라고 부탁했습니다》
+	CFLAG:690 = 1
+	JUEL:5 -= 5000
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 10 && CFLAG:690 == 1
+	PRINTFORMW 《%CALLNAME:TARGET%에게 치한을 유혹하지 말라고 부탁했습니다》
+	CFLAG:690 = 0
+	GOTO INPUT_LOOP_02
+						;****痴漢誘惑追加ここまで****
+ELSEIF RESULT == 11 && TALENT:203 == 0 && TALENT:402 == 0 && TALENT:421 == 0
+	CALL ARBEIT_MAIN
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 12 && CFLAG:691 == 0 && ABL:11 >= 4 && TALENT:425 == 0
+	PRINTFORM %플레이어는()% 
+	IF TALENT:85 == 0 && TALENT:76 == 1
+		PRINTFORM %CALLNAME:TARGET%에게 섹프를 소개해주기로 
+	ELSEIF TALENT:85 == 01 && TALENT:76 == 0
+		PRINTFORM %타겟을()% 다른 남자가 안게
+	ELSEIF TALENT:85 == 1 && TALENT:76 == 1
+		PRINTFORM %CALLNAME:TARGET%의 바람SEX를 허가해주기로
+	ELSE
+		PRINTFORM %타겟을()% 다른 남자가 안게
+	ENDIF
+	PRINTFORMW 했다……
+	PRINTFORM 그런 엉뚱한 부탁을 하는 %플레이어를()%, %타겟은()% 차가운 눈으로 응시했지만 
+	PRINTFORML 신뢰하고 있는 %CALLNAME:MASTER%의 부탁을 무시할수도 없었는지, 마지못해 수긍했다
+	PRINTFORMW 《%타겟은()% 키류 조직이 운영하는 만남사이트에 등록했다》
+	CFLAG:691 = 1
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 12 && TALENT:425 == 1
+	PRINTFORMW 《%타겟은()% 섹프와 인연을 끊었다》
+	CFLAG:691 = 0
+	TALENT:425 = 0 
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 12 && CFLAG:691 == 1
+	PRINTFORMW 《%타겟은()% 만남사이트를 탈퇴했다》
+	CFLAG:691 = 0
+	TALENT:425 = 0 
+	GOTO INPUT_LOOP_02
+ELSEIF RESULT == 13
+	PRINTFORML %CALLNAME:TARGET%의 현재 일인칭은 %CSTR:9%입니다
+	PRINTFORML 변경할 일인칭을 입력해주세요
+	$INPUTLOOP_CALLME
+	INPUTS
+	IF RESULTS == ""
+		PRINTW 변경하지 않습니다
+		GOTO INPUT_LOOP_02
+	ENDIF
+	PRINTFORML %CALLNAME:TARGET%의 일인칭을 %조사처리(RESULTS,"로")% 바꾸겠습니까?
+	PRINTL [0] - 네
+	PRINTL [1] - 아니오
+	$INPUTLOOP_CALLMENAMEDECIDE
+	INPUT
+	IF RESULT == 0
+		CSTR:9 = %RESULTS%
+		PRINTFORMW 《%CALLNAME:TARGET%의 일인칭이 %조사처리(CSTR:9,"로")% 변했습니다》
+	ELSEIF RESULT == 1
+		PRINTFORML 다시 입력해주십시오
+		GOTO INPUTLOOP_CALLME
+	ELSE
+		GOTO INPUTLOOP_CALLMENAMEDECIDE
+	ENDIF
+ELSEIF RESULT == 999
+	GOTO INPUT_LOOP_01
+;/////2012/09/23改造部分ここから/////
+ELSEIF RESULT == 1000
+	RETURN 0
+
+ELSEIF RESULT == 1001 && T > 1
+	LOCAL = T-1
+	IF ABL:LOCAL:10 < 3
+		PRINTFORMW 《좀 더 사이 좋아진 뒤에 합시다》
+		GOTO INPUT_LOOP_02
+	ENDIF
+	PRINTFORM %조사처리(CALLNAME:TARGET,"으로")%はなく, 
+	TARGET = T - 1
+	PRINTFORMW %NAME:TARGET%에게 부탁하기로 했습니다
+	GOTO INPUT_LOOP_02
+
+ELSEIF RESULT == 1003 && T < CHARANUM - 1
+	LOCAL = T+1
+	IF ABL:LOCAL:10 < 3
+		PRINTFORMW 《좀 더 사이 좋아진 뒤에 합시다》
+		GOTO INPUT_LOOP_02
+	ENDIF
+	PRINTFORM %CALLNAME:TARGET%말고 
+	TARGET = T + 1
+	PRINTFORMW %NAME:TARGET%에게 부탁하기로 했습니다
+	GOTO INPUT_LOOP_02
+ELSE
+	GOTO INPUT_LOOP_02
+ENDIF
+;/////2012/09/23改造部分ここまで/////
+;-------------------------------------------------
+;お願い用メンバーリスト
+;-------------------------------------------------
+@LIFE_LIST_PLEASE
+REPEAT CHARANUM
+	;主人公は排除
+	SIF COUNT == 0
+		CONTINUE
+	SIF CFLAG:COUNT:140 == 1
+		CONTINUE
+	TARGET = COUNT
+	PRINTFORM  [{COUNT}] %NAME:COUNT% 
+	IF CFLAG:41 && (CFLAG:45 >= 0 || CFLAG:46 >= 0)
+	ENDIF
+	PRINTL 
+REND

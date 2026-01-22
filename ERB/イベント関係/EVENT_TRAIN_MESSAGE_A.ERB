@@ -1,0 +1,1601 @@
+﻿;========================================================
+;調教時メッセージ
+;========================================================
+;eratohoRR v1.31.6より一部改変して流用
+;========================================================
+;調教ソース確認後に表示されるテキスト
+;SOURCR.ERBより呼び出し
+;主にパラメータの上昇による反応や, 「その調教の結果どういう事が起こったか」を描写するのに使う
+;表示される順番はTRAIN_MESSAGE_B→TRAIN_MESSAGE_Aである事に注意
+;>@TEXT→@TRAIN_MESSAGE_Cに改名
+;@TRAIN_MESSAGE_CをTRAIN_MESSAGE_Aにマージ
+;失神パッチ適応用の処理を追加
+;========================================================
+@TRAIN_MESSAGE_A
+;調教テキスト省略設定の場合は戻る
+SIF (FLAG:6 & 1)
+	RETURN 0
+
+PRINTL ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+
+;--------------------------------------------------------
+;스마타で사정
+;--------------------------------------------------------
+IF TFLAG:9 == 1
+	;투구비비기の場合
+	IF SELECTCOM == 122
+		;相手も사정
+		IF TFLAG:10 >= 1
+			PRINTL 두 사람은 동시에 사정해, 서로의 페니스에 정액을 뿌렸다…
+		;主人のみ사정
+		ELSE
+			PRINTFORML 뿜어져나온 정액이 %CALLNAME:TARGET%의 페니스를 더럽혔다…
+		ENDIF
+	;스마타
+	ELSE
+	SIF SELECTCOM == 33
+		PRINTFORML 뿜어져나온 정액이 %CALLNAME:TARGET%의 몸을 더럽혔다…
+	SIF SELECTCOM == 62
+		PRINTL 뿜어져나온 정액이 두 사람의 몸을 더럽혔다…
+	ENDIF
+
+;--------------------------------------------------------
+;스마타で대량사정
+;--------------------------------------------------------
+ELSEIF TFLAG:9 == 2
+	;투구비비기の場合
+	IF SELECTCOM == 122
+		;相手も사정
+		IF TFLAG:10 >= 1
+			PRINTL 두 사람은 동시에 사정해, 서로의 페니스에 대량의 정액을 뿌렸다…
+		;主人のみ사정
+		ELSE
+			PRINTFORML 뿜어져나온 대량의 정액이 %CALLNAME:TARGET%의 페니스를 질퍽질퍽하게 더럽혔다…
+		ENDIF
+	;스마타
+	ELSE
+	SIF SELECTCOM == 33
+		PRINTFORML %CALLNAME:TARGET%의 몸은 뿜어져나온 대량의 정액에 범벅이 되었다…
+	SIF SELECTCOM == 62
+		PRINTL 두 사람의 몸은 뿜어져나온 대량의 정액에 범벅이 되었다…
+	ENDIF
+ENDIF
+
+;--------------------------------------------------------
+;촉수が사정
+;--------------------------------------------------------
+SIF TFLAG:15 == 1
+	PRINTFORML %CALLNAME:TARGET%에게 들러붙은 촉수가 끈적끈적한 체액을 뿜어냈다…
+
+;--------------------------------------------------------
+;촉수が대량사정
+;--------------------------------------------------------
+SIF TFLAG:15 == 2
+	PRINTFORML %CALLNAME:TARGET%의 전신에 들러붙은 촉수가 일제히 끈적끈적한 체액을 뿜어냈다…
+
+;--------------------------------------------------------
+;犬が사정
+;--------------------------------------------------------
+IF TFLAG:16 > 0
+	IF SELECTCOM == 21 || SELECTCOM == 34
+		PRINTFORML %CALLNAME:TARGET%의 질내에, 짐승의 악취가 나는 뜨거운 정액이 뿜어져나왔다…
+	ELSEIF SELECTCOM == 27
+		PRINTFORML %CALLNAME:TARGET%의 직장에, 짐승의 악취가 나는 뜨거운 정액이 뿜어져나왔다…
+	ELSEIF SELECTCOM == 31
+		PRINTFORML %CALLNAME:TARGET%의 입속에, 짐승의 악취가 나는 뜨거운 정액이 뿜어져나왔다…
+	ELSEIF SELECTCOM == 30
+		PRINTFORML %CALLNAME:TARGET%의 손바닥에, 짐승의 악취가 나는 뜨거운 정액이 뿜어져나왔다…
+	ENDIF
+ENDIF
+;--------------------------------------------------------
+;조수를 범한다で사정
+;--------------------------------------------------------
+IF TFLAG:7 > 0
+	SIF TFLAG:7 == 1
+		PRINTFORML %CALLNAME:TARGET%의 눈앞에서, %CALLNAME:ASSI%의 안쪽에 정액을 쏟아부었다…
+	SIF TFLAG:7 == 2
+		PRINTFORML %CALLNAME:TARGET%의 눈앞에서, %CALLNAME:ASSI%의 안쪽에 흘러넘칠 정도로 정액을 쏟아부었다…
+	SIF ABL:11 > 3 || ABL:32 > 2 && TFLAG:899 <= 1
+		PRINTFORML %타겟은()% 그 모습을 부러운듯이 바라보고 있다…
+ENDIF
+
+;--------------------------------------------------------
+;フェラ系コマンドや파이즈리で, 사정＋절정の際の冠頭文(修正)
+;--------------------------------------------------------
+IF TFLAG:0 > 0 && TFLAG:29 > 0
+	IF SELECTCOM == 32
+		IF RAND:3 == 0
+			PRINTFORM 양 가슴에 눌려서 감싸이는 압박감에
+		ELSEIF RAND:2 == 0
+			PRINTFORM ――
+			SIF TALENT:76
+				PRINTFORM 요염하게 
+			IF TALENT:114
+				PRINTFORM 흘러넘칠 것만같은 유방을 
+			ELSEIF TALENT:110
+				PRINTFORM 풍만한 유방을 
+			ELSEIF TALENT:109
+				PRINTFORM 조금 부족한 느낌이 드는 유방을 
+			ELSEIF TALENT:116
+				PRINTFORM 납짝한 가슴을 
+			ELSE
+				PRINTFORM 부드러운 유방을 
+			ENDIF
+			SIF TALENT:85
+				PRINTFORM 사랑스럽게 
+			PRINTFORM 문질러오는 
+			PRINTFORM %CALLNAME:TARGET%에게 
+		ELSE
+			PRINTFORM 음경이 %CALLNAME:TARGET%의 
+			IF TALENT:114
+				PRINTFORM 흘러넘칠 듯한 유방에 
+			ELSEIF TALENT:110
+				PRINTFORM 포근한 가슴에 
+			ELSEIF TALENT:109
+				PRINTFORM 살짝 부풀어오른 유방에 
+			ELSEIF TALENT:116
+				PRINTFORM 부드러운 가슴의 피부에 
+			ELSE 
+				PRINTFORM 모양 좋은 유방에 
+			ENDIF
+			IF TALENT:110 || TALENT:114
+				PRINTFORM 파묻히는 감촉에
+			ELSE
+				PRINTFORM 쓸어올려지는 감촉에
+			ENDIF
+		ENDIF
+	ELSE
+		IF RAND:4 == 0
+			PRINT 달라붙어오는 입안 점막의 자극에
+		ELSEIF RAND:3 == 0
+			PRINT 뒤에서부터 귀두를 기어다니는 혀의 감각에
+		ELSEIF RAND:2 == 0
+			PRINT 음경을 
+			SIF TALENT:76
+				PRINT 음란하게 
+			SIF TALENT:85
+				PRINT 관능적으로 
+			PRINT 훑는 목구멍의 쾌감에
+		ELSEIF RAND:2 == 0
+			PRINT 귀두 뒷쪽을 문질러올리는 입술의 부드러움에
+		ELSE
+			PRINT 요도를 핥는 혀끝의 움직임에
+		ENDIF
+	ENDIF
+	;더블 펠라, 더블 파이즈리
+	IF SELECTCOM == 68 || SELECTCOM == 71
+		IF RAND:4 == 0
+			PRINTFORMW , %플레이어가()% 넘쳐오는 정액을 털어놓자 
+		ELSEIF RAND:3 == 0
+			PRINTFORMW  자극을 받아, %플레이어는()% 사정을 막을 수가 없었다.
+		ELSEIF RAND:2 == 0
+			PRINTFORML  짜내어진 %CALLNAME:MASTER%의 정액이
+			PRINTFORMW %CALLNAME:TARGET%들의 몸을 더럽혀갔다.
+			PRINTFORM 그것이 방아쇠가 되었는지 
+		ELSE
+			PRINTFORMW  격렬하게 욕정해, %플레이어는()% 두사람의 상기된 얼굴을 향해 사정을 했다.
+			PRINTFORM 그리고 
+		ENDIF
+	;두개 펠라
+	ELSEIF SELECTCOM == 6
+		IF TFLAG:6
+			PRINTFORMW , %플레이어와()% %플레이어가()% 넘쳐오는 정액을 털어놓자마자, 
+		ELSE
+			PRINTFORMW , %플레이어가()% 넘쳐오는 정액을 털어놓자 
+		ENDIF
+	;その他
+	ELSE
+		IF RAND:4 == 0
+			PRINTFORMW , %플레이어가()% 넘쳐오는 정액을 털어놓자 
+		ELSEIF RAND:3 == 0
+			PRINTFORMW  자극을 받아, %플레이어는()% 사정을 막을 수가 없었다.
+		ELSEIF RAND:2 == 0
+			PRINTFORML  짜내어진 %CALLNAME:PLAYER%의 정액이
+			PRINTFORMW %CALLNAME:TARGET%의 몸을 더럽혀갔다.
+			PRINTFORM 그것이 방아쇠가 되었는지 
+		ELSE
+			PRINTFORMW 격렬하게 욕정해, %플레이어는()% 그 상기된 얼굴을 향해 사정했다.
+			PRINTFORM 그리고 
+		ENDIF
+	ENDIF
+ENDIF
+
+;--------------------------------------------------------
+;口で사정
+;--------------------------------------------------------
+IF TFLAG:0 == 1
+	;펠라치오
+	IF SELECTCOM == 31
+		IF ABL:16 >= 3
+			IF RAND:6 == 0
+				PRINTFORML %타겟은()% 꿀꺽하고 정액을 들이마셨다…
+			ELSEIF RAND:5 == 0
+				PRINTFORML 정액을 입으로 받아들이고, %타겟은()% 맛을 보듯이 천천히 삼켰다…
+			ELSEIF RAND:4 == 0
+				PRINTFORML %타겟은()% 목구멍에 흘러들어가는 하얗고 탁한 액체의 감각에 아랫배를 뜨겁게 달구었다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML 음경을 맛있게 훑고있는 %CALLNAME:TARGET%의 목구멍에, %CALLNAME:PLAYER%의 정액이 얽혀들어갔다…
+			ELSEIF RAND:2
+				PRINTFORML %타겟은()% 입안에 튀어들어오는 정액을 뱃속에 넣으려는 듯이 혀를 움직이고 있다…
+			ELSE
+				PRINTFORMW %타겟은()% 뺨을 오무리고, 가만히 정액의 분출을 받아들였다…
+				PRINTFORMW 그리고 맥동이 사라지자, 조용히 입에 모은 정액을 음경에 바르기 시작해 
+				PRINTFORML 다시 촉촉한 입술로 뒤덮어갔다…
+			ENDIF
+		ELSE
+			IF RAND:4 == 0
+				PRINTFORML 정액을 %CALLNAME:TARGET%의 입안에 흘려넣었다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML %타겟은()% 기세 좋게 뿜어나온 정액에 숨이 막힐 것만 같아서, 삼키지 않을 수가 없게되었다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML 맥박치는 음경은, 사정후에도 %CALLNAME:TARGET%의 입안에 머물러서, 정액을 토해내는 것을 허락하지 않았다…
+			ELSE 
+				PRINTFORML %타겟은()% 입안에 흘러들어온 정액을 삼키지 못하고, 괴로운 듯이 게워내고 있다…
+			ENDIF
+		ENDIF
+	;파이즈리
+	ELSEIF SELECTCOM == 32
+		IF TALENT:110 || TALENT:114
+			PRINTFORML %CALLNAME:TARGET%의 가슴 골짜기에 정액이 고여 있다…
+		ELSE
+			IF RAND:3 == 0 && TALENT:116 == 0
+				PRINTFORML 미끄덩한 정액이 두 가슴에서 번들거리고 있다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML %CALLNAME:TARGET%의 가슴에 하얀 줄무늬가 흘려내려갔다…
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%의 가슴팍부터 얼굴까지 정액에 흩뿌려졌다…
+			ENDIF
+		ENDIF
+	;더블 펠라
+	ELSEIF SELECTCOM == 68
+		PRINTFORML %타겟과()% %조수는()% 정액을 입으로 받아들이고 있다…
+	;식스나인
+	ELSEIF SELECTCOM == 69
+		IF RAND:4 == 0
+			PRINTFORML %타겟은()% 비부의 자극에 몸을 떨면서 정액을 삼키고 있다…
+		ELSEIF RAND:3 == 0
+			PRINTFORML %CALLNAME:PLAYER%의 혀가 가져오는 쾌감에 희롱당하면서도, %타겟은()% 탐욕스럽게 정액을 삼키려하고 있다…
+		ELSEIF RAND:2 == 0
+			PRINTFORML %플레이어가()% 무심코 혀끝을 쉬는 틈을 타, %타겟은()% 음경을 잡고 빨면서 정액을 짜내었다.
+		ELSE
+			IF TFLAG:29 > 0
+				PRINTFORML %CALLNAME:TARGET%의 절정에 맞춰서, %CALLNAME:PLAYER%도 사정을 했다.
+			ELSE
+				PRINTFORML 두사람은 상대를 보내려고 애를 썼지만, %CALLNAME:PLAYER% 쪽이 먼저 절정에 도달하고말았다.
+				PRINTFORML %CALLNAME:TARGET%의 만족스러운 얼굴 위를, 정액이 실을 늘어뜨리면서 흘러떨어졌다.
+			ENDIF
+		ENDIF
+	;이라마치오, 딥스로트
+	ELSEIF SELECTCOM == 80 || SELECTCOM == 124
+		IF ABL:16 >= 3
+			IF RAND:5 == 0
+				PRINTFORML %타겟은()% 꿀꺽하고 정액을 들이마셨다…
+			ELSEIF RAND:4 == 0
+				PRINTFORML 정액을 입으로 받아들이고, %타겟은()% 맛을 보듯이 천천히 삼켰다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML %타겟은()% 목구멍에 흘러들어가는 하얗고 탁한 액체의 감각에 아랫배를 뜨겁게 달구었다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML 음경을 맛있게 훑고있는 %CALLNAME:TARGET%의 목구멍에, %CALLNAME:PLAYER%의 정액이 얽혀들어갔다…
+			ELSE
+				PRINTFORML %타겟은()% 입안에 튀어들어오는 정액을 뱃속에 넣으려는 듯이 혀를 움직이고 있다…
+			ENDIF
+		ELSE
+			IF RAND:3 == 0
+				PRINTFORML %CALLNAME:TARGET%의 머리를 잡고, 목 안쪽에 정액을 방출했다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML 머리를 붙잡힌 %타겟은()%, 흘러들어오는 정액을 토해내지도 못하고 강제로 정액을 마셨다…
+			ELSE
+				PRINTFORML 구토하는 %타겟을()% 아랑곳하지 않고 찔러넣어진 음경이, 목구멍에서 튀어오르듯이 맥박치고 있다…
+			ENDIF
+		ENDIF
+	;파이즈리펠라
+	ELSEIF SELECTCOM == 123
+		IF TALENT:109
+			PRINTFORML %플레이어는()% 페니스를 가슴에 문지르는 %CALLNAME:TARGET%의 입 안에다 정액을 들이부었다…
+		ELSE
+			PRINTFORML %플레이어는()% 페니스를 가슴 사이에 끼운 %CALLNAME:TARGET%의 입 안에다 정액을 들이부었다…
+		ENDIF
+	;수음펠라
+	ELSEIF SELECTCOM == 126
+		IF ABL:16 >= 3
+				PRINTFORML %타겟은()% 꿀꺽하고 정액을 들이마셨다…
+		ELSE
+			PRINTFORML 정액을 %CALLNAME:TARGET%의 입 안에다 흘려넣었다…
+		ENDIF
+		SIF ABL:32 >= 3 && TALENT:PLAYER:122
+			PRINTFORML %타겟은()% 구슬을 어루만지며, 막대를 짜내듯 정액을 들이마시고 있다
+		SIF ABL:32 >= 3 && TALENT:PLAYER:121
+			PRINTFORML %타겟은()% 막대를 짜내듯 정액을 들이마시고 있다
+	;바큠펠라
+	ELSEIF SELECTCOM == 127
+		IF ABL:16 >= 3
+			PRINTFORML 페니스에 음란하게 달라붙는 %CALLNAME:TARGET%의 입 속에 정액을 뿜어냈다…
+		ELSE
+			PRINTFORML 페니스에 달라붙는 %CALLNAME:TARGET%의 입 속에 정액을 뿜어냈다…
+		ENDIF
+		SIF ABL:32 >= 3
+			PRINTFORML %타겟은()% 황홀해하는 표정으로 페니스와 정액을 삼키고 있다…
+	ENDIF
+;--------------------------------------------------------
+;口で대량사정
+;--------------------------------------------------------
+ELSEIF TFLAG:0 == 2
+	;펠라치오
+	IF SELECTCOM == 31
+		IF ABL:16 >= 3
+			IF RAND:9 == 0
+				PRINTFORML 채 삼키지 못한 정액이 %CALLNAME:TARGET%의 입에서 흘러나왔다
+			ELSEIF RAND:8 == 0
+				PRINTFORML %타겟은()% 입에서 흘러서 떨어뜨릴뻔한 정액을, 필사적으로 막고 전부 마시고 있다…
+			ELSEIF RAND:7 == 0
+				PRINTFORML %타겟은()% 숨이 막힐 정도로 많은 정액의 양에 놀라면서도, 더욱 목을 울리며 전부 삼켰다…
+			ELSEIF RAND:6 == 0
+				PRINTFORML 목구멍을 침입해 들어오는 엄청난 정액의 흐름에, %타겟은()% 몸을 뜨겁게 흥분시켜갔다…
+			ELSEIF RAND:5 == 0
+				PRINTFORML %타겟은()% 목구멍에서 튀어나올 정도의 정액에 목이 메여, 더러워진 턱을 닦고 다시 입을 맞추었다…
+			ELSEIF RAND:4 == 0
+				PRINTFORML 페니스 그자체를 삼켜버릴 듯한 기세로 꿈틀대는 %CALLNAME:TARGET%의 목구멍은 
+				PRINTFORML 끝없이 토해내지는 정액을 요염하게 받아들였다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML %타겟은()% 혀위에 내뿜어져나오는 하얗고 탁한 액체를, 열심히 위장에 받아들이듯이 계속 봉사했다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML %CALLNAME:TARGET%의 목에 삽입된 %CALLNAME:PLAYER%의 음경은, 
+				PRINTFORML 다량의 정액으로 채워진 목구멍으로 계속 애무를 받고 있다…
+			ELSE
+				PRINTFORML 대량의 정액을 간신히 입안에 받아들이고, %타겟은()% 맛보듯이 천천히 삼켰다…
+			ENDIF
+		ELSE
+			IF RAND:2 == 0
+				PRINTFORML 흘러넘칠 정도로 많은 정액이 %CALLNAME:TARGET%의 목구멍을 두들겼다…
+			ELSE
+				PRINTFORML 방출된 대량의 정액이, 맥박치는 음경과 함께 %CALLNAME:TARGET%의 목을 점령하였다…
+			ENDIF
+		ENDIF
+	;파이즈리
+	ELSEIF SELECTCOM == 32
+		IF RAND:3 == 0 && TALENT:116 == 0
+			PRINTFORML 미끄덩한 정액이 두 가슴에서 번들거리고 있다…
+		ELSEIF RAND:2 == 0
+			PRINTFORML 튀어나온 정액이 %CALLNAME:TARGET%의 얼굴에서 가슴팍까지 뒤덮고 있다…
+		ELSE
+			PRINTFORML 정액이 %CALLNAME:TARGET%의 가슴을 하얗게 물들였다…
+		ENDIF
+	;더블 펠라
+	ELSEIF SELECTCOM == 68
+		PRINTFORML 대량의 정액이 %타겟과()% %CALLNAME:ASSI%의 얼굴에 쏟아졌다…
+	;식스나인
+	ELSEIF SELECTCOM == 69
+		IF RAND:4 == 0
+			PRINTFORML %타겟은()% 비부의 자극에 몸을 떨면서 정액을 삼키고 있다…
+		ELSEIF RAND:3 == 0
+			PRINTFORML %CALLNAME:PLAYER%의 혀가 가져오는 쾌감에 희롱당하면서도, %타겟은()% 탐욕스럽게 정액을 삼키려하고 있다…
+		ELSEIF RAND:2 == 0
+			PRINTFORML %플레이어가()% 무심코 혀끝을 쉬는 틈을 타, %타겟은()% 음경을 잡고 빨면서, 정액을 짜내었다.
+		ELSE
+			IF TFLAG:29 > 0
+				PRINTFORML %CALLNAME:TARGET%의 절정에 맞춰서, %CALLNAME:PLAYER%도 사정을 했다.
+			ELSE
+				PRINTFORML 두사람은 상대를 보내려고 애를 썼지만, %CALLNAME:PLAYER% 쪽이 먼저 절정에 도달하고말았다.
+				PRINTFORML %CALLNAME:TARGET%의 만족스러운 얼굴 위를, 정액이 실을 늘어뜨리면서 흘러떨어졌다.
+			ENDIF
+		ENDIF
+	;이라마치오, 딥스로트
+	ELSEIF SELECTCOM == 80 || SELECTCOM == 124
+		IF ABL:16 >= 3
+			IF RAND:9 == 0
+				PRINTFORML 채 삼키지 못한 정액이 %CALLNAME:TARGET%의 입에서 흘러나왔다
+			ELSEIF RAND:8 == 0
+				PRINTFORML %타겟은()% 입에서 흘러서 떨어뜨릴뻔한 정액을, 필사적으로 막고 전부 마시고 있다…
+			ELSEIF RAND:7 == 0
+				PRINTFORML %타겟은()% 숨이 막힐 정도로 많은 정액의 양에 놀라면서도, 더욱 목을 울리며 전부 삼켰다…
+			ELSEIF RAND:6 == 0
+				PRINTFORML 목구멍을 침입해 들어오는 엄청난 정액의 흐름에, %타겟은()% 몸을 뜨겁게 흥분시켜갔다…
+			ELSEIF RAND:5 == 0
+				PRINTFORML %타겟은()% 목구멍에서 튀어나올 정도의 정액에 목이 메여, 더러워진 턱을 닦고 다시 입을 맞추었다…
+			ELSEIF RAND:4 == 0
+				PRINTFORML 페니스 그자체를 삼켜버릴 듯한 기세로 꿈틀대는 %CALLNAME:TARGET%의 목구멍은 
+				PRINTFORML 끝없이 토해내지는 정액을 요염하게 받아들였다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML %타겟은()% 혀위에 내뿜어져나오는 하얗고 탁한 액체를, 열심히 위장에 받아들이듯이 계속 봉사했다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML %CALLNAME:TARGET%의 목에 삽입된 %CALLNAME:PLAYER%의 음경은, 
+				PRINTFORML 다량의 정액으로 채워진 목구멍으로 계속 애무를 받고 있다…
+			ELSE
+				PRINTFORML 대량의 정액을 간신히 입안에 받아들이고, %타겟은()% 맛보듯이 천천히 삼켰다…
+			ENDIF
+		ELSE
+			IF RAND:2 == 0
+				PRINTFORML %CALLNAME:TARGET%의 목안에 방출된 정액이, 입에서 흘러넘쳐나왔다…
+			ELSE
+				PRINTFORML 맥박치는 %CALLNAME:PLAYER%의 음경이, 자신에게서 뿜어져나온 대량의 정액과 함께 
+				PRINTFORML %CALLNAME:TARGET%의 목구멍을 자극하고 있다…
+			ENDIF
+		ENDIF
+	;파이즈리펠라
+	ELSEIF SELECTCOM == 123
+		IF TALENT:109
+			PRINTFORML %플레이어는()% 페니스를 가슴에 문지르는 %CALLNAME:TARGET%의 입 안에다 정액을 들이부었다…
+		ELSE
+			PRINTFORML %플레이어는()% 페니스를 가슴 사이에 끼운 %CALLNAME:TARGET%의 입 안에다 정액을 들이부었다…
+		ENDIF
+		PRINTL 입에서 흘러넘친 정액이 페니스와 가슴을 하얗게 더럽혀갔다…
+	;수음펠라
+	ELSEIF SELECTCOM == 126
+		IF ABL:16 >= 3
+			PRINTFORML 마시지 못한 정액이 %CALLNAME:TARGET%의 입에서 흘러나왔다…
+		ELSE
+			PRINTFORML 흘러넘칠 정도의 정액이 %CALLNAME:TARGET%의 목을 두들겼다…
+		ENDIF
+		SIF ABL:32 >= 3 && TALENT:PLAYER:122
+			PRINTFORML %타겟은()% 넘치는 정액으로 입 주위가 질척질척하게 된 채로 구슬을 어루만지며, 막대를 짜내듯 정액을 들이마시고 있다
+		SIF ABL:32 >= 3 && TALENT:PLAYER:121
+			PRINTFORML %타겟은()% 넘치는 정액으로 입 주위가 질척질척하게 된 채로 막대를 짜내듯 정액을 들이마시고 있다
+	;바큠펠라
+	ELSEIF SELECTCOM == 127
+		IF ABL:16 >= 3
+			PRINTFORML 페니스에 음란하게 달라붙는 %CALLNAME:TARGET%의 입 속에 대량의 정액을 뿜어냈다…
+		ELSE
+			PRINTFORML 페니스에 달라붙는 %CALLNAME:TARGET%의 입 속에 대량의 정액을 뿜어냈다…
+		ENDIF
+		SIF ABL:32 >= 3
+			PRINTFORML %타겟은()% 정액을 입에서 흘리면서, 황홀해하는 표정으로 페니스와 정액을 들이삼키고 있다…
+	ENDIF
+;--------------------------------------------------------
+;手で사정
+;--------------------------------------------------------
+ELSEIF TFLAG:1 == 1 && ABL:20 <= 2
+	SIF EXP:20 == 0 && TFLAG:899 <= 1
+		PRINT 놀란 표정을 짓는 
+	SIF ABL:32 > 2 && TFLAG:899 <= 1
+		PRINT 황홀해하는 표정을 짓는 
+	PRINTFORML %CALLNAME:TARGET%에게 정액이 흩뿌려졌다…
+ELSEIF TFLAG:1 == 1 && ABL:20 >= 3
+	SIF TEQUIP:55
+		PRINTFORM %CALLNAME:PLAYER%의 얼굴에 앉아 %CALLNAME:PLAYER%의 페니스를 문지르는 
+	PRINTFORM %CALLNAME:TARGET%
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 0
+		PRINTFORM 의 멸시의 시선
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 1
+		PRINTFORM 의 동정섞인 멸시의 시선
+	PRINTFORML 을 받으며
+	PRINTFORML %플레이어는()% %CALLNAME:TARGET%의 손에 욕망을 분출했다…
+	IF TALENT:83
+		PRINTFORM %타겟은()% 손에 묻은 정액을 %CALLNAME:PLAYER%의 육봉에 바르고 
+		PRINTFORML 아직 민감한 귀두를 집요하게 괴롭히고 있다
+	ENDIF
+ELSEIF TFLAG:1 == 3 && ABL:20 >= 3
+	SIF TEQUIP:55
+		PRINTFORM %CALLNAME:PLAYER%의 얼굴에 앉아 %CALLNAME:PLAYER%의 페니스를 문지르는 
+	PRINTFORM %CALLNAME:TARGET%
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 0
+		PRINTFORM 의 멸시의 시선
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 1
+		PRINTFORM 의 동정섞인 멸시의 시선
+	PRINTFORML 을 받으며
+	PRINTFORML %플레이어는()% 오나홀에 욕망을 분출했다…
+	IF TALENT:83
+		PRINTFORM %타겟은()% 방금 사정한 %CALLNAME:PLAYER%의 육봉을 
+		PRINTFORML 오나홀로 집요하게 괴롭히고 있다
+	ENDIF
+;--------------------------------------------------------
+;手で대량사정
+;--------------------------------------------------------
+ELSEIF TFLAG:1 == 2 && ABL:20 <= 2
+	SIF EXP:20 == 0 && TFLAG:899 <= 1
+		PRINT 놀란 표정을 짓는 
+	SIF ABL:32 > 2 && TFLAG:899 <= 1
+		PRINT 황홀해하는 표정을 짓는 
+	PRINTFORML %CALLNAME:TARGET%의 얼굴과 손에 대량의 정액이 흩뿌려졌다…
+ELSEIF TFLAG:1 == 2 && ABL:20 >= 3
+	SIF TEQUIP:55
+		PRINTFORM %CALLNAME:PLAYER%의 얼굴에 앉아 %CALLNAME:PLAYER%의 페니스를 문지르는 
+	PRINTFORM %CALLNAME:TARGET%
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 0
+		PRINTFORM 의 멸시의 시선
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 1
+		PRINTFORM 의 동정섞인 멸시의 시선
+	PRINTFORML 을 받으며
+	PRINTFORML %플레이어는()% %CALLNAME:TARGET%의 손에 대량의 정액을 분출했다…
+	IF TALENT:83
+		PRINTFORM %타겟은()% 손에 묻은 정액을 %CALLNAME:PLAYER%의 육봉에 바르고 
+		PRINTFORML 찰박찰박 음란한 소리를 내며, 아직 민감한 귀두를 집요하게 괴롭히고 있다
+	ENDIF
+ELSEIF TFLAG:1 == 4 && ABL:20 >= 3
+	SIF TEQUIP:55
+		PRINTFORM %CALLNAME:PLAYER%의 얼굴에 앉아 %CALLNAME:PLAYER%의 페니스를 문지르는 
+	PRINTFORM %CALLNAME:TARGET%
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 0
+		PRINTFORM 의 멸시의 시선
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 1
+		PRINTFORM 의 동정섞인 멸시의 시선
+	PRINTFORML 을 받으며
+	PRINTFORML %플레이어는()% 오나홀에 넘쳐날 정도로 대량의 정액을 분출했다…
+	IF TALENT:83
+		PRINTFORM %타겟은()% 방금 사정한 %CALLNAME:PLAYER%의 육봉을 
+		PRINTFORML 찰박찰박 음란한 소리를 내며, 오나홀로 집요하게 괴롭히고 있다
+	ENDIF
+;--------------------------------------------------------
+;足で사정
+;--------------------------------------------------------
+ELSEIF TFLAG:18 == 1
+	PRINTFORM %CALLNAME:TARGET%
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 0
+		PRINTFORM 의 멸시의 시선을 받으며, 
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 1
+		PRINTFORM 의 동정섞인 멸시의 시선을 받으며, 
+	PRINTFORML 그 발에 뜨거운 정액을 뿌렸다…
+;--------------------------------------------------------
+;足で대량사정
+;--------------------------------------------------------
+ELSEIF TFLAG:18 == 2
+	PRINTFORM %CALLNAME:TARGET%
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 0
+		PRINTFORM 의 멸시의 시선을 받으며, 
+	SIF (TALENT:83 || ABL:20 > 2) && TALENT:85 == 1
+		PRINTFORM 의 동정섞인 멸시의 시선을 받으며, 
+	PRINTFORML 그 발에 대량의 뜨거운 정액을 뿌렸다…
+;--------------------------------------------------------
+;尻で사정
+;--------------------------------------------------------
+ELSEIF TFLAG:102  == 1
+	;巨尻の表現が分からない
+	IF TALENT:128
+			PRINTFORML %CALLNAME:TARGET%의 엉덩이 사이에 정액이 고여있다…
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 국부에 정액이 튀었다…
+		ENDIF
+;--------------------------------------------------------
+;尻で대량사정
+;--------------------------------------------------------
+ELSEIF TFLAG:102  == 2
+	;巨尻の表現が分からない
+	IF TALENT:128
+			PRINTFORML %CALLNAME:TARGET%의 엉덩이 계곡에 대량의 정액이 고여있다…
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 국부에 대량의 정액이 튀었다…
+		ENDIF
+;--------------------------------------------------------
+;아무것도 안한다
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 55 && TFLAG:899 <= 1
+	SIF PALAM:5 >= PALAMLV:3
+		PRINTFORM %타겟은()% 숨을 헐떡거리
+	SIF PALAM:5 >= PALAMLV:5
+		PRINT 며, 뜨거운 시선으로 이쪽을 바라보
+	SIF PALAM:5 >= PALAMLV:3 && TEQUIP:21
+		PRINT 고, 바들바들 떨리는 몸을 끌어안
+	SIF PALAM:5 >= PALAMLV:4 && TEQUIP:21
+		PRINT 으
+	SIF PALAM:5 >= PALAMLV:4
+		PRINT 면서, 자꾸만 허벅지를 문지르
+	SIF PALAM:5 >= PALAMLV:3
+		PRINTL 고 있다…
+ENDIF
+;--------------------------------------------------------
+;절정
+;--------------------------------------------------------
+IF TFLAG:29 > 0 && TFLAG:899 <= 1
+	PRINTFORM %타겟은()% 
+	SIF TFLAG:11 == 1
+		PRINT 가슴 끝에서 모유를 늘어뜨리며 
+	SIF TFLAG:11 == 2
+		PRINT 가슴 끝에서 향기를 낼 정도로 대량의 모유를 뿜어내며 
+	SIF TFLAG:29 >= 5 && TFLAG:29 <= 8 && TALENT:121 == 0 && TALENT:122 == 0
+		PRINT 음순에서 투명한 애액을 뿜어내며 
+	SIF TFLAG:29 >= 9 && TALENT:121 == 0 && TALENT:122 == 0
+		PRINT 음순에서 백탁액 섞인 애액을 뿜어내며 
+	SIF TFLAG:10 == 1
+		PRINT 페니스에서 정액을 뿜어내며 
+	SIF TFLAG:10 == 2
+		PRINT 맥동하는 페니스에서 대량의 정액을 흩뿌리며 
+	SIF (TFLAG:29 < 5 || TALENT:121 || TALENT:122) && TFLAG:10 == 0 && TFLAG:11 == 0
+		PRINT 등을 크게 젖히며 
+	IF TFLAG:29 < 12
+		PRINTL 온몸을 떨며 절정에 도달했다
+	ELSE
+		PRINTL 쾌락에 녹아버린 얼굴로 절정에 도달했다
+	ENDIF
+ENDIF
+
+;--------------------------------------------------------
+;セックスで사정
+;--------------------------------------------------------
+IF TFLAG:2 > 0
+	PRINTL
+	IF CFLAG:33 != 0
+		PRINTFORM %플레이어는()% %CALLNAME:TARGET%의 비렬에서 사정 직전의 
+		SIF TFLAG:31
+			PRINTFORM 처녀혈이 붙은 
+		PRINTFORML 페니스를 뽑아 
+		PRINTFORM %CALLNAME:TARGET%
+		IF CFLAG:33 == 1
+			PRINTFORM 의 
+			IF FLAG:36
+				IF CFLAG:6 > 6
+					PRINTFORM 음모가 자란 
+				ELSEIF  CFLAG:6 <= 6 && TALENT:125 == 0
+					PRINTFORM 맨들맨들하게 깎은 
+				ELSE
+					PRINTFORM 털이 없는 
+				ENDIF
+			ENDIF
+			PRINTFORM 치구
+		ELSEIF CFLAG:33 == 2
+			PRINTFORM 의 
+			IF CFLAG:173
+				IF CFLAG:170 >= 5
+					CALL PRINT_SHOESTYPE_MAIN
+					PRINTFORM %조사만처리(RESULT+2,"를")% 신은 
+				ENDIF
+			ENDIF
+			PRINTFORM 허벅지
+		ELSEIF CFLAG:33 == 3
+			PRINTFORM 의 
+			SIF (CFLAG:7 & 2)
+				PRINTFORM 피어스가 달린 
+			PRINTFORM 배꼽
+		ELSEIF CFLAG:33 == 4
+			PRINTFORM 의 
+			SIF (CFLAG:7 & 1)
+				PRINTFORM 유두에 피어스를 단 
+			IF TALENT:109
+				PRINTFORM 소극적인 
+			ELSEIF TALENT:110
+				PRINTFORM 큰 
+			ELSEIF TALENT:114
+				PRINTFORM 풍만한 
+			ELSEIF TALENT:116
+				PRINTFORM 빨래판 같은 
+			ELSE
+				PRINTFORM 예쁜 
+			ENDIF
+			PRINTFORM 가슴
+		ELSEIF CFLAG:33 == 5
+			PRINTFORM 의 
+			IF ABL:16 >= 3
+				PRINTFORM 입에 가져가니 %타겟은()%
+				PRINTFORML 페니스를 물고 입으로 봉사했다……
+				PRINTFORM %플레이어는()% %CALLNAME:TARGET%의 
+				IF ABL:12 >= 3
+					PRINTFORM 훌륭한 
+				ELSE
+					PRINTFORM 서투르지만 헌신적인 
+				ENDIF
+				PRINTFORM 혀놀림에 신음하며, 그 
+			ENDIF
+			PRINTFORM 입
+		ELSEIF CFLAG:33 == 6
+			PRINTFORM 의 얼굴
+		ELSEIF CFLAG:33 == 7
+			PRINTFORM 의 
+			SIF CFLAG:600 != 9 && CFLAG:601 != 1
+				CALL PRINT_HAIRCOLOR_TAILOR
+			IF CFLAG:600 == 9 && CFLAG:601 == 1
+				PRINT 탈색한 
+			ELSE
+				PRINT 색 
+			ENDIF
+			PRINTFORM 머리
+		ELSEIF CFLAG:33 == 8
+			IF CFLAG:42 == 80
+				PRINT 안경
+			ELSEIF CFLAG:42 == 81
+				PRINT 선글라스
+			ENDIF
+		ENDIF
+		PRINTFORM 에 
+		SIF TFLAG:2 == 2
+			PRINTFORM 대량의 
+		PRINTFORML 정액을 뿜었다……
+	ELSEIF CFLAG:33 == 0 && (PALAM:5 < PALAMLV:4 || TFLAG:31)
+		;정상위, 대면좌위, 
+		IF SELECTCOM == 20 || SELECTCOM == 22
+			PRINT 페니스를 뽑아낸 비열에서는 
+			SIF TFLAG:31
+				PRINT 처녀혈이 섞인 
+			PRINTL 정액이 흘러나왔다…
+		;후배위, 배면좌위
+		ELSEIF SELECTCOM == 21 || SELECTCOM == 23
+			PRINT 페니스를 뽑아낸 비열에서는 
+			SIF TFLAG:31
+				PRINT 처녀혈이 섞인 
+			PRINTL 정액이 늘어진 채 똑똑 떨어졌다…
+		;アナルセックス
+		ELSEIF SELECTCOM == 26 || SELECTCOM == 27 || SELECTCOM == 28 || SELECTCOM == 29 || SELECTCOM == 36
+			PRINTL 애널에서 흘러나오는, 장액이 섞인 정액이 엉덩이 굴곡을 따라 떨어져 내리고 있다…
+		;기승위
+		ELSEIF SELECTCOM == 34
+			PRINT 페니스를 뽑아내자 
+			SIF TFLAG:31
+				PRINT 처녀혈이 섞인 
+			PRINTL 정액이 흘러나왔다…
+		;삽입자궁구자극
+		ELSEIF SELECTCOM == 91
+			PRINTFORML %CALLNAME:TARGET%의 자궁에 뜨거운 정액이 쏟아졌다…
+		ENDIF
+		TFLAG:31 = 0
+		TFLAG:60 = 0
+	ELSEIF CFLAG:33 == 0
+		;アナルセックス
+		IF SELECTCOM == 26 || SELECTCOM == 27 || SELECTCOM == 28 || SELECTCOM == 29 || SELECTCOM == 36
+			IF RAND:6 == 0
+				PRINTFORML 정액이 넘쳐나는 %CALLNAME:TARGET%의 장내가 움질움찔 떨며, 
+				PRINTFORML %CALLNAME:PLAYER%의 페니스를 거세게 조이고 있다…
+			ELSEIF RAND:5 == 0
+				PRINTFORML %CALLNAME:TARGET%의 장내는, 정액을 토해낸 페니스에 달라붙어, 
+				PRINTFORML 장벽으로 빨아올리듯이 받아들이고 있다…
+			ELSEIF RAND:4 == 0
+				PRINTFORML 사정하는 것이 직장으로 느껴지자, %타겟은()% 자기도 모르게 장벽으로 남근을 훑어올렸다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML %CALLNAME:TARGET%의 어깨에서 엉덩이로 경련이 달리고, 
+				PRINTFORML 페니스를 삼킨 항문에서 정액이 흘러나왔다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML 장내를 채운 하얗고 탁한 액체의 열기에 의식이 몽롱한 듯, 
+				PRINTFORML %타겟은()% 음욕에 몸부림쳤다…
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%의 항문은, 더욱더 정액을 짜내려는 듯이 요염하게 꿈틀대었다…
+			ENDIF
+		;通常セックス
+		ELSE
+			IF RAND:6 == 0
+				PRINTFORML 정액으로 채워진 질내는 조금씩 꿈틀대며, 
+				PRINTFORML %CALLNAME:PLAYER%의 페니스에 얽혀붙고 있다…
+			ELSEIF RAND:5 == 0
+				PRINTFORML %CALLNAME:TARGET%의 질벽은 정액을 토해낸 페니스를 얽혀붙어, 
+				PRINTFORML 음란한 살덩어리로 빨아들이듯이 맞아들이고 있다…
+			ELSEIF RAND:4 == 0
+				PRINTFORML 사정하는 것이 자궁으로 느껴지자, %타겟은()% 자기도 모르게 %CALLNAME:PLAYER%의 페니스를 바짝 조였다…
+			ELSEIF RAND:3 == 0
+				PRINTFORML %CALLNAME:TARGET%의 어깨에서 엉덩이로 경련이 달리고, 
+				PRINTFORML 페니스를 삼킨 음순에서 정액이 흘러나왔다…
+			ELSEIF RAND:2 == 0
+				PRINTFORML 질내를 채운 하얗고 탁한 액체의 열기에 의식이 몽롱해진 듯, 
+				PRINTFORML %타겟은()% 음욕에 몸부림쳤다…
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%의 질구는, 더욱더 정액을 짜내려는 듯이 요염하게 꿈틀대었다…
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	IF ITEM:29 > 0 && CFLAG:33 == 0
+		PRINTL
+		PRINTFORML %CALLNAME:TARGET%의 몸에 질내사정 횟수를 낙서합니까?
+		PRINTFORML 《현재 질내사정 횟수 / {TFLAG:820}회》
+		PRINTL [0] - 네
+		PRINTL [1] - 아니오
+		$INPUT_LOOP
+		INPUT
+		
+		IF RESULT == 1
+			PRINTFORML %CALLNAME:TARGET%의 몸에 질내사정 횟수를 쓰지 않았습니다
+		ELSEIF RESULT == 0
+			PRINTFORML %CALLNAME:TARGET%의 몸에 질내사정 횟수를 낙서합니다
+			TFLAG:820 += 1
+			ITEM:29 -= 1
+			PRINTFORML 《현재 질내사정 횟수 / {TFLAG:820}회》
+			WAIT
+		ELSE
+			GOTO INPUT_LOOP
+		ENDIF
+	ENDIF
+			
+
+;--------------------------------------------------------
+;절정
+;--------------------------------------------------------
+ELSE
+	IF TFLAG:899 <= 1
+		IF TFLAG:29 >= 9 && TFLAG:19 && (TEQUIP:11 || TFLAG:60) && (CFLAG:40 & 16) == 0 && (CFLAG:40 & 1) == 0
+			PRINTFORML %CALLNAME:TARGET%의 고기주름은 찐득거리는 액체를 흘리며, 꾸욱꾸욱 하고 조르는 듯 수축을 반복하고 있다…
+		ELSEIF TFLAG:29 >= 5 && TFLAG:19 && (TEQUIP:11 || TFLAG:60) && (CFLAG:40 & 16) == 0 && (CFLAG:40 & 1) == 0
+			PRINTFORML %CALLNAME:TARGET%의 고기주름은 찐득거리는 액체를 떨어뜨리며, 허덕이는 것처럼 개폐를 반복하고 있다…
+		ELSEIF TFLAG:29 >= 9
+			PRINTFORML %타겟은()% 간헐적으로 절정을 반복하면서, 몸을 움찔움찔 경련시키면서 몸부림치고 있다…
+		ELSEIF TFLAG:29 >= 5
+			PRINTFORML %타겟은()% 간헐적으로 절정을 반복하면서, 축 늘어져 있다…
+		ELSEIF TFLAG:29 >= 3
+			PRINTFORML %타겟은()% 거친 숨을 쉬면서, 절정의 여운에 빠져 있다…
+		ENDIF
+	ENDIF
+ENDIF
+
+;--------------------------------------------------------
+;절정とおもらし
+;--------------------------------------------------------
+;失神状態で방뇨
+IF TFLAG:899 >= 2 && TFLAG:29 >= 3 && (TEQUIP:22 || TALENT:57)
+	PRINTFORML 의식이 없는 %CALLNAME:TARGET%의 음순에서 하염없이 소변이 흘러나오고 있다…
+;失神状態で失禁
+ELSEIF TFLAG:899 >= 2 && TFLAG:29 >= 1 && (TEQUIP:22 || TALENT:57)
+	PRINTFORML 의식이 없는 %CALLNAME:TARGET%의 음순에서 소변이 졸졸 새어나오고 있다…
+;기저귀の中へ방뇨
+ELSEIF CFLAG:42 == 69 && (CFLAG:40 & 64) && ((TFLAG:29 >= 5 && TEQUIP:22) || (TFLAG:29 >= 3 && TEQUIP:22 && TALENT:57))
+	PRINTFORML %타겟이()% 입고 있는 기저귀에서 김이 피어오르며, 
+	PRINTFORML 분명히 알 수 있을 정도로 소변 냄새가 풍겨져나왔다
+	PRINTFORML 아무래도 흥분한 나머지, 기저귀 안에 오줌을 지린 것 같다…
+;기저귀の中へ失禁
+ELSEIF CFLAG:42 == 69 && (CFLAG:40 & 64) && ((TFLAG:29 >= 3 && TALENT:57) || (TFLAG:29 >= 1 && TEQUIP:22))
+	PRINTFORML %CALLNAME:TARGET%의 기저귀에서 김이 피어오르며, 오줌 냄새가 풍겨져나오고 있다…
+;즈코 인형の中で방뇨
+ELSEIF CFLAG:42 == 11 && (CFLAG:40 & 64) && ((TFLAG:29 >= 5 && TEQUIP:22) || (TFLAG:29 >= 3 && TEQUIP:22 && TALENT:57))
+	PRINTFORM %타겟이()% 입고 있는 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	PRINTFORML 이 떨리고, 밖에서도 확실히 느껴질 정도의 소변 냄새가 풍겨져나왔다
+	PRINTFORM 아무래도 흥분한 나머지, 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	PRINTFORML  속에 방뇨를 해버린 것 같다…
+;즈코 인형の中で失禁
+ELSEIF CFLAG:42 == 11 && (CFLAG:40 & 64) && ((TFLAG:29 >= 3 && TALENT:57) || (TFLAG:29 >= 1 && TEQUIP:22))
+	PRINTFORM 아까까지 격렬하게 움직이고 있던 
+	CALL PRINT_CLOTHTYPE_SPECIAL
+	PRINTFORML 의 움직임이 딱 멈추었다
+	PRINTFORML 아무래도, 안에다 오줌을 지려버린 것 같다…
+;服を着たまま방뇨
+ELSEIF (CFLAG:40 & 16) && ((TFLAG:29 >= 5 && TEQUIP:22) || (TFLAG:29 >= 3 && TEQUIP:22 && TALENT:57))
+	PRINTFORM 쾌락에 견디지 못하고, %타겟은()% 
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORML %조사만처리(RESULT+2,"가")% 흠뻑 젖은 것도 신경쓰지 않고 힘차게 오줌을 싸기 시작했다…
+;服を着たまま失禁
+ELSEIF (CFLAG:40 & 16) && ((TFLAG:29 >= 3 && TALENT:57) || (TFLAG:29 >= 1 && TEQUIP:22))
+	CALL PRINT_CLOTHTYPE_MAIN2
+	PRINTFORML 의 사타구니에 김이 나면서, 노란 얼룩이 퍼져나간다…
+;パンツをはいたまま방뇨
+ELSEIF (CFLAG:40 & 1) && ((TFLAG:29 >= 5 && TEQUIP:22) || (TFLAG:29 >= 3 && TEQUIP:22 && TALENT:57))
+	PRINTFORM %타겟은()% 쾌락에 견디지 못하고선, 팬티 속에다가 성대하게 오줌을 지렸다…
+;パンツをはいたまま失禁
+ELSEIF (CFLAG:40 & 1) && ((TFLAG:29 >= 3 && TALENT:57) || (TFLAG:29 >= 1 && TEQUIP:22))
+	PRINTFORM %타겟이()% 입고 있는 팬티에서 김이 피어오르면서, 노란 얼룩이 퍼져나간다……
+ELSEIF TFLAG:29 >= 7 && TEQUIP:22 && TALENT:57
+	PRINTFORML %타겟은()% 바들바들 몸을 경련시키면서 하염없이 오줌을 흘렸다
+	PRINTFORML 아무래도 배뇨행위 자체에 쾌락을 느끼고 있는 것 같다…
+ELSEIF TFLAG:29 >= 7 && TEQUIP:22
+	PRINTFORML 경련하는 %CALLNAME:TARGET%의 요도구에서 분수처럼 소변이 뿜어져나왔다…
+ELSEIF TFLAG:29 >= 7 && TALENT:57
+	PRINTFORML 경련하는 %CALLNAME:TARGET%의 요도구에서 기세 좋게 물줄기가 솟구쳐, 호를 그렸다…
+ELSEIF TFLAG:29 >= 5 && TEQUIP:22 && TALENT:57
+	PRINTFORML 축 늘어진 %CALLNAME:TARGET%의 요도구에서 분수처럼 소변이 뿜어져나왔다…
+ELSEIF TFLAG:29 >= 5 && TEQUIP:22
+	PRINTFORML 축 늘어진 %CALLNAME:TARGET%의 요도구에서 기세 좋게 물줄기가 솟구쳐, 호를 그렸다…
+ELSEIF TFLAG:29 >= 5 && TALENT:57
+	PRINTFORML 축 늘어진 %CALLNAME:TARGET%의 요도구에서 물줄기가 솟구쳐, 웅덩이를 만들었다…
+ELSEIF TFLAG:29 >= 3 && TEQUIP:22 && TALENT:57
+	PRINTFORML 떨고 있는 %CALLNAME:TARGET%의 요도구에서 기세 좋게 물줄기가 솟구쳐, 호를 그렸다…
+ELSEIF TFLAG:29 >= 3 && TEQUIP:22
+	PRINTFORML 떨고 있는 %CALLNAME:TARGET%의 요도구에서 물줄기가 솟구쳐, 웅덩이를 만들었다…
+ELSEIF TFLAG:29 >= 3 && TALENT:57
+	PRINTFORML 떨고 있는 %CALLNAME:TARGET%의 음순에서 소변이 졸졸 새어나오고 있다…
+ELSEIF TFLAG:29 >= 1 && TEQUIP:22 && TALENT:57
+	PRINTFORML %CALLNAME:TARGET%의 요도구에서 물줄기가 솟구쳐, 웅덩이를 만들었다…
+ELSEIF TFLAG:29 >= 1 && TEQUIP:22
+	PRINTFORML %CALLNAME:TARGET%의 음순에서 소변이 졸졸 새어나오고 있다…
+ENDIF
+
+;--------------------------------------------------------
+;처녀상실で촉수が사정
+;--------------------------------------------------------
+SIF TFLAG:15 == 1 && TFLAG:3
+	PRINTFORML %CALLNAME:TARGET%의 비순에서, 더러운 액체가 뒤섞인 처녀혈이 끔찍한 촉수를 타고 떨어졌다…
+
+;--------------------------------------------------------
+;처녀상실で사정なし
+;--------------------------------------------------------
+SIF TFLAG:2 == 0 && TFLAG:15 == 0 && TFLAG:3
+	PRINTFORML %CALLNAME:TARGET%의 비순에서, 처녀의 증거인 붉은 피가 흘러 떨어졌다…
+
+;--------------------------------------------------------
+;近親相姦で처녀상실
+;--------------------------------------------------------
+IF TFLAG:3 && TFLAG:14 > 0 && TFLAG:15 == 0 && TEQUIP:89 == 0 && TEQUIP:90 == 0 && TFLAG:899 <= 1
+	PRINTFORM %타겟은()% 
+	IF TFLAG:14 == 1 && TALENT:PLAYER:122
+		PRINT 부친
+	ELSEIF TFLAG:14 == 1 && TALENT:PLAYER:122 == 0
+		PRINT 모친
+	ELSEIF TFLAG:14 == 2 && TALENT:PLAYER:122
+		PRINT 아들
+	ELSEIF TFLAG:14 == 2 && TALENT:PLAYER:122 == 0
+		PRINT 딸
+	ELSEIF TFLAG:14 == 3 && TALENT:PLAYER:122
+		PRINT 오빠
+	ELSEIF TFLAG:14 == 3 && TALENT:PLAYER:122 == 0
+		PRINT 언니
+	ELSEIF TFLAG:14 == 4 && TALENT:PLAYER:122
+		PRINT 남동생
+	ELSEIF TFLAG:14 == 4 && TALENT:PLAYER:122 == 0
+		PRINT 여동생
+	ELSEIF TFLAG:14 == 6 && TALENT:PLAYER:122
+		PRINT 사촌동생
+	ENDIF
+	PRINTFORML 인 %CALLNAME:PLAYER%에게 처녀를 바쳤다
+ENDIF
+
+;--------------------------------------------------------
+;ノラ犬で처녀상실
+;--------------------------------------------------------
+SIF TFLAG:3 && TEQUIP:89 && TFLAG:899 <= 1
+	PRINTFORML %타겟은()% 들개에게 처녀를 바쳤다
+
+;--------------------------------------------------------
+;奉仕系でその後
+;--------------------------------------------------------
+;(イラマ＋파이즈리＋Dパイ＋Dフェラ)で사정後
+;--------------------------------------------------------
+IF TFLAG:8 > 0
+	PRINT 그 후, 
+	IF TFLAG:0 && TFLAG:6 && ASSI
+		PRINTFORML %타겟은()% %플레이어와()% %CALLNAME:ASSI%의 페니스를 교대로 물고, 더러움을 혀로 깨끗하게 없앴다…
+	ELSE
+		SIF TFLAG:8 >= 2
+				PRINTFORM %조수와()% 
+		PRINTFORM %타겟은()% 
+		SIF ABL:10 >= 3
+			 PRINT 남아있던 정액을 빨아들이면서, 
+		PRINTL 페니스의 더러움을 깨끗하게 핥아주었다…
+	ENDIF
+	SIF TFLAG:8 == 3
+		PRINTL 두 사람은 그것만으론 부족한 듯 서로의 입에 고여있던 정액을 핥고 있다…
+ENDIF
+;--------------------------------------------------------
+;フェラで사정+절정後
+;--------------------------------------------------------
+IF SELECTCOM == 31 && TFLAG:0 && TFLAG:29
+	PRINT 그리고 
+	IF ABL:16 >= 3
+		IF RAND:3 == 0
+			PRINTFORML %타겟은()%, 생각 난듯이 입안에 남은 정액을 음경에 묻히고, 발라준 후에 다시 입에 물었다.
+		ELSEIF RAND:2 == 0
+			PRINTFORML , %플레이어가()% 작게 벌어진 입술에 음경을 눌러붙이자, 흘러나온 정액을 되찾겠다는 듯이 목구멍으로 훑기 시작했다.
+		ELSE
+			PRINTFORML , %타겟은()% 요도에 남아있는 정액을 떠내서, 더러운 음경을 혀로 깨끗하게 했다.
+		ENDIF
+	ELSE 
+		PRINTFORML %플레이어가()% 작게 벌어진 입술에 음경을 밀어넣자, 생각이 난 듯이 혀를 움직였다.
+	ENDIF
+ENDIF
+;--------------------------------------------------------
+;식스나인で절정後(修正)
+;--------------------------------------------------------
+IF SELECTCOM == 69 && TFLAG:29
+	SIF TFLAG:0 > 0
+		PRINTFORM 그 후 
+	IF RAND:4 == 0
+		PRINTFORM %플레이어가()% 다시 비소를 혀로 희롱해주자, %CALLNAME:TARGET%도 
+		SIF ABL:16 >= 3
+			PRINT 기쁜 듯이 
+		PRINTL 입으로 물어서 보답했다.
+	ELSEIF RAND:3 == 0
+		PRINTFORML 다시 장난쳐오는 %CALLNAME:TARGET%에게 
+		PRINTFORML %CALLNAME:PLAYER%도 다시 그녀의 음부에 입을 맞추기 시작했다.
+	ELSEIF RAND:2 == 0
+		PRINTFORML %플레이어와()% %타겟은()% 한숨을 쉬고, 어느쪽이 먼저랄 것도 없이 서로의 성기를 애무했다.
+	ELSE 
+		PRINTFORM %플레이어가()% 아랫배 쪽을 보자, %타겟이()% 끈적끈적해진 
+			IF TALENT:PLAYER:121 || TALENT:PLAYER:122
+				PRINTFORM 음경에 
+			ELSE
+				PRINTFORM 음순에 
+			ENDIF
+			SIF ABL:16 >= 3	
+				PRINTFORM 사랑스러운 듯이 
+		PRINTFORML 장난을 쳤다.
+	ENDIF
+ENDIF
+;--------------------------------------------------------
+;애무
+;--------------------------------------------------------
+IF SELECTCOM == 0 && TEQUIP:44 == 0 && TFLAG:899 <= 1
+	A = UP:0
+	B = UP:14
+	C = A + B
+
+	IF C < 100
+		IF TALENT:11
+			PRINTFORML %타겟은()% 애무를 당하면서도 반항적인 태도를 취하고 있다.
+		ELSE
+			PRINTFORML %타겟은()% 간지러운 듯 몸을 움츠리지만, 쾌락을 느낄 정도까지는 개발되지 못한 것 같다.
+		ENDIF
+	ELSEIF C < 300
+		PRINTFORM %타겟은()% 
+		IF TEQUIP:90
+			PRINT 촉수의 꿈틀거림
+		ELSEIF TEQUIP:89
+			PRINT 개의 혀 움직임
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%의 애무
+		ENDIF
+		PRINTL 에 반응해 몸을 떨고 있다.
+	ELSEIF C < 1000
+		PRINTFORML %타겟은()% 몸에 가벼운 전격이라도 닿은 듯이 작게 떨렸다.
+	ELSEIF C < 3000
+		PRINTFORML %타겟은()% 분명히 쾌락을 느끼고 있는 모습으로 요염하게 신음소리를 내고 있다.
+	ELSEIF C < 6000
+		PRINTFORM %타겟은()% 애무에 격렬한 쾌락을 느끼고는, 스스로 조르듯 손을 
+		IF TEQUIP:90
+			PRINT 촉수생물
+		ELSEIF TEQUIP:89
+			PRINT 개의 머리
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%의 머리
+		ENDIF
+		PRINTL 에 둘렀다.
+	ELSE
+		PRINTFORM %타겟은()% 
+		IF TEQUIP:90
+			PRINT 촉수의 감촉
+		ELSEIF TEQUIP:89
+			PRINT 개 혀의 움직임
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%의 애무
+		ENDIF
+		PRINT 만으로 격렬하게 마구 느끼며, 새로운 자극을 요구해 
+		IF TEQUIP:90
+			PRINTL 떼지어 모인 촉수에게 범해지고 있다.
+		ELSEIF TEQUIP:89
+			PRINTL 들개의 몸에 안기고 있다.
+		ELSE
+			PRINTFORML %CALLNAME:PLAYER%에게 안기고 있다.
+		ENDIF
+	ENDIF
+
+;--------------------------------------------------------
+;커닐링구스
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 1  && TFLAG:899 <= 1
+	A = UP:0
+
+	IF A < 300
+		PRINTFORML %CALLNAME:TARGET%의 그곳은 아직 단단하게 닫힌 상태이다. 쾌락을 느끼기엔 시간이 걸릴지도 모르겠다.
+	ELSEIF A < 1000
+		PRINTFORML %타겟은()% 커닐링구스의 자극에 가만히 견디고 있지만, 확실하게 느끼고 있는 것 같다.
+	ELSEIF A < 3000
+		PRINTFORM 민감한 콩을 핥아지고 있다는 것을 느낀 것인지, %타겟은()% 
+		SIF TALENT:35
+			PRINT 수치심으로 뺨을 붉게 물들인 채 손으로 자신의 입을 억누르고 소리가 나오는 것을 참으며 
+		IF TALENT:70 || TALENT:33
+			PRINTL 뜨거운 한숨을 내쉬면서 쾌락에 몸을 맡기고 있다.
+		ELSEIF TALENT:71 || TALENT:32
+			PRINTL 쾌락을 부정하듯 고개를 흔들며 견디고 있다.
+		ELSE
+			PRINTL 비소에서 애액을 흘리며 작게 한숨을 쉬었다.
+		ENDIF
+	ELSEIF A < 6000
+		 PRINTFORML %CALLNAME:TARGET%의 작은 콩을 혀로 문질러주자 %타겟은()% 사랑스러운 소리를 내면서 파들파들 몸을 떨었다.
+	ELSEIF A < 10000 && TEQUIP:89 == 0
+		PRINTFORML %타겟은()% 확실한 쾌락의 소리를 내면서, 무의식적으로 %CALLNAME:PLAYER%의 머리를 손으로 눌러 한층 더 그 부분을 눌러왔다.
+	ELSE
+		IF TALENT:102
+			PRINTFORML %타겟은()% 민감한 클리토리스에 가해진 괴롭힘에 격하게 몸부림치며, 계속 한심한 소리를 냈다.
+		ELSE
+			PRINTFORML %타겟은()% 클리토리스에 가해진 자극에 격한 신음소리를 내며 계속 허덕였다.
+		ENDIF
+	ENDIF
+
+;--------------------------------------------------------
+;애널애무
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 2 && TFLAG:899 <= 1
+	A = UP:2
+
+	IF A < 300
+		PRINTFORM %타겟은()% 비명을 지르며 몸을 뒤튼다. 
+		IF ABL:3 <= 2
+			PRINTL 천천히 개발해나가면 될 것 같다.
+		ELSE
+			PRINTL 몸이 아직 준비가 덜 된 것 같다.
+		ENDIF
+	ELSEIF A < 1000
+		PRINTFORM %타겟은()% 작은 몸을 떨었다. 
+		IF ABL:3 <= 2
+			PRINTL 아직 조금 더 개발할 필요가 있을 것 같다.
+		ELSE
+			PRINTL 쾌락을 얻기에는 아직 몸을 좀 더 풀어야 할 것 같다.
+		ENDIF
+	ELSEIF A < 3000
+		PRINTFORM %타겟은()% 작게 교성을 지르면서 몸을 경직시켰다. 
+		SIF TALENT:106
+			PRINT 본래부터 애널에 대한 자극에 약한 것인지, 
+		PRINTL 분명하게 쾌락을 느끼기 시작하고 있다.
+	ELSEIF A < 6000
+		PRINTFORML %타겟은()% 애널에 가해진 자극에 확실히 쾌락을 느끼고 있는 것 같다.
+	ELSEIF A < 10000
+		IF TALENT:106
+			PRINT 민감한 애널을 괴롭혀지자 
+		ELSE
+ 			PRINT 애널에 가해진 자극에 
+		ENDIF
+		PRINTFORM %타겟은()% 기뻐하는 소리를 내면서
+		IF TALENT:70 || TALENT:33
+			PRINTL 쾌락을 호소했다.
+		ELSEIF TALENT:71 || TALENT:32
+			PRINTL 필사적으로 쾌락을 부정했다.
+		ELSE
+			PRINTL 미친듯이 허덕였다.
+		ENDIF
+	ELSE
+		PRINTFORML %타겟은()% 개발당한 애널을 만져주자 참을 수 없다는 듯이 비명 섞인 신음소리를 지르며 미친듯 기뻐랬다.
+	ENDIF
+
+;--------------------------------------------------------
+;자위
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 3
+	A = UP:0
+	B = UP:1
+	C = UP:2
+	D = UP:17
+	E = A + B + C + D
+
+	IF TALENT:122 || TALENT:121
+		SAVESTR:2 = 성기를 훑었
+		SAVESTR:3 = 딱딱하게 발기한 페니스를 움켜쥐
+	ELSE
+		SAVESTR:2 = 성기를 만지작거렸
+		SAVESTR:3 = 애액을 계속 흘리고 있는 비소를 벌려 보이
+	ENDIF
+
+	PRINTFORM %타겟은()% 
+	SIF ABL:17 == 4
+		PRINT 노출하는 쾌락에 취한 표정을 보이면서, 
+	SIF ABL:17 == 5
+		PRINTFORM 완전히 보여지는 쾌감에 눈떠버렸는지, 음탕한 표정을 지은 채, 스스로 %SAVESTR:3%면서, 
+	SIF TALENT:35 && ABL:17 <= 3
+		PRINT 수치심으로 얼굴을 새빨갛게 물들인 채, 
+		SIF TALENT:45 == 0 && TALENT:310 == 0
+			PRINT 눈물을 글썽이며 
+	SIF TALENT:99
+		PRINT 큰 몸을 굽힌 채 
+	SIF TALENT:100
+		PRINT 작은 몸으로 
+	SIF TALENT:100 == 0 && (TEQUIP:11 || TEQUIP:13)
+		PRINT 자기 안에 
+	IF TEQUIP:11 && TEQUIP:13
+		PRINT 두 개의 바이브가 박혀 있는 추잡한 모습을 보이면서, 
+	ELSEIF TEQUIP:11
+		PRINT 들어가 있는 바이브를 손으로 쥔 채, 
+	ELSEIF TEQUIP:13
+		PRINT 쑤셔박힌 애널바이브를 들고서, 
+	ENDIF
+	SIF TEQUIP:53
+		PRINT 비디오카메라를 향해 
+	PRINTL 계속 자위하고 있다.
+
+	IF E < 300
+		PRINTL 그 손의 움직임은 아직 뻣뻣해, 쾌락보다도 수치심 쪽이 더 강한 것 같다.
+	ELSEIF E <1000
+		PRINTL 때때로 작은 몸을 떠는 모습은 확실히 쾌락을 느끼기 시작하고 있었지만, 아직 몰두하지는 못하고 있는 것 같다.
+	ELSEIF E < 3000
+		PRINTL 그 표정에서는 확실한 쾌락의 조짐이 보이며, 열띤 한숨이 새어나오고 있다.
+	ELSEIF E < 6000
+		PRINTL 그리고 참을 수 없는 쾌감에 쾌락의 소리를 내면서 자위 행위에 몰두하고 있다.
+	ELSEIF E < 10000
+		PRINTFORML 그리고 자위 행위를 계속하면서 쾌락에 몸을 경련하며, 허리로 브릿지를 만든 채 스스로 계속 %SAVESTR:2%다.
+	ELSE
+		PRINTFORML 지나친 쾌락에 모든 것을 잊어버린듯한 표정으로 찌걱찌걱 소리를 내면서 계속 %SAVESTR:2%다. 내버려두면 분명 계속할 것이다.
+	ENDIF
+
+;--------------------------------------------------------
+;가슴애무
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 5 && TEQUIP:89 == 0 && TFLAG:899 <= 1
+	SIF TALENT:114
+		PRINTFORML %CALLNAME:PLAYER%의 손은, %CALLNAME:TARGET%의 젖에 폭 묻혀 있다…… 
+
+	A = UP:14
+
+	IF TALENT:130 && TEQUIP:16 == 0 && TEQUIP:90 == 0
+		SAVESTR:2 = 빨아
+	ELSE
+		SAVESTR:2 = 만져
+	ENDIF
+
+	IF A < 300
+		PRINTFORML %타겟은()% 아직 가슴으로 쾌락을 느낄 정도까지는 개발되지 않은 것 같다.
+	ELSEIF A < 1000
+ 		PRINTFORML %타겟은()% 가슴을 농락당하는 쾌감에 눈을 떠가는듯한 모습이다.
+	ELSEIF A < 3000
+		PRINTFORML %CALLNAME:TARGET%의 가슴을 계속 %SAVESTR:2%주자 유두는 단단하게 솟고, 뜨거운 한숨을 쉬기 시작했다.
+	ELSEIF A < 6000
+		PRINTFORML %타겟은()% 가슴 애무에 흐리멍텅한 표정이 되어 있다.
+	ELSEIF A < 10000
+		PRINTFORM %타겟은()% 
+		SIF TALENT:109
+			PRINT 평균보다 살짝 작은 가슴으로 
+		PRINTL 심하게 느끼며, 가슴에 가해진 자극만으로도 황홀함의 극치에 도달한 상태다.
+	ELSE
+		PRINTFORM %CALLNAME:TARGET%의 가슴을 계속 %SAVESTR:2%주자 그것만으로 매우 느끼며 몸을 홱 젖혀, 
+		IF TALENT:110 || TALENT:114
+			PRINTL 눈앞에서 그 거유를 흔들며 이쪽의 눈을 즐겁게 해주었다.
+ 		ELSE
+			PRINTL 풀어진 표정으로 쾌락에 몸을 맡겼다.
+		ENDIF
+	ENDIF
+
+;--------------------------------------------------------
+;로터
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 10 && TFLAG:899 <= 1
+	A = UP:0
+	IF TALENT:121 || TALENT:122
+		SAVESTR:2 = 페니스
+	ELSE
+		SAVESTR:2 = 클리토리스
+	ENDIF
+	IF A < 300
+		PRINTFORML %타겟은()% 아직 큰 쾌락을 얻기엔 충분히 개발되지 못한 것 같다.
+	ELSEIF A < 1000
+		PRINTFORML %CALLNAME:TARGET%의 %SAVESTR:2%에 로터를 들이대자, 작게 비명을 지르며 움찔 하고 몸을 경련시켰다.
+	ELSEIF A < 3000
+		IF TALENT:70
+			PRINTFORML %타겟은()% 로터의 자극에, 기분 좋은듯 그 쾌락을 받아들이고 있다.
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 %SAVESTR:2%에 로터를 들이대자, 쾌락의 목소리를 내면서 자극으로부터 달아나려 몸을 뒤틀었다.
+		ENDIF
+	ELSEIF A < 6000
+		PRINTFORML %타겟은()% %SAVESTR:2%를 직접 로터에 자극받아, 격한 쾌락에 온몸을 경련했다.
+	ELSEIF A < 10000
+		PRINTFORML %CALLNAME:TARGET%의 %SAVESTR:2%를 로터로 자극하자, 격렬한 쾌락에 몸부림치며, 허리를 추잡하게 그라인드시켰다.
+	ELSE
+		IF TALENT:42
+			PRINTFORML %타겟은()% 로터를 가져다 대자, 지나치게 강렬한 쾌락에 격하게 허리를 굽힌 채 연속으로 애액을 분출시켰다.
+ 		ELSE
+			PRINTFORML %타겟은()% 로터를 들이대자, 지나친 쾌락에 침까지 흘리면서 몸을 배배 꼬았다.
+		ENDIF
+	ENDIF
+
+;--------------------------------------------------------
+;바이브
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 11 && TFLAG:899 <= 1
+	A = UP:1
+
+	IF TEQUIP:11
+		IF A < 300
+			PRINTFORML %타겟은()% 바이브의 굵기에 괴로운 듯 몸부림쳤다.
+		ELSEIF A < 1000
+			PRINTFORML %타겟은()% 익숙하지 않은 바이브의 감각에 당황하면서도, 때때로 밀어오는 쾌락의 충격에 몸을 떨고 있다.
+		ELSEIF A < 3000
+			PRINTFORML %타겟은()% 이미 바기나로도 쾌락을 느끼는 몸이 되어버린 것인지, 진동하는 바이브를 넣자 확실하게 느끼는 목소리를 냈다.
+		ELSEIF A < 6000 
+			PRINTFORM %CALLNAME:TARGET%의 
+			SIF TALENT:132
+				PRINT 작은 
+			PRINTL 바기나에 바이브를 쑤셔넣자 그 즉시 쾌락에 녹아있는 표정을 지었다.
+		ELSEIF A < 10000
+			PRINTFORM %타겟은()% 
+			SIF TALENT:100
+				PRINT 그 작은 몸으로 
+			PRINTL 굵직한 바이브를 삼킨 채, 격렬한 진동에 의한 자극과 쾌락에 그 나신을 은어마냥 팔딱거리고 있다.
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%에게 진동하는 바이브를 격렬하게 넣어주니 애액을 흘리면서 격렬한 쾌락에 몸부림쳤다.
+		ENDIF
+	ELSE
+		IF A < 300
+			PRINTFORML %CALLNAME:TARGET%의 몸에서 바이브를 뽑아내자 안심하는 표정을 지었다.
+		ELSEIF A < 1000
+			PRINTFORML %타겟은()% 그 몸에서 바이브를 뽑아낸 순간 작고 귀여운 신음소리를 냈다.
+		ELSEIF A < 3000
+			PRINTFORML %CALLNAME:TARGET%의 몸에서 바이브를 뽑아내는 순간 가볍게 넣고 빼주자 작은 신음소리를 흘리면서 몸을 떨었다.
+		ELSEIF A < 6000
+			PRINTFORML %타겟을()% 심하게 바이브로 괴롭힌 후 가까스로 뽑아내자 질에서 대량의 애액이 쏟아져나왔다.
+		ELSEIF A < 10000
+			PRINTFORML %타겟은()% 바이브를 뽑아낸 것만으로도 귀여운 신음소리를 내며 마지막에 다시 한 번 더 쑤셔박았다가 격렬하게 뽑아내자 애액을 뿜어내면서 온몸을 경련시켰다.
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%의 몸에서 바이브를 뽑아내기 전에 바이브를 있는 힘껏 격하게 넣고 뽑아내자 온몸을 배배 꼬면서 미친듯 기뻐했다.
+		ENDIF
+	ENDIF
+
+
+;--------------------------------------------------------
+;E마사지기
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 12 && TFLAG:899 <= 1
+	A = UP:0
+	IF TALENT:121 || TALENT:122
+		SAVESTR:2 = 페니스
+	ELSE
+		SAVESTR:2 = 클리토리스
+	ENDIF
+	IF A < 300
+		PRINTFORML %CALLNAME:TARGET%의 %SAVESTR:2%에 마사지기를 들이댔으나, 진동에 견딜 뿐 큰 쾌락을 얻는 것기엔 아직 먼 것 같다.
+	ELSEIF A < 1000
+		PRINTFORML %CALLNAME:TARGET%의 그곳에 마사지기를 들이대자, 간지럼 타면서도 그 표정에 쾌락의 징조가 보인다.
+	ELSEIF A < 3000
+		PRINTFORML %SAVESTR:2%에 마사지기를 들이대자, %타겟은()% 작고 귀여운 소리를 내면서 몸을 떨었다.
+	ELSEIF A < 6000
+		PRINTFORML %CALLNAME:TARGET%의 그곳에 마사지기를 들이대자, 참을 수 없는 쾌락에 무심코 두 다리를 오므려서 마사지기를 조여버려, %타겟은()% 몸부림쳤다.
+	ELSEIF A < 10000
+		PRINTFORML %타겟은()% %SAVESTR:2%에서 느껴지는 마사지기의 진동으로 인한 쾌락에, 필사적으로 달아나려 하면서 계속 색기 있는 신음소리를 내고 있다.
+	ELSE
+		PRINTFORM %타겟은()% 마사지기를 들이댄 순간 격렬하게 몸을 뒤로 젖히며, 
+		IF TALENT:42 && TALENT:122 == 0
+ 			PRINTL 그곳에서 몇 번이고 애액을 흩뿌렸다.
+		ELSE
+			PRINTL 강렬한 쾌락에 몸을 경련시켰다.
+		ENDIF
+	ENDIF
+
+;--------------------------------------------------------
+;애널바이브
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 13 && TFLAG:899 <= 1
+	A = UP:2
+
+	IF TEQUIP:13
+		IF A < 300
+			PRINTFORML 애널에 바이브를 넣자 %타겟은()% 비명을 질렀다. 아직 고통이 더 강한 것 같다.
+		ELSEIF  A < 1000
+			PRINTFORML %CALLNAME:TARGET%의 애널은 상당히 받아들일 수 있게 된 것 같지만 아직 좀 힘들어보인다.
+		ELSEIF A < 3000
+			PRINTFORML %타겟은()% 애널에 바이브를 삽입당하자 조금 고통스러워 해도 쾌락 쪽이 더 강해진 것 같다.
+		ELSEIF A < 6000
+			PRINTFORML %타겟은()% 애널에 바이브를 쑤셔박히고선 명백한 교성을 내면서 쾌락을 느끼고 있다.
+		ELSEIF A < 10000
+			PRINTFORML %타겟은()% 애널바이브가 가져다주는 강렬한 쾌락에 표정이 풀어졌다.
+		ELSE
+			PRINTFORM %타겟은()% 애널에 가해진 자극에 격하게 느끼면서 
+			IF TALENT:99
+				PRINT 그 큰 몸을 
+			ELSEIF TALENT:100
+				PRINT 그 작은 몸을 
+			ELSE
+				PRINT 그 땀 투성이가 된 몸을 
+			ENDIF
+			PRINTL 괴로움에 뒹굴었다.
+		ENDIF
+	ELSE
+		IF A < 300
+			PRINTFORML %CALLNAME:TARGET%의 몸에서 애널바이브를 뽑아내자 안도의 한숨을 쉬었다.
+		ELSEIF A < 1000
+			PRINTFORML %CALLNAME:TARGET%의 애널 조임을 즐기면서 천천히 뽑아주었다.
+		ELSEIF A < 3000
+			PRINTFORML 애널에서 바이브를 뽑아내는 순간, %타겟은()% 참을 수 없다는 신음소리를 냈다.
+		ELSEIF A < 6000
+			PRINTFORML %CALLNAME:TARGET%의 안에서 계속 진동하는 바이브를 강제로 뽑아내자 달콤한 쾌락이 뒤섞인 신음소리를 냈다.
+		ELSEIF A < 10000
+			PRINTFORML 애널바이브를 뽑아내기 전에 가볍게 뺐다 끼워넣자 %타겟은()% 달콥한 목소리를 내면서 엉덩이를 흔들었다.
+		ELSE
+			PRINTFORML 애널바이브를 들고 격하게 넣었다 빼자 %타겟은()% 강렬한 쾌락에 격하게 신음소리를 내며 추잡하게 허리를 흔들며 쾌락을 탐했다.
+		ENDIF
+	ENDIF
+
+;--------------------------------------------------------
+;전동클리캡
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 14 && TFLAG:899 <= 1
+	A = UP:0
+
+	IF A < 300
+		PRINTFORML %타겟은()% 클리토리스에 가해진 자극에 눈을 감은 채 견디고 있다.
+	ELSEIF A < 1000
+		PRINTFORML 클리 마사지기로 클리토리스를 문질러주자 %타겟은()% 작은 신음소리를 냈다.
+	ELSEIF A < 3000
+		PRINTFORML %타겟은()% 클리토리스에 가해진 자극을 견디지 못한 채 몸을 조금씩 떨며 쾌락에 몰아세워지고 있다.
+	ELSEIF A < 6000
+		PRINTFORML %타겟은()% 전동 클리캡의 자극이 가져다주는 격렬한 쾌감에 허리를 위로 밀며 추잡한 댄스를 추고 있다.
+	ELSEIF A < 10000
+		PRINTFORML %타겟은()% 클리토리스에 받은 쾌락에 의식이 희미해진 채 느슨한 표정을 짓고 있다.
+	ELSE
+		PRINTFORML 전동 클리캡을 쥐고 움직여주자 %타겟은()% 클리토리스에 가해진 엄청난 자극을 견디지 못하고 대량으로 애액을 흘리면서 몸을 젖혔다.
+	ENDIF
+
+;--------------------------------------------------------
+;정상위, 정상위애널
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 20 || SELECTCOM == 26 && TFLAG:899 <= 1
+	SIF TFLAG:2 && ABL:10 >= 3 && ABL:11 >= 3
+		PRINTFORML %타겟은()% %CALLNAME:PLAYER%에게 다리를 얽어 허리를 꽉 눌렀다…
+
+;--------------------------------------------------------
+;대면좌위, 대면좌위애널
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 24 || SELECTCOM == 28 && TFLAG:899 <= 1
+	SIF TFLAG:2 && ABL:10 >= 3 && ABL:11 >= 3
+		PRINTFORML %타겟은()% %CALLNAME:PLAYER%의 머리에 손을 둘러 껴안았다…
+
+;--------------------------------------------------------
+;배면좌위, 배면좌위애널
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 25 || SELECTCOM == 29 && TFLAG:899 <= 1
+	SIF TFLAG:2 && ABL:10 >= 3 && ABL:11 >= 3
+		PRINTFORML %타겟은()% 등을 뒤로 젖힌 채 %CALLNAME:PLAYER%에게 매달려왔다…
+
+;--------------------------------------------------------
+;기승위
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 34
+	A = UP:1
+
+	IF A < 299 
+		PRINTFORML %타겟은()% 괴로워하면서 명령에 따라 허리를 흔든다. 하지만 아직 쾌락을 얻기에는 먼 것 같다.
+	ELSEIF A < 1000
+		PRINTFORML %타겟은()% 괴로워하지만 그 표정에는 쾌락의 조짐이 보인다.
+	ELSEIF A < 3000
+		PRINTFORML %타겟은()% 허리를 흔들면서 참을 수 없는 쾌락에 귀여운 소리를 흘리고 있다.
+	ELSEIF A < 6000
+		SIF TALENT:110 || TALENT:114
+			PRINTFORML %CALLNAME:PLAYER%의 눈앞에서, %타겟은()% 커다란 유방을 허리의 움직임에 따라 위아래로 출렁이면서 쾌락에 젖어있다.
+		SIF TALENT:110 == 0
+			PRINTFORML %타겟은()% 상당히 익숙해진 것인지, 쾌락에 밀쳐올려지면서 스스로 허리를 흔들고 있다.
+	ELSEIF A < 10000
+		PRINTFORM %타겟은()% 
+		IF TALENT:99
+			PRINTFORM 그 큰 체구를 가지고, 
+		ELSEIF TALENT:100
+ 			PRINTFORM 그 작은 몸으로 
+		ENDIF
+		IF (TALENT:32 || TALENT:71) && TALENT:432 == 0
+			PRINTFORML 쾌락을 부정하는 말을 토해내면서, 참지 못하고 계속 허덕이는 신음소리를 내고 있다.
+		ELSEIF TALENT:432 == 1
+			PRINTFORML 상스럽게 가랑이 위에서 허리를 흔들고 등을 뒤로 젖히면서 음란한 말이 섞인 쾌락의 신음을 질렀다.
+		ELSE
+			PRINTFORML 열심히 허리를 흔들며 등을 뒤로 젖힌 채 쾌락의 신음소리를 냈다.
+		ENDIF
+	ELSE
+		PRINTFORML %타겟은()% 허리를 흔들면서 풀려버린, 느슨한 얼굴로 쾌락을 취하고 있다.
+	ENDIF
+
+;--------------------------------------------------------
+;스팽킹, 바늘, 채찍
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 40 || SELECTCOM == 41 || SELECTCOM == 42 && TFLAG:899 <= 1
+	A = UP:9
+
+	IF A < 300
+		B = 0
+	ELSEIF A < 1000
+		B = 1
+	ELSEIF A < 2000
+		B = 2
+	ELSEIF A < 3000
+		B = 3
+	ELSE
+		B = 4
+	ENDIF
+
+	SIF TALENT:40
+		B += 1
+
+	SIF TALENT:41
+		B -= 1
+
+	IF B < 1
+		PRINTFORML %타겟은()% 비명을 참아가며 아픔에 견뎠다.
+	ELSEIF B < 2
+		PRINTFORML %타겟은()% 심한 고통에 악문 이 사이로 괴로운듯한 신음소리를 냈다.
+	ELSEIF B < 3
+		PRINTFORML %타겟은()% 고통에 견디지 못하고 비명을 지르며 온몸을 뒤틀었다.
+	ELSEIF B < 4
+		PRINTFORML %타겟은()% 아픔이 너무 심해 온몸에서 식은땀을 흘리면서 고통에 괴로워하며 뒹굴었다.
+	ELSEIF B < 5
+		PRINTFORML %타겟은()% 너무 심한 아픔에 의식이 날아갈 것 같게 되자 차마 들을 수 없는 짐승 같은 비명을 계속 질렀다.
+	ELSE
+		PRINTFORM %타겟은()% 너무 심한 아픔에 
+		SIF TALENT:45 == 0 && TALENT:310 == 0
+			PRINT 흐느껴 울면서 
+		PRINTL 필사적으로 용서를 구걸하고 있다.
+	ENDIF
+	IF UP:5 > 1000
+		PRINTFORM 그러나 동시에, %타겟은()% 고통에 몸을 뒤틀면서도 
+		IF TALENT:121 || TALENT:122
+			PRINTFORML 페니스를 발기시키고 있다……
+		ELSE
+			PRINTFORML 사타구니를 적시고 있다……
+		ENDIF
+	ENDIF
+;--------------------------------------------------------
+;제모
+;--------------------------------------------------------
+ELSEIF SELECTCOM == 88 && TFLAG:899 <= 1
+	IF RAND:3 == 0 && TEQUIP:44 == 0
+		PRINTFORM %타겟은()% 면도된 
+			IF CFLAG:608 == 0
+				PRINT 도끼자국이 깔끔한 
+			ELSEIF CFLAG:608 == 1
+				PRINT 소음순이 비어져나온 
+			ELSEIF CFLAG:608 == 2
+				PRINT 색소가 침착되어 거무슴한 소음순이 비어져나온 
+			ENDIF
+			PRINT 가랑이
+			IF ABL:16 >=3
+				PRINTFORML 에 손가락을 뻗어, 감촉을 확인하고 있다…
+				SIF TALENT:35
+					PRINTFORML 얼굴을 붉히지만 꼭 싫지만은 않은 모습이다.
+			ELSE
+				PRINTFORML 를 손으로 가리고, 음부의 감촉을 확인하고 있다…
+			ENDIF
+	ELSEIF RAND:2 == 0 && TEQUIP:44 == 0
+		PRINTFORM %타겟은()% 완전히 모습을 드러낸 
+			IF CFLAG:608 == 0
+				PRINT 도끼자국이 깔끔한 
+			ELSEIF CFLAG:608 == 1
+				PRINT 소음순이 비어져나온 
+			ELSEIF CFLAG:608 == 2
+				PRINT 색소가 침착되어 거무슴한 소음순이 삐져나온 
+			ENDIF
+			PRINTL 성기를, 
+			IF ABL:16 >=3
+				SIF TALENT:24 || TALENT:30 || TALENT:35
+					PRINTFORM 얼굴을 새빨갛게 붉히면서도 
+				PRINTFORML %CALLNAME:PLAYER%의 눈앞에 보여줬다.
+			ELSE
+				SIF TALENT:24 || TALENT:30 || TALENT:35
+					PRINTFORM 부끄러운 듯이 
+				PRINTFORML 손으로 감추려하고 있다.
+			ENDIF
+	ELSE
+		PRINTFORM 어린 아기처럼 드러난 자신의 
+		IF TALENT:121 || TALENT:122
+			PRINT 페니스를 
+		ELSE
+			IF CFLAG:608 == 0
+				PRINT 도끼자국이 깔끔한 
+			ELSEIF CFLAG:608 == 1
+				PRINT 소음순이 비어져나온 
+			ELSEIF CFLAG:608 == 2
+				PRINT 색소가 침착되어 거무슴한 소음순이 비어져나온 
+			ENDIF
+			PRINTL 음부를, 
+		ENDIF
+		PRINTFORM %타겟은()% 
+		IF ABL:17 >= 3
+			PRINT 자랑스럽게 
+		ELSE
+			PRINT 쓸쓸한 듯이 
+		ENDIF
+		PRINTFORML 내려다보고 있다…
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;애널봉사＋절정無(修正)
+;-------------------------------------------------
+IF SELECTCOM == 37 || SELECTCOM == 138
+	IF ABL:16 >=3 && TFLAG:29 == 0
+		IF RAND:3 ==0
+			PRINTFORML %타겟은()% 항문 주변을 핥아주고, 혀끝을 길게 뽑아 안쪽으로 들어왔다
+			PRINTFORML 혀가 미끈미끈한 장벽을 덧그리듯이 희롱하고 있다…
+		ELSEIF RAND:2 == 0
+			PRINTFORMW %CALLNAME:TARGET%의 혀끝이 항문을 얕게 찌르고, 그 다음엔 그 주변을 문질렀다…
+			PRINTFORML 그리고, 갑자기 혀끝이 깊게 찔러들어와, 직장을 희롱하듯이 움직였다
+		ELSE
+			PRINTFORML %타겟은()% 애널에 달라붙어, 엉덩이 전체를 껴안는 듯한 자세로 봉사를 하고 있다…
+		ENDIF
+	ELSEIF ABL:10 >=2 && TFLAG:29 == 0
+		IF RAND:2 ==0
+			PRINTFORML %CALLNAME:TARGET%의 혀끝이 안에 들어오기전에 잠시 망설였다…
+			PRINTFORML 무서운듯이 다시 뽑혀나와, 입구 주변을 맴돌고 있다.
+		ELSE
+			PRINTFORMW %CALLNAME:TARGET%의 혀끝은 항문을 얕게 찌르고, 주변을 문질러갔다…
+			PRINTFORML 하지만, 안쪽으로 들어갈 수는 없었다.
+			PRINTFORML %CALLNAME:TARGET%에게는 아직 저항감이 있는 것같다.
+		ENDIF
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;관장+애널플러그 삽입중
+;-------------------------------------------------
+IF TEQUIP:46 && TFLAG:899 <= 1
+	PRINTFORML %타겟은()% 대량으로 관장액이 부어진 항문에 마개가 끼워진 상태로, 계속 괴로워하고 있다.
+	IF ABL:21 == 0
+		PRINTFORML %타겟은()% 고통스러워하는 표정을 짓고 있다.
+	ELSEIF ABL:21 == 1
+		PRINTFORML %타겟은()% 진땀을 흘리면서, 배설감을 참고 있다.
+	ELSEIF ABL:21 == 2
+		PRINTFORML %타겟은()% 괴로운 표정을 지으면서도, 얼굴을 홍조시킨 채 쭈뼛거리며 엉덩이를 흔들고 있다.
+	ELSEIF ABL:21 == 3
+		PRINTFORML %타겟은()% 배설감에 시달리면서도, 때때로 황홀해하는 표정을 짓고 있다.
+	ELSEIF ABL:21 == 4
+		PRINTFORML %타겟은()% 황홀해하는 표정을 지으면서, 배설감과 복통을 즐기고 있다.
+	ELSEIF ABL:21 >= 5
+		PRINTFORML %타겟은()% 배설감을 마음껏 맛보고 있다.
+		PRINTFORML %CALLNAME:TARGET%의 표정은 쾌감에 느슨하게 풀려서, 그 입과 질구에서 똑똑 침을 떨어뜨리고 있다.
+	ENDIF
+ENDIF
+
+SIF TEQUIP:55
+	PRINTFORML %타겟은()% %CALLNAME:PLAYER%의 얼굴에 엉덩이를 들이밀며 가학적인 미소를 짓고 있다.
+
+
+RETURN 0
+;
+;
+;

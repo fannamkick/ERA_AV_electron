@@ -1,0 +1,80 @@
+﻿;===========================================================
+;붕괴の取得
+;===========================================================
+@ADD_CATASTROPH
+
+FOR LOCAL, 0, 600
+	SIF LOCAL == 0 || LOCAL == 1 ||  LOCAL == 2 ||  LOCAL == 121 || LOCAL == 122 || LOCAL == 130 || LOCAL == 153 || LOCAL == 154 || LOCAL == 422 || LOCAL == 424
+		CONTINUE
+	TALENT:LOCAL = 0
+NEXT
+	TALENT:9 = 1
+	TALENT:101 = 1
+	TALENT:103 = 1
+	TALENT:105 = 1
+	TALENT:107 = 1
+	MAXBASE:31 = 10
+	SIF BASE:31 >= MAXBASE:31
+		BASE:31 = MAXBASE:31
+	MAXBASE:0 -= 1500
+	SIF MAXBASE:0 < 800
+		MAXBASE:0 = 800 
+	BASE:0 = MAXBASE:0
+	MAXBASE:1 -= 1000
+	SIF MAXBASE:1 < 400
+		MAXBASE:1 = 400
+	BASE:1 = MAXBASE:1
+
+;===========================================================
+;붕괴の取得
+;===========================================================
+@ADD_CATASTROPH_LABO
+
+FOR LOCAL, 0, 600
+	SIF LOCAL == 0 || LOCAL == 1 ||  LOCAL == 2 ||  LOCAL == 121 || LOCAL == 122 || LOCAL == 130 || LOCAL == 153 || LOCAL == 154 || LOCAL == 422 || LOCAL == 424
+		CONTINUE
+	TALENT:T:LOCAL = 0
+NEXT
+	TALENT:T:9 = 1
+	TALENT:T:101 = 1
+	TALENT:T:103 = 1
+	TALENT:T:105 = 1
+	TALENT:T:107 = 1
+	MAXBASE:T:31 = 10
+	SIF BASE:T:31 >= MAXBASE:T:31
+		BASE:T:31 = MAXBASE:T:31
+	MAXBASE:T:0 -= 1500
+	SIF MAXBASE:T:0 < 800
+		MAXBASE:T:0 = 800 
+	BASE:T:0 = MAXBASE:T:0
+	MAXBASE:T:1 -= 1000
+	SIF MAXBASE:T:1 < 400
+		MAXBASE:T:1 = 400
+	BASE:T:1 = MAXBASE:T:1
+
+;===========================================================
+;붕괴の取得・助手
+;===========================================================
+@ADD_CATASTROPH_ASSI
+
+FOR LOCAL, 0, 600
+	SIF LOCAL == 0 || LOCAL == 1 ||  LOCAL == 2 ||  LOCAL == 121 || LOCAL == 122 || LOCAL == 130 || LOCAL == 153 || LOCAL == 154 || LOCAL == 422 || LOCAL == 424
+		CONTINUE
+	TALENT:ASSI:LOCAL = 0
+NEXT
+	TALENT:ASSI:9 = 1
+	TALENT:ASSI:101 = 1
+	TALENT:ASSI:103 = 1
+	TALENT:ASSI:105 = 1
+	TALENT:ASSI:107 = 1
+	MAXBASE:ASSI:31 = 10
+	SIF BASE:ASSI:31 >= MAXBASE:ASSI:31
+		BASE:ASSI:31 = MAXBASE:ASSI:31
+	MAXBASE:ASSI:0 -= 1500
+	SIF MAXBASE:ASSI:0 < 800
+		MAXBASE:ASSI:0 = 800 
+	BASE:ASSI:0 = MAXBASE:ASSI:0
+	MAXBASE:ASSI:1 -= 1000
+	SIF MAXBASE:ASSI:1 < 400
+		MAXBASE:ASSI:1 = 400
+	BASE:ASSI:1 = MAXBASE:ASSI:1

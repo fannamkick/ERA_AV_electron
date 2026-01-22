@@ -1,0 +1,51 @@
+﻿;-------------------------------------------------
+;구현
+;助手系コマンド
+;-------------------------------------------------
+@COM180
+
+PRINTL 구현
+IF TALENT:121 == 1
+	SAVESTR:0 = 구현(페니스 소거)
+ELSEIF TALENT:121 == 1
+	SAVESTR:0 = 구현(페니스 생성)
+ENDIF
+CALL TRAIN_MESSAGE_B
+
+LOSEBASE:0 += 0
+;마조끼が高いと기력소비減少
+IF ABL:38 == 0
+	LOSEBASE:1 += 60
+ELSEIF ABL:38 <= 2 
+	LOSEBASE:1 += 45
+ELSE
+	LOSEBASE:1 += 30
+ENDIF
+
+;본디지ルックの装着
+IF TALENT:121 == 0
+	TALENT:121 = 1
+	SIF CFLAG:18 == 0
+		TALENT:1 = 1
+	IF MAXBASE:50 == 0
+		MAXBASE:50 = 15 + RAND:6
+		BASE:50 = MAXBASE:50
+		CFLAG:611 = 1 + RAND:3
+		IF MAXBASE:50 <= 16
+			CFLAG:609 = 1
+		ELSEIF MAXBASE:50 >= 17
+			CFLAG:609 = 2
+		ENDIF
+	ENDIF
+ELSEIF TALENT:121 == 1
+	TALENT:121 = 0
+	SIF CFLAG:18 == 0
+		TALENT:1 = 0
+ENDIF
+
+
+
+RETURN 1
+
+
+		

@@ -1,0 +1,223 @@
+﻿;===========================================================
+;ユニット結成の計算
+;===========================================================
+@IDOL_PRODUCE_CALC
+
+A = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	;既にユニット所属またはソロで確固たる地歩のある者の除外
+	;CPG
+	ELSEIF TALENT:COUNT:509 == 1
+		CONTINUE
+	;Mermaid girl
+	ELSEIF TALENT:COUNT:518 == 1
+		CONTINUE
+	;Triptych
+	ELSEIF TALENT:COUNT:519 == 1
+		CONTINUE
+	;Emerald Queen
+	ELSEIF TALENT:COUNT:522 == 1
+		CONTINUE
+	;Lily Princess
+	ELSEIF TALENT:COUNT:523 == 1
+		CONTINUE
+	;何の予定だったんだ……存在しないTALENT
+	ELSEIF TALENT:COUNT:524 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:203 == 1
+		A += 1
+	ENDIF
+REND
+
+IF A >= 4 && MONEY >= 10000000
+	CALL IDOL_PRODUCE
+ENDIF
+
+;===========================================================
+;ユニット結成の内容
+;===========================================================
+@IDOL_PRODUCE
+B = 0
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:509 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:518 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:519 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:522 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:523 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:524 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:203 == 1
+		B = COUNT
+		BREAK
+	ENDIF
+REND
+
+PRINTFORML %플레이어가()% 문뜻 켜놓았던 TV를 보니, 한 예능방송이 나오고 있었다
+PRINTFORM 출연석에는 초인기 아이돌『Colorful Pure Girls』멤버들이 앉아있고, 흔한「재미있는 영상」을 보며 
+PRINTFORML MC가 화제를 던지면 무난한 대답을 하고 있다
+PRINTFORM 그 광경을 멍하니 바라보다, 
+PRINTFORM 팬에겐 현역 AV배우라는 걸 숨기고 있지만, %CALLNAME:MASTER%의 사무소에는 %조사처리(NAME:B,"를")% 포함해, CPG에게도 지지 않는 
+PRINTFORML 미모의 아이돌들이 소속돼 있는 걸 %플레이어는()% 깨달았다
+PRINTFORM 이렇게 된거 %조사처리(CALLNAME:B,"와")% 다른 아이돌들도 CPG처럼 그룹을 만들어서 팔고, 그 그룹이 인기를 얻으면……『닮은 꼴』이라는 
+PRINTFORML 부가가치가 생길지도 모른다
+PRINTFORMW 카논에게 이『생각』을 상담하자, 500만 포인트만 있으면 %CALLNAME:B%들을 CPG에 필적할만한 그룹으로 만들 수 있다고 한다……
+PRINTL
+$INPUT_LOOP_PRODUCE
+PRINTFORML 아이돌 그룹을 만듭니까?
+PRINTL [0] - 네
+PRINTL [1] - 아니오
+INPUT
+	IF RESULT == 0
+		PRINTL
+		PRINTFORML 지금까지 솔로로 활동하던 %CALLNAME:B%들을 아이돌 그룹으로 데뷔시켰습니다
+		$INPUT_LOOP_DECIDE1
+		PRINTL 《아이돌 그룹의 이름을 정해주세요》
+		INPUTS
+			$INPUT_LOOP_DECIDE2
+			PRINTFORML 그룹명을《%RESULTS%》%조사만처리(RESULTS,"로")% 정합니까?
+			PRINTL [0] - 네
+			PRINTL [1] - 아니오
+			INPUT
+				IF RESULT == 0
+					PRINTFORML %CALLNAME:B%들을 %조사처리(RESULTS,"로")% 데뷔시켰습니다
+					PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+					CSTR:MASTER:4 = %RESULTS%
+					FLAG:554 = 1
+					REPEAT CHARANUM
+						IF COUNT == 0
+							CONTINUE
+						ELSEIF NO:COUNT == 2 && TALENT:518 == 1
+							CONTINUE
+						ELSEIF TALENT:COUNT:509 == 1
+							CONTINUE
+						ELSEIF TALENT:COUNT:518 == 1
+						CONTINUE
+						ELSEIF TALENT:COUNT:519 == 1
+							CONTINUE
+						ELSEIF TALENT:COUNT:522 == 1
+							CONTINUE
+						ELSEIF TALENT:COUNT:523 == 1
+							CONTINUE
+						ELSEIF TALENT:COUNT:524 == 1
+							CONTINUE
+						ELSEIF TALENT:COUNT:203 == 1 && TALENT:COUNT:514 == 0
+							TALENT:COUNT:515 = 1
+							MAXBASE:COUNT:31 += 30
+							BASE:COUNT:31 += 30
+						ENDIF
+					REND
+					MONEY -= 5000000
+					FOR LOCAL,0,CHARANUM
+						IF TALENT:LOCAL:515 == 0
+							CONTINUE
+						ELSE
+							FOR LOCAL:1,0,CHARANUM
+								SIF TALENT:(LOCAL:1):515 == 0
+									CONTINUE
+								SIF LOCAL == LOCAL:1
+									CONTINUE						
+								IF RELATION:LOCAL:(NO:(LOCAL:1)) <= 300
+									RELATION:LOCAL:(NO:(LOCAL:1)) = 300
+								ENDIF
+							NEXT
+						ENDIF
+					NEXT 
+				ELSEIF RESULT == 1
+					PRINTFORML 다시 입력해 주세요
+					GOTO INPUT_LOOP_DECIDE1
+				ELSE
+					GOTO INPUT_LOOP_DECIDE2
+				ENDIF
+	ELSEIF RESULT == 1
+		PRINTFORML 그룹 결성을 보류합니다
+		PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	ELSE
+		GOTO INPUT_LOOP_PRODUCE
+	ENDIF
+
+;===========================================================
+;ユニット結成の内容
+;===========================================================
+@IDOL_PRODUCE_ADD
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF CFLAG:COUNT:672 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:509 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:515 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:518 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:519 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:522 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:523 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:524 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:203 == 1 && TALENT:COUNT:515 == 0
+		$INPUT_LOOP_DECIDE3
+		PRINTFORML 솔로로 활동중인 %조사처리(NAME:COUNT,"를")% %CSTR:MASTER:4%에 가입시킵니까?
+		PRINTFORML (%CALLNAME:COUNT%의 레슨비로 500000포인트가 필요합니다)
+			PRINTL [0] - 네
+			PRINTL [1] - 아니오
+			INPUT
+				IF RESULT == 0
+					PRINTFORML %조사처리(CALLNAME:COUNT,"를")% %CSTR:MASTER:4%에 가입시켰습니다
+					PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+					FLAG:554 = 1
+					TALENT:COUNT:515 = 1
+					MAXBASE:COUNT:31 += 30
+					BASE:COUNT:31 += 30
+					MONEY -= 500000
+					FOR LOCAL,0,CHARANUM
+						IF TALENT:LOCAL:515 == 0
+							CONTINUE
+						ELSE
+							FOR LOCAL:1,0,CHARANUM
+								SIF TALENT:(LOCAL:1):515 == 0
+									CONTINUE
+								SIF LOCAL == LOCAL:1
+									CONTINUE						
+								IF RELATION:LOCAL:(NO:(LOCAL:1)) <= 300
+									RELATION:LOCAL:(NO:(LOCAL:1)) = 300
+								ENDIF
+							NEXT
+						ENDIF
+					NEXT 
+				ELSEIF RESULT == 1
+					PRINTFORML 그룹 가입은 보류했습니다
+					PRINTFORML ※앞으로 %CALLNAME:COUNT%의 그룹 가입을 확인할까요?
+					PRINTL [0] - 네
+					PRINTL [1] - 아니오
+					$INPUT_LOOP_DECIDE4
+					INPUT
+						IF RESULT == 0
+							PRINTFORML %CALLNAME:COUNT%의 그룹 가입을 확인합니다
+						ELSEIF RESULT == 1
+							PRINTFORML %CALLNAME:COUNT%의 그룹 가입을 확인하지 않습니다
+							CFLAG:COUNT:672 = 1
+						ELSE
+							GOTO INPUT_LOOP_DECIDE4
+						ENDIF
+						
+					PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+				ELSE
+					GOTO INPUT_LOOP_DECIDE3
+				ENDIF
+	ENDIF
+REND

@@ -1,0 +1,61 @@
+﻿;-------------------------------------------------
+;E마사지기
+;道具使用コマンド: 調教対象の클리토리스をE마사지기で刺激
+;체력・기력の消費や逸脱の上昇が로터より大きいが, 
+;低レベルでは로터よりも遥かに効率的に快cのソースを追加
+;-------------------------------------------------
+@COM12
+
+PRINTL E마사지기
+SAVESTR:0 = E마사지기
+CALL TRAIN_MESSAGE_B
+
+;-------------------------------------------------
+;ソースの計算
+;-------------------------------------------------
+LOSEBASE:0 += 30
+LOSEBASE:1 += 150
+
+SOURCE:12 = 120
+SOURCE:14 = 400
+
+;ABL:C感覚をみる
+IF ABL:0 == 0
+	SOURCE:0 = 2000
+ELSEIF ABL:0 == 1
+	SOURCE:0 = 2500
+ELSEIF ABL:0 == 2
+	SOURCE:0 = 3000
+ELSEIF ABL:0 == 3
+	SOURCE:0 = 3300
+ELSEIF ABL:0 == 4
+	SOURCE:0 = 3600
+ELSE
+	SOURCE:0 = 3800
+ENDIF
+
+						;****슬라임パッチ追加ここから****
+IF ITEM:202 >= 1
+	TIMES LOSEBASE:0 , 0.80
+	TIMES LOSEBASE:1 , 0.80
+	TIMES SOURCE:0 , 1.20
+	TIMES SOURCE:12 , 1.20
+	TIMES SOURCE:14 , 0.80
+ENDIF
+						;****슬라임パッチ追加ここまで****
+;-------------------------------------------------
+;経験上昇
+;-------------------------------------------------
+;レズ・ホモ経験
+IF TALENT:122 == 0 && TALENT:PLAYER:122 == 0
+	PRINTS EXPNAME:40
+	PRINTL +1
+	EXP:40 += 1
+ELSEIF TALENT:122 == 1 && TALENT:PLAYER:122 == 1
+	PRINTS EXPNAME:41
+	PRINTL +1
+	EXP:41 += 1
+ENDIF
+
+RETURN 1
+;

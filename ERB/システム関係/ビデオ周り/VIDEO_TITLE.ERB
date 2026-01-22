@@ -1,0 +1,1420 @@
+﻿;===========================================================
+;デビュータイトルの処理
+;===========================================================
+@VIDEO_TITLE_DEBUT
+
+CALL SPECIAL_TITLE_CALC
+
+IF TFLAG:160 == 1
+	CALL SPECIAL_TITLE_DECIDE_DEBUT
+ELSE
+	;素質による一括接頭語処理
+	;카나데と아이돌組を抜く。個々の称号で処理されているため。
+	IF NO:TARGET != 42 && NO:TARGET != 46 && NO:TARGET != 80 && NO:TARGET != 150 && NO:TARGET != 1 && NO:TARGET != 91 
+		IF TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+			IF RAND:2 == 0
+				PRINTFORM 음란 
+				CSTR:11 = 음란 
+			ELSE
+				PRINTFORM 변태 
+				CSTR:11 = 변태 
+			ENDIF
+		ELSEIF TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+			PRINTFORM 흑갸루걸레 
+			CSTR:11 = 흑갸루걸레 
+		ELSEIF TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+			PRINTFORM 흑갸루 
+			CSTR:11 = 흑갸루 
+		ENDIF
+	ENDIF
+
+	;△432が1だと純情とか清楚って感じでもないとは思うんですけども称号なくなっちゃいますし
+	;黒だけ抜けばいいのか?→抜いてでっち上げた。
+;	IF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	IF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:432 == 0
+		PRINTFORM 순정소녀・
+		CSTR:TARGET:12 = 순정소녀・
+;	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:432 == 0
+		PRINTFORM 청초 로리비치・
+		CSTR:TARGET:12 = 청초 로리비치・
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 에로귀염계 흑갸루・
+		CSTR:TARGET:12 = 에로귀염계 흑갸루・ 
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 흑갸루 로리비치・
+		CSTR:TARGET:12 = 흑갸루 로리비치・
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:422 == 0 && TALENT:432 == 1
+		PRINTFORM 에로귀염계 갸루・
+		CSTR:TARGET:12 = 에로귀염계 갸루・ 
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:422 == 0 && TALENT:432 == 1
+		PRINTFORM 갸루계 로리비치・
+		CSTR:TARGET:12 = 갸루계 로리비치・
+	ELSEIF NO:TARGET == 2
+		PRINTFORM 스포츠소녀・
+		CSTR:TARGET:12 = 스포츠소녀・
+	ELSEIF NO:TARGET == 3
+		PRINTFORM 요즘 여자아이・
+		CSTR:TARGET:12 = 요즘 여자아이・
+	ELSEIF NO:TARGET == 4
+		PRINTFORM 아가씨・
+		CSTR:TARGET:12 = 아가씨・
+	ELSEIF NO:TARGET == 5
+		PRINTFORM 인기 코스프레이어・
+		CSTR:TARGET:12 = 인기 코스프레이어・
+	ELSEIF NO:TARGET == 6
+		PRINTFORM 유부녀・
+		CSTR:TARGET:12 = 유부녀・
+	ELSEIF NO:TARGET == 7
+		PRINTFORM 백합자매・
+		CSTR:TARGET:12 = 백합자매・
+	ELSEIF NO:TARGET == 8
+		PRINTFORM 백합자매・
+		CSTR:TARGET:12 = 백합자매・
+	ELSEIF NO:TARGET == 9
+		PRINTFORM 공주님・
+		CSTR:TARGET:12 = 공주님・
+	ELSEIF NO:TARGET == 10
+		PRINTFORM 쿼터・
+		CSTR:TARGET:12 = 쿼터・
+	ELSEIF NO:TARGET == 11
+		PRINTFORM 세레브 니트・
+		CSTR:TARGET:12 = 세레브 니트・
+	ELSEIF NO:TARGET == 12
+		PRINTFORM 미인 간호사・
+		CSTR:TARGET:12 = 미인 간호사・
+	ELSEIF NO:TARGET == 13
+		PRINTFORM 낭자애・
+		CSTR:TARGET:12 = 낭자애・
+	ELSEIF NO:TARGET == 14
+		PRINTFORM 사무라이 걸・
+		CSTR:TARGET:12 = 사무라이 걸・
+	ELSEIF NO:TARGET == 15
+		PRINTFORM 미소녀 무녀・
+		CSTR:TARGET:12 = 미소녀 무녀・
+	ELSEIF NO:TARGET == 16
+		PRINTFORM 츤데레소녀・
+		CSTR:TARGET:12 = 츤데레소녀・
+	ELSEIF NO:TARGET == 17
+		PRINTFORM 메이드로이드・
+		CSTR:TARGET:12 = 메이드로이드・
+	ELSEIF NO:TARGET == 18
+		PRINTFORM 귀국자녀・
+		CSTR:TARGET:12 = 귀국자녀・
+	ELSEIF NO:TARGET == 19
+		PRINTFORM 더치와이프・
+		CSTR:TARGET:12 = 더치와이프・
+	ELSEIF NO:TARGET == 20
+		PRINTFORM 카리스마 점원・
+		CSTR:TARGET:12 = 카리스마 점원・
+	ELSEIF NO:TARGET == 21
+		PRINTFORM 여교사・
+		CSTR:TARGET:12 = 여교사・
+	ELSEIF NO:TARGET == 22
+		PRINTFORM 소악마 걸・
+		CSTR:TARGET:12 = 소악마 걸・
+	ELSEIF NO:TARGET == 23
+		PRINTFORM 유행소녀・
+		CSTR:TARGET:12 = 유행소녀・
+	ELSEIF NO:TARGET == 24
+		PRINTFORM 인기 AV배우・
+		CSTR:TARGET:12 = 인기 AV배우・
+	ELSEIF NO:TARGET == 25
+		PRINTFORM 수녀・
+		CSTR:TARGET:12 = 수녀・
+	ELSEIF NO:TARGET == 26
+		PRINTFORM 합법로리・
+		CSTR:TARGET:12 = 합법로리・
+	ELSEIF NO:TARGET == 27
+		PRINTFORM 아가씨・
+		CSTR:TARGET:12 = 아가씨・
+	ELSEIF NO:TARGET == 28
+		PRINTFORM 모에계 혼혈소녀・
+		CSTR:TARGET:12 = 모에계 혼혈소녀・
+	ELSEIF NO:TARGET == 29
+		PRINTFORM 성직자・
+		CSTR:TARGET:12 = 성직자・
+	ELSEIF NO:TARGET == 30
+		PRINTFORM 로리큐트・
+		CSTR:TARGET:12 = 로리큐트・
+	ELSEIF NO:TARGET == 31
+		PRINTFORM 음침계 로리소녀・
+		CSTR:TARGET:12 = 음침계 로리소녀・
+	ELSEIF NO:TARGET == 32
+		PRINTFORM 너무 아름다운 여의사・
+		CSTR:TARGET:12 = 너무 아름다운 여의사・
+	ELSEIF NO:TARGET == 33
+		PRINTFORM 로리 간호사・
+		CSTR:TARGET:12 = 로리 간호사・
+	ELSEIF NO:TARGET == 34
+		PRINTFORM 비밀 코스프레이어・
+		CSTR:TARGET:12 = 비밀 코스프레이어・
+	ELSEIF NO:TARGET == 35
+		PRINTFORM 쿨한 반장계 미소녀・
+		CSTR:TARGET:12 = 쿨한 반장계 미소녀・
+	ELSEIF NO:TARGET == 36
+		PRINTFORM 치유계 소꿉친구타입・
+		CSTR:TARGET:12 = 치유계 소꿉친구타입・
+	ELSEIF NO:TARGET == 37
+		PRINTFORM 인기 걸밴드의 베이시스트를 닮은 
+		CSTR:TARGET:12 = 인기 걸밴드의 베이시스트를 닮은 
+	ELSEIF NO:TARGET == 38
+		PRINTFORM 타천사계 미소녀・
+		CSTR:TARGET:12 = 타천사계 미소녀・
+	ELSEIF NO:TARGET == 39
+		PRINTFORM 납작가슴 독설소녀・
+		CSTR:TARGET:12 = 납작맨들 독설소녀・
+	ELSEIF NO:TARGET == 40
+		PRINTFORM 순종적인 폭유우등생・
+		CSTR:TARGET:12 = 순종적인 폭유우등생・
+	ELSEIF NO:TARGET == 41
+		PRINTFORM 폭신 치유계・
+		CSTR:TARGET:12 = 폭신 치유계・
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은 
+		CSTR:TARGET:12 = 아이돌 휴업중인 ○세를 닮은 
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은 음란소녀・
+		CSTR:TARGET:12 = 아이돌 휴업중인 ○세를 닮은 음란소녀・
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은 흑갸루・
+		CSTR:TARGET:12 = 아이돌 휴업중인 ○세를 닮은 흑갸루・
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은 흑갸루걸레・
+		CSTR:TARGET:12 = 아이돌 휴업중인 ○세를 닮은 흑갸루걸레・
+	ELSEIF NO:TARGET == 43
+		PRINTFORM 쌀쌀맞은 반장계 아가씨・
+		CSTR:TARGET:12 = 쌀쌀맞은 반장계 아가씨・
+	ELSEIF NO:TARGET == 44
+		PRINTFORM 묵묵한 모델계 장신미녀・
+		CSTR:TARGET:12 = 묵묵한 모델계 장신미녀・
+	ELSEIF NO:TARGET == 45
+		PRINTFORM 통통한 미소녀・
+		CSTR:TARGET:12 = 통통한 미소녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 미녀・
+		CSTR:TARGET:12 = 추억의 아이돌・타카○나시를 닮은 미녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 음란미녀・
+		CSTR:TARGET:12 = 추억의 아이돌・타카○나시를 닮은 음란미녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 흑갸루미녀・
+		CSTR:TARGET:12 = 추억의 아이돌・타카○나시를 닮은 흑갸루미녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 흑갸루걸레・
+		CSTR:TARGET:12 = 추억의 아이돌・타카○나시를 닮은 흑갸루걸레・
+	ELSEIF NO:TARGET == 47
+		PRINTFORM 청초 아가씨・
+		CSTR:TARGET:12 = 청초 아가씨・
+	ELSEIF NO:TARGET == 70
+		PRINTFORM 원교소녀・
+		CSTR:TARGET:12 = 원교소녀・
+	ELSEIF NO:TARGET == 72
+		PRINTFORM 찐레즈 여고생・
+		CSTR:TARGET:12 = 찐레즈 여고생・
+	ELSEIF NO:TARGET == 71
+		PRINTFORM 폭유언니・
+		CSTR:TARGET:12 = 폭유언니・
+	ELSEIF NO:TARGET == 73
+		PRINTFORM 수수한 아이・
+		CSTR:TARGET:12 = 수수한 아이・
+	ELSEIF NO:TARGET == 74
+		PRINTFORM 박복로리・
+		CSTR:TARGET:12 = 박복로리・
+	ELSEIF NO:TARGET == 75
+		PRINTFORM 아가씨・
+		CSTR:TARGET:12 = 아가씨・
+	ELSEIF NO:TARGET == 76
+		PRINTFORM 우등생・
+		CSTR:TARGET:12 = 우등생・
+	ELSEIF NO:TARGET == 77
+		PRINTFORM 폭유교사・
+		CSTR:TARGET:12 = 폭유교사・
+	ELSEIF NO:TARGET == 78
+		PRINTFORM 박복교사・
+		CSTR:TARGET:12 = 박복교사・
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 미○로를 닮은 
+		CSTR:TARGET:12 = C○G의 미○로를 닮은 
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 미○로를 닮은 음란소녀・
+		CSTR:TARGET:12 = C○G의 미○로를 닮은 음란소녀・
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 미○로를 닮은 흑갸루・
+		CSTR:TARGET:12 = C○G의 미○로를 닮은 흑갸루・
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 미○로를 닮은 흑갸루걸레・
+		CSTR:TARGET:12 = C○G의 미○로를 닮은 흑갸루걸레・
+	ELSEIF NO:TARGET == 81
+		PRINTFORM 아가씨・
+		CSTR:TARGET:12 = 아가씨・
+	ELSEIF NO:TARGET == 82
+		PRINTFORM 리틀 데빌・
+		CSTR:TARGET:12 = 리틀 데빌・
+	ELSEIF NO:TARGET == 83
+		PRINTFORM 전 주니어아이돌・
+		CSTR:TARGET:12 = 전 주니어아이돌・
+	ELSEIF NO:TARGET == 84
+		PRINTFORM 숙녀・
+		CSTR:TARGET:12 = 숙녀・
+	ELSEIF NO:TARGET == 85
+		PRINTFORM 여신・
+		CSTR:TARGET:12 = 여신・
+	ELSEIF NO:TARGET == 86
+		PRINTFORM 천재소녀・
+		CSTR:TARGET:12 = 천재소녀・
+	ELSEIF NO:TARGET == 87
+		PRINTFORM 남장미소녀・
+		CSTR:TARGET:12 = 남장미소녀・
+	ELSEIF NO:TARGET == 93
+		PRINTFORM 동물귀 중화소녀・
+		CSTR:TARGET:12 = 동물귀 중화소녀・
+	ELSEIF NO:TARGET == 94
+		PRINTFORM 안경・
+		CSTR:TARGET:12 = 안경・
+	ELSEIF NO:TARGET == 95
+		PRINTFORM 로리BBA(!?)・
+		CSTR:TARGET:12 = 로리BBA(!?)・
+	ELSEIF NO:TARGET == 96
+		PRINTFORM 쿨 뷰티・
+		CSTR:TARGET:12 = 쿨 뷰티・
+	ELSEIF NO:TARGET == 97
+		PRINTFORM 변태숙녀・
+		CSTR:TARGET:12 = 변태숙녀・
+	ELSEIF NO:TARGET == 98
+		PRINTFORM 누나계 인기 독자모델・
+		CSTR:TARGET:12 = 누나계 인기 독자모델・
+	ELSEIF NO:TARGET == 99
+		PRINTFORM 여동생계 병약 츤데레・
+		CSTR:TARGET:12 = 여동생계 병약 츤데레・
+	ELSEIF NO:TARGET == 100
+		PRINTFORM 강아지계 활발소녀・
+		CSTR:TARGET:12 = 강아지계 활발소녀・
+	ELSEIF NO:TARGET == 101
+		PRINTFORM 쿨한 검도소녀・
+		CSTR:TARGET:12 = 쿨한 검도소녀・
+	ELSEIF NO:TARGET == 102
+		PRINTFORM 소악마계 혼혈소녀・
+		CSTR:TARGET:12 = 소악마계 혼혈소녀・
+	ELSEIF NO:TARGET == 103
+		PRINTFORM 온화계 거유 아가씨・
+		CSTR:TARGET:12 = 온화계 거유 아가씨・
+	ELSEIF NO:TARGET == 106
+		PRINTFORM 미니멈 큐트계 로리 의붓여동생・
+		CSTR:TARGET:12 = 미니멈 큐트계 로리 의붓여동생・
+	ELSEIF NO:TARGET == 107
+		PRINTFORM 열혈 근성 스포츠소녀・
+		CSTR:TARGET:12 = 열혈 근성 스포츠소녀・
+	ELSEIF NO:TARGET == 108
+		PRINTFORM 공주님계 거유미소녀・
+		CSTR:TARGET:12 = 공주님계 거유미소녀・
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 유○를 닮은 
+		CSTR:TARGET:12 = C○G의 유○를 닮은 
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 유○를 닮은 음란소녀・
+		CSTR:TARGET:12 = C○G의 유○를 닮은 음란소녀・
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 유○를 닮은 흑갸루・
+		CSTR:TARGET:12 = C○G의 유○를 닮은 흑갸루・
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 유○를 닮은 흑갸루걸레・
+		CSTR:TARGET:12 = C○G의 유○를 닮은 흑갸루걸레・
+	ELSEIF NO:TARGET == 151
+		PRINTFORM 풍속녀・
+		CSTR:TARGET:12 = 풍속녀・
+	ELSEIF NO:TARGET == 152
+		PRINTFORM 미인 아가씨 여고생・
+		CSTR:TARGET:12 = 미인 아가씨 여고생・
+	ELSEIF NO:TARGET == 200
+		PRINTFORM 로리계 벨리 댄서・
+		CSTR:TARGET:12 = 로리계 벨리 댄서
+	ELSEIF NO:TARGET == 201
+		PRINTFORM 공주 용사(자칭)・
+		CSTR:TARGET:12 = 공주 용사(자칭)・
+	ELSEIF NO:TARGET == 202
+		PRINTFORM 걸밴드 어린아내・
+		CSTR:TARGET:12 = 걸밴드 어린아내・
+	ELSEIF NO:TARGET == 203
+		PRINTFORM 여배우 지망생・
+		CSTR:TARGET:12 = 여배우 지망생・
+	ELSEIF NO:TARGET == 204
+		PRINTFORM S급 미소녀・
+		CSTR:TARGET:12 = S급 미소녀・
+	ELSEIF NO:TARGET == 205
+		PRINTFORM 닌자 걸・
+		CSTR:TARGET:12 = 닌자 걸・
+	ELSEIF NO:TARGET == 206
+		PRINTFORM 그 아가씨를 닮은 낭자애・
+		CSTR:TARGET:12 = 그 아가씨를 닮은 낭자애・
+	ELSEIF NO:TARGET == 207
+		PRINTFORM 폭유 불량배・
+		CSTR:TARGET:12 = 폭유 불량배・
+	ELSEIF NO:TARGET == 208
+		PRINTFORM 커리어 우먼계 미망인・
+		CSTR:TARGET:12 = 커리어 우먼계 미망인・
+	ELSEIF NO:TARGET == 209
+		PRINTFORM 여왕님계 마조녀・
+		CSTR:TARGET:12 = 여왕님계 마조녀・
+	ELSEIF NO:TARGET == 210
+		PRINTFORM 덜렁이 아가씨・
+		CSTR:TARGET:12 = 덜렁이 아가씨・
+	ELSEIF NO:TARGET == 211
+		PRINTFORM 관심받고 싶어하는 로리・
+		CSTR:TARGET:12 = 관심받고 싶어하는 로리・
+	ELSEIF NO:TARGET == 212
+		PRINTFORM 더러움계 폭유무녀・
+		CSTR:TARGET:12 = 더러움계 폭유무녀・
+	ELSEIF NO:TARGET == 213
+		PRINTFORM 청춘 소박계 천연미소녀・
+		CSTR:TARGET:12 = 청춘 소박계 천연미소녀・
+	ELSEIF NO:TARGET == 214
+		PRINTFORM 천진난만한 로리계 미소녀・
+		CSTR:TARGET:12 = 천진난만한 로리계 미소녀・
+	ELSEIF NO:TARGET == 215
+		PRINTFORM 자택경비계 신세대 아이돌・
+		CSTR:TARGET:12 = 자택경비계 신세대 아이돌・
+	ENDIF
+
+	IF TALENT:153 == 1 && FLAG:22 & 4
+		IF RAND:2 == 0
+			CSTR:14 = 만삭 코스프레 
+		ELSE
+			CSTR:14 = 코스프레 임산부 
+		ENDIF
+	ELSEIF TALENT:153 == 1 
+		IF RAND:2 == 0
+			CSTR:14 = 만삭 
+		ELSE
+			CSTR:14 = 임산부 
+		ENDIF
+	ELSEIF FLAG:22 & 4
+		CSTR:14 = 코스프레 
+	ENDIF
+
+	;△TFLAG:820は「サインペンで書いた」回数。これでいい気がこれっぽっちもしないがさて。
+	;→やっぱり別に作るまで封印封印
+	;IF A:2 >= A:0 && A:2 >= A:3 && B:3 && TFLAG:820
+	;	PRINTFORM 生ハメ질내사정し{TFLAG:820}連発
+	;	CSTR:15 = 生ハメ질내사정し{TFLAG:820}連発
+	IF 촬영부위V >= 촬영부위C && 촬영부위V >= 촬영부위A && 촬영내용성교
+		CSTR:13 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:15 = 생SEX
+	ELSEIF 촬영부위A && 촬영내용성교
+		CSTR:13 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:15 = 애널섹스
+	ELSEIF 촬영내용피스트
+		CSTR:13 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:15 = 피스트퍽
+	ELSEIF 촬영특수난교
+		CSTR:13 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:15 = 대난교
+	ELSEIF 촬영특수착유
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 착유파티
+	ELSEIF 촬영특수거품춤
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 봉사 소프플레이
+	ELSEIF 촬영내용펠라 && (촬영내용펠라 >= 촬영경향봉사/2)
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 봄 펠라축제
+	ELSEIF 촬영경향봉사
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 봉사 대작전
+	ELSEIF 촬영경향SM
+		CSTR:13 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:15 = SM
+	ELSEIF 촬영경향자위
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 엄청 에로한 자위를 보여줄게
+	ELSEIF 촬영부위C && 촬영내용성교
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 역강간
+	ELSEIF 촬영특수레즈
+		CSTR:13 = %NICKNAME:TARGET%의 
+		CSTR:15 = 레즈SEX
+;△プレイ次第ではここ抜けることがあるのでelseを準備。
+;何で埋めるといいだろうか。
+;	ELSE
+;		PRINT
+;		CSTR:15 =
+	ENDIF
+	
+	IF TFLAG:32 & 1
+		CSTR:13 = %조사처리(NICKNAME:TARGET,"이")% 
+	ENDIF
+	PRINTFORM %CSTR:13% 
+	STRLENSU CSTR:14
+	SIF RESULT
+		PRINTFORM %CSTR:14% 
+	PRINTFORM %CSTR:15%
+	
+	;△思うんですけど반 친구がセンパイ扱いしてくるのきつくないですか
+	;誕生日で区切ってるので補正を入れたい
+	;あと, だれが実際に奪ったのかも実は取れてない
+	IF TFLAG:32 & 1
+		PRINTFORML %조사처리(CSTR:15,"로")% 처녀상실
+		CSTR:16 = %조사처리(CSTR:15,"로")% 처녀상실
+		IF NO:PLAYER == 0 && TALENT:PLAYER:122 == 0 && (NO:TARGET == 1 || NO:TARGET == 91) 
+			PRINTFORM  ~언니가 어른 여자로 만들어 주셨습니다~
+			CSTR:17 =  ~언니가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:PLAYER:122 == 0 && TALENT:432 == 1 && TALENT:PLAYER:432 == 1
+			PRINTFORM  ~레즈섹프갸루친구・%조수가()% 여자로 만들어 줬습니다~
+			CSTR:17 =  ~레즈섹프갸루친구・%조수가()% 여자로 만들어 줬습니다~
+		ELSEIF TALENT:PLAYER:122 == 0
+			PRINTFORM  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@이 어른 여자로 만들어 주셨습니다~
+			CSTR:17 =  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@이 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠가 여자로 만들어 줬습니다~
+			CSTR:17 =  ~오빠가 여자로 만들어 줬습니다~
+		ELSEIF TALENT:432 == 1 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~형님의 자지가 여자로 만들어 주셨습니다~
+			CSTR:17 =  ~형님의 자지가 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9 < BASE:MASTER:9
+			PRINTFORM  ~선배가 여자로 만들어 주셨습니다~
+			CSTR:17 =  ~선배가 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  > BASE:MASTER:9
+			PRINTFORM  ~연하에게 어른 여자가 되버렸습니다~
+			CSTR:17 =  ~연하에게 어른 여자가 되버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  == BASE:MASTER:9
+			PRINTFORM  ~친구에게 여자가 되버렸습니다~
+			CSTR:17 =  ~친구에게 여자가 되버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9 < BASE:MASTER:9
+			PRINTFORM  ~선배의 자지가 어른 여자로 만들어 주셨습니다~
+			CSTR:17 =  ~선배의 자지가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  > BASE:MASTER:9
+			PRINTFORM  ~연하의 자지에게 어른 여자가 되버렸습니다~
+			CSTR:17 =  ~연하의 자지에게 어른 여자가 되버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  == BASE:MASTER:9
+			PRINTFORM  ~연하의 자지로 어른 여자가 되버렸습니다~
+			CSTR:17 =  ~연하의 자지로 어른 여자가 되버렸습니다~
+		ENDIF
+		CFLAG:641 = 1
+	ELSEIF TFLAG:132 & 1
+		PRINTFORML %조사처리(CSTR:15,"로")% 애널처녀 상실
+		CSTR:16 = %조사처리(CSTR:15,"로")% 애널처녀 상실
+		IF NO:PLAYER == 0 && TALENT:PLAYER:122 == 0 && (NO:TARGET == 1 || NO:TARGET == 91) 
+			PRINTFORM  ~언니에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~언니에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:PLAYER:122 == 0 && TALENT:432 == 1 && TALENT:PLAYER:432 == 1
+			PRINTFORM  ~레즈섹프갸루친구・%NICKNAME:ASSI%에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~레즈섹프갸루친구・%NICKNAME:ASSI%에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:PLAYER:122 == 0
+			PRINTFORM  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~오빠에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~오빠의 자지에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9 < 17
+			PRINTFORM  ~선배에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~선배에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  > 17
+			PRINTFORM  ~연하에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~연하에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  == 17
+			PRINTFORM  ~친구에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~친구에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9 < 17
+			PRINTFORM  ~선배의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~선배의 자지에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  > 17
+			PRINTFORM  ~연하의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~연하의 자지에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  == 17
+			PRINTFORM  ~섹프의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:17 =  ~섹프의 자지에게 애널처녀 바쳐버렸습니다~
+		ENDIF
+		CFLAG:641 = 1
+	ELSEIF TFLAG:133
+		IF TFLAG:133 == 1
+			PRINTFORML %조사처리(CSTR:15,"로")% 동정상실
+			CSTR:16 = %조사처리(CSTR:15,"로")% 동정상실
+		ENDIF
+		IF TALENT:PLAYER:122 == 0 && TALENT:432 == 1 && TALENT:PLAYER:432 == 1
+			PRINTFORM  ~레즈섹프갸루친구・%NICKNAME:ASSI%의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+			CSTR:17 =  ~레즈섹프갸루친구・%NICKNAME:ASSI%의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+		ELSEIF TALENT:PLAYER:122 == 0
+			PRINTFORM  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+			CSTR:17 =  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+		ENDIF
+		CFLAG:641 = 1
+	ELSE
+		PRINTFORM 
+		CSTR:16 = 
+		CFLAG:641 = 0
+		CSTR:17 =
+	ENDIF
+ENDIF
+
+;===========================================================
+;デビュータイトルの表示処理
+;===========================================================
+@PRINT_VIDEO_TITLE
+PRINTFORM %CSTR:10%
+PRINTFORM %CSTR:11%
+PRINTFORM %CSTR:12%
+PRINTFORM %CSTR:13%
+PRINTFORM %CSTR:14%
+PRINTFORM %CSTR:15%
+PRINTFORM %CSTR:16%
+IF CFLAG:641 == 1
+	PRINTL  
+	PRINTFORML  %CSTR:17%
+ELSE
+	PRINTL 
+ENDIF
+
+;===========================================================
+;新作タイトルの処理
+;===========================================================
+@VIDEO_TITLE_NEW
+
+CALL SPECIAL_TITLE_CALC
+
+IF TFLAG:160 == 1
+	CALL SPECIAL_TITLE_DECIDE
+ELSE
+	;素質による一括接頭語処理
+	;카나데と아이돌組を抜く。個々の称号で処理されているため。
+	IF NO:TARGET != 42 && NO:TARGET != 46 && NO:TARGET != 80 && NO:TARGET != 150 && NO:TARGET != 1 && NO:TARGET != 91 
+		IF TALENT:76 == 1 && TALENT:422 == 0
+			IF RAND:2 == 0
+				PRINTFORM 음란 
+				CSTR:31 = 음란 
+			ELSE
+				PRINTFORM 변태 
+				CSTR:31 = 변태 
+			ENDIF
+		ELSEIF TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+			PRINTFORM 흑갸루걸레 
+			CSTR:31 = 흑갸루걸레 
+		ELSEIF TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+			PRINTFORM 흑갸루 
+			CSTR:31 = 흑갸루 
+		ENDIF
+	ENDIF
+
+	;当然こっちも置き換える	
+;	IF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	IF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:432 == 0
+		PRINTFORM 순정소녀・
+		CSTR:TARGET:32 = 순정소녀・
+;	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:432 == 0
+		PRINTFORM 청초 로리비치・
+		CSTR:TARGET:32 = 청초 로리비치・
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 에로귀염계 흑갸루・
+		CSTR:TARGET:32 = 에로귀염계 흑갸루・ 
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 흑갸루 로리비치・
+		CSTR:TARGET:32 = 흑갸루 로리비치・
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:422 == 0 && TALENT:432 == 1
+		PRINTFORM 에로귀염계 갸루・
+		CSTR:TARGET:32 = 에로귀염계 갸루・ 
+	ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:422 == 0 && TALENT:432 == 1
+		PRINTFORM 갸루계 로리비치・
+		CSTR:TARGET:32 = 갸루계 로리비치・
+	ELSEIF NO:TARGET == 2
+		PRINTFORM 스포츠소녀・
+		CSTR:TARGET:32 = 스포츠소녀・
+	ELSEIF NO:TARGET == 3
+		PRINTFORM 요즘 여자아이・
+		CSTR:TARGET:32 = 요즘 여자아이・
+	ELSEIF NO:TARGET == 4
+		PRINTFORM 아가씨・
+		CSTR:TARGET:32 = 아가씨・
+	ELSEIF NO:TARGET == 5
+		PRINTFORM 인기 코스프레이어・
+		CSTR:TARGET:32 = 인기 코스프레이어・
+	ELSEIF NO:TARGET == 6
+		PRINTFORM 유부녀・
+		CSTR:TARGET:32 = 유부녀・
+	ELSEIF NO:TARGET == 7
+		PRINTFORM 백합자매・
+		CSTR:TARGET:32 = 백합자매・
+	ELSEIF NO:TARGET == 8
+		PRINTFORM 백합자매・
+		CSTR:TARGET:32 = 백합자매・
+	ELSEIF NO:TARGET == 9
+		PRINTFORM 공주님・
+		CSTR:TARGET:32 = 공주님・
+	ELSEIF NO:TARGET == 10
+		PRINTFORM 쿼터・
+		CSTR:TARGET:32 = 쿼터・
+	ELSEIF NO:TARGET == 11
+		PRINTFORM 세레브 니트・
+		CSTR:TARGET:32 = 세레브 니트・
+	ELSEIF NO:TARGET == 12
+		PRINTFORM 미인 간호사・
+		CSTR:TARGET:32 = 미인 간호사・
+	ELSEIF NO:TARGET == 13
+		PRINTFORM 낭자애・
+		CSTR:TARGET:32 = 낭자애・
+	ELSEIF NO:TARGET == 14
+		PRINTFORM 사무라이 걸・
+		CSTR:TARGET:32 = 사무라이 걸・
+	ELSEIF NO:TARGET == 15
+		PRINTFORM 미소녀 무녀・
+		CSTR:TARGET:32 = 미소녀 무녀・
+	ELSEIF NO:TARGET == 16
+		PRINTFORM 츤데레소녀・
+		CSTR:TARGET:32 = 츤데레소녀・
+	ELSEIF NO:TARGET == 17
+		PRINTFORM 메이드로이드・
+		CSTR:TARGET:32 = 메이드로이드・
+	ELSEIF NO:TARGET == 18
+		PRINTFORM 귀국자녀・
+		CSTR:TARGET:32 = 귀국자녀・
+	ELSEIF NO:TARGET == 19
+		PRINTFORM 더치와이프・
+		CSTR:TARGET:32 = 더치와이프・
+	ELSEIF NO:TARGET == 20
+		PRINTFORM 카리스마 점원・
+		CSTR:TARGET:32 = 카리스마 점원・
+	ELSEIF NO:TARGET == 21
+		PRINTFORM 여교사・
+		CSTR:TARGET:32 = 여교사・
+	ELSEIF NO:TARGET == 22
+		PRINTFORM 소악마 걸・
+		CSTR:TARGET:32 = 소악마 걸・
+	ELSEIF NO:TARGET == 23
+		PRINTFORM 유행소녀・
+		CSTR:TARGET:32 = 유행소녀・
+	ELSEIF NO:TARGET == 24
+		PRINTFORM 인기 AV배우・
+		CSTR:TARGET:32 = 인기 AV배우・
+	ELSEIF NO:TARGET == 25
+		PRINTFORM 수녀・
+		CSTR:TARGET:32 = 수녀・
+	ELSEIF NO:TARGET == 26
+		PRINTFORM 합법로리・
+		CSTR:TARGET:32 = 합법로리・
+	ELSEIF NO:TARGET == 27
+		PRINTFORM 아가씨・
+		CSTR:TARGET:32 = 아가씨・
+	ELSEIF NO:TARGET == 28
+		PRINTFORM 모에계 혼혈소녀・
+		CSTR:TARGET:32 = 모에계 혼혈소녀・
+	ELSEIF NO:TARGET == 29
+		PRINTFORM 성직자・
+		CSTR:TARGET:32 = 성직자・
+	ELSEIF NO:TARGET == 30
+		PRINTFORM 로리큐트・
+		CSTR:TARGET:32 = 로리큐트・
+	ELSEIF NO:TARGET == 31
+		PRINTFORM 음침계 로리소녀
+		CSTR:TARGET:32 = 음침계 로리소녀
+	ELSEIF NO:TARGET == 32
+		PRINTFORM 너무 아름다운 여의・
+		CSTR:TARGET:32 = 너무 아름다운 여의・
+	ELSEIF NO:TARGET == 33
+		PRINTFORM 로리 간호사・
+		CSTR:TARGET:32 = 로리 간호사・
+	ELSEIF NO:TARGET == 34
+		PRINTFORM 비밀 코스프레이어・
+		CSTR:TARGET:32 = 비밀 코스프레이어・
+	ELSEIF NO:TARGET == 35
+		PRINTFORM 쿨한 반장계 미소녀・
+		CSTR:TARGET:32 = 쿨한 반장계 미소녀・
+	ELSEIF NO:TARGET == 36
+		PRINTFORM 치유계 소꿉친구타입・
+		CSTR:TARGET:32 = 치유계 소꿉친구타입・
+	ELSEIF NO:TARGET == 37
+		PRINTFORM 인기 걸밴드의 베이시스트를 닮은・
+		CSTR:TARGET:32 = 인기 걸밴드의 베이시스트를 닮은・
+	ELSEIF NO:TARGET == 38
+		PRINTFORM 타천사계 미소녀・
+		CSTR:TARGET:32 = 타천사계 미소녀・
+	ELSEIF NO:TARGET == 39
+		PRINTFORM 납작맨들 독설소녀・
+		CSTR:TARGET:32 = 납작맨들 독설소녀・
+	ELSEIF NO:TARGET == 40
+		PRINTFORM 순종적인 폭유우등생・
+		CSTR:TARGET:32 = 순종적인 폭유우등생・
+	ELSEIF NO:TARGET == 41
+		PRINTFORM 폭신 치유계・
+		CSTR:TARGET:32 = 폭신 치유계・
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은
+		CSTR:TARGET:32 = 아이돌 휴업중인 ○세를 닮은
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은 음란소녀・
+		CSTR:TARGET:32 = 아이돌 휴업중인 ○세를 닮은 음란소녀・
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은 흑갸루・
+		CSTR:TARGET:32 = 아이돌 휴업중인 ○세를 닮은 흑갸루・
+	ELSEIF NO:TARGET == 42 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 아이돌 휴업중인 ○세를 닮은흑갸루걸레・
+		CSTR:TARGET:32 = 아이돌 휴업중인 ○세를 닮은흑갸루걸레・
+	ELSEIF NO:TARGET == 43
+		PRINTFORM 쌀쌀맞은 반장계아가씨・
+		CSTR:TARGET:32 = 쌀쌀맞은 반장계아가씨・
+	ELSEIF NO:TARGET == 44
+		PRINTFORM 묵묵한 모델계 장신미녀・
+		CSTR:TARGET:32 = 묵묵한 모델계 장신미녀・
+	ELSEIF NO:TARGET == 45
+		PRINTFORM 통통한 미소녀・
+		CSTR:TARGET:32 = 통통한 미소녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 미녀・
+		CSTR:TARGET:32 = 추억의 아이돌・타카○나시를 닮은 미녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 음란미녀
+		CSTR:TARGET:32 = 추억의 아이돌・타카○나시를 닮은 음란미녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 흑갸루미녀・
+		CSTR:TARGET:32 = 추억의 아이돌・타카○나시를 닮은 흑갸루미녀・
+	ELSEIF NO:TARGET == 46 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 추억의 아이돌・타카○나시를 닮은 흑갸루걸레・
+		CSTR:TARGET:32 = 추억의 아이돌・타카○나시를 닮은 흑갸루걸레・
+	ELSEIF NO:TARGET == 47
+		PRINTFORM 청초 아가씨・
+		CSTR:TARGET:32 = 청초 아가씨・
+	ELSEIF NO:TARGET == 70
+		PRINTFORM 원교소녀・
+		CSTR:TARGET:32 = 원교소녀・
+	ELSEIF NO:TARGET == 72
+		PRINTFORM 찐레즈 여고생・
+		CSTR:TARGET:32 = 찐레즈 여고생・
+	ELSEIF NO:TARGET == 71
+		PRINTFORM 폭유언니・
+		CSTR:TARGET:32 = 폭유언니・
+	ELSEIF NO:TARGET == 73
+		PRINTFORM 수수한 아이・
+		CSTR:TARGET:32 = 수수한 아이・
+	ELSEIF NO:TARGET == 74
+		PRINTFORM 박복로리・
+		CSTR:TARGET:32 = 박복로리・
+	ELSEIF NO:TARGET == 75
+		PRINTFORM 아가씨・
+		CSTR:TARGET:32 = 아가씨・
+	ELSEIF NO:TARGET == 76
+		PRINTFORM 우등생・
+		CSTR:TARGET:32 = 우등생・
+	ELSEIF NO:TARGET == 77
+		PRINTFORM 폭유교사・
+		CSTR:TARGET:32 = 폭유교사・
+	ELSEIF NO:TARGET == 78
+		PRINTFORM 박복교사・
+		CSTR:TARGET:32 = 박복교사・
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 미○로를 닮은
+		CSTR:TARGET:32 = C○G의 미○로를 닮은
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 미○로를 닮은 음란소녀・
+		CSTR:TARGET:32 = C○G의 미○로를 닮은 음란소녀・
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 미○로를 닮은 흑갸루・
+		CSTR:TARGET:32 = C○G의 미○로를 닮은 흑갸루・
+	ELSEIF NO:TARGET == 80 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 미○로를 닮은흑갸루걸레・
+		CSTR:TARGET:32 = C○G의 미○로를 닮은흑갸루걸레・
+	ELSEIF NO:TARGET == 81
+		PRINTFORM 아가씨・
+		CSTR:TARGET:32 = 아가씨・
+	ELSEIF NO:TARGET == 82
+		PRINTFORM 리틀 데빌・
+		CSTR:TARGET:32 = 리틀 데빌・
+	ELSEIF NO:TARGET == 83
+		PRINTFORM 전 주니어아이돌・
+		CSTR:TARGET:32 = 전 주니어아이돌・
+	ELSEIF NO:TARGET == 84
+		PRINTFORM 숙녀・
+		CSTR:TARGET:32 = 숙녀・
+	ELSEIF NO:TARGET == 85
+		PRINTFORM 여신・
+		CSTR:TARGET:32 = 여신・
+	ELSEIF NO:TARGET == 86
+		PRINTFORM 천재소녀・
+		CSTR:TARGET:32 = 천재소녀・
+	ELSEIF NO:TARGET == 87
+		PRINTFORM 남장미소녀・
+		CSTR:TARGET:32 = 남장미소녀・
+	ELSEIF NO:TARGET == 93
+		PRINTFORM 동물귀 중화소녀・
+		CSTR:TARGET:32 = 동물귀 중화소녀・
+	ELSEIF NO:TARGET == 94
+		PRINTFORM 안경・
+		CSTR:TARGET:32 = 안경・
+	ELSEIF NO:TARGET == 95
+		PRINTFORM 로리BBA(!?)・
+		CSTR:TARGET:32 = 로리BBA(!?)・
+	ELSEIF NO:TARGET == 96
+		PRINTFORM 쿨 뷰티・
+		CSTR:TARGET:32 = 쿨 뷰티・
+	ELSEIF NO:TARGET == 97
+		PRINTFORM 변태숙녀・
+		CSTR:TARGET:32 = 변태숙녀・
+	ELSEIF NO:TARGET == 98
+		PRINTFORM 누나계 인기 독자모델・
+		CSTR:TARGET:32 = 누나계 인기 독자모델・
+	ELSEIF NO:TARGET == 99
+		PRINTFORM 여동생계 병약 츤데레・
+		CSTR:TARGET:32 = 여동생계 병약 츤데레・
+	ELSEIF NO:TARGET == 100
+		PRINTFORM 강아지계 활발소녀・
+		CSTR:TARGET:32 = 강아지계 활발소녀・
+	ELSEIF NO:TARGET == 101
+		PRINTFORM 쿨한 검도소녀・
+		CSTR:TARGET:32 = 쿨한 검도소녀・
+	ELSEIF NO:TARGET == 102
+		PRINTFORM 소악마계 혼혈소녀・
+		CSTR:TARGET:32 = 소악마계 혼혈소녀・
+	ELSEIF NO:TARGET == 103
+		PRINTFORM 온화계 거유 아가씨・
+		CSTR:TARGET:32 = 온화계 거유 아가씨・
+	ELSEIF NO:TARGET == 106
+		PRINTFORM 미니멈 큐트계 로리 의붓여동생・
+		CSTR:TARGET:32 = 미니멈 큐트계 로리 의붓여동생・
+	ELSEIF NO:TARGET == 107
+		PRINTFORM 열혈 근성 스포츠소녀・
+		CSTR:TARGET:32 = 열혈 근성 스포츠소녀・
+	ELSEIF NO:TARGET == 108
+		PRINTFORM 공주님계 거유미소녀・
+		CSTR:TARGET:32 = 공주님계 거유미소녀・
+	ELSEIF NO:TARGET == 151
+		PRINTFORM 풍속녀・
+		CSTR:TARGET:32 = 풍속녀・
+	ELSEIF NO:TARGET == 152
+		PRINTFORM 미인 아가씨 여고생・
+		CSTR:TARGET:32 = 미인 아가씨 여고생・
+	ELSEIF NO:TARGET == 200
+		PRINTFORM 로리계 벨리 댄서・
+		CSTR:TARGET:32 = 로리계 벨리 댄서
+	ELSEIF NO:TARGET == 201
+		PRINTFORM 공주 용사(자칭)・
+		CSTR:TARGET:32 = 공주 용사(자칭)・
+	ELSEIF NO:TARGET == 202
+		PRINTFORM 걸밴드 어린아내・
+		CSTR:TARGET:32 = 걸밴드 어린아내・
+	ELSEIF NO:TARGET == 203
+		PRINTFORM 여배우 지망생・
+		CSTR:TARGET:32 = 여배우 지망생・
+	ELSEIF NO:TARGET == 204
+		PRINTFORM S급 미소녀・
+		CSTR:TARGET:32 = S급 미소녀・
+	ELSEIF NO:TARGET == 205
+		PRINTFORM 닌자 걸・
+		CSTR:TARGET:32 = 닌자 걸・
+	ELSEIF NO:TARGET == 206
+		PRINTFORM 그 아가씨를 닮은 낭자애・
+		CSTR:TARGET:32 = 그 아가씨를 닮은 낭자애・
+	ELSEIF NO:TARGET == 207
+		PRINTFORM 폭유 불량배・
+		CSTR:TARGET:32 = 폭유 불량배・
+	ELSEIF NO:TARGET == 208
+		PRINTFORM 커리어 우먼계 미망인
+		CSTR:TARGET:32 = 커리어 우먼계 미망인
+	ELSEIF NO:TARGET == 209
+		PRINTFORM 여왕님계 마조녀・
+		CSTR:TARGET:32 = 여왕님계 마조녀・
+	ELSEIF NO:TARGET == 210
+		PRINTFORM 덜렁이 아가씨・
+		CSTR:TARGET:32 = 덜렁이 아가씨・
+	ELSEIF NO:TARGET == 211
+		PRINTFORM 관심받고 싶어하는 로리・
+		CSTR:TARGET:32 = 관심받고 싶어하는 로리・
+	ELSEIF NO:TARGET == 212
+		PRINTFORM 더러움계 폭유무녀・
+		CSTR:TARGET:32 = 더러움계 폭유무녀・
+	ELSEIF NO:TARGET == 213
+		PRINTFORM 청춘 소박계 천연미소녀・
+		CSTR:TARGET:32 = 청춘 소박계 천연미소녀・
+	ELSEIF NO:TARGET == 214
+		PRINTFORM 천진난만한 로리계 미소녀・
+		CSTR:TARGET:32 = 천진난만한 로리계 미소녀・
+	ELSEIF NO:TARGET == 215
+		PRINTFORM 자택경비계 신세대 아이돌・
+		CSTR:TARGET:32 = 자택경비계 신세대 아이돌・
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 유○를 닮은
+		CSTR:TARGET:32 = C○G의 유○를 닮은
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+		PRINTFORM C○G의 유○를 닮은 음란소녀・
+		CSTR:TARGET:32 = C○G의 유○를 닮은 음란소녀・
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 유○를 닮은 흑갸루・
+		CSTR:TARGET:32 = C○G의 유○를 닮은 흑갸루・
+	ELSEIF NO:TARGET == 150 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM C○G의 유○를 닮은 흑갸루걸레・
+		CSTR:TARGET:32 = C○G의 유○를 닮은 흑갸루걸레・
+	ENDIF
+
+	;優先順位がめんどくさいのでCSTR:33は35とセットで決めて33-35の一括表示にしようそうしよう
+	IF TALENT:153 == 1 && FLAG:22 & 4
+		IF RAND:2 == 0
+			CSTR:34 = 만삭 코스프레 
+		ELSE
+			CSTR:34 = 코스프레 임산부 
+		ENDIF
+	ELSEIF TALENT:153 == 1 
+		IF RAND:2 == 0
+			CSTR:34 = 만삭 
+		ELSE
+			CSTR:34 = 임산부 
+		ENDIF
+	ELSEIF FLAG:22 & 4
+		CSTR:34 = 코스프레 
+	ENDIF
+	
+;	IF A:2 >= A:0 && A:2 >= A:3 && B:3 && TFLAG:820
+;		CSTR:33 = %NICKNAME:TARGET%に
+;		CSTR:35 = 生ハメ질내사정し{TFLAG:820}連発
+	IF 촬영부위V >= 촬영부위C && 촬영부위V >= 촬영부위A && 촬영내용성교
+	;△ゴム使ってる場合どうするのっと
+		CSTR:33 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:35 = 생SEX
+	ELSEIF 촬영부위A && 촬영내용성교
+		CSTR:33 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:35 = 애널섹스
+	ELSEIF 촬영내용피스트
+		CSTR:33 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:35 = 피스트퍽
+	ELSEIF 촬영특수거품춤
+		;優先順位上と違くない!?
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 봉사 소프플레이
+	ELSEIF 촬영특수난교
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 대난교
+	ELSEIF 촬영특수착유
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 착유파티
+	ELSEIF 촬영내용펠라 && (촬영내용펠라 >= 촬영경향봉사/2)
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 봄 펠라축제
+ 	ELSEIF 촬영경향봉사
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 봉사 대작전
+	ELSEIF 촬영경향SM
+		CSTR:33 = %조사처리(NICKNAME:TARGET,"과")% 
+		CSTR:35 = SM
+	ELSEIF 촬영경향자위
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 엄청 에로한 자위를 보여줄게
+	ELSEIF 촬영부위C && 촬영내용성교
+		CSTR:33 = %NICKNAME:TARGET%의 
+		CSTR:35 = 역강간
+	ELSEIF 촬영특수레즈
+		CSTR:33 = %NICKNAME:TARGET%들의 
+		CSTR:35 = 레즈SEX
+	ENDIF
+	IF TFLAG:32 & 1
+		CSTR:33 = %조사처리(NICKNAME:TARGET,"이")% 
+	ENDIF
+	PRINTFORM %CSTR:33%%CSTR:34%%CSTR:35%
+	IF TFLAG:32 & 1
+		PRINTFORML %조사처리(CSTR:35,"로")% 처녀상실
+		CSTR:36 = %조사처리(CSTR:35,"로")% 처녀상실
+		IF NO:PLAYER == 0 && TALENT:PLAYER:122 == 0 && (NO:TARGET == 1 || NO:TARGET == 91) 
+			PRINTFORM  ~언니가 어른 여자로 만들어 주셨습니다~
+			CSTR:37 =  ~언니가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:PLAYER:122 == 0 && TALENT:432 == 1 && TALENT:PLAYER:432 == 1
+			PRINTFORM  ~레즈섹프갸루친구・%조수가()% 여자로 만들어 줬습니다~
+			CSTR:37 =  ~레즈섹프갸루친구・%조수가()% 여자로 만들어 줬습니다~
+		ELSEIF TALENT:PLAYER:122 == 0
+			PRINTFORM  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@이 어른 여자로 만들어 주셨습니다~
+			CSTR:37 =  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@이 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠가 어른 여자로 만들어 주셨습니다~
+			CSTR:37 =  ~오빠가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 1 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠의 자지가 어른 여자로 만들어 주셨습니다~
+			CSTR:37 =  ~오빠의 자지가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9 < BASE:MASTER:9
+			PRINTFORM  ~선배가 어른 여자로 만들어 주셨습니다~
+			CSTR:37 =  ~선배가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  > BASE:MASTER:9
+			PRINTFORM  ~연하에게 어른 여자가 되버렸습니다~
+			CSTR:37 =  ~연하에게 어른 여자가 되버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  == BASE:MASTER:9
+			PRINTFORM  ~친구에게 여자가 되버렸습니다~
+			CSTR:37 =  ~친구에게 여자가 되버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9 < BASE:MASTER:9
+			PRINTFORM  ~선배의 자지가 어른 여자로 만들어 주셨습니다~
+			CSTR:37 =  ~선배의 자지가 어른 여자로 만들어 주셨습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  > BASE:MASTER:9
+			PRINTFORM  ~연하의 자지에게 어른 여자가 되버렸습니다~
+			CSTR:37 =  ~연하의 자지에게 어른 여자가 되버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  == BASE:MASTER:9
+			PRINTFORM  ~섹프의 자지에게 어른 여자가 되버렸습니다~
+			CSTR:37 =  ~섹프의 자지에게 어른 여자가 되버렸습니다~
+		ENDIF
+		CFLAG:641 = 1
+	ELSEIF TFLAG:132 & 1
+		PRINTFORML %조사처리(CSTR:35,"로")% 애널처녀상실
+		CSTR:36 = %조사처리(CSTR:35,"로")% 애널처녀상실
+		IF NO:PLAYER == 0 && TALENT:PLAYER:122 == 0 && (NO:TARGET == 1 || NO:TARGET == 91) 
+			PRINTFORM  ~언니에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~언니에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:PLAYER:122 == 0 && TALENT:432 == 1 && TALENT:PLAYER:432 == 1
+			PRINTFORM  ~레즈섹프갸루친구・%NICKNAME:ASSI%에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~레즈섹프갸루친구・%NICKNAME:ASSI%에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:PLAYER:122 == 0
+			PRINTFORM  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~오빠에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && (NO:TARGET == 1 || NO:TARGET == 91)
+			PRINTFORM  ~오빠의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~오빠의 자지에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9 < 17
+			PRINTFORM  ~선배에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~선배에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  > 17
+			PRINTFORM  ~연하에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~연하에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 0 && BASE:9  == 17
+			PRINTFORM  ~친구에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~친구에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9 < 17
+			PRINTFORM  ~선배의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~선배의 자지에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  > 17
+			PRINTFORM  ~연하의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~연하의 자지에게 애널처녀 바쳐버렸습니다~
+		ELSEIF TALENT:432 == 1 && BASE:9  == 17
+			PRINTFORM  ~섹프의 자지에게 애널처녀 바쳐버렸습니다~
+			CSTR:37 =  ~섹프의 자지에게 애널처녀 바쳐버렸습니다~
+		ENDIF
+		CFLAG:641 = 1
+	ELSEIF TFLAG:133
+		IF TFLAG:133 == 1
+		PRINTFORML %조사처리(CSTR:35,"로")% 동정상실
+		CSTR:36 = %조사처리(CSTR:35,"로")% 동정상실
+		ENDIF
+		IF TALENT:PLAYER:122 == 0 && TALENT:432 == 1 && TALENT:PLAYER:432 == 1
+			PRINTFORM  ~레즈섹프갸루친구・%NICKNAME:ASSI%의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+			CSTR:37 =  ~레즈섹프갸루친구・%NICKNAME:ASSI%의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+		ELSEIF TALENT:PLAYER:122 == 0
+			PRINTFORM  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+			CSTR:37 =  ~\@ PLAYER ? %NICKNAME:PLAYER%chan # 감독 \@의 보지에 %CSTR:9%의 자지 들어가 버렸습니다~
+		ENDIF
+		CFLAG:641 = 1
+	ELSE
+		PRINTFORM 
+		CSTR:36 = 
+		CFLAG:641 = 0
+		CSTR:37 =
+	ENDIF
+ENDIF
+
+;===========================================================
+;新作タイトルの表示処理
+;===========================================================
+@PRINT_VIDEO_TITLE_NEW
+PRINTFORM %CSTR:30%
+PRINTFORM %CSTR:31%
+PRINTFORM %CSTR:32%
+PRINTFORM %CSTR:33%
+PRINTFORM %CSTR:34%
+PRINTFORM %CSTR:35%
+PRINTFORM %CSTR:36%
+IF CFLAG:642 == 1
+	PRINTL  
+	PRINTFORML  %CSTR:37%
+ELSE
+	PRINTL 
+ENDIF
+
+
+;===========================================================
+;代表作タイトルの処理
+;===========================================================
+@CHANGE_VIDEOTITLE_REPRESENT
+IF TFLAG:160 == 0
+	CSTR:20 = %CSTR:30%
+	CSTR:21 = %CSTR:31%
+	CSTR:22 = %CSTR:32%
+ELSE
+	CSTR:20 = %CSTR:30%
+	CSTR:21 = %CSTR:31%
+	CSTR:22 = %CSTR:32%	
+ENDIF
+CSTR:23 = %CSTR:33%
+CSTR:24 = %CSTR:34%
+CSTR:25 = %CSTR:35%
+CSTR:26 = %CSTR:36%
+CSTR:27 = %CSTR:37%
+IF (TFLAG:32 & 1 || TFLAG:132 & 1) && TFLAG:160 == 0 &&TFLAG:180 != 20
+	CFLAG:643 = 1
+ELSE
+	CSTR:27 =
+	CFLAG:643 = 0
+ENDIF
+
+;===========================================================
+;代表作タイトルの表示
+;===========================================================
+@PRINT_VIDEO_TITLE_REPRESENT
+PRINTFORM %CSTR:20%
+PRINTFORM %CSTR:21%
+PRINTFORM %CSTR:22%
+PRINTFORM %CSTR:23%
+PRINTFORM %CSTR:24%
+PRINTFORM %CSTR:25%
+PRINTFORM %CSTR:26%
+IF CFLAG:643 == 1
+	PRINTL  
+	PRINTFORML  %CSTR:27%
+ELSE
+	PRINTL 
+ENDIF
+;===========================================================
+;称号の処理
+;===========================================================
+@ACTRESS_ARTICLE
+
+;素質による一括接頭語処理
+;카나데と아이돌組を抜く。個々の称号で処理されているため。
+IF NO:TARGET != 42 && NO:TARGET != 46 && NO:TARGET != 80 && NO:TARGET != 150 && NO:TARGET != 1 && NO:TARGET != 91 
+	IF TALENT:76 == 1 && TALENT:422 == 0
+		IF RAND:2 == 0
+			PRINTFORM 음란 
+			CSTR:41 = 음란 
+		ELSE
+			PRINTFORM 변태 
+			CSTR:41 = 변태 
+		ENDIF
+	ELSEIF TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 흑갸루걸레 
+		CSTR:41 = 흑갸루걸레 
+	ELSEIF TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+		PRINTFORM 흑갸루 
+		CSTR:41 = 흑갸루 
+	ENDIF
+ENDIF
+
+;△しまったこっちも直さないといけないんだった……レゲエダンサー? 見なかったことにする
+IF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = 순정소녀
+ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = 청초 로리비치
+ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = 건방지고 에로귀염한 흑갸루 레게 댄서
+ELSEIF (NO:TARGET == 1 || NO:TARGET == 91) && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = 흑갸루 로리비치 레게 댄서
+ELSEIF NO:TARGET == 2
+	CSTR:TARGET:42 = 스포츠소녀
+ELSEIF NO:TARGET == 3
+	CSTR:TARGET:42 = 요즘 여자아이
+ELSEIF NO:TARGET == 4
+	CSTR:TARGET:42 = 아가씨
+ELSEIF NO:TARGET == 5
+	CSTR:TARGET:42 = 인기 코스프레이어
+ELSEIF NO:TARGET == 6
+	CSTR:TARGET:42 = 유부녀
+ELSEIF NO:TARGET == 7
+	CSTR:TARGET:42 = 백합자매
+ELSEIF NO:TARGET == 8
+	CSTR:TARGET:42 = 백합자매
+ELSEIF NO:TARGET == 9
+	CSTR:TARGET:42 = 공주님
+ELSEIF NO:TARGET == 10
+	CSTR:TARGET:42 = 쿼터
+ELSEIF NO:TARGET == 11
+	CSTR:TARGET:42 = 세레브 니트
+ELSEIF NO:TARGET == 12
+	CSTR:TARGET:42 = 미인 간호사
+ELSEIF NO:TARGET == 13
+	CSTR:TARGET:42 = 낭자애
+ELSEIF NO:TARGET == 14
+	CSTR:TARGET:42 = 사무라이 걸
+ELSEIF NO:TARGET == 15 && TALENT:76 == 0
+	CSTR:TARGET:42 = 미소녀 무녀
+ELSEIF NO:TARGET == 16
+	CSTR:TARGET:42 = 츤데레소녀
+ELSEIF NO:TARGET == 17
+	CSTR:TARGET:42 = 메이드로이드
+ELSEIF NO:TARGET == 18
+	CSTR:TARGET:42 = 귀국자녀
+ELSEIF NO:TARGET == 19
+	CSTR:TARGET:42 = 더치와이프
+ELSEIF NO:TARGET == 20
+	CSTR:TARGET:42 = 카리스마 점원
+ELSEIF NO:TARGET == 21
+	CSTR:TARGET:42 = 여교사
+ELSEIF NO:TARGET == 22
+	CSTR:TARGET:42 = 소악마 걸
+ELSEIF NO:TARGET == 23
+	CSTR:TARGET:42 = 유행소녀
+ELSEIF NO:TARGET == 24
+	CSTR:TARGET:42 = 인기 AV배우
+ELSEIF NO:TARGET == 25
+	CSTR:TARGET:42 = 수녀
+ELSEIF NO:TARGET == 26
+	CSTR:TARGET:42 = 합법로리
+ELSEIF NO:TARGET == 27
+	CSTR:TARGET:42 = 아가씨
+ELSEIF NO:TARGET == 28
+	CSTR:TARGET:42 = 모에계 혼혈소녀
+ELSEIF NO:TARGET == 29
+	CSTR:TARGET:42 = 배덕한 성직자
+ELSEIF NO:TARGET == 30
+	CSTR:TARGET:42 = 로리큐트
+ELSEIF NO:TARGET == 31
+	CSTR:TARGET:42 = 음침계 로리소녀
+ELSEIF NO:TARGET == 32
+	CSTR:TARGET:42 = 너무 아름다운 여의
+ELSEIF NO:TARGET == 33
+	CSTR:TARGET:42 = 로리 간호사
+ELSEIF NO:TARGET == 34
+	CSTR:TARGET:42 = 비밀 코스프레이어
+ELSEIF NO:TARGET == 35
+	CSTR:TARGET:42 = 쿨한 반장계 미소녀
+ELSEIF NO:TARGET == 36
+	CSTR:TARGET:42 = 치유계 소꿉친구타입
+ELSEIF NO:TARGET == 37
+	CSTR:TARGET:42 = 인기 걸밴드의 베이시스트를 닮은
+ELSEIF NO:TARGET == 38
+	CSTR:TARGET:42 = 타천사계 미소녀
+ELSEIF NO:TARGET == 39
+	CSTR:TARGET:12 = 납작맨들 독설소녀
+ELSEIF NO:TARGET == 40
+	CSTR:TARGET:12 = 순종적인 폭유우등생
+ELSEIF NO:TARGET == 41
+	CSTR:TARGET:12 = 폭신 치유계
+ELSEIF NO:TARGET == 42 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = 아이돌 휴업중인 ○세를 닮은 
+ELSEIF NO:TARGET == 42 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = 아이돌 휴업중인 ○세를 닮은 음란소녀
+ELSEIF NO:TARGET == 42 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = 아이돌 휴업중인 ○세를 닮은 흑갸루
+ELSEIF NO:TARGET == 42 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = 아이돌 휴업중인 ○세를 닮은 흑갸루걸레
+ELSEIF NO:TARGET == 43
+	CSTR:TARGET:42 = 쌀쌀맞은 반장계아가씨
+ELSEIF NO:TARGET == 44
+	CSTR:TARGET:42 = 묵묵한 모델계 장신미녀
+ELSEIF NO:TARGET == 45
+	CSTR:TARGET:42 = 통통한 미소녀
+ELSEIF NO:TARGET == 46 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = 추억의 아이돌・코○리 아○비를 닮은 미녀
+ELSEIF NO:TARGET == 46 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = 추억의 아이돌・코○리 아○비를 닮은 음란미녀
+ELSEIF NO:TARGET == 46 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = 추억의 아이돌・코○리 아○비를 닮은 흑갸루미녀
+ELSEIF NO:TARGET == 46 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = 추억의 아이돌・코○리 아○비를 닮은 흑갸루걸레
+ELSEIF NO:TARGET == 47
+	CSTR:TARGET:12 = 청초 아가씨
+ELSEIF NO:TARGET == 70
+	CSTR:TARGET:42 = 원교소녀
+ELSEIF NO:TARGET == 72
+	CSTR:TARGET:42 = 찐레즈 여고생
+ELSEIF NO:TARGET == 71
+	CSTR:TARGET:42 = 폭유언니
+ELSEIF NO:TARGET == 73
+	CSTR:TARGET:42 = 수수한 아이
+ELSEIF NO:TARGET == 74
+	CSTR:TARGET:42 = 박복로리
+ELSEIF NO:TARGET == 75
+	CSTR:TARGET:42 = 아가씨
+ELSEIF NO:TARGET == 76
+	CSTR:TARGET:42 = 우등생
+ELSEIF NO:TARGET == 77
+	CSTR:TARGET:42 = 폭유교사
+ELSEIF NO:TARGET == 78
+	CSTR:TARGET:42 = 박복교사
+ELSEIF NO:TARGET == 80 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = C○G의 미○로를 닮은 
+ELSEIF NO:TARGET == 80 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = C○G의 미○로를 닮은 음란소녀
+ELSEIF NO:TARGET == 80 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = C○G의 미○로를 닮은 흑갸루
+ELSEIF NO:TARGET == 80 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = C○G의 미○로를 닮은흑갸루걸레
+ELSEIF NO:TARGET == 81
+	CSTR:TARGET:42 = 아가씨
+ELSEIF NO:TARGET == 82
+	CSTR:TARGET:42 = 리틀 데빌
+ELSEIF NO:TARGET == 83
+	CSTR:TARGET:42 = 전 주니어아이돌
+ELSEIF NO:TARGET == 84
+	CSTR:TARGET:42 = 숙녀
+ELSEIF NO:TARGET == 85
+	CSTR:TARGET:42 = 여신
+ELSEIF NO:TARGET == 86
+	CSTR:TARGET:42 = 천재소녀
+ELSEIF NO:TARGET == 87
+	CSTR:TARGET:42 = 남장미소녀
+ELSEIF NO:TARGET == 93
+	CSTR:TARGET:42 = 동물귀 중화소녀
+ELSEIF NO:TARGET == 94
+	CSTR:TARGET:42 = 안경
+ELSEIF NO:TARGET == 95
+	CSTR:TARGET:42 = 로리BBA(!?)
+ELSEIF NO:TARGET == 96
+	CSTR:TARGET:42 = 쿨 뷰티
+ELSEIF NO:TARGET == 97
+	CSTR:TARGET:42 = 변태숙녀
+ELSEIF NO:TARGET == 98
+	CSTR:TARGET:42 = 누나계 인기 독자모델
+ELSEIF NO:TARGET == 99
+	CSTR:TARGET:42 = 여동생계 병약 츤데레
+ELSEIF NO:TARGET == 100
+	CSTR:TARGET:42 = 강아지계 활발소녀
+ELSEIF NO:TARGET == 101
+	CSTR:TARGET:42 = 쿨한 검도소녀
+ELSEIF NO:TARGET == 102
+	CSTR:TARGET:42 = 소악마계 혼혈소녀
+ELSEIF NO:TARGET == 103
+	CSTR:TARGET:42 = 온화계 거유 아가씨
+ELSEIF NO:TARGET == 106
+	CSTR:TARGET:32 = 미니멈 큐트계 로리 의붓여동생
+ELSEIF NO:TARGET == 107
+	CSTR:TARGET:42 = 열혈 근성 스포츠소녀
+ELSEIF NO:TARGET == 108
+	CSTR:TARGET:42 = 공주님계 거유미소녀
+ELSEIF NO:TARGET == 200
+	CSTR:TARGET:42 = 로리계 벨리 댄서
+ELSEIF NO:TARGET == 201
+	CSTR:TARGET:42 = 공주 용사(자칭)
+ELSEIF NO:TARGET == 202
+	CSTR:TARGET:42 = 걸밴드 어린아내
+ELSEIF NO:TARGET == 203
+	CSTR:TARGET:42 = 여배우 지망생
+ELSEIF NO:TARGET == 204
+	CSTR:TARGET:42 = S급 미소녀
+ELSEIF NO:TARGET == 205
+	CSTR:TARGET:42 = 닌자 걸
+ELSEIF NO:TARGET == 206
+	CSTR:TARGET:42 = 그 아가씨를 닮은 낭자애
+ELSEIF NO:TARGET == 207
+	CSTR:TARGET:42 = 폭유 불량배
+ELSEIF NO:TARGET == 208
+	CSTR:TARGET:42 = 커리어 우먼계 미망인
+ELSEIF NO:TARGET == 209
+	CSTR:TARGET:42 = 여왕님계 마조녀
+ELSEIF NO:TARGET == 210
+	CSTR:TARGET:42 = 덜렁이 아가씨
+ELSEIF NO:TARGET == 211
+	CSTR:TARGET:42 = 관심받고 싶어하는 로리
+ELSEIF NO:TARGET == 212
+	CSTR:TARGET:42 = 더러움계 폭유무녀
+ELSEIF NO:TARGET == 213
+	CSTR:TARGET:42 = 청춘 소박계 천연미소녀
+ELSEIF NO:TARGET == 214
+	CSTR:TARGET:42 = 천진난만한 로리계 미소녀
+ELSEIF NO:TARGET == 215
+	CSTR:TARGET:42 = 자택경비계 신세대 아이돌
+ELSEIF NO:TARGET == 150 && TALENT:76 == 0 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = C○G의 유○를 닮은 소녀
+ELSEIF NO:TARGET == 150 && TALENT:76 == 1 && (TALENT:422 == 0 || TALENT:432 == 0)
+	CSTR:TARGET:42 = C○G의 유○를 닮은 음란소녀
+ELSEIF NO:TARGET == 150 && TALENT:76 == 0 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = C○G의 유○를 닮은 흑갸루
+ELSEIF NO:TARGET == 150 && TALENT:76 == 1 && TALENT:422 == 1 && TALENT:432 == 1
+	CSTR:TARGET:42 = C○G의 유○를 닮은흑갸루걸레
+ELSEIF NO:TARGET == 151
+	PRINTFORM 풍속녀
+	CSTR:TARGET:42 = 풍속녀
+ELSEIF NO:TARGET == 152
+	PRINTFORM 미인 아가씨 여고생
+	CSTR:TARGET:42 = 미인 아가씨 여고생
+ENDIF

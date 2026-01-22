@@ -1,0 +1,11 @@
+# Save files
+sav/
+
+# Windows
+Thumbs.db
+Desktop.ini
+**/nul
+
+# Backup files
+*.bak
+*~

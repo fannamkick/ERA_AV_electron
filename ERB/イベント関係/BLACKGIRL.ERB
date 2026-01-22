@@ -1,0 +1,492 @@
+﻿;===========================================================
+;흑갸루絡みのイベント
+;===========================================================
+@BLACKGIRL_EVENT
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:LOCAL:153 == 1
+		CONTINUE
+	ELSEIF TALENT:LOCAL:154 == 1
+		CONTINUE
+	ELSEIF (TALENT:COUNT:422 == 1 && TALENT:COUNT:432 == 1 && TALENT:COUNT:430 == 0) || (TALENT:COUNT:422 == 1 && TALENT:COUNT:432 == 1 && TALENT:COUNT:430 == 1 && FLAG:545 == 1)
+		CALL START_BGEVENT
+	ENDIF
+REND
+
+;===========================================================
+;イベント開始
+;===========================================================
+@START_BGEVENT
+IF RAND:8 == 0
+	CALL NOTHING
+ELSEIF RAND:7 == 0
+	CALL NOTHING
+ELSEIF RAND:6 == 0
+	CALL NOTHING
+ELSEIF RAND:5 == 0
+	CALL EVENT_BGGUIDANCE
+ELSEIF RAND:4 == 0
+	CFLAG:COUNT:692 = 0
+	CALL EVENT_BGSEX
+ELSEIF RAND:3 == 0
+	CALL EVENT_BGTATTO
+ELSEIF RAND:2 == 0 && FLAG:540 == 0
+	CFLAG:COUNT:692 = 0
+	CALL EVENT_BGSEX
+ELSEIF RAND:1 == 0
+	CALL EVENT_BGGUIDANCE
+ELSE
+	CALL NOTHING
+ENDIF
+
+;===========================================================
+;タトゥー入れ
+;===========================================================
+@EVENT_BGTATTO
+;全部入れていたら起こらない
+IF CFLAG:COUNT:606 < 15
+	CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+	SETCOLOR 0xDDBBCC
+	PRINTFORM 「
+	IF NO:COUNT == 1 || NO:COUNT == 91
+		PRINTFORM 어때, 형님. 짱 멋지지, 이 타투♪
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:11
+		PRINTFORM 짱 멋지지, 이 타투♪
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:11 == 0
+		PRINTFORM 타투를 새
+			IF NO:COUNT == 14
+				PRINTFORM 겨 봤는데
+			ELSEIF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+				PRINTFORM 겨 봤는데요
+			ELSE
+				PRINTFORM 겼는데
+			ENDIF
+		PRINTFORM …… 간지
+			IF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+				PRINTFORM 나나요?
+			ELSEIF NO:COUNT == 11
+				PRINTFORM 나지ー?
+			ELSEIF NO:COUNT == 14
+				PRINTFORM 나나?
+			ELSEIF NO:COUNT == 80
+				PRINTFORM 나지☆
+			ELSE
+				PRINTFORM 나려나?
+			ENDIF
+	ENDIF
+	PRINTFORML 」
+	PRINTFORM 「
+	IF NO:COUNT == 1 || NO:COUNT == 91
+		PRINTFORM 그럼 더 팍팍 새기고 올테니까 기다려, 형님
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:11
+		PRINTFORM 그럼 더 팍팍 새기고 올테니까 기다려
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:11 == 0
+		PRINTFORM 그럼, 더 팍팍 새기고 
+			IF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+				PRINTFORM 올게요
+			ELSEIF NO:COUNT == 11
+				PRINTFORM 올게ー
+			ELSEIF NO:COUNT == 14
+				PRINTFORM 오겠어
+			ELSEIF NO:COUNT == 80
+				PRINTFORM 와줄게
+			ELSE
+				PRINTFORM 올게
+			ENDIF
+	ENDIF
+	IF TALENT:COUNT:85 == 1
+		PRINTFORM %UNICODE(0x2665)%
+	ELSE
+		PRINT ♪
+	ENDIF
+	PRINTFORML 」
+	RESETCOLOR
+	SETFONT ""
+
+	PRINTFORM 주말이 지나고 월요일, 사무소 스탭들과 담소하던 %조사처리(NAME:COUNT,"가")%, 
+	PRINTFORM 조금 늦게 들어온 %CALLNAME:MASTER%에게 다가와, 
+		IF CFLAG:COUNT:606 == 0
+			PRINTFORM 팔뚝에 새긴 트라이벌 패턴 타투를 보여주
+			CFLAG:COUNT:606 |= 1
+			CSTR:COUNT:70 = 왼 팔뚝
+			CSTR:COUNT:71 = 트라이벌 패턴 
+		ELSEIF CFLAG:COUNT:606 == 1
+			PRINTFORM 손목을 감듯이 새긴, 덩굴 모양의 타투를 보여주
+			CFLAG:COUNT:606 |= 2
+			CSTR:COUNT:72 = 오른 손목
+			CSTR:COUNT:73 = 로즈 아이비 모양의 
+		ELSEIF CFLAG:COUNT:606 == 3
+			PRINTFORM 허벅지에 전갈을 모티브로 한 타투를 보여주
+			CFLAG:COUNT:606 |= 4
+			CSTR:COUNT:74 = 오른 허벅지 바깥쪽
+			CSTR:COUNT:75 = 스콜피온 테일 
+		ELSEIF CFLAG:COUNT:606 == 7
+			PRINTFORM 갑자기 윗옷을 벗고 등뒤에 천사의 날개를 모티브로 한 타투를 보여주
+			CFLAG:COUNT:606 |= 8
+			CSTR:COUNT:76 = 등
+			CSTR:COUNT:77 = 천사의 날개 모양의 
+		ENDIF
+	PRINTFORML 며 %CALLNAME:MASTER%에게 어울리는지 물어보았다
+	PRINTFORM 감독, 그러니까 고용주
+	IF NO:COUNT == 1 || NO:COUNT == 91
+		PRINTFORM 이며, 유일한 혈육이기도 한 
+	ELSE
+		PRINTFORM 인 
+	ENDIF
+	PRINTFORM %CALLNAME:MASTER%에게 아무말 없이 멋대로 행동한 %조사처리(CALLNAME:COUNT,"를")% 
+	PRINTFORM 간단히 설교한 했지만, 그래도 확실히 어울리긴 하기에, 혼나서 시무룩해하는 
+	PRINTFORML %조사만처리(NAME:COUNT,"를")% 위로하면서「어울려」라고 말했다……
+	PRINTL
+	CFLAG:COUNT:617 += 1
+	PRINTL 이상경험 +1
+	EXP:COUNT:50 += 1
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ENDIF
+
+;===========================================================
+;勝手にSEX
+;===========================================================
+@EVENT_BGSEX
+IF CFLAG:COUNT:40 >= 64 && CFLAG:COUNT:42 == 79
+	RETURN
+ELSEIF TALENT:COUNT:432 == 0 && CFLAG:COUNT:691 == 0
+	RETURN
+ELSEIF CFLAG:COUNT:692 == 1
+	RETURN
+ELSE
+	CHKFONT "あくびん"
+		IF RESULT
+			SETFONT "あくびん"
+		ENDIF
+	SETCOLOR 0xDDBBCC
+	IF CFLAG:COUNT:15 == 0
+		PRINTFORM 「
+		IF (NO:COUNT == 1 || NO:COUNT == 91) && TALENT:85 == 1 && TALENT:COUNT:432 == 1
+			PRINTFORML 처녀는 그 녀석한테 주고 싶었지만…… 뭐, 어때%UNICODE(0x2665)%　
+			PRINTFORM 그 녀석도 처녀따위 귀찮을테고
+		ELSEIF (NO:COUNT == 1 || NO:COUNT == 91) && TALENT:COUNT:85 == 0 && TALENT:COUNT:432 == 1
+			PRINTFORML 섹프로 처녀상실이라니 짱인데? 
+			PRINTFORM 나도 처녀따윈 빨리 떼버리고 싶었고, 
+			PRINTFORM 너도 처녀 따먹으니까 좋잖아
+		ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && TALENT:COUNT:11 == 1 && TALENT:COUNT:432 == 1
+			PRINTFORML 섹프로 처녀상실이라니 짱인데? 
+			PRINTFORM 나도 처녀따윈 빨리 떼보리고싶었고, 
+			PRINTFORM 너도 처녀따먹으니까 좋잖아
+		ELSE
+			PRINTFORM 섹프로 처녀상실
+				IF NO:COUNT == 14
+					PRINTFORM 이라니…… 뭐, 어때. 
+				ELSEIF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+					PRINTFORM 이라니…… 뭐, 좋아요. 
+				ELSEIF NO:COUNT == 11
+					PRINTFORM 이라니…… 뭐, 좋아ー 
+				ELSE
+					PRINTFORM 이라니…… 뭐, 좋아. 
+				ENDIF
+			PRINTFORM 처녀따위 빨리 떼버리고 싶었고, 
+			IF NO:COUNT == 14
+				PRINTFORM 너도 
+			ELSEIF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+				PRINTFORM 당신도 
+			ELSEIF NO:COUNT == 10
+				PRINTFORM 댁도 
+			ELSE
+				PRINTFORM 너도 
+			ENDIF
+			PRINTFORM 처녀 
+			IF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+				PRINTFORM 먹으
+			ELSE
+				PRINTFORM 따먹으
+			ENDIF
+				PRINTFORM 니까 좋
+			IF NO:COUNT == 14
+				PRINTFORM 지
+			ELSEIF NO:COUNT == 9  || NO:COUNT == 106 || NO:COUNT == 152
+				PRINTFORM 지요
+			ELSEIF NO:COUNT == 10
+				PRINTFORM 겠지
+			ELSEIF NO:COUNT == 11
+				PRINTFORM 잖아ー
+			ELSEIF NO:COUNT == 80
+				PRINTFORM 잖앗
+			ELSE
+				PRINTFORM 을거 아냐
+			ENDIF
+		ENDIF
+		PRINTFORM ♪
+		PRINTFORML 」
+	ENDIF
+			
+	PRINTFORML 「아♪ 아앙%UNICODE(0x2665)% 생%CSTR:COUNT:80% 기분 좋아, 더 안까지 넣어줘%UNICODE(0x2665)%」
+	IF (NO:COUNT == 1 || NO:COUNT == 91) && CFLAG:COUNT:15 > 0 && TALENT:COUNT:432 == 1
+		PRINTFORML 「그 녀석 꺼보다 두꺼운 %조사처리(CSTR:COUNT:80,"가")% %후치환(CSTR:COUNT:9+"의")% %CSTR:COUNT:81% 범하고 있어%UNICODE(0x2665)%」
+		PRINTFORM 「응……?　그 녀석은 형님을 말하는 거야♪ %후치환(CSTR:COUNT:9+"의")% 
+		IF TALENT:COUNT:85 == 0
+			PRINTFORM 육바이브♪
+		ELSEIF TALENT:COUNT:85 == 1
+			PRINTFORM 소중한 남친%UNICODE(0x2665)%
+		ENDIF
+		PRINTFORML 」
+		PRINTFORM 「
+		IF TALENT:COUNT:85 == 0
+		PRINTFORM %CSTR:COUNT:9%한테 박으면서『예전의 카나데로 돌아와줘』같은 소리나 하고 
+		PRINTFORM %CSTR:COUNT:80% 발딱 세우는거 있지. 
+		PRINTFORML 존나 웃긴다니까♪」
+			IF CFLAG:MASTER:670 == 1
+				PRINTFORM 「거기다 동정이었는지, 
+				PRINTFORM %후치환(CSTR:COUNT:9+"의")% %CSTR:COUNT:81%에 %CSTR:COUNT:80% 넣기만해도 사정해 버렸어. 
+				PRINTFORML 동정에 조루고, %CSTR:COUNT:80%도 작다니 진짜 최악이야%UNICODE(0x2665)%」
+			ENDIF
+		ELSEIF TALENT:COUNT:85 == 1
+			PRINTFORM 남친이 형님이라니 완전 위험하지♪ 번데기지만 
+			PRINTFORML 얼굴은 미남이고 돈도 많아%UNICODE(0x2665)%」
+		ENDIF
+		PRINTFORM 「응, 맞아%UNICODE(0x2665)% 네 거하고 비교하면 형님의 %CSTR:COUNT:80%따위 번데기야, 번데기♪ 
+		PRINTFORM 그래도 생으로 SEX해주
+		IF TALENT:COUNT:85 == 1
+			PRINTFORM 고, 작아도 사랑하는 형님의 %조사처리(CSTR:COUNT:80,"니")%까 기분 좋지만
+		ELSE
+			PRINTFORM 니까 참고 있지만
+		ENDIF
+		PRINTFORML %UNICODE(0x2665)%」
+	ELSEIF NO:COUNT != 1 && NO:COUNT != 91 && NO:COUNT != 106 && CFLAG:COUNT:15  > 0 && TALENT:COUNT:11 && TALENT:COUNT:432 == 1
+		PRINTFORML 「그 녀석 꺼보다 두꺼운 %조사처리(CSTR:COUNT:80,"가")% %후치환(CSTR:COUNT:9+"의")% %CSTR:COUNT:81% 범하고 있어%UNICODE(0x2665)%」
+		PRINTFORM 「응……?　그 녀석은 
+			IF TALENT:COUNT:85 == 0
+				PRINTFORM 육바이브군
+			ELSEIF TALENT:COUNT:85 == 1
+				PRINTFORM 남친
+			ENDIF
+		PRINTFORML 이야%UNICODE(0x2665)%」
+		PRINTFORM 「응, 맞아%UNICODE(0x2665)% 네 거하고 비교하면 그 녀석의 %CSTR:COUNT:80%따위 번데기야, 번데기♪ 
+		PRINTFORM 그래도 생으로 SEX해주니까 참고 있지만%UNICODE(0x2665)%」
+		SIF ABL:MASTER:12 <= 6
+			PRINTFORML  「거기다…… 너무 허접이라 전혀 기분 좋아지질 않는 걸%UNICODE(0x2665)%」
+		PRINTFORML 「으응…… 이제 됐잖아%UNICODE(0x2665)% %조사처리(CSTR:COUNT:81,"가")% 바보가 될 정도로 격하게 범해줘♪」
+	ELSEIF CFLAG:COUNT:15 != 0
+		PRINTFORML 「그이보다 두꺼운 %조사처리(CSTR:COUNT:80,"가")% %후치환(CSTR:COUNT:9+"의")% %CSTR:COUNT:81% 범하고 있어%UNICODE(0x2665)%」
+		PRINTFORM 「응……?　그이는 
+		IF TALENT:COUNT:85 == 0
+			PRINTFORM 육바이브군
+		ELSEIF TALENT:COUNT:85 == 1
+			PRINTFORM 남친
+		ENDIF
+		IF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+			PRINTFORM 이예요
+		ELSEIF NO:COUNT == 14
+			PRINTFORM 인데
+		ELSE
+			PRINTFORM 이야
+		ENDIF
+			PRINTFORML %UNICODE(0x2665)%」
+		PRINTFORM 「응, 맞아%UNICODE(0x2665)%
+		IF NO:COUNT == 14
+			PRINTFORM 네
+		ELSEIF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+			PRINTFORM 당신
+		ELSEIF NO:COUNT == 10
+			PRINTFORM 댁
+		ELSE
+			PRINTFORM 네
+		ENDIF
+		PRINTFORM 거랑 비교하면 그이의 %CSTR:COUNT:80%따위 번데기%CSTR:COUNT:80%따위 번데기
+		IF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+			PRINTFORM 예요, 
+		ELSEIF NO:COUNT == 14
+			PRINTFORM 야, 
+		ELSE
+			PRINTFORM 지, 
+		ENDIF
+		PRINTFORM 번데기♪ 그래도 생으로 SEX해주니까 참고있는 거
+		IF NO:COUNT == 9 || NO:COUNT == 106 || NO:COUNT == 152
+			PRINTFORM 예요
+		ELSEIF NO:COUNT == 14
+			PRINTFORM 야
+		ELSE
+			PRINTFORM 
+		ENDIF
+		PRINTFORML %UNICODE(0x2665)%」
+		SIF ABL:MASTER:12 <= 6
+			PRINTFORML  「거기다…… 너무 허접이라 전혀 기분 좋아지질 않아%UNICODE(0x2665)%」
+		PRINTFORML 「으응…… 이제 됐잖아%UNICODE(0x2665)% %조사처리(CSTR:COUNT:81,"가")% 바보가 될 정도로 격하게 범해줘♪」
+	ENDIF
+	
+	PRINTFORM 「간다아아아아ーーー앗%UNICODE(0x2665)% %CSTR:COUNT:9%의 
+	IF CFLAG:COUNT:15 == 0
+		PRINTFORM 처녀%CSTR:COUNT:81%에 생질싸 
+	ELSEIF CFLAG:COUNT:15 > 0
+		PRINTFORM %CSTR:COUNT:81%에 생질싸 씨뿌리기 
+	ENDIF
+	PRINTFORML 당해서 가버려어어엇~%UNICODE(0x2665)%」
+	SETFONT ""
+	RESETCOLOR
+			
+	PRINTFORML 주말이 지나고 월요일, 사무소 스탬들과 %조사처리(NAME:COUNT,"가")% TV에서 AV같은 것을 보고 있었다
+	PRINTFORM 빈말로도 화질이 그리 좋지않고, 소리가 심하게 갈라졌지만 화면 속에서 섹스를 
+	PRINTFORML 즐기고 있는 것이 %CALLNAME:COUNT%인 것만큼은 확실했다
+	PRINTFORM 그다지 남의 사생활에 참견하는 것은 아니지만, 
+	IF CFLAG:COUNT:15 == 0
+		PRINTFORM 자신의 감시 밖에서 %조사처리(CALLNAME:COUNT,"가")% 처녀를 깨버린 것에, 
+	ELSEIF CFLAG:COUNT:15 > 0
+		PRINTFORM 거기까진 자신은 없지만「번데기」라는 소리를 %CALLNAME:COUNT%에게 들어버린 것에, 
+	ENDIF
+		PRINTFORML %플레이어는()% 심경이 복잡해졌다……
+		PRINTFORML
+
+	IF TALENT:COUNT:425 == 0
+		TALENT:COUNT:425 = 1
+		CALL DECIDE_SEXFRIEND,COUNT
+	ENDIF	
+	
+	SIF TALENT:COUNT:27 == 1
+		TALENT:COUNT:27 = 0
+
+	IF CFLAG:COUNT:15 == 0 && TALENT:COUNT:0 == 1
+		CFLAG:COUNT:15 = 9
+		SETCOLOR 0xF58F98
+		PRINTL 【처녀상실】
+		RESETCOLOR
+		PRINTL 이상경험 +1
+		TALENT:COUNT:0 = 0
+		EXP:COUNT:50 += 1
+		CSTR:COUNT:0 = %CSTR:COUNT:47% %CSTR:COUNT:48%(섹프)
+		CFLAG:COUNT:160 = BASE:COUNT:9
+		CFLAG:COUNT:161 = DAY:1
+		CFLAG:COUNT:162 = DAY:2
+		CFLAG:COUNT:163 = 3
+		CFLAG:COUNT:164 = 3
+	ENDIF
+			
+	IF CFLAG:COUNT:16 == -1
+		CFLAG:COUNT:16 = 9
+		SETCOLOR 0xDDBBCC
+		PRINTL 【첫 키스】
+		RESETCOLOR
+		CSTR:COUNT:1 = %CSTR:COUNT:47% %CSTR:COUNT:48%(섹프)의 극태%CSTR:COUNT:80%%UNICODE(0x2665)%
+		CFLAG:COUNT:820 = BASE:COUNT:9
+		CFLAG:COUNT:821 = DAY:1
+		CFLAG:COUNT:822 = DAY:2
+		CFLAG:COUNT:823 = 3
+		CFLAG:COUNT:824 = 1
+	ENDIF
+		
+	;性交回数
+	S = 0
+	;V감각
+	IF ABL:COUNT:2 == 4
+		S += 1
+	ELSEIF ABL:COUNT:2 == 5
+		S += 2
+	ELSEIF ABL:COUNT:2 >= 6
+		S += 3
+	ENDIF
+	;성교중독によるボーナス
+	SIF ABL:COUNT:30
+		S += ABL:COUNT:30 / 2 + 1
+	;PALAM:욕정がLV4以上
+	;욕망L%UNICODE(0x2665)%5以上봉사정신5以上で+1
+	SIF ABL:COUNT:11 >= 5 && ABL:COUNT:16 >= 5
+		S += 2
+	;욕망L%UNICODE(0x2665)%4以上봉사정신4以上で+1
+	SIF ABL:COUNT:11 >= 3 && ABL:COUNT:16 >= 3
+		S += 1
+	;PALAM:욕정がLV3以上
+	;욕망L%UNICODE(0x2665)%7以上%UNICODE(0x2665)%感覚L%UNICODE(0x2665)%6以上で+1(下と合わせて+2)
+	SIF ABL:COUNT:11 >= 7 && ABL:COUNT:5 >= 6
+		S += 1
+	;욕망L%UNICODE(0x2665)%4以上%UNICODE(0x2665)%感覚L%UNICODE(0x2665)%3以上で+1
+	SIF ABL:COUNT:11 >= 4 && ABL:COUNT:2 >= 3
+		S += 1
+	;남친있음, 음란によるボーナス
+	SIF TALENT:COUNT:31
+		S += 10
+	;섹스광によるボーナス
+	SIF TALENT:COUNT:75
+		S *= 2
+	;쾌감에 솔직, 쾌감을 부정
+	IF TALENT:COUNT:70
+		S += 1
+	SIF TALENT:COUNT:76
+		S *= 2
+	ENDIF
+	SIF S < 5
+		S = 2 + RAND:4
+	PRINTFORML %EXPNAME:0% +{S}
+	PRINTFORML %EXPNAME:2% +{S}
+	PRINTFORML %EXPNAME:5% +{S}
+	PRINTFORML %EXPNAME:20% +{S*2}
+	PRINTFORML %EXPNAME:22% +{S/2}
+	;%UNICODE(0x2665)%経験
+	EXP:COUNT:0 += S
+	;절정경험
+	EXP:COUNT:2 += S / 2 + RAND:6
+	;정액경험
+	EXP:COUNT:20 += S*2
+	;성교경험
+	EXP:COUNT:5 += S
+	;성교경험
+	EXP:COUNT:22 += S / 2
+	;섹프とのSEX回数
+	EXP:COUNT:104 += 1
+	;섹프있음を取得
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+	CFLAG:COUNT:692 = 1
+	SIF CFLAG:COUNT:691 == 0
+		CFLAG:COUNT:691 = 1
+ENDIF
+
+RETURN
+
+;===========================================================
+;補導
+;===========================================================
+@EVENT_BGGUIDANCE
+IF BASE:COUNT:9 < 19
+	PRINTFORMW 한가롭게 사무소 뒷정리를 하고있던 중, %CALLNAME:MASTER%의 휴대폰에 한통의 전화가 걸려왔다……
+	PRINTFORM 전화를 건 사람은 경찰로, %조사처리(NAME:COUNT,"가")% 
+		IF RAND:2 == 0
+			PRINTFORML 한밤중에 패밀리 레스토랑에서 흡연하고 있어서 데려왔다고 한다
+			PRINTFORMW %플레이어는()% 한숨을 쉬고, %조사처리(CALLNAME:COUNT,"를")% 경찰서까지 마중 나가기로 했다……
+			IF TALENT:COUNT:424 == 0
+				TALENT:COUNT:424 = 1
+				CALL CIGARETTES_4COUNT
+			ENDIF
+		ELSE
+			PRINTFORML 한밤중에 노래방에서 술을 마시고 있어서 데려왔다고한다
+			PRINTFORML %플레이어는()% 한숨을 쉬고, %조사처리(CALLNAME:COUNT,"를")% 경찰서까지 마중 나가기로 했다……
+		ENDIF
+	PRINTL
+	PRINTFORML 훈계경험 +1
+	PRINTW
+	EXP:COUNT:92 += 1
+	PRINTW ‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥‥
+ENDIF
+
+
+;===========================================================
+;갈색피부消失の処理
+;===========================================================
+@SUNBURN_AFTER
+
+REPEAT CHARANUM
+	IF COUNT == 0
+		CONTINUE
+	ELSEIF TALENT:COUNT:432 == 1
+		CONTINUE
+	ELSEIF TALENT:COUNT:505 == 1 && TALENT:COUNT:511 == 1
+		CONTINUE
+	ELSEIF NO:COUNT == 200
+		CONTINUE
+	ELSEIF TALENT:COUNT:422 == 1
+		CFLAG:COUNT:614 -= 1
+		IF CFLAG:COUNT:614 <= 0
+			PRINTFORML 《%조사처리(NAME:COUNT,"는")% 태닝살롱의 효과가 끊겨 원래 살색으로 돌아왔다》
+			TALENT:COUNT:422 = 0
+		ENDIF
+	ENDIF
+REND

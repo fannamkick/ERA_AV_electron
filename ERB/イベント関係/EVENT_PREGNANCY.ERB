@@ -1,0 +1,1130 @@
+﻿;EVENT_P, EVENT_PREGNANCY, 임신関連のイベント
+;eratohoAより流用
+
+;---------------------------------------------------------
+;フラグ管理　口上用のフラグと被るので, 変更
+;---------------------------------------------------------
+
+;CFLAG
+;101→マスターによる질내사정カウント用
+;102→誰によって임신させられたか(マスター = 1, 助手 = 2, 奴隷 = 3)
+;103, 104→助手と奴隷間での질내사정カウント用
+;105→娼館などの客と奴隷間の질내사정カウント用
+;106→ノラ犬から奴隷への질내사정カウント用
+						;****追加ここから****
+;107→촉수から奴隷への질내사정カウント用
+						;****追加ここまで****
+;109→배란유발제の使用の有無
+;110→出産日
+;111→父親は??
+;121→임신時の増加체중
+;122→임신時の増加가슴
+;123→임신時の増加허리
+;124→임신時の増加엉덩이
+;追加 FLAG
+;97→산월or육아 중の奴隷はいるか?
+;98→사정箇所選択機能および임신機能のON・OFF
+;99→사정選択の自動モード時사정先選択機能のON・OFF
+;TFLAG
+;700→육아部屋コマンド実行した?
+
+;---------------------------------------------------------
+;関数群統括関数
+;---------------------------------------------------------
+
+@IN_VAGINA_ALL
+						;****あなた임신パッチ追加ここから****
+CALL IN_VAGINA_A_TO_M
+CALL IN_VAGINA_T_TO_M
+						;****あなた임신パッチ追加ここまで****
+CALL IN_VAGINA_M_TO_T
+CALL IN_VAGINA_M_TO_A
+CALL IN_VAGINA_A_TO_T
+CALL IN_VAGINA_T_TO_A
+CALL IN_VAGINA_D_TO_T
+						;****追加ここから****
+CALL IN_VAGINA_S_TO_T
+						;****追加ここまで****
+						;****슬라임パッチ追加ここから****
+CALL IN_VAGINA_G_TO_T
+						;****슬라임パッチ追加ここまで****
+;売春による임신判定は@EVENTTURNENDでまとめて行う
+;CALL IN_VAGINA_EXTRA
+
+@CONCEPTION_CHECK_ALL
+						;****あなた임신パッチ追加ここから****
+CALL CONCEPTION_CHECK_A_TO_M
+CALL CONCEPTION_CHECK_T_TO_M
+						;****あなた임신パッチ追加ここまで****
+CALL CONCEPTION_CHECK_M_TO_T
+CALL CONCEPTION_CHECK_M_TO_A
+CALL CONCEPTION_CHECK_A_TO_T
+CALL CONCEPTION_CHECK_T_TO_A
+CALL CONCEPTION_CHECK_D_TO_T
+						;****追加ここから****
+CALL CONCEPTION_CHECK_S_TO_T
+						;****追加ここまで****
+						;****슬라임パッチ追加ここから****
+CALL CONCEPTION_CHECK_G_TO_T
+						;****슬라임パッチ追加ここまで****
+;売春による임신判定は@EVENTTURNENDでまとめて行う
+;CALL CONCEPTION_CHECK_EXTRA
+
+@GET_CHILD_ALL
+REPEAT CHARANUM
+	CALL GET_CHILD
+REND
+
+;---------------------------------------------------------
+;질내사정・임신フラグに絡む関数群
+;---------------------------------------------------------
+
+						;****あなた임신パッチ追加ここから****
+@IN_VAGINA_A_TO_M
+;助手→奴隷への질내사정による임신判定
+;助手とターゲットがいるか
+IF ASSI >= 1
+	;奴隷の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = MASTER
+		P = 2
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+
+@IN_VAGINA_T_TO_M
+;奴隷→助手への질내사정による임신判定
+;助手の임신チェック
+IF TALENT:MASTER:153 == 0
+	T = MASTER
+	P = 3
+	CALL NAKADASHI_CHECK
+ENDIF
+						;****あなた임신パッチ追加ここまで****
+@IN_VAGINA_M_TO_T
+;질내사정による임신, 非임신のチェック
+IF TARGET >= 1
+	;奴隷の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = TARGET
+		P = 1
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+
+@IN_VAGINA_M_TO_A
+;질내사정による임신, 非임신のチェック
+;助手がいるか
+IF ASSI >= 1
+	;助手の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = ASSI
+		P = 1
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+
+
+@IN_VAGINA_A_TO_T
+;助手→奴隷への질내사정による임신判定
+;助手とターゲットがいるか
+IF ASSI >= 1 && TARGET >= 1
+	;奴隷の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = TARGET
+		P = 2
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+
+@IN_VAGINA_T_TO_A
+;奴隷→助手への질내사정による임신判定
+;助手がいるか
+IF ASSI >= 1
+	;助手の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = ASSI
+		P = 3
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+
+@IN_VAGINA_D_TO_T
+;ノラ犬→奴隷への질내사정による임신判定
+IF TARGET >= 1
+	;奴隷の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = TARGET
+		P = 5
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+
+						;****追加ここから****
+@IN_VAGINA_S_TO_T
+;촉수→奴隷への질내사정による임신判定
+IF TARGET >= 1
+	;奴隷の임신チェック
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = TARGET
+		P = 6
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+						;****追加ここまで****
+						;****슬라임パッチ追加ここから****
+@IN_VAGINA_G_TO_T
+;슬라임→奴隷への질내사정?による임신判定
+IF TARGET >= 1
+	;奴隷の임신チェック
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0
+		T = TARGET
+		P = 8
+		CALL NAKADASHI_CHECK
+	ENDIF
+ENDIF
+						;****슬라임パッチ追加ここまで****
+@IN_VAGINA_EXTRA
+;娼館やレンタル時に客に膣射された場合の임신判定
+REPEAT CHARANUM
+						;****슬라임パッチ追加ここから****
+	IF TALENT:COUNT:153 == 0 && TALENT:COUNT:157 == 0
+						;****슬라임パッチ追加ここまで****
+		T = COUNT
+		P = 4
+		CALL NAKADASHI_CHECK
+	ENDIF
+REND
+
+@NAKADASHI_CHECK
+;中出しされた精子量に応じて確率処理
+
+;임신フィルタ部分
+SIF FLAG:60 == 1
+	RETURN 0
+SIF CFLAG:T:33 != 0
+	RETURN 0
+SIF CFLAG:T:645 != 1
+	RETURN 0
+
+;チェックするフラグ設定
+F = 101 + P
+SIF P == 1
+	F = 101
+SIF P == 8
+	F = 112
+
+;対象が男か미숙함なら関数終了
+SIF TALENT:T:122 || TALENT:T:135
+	RETURN 0
+
+						;****あなた임신パッチ追加ここから****
+						;****追加ここから****(加筆)
+;対象が精霊, 幽霊なら関数終了
+;素質が消えているのでコメントアウト
+;IF (TALENT:T:315 || TALENT:T:316) && (CFLAG:T:109 == 0 || PBAND:303 != 3)
+;	CFLAG:T:F = 0
+;	RETURN 0
+;ENDIF
+
+;対象が가이노이드, サイボーグ, ヒーローなら関数終了
+IF (TALENT:T:504 || TALENT:T:505 || TALENT:T:420 || TALENT:T:500 || TALENT:T:501 || TALENT:T:511) && (CFLAG:T:109 == 0 || PBAND:303 != 3)
+	CFLAG:T:F = 0
+	RETURN 0
+ENDIF
+
+;獣姦で対象が동물귀じゃないなら関数終了
+IF (P == 5 && TALENT:T:124 == 0) && (CFLAG:T:109 == 0 || PBAND:303 != 3)
+	CFLAG:T:F = 0
+	RETURN 0
+ENDIF
+						;****追加ここまで****(加筆)
+IF TALENT:T:520 && (CFLAG:T:109 == 0 || PBAND:303 != 3)
+	CFLAG:T:F = 0
+	RETURN 0
+ENDIF
+;中だしされてないなら関数終了
+SIF CFLAG:T:F == 0
+	RETURN 0
+
+;임신が既に確定している場合は関数終了
+IF CFLAG:T:110 > 0
+	CFLAG:T:F = 0
+	RETURN 0
+ENDIF
+
+;임신중もしくは육아 중は関数終了
+						;****슬라임パッチ追加ここから****
+IF TALENT:T:153 || TALENT:T:154 || TALENT:T:157
+						;****슬라임パッチ追加ここまで****
+	CFLAG:T:F = 0
+	RETURN 0
+ENDIF
+
+IF CFLAG:T:109 == -1
+	CFLAG:T:F = 0
+	RETURN 0
+ENDIF
+						;****あなた임신パッチ追加ここまで****
+;排卵剤の有無による定数設定
+C = 3 - (CFLAG:T:109 * 2)
+SIF C < 0
+	C = 1
+
+IF CFLAG:T:F >= 30
+	SIF RAND:((1 + TALENT:T:100 * 2) * C) == 0
+		CFLAG:T:102 = P
+ELSEIF CFLAG:T:F >= 20
+	SIF RAND:((2 + TALENT:T:100 * 2) * C) == 0
+		CFLAG:T:102 = P
+ELSEIF CFLAG:T:F >= 15
+	SIF RAND:((3 + TALENT:T:100 * 2) * C) == 0
+		CFLAG:T:102 = P
+ELSEIF CFLAG:T:F >= 10
+	SIF RAND:((4 + TALENT:T:100 * 2) * C) == 0
+		CFLAG:T:102 = P
+ELSEIF CFLAG:T:F >= 5
+	SIF RAND:((5 + TALENT:T:100 * 2) * C) == 0
+		CFLAG:T:102 = P
+ELSEIF CFLAG:T:F >= 1
+	SIF RAND:((6 + TALENT:T:100 * 2) * C) == 0
+		CFLAG:T:102 = P
+ENDIF
+
+;判定を行った膣射のリセット
+CFLAG:T:F = 0
+
+;---------------------------------------------------------
+;임신判定関数郡
+;---------------------------------------------------------
+
+						;****あなた임신パッチ追加ここから****
+@CONCEPTION_CHECK_A_TO_M
+;助手の精液でマスター임신確定時の処理
+;助手と奴隷がいるか
+IF ASSI >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:MASTER:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:MASTER:102 == 2 && CFLAG:MASTER:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:MASTER:110 = DAY + 10 + RAND:3
+		CFLAG:MASTER:111 = NO:ASSI
+		CSTR:MASTER:60 = %NAME:ASSI%
+	ENDIF
+ENDIF
+
+@CONCEPTION_CHECK_T_TO_M
+;奴隷の精液でマスター임신確定時の処理
+;助手がいるか
+IF TARGET >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:MASTER:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:MASTER:102 == 3 && CFLAG:MASTER:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:MASTER:110 = DAY + 10 + RAND:3
+		CFLAG:MASTER:111 = NO:TARGET
+		CSTR:MASTER:60 = %NAME:TARGET%
+	ENDIF
+ENDIF
+						;****あなた임신パッチ追加ここまで****
+@CONCEPTION_CHECK_M_TO_T
+;マスターの精液でターゲット임신確定時の処理
+;奴隷がいるか
+IF TARGET >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:TARGET:102 == 1 && CFLAG:TARGET:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:TARGET:110 = DAY + 10 + RAND:3
+		CFLAG:TARGET:111 = NO:MASTER
+						;****あなた임신パッチ追加ここから****
+		CSTR:TARGET:60 = %CALLNAME:MASTER%
+						;****あなた임신パッチ追加ここまで****
+	ENDIF
+ENDIF
+
+@CONCEPTION_CHECK_M_TO_A
+;マスターの精液で助手임신確定時の処理
+;助手がいるか
+IF ASSI >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:ASSI:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:ASSI:102 == 1 && CFLAG:ASSI:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:ASSI:110 = DAY + 10 + RAND:3
+		CFLAG:ASSI:111 = NO:MASTER
+						;****あなた임신パッチ追加ここから****
+		CSTR:ASSI:60 = %CALLNAME:MASTER%
+						;****あなた임신パッチ追加ここまで****
+	ENDIF
+ENDIF
+
+@CONCEPTION_CHECK_A_TO_T
+;助手の精液で奴隷임신確定時の処理
+;助手と奴隷がいるか
+IF ASSI >= 1 && TARGET >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:TARGET:102 == 2 && CFLAG:TARGET:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:TARGET:110 = DAY + 10 + RAND:3
+		CFLAG:TARGET:111 = NO:ASSI
+						;****あなた임신パッチ追加ここから****
+		CSTR:TARGET:60 = %NAME:ASSI%
+						;****あなた임신パッチ追加ここまで****
+	ENDIF
+ENDIF
+
+
+@CONCEPTION_CHECK_T_TO_A
+;奴隷の精液で助手임신確定時の処理
+;助手がいるか
+IF ASSI >= 1 && TARGET >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:ASSI:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:ASSI:102 == 3 && CFLAG:ASSI:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:ASSI:110 = DAY + 10 + RAND:3
+		CFLAG:ASSI:111 = NO:TARGET
+						;****あなた임신パッチ追加ここから****
+		CSTR:ASSI:60 = %NAME:TARGET%
+						;****あなた임신パッチ追加ここまで****
+	ENDIF
+ENDIF
+
+@CONCEPTION_CHECK_D_TO_T
+;犬の精液で奴隷임신確定時の処理
+;奴隷がいるか
+IF TARGET >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:TARGET:102 == 5 && CFLAG:TARGET:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		;犬の仔なら임신期間短い
+		CFLAG:TARGET:110 = DAY + 10 + RAND:3
+		CFLAG:TARGET:111 = -2
+						;****追加ここから****
+		CSTR:60 = 개
+						;****追加ここまで****
+	ENDIF
+ENDIF
+
+
+						;****追加ここから****
+@CONCEPTION_CHECK_S_TO_T
+;촉수の精液で奴隷임신確定時の処理
+;奴隷がいるか
+IF TARGET >= 1
+						;****슬라임パッチ追加ここから****
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:TARGET:102 == 6 && CFLAG:TARGET:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		;촉수の仔なら임신期間短い
+		CFLAG:TARGET:110 = DAY + 5 + RAND:3
+		CFLAG:TARGET:111 = -3
+		CSTR:60 = 촉수
+	ENDIF
+ENDIF
+						;****追加ここまで****
+						;****슬라임パッチ追加ここから****
+@CONCEPTION_CHECK_G_TO_T
+;촉수の精液で奴隷임신確定時の処理
+;奴隷がいるか
+IF TARGET >= 1
+	IF TALENT:TARGET:153 == 0 && TALENT:TARGET:157 == 0 && CFLAG:TARGET:102 == 8 && CFLAG:TARGET:110 == 0
+		;出産系のフラグ設定
+		;抱卵は임신期間短い
+		CFLAG:TARGET:110 = DAY + 5 + RAND:3
+		CFLAG:TARGET:111 = -6
+		CSTR:60 = 슬라임
+	ENDIF
+ENDIF
+						;****슬라임パッチ追加ここまで****
+@CONCEPTION_CHECK_EXTRA
+;娼館やレンタル時の客の精液で임신確定時の処理
+;CFLAG:108→素質の消滅をカウントする変数
+REPEAT CHARANUM
+						;****슬라임パッチ追加ここから****
+	IF TALENT:COUNT:153 == 0 && TALENT:COUNT:157 == 0 && CFLAG:COUNT:102 == 4 && CFLAG:COUNT:110 == 0
+						;****슬라임パッチ追加ここまで****
+		;出産系のフラグ設定
+		CFLAG:COUNT:110 = DAY + 9 + RAND:6
+		CFLAG:COUNT:111 = -1
+		CSTR:COUNT:60 = 모르는 남자
+	ENDIF
+REND
+
+
+;---------------------------------------------------------
+;임신処理関数郡
+;---------------------------------------------------------
+
+@GET_CHILD
+;既に임신중・육아 중ならそのまま戻る
+						;****슬라임パッチ追加ここから****
+SIF TALENT:COUNT:153 || TALENT:COUNT:154 || TALENT:COUNT:157
+	RETURN 0
+						;****슬라임パッチ追加ここまで****
+
+;マスターの精液で임신発覚時の処理
+IF  CFLAG:COUNT:102 == 1 && CFLAG:COUNT:110 <= DAY+13
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% %CALLNAME:MASTER%의 아이를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+;助手の精液で임신発覚時の処理
+ELSEIF CFLAG:COUNT:102 == 2 && CFLAG:COUNT:110 <= DAY+13
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")%%CSTR:COUNT:60%의 아이를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+;奴隷の精液で임신発覚時の処理
+ELSEIF CFLAG:COUNT:102 == 3 && CFLAG:COUNT:110 <= DAY+13
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% %CSTR:COUNT:60%의 아이를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+;客の精液で임신発覚時の処理
+ELSEIF CFLAG:COUNT:102 == 4 && CFLAG:COUNT:110 <= DAY+13
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 이름도 모르는 남자의 아이를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	CSTR:COUNT:60 = 모르는 남자
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+;犬の精液で임신発覚時の処理
+ELSEIF CFLAG:COUNT:102 == 5 && CFLAG:COUNT:110 <= DAY+8
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 들개의 새끼를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+						;****追加ここから****
+ELSEIF CFLAG:COUNT:102 == 6 && CFLAG:COUNT:110 <= DAY+8
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 촉수의 새끼를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+						;****追加ここまで****
+						;****슬라임パッチ追加ここから****
+ELSEIF CFLAG:COUNT:102 == 8 && CFLAG:COUNT:110 <= DAY+8
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 슬라임의 알을 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	WAIT
+	TALENT:COUNT:157 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+						;****슬라임パッチ追加ここまで****
+ELSEIF CFLAG:COUNT:102 == 7 && CFLAG:COUNT:110 <= DAY+13
+	PRINTFORML %CALLNAME:COUNT%의 모습이 이상하다……
+	PRINTFORML %조사처리(CALLNAME:COUNT,"는")% 남친의 아이를 임신한 것 같다
+	PRINTL 
+	PRINTFORML %조사처리(NAME:COUNT,"는")%【%TALENTNAME:153%】했다
+	IF TALENT:COUNT:206 == 0 && BASE:COUNT:9 >= 16
+		PRINTFORMW
+		PRINTFORML 남친의 아이를 임신해버린 %조사처리(CALLNAME:COUNT,"는")%, 고민한 끝에 남친과 결혼하기로 했다……
+		PRINTFORMW 《%조사처리(NAME:COUNT,"는")%【유부녀】가 되어, 이름이 %CSTR:COUNT:7% %조사처리(CALLNAME:COUNT,"가")% 됐다》
+		NAME:COUNT = %CSTR:COUNT:7% %CALLNAME:COUNT%
+		TALENT:COUNT:206 = 1
+	ENDIF
+	WAIT
+	TALENT:COUNT:153 = 1
+	T = COUNT
+	CALL CHANGE_N_STATUS
+ENDIF
+
+@CHANGE_N_STATUS
+;임신時のステータスの変化
+;共通処理
+;체력上限を減らす
+MAXBASE:T:0 -= 500
+SIF BASE:T:0 > MAXBASE:T:0
+	BASE:T:0 = MAXBASE:T:0
+
+;近親相姦のチェック
+I  = 0
+F = 0
+
+SIF CFLAG:T:102 != 2 && CFLAG:T:102 != 3
+	GOTO INCEST_CHECK_END
+
+G = COUNT
+REPEAT CHARANUM
+	SIF NO:COUNT == CFLAG:T:111
+		F = COUNT
+REND
+REPEAT 5
+	B = COUNT + 21
+	IF CFLAG:T:B % 1000 == CFLAG:T:111
+		;父親・母親の子供を임신
+		IF CFLAG:T:B < 1000
+			I = 1
+			IF F > 0 && TALENT:F:122
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 부친인 %CALLNAME:F%의 자식을 임신했다
+			ELSEIF F > 0
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 모친인 %CALLNAME:F%의 자식을 임신했다
+			ELSE
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자기 부모의 자식을 임신했다
+			ENDIF
+		;息子・娘の子供を임신
+		ELSEIF  CFLAG:T:B < 2000
+			I = 2
+			IF F > 0 && TALENT:F:122
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 아들인 %CALLNAME:F%의 자식을 임신했다
+			ELSEIF F > 0
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 딸인 %CALLNAME:F%의 자식을 임신했다
+			ELSE
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자기 아이의 자식을 임신했다
+			ENDIF
+		;兄・姉の子供を임신
+		ELSEIF  CFLAG:T:B < 3000
+			I = 3
+			IF F > 0 && TALENT:F:122
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 오빠인 %CALLNAME:F%의 자식을 임신했다
+			ELSEIF F > 0
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 언니인 %CALLNAME:F%의 자식을 임신했다
+			ELSE
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자기 친형제의 자식을 임신했다
+			ENDIF
+		;弟・妹の子供を임신
+		ELSEIF  CFLAG:T:B < 4000
+			I = 4
+			IF F > 0 && TALENT:F:122
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 남동생인 %CALLNAME:F%의 자식을 임신했다
+			ELSEIF F > 0
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자신의 여동생인 %CALLNAME:F%의 자식을 임신했다
+			ELSE
+				PRINTFORML %조사처리(CALLNAME:T,"는")% 자기 친형제의 자식을 임신했다
+			ENDIF
+;		;従弟の子供を임신
+;Im@s用処理。AV_Hoではたぶん必要ないのでなかったことに。
+;		ELSEIF  CFLAG:T:B == 516
+;			I = 5
+;			IF F > 0 && TALENT:F:122
+;				PRINTFORML %CALLNAME:T%は自分の従弟である%CALLNAME:F%の子種で임신した
+;			ENDIF
+		ENDIF
+	BREAK
+	ENDIF
+REND
+COUNT = G
+
+$INCEST_CHECK_END
+
+;乳がワンランクパワーアップする
+CALL GROW_B_SIZE
+
+;모유出るようになる
+						;****あなた임신パッチ追加ここから****
+IF TALENT:T:130 == 1
+	MARK:T:6 = 1
+ELSEIF TALENT:T:130 == 0
+						;****あなた임신パッチ追加ここまで****
+	PRINTFORML %조사처리(CALLNAME:T,"는")% 모유가 나오게 되었다
+	WAIT
+	TALENT:T:130 = 1
+ENDIF
+
+;父親が誰なのかと母親の状態によるストレス値の分岐
+S = 0
+A = CFLAG:T:111
+
+;父親が主人で母親が【연심】持ち
+IF TALENT:T:85 && CFLAG:T:102 == 1
+	S += 0
+;父親が主人で母親が【음란】持ち
+ELSEIF TALENT:T:76 && CFLAG:T:102 == 1
+	S += 30
+ENDIF
+
+;父親が助手・奴隷で母親が【연심】持ち
+IF TALENT:T:85 && (CFLAG:T:102 == 2 || CFLAG:T:102 == 3)
+	IF RELATION:T:A != 0
+		S += 30 * ((200-RELATION:T:A) / 100) + 30
+	ELSE
+		S += 60
+	ENDIF
+;父親が助手・奴隷で母親が【음란】持ち
+ELSEIF TALENT:T:76 && (CFLAG:T:102 == 2 || CFLAG:T:102 == 3)
+	IF RELATION:T:A != 0
+		S += 30 * ((200-RELATION:T:A) / 100)
+	ELSE
+		S += 30
+	ENDIF
+ENDIF
+
+;父親が顧客で母親が【연심】持ち
+IF TALENT:T:85 && CFLAG:T:102 == 4
+	S += 80
+;父親が顧客で母親が【음란】持ち
+ELSEIF TALENT:T:76 && CFLAG:T:102 == 4
+	S += 50
+ENDIF
+
+;父親がノラ犬で母親が【연심】持ち
+IF TALENT:T:85 && CFLAG:T:102 == 5
+	S += 120
+	;【암캐】が付いてればかなり減る
+	SIF TALENT:T:136
+		S -= 40
+;父親がノラ犬で母親が【음란】持ち
+ELSEIF TALENT:T:76 && CFLAG:T:102 == 5
+	S += 80
+	;【암캐】が付いてればかなり減る
+	SIF TALENT:T:136
+		S -= 40
+;それ以外で父親がノラ犬。「陥落素質なし」とあわせて+140
+ELSEIF CFLAG:T:102 == 5
+	S += 40
+	;【암캐】が付いてればかなり減る
+	SIF TALENT:T:136
+		S -= 40
+ENDIF
+
+						;****追加ここから****
+;父親が촉수で母親が【연심】持ち
+IF TALENT:T:85 && CFLAG:T:102 == 6
+	S += 120
+	;촉수경험である程度軽減
+	SIF EXP:T:55 > 100
+		S -= LIMIT((EXP:T:55-300*MARK:T:3)/20, 0, 150)
+;父親が촉수で母親が【음란】持ち
+ELSEIF TALENT:T:76 && CFLAG:T:102 == 6
+	S += 80
+	;촉수경험である程度軽減
+	SIF EXP:T:55 > 100
+		S -= LIMIT((EXP:T:55-300*MARK:T:3)/20, 0, 150)
+;それ以外で父親が촉수。「陥落素質なし」とあわせて+140
+ELSEIF CFLAG:T:102 == 6
+	S += 40
+	;촉수경험である程度軽減
+	SIF EXP:T:55 > 100
+		S -= LIMIT((EXP:T:55-300*MARK:T:3)/20, 0, 150)
+ENDIF
+						;****追加ここまで****
+
+;父親が自分の親か子供
+SIF I == 1 || I == 2
+	S += 100
+;父親が自分の兄弟姉妹
+SIF I == 3 || I == 4
+	S += 60
+
+;陥落素質がついていない
+SIF TALENT:T:85 == 0 && TALENT:T:76 == 0
+	S += 100
+SIF TALENT:T:184 == 1 && CFLAG:T:102 == 7
+	S = 0
+
+
+;다부짐
+SIF TALENT:T:12
+	S -= 20
+;모성
+SIF TALENT:T:155
+	S -= 40
+;유리멘탈
+SIF TALENT:T:134
+	S += 20
+;出産経験あり
+SIF EXP:T:60
+	S -= 20
+
+						;****あなた임신パッチ追加ここから****
+;主人は붕괴しない
+SIF T == MASTER
+	S = 0
+						;****あなた임신パッチ追加ここまで****
+
+;ストレス値の累積が100を超えた場合
+IF S >= 100 && TALENT:T:9 == 0
+	PRINTFORML %조사처리(CALLNAME:T,"는")% 망연자실한 표정을 짓고 있다
+	PRINTFORML %CALLNAME:T%의 안에서 뭔가가 망가져버린 것 같다……
+	PRINTFORML %CALLNAME:T%의 정신은【%TALENTNAME:9%】돼버렸다
+	WAIT
+	IF TALENT:T:85
+		PRINTFORML %조사처리(CALLNAME:T,"는")%【%TALENTNAME:85%】를 잃었다
+		TALENT:T:85 = 0
+	ENDIF
+	IF TALENT:T:76
+		PRINTFORML %조사처리(CALLNAME:T,"는")%【%TALENTNAME:76%】을 잃었다
+		TALENT:T:76 = 0
+	ENDIF
+	TALENT:T:9 = 1
+	WAIT
+ENDIF
+;임신発覚時のイベント口上
+TARGET = T
+TFLAG:13 = 11
+CALL SELF_KOJO
+
+DRAWLINE
+
+;산월到達
+@REACH_FULL_TERM(ARG)
+PRINTFORML %조사처리(NAME:ARG,"는")% 산월을 맞이했다
+PRINTFORML %조사처리(CALLNAME:ARG,"는")% 출산준비를 위해 육아실로 이동합니다
+WAIT
+;営業フラグ外れる
+CFLAG:ARG:12 = 0
+SIF TARGET == ARG
+	TARGET = -1
+SIF ASSI == ARG
+	ASSI = -1
+
+;出産
+@CHILD_BIRTH
+F = -1
+REPEAT CHARANUM
+	SIF NO:COUNT == CFLAG:C:111
+		F = COUNT
+REND
+
+EXP:C:52 += 1
+EXP:C:60 += 1
+
+IF CFLAG:C:111 >= 0 && F >= 0
+	PRINTFORML %조사처리(NAME:C,"는")% %NAME:F%의 아이를 무사히 출산했습니다
+ELSEIF CFLAG:C:111 == -4 && TALENT:C:184 == 1
+	PRINTFORML %조사처리(NAME:C,"는")% 남친의 아이를 무사히 출산했습니다
+ELSEIF CFLAG:C:111 == -5 && TALENT:C:184 == 0
+	PRINTFORML %조사처리(NAME:C,"는")% 전남친의 아이를 무사히 출산했습니다
+ELSEIF CFLAG:C:111 == -1
+	PRINTFORML %조사처리(NAME:C,"는")% 아비를 모르는 아이를 무사히 출산했습니다
+ELSEIF CFLAG:C:111 == -2
+	PRINTFORML %조사처리(NAME:C,"는")% 강아지 귀와 꼬리가 난 아이를 몇 마리쯤 낳았습니다
+	;犬の仔なら육아期間短縮
+	CFLAG:C:110 -= 10
+						;****追加ここから****
+ELSEIF CFLAG:C:111 == -3
+	PRINTFORML %조사처리(NAME:C,"는")% 정체를 알 수 없는 알을 낳았습니다
+	;촉수の仔なら육아期間短縮
+	CFLAG:C:110 -= 10
+						;****追加ここまで****
+ELSE
+	PRINTFORML %조사처리(NAME:C,"는")% 아비가 없는 아이를 무사히 출산했습니다
+ENDIF
+WAIT
+
+;出産時のイベント口上
+TARGET = C
+TFLAG:13 = 12
+CALL SELF_KOJO
+
+;【연심】持ちの奴隷に産ませた子供が3人以上でマスターに【부성】が付く
+SIF TALENT:C:85 && CFLAG:C:111 == NO:MASTER
+	FLAG:32 += 1
+IF FLAG:32 >= 3 && TALENT:MASTER:156 == 0 && TALENT:MASTER:122
+	PRINTFORML %플레이어는()%【%TALENTNAME:156%】에 눈을 떴다
+	WAIT
+	TALENT:MASTER:156 = 1
+ENDIF
+
+;임신を失う
+TALENT:C:153 = 0
+
+$INPUT_LOOP
+;육아放棄をした場合
+						;****あなた임신パッチ追加ここから****
+IF TALENT:C:9 || C == MASTER
+						;****あなた임신パッチ追加ここまで****
+	;육아放棄の際の赤子の処置
+	A = 0
+	REPEAT CHARANUM
+						;****あなた임신パッチ追加ここから****
+		SIF (TALENT:COUNT:153 == 0 && (TALENT:COUNT:154 || TALENT:COUNT:155) && TALENT:COUNT:9 == 0 && CFLAG:COUNT:1 == 2) || C == MASTER
+			A += 1
+						;****あなた임신パッチ追加ここまで****
+	REND
+	IF A > 0
+		PRINTFORML 태어난 아기를 다른 노예에게 맡길 것인지, 입양 보낼 것인지를 선택해주십시오
+		WAIT
+		PRINTL 누구에게 맡깁니까?
+		CUSTOMDRAWLINE ‥
+		REPEAT CHARANUM
+			;現在[임신]状態でなく, [육아 중]か[모성]持ちで붕괴してなく, かつ조수 가능能なキャラを羅列
+						;****あなた임신パッチ追加ここから****
+			IF (TALENT:COUNT:153 == 0 && (TALENT:COUNT:154 || TALENT:COUNT:155) && TALENT:COUNT:9 == 0 && CFLAG:COUNT:1 == 2) || (COUNT == MASTER && C == MASTER)
+						;****あなた임신パッチ追加ここまで****
+				PRINTFORML  [{COUNT}] %NAME:COUNT% 
+			ENDIF
+		REND
+		CUSTOMDRAWLINE ‥
+		PRINTFORML  [100] - 입양 보낸다
+		INPUT
+		IF RESULT == 100
+			PRINTFORML %플레이어는()% 부득이하게, 아기를 입양 보냈습니다
+			WAIT
+		ELSEIF RESULT < 0 || RESULT >= CHARANUM
+			GOTO INPUT_LOOP
+						;****あなた임신パッチ追加ここから****
+		ELSEIF (TALENT:RESULT:153 == 1 || (TALENT:RESULT:154 ==0 && TALENT:RESULT:155 == 0) || TALENT:RESULT:9 || CFLAG:RESULT:1 < 2) && RESULT != MASTER
+			GOTO INPUT_LOOP
+		ELSEIF RESULT == MASTER && C != MASTER
+			GOTO INPUT_LOOP
+						;****あなた임신パッチ追加ここまで****
+		ENDIF
+		IF RESULT != 100 && RESULT == MASTER
+			PRINTFORML %플레이어는()% 일을 쉬고 육아에 집중하기로 했습니다
+			TALENT:C:154 = 1
+			;3サイズ設定キャラは乳サイズ以外減らす
+			SIF  BASE:C:22 > 0 && FLAG:38 > 0
+			CALL REVERSE_3_SIZE_IWS
+			WAIT
+		ELSEIF RESULT != 100
+			PRINTFORML %플레이어는()% %CALLNAME:RESULT%에게 보모 일을 맡기기로 했습니다
+			;육아期間を設定する
+			CFLAG:RESULT:110 = DAY
+			;犬の仔なら육아期間短縮
+						;****追加ここから****(加筆)
+			SIF CFLAG:C:111 == -2 || CFLAG:C:111 == -3
+				CFLAG:RESULT:110 -= 10
+						;****追加ここまで****(加筆)
+			;営業フラグ外す
+			CFLAG:RESULT:12 = 0
+			IF TALENT:RESULT:154 == 0
+				TALENT:RESULT:154 = 1
+				SIF RESULT == TARGET
+					TARGET = -1
+				SIF RESULT == ASSI
+					ASSI = -1
+				;육아 중でない奴隷なら乳がワンランクパワーアップする
+				T = RESULT
+				PRINTFORM %CALLNAME:C%의 아이에게 젖을 주기 위해 
+				CALL GROW_B_SIZE
+				;모유出るようになる
+						;****あなた임신パッチ追加ここから****
+				IF TALENT:T:130 == 1
+					MARK:T:6 = 1
+				ELSEIF TALENT:T:130 == 0
+						;****あなた임신パッチ追加ここまで****
+					PRINTFORML %조사처리(CALLNAME:T,"는")% 모유가 나오게 되었다
+					TALENT:T:130 = 1
+				ENDIF
+			ENDIF
+			WAIT
+		ENDIF
+	ELSE
+		PRINTFORML %플레이어는()% 부득이하게, 아기를 입양 보냈다
+		WAIT
+	ENDIF
+						;****あなた임신パッチ追加ここから****
+	IF C != MASTER || RESULT != MASTER
+		;임신時に減った체력の最大値が回復
+		MAXBASE:C:0 += 500
+		CALL CLEAR_FLAG
+		;임신時に大きくなった胸のサイズを一段小さくする
+		CALL REVERSE_B_SIZE
+		PRINTFORML %NAME:C%의 가슴은 모유수유를 포기했기에 작아졌습니다
+		;모유出なくなる
+		IF TALENT:C:130 == 1 && MARK:C:6 >= 1
+			MARK:T:6 = 0
+		ELSEIF TALENT:C:130 == 1
+			TALENT:C:130 = 0
+			PRINTFORML %조사처리(CALLNAME:C,"는")% 모유가 나오지 않게 됐다
+		ENDIF
+	ENDIF
+						;****あなた임신パッチ追加ここまで****
+;육아に入った場合
+ELSE
+	PRINTFORML %조사처리(CALLNAME:C,"는")% 육아실에서 육아를 시작했다
+	TALENT:C:154 = 1
+	;【연심】持ちで父親が主人なら【모성】に目覚める
+	IF TALENT:C:85 && CFLAG:C:111 == NO:MASTER && TALENT:C:155 == 0
+		PRINTFORML %조사처리(CALLNAME:C,"는")%【%TALENTNAME:155%】에 눈을 뜬 것 같다
+		TALENT:C:155 = 1
+	ENDIF
+	;3サイズ設定キャラは乳サイズ以外減らす
+	SIF  BASE:C:22 > 0 && FLAG:38 > 0
+	CALL REVERSE_3_SIZE_IWS
+	WAIT
+ENDIF
+
+DRAWLINE
+
+						;****슬라임パッチ追加ここから****
+;産卵
+@EGG_BIRTH
+
+IF TALENT:C:처녀 == 1
+	CSTR:C:0 = 슬라임의 알
+	TALENT:C:처녀 = 0
+	CFLAG:C:15 = 4
+	SETCOLOR 0xF58F98
+	PRINTL 【처녀상실】
+	RESETCOLOR
+ENDIF
+EXP:C:52 += 1
+EXP:C:59 += 1
+
+PRINTFORML %조사처리(NAME:C,"는")% 슬라임의 알을 무사히 산란했습니다
+CALL EGG_ITEM
+WAIT
+
+;出産時のイベント口上
+;TARGET = C
+;TFLAG:13 = XX
+;CALL SELF_KOJO
+
+;抱卵を失う
+TALENT:C:157 = 0
+
+MAXBASE:C:0 += 500
+TALENT:C:154 = 0
+IF TALENT:C:109 == 0 && TALENT:C:116 == 0
+	PRINTFORML %NAME:C%의 가슴은 모유수유를 끝냈으므로 작아졌습니다
+	WAIT
+		;모유出なくなる
+	IF TALENT:T:130 == 1 && MARK:T:6 >= 1
+		MARK:T:6 = 0
+	ELSEIF TALENT:T:130 == 1
+		PRINTFORML %조사처리(CALLNAME:T,"는")% 모유가 나오지 않게 됐다
+		TALENT:T:130 = 0
+	ENDIF
+	;임신時に大きくなった胸のサイズを一段小さくする
+	CALL REVERSE_B_SIZE
+ENDIF
+CALL CLEAR_FLAG
+
+DRAWLINE
+
+						;****슬라임パッチ追加ここまで****
+;親離れ
+@DEPEARENT
+PRINTFORML %CALLNAME:C%의 육아 중이던 아이가 부모에게서 독립했습니다
+PRINTFORML %조사처리(CALLNAME:C,"는")% 다시 지도할 수 있습니다
+WAIT
+;임신時に減った체력の最大値が回復
+MAXBASE:C:0 += 500
+TALENT:C:154 = 0
+IF TALENT:C:109 == 0 && TALENT:C:116 == 0
+	PRINTFORML %NAME:C%의 가슴은 모유를 주는 역할을 끝냈으므로 작아졌습니다
+	WAIT
+		;모유出なくなる
+						;****あなた임신パッチ追加ここから****
+	IF TALENT:T:130 == 1 && MARK:T:6 >= 1
+		MARK:T:6 = 0
+	ELSEIF TALENT:T:130 == 1
+						;****あなた임신パッチ追加ここまで****
+		PRINTFORML %조사처리(CALLNAME:T,"는")% 모유가 나오지 않게 됐다
+		TALENT:T:130 = 0
+	ENDIF
+	;임신時に大きくなった胸のサイズを一段小さくする
+	CALL REVERSE_B_SIZE
+ENDIF
+CALL CLEAR_FLAG
+
+DRAWLINE
+
+;임신パッチまわりのフラグをリセット
+@CLEAR_FLAG
+CFLAG:C:101 = 0
+CFLAG:C:102 = 0
+CFLAG:C:103 = 0
+CFLAG:C:104 = 0
+CFLAG:C:105 = 0
+						;****追加ここから****
+CFLAG:C:106 = 0
+CFLAG:C:107 = 0
+						;****追加ここまで****
+CFLAG:C:110 = 0
+CFLAG:C:111 = 0
+						;****슬라임パッチ追加ここから****
+CFLAG:C:112 = 0
+						;****슬라임パッチ追加ここまで****
+
+
+;임신or子育て開始時の胸サイズの膨張処理
+@GROW_B_SIZE
+;가슴サイズが設定されているキャラは毎日成長なのでスルー
+IF BASE:T:22 > 0 && FLAG:38 > 0
+ELSE
+;乳がワンランクパワーアップする
+;絶→貧　貧→普　普→巨　巨→爆　爆→そのまま
+	IF TALENT:T:116 == 1
+		PRINTFORML %CALLNAME:T%의 가슴이【%TALENTNAME:116%】에서【%TALENTNAME:109%】정도로 커졌다
+		TALENT:T:116 = 0
+		TALENT:T:109 = 1
+	ELSEIF TALENT:T:109 == 1
+		PRINTFORML %CALLNAME:T%의 가슴이【%TALENTNAME:109%】에서 평범한 수준으로 커졌다
+		TALENT:T:109 = 0
+	ELSEIF TALENT:T:110 == 0 && TALENT:T:114 == 0
+		PRINTFORML %CALLNAME:T%의 가슴이 평범한 수준에서【%TALENTNAME:110%】사이즈로 커졌다
+		TALENT:T:110 = 1
+	ELSEIF TALENT:T:110 == 1
+		PRINTFORML %CALLNAME:T%의 가슴이【%TALENTNAME:110%】에서【%TALENTNAME:114%】사이즈가 되었다
+		TALENT:T:110 = 0
+		TALENT:T:114 = 1
+						;****あなた임신パッチ追加ここから****
+	ELSEIF TALENT:T:114 == 1
+		PRINTFORML %CALLNAME:T%의 가슴이【%TALENTNAME:114%】에서 더 커졌다
+		MARK:T:5 = 1
+						;****あなた임신パッチ追加ここまで****
+	ENDIF
+ENDIF
+
+;子育て終了or임신強制終了時の胸サイズの縮小処理
+@REVERSE_B_SIZE
+;가슴サイズが設定されているキャラは3サイズの縮小処理を行う
+IF BASE:T:22 > 0 && FLAG:38 > 0
+	CALL REVERSE_3_SIZE_IWS
+ELSE
+;爆→巨　巨→普　普→貧　貧・絶→そのまま
+						;****あなた임신パッチ追加ここから****
+	IF TALENT:C:114 && MARK:C:5 >= 1
+		MARK:C:5 = 0
+	ELSEIF TALENT:C:114
+						;****あなた임신パッチ追加ここまで****
+		TALENT:C:114 = 0
+		TALENT:C:110 = 1
+	ELSEIF TALENT:C:110
+		TALENT:C:110 = 0
+	ELSEIF TALENT:C:109 == 0 && TALENT:C:116 == 0
+		TALENT:C:109 = 1
+	ENDIF
+ENDIF
+
+;육아室にいるかの判定
+@CHECK_CHILD_CARE
+SIF (TALENT:C:153 && CFLAG:C:110 - 3 <= DAY) || (TALENT:C:154 && CFLAG:C:110 + 30 > DAY)
+	RETURN 1
+
+RETURN 0
