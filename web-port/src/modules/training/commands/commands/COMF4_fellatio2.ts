@@ -98,7 +98,7 @@ export const COMF4_fellatio2: CommandPlugin = {
     // 혀놀림 소질 보너스
     if (safe.hasPlayerTalent('혀놀림')) {
       safe.multiplySource('쾌C', 2.0);
-      safe.addSource('습득', Math.floor(safe.getSource('쾌C') / 20));
+      safe.addPalam('습득', Math.floor(safe.getSource('쾌C') / 20));
     }
 
     // 더러움 처리: 대상의 입 ⇔ 조교자의 V

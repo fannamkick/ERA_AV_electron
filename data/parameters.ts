@@ -110,3 +110,26 @@ export const PARAMETERS_LIST = [
     "description": ""
   },
 ];
+
+// 역매핑: 이름 → 인덱스 (타입 안전한 접근용)
+export const PALAM = {
+  '쾌C': 0,
+  '쾌V': 1,
+  '쾌A': 2,
+  '윤활': 3,
+  '온순': 4,
+  '욕정': 5,
+  '굴복': 6,
+  '습득': 7,
+  '치정': 8,
+  '고통': 9,
+  '공포': 10,
+  '반감': 11,
+  '불쾌': 12,
+  '억울': 13,
+  '쾌B': 14,
+  '향락': 15,
+  '부정': 100,
+} as const;
+
+export type PalamKey = keyof typeof PALAM;

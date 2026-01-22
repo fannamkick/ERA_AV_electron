@@ -185,9 +185,9 @@ export const COMF2_analCaress: CommandPlugin = {
 
     // SOURCE 설정
     safe.addSource('쾌A', Math.floor(pleasureA));
-    safe.addSource('불쾌', Math.floor(discomfort));
-    safe.addSource('고통', Math.floor(pain));
-    safe.addSource('수치심', shameBonus);
+    safe.addPalam('불쾌', Math.floor(discomfort));
+    safe.addPalam('고통', Math.floor(pain));
+    safe.addPalam('반감', shameBonus);
 
     // 수간인 경우 조기 종료
     if (safe.hasEquipment('수간')) {
@@ -198,24 +198,24 @@ export const COMF2_analCaress: CommandPlugin = {
 
     // A민감/둔감 보정 (고통, 불쾌, 수치심에 영향)
     if (safe.hasTalent('A둔감')) {
-      safe.multiplySource('고통', 1.5);
-      safe.multiplySource('불쾌', 1.5);
-      safe.multiplySource('수치심', 1.5);
+      safe.multiplyPalam('고통', 1.5);
+      safe.multiplyPalam('불쾌', 1.5);
+      safe.multiplyPalam('반감', 1.5);
     } else if (safe.hasTalent('A민감')) {
-      safe.multiplySource('고통', 0.6);
-      safe.multiplySource('불쾌', 0.6);
-      safe.multiplySource('수치심', 0.6);
+      safe.multiplyPalam('고통', 0.6);
+      safe.multiplyPalam('불쾌', 0.6);
+      safe.multiplyPalam('반감', 0.6);
     }
 
     // 처녀 + 정조관념
     if (safe.hasTalent('처녀') && safe.hasTalentByIndex(30)) {
-      safe.multiplySource('불쾌', 0.8);
-      safe.multiplySource('수치심', 0.5);
+      safe.multiplyPalam('불쾌', 0.8);
+      safe.multiplyPalam('반감', 0.5);
     }
 
     // 미숙함
     if (safe.hasTalentByIndex(135)) {
-      safe.multiplySource('고통', 2.0);
+      safe.multiplyPalam('고통', 2.0);
     }
 
     // 더러움 처리: A ⇔ 조교자의 손

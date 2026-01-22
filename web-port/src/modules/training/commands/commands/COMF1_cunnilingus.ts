@@ -114,7 +114,7 @@ export const COMF1_cunnilingus: CommandPlugin = {
     // 혀놀림 소질/수간 보너스
     if (safe.hasPlayerTalent('혀놀림') || safe.hasEquipment('수간')) {
       safe.multiplySource('쾌C', 2.0);
-      safe.addSource('습득', Math.floor(safe.getSource('쾌C') / 20));
+      safe.addPalam('습득', Math.floor(safe.getSource('쾌C') / 20));
     }
 
     // 더러움 처리: V ⇔ 조교자의 입

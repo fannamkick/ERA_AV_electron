@@ -4,24 +4,24 @@
  * CSV 데이터에서 자동 생성된 게임 상수들을 중앙에서 관리
  */
 
-export * from './generated/abilities';
-export * from './generated/parameters';
-export * from './generated/talents';
-export * from './generated/base';
-export * from './generated/experience';
-export * from './generated/training';
-export * from './generated/items';
-export * from './generated/marks';
+export * from '../../../data/abilities';
+export * from '../../../data/parameters';
+export * from '../../../data/talents';
+export * from '../../../data/base';
+export * from '../../../data/experience';
+export * from '../../../data/training';
+export * from '../../../data/items';
+export * from '../../../data/marks';
 
 // Re-export with grouped namespace for easier access
-import { ABILITIES_MAP, ABILITIES_LIST, ABILITIES_CATEGORIES } from './generated/abilities';
-import { PARAMETERS_MAP, PARAMETERS_LIST } from './generated/parameters';
-import { TALENTS_MAP, TALENTS_LIST, TALENTS_CATEGORIES } from './generated/talents';
-import { BASE_MAP, BASE_LIST } from './generated/base';
-import { EXPERIENCE_MAP, EXPERIENCE_LIST, EXPERIENCE_CATEGORIES } from './generated/experience';
-import { TRAINING_MAP, TRAINING_LIST, TRAINING_CATEGORIES } from './generated/training';
-import { ITEMS_MAP, ITEMS_LIST, ITEMS_CATEGORIES } from './generated/items';
-import { MARKS_MAP, MARKS_LIST } from './generated/marks';
+import { ABILITIES_MAP, ABILITIES_LIST, ABILITIES_CATEGORIES } from '../../../data/abilities';
+import { PARAMETERS_MAP, PARAMETERS_LIST } from '../../../data/parameters';
+import { TALENTS_MAP, TALENTS_LIST, TALENTS_CATEGORIES } from '../../../data/talents';
+import { BASE_MAP, BASE_LIST } from '../../../data/base';
+import { EXPERIENCE_MAP, EXPERIENCE_LIST, EXPERIENCE_CATEGORIES } from '../../../data/experience';
+import { TRAINING_MAP, TRAINING_LIST, TRAINING_CATEGORIES } from '../../../data/training';
+import { ITEMS_MAP, ITEMS_LIST, ITEMS_CATEGORIES } from '../../../data/items';
+import { MARKS_MAP, MARKS_LIST } from '../../../data/marks';
 
 export const GameData = {
   abilities: {

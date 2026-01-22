@@ -7,6 +7,7 @@
 
 import {
   ABL,
+  PALAM,
   TALENT,
   SOURCE,
   EXP,
@@ -21,6 +22,7 @@ import type { TrainingContext } from '../../../types/training';
 
 // 타입 별칭
 type AblKey = keyof typeof ABL;
+type PalamKey = keyof typeof PALAM;
 type TalentKey = keyof typeof TALENT;
 type SourceKey = keyof typeof SOURCE;
 type ExpKey = keyof typeof EXP;
@@ -270,6 +272,28 @@ export class SafeContext {
       if (value >= thresholds[i]) return i;
     }
     return 0;
+  }
+
+  /** 파라미터 값 가져오기 (키 사용) */
+  getPalam(key: PalamKey): number {
+    return this.ctx.params[PALAM[key]] ?? 0;
+  }
+
+  /** 파라미터 값 추가 (키 사용) */
+  addPalam(key: PalamKey, amount: number): void {
+    const index = PALAM[key];
+    this.ctx.params[index] = (this.ctx.params[index] ?? 0) + amount;
+  }
+
+  /** 파라미터 값 설정 (키 사용) */
+  setPalam(key: PalamKey, value: number): void {
+    this.ctx.params[PALAM[key]] = value;
+  }
+
+  /** 파라미터 값 곱하기 (키 사용) */
+  multiplyPalam(key: PalamKey, multiplier: number): void {
+    const index = PALAM[key];
+    this.ctx.params[index] = Math.floor((this.ctx.params[index] ?? 0) * multiplier);
   }
 
   // ============================================================================

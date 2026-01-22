@@ -200,28 +200,28 @@ export function createCaressCommand(config: CaressCommandConfig): CommandPlugin 
       const baseValue = valueTable[Math.min(abilityLevel, valueTable.length - 1)] ?? 0;
       safe.addSource(primarySource, baseValue);
 
-      // 욕정 SOURCE
+      // 욕정 PALAM (직접 증가)
       if (lustTable) {
         const lustValue = lustTable[Math.min(abilityLevel, lustTable.length - 1)] ?? 0;
-        safe.addSource('욕정', lustValue);
+        safe.addPalam('욕정', lustValue);
       }
 
-      // 불쾌 SOURCE
+      // 불쾌 PALAM (직접 증가)
       if (discomfortTable) {
         const discomfortValue = discomfortTable[Math.min(abilityLevel, discomfortTable.length - 1)] ?? 0;
-        safe.addSource('불쾌', discomfortValue);
+        safe.addPalam('불쾌', discomfortValue);
       }
 
-      // 고통 SOURCE
+      // 고통 PALAM (직접 증가)
       if (painTable) {
         const painValue = painTable[Math.min(abilityLevel, painTable.length - 1)] ?? 0;
-        safe.addSource('고통', painValue);
+        safe.addPalam('고통', painValue);
       }
 
-      // 수치심 SOURCE
+      // 반감 PALAM (수치심 대체)
       if (shameTable) {
         const shameValue = shameTable[Math.min(abilityLevel, shameTable.length - 1)] ?? 0;
-        safe.addSource('수치심', shameValue);
+        safe.addPalam('반감', shameValue);
       }
 
       // LOSEBASE (체력/기력 소모)

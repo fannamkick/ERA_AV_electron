@@ -161,7 +161,7 @@ export const COMF5_breastCaress: CommandPlugin = {
     const bSense = safe.getAbility('B감각');
     const senseData = B_SENSE_VALUES[Math.min(bSense, B_SENSE_VALUES.length - 1)];
     safe.addSource('쾌B', senseData.쾌B);
-    safe.addSource('욕정', senseData.욕정);
+    safe.addPalam('욕정', senseData.욕정);
 
     // LOSEBASE
     safe.addStaminaCost(5);
@@ -175,13 +175,13 @@ export const COMF5_breastCaress: CommandPlugin = {
     // 조교자가 유아퇴행 - 1.2배
     if (safe.hasPlayerTalentByIndex(131)) {
       safe.multiplySource('쾌B', 1.2);
-      safe.multiplySource('욕정', 1.2);
+      safe.multiplyPalam('욕정', 1.2);
     }
 
     // 조교자가 유치 - 1.2배
     if (safe.hasPlayerTalentByIndex(132)) {
       safe.multiplySource('쾌B', 1.2);
-      safe.multiplySource('욕정', 1.2);
+      safe.multiplyPalam('욕정', 1.2);
     }
 
     // 더러움 처리
@@ -198,7 +198,7 @@ export const COMF5_breastCaress: CommandPlugin = {
       if (canUseMouth) {
         // 혀놀림 소질 - 습득 보너스
         if (safe.hasPlayerTalent('혀놀림')) {
-          safe.addSource('습득', Math.floor(safe.getSource('쾌B') / 20));
+          safe.addPalam('습득', Math.floor(safe.getSource('쾌B') / 20));
         }
 
         // B ⇔ 조교자의 입 더러움 이동

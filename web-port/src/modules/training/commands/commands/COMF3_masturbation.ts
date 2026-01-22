@@ -174,7 +174,7 @@ function canExecute(safe: SafeContext): { canExecute: boolean; score: number; th
   let score = 0;
 
   // 종순도에 따른 기본 점수
-  const submission = safe.getAbility('순종');
+  const submission = safe.getAbility('신뢰');
   if (submission >= 3) score += submission * 2;
 
   // 욕망 * 3
@@ -235,7 +235,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
   const aExpLevel = safe.getExpLevelByIndex(1);
   const lubLevel = safe.getParamLevel(3);
   const lustLevel = safe.getParamLevel(5);
-  const submission = safe.getAbility('순종');
+  const submission = safe.getAbility('신뢰');
 
   // LOSEBASE
   safe.addStaminaCost(5);
@@ -243,15 +243,15 @@ function calculateMasturbationSource(safe: SafeContext): void {
 
   // 비디오 촬영중
   if (safe.hasEquipmentByIndex(53)) {
-    safe.addSource('욕정', 50);
-    safe.addSource('수치심', 100);
+    safe.addPalam('욕정', 50);
+    safe.addPalam('반감', 100);
   }
 
   // C감각 기본값
   const cData = C_SENSE_VALUES[Math.min(cSense, 5)];
   safe.addSource('쾌C', cData.c);
-  safe.addSource('습득', cData.learn);
-  safe.addSource('불쾌', cData.displ);
+  safe.addPalam('습득', cData.learn);
+  safe.addPalam('불쾌', cData.displ);
 
   // B감각 기본값
   safe.addSource('쾌B', B_SENSE_VALUES[Math.min(bSense, 5)]);
@@ -280,7 +280,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
       displeasure *= 0.6;
     }
 
-    safe.addSource('불쾌', displeasure);
+    safe.addPalam('불쾌', displeasure);
     displeasure = 0;
   }
 
@@ -306,7 +306,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
       displeasure *= 0.6;
     }
 
-    safe.addSource('불쾌', displeasure);
+    safe.addPalam('불쾌', displeasure);
     displeasure = 0;
   }
 
@@ -314,8 +314,8 @@ function calculateMasturbationSource(safe: SafeContext): void {
   if (safe.hasEquipment('샤워')) {
     const cShowerData = C_SHOWER_VALUES[Math.min(cSense, 5)];
     safe.setSource('쾌C', cShowerData.c);
-    safe.setSource('습득', cShowerData.learn);
-    safe.setSource('불쾌', cShowerData.displ);
+    safe.setPalam('습득', cShowerData.learn);
+    safe.setPalam('불쾌', cShowerData.displ);
 
     const vShowerData = V_SHOWER_VALUES[Math.min(vSense, 5)];
     safe.addSource('쾌V', vShowerData.v);
@@ -327,23 +327,23 @@ function calculateMasturbationSource(safe: SafeContext): void {
 
     // V민감/둔감
     if (safe.hasTalent('V둔감')) {
-      safe.multiplySource('고통', 1.5);
+      safe.multiplyPalam('고통', 1.5);
       displeasure *= 1.5;
     } else if (safe.hasTalent('V민감')) {
-      safe.multiplySource('고통', 0.6);
+      safe.multiplyPalam('고통', 0.6);
       displeasure *= 0.6;
     }
 
     // A민감/둔감
     if (safe.hasTalent('A둔감')) {
-      safe.multiplySource('고통', 1.5);
+      safe.multiplyPalam('고통', 1.5);
       displeasure *= 1.5;
     } else if (safe.hasTalent('A민감')) {
-      safe.multiplySource('고통', 0.6);
+      safe.multiplyPalam('고통', 0.6);
       displeasure *= 0.6;
     }
 
-    safe.addSource('불쾌', displeasure);
+    safe.addPalam('불쾌', displeasure);
     displeasure = 0;
   } else {
     aPleasure = 0;
@@ -368,7 +368,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
       displeasure *= 0.6;
     }
 
-    safe.addSource('불쾌', displeasure);
+    safe.addPalam('불쾌', displeasure);
     displeasure = 0;
   }
 
@@ -393,7 +393,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
       displeasure *= 0.6;
     }
 
-    safe.addSource('불쾌', displeasure);
+    safe.addPalam('불쾌', displeasure);
     displeasure = 0;
   }
 
@@ -437,7 +437,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
 
     safe.addSource('쾌V', Math.floor(vPleasure));
     safe.addSource('쾌A', Math.floor(aPleasure));
-    safe.addSource('고통', Math.floor(pain));
+    safe.addPalam('고통', Math.floor(pain));
   }
 
   // 샤워 별도 계산
@@ -471,7 +471,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
   // 자위중독 보정
   const mastAddiction = safe.getAbility('자위중독');
   const mastData = MAST_VALUES[Math.min(mastAddiction, 5)];
-  safe.addSource('굴복', mastData.yield);
+  safe.addPalam('굴복', mastData.yield);
   safe.multiplySource('쾌C', mastData.mult);
   safe.multiplySource('쾌B', mastData.mult);
   if (mastAddiction >= 5) {
@@ -486,27 +486,27 @@ function calculateMasturbationSource(safe: SafeContext): void {
   if (safe.hasEquipmentByIndex(53) || safe.hasEquipmentByIndex(54)) {
     const exhib = safe.getAbility('노출벽');
     const exhibData = EXHIB_VALUES[Math.min(exhib, 5)];
-    safe.addSource('굴복', exhibData.yield);
+    safe.addPalam('굴복', exhibData.yield);
     safe.multiplySource('쾌C', exhibData.pleaseMult);
     safe.multiplySource('쾌B', exhibData.pleaseMult);
     safe.multiplySource('쾌V', exhibData.pleaseMult);
     safe.multiplySource('쾌A', exhibData.pleaseMult);
-    safe.multiplySource('습득', exhibData.shameMult);
+    safe.multiplyPalam('습득', exhibData.shameMult);
 
     // 노출광 소질
     if (safe.hasTalentByIndex(89)) {
-      safe.addSource('굴복', 500);
+      safe.addPalam('굴복', 500);
       safe.multiplySource('쾌C', 1.2);
       safe.multiplySource('쾌B', 1.2);
       safe.multiplySource('쾌V', 1.2);
       safe.multiplySource('쾌A', 1.2);
-      safe.multiplySource('습득', 1.5);
+      safe.multiplyPalam('습득', 1.5);
     }
   }
 
   // 음모 생성 설정 + 제모 상태
   if (safe.getFlag(36) && !safe.hasTalentByIndex(125) && safe.getCharFlagByIndex(6) <= 5) {
-    safe.multiplySource('습득', 2.0);
+    safe.multiplyPalam('습득', 2.0);
   }
 }
 
@@ -519,7 +519,7 @@ function calculateMasturbationSource(safe: SafeContext): void {
  */
 function generateMasturbationMessage(safe: SafeContext): string {
   const targetName = safe.targetName;
-  const submission = safe.getAbility('순종');
+  const submission = safe.getAbility('신뢰');
   const rebellion = safe.getParam(12);
 
   // 거부 케이스
