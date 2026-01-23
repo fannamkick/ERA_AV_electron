@@ -7,9 +7,9 @@ const fs = require('fs');
 const path = require('path');
 const iconv = require('iconv-lite');
 
-const CSV_DIR = path.join(__dirname, '..', 'original-game', 'CSV');
+const CSV_DIR = path.join(__dirname, '..', '..', 'original-game', 'CSV');
 const OUTPUT_DIR = path.join(__dirname, '..', 'data');
-const DOCS_DIR = path.join(__dirname, '..', 'web-port', 'docs');
+const DOCS_DIR = path.join(__dirname, '..', 'docs');
 
 // 출력 디렉토리 생성
 if (!fs.existsSync(OUTPUT_DIR)) {

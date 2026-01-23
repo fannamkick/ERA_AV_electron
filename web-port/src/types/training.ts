@@ -230,14 +230,14 @@ export type CommandCategory =
 // ============================================================================
 
 // ABL (능력치), PALAM (파라미터), TALENT (특성)는 data/에서 import
-export { ABL } from '../../../data/abilities';
-export type { AblKey } from '../../../data/abilities';
+export { ABL } from '../../data/abilities';
+export type { AblKey } from '../../data/abilities';
 
-export { PALAM } from '../../../data/parameters';
-export type { PalamKey } from '../../../data/parameters';
+export { PALAM } from '../../data/parameters';
+export type { PalamKey } from '../../data/parameters';
 
-export { TALENT } from '../../../data/talents';
-export type { TalentKey } from '../../../data/talents';
+export { TALENT } from '../../data/talents';
+export type { TalentKey } from '../../data/talents';
 
 // ============================================================================
 // PALAM 타입 (호환성)
