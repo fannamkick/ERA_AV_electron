@@ -5,7 +5,7 @@
  * 각 @COM_ABLE0-154 함수의 조건을 선언적으로 정의
  */
 
-import { TrainingContext } from '../types';
+import { TrainingContext } from '../runtime/types';
 import { Character } from '../../../types/game';
 
 /**
@@ -72,15 +72,15 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
     ],
     customCheck: (ctx, char) => {
       // 검은 스타킹 착용시 불가
-      if (char.cflags[170] === 6 && char.cflags[173] === 0) {
+      if (char.cflag[170] === 6 && char.cflag[173] === 0) {
         return false;
       }
       // 기저귀 착용시 불가
-      if (char.cflags[42] === 69 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 69 && (char.cflag[40] & 64)) {
         return false;
       }
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
@@ -100,19 +100,19 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
     forbiddenEquipment: [89, 70], // 수간, 삼각목마
     customCheck: (ctx, char) => {
       // 팬티(1) 또는 하의(16) 착용시 불가
-      if ((char.cflags[40] & 17) !== 0) {
+      if ((char.cflag[40] & 17) !== 0) {
         return false;
       }
       // 검은 스타킹 착용시 불가
-      if (char.cflags[170] === 6 && char.cflags[173] === 0) {
+      if (char.cflag[170] === 6 && char.cflag[173] === 0) {
         return false;
       }
       // 기저귀 착용시 불가
-      if (char.cflags[42] === 69 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 69 && (char.cflag[40] & 64)) {
         return false;
       }
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
@@ -134,7 +134,7 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
     forbiddenEquipment: [44, 90, 150, 70, 89, 55], // 밧줄, 촉수, 슬라임, 삼각목마, 수간, 안면기승
     customCheck: (ctx, char) => {
       // 실신중 불가 (TFLAG:899 > 0)
-      if ((ctx.tflags[899] || 0) > 0) {
+      if ((ctx.flags[899] || 0) > 0) {
         return false;
       }
 
@@ -145,19 +145,19 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
       //     RETURN 0
 
       // 팬티(1) 또는 하의(16) 착용시 불가
-      if ((char.cflags[40] & 17) !== 0) {
+      if ((char.cflag[40] & 17) !== 0) {
         return false;
       }
       // 검은 스타킹 착용시 불가
-      if (char.cflags[170] === 6 && char.cflags[173] === 0) {
+      if (char.cflag[170] === 6 && char.cflag[173] === 0) {
         return false;
       }
       // 기저귀 착용시 불가
-      if (char.cflags[42] === 69 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 69 && (char.cflag[40] & 64)) {
         return false;
       }
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
@@ -177,26 +177,26 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
       //     RETURN 0
 
       // 대상이 남성 또는 후타나리가 아니면 불가
-      const isFutanari = char.talents?.[121] || false;
-      const isMale = char.talents?.[122] || false;
+      const isFutanari = char.talent?.[121] || false;
+      const isMale = char.talent?.[122] || false;
       if (!isFutanari && !isMale) {
         return false;
       }
 
       // 팬티(1) 또는 하의(16) 착용시 불가
-      if ((char.cflags[40] & 1) || (char.cflags[40] & 16)) {
+      if ((char.cflag[40] & 1) || (char.cflag[40] & 16)) {
         return false;
       }
       // 검은 스타킹 착용시 불가
-      if (char.cflags[170] === 6 && char.cflags[173] === 0) {
+      if (char.cflag[170] === 6 && char.cflag[173] === 0) {
         return false;
       }
       // 기저귀 착용시 불가
-      if (char.cflags[42] === 69 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 69 && (char.cflag[40] & 64)) {
         return false;
       }
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
@@ -210,18 +210,18 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
     forbiddenTalents: [122], // 남성
     customCheck: (ctx, char) => {
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
       // FLAG:37 (착의 시스템) ON인 경우
       if (ctx.flags?.[37]) {
         // 상의가 벗겨지거나, 상반신이 드러난 경우가 아니면 안됨
-        if (!((char.cflags[40] & 128) || !(char.cflags[40] & 4))) {
+        if (!((char.cflag[40] & 128) || !(char.cflag[40] & 4))) {
           return false;
         }
         // 브라를 장착하고 있으면 안됨
-        if (char.cflags[40] & 2) {
+        if (char.cflag[40] & 2) {
           return false;
         }
       }
@@ -256,12 +256,12 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
     ],
     customCheck: (ctx, char) => {
       // 실신중 불가
-      if ((ctx.tflags[899] || 0) > 0) {
+      if ((ctx.flags[899] || 0) > 0) {
         return false;
       }
 
       // 처녀이면서 従順3 미만이고 노출벽3 미만이면 불가
-      const isVirgin = char.talents?.[0] || false;
+      const isVirgin = char.talent?.[0] || false;
       const submission = char.abilities?.[10] || 0;
       const exposure = char.abilities?.[17] || 0;
       if (isVirgin && submission < 3 && exposure < 3) {
@@ -269,19 +269,19 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
       }
 
       // 팬티(1) 또는 하의(16) 착용시 불가
-      if ((char.cflags[40] & 17) !== 0) {
+      if ((char.cflag[40] & 17) !== 0) {
         return false;
       }
       // 검은 스타킹 착용시 불가
-      if (char.cflags[170] === 6 && char.cflags[173] === 0) {
+      if (char.cflag[170] === 6 && char.cflag[173] === 0) {
         return false;
       }
       // 기저귀 착용시 불가
-      if (char.cflags[42] === 69 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 69 && (char.cflag[40] & 64)) {
         return false;
       }
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
@@ -302,23 +302,23 @@ export const COMMAND_CONDITIONS: Record<number, CommandCondition> = {
       //     RETURN 0
 
       // 팬티(1) 또는 하의(16) 착용시 불가
-      if ((char.cflags[40] & 17) !== 0) {
+      if ((char.cflag[40] & 17) !== 0) {
         return false;
       }
       // 검은 스타킹 착용시 불가
-      if (char.cflags[170] === 6 && char.cflags[173] === 0) {
+      if (char.cflag[170] === 6 && char.cflag[173] === 0) {
         return false;
       }
       // 기저귀 착용시 불가
-      if (char.cflags[42] === 69 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 69 && (char.cflag[40] & 64)) {
         return false;
       }
       // 정조대 착용시 불가
-      if (char.cflags[42] === 79 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 79 && (char.cflag[40] & 64)) {
         return false;
       }
       // 즈코 인형 착용시 불가
-      if (char.cflags[42] === 11 && (char.cflags[40] & 64)) {
+      if (char.cflag[42] === 11 && (char.cflag[40] & 64)) {
         return false;
       }
 
@@ -358,7 +358,7 @@ export function checkCommandAvailable(
   // 필수 소질 체크
   if (condition.requiredTalents) {
     for (const talentId of condition.requiredTalents) {
-      if (!char.talents?.[talentId]) {
+      if (!char.talent?.[talentId]) {
         return false;
       }
     }
@@ -367,7 +367,7 @@ export function checkCommandAvailable(
   // 금지된 소질 체크
   if (condition.forbiddenTalents) {
     for (const talentId of condition.forbiddenTalents) {
-      if (char.talents?.[talentId]) {
+      if (char.talent?.[talentId]) {
         return false;
       }
     }

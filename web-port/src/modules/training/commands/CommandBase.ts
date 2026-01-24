@@ -215,27 +215,27 @@ export abstract class TrainingCommand {
    * Check clothing state
    */
   protected isNaked(): boolean {
-    const clothing = this.character.flags[40] || 0;
+    const clothing = this.character.cflag[40] || 0;
     return clothing === 0;
   }
 
   protected hasTop(): boolean {
-    const clothing = this.character.flags[40] || 0;
+    const clothing = this.character.cflag[40] || 0;
     return (clothing & 4) !== 0;
   }
 
   protected hasBottom(): boolean {
-    const clothing = this.character.flags[40] || 0;
+    const clothing = this.character.cflag[40] || 0;
     return (clothing & 16) !== 0;
   }
 
   protected topNaked(): boolean {
-    const clothing = this.character.flags[40] || 0;
+    const clothing = this.character.cflag[40] || 0;
     return (clothing & 6) === 0; // 상의(4) + 브라(2) 모두 벗음
   }
 
   protected bottomNaked(): boolean {
-    const clothing = this.character.flags[40] || 0;
+    const clothing = this.character.cflag[40] || 0;
     return (clothing & 17) === 0; // 하의(16) + 팬티(1) 모두 벗음
   }
 

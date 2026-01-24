@@ -5,7 +5,7 @@
  */
 
 import { TrainingCommand, SourceResult } from './CommandBase';
-import { TrainingContext } from '../types';
+import { TrainingContext } from '../runtime/types';
 import { Character } from '../../../types/game';
 
 /**
@@ -28,12 +28,12 @@ export class Com0Command extends TrainingCommand {
     }
 
     // 의식이 있어야 함
-    if (this.character.flags[16] === -1) { // 기절 상태
+    if (this.character.cflag[16] === -1) { // 기절 상태
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -104,7 +104,7 @@ export class Com0Command extends TrainingCommand {
       source.pleasureB! /= 2;
     }
     // 기절 상태 (실제로는 isAvailable에서 막히지만 방어적 코딩)
-    else if (this.character.flags[16] === -1) {
+    else if (this.character.cflag[16] === -1) {
       source.lust = 0;
       source.pleasureC! /= 2;
       source.lubrication! /= 4;
@@ -175,7 +175,7 @@ export class Com0Command extends TrainingCommand {
     this.addExperience(14, 1);
 
     // 페로몬 경험치 (호감도 1000 이상)
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 2);
     }
   }
@@ -215,12 +215,12 @@ export class Com1Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -321,7 +321,7 @@ export class Com1Command extends TrainingCommand {
     }
 
     // 페로몬 (호감도 체크)
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -361,7 +361,7 @@ export class Com2Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -536,7 +536,7 @@ export class Com2Command extends TrainingCommand {
     }
 
     // 페로몬
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -576,7 +576,7 @@ export class Com3Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -723,7 +723,7 @@ export class Com3Command extends TrainingCommand {
     }
 
     // 페로몬
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -758,7 +758,7 @@ export class Com4Command extends TrainingCommand {
 
   isAvailable(): boolean {
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -829,7 +829,7 @@ export class Com4Command extends TrainingCommand {
 
     // 애정 경험치
     const e = charVirgin ? 2 : 1;
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, e);
     }
   }
@@ -875,7 +875,7 @@ export class Com5Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -992,7 +992,7 @@ export class Com5Command extends TrainingCommand {
     }
 
     // 페로몬
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -1027,7 +1027,7 @@ export class Com6Command extends TrainingCommand {
 
   isAvailable(): boolean {
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -1141,7 +1141,7 @@ export class Com6Command extends TrainingCommand {
     }
 
     // 페로몬
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -1181,12 +1181,12 @@ export class Com7Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -1342,12 +1342,12 @@ export class Com8Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -1523,7 +1523,7 @@ export class Com8Command extends TrainingCommand {
     }
 
     // 애정 경험
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 1);
     }
   }
@@ -1569,7 +1569,7 @@ export class Com9Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -1699,12 +1699,12 @@ export class Com10Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -1829,7 +1829,7 @@ export class Com10Command extends TrainingCommand {
     }
 
     // 페로몬
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -1869,12 +1869,12 @@ export class Com11Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -1913,7 +1913,7 @@ export class Com11Command extends TrainingCommand {
     // === 처녀 상실 ===
     if (wasVirgin) {
       this.loseVirginity();
-      this.character.flags[100] = 1; // 첫 경험 플래그
+      this.character.cflag[100] = 1; // 첫 경험 플래그
     }
 
     // === 경험치 획득 ===
@@ -2043,7 +2043,7 @@ export class Com11Command extends TrainingCommand {
     this.addExperience(50, 5);
 
     // 페로몬 (호감도 체크)
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 5);
     }
 
@@ -2063,7 +2063,7 @@ export class Com11Command extends TrainingCommand {
       return false;
     }
 
-    if (this.character.flags[50]) { // 피임약 복용
+    if (this.character.cflag[50]) { // 피임약 복용
       return false;
     }
 
@@ -2078,7 +2078,7 @@ export class Com11Command extends TrainingCommand {
     let finalChance = baseChance;
 
     // 배란일이면 확률 상승
-    if (this.character.flags[51] === 1) {
+    if (this.character.cflag[51] === 1) {
       finalChance *= 3;
     }
 
@@ -2090,7 +2090,7 @@ export class Com11Command extends TrainingCommand {
       this.message('');
       this.message('** 임신했습니다! **');
       this.ctx.talents.push(201); // 임신 중 소질 추가
-      this.character.flags[45] = 0; // 임신 주차
+      this.character.cflag[45] = 0; // 임신 주차
     }
   }
 }
@@ -2134,12 +2134,12 @@ export class Com12Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -2274,7 +2274,7 @@ export class Com13Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -2509,12 +2509,12 @@ export class Com14Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -2621,7 +2621,7 @@ export class Com15Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -2746,7 +2746,7 @@ export class Com16Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -2904,7 +2904,7 @@ export class Com17Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -3022,7 +3022,7 @@ export class Com18Command extends TrainingCommand {
 
   isAvailable(): boolean {
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -3183,7 +3183,7 @@ export class Com19Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -3410,12 +3410,12 @@ export class Com20Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -3630,7 +3630,7 @@ export class Com20Command extends TrainingCommand {
     }
 
     // 애정 경험
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 3);
     }
   }
@@ -3670,12 +3670,12 @@ export class Com21Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -3884,7 +3884,7 @@ export class Com21Command extends TrainingCommand {
     }
 
     // 애정 경험
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 2);
     }
   }
@@ -3924,12 +3924,12 @@ export class Com22Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -4185,7 +4185,7 @@ export class Com22Command extends TrainingCommand {
     }
 
     // 애정 경험 (대면좌위는 애정 경험 높음)
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 5);
     } else {
       this.addExperience(23, 3);
@@ -4227,12 +4227,12 @@ export class Com23Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
     // 정조대 착용 시 불가
-    if (this.character.flags[42] === 79) {
+    if (this.character.cflag[42] === 79) {
       return false;
     }
 
@@ -4471,7 +4471,7 @@ export class Com23Command extends TrainingCommand {
     }
 
     // 애정 경험
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 2);
     }
   }
@@ -4603,7 +4603,7 @@ export class Com24Command extends TrainingCommand {
     this.addExperience(5, 1);
 
     // 애정 경험
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       const affAmount = this.hasTalent(1) ? 50 : 4;
       this.addExperience(23, affAmount);
     }
@@ -4638,7 +4638,7 @@ export class Com25Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -4703,7 +4703,7 @@ export class Com26Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -4768,7 +4768,7 @@ export class Com27Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -4834,7 +4834,7 @@ export class Com28Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -4902,7 +4902,7 @@ export class Com29Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -4973,7 +4973,7 @@ export class Com30Command extends TrainingCommand {
 
   isAvailable(): boolean {
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -5097,7 +5097,7 @@ export class Com31Command extends TrainingCommand {
 
   isAvailable(): boolean {
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -5212,7 +5212,7 @@ export class Com32Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.topNaked()) return false;
     return true;
   }
@@ -5275,7 +5275,7 @@ export class Com33Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -5335,7 +5335,7 @@ export class Com34Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -5397,7 +5397,7 @@ export class Com35Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.topNaked()) return false;
     if (!this.hasTalent(108)) return false; // 모유체질 필요
     return true;
@@ -5461,7 +5461,7 @@ export class Com36Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -5523,7 +5523,7 @@ export class Com37Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -5586,7 +5586,7 @@ export class Com38Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -5649,7 +5649,7 @@ export class Com39Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -5719,7 +5719,7 @@ export class Com40Command extends TrainingCommand {
     }
 
     // 의식 필수
-    if (this.character.flags[16] === -1) {
+    if (this.character.cflag[16] === -1) {
       return false;
     }
 
@@ -5796,7 +5796,7 @@ export class Com40Command extends TrainingCommand {
       this.addExperience(41, 2);
     }
 
-    if (this.character.flags[2] >= 1000 && !this.isAssiPlay()) {
+    if (this.character.cflag[2] >= 1000 && !this.isAssiPlay()) {
       this.addExperience(23, 1);
     }
   }
@@ -5830,7 +5830,7 @@ export class Com41Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -5892,7 +5892,7 @@ export class Com42Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -5953,7 +5953,7 @@ export class Com42Command extends TrainingCommand {
     }
 
     // 애정경험 (조건부)
-    if (this.character.flags[2] >= 1000 &&
+    if (this.character.cflag[2] >= 1000 &&
         (this.getAbility(21) >= 3 || this.hasTalent(88)) &&
         this.ctx.assiplay === 0) {
       this.addExperience(23, 1);
@@ -5984,7 +5984,7 @@ export class Com43Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -6051,7 +6051,7 @@ export class Com44Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.topNaked()) return false;
     return true;
   }
@@ -6115,7 +6115,7 @@ export class Com45Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6179,7 +6179,7 @@ export class Com46Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6241,7 +6241,7 @@ export class Com47Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -6304,7 +6304,7 @@ export class Com48Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6366,7 +6366,7 @@ export class Com49Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6428,7 +6428,7 @@ export class Com50Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6491,7 +6491,7 @@ export class Com51Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6553,7 +6553,7 @@ export class Com52Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6615,7 +6615,7 @@ export class Com53Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6677,7 +6677,7 @@ export class Com54Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6739,7 +6739,7 @@ export class Com55Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.bottomNaked()) return false;
     return true;
   }
@@ -6808,7 +6808,7 @@ export class Com56Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6869,7 +6869,7 @@ export class Com57Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -6930,7 +6930,7 @@ export class Com58Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     if (!this.topNaked()) return false;
     if (!this.hasTalent(108)) return false;
     return true;
@@ -6994,7 +6994,7 @@ export class Com59Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7056,7 +7056,7 @@ export class Com60Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7120,7 +7120,7 @@ export class Com61Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7184,7 +7184,7 @@ export class Com62Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7248,7 +7248,7 @@ export class Com63Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7312,7 +7312,7 @@ export class Com64Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7376,7 +7376,7 @@ export class Com65Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7440,7 +7440,7 @@ export class Com66Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7504,7 +7504,7 @@ export class Com67Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7568,7 +7568,7 @@ export class Com68Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7632,7 +7632,7 @@ export class Com69Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7696,7 +7696,7 @@ export class Com70Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7760,7 +7760,7 @@ export class Com71Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7824,7 +7824,7 @@ export class Com72Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7888,7 +7888,7 @@ export class Com73Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -7948,7 +7948,7 @@ export class Com74Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8008,7 +8008,7 @@ export class Com75Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8068,7 +8068,7 @@ export class Com76Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8128,7 +8128,7 @@ export class Com77Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8188,7 +8188,7 @@ export class Com78Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8248,7 +8248,7 @@ export class Com79Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8312,7 +8312,7 @@ export class Com80Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8376,7 +8376,7 @@ export class Com81Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8440,7 +8440,7 @@ export class Com82Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8504,7 +8504,7 @@ export class Com83Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8568,7 +8568,7 @@ export class Com84Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8632,7 +8632,7 @@ export class Com85Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8692,7 +8692,7 @@ export class Com86Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8756,7 +8756,7 @@ export class Com87Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8820,7 +8820,7 @@ export class Com88Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8884,7 +8884,7 @@ export class Com89Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -8948,7 +8948,7 @@ export class Com90Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -9012,7 +9012,7 @@ export class Com91Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
@@ -9076,7 +9076,7 @@ export class Com92Command extends TrainingCommand {
   }
 
   isAvailable(): boolean {
-    if (this.character.flags[16] === -1) return false;
+    if (this.character.cflag[16] === -1) return false;
     return true;
   }
 
