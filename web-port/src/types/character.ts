@@ -486,6 +486,11 @@ export interface Character {
   isOwned: boolean;              // 소유 여부
   isAssistant: boolean;          // 조수 여부
   location?: string;             // 현재 위치
+
+  // 조교 시스템 전용 (런타임 추가 속성)
+  abilities?: number[];          // abl을 배열로 변환 (호환성)
+  equipment?: Record<number, number>;  // 장비 상태 (TEQUIP)
+  source?: number[];             // SOURCE 배열 (조교 중 쾌락 증가량)
 }
 
 // 캐릭터 생성 시 초기 데이터

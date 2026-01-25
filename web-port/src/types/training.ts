@@ -181,6 +181,9 @@ export interface TrainingContext {
 
   /** SOURCE 적용 함수 (옵션) */
   applySource?: (source: number[]) => void;
+
+  /** TALENT 값 가져오기 (호환성) */
+  getTalent?: (id: number) => number;
 }
 
 // ============================================================================

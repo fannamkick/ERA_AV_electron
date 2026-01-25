@@ -122,14 +122,19 @@ export class MessageGenerator {
    * 현재 상태를 스냅샷으로 추출
    */
   private extractState(): GameState {
+    // CharacterTalents 객체를 number[] 배열로 변환
+    const talentArray = Array.isArray(this.character.talent)
+      ? this.character.talent
+      : Object.keys(this.character.talent || {}).map(Number).filter(n => !isNaN(n));
+
     return {
-      cflag40: this.character.flags?.[40] || 0,
-      cflag42: this.character.flags?.[42] || 0,
-      cflag16: this.character.flags?.[16] || 0,
-      cflag110: this.character.flags?.[110] || 0,
-      cflag7: this.character.flags?.[7] || 0,
+      cflag40: this.character.cflag?.[40] || 0,
+      cflag42: this.character.cflag?.[42] || 0,
+      cflag16: this.character.cflag?.[16] || 0,
+      cflag110: this.character.cflag?.[110] || 0,
+      cflag7: this.character.cflag?.[7] || 0,
       equipment: this.ctx.equipment || {},
-      talents: this.character.talent || [],
+      talents: talentArray,
       abilities: this.ctx.abilities || {},
       params: this.ctx.params || {},
       stain: this.ctx.stain || {},

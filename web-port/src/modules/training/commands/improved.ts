@@ -5955,7 +5955,7 @@ export class Com42Command extends TrainingCommand {
     // 애정경험 (조건부)
     if (this.character.cflag[2] >= 1000 &&
         (this.getAbility(21) >= 3 || this.hasTalent(88)) &&
-        this.ctx.assiplay === 0) {
+        this.ctx.assiPlay === 0) {
       this.addExperience(23, 1);
     }
   }

@@ -57,6 +57,7 @@ export interface TrainingContext {
   // ============================================================================
   // 조교 관련
   // ============================================================================
+  source: number[];           // SOURCE:0~299 (쾌락 변화량)
   loseBase: number[];         // LOSEBASE:0~99 (기본 상실량)
   stain: number[];            // STAIN:0~99 (오염도 - 정액, 애액 등)
   playerStain: number[];      // STAIN:PLAYER:n
@@ -65,6 +66,7 @@ export interface TrainingContext {
   // ============================================================================
   // BASE 스탯
   // ============================================================================
+  base: number[];             // BASE:0~99 (대상 캐릭터)
   playerBase: number[];       // BASE:PLAYER:0~99
   masterBase: number[];       // BASE:MASTER:0~99
 
@@ -79,6 +81,13 @@ export interface TrainingContext {
   assiPlay: number;           // ASSIPLAY (조수 플레이 모드)
   player: any;                // PLAYER
   assi: any;                  // 조수 객체
+
+  // ============================================================================
+  // 게임 상태
+  // ============================================================================
+  day?: number;               // 현재 날짜
+  prevCom?: number;           // 이전 커맨드
+  equipment?: Record<number, number>;  // 장비 상태
 
   // ============================================================================
   // 출력/UI 함수
@@ -149,6 +158,8 @@ export interface TrainingContext {
   // ============================================================================
   checkAbilityUp(abl: number): void;
   checkCharacterAbilityUp(abl: number): void;
+  getAbility?(id: number): number;  // ABL 값 가져오기
+  getTalent?(id: number): number;   // TALENT 값 가져오기
 
   // ============================================================================
   // 배열/변수 조작
@@ -276,4 +287,9 @@ export interface Character {
   // ============================================================================
   id: number;
   name: string;
+
+  // ============================================================================
+  // 헬퍼 메서드
+  // ============================================================================
+  getTalent?(id: number): number;  // TALENT 값 가져오기
 }

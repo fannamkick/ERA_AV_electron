@@ -42,6 +42,18 @@ export interface SourceResult {
   comfort: number;
   /** 습관 증가량 (SOURCE:16) */
   habit: number;
+  /** 감도 증가량 */
+  sensitivity?: number;
+  /** 노출 증가량 */
+  exposure?: number;
+  /** 감각 증가량 */
+  sensation?: number;
+  /** 애정 증가량 */
+  affection?: number;
+  /** 쾌M 증가량 */
+  pleasureM?: number;
+  /** 수치 증가량 */
+  shame?: number;
 }
 
 /**
