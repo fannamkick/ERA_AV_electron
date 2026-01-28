@@ -31,7 +31,7 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
   // ============================================================================
   1: (ctx, char) => {
     // 대상이 남성이면 불가 (TALENT:122)
-    if (char.talents?.[122]) return false;
+    if (char.talent?.[122]) return false;
 
     // 촉수 지도중 불가 (TEQUIP:90)
     if (char.equipment?.[90]) return false;
@@ -130,7 +130,7 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
     }
 
     // 자위 안함 소질 보유 시 불가 (TALENT:150)
-    if (char.talents?.[150]) return false;
+    if (char.talent?.[150]) return false;
 
     // 밧줄 사용중 불가 (TEQUIP:44)
     if (char.equipment?.[44]) return false;
@@ -187,8 +187,8 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
     }
 
     // 대상이 남성 또는 후타나리가 아니면 불가
-    const isFutanari = char.talents?.[121] || 0;
-    const isMale = char.talents?.[122] || 0;
+    const isFutanari = char.talent?.[121] || 0;
+    const isMale = char.talent?.[122] || 0;
     if (!isFutanari && !isMale) return false;
 
     // 촉수 지도중 불가
@@ -227,7 +227,7 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
   // ============================================================================
   5: (ctx, char) => {
     // 남성이면 불가 (TALENT:122)
-    if (char.talents?.[122]) return false;
+    if (char.talent?.[122]) return false;
 
     // 즈코 인형 착용시 불가
     if ((char.cflags?.[42] || 0) === 11 && ((char.cflags?.[40] || 0) & 64)) return false;
@@ -266,7 +266,7 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
     }
 
     // 봉사 안함 소질 보유 시 불가 (TALENT:151)
-    if (char.talents?.[151]) return false;
+    if (char.talent?.[151]) return false;
 
     // 볼개그 사용중 불가 (TEQUIP:45)
     if (char.equipment?.[45]) return false;
@@ -292,13 +292,13 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
     if ((char.tflags?.[899] || 0) > 0) return false;
 
     // 남성이면 불가 (TALENT:122)
-    if (char.talents?.[122]) return false;
+    if (char.talent?.[122]) return false;
 
     // 従順2 미만이면 불가 (ABL:10 < 2)
     if ((ctx.abilities?.[10] || 0) < 2) return false;
 
     // 처녀이면서 従順3 미만이고 노출벽3 미만이면 불가
-    if (char.talents?.[0] && (ctx.abilities?.[10] || 0) < 3 && (ctx.abilities?.[17] || 0) < 3) {
+    if (char.talent?.[0] && (ctx.abilities?.[10] || 0) < 3 && (ctx.abilities?.[17] || 0) < 3) {
       return false;
     }
 
@@ -341,7 +341,7 @@ export const COMMAND_AVAILABLE: Record<number, AvailabilityChecker> = {
   // ============================================================================
   8: (ctx, char) => {
     // 남성이면 불가 (TALENT:122)
-    if (char.talents?.[122]) return false;
+    if (char.talent?.[122]) return false;
 
     // 윤활 부족 조건
     if (ctx.assiPlay) {

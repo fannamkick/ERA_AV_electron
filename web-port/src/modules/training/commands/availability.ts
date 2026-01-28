@@ -7,7 +7,7 @@
  * 참고: COMMAND_DEPENDENCIES.md
  */
 
-import type { TrainingContext } from '../types';
+import type { TrainingContext } from '../runtime/types';
 
 // ============================================================================
 // 공통 조건 체크 함수
@@ -28,22 +28,22 @@ import type { TrainingContext } from '../types';
 export const clothingCheck = {
   /** 상의 착용 여부 (비트 4) */
   hasTop: (context: TrainingContext): boolean => {
-    return (context.charFlags[40] & 4) !== 0;
+    return (context.flags[40] & 4) !== 0;
   },
 
   /** 브래지어 착용 여부 (비트 2) */
   hasBra: (context: TrainingContext): boolean => {
-    return (context.charFlags[40] & 2) !== 0;
+    return (context.flags[40] & 2) !== 0;
   },
 
   /** 하의 착용 여부 (비트 16) */
   hasBottom: (context: TrainingContext): boolean => {
-    return (context.charFlags[40] & 16) !== 0;
+    return (context.flags[40] & 16) !== 0;
   },
 
   /** 팬티 착용 여부 (비트 1) */
   hasPanties: (context: TrainingContext): boolean => {
-    return (context.charFlags[40] & 1) !== 0;
+    return (context.flags[40] & 1) !== 0;
   },
 
   /** 상반신 노출 (상의와 브라 모두 벗음) */
@@ -63,27 +63,27 @@ export const clothingCheck = {
 
   /** 하의 계열 착용 (팬티 OR 하의) */
   hasLowerClothing: (context: TrainingContext): boolean => {
-    return (context.charFlags[40] & 17) !== 0; // 비트 1 OR 비트 16
+    return (context.flags[40] & 17) !== 0; // 비트 1 OR 비트 16
   },
 
   /** 정조대 착용 (CFLAG:42 == 79) */
   hasChastityBelt: (context: TrainingContext): boolean => {
-    return context.charFlags[42] === 79 && (context.charFlags[40] & 64) !== 0;
+    return context.flags[42] === 79 && (context.flags[40] & 64) !== 0;
   },
 
   /** 쭈코인형 착용 (CFLAG:42 == 11) */
   hasZuukoDoll: (context: TrainingContext): boolean => {
-    return context.charFlags[42] === 11 && (context.charFlags[40] & 64) !== 0;
+    return context.flags[42] === 11 && (context.flags[40] & 64) !== 0;
   },
 
   /** 기저귀 착용 (CFLAG:42 == 69) */
   hasDiaper: (context: TrainingContext): boolean => {
-    return context.charFlags[42] === 69 && (context.charFlags[40] & 64) !== 0;
+    return context.flags[42] === 69 && (context.flags[40] & 64) !== 0;
   },
 
   /** 검은 스타킹 (CFLAG:170 == 6) without override */
   hasBlackStockings: (context: TrainingContext): boolean => {
-    return context.charFlags[170] === 6 && context.charFlags[173] === 0;
+    return context.flags[170] === 6 && context.flags[173] === 0;
   },
 };
 
@@ -2186,7 +2186,7 @@ export const COM_ABLE110 = (context: TrainingContext): boolean => {
 export const COM_ABLE111 = (context: TrainingContext): boolean => {
   // 의류 탈의
   // 뭔가 입고 있어야 함
-  const hasClothing = (context.charFlags[40] ?? 0) > 0;
+  const hasClothing = (context.flags[40] ?? 0) > 0;
   return hasClothing;
 };
 

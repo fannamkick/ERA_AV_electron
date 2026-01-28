@@ -5,8 +5,7 @@
  * 각 @COM_ABLE0-154 함수의 조건을 선언적으로 정의
  */
 
-import { TrainingContext } from '../runtime/types';
-import { Character } from '../../../types/game';
+import { TrainingContext, Character } from '../runtime/types';
 
 /**
  * 커맨드 가용성 조건 체크 함수 타입

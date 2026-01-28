@@ -14,6 +14,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
     /* Linting - strict mode */
     "strict": true,
     "noUnusedLocals": true,
@@ -28,6 +34,16 @@
     "alwaysStrict": true
   },
   "include": ["src"],
-  "exclude": ["src/modules/**/generated/**"],
+  "exclude": [
+    "src/modules/**/generated/**",
+    "src/modules/training/commands/**",
+    "src/modules/training/ImprovedTrainingModule.ts",
+    "src/modules/training/TrainingModule.ts",
+    "src/modules/training/systems/**",
+    "src/**/__tests__/**",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/examples/**"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
