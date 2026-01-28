@@ -16,8 +16,7 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'game-modules': [
-            './src/modules/training/TrainingModule',
-            './src/modules/system/SystemModule'
+            './src/modules/training/TrainingModule'
           ]
         }
       }

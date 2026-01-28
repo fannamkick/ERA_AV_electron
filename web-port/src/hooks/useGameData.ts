@@ -5,6 +5,7 @@
 import { useEffect } from 'react';
 import { useGameStore } from '../stores/gameStore';
 import { createSampleCharacter } from '../utils/characterGenerator';
+import type { Character } from '../types';
 
 export function useGameData() {
   const { loadAvailableCharacters } = useGameStore();
@@ -14,7 +15,7 @@ export function useGameData() {
       try {
         // 1. CSV 기반 스페셜 캐릭터 로드
         const charactersData = await import('../data/json/characters.json');
-        loadAvailableCharacters(charactersData.default);
+        loadAvailableCharacters(charactersData.default as unknown as Character[]);
 
         // 2. 예시 캐릭터 추가
         const sampleChar = createSampleCharacter();

@@ -122,8 +122,9 @@ export function getCharacterBaseWithNames(base: CharacterBase): Array<{ id: numb
  * 특정 카테고리의 능력치만 추출
  */
 export function getAbilitiesByCategory(abl: CharacterAbilities, category: string): Array<{ id: number; name: string; value: number }> {
-  const categoryAbilities = GameData.abilities.categories[category] || [];
-  const categoryIds = new Set(categoryAbilities.map(a => a.id));
+  const categories = GameData.abilities.categories as Record<string, Array<{ id: number; name: string; description: string }>>;
+  const categoryAbilities = categories[category] || [];
+  const categoryIds = new Set(categoryAbilities.map((a: { id: number }) => a.id));
 
   return getCharacterAbilitiesWithNames(abl)
     .filter(ability => categoryIds.has(ability.id));
@@ -133,8 +134,9 @@ export function getAbilitiesByCategory(abl: CharacterAbilities, category: string
  * 특정 카테고리의 특성만 추출
  */
 export function getTalentsByCategory(talent: CharacterTalents, category: string): Array<{ id: number; name: string; value: number }> {
-  const categoryTalents = GameData.talents.categories[category] || [];
-  const categoryIds = new Set(categoryTalents.map(t => t.id));
+  const categories = GameData.talents.categories as Record<string, Array<{ id: number; name: string; description: string }>>;
+  const categoryTalents = categories[category] || [];
+  const categoryIds = new Set(categoryTalents.map((t: { id: number }) => t.id));
 
   return getCharacterTalentsWithNames(talent)
     .filter(t => categoryIds.has(t.id));

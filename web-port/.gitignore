@@ -30,3 +30,4 @@ dist-ssr
 *.tmp
 __pycache__/
 *.pyc
+web-port/release/

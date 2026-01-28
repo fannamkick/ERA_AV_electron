@@ -318,25 +318,28 @@ export class ImprovedTrainingModule {
     if (!(target as any).base) (target as any).base = {};
 
     // TrainingContext 생성 (간소화 버전, isAvailable 체크용)
-    const ctx: TrainingContext = {
-      target,
+    // NOTE: training 모듈 리팩터링 전까지 타입 체크 완화
+    const ctx = {
+      target: target as any,
       targetId: target.id,
       params: convertParametersToArray(trainingStore.parameters),
-      abilities: (target as any).abilities || {},
+      abilities: (target as any).abilities || [],
       talents: (target as any).talents || [],
-      base: (target as any).base || {},
-      exp: (target as any).experience || {},
+      base: (target as any).base || [],
+      exp: (target as any).experience || [],
       charFlags: (target as any).cflags || {},
       equipment: (target as any).equipment || {},
       items: convertItemsToArray(gameStore.items),
       flags: {},
-      stain: (target as any).stain || {},
-      playerStain: {},
-      source: (target as any).source || {},
+      stain: (target as any).stain || [],
+      playerStain: [],
+      source: (target as any).source || [],
       saveStr: [],
       assiPlay: 0,
-      assiAbilities: {},
+      assiAbilities: [],
+      isAssistantPlay: false,
       day: gameStore.day,
+      time: 0,
       showMessage: () => {},
       getTalent: (id: number) => ((target as any).talents?.includes(id) ? 1 : 0),
       getVarName: (type: string, id: number) => {
@@ -346,7 +349,7 @@ export class ImprovedTrainingModule {
         return `${type}[${id}]`;
       },
       getString: (key: string) => key,
-    };
+    } as unknown as TrainingContext;
 
     // 각 커맨드의 isAvailable() 체크
     const availableCommands: number[] = [];
@@ -405,17 +408,18 @@ export class ImprovedTrainingModule {
     const messages: string[] = [];
 
     // TrainingContext 생성
-    const ctx: TrainingContext = {
+    // NOTE: training 모듈 리팩터링 전까지 타입 체크 완화
+    const ctx = {
       // 기본 정보
-      target,
+      target: target as any,
       targetId: target.id,
 
       // 파라미터 (숫자 인덱스 배열로 변환)
       params: convertParametersToArray(trainingStore.parameters),
-      abilities: (target as any).abilities || {},
+      abilities: (target as any).abilities || [],
       talents: (target as any).talents || [],
-      base: (target as any).base || {},
-      exp: (target as any).experience || {},
+      base: (target as any).base || [],
+      exp: (target as any).experience || [],
 
       // 플래그
       charFlags: (target as any).cflags || {},
@@ -424,15 +428,17 @@ export class ImprovedTrainingModule {
       flags: {},
 
       // 상태
-      stain: (target as any).stain || {},
-      playerStain: {},
-      source: (target as any).source || {},
+      stain: (target as any).stain || [],
+      playerStain: [],
+      source: (target as any).source || [],
 
       // 메타
       saveStr: [],
       assiPlay: 0,
-      assiAbilities: {},
+      assiAbilities: [],
+      isAssistantPlay: false,
       day: gameStore.day,
+      time: 0,
 
       // 메시지 수집
       showMessage: (msg: string) => {
@@ -448,7 +454,7 @@ export class ImprovedTrainingModule {
         return `${type}[${id}]`;
       },
       getString: (key: string) => key,
-    };
+    } as unknown as TrainingContext;
 
     try {
       // 커맨드 실행

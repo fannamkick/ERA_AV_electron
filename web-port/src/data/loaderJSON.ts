@@ -68,7 +68,7 @@ export class GameData {
     );
 
     this.characters = new Map(
-      (charactersData as CharacterData[]).map(c => [c.no, c])
+      (charactersData as unknown as CharacterData[]).map(c => [c.no, c])
     );
 
     this.experiences = new Map(

@@ -307,7 +307,7 @@ export interface CloudSyncAdapter {
  */
 export async function syncToCloud(adapter: CloudSyncAdapter, slotNumber: number): Promise<boolean> {
   try {
-    const saveData = loadGame(slotNumber);
+    const saveData = await loadGame(slotNumber);
     if (!saveData) {
       throw new Error('저장 데이터가 없습니다.');
     }

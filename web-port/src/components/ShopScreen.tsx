@@ -12,7 +12,7 @@ interface Item {
   name: string;
   price: number;
   description?: string;
-  category: 'tool' | 'consumable' | 'costume' | 'special' | 'magic';
+  category: string;
 }
 
 function ShopScreen({ onBack }: ShopScreenProps) {

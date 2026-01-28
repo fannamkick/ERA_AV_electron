@@ -148,15 +148,15 @@ export class SourceCheckSystem {
       result.type = orgasms.length > 1 ? 'multiple' : orgasms[0];
 
       // 절정 횟수 누적
-      this.character.cflags[10] = (this.character.cflags[10] || 0) + orgasms.length;
+      this.character.cflag[10] = (this.character.cflag[10] || 0) + orgasms.length;
 
       // 연속 절정 체크
-      const continuousOrgasms = this.character.cflags[11] || 0;
-      this.character.cflags[11] = continuousOrgasms + 1;
+      const continuousOrgasms = this.character.cflag[11] || 0;
+      this.character.cflag[11] = continuousOrgasms + 1;
 
       // 기절 판정
-      if (this.character.cflags[10] >= MAX_ORGASMS.total ||
-          this.character.cflags[11] >= MAX_ORGASMS.continuous) {
+      if (this.character.cflag[10] >= MAX_ORGASMS.total ||
+          this.character.cflag[11] >= MAX_ORGASMS.continuous) {
         result.fainted = true;
       }
 
@@ -164,7 +164,7 @@ export class SourceCheckSystem {
       result.secretions = this.calculateSecretions(orgasms);
     } else {
       // 절정이 없으면 연속 카운터 리셋
-      this.character.cflags[11] = 0;
+      this.character.cflag[11] = 0;
     }
 
     return result;
@@ -182,7 +182,7 @@ export class SourceCheckSystem {
 
     // 절정 카운터 증가
     const countIndex = type === 'C' ? 20 : type === 'V' ? 21 : type === 'A' ? 22 : 23;
-    this.character.cflags[countIndex] = (this.character.cflags[countIndex] || 0) + 1;
+    this.character.cflag[countIndex] = (this.character.cflag[countIndex] || 0) + 1;
 
     // 파라미터 리셋
     this.ctx.params[paramIndex] = 0;
@@ -192,7 +192,7 @@ export class SourceCheckSystem {
     this.ctx.exp[expIndex] = (this.ctx.exp[expIndex] || 0) + 10;
 
     // 만족도 상승
-    this.character.cflags[3] = (this.character.cflags[3] || 0) + 50;
+    this.character.cflag[3] = (this.character.cflag[3] || 0) + 50;
   }
 
   /**
@@ -229,7 +229,7 @@ export class SourceCheckSystem {
 
     // 절정 횟수 표시
     const countIndex = type === 'C' ? 20 : type === 'V' ? 21 : type === 'A' ? 22 : 23;
-    const count = (this.character.cflags[countIndex] || 0) + 1;
+    const count = (this.character.cflag[countIndex] || 0) + 1;
     this.ctx.showMessage(`${type}절정 ${count}회째`);
   }
 
@@ -309,7 +309,7 @@ export class SourceCheckSystem {
     this.ctx.showMessage('');
 
     // 기절 상태 설정
-    this.character.cflags[16] = -1;
+    this.character.cflag[16] = -1;
 
     // 모든 쾌감 파라미터 리셋
     this.ctx.params[0] = 0;
@@ -317,8 +317,11 @@ export class SourceCheckSystem {
     this.ctx.params[2] = 0;
     this.ctx.params[14] = 0;
 
-    // 정신력 대폭 감소
-    this.character.vital = Math.max(0, this.character.vital - 50);
+    // 정신력 대폭 감소 (base[1] = 기력)
+    const currentVital = this.character.base?.[1] ?? 100;
+    if (this.character.base) {
+      this.character.base[1] = Math.max(0, currentVital - 50);
+    }
 
     // 경험치 보너스
     this.ctx.exp[70] = (this.ctx.exp[70] || 0) + 50; // 기절 경험치
@@ -330,25 +333,25 @@ export class SourceCheckSystem {
   private updateStatus(): void {
     // 윤활 상태 갱신
     if (this.ctx.params[3] >= 3000) {
-      this.character.cflags[15] = 3; // 매우 젖음
+      this.character.cflag[15] = 3; // 매우 젖음
     } else if (this.ctx.params[3] >= 1500) {
-      this.character.cflags[15] = 2; // 젖음
+      this.character.cflag[15] = 2; // 젖음
     } else if (this.ctx.params[3] >= 500) {
-      this.character.cflags[15] = 1; // 약간 젖음
+      this.character.cflag[15] = 1; // 약간 젖음
     } else {
-      this.character.cflags[15] = 0; // 건조
+      this.character.cflag[15] = 0; // 건조
     }
 
     // 흥분 상태 갱신
     const totalPleasure = this.ctx.params[0] + this.ctx.params[1] + this.ctx.params[2] + this.ctx.params[14];
     if (totalPleasure >= 8000) {
-      this.character.cflags[14] = 3; // 매우 흥분
+      this.character.cflag[14] = 3; // 매우 흥분
     } else if (totalPleasure >= 5000) {
-      this.character.cflags[14] = 2; // 흥분
+      this.character.cflag[14] = 2; // 흥분
     } else if (totalPleasure >= 2000) {
-      this.character.cflags[14] = 1; // 약간 흥분
+      this.character.cflag[14] = 1; // 약간 흥분
     } else {
-      this.character.cflags[14] = 0; // 평온
+      this.character.cflag[14] = 0; // 평온
     }
   }
 

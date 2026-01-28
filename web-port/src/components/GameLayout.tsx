@@ -196,14 +196,6 @@ function GameLayout() {
 
         {/* 오른쪽: 메뉴 선택지 */}
         <aside className="status-panel">
-          {currentScene === 'title' && (
-            <div className="menu-buttons">
-              <button onClick={onNewGame}>새로 시작</button>
-              <button disabled>이어하기</button>
-              <button disabled>설정</button>
-            </div>
-          )}
-
           {currentScene === 'main' && (
             <MainMenu
               onSelectMenu={(menu) => setCurrentScene(menu as SceneType)}

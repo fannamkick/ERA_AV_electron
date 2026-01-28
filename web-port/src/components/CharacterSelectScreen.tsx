@@ -66,7 +66,7 @@ function CharacterSelectScreen({ selectedId, onSelect, onBack }: CharacterSelect
               {Object.keys(selectedCharacter.talent).length > 0 ? (
                 Object.keys(selectedCharacter.talent).map((key) => {
                   const talentId = parseInt(key);
-                  const talentName = talentsData[talentId as keyof typeof talentsData];
+                  const talentName = (talentsData as Record<number, string>)[talentId];
                   return (
                     <span key={talentId} className="talent-tag">
                       {talentName || `특성${talentId}`}
@@ -84,7 +84,7 @@ function CharacterSelectScreen({ selectedId, onSelect, onBack }: CharacterSelect
             <div className="abilities-display">
               {Object.entries(selectedCharacter.base).slice(0, 6).map(([key, value]) => {
                 const abilityId = parseInt(key);
-                const abilityName = abilitiesData[abilityId as keyof typeof abilitiesData];
+                const abilityName = (abilitiesData as Record<number, string>)[abilityId];
                 return (
                   <div key={key} className="ability-row">
                     <span className="ability-name">

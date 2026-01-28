@@ -224,15 +224,28 @@ export function generateRandomCharacter(id: number, config: RandomCharacterConfi
     id,
     name,
     callName,
-    baseStats,
-    abilities: generateRandomAbilities() as any,
+    base: {
+      9: baseStats.진짜연령,
+      7: baseStats.외견연령,
+      20: baseStats.키,
+      21: baseStats.체중,
+      22: baseStats.가슴,
+      23: baseStats.허리,
+      24: baseStats.엉덩이,
+    },
+    maxBase: {},
+    abl: generateRandomAbilities() as any,
+    palam: {},
     talent: generateRandomTalents(),
-    mark: [],
-    exp: [],
+    exp: {},
+    mark: {},
+    juel: {},
+    cflag: {},
+    cstr: {},
     relation: [],
-    flags: {},
-    price: generateRandomPrice(config), // 가격 정보 추가
-  };
+    isOwned: false,
+    isAssistant: false,
+  } as Character;
 }
 
 /**
@@ -260,16 +273,17 @@ export function createSampleCharacter(): Character {
     id: 9999,
     name: '사토 사쿠라',
     callName: '사쿠라',
-    baseStats: {
-      진짜연령: 20,
-      외견연령: 19,
-      키: 165,
-      체중: 48,
-      가슴: 88,
-      허리: 58,
-      엉덩이: 86,
+    base: {
+      9: 20,   // 진짜연령
+      7: 19,   // 외견연령
+      20: 165, // 키
+      21: 48,  // 체중
+      22: 88,  // 가슴
+      23: 58,  // 허리
+      24: 86,  // 엉덩이
     },
-    abilities: {
+    maxBase: {},
+    abl: {
       [ABL_IDS.욕망]: 2,
       [ABL_IDS.기교]: 3,
       [ABL_IDS.봉사정신]: 4,
@@ -278,19 +292,21 @@ export function createSampleCharacter(): Character {
       [ABL_IDS.매력]: 5,
       [ABL_IDS.연기]: 3,
     } as any,
-    talent: [
-      TALENT_IDS.처녀,
-      TALENT_IDS.순종적,
-      TALENT_IDS.풍만한가슴,
-      TALENT_IDS.민감한유두,
-      TALENT_IDS.성실,
-    ],
-    mark: [],
-    exp: [],
+    palam: {},
+    talent: {
+      [TALENT_IDS.처녀]: 1,
+      [TALENT_IDS.순종적]: 1,
+      [TALENT_IDS.풍만한가슴]: 1,
+      [TALENT_IDS.민감한유두]: 1,
+      [TALENT_IDS.성실]: 1,
+    } as any,
+    exp: {},
+    mark: {},
+    juel: {},
+    cflag: {},
+    cstr: {},
     relation: [],
-    flags: {},
-    price: {
-      1001: 45000, // 계약금 45,000엔
-    },
-  };
+    isOwned: false,
+    isAssistant: false,
+  } as Character;
 }

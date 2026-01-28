@@ -86,7 +86,8 @@ function CharacterListScreen({ selectedId, onBack }: CharacterListScreenProps) {
       if (!character.talent[122] && (i === 23 || i === 34)) {
         continue;
       }
-      if (character.abl[i] && character.abl[i] > 0) {
+      const ablValue = character.abl?.[i] ?? 0;
+      if (ablValue > 0) {
         currentGroup.push(i);
         if (currentGroup.length === 4) {
           groups.push(currentGroup);
@@ -102,7 +103,8 @@ function CharacterListScreen({ selectedId, onBack }: CharacterListScreenProps) {
 
     // 50-52 범위
     for (let i = 50; i <= 52; i++) {
-      if (character.abl[i] && character.abl[i] > 0) {
+      const ablValue = character.abl?.[i] ?? 0;
+      if (ablValue > 0) {
         currentGroup.push(i);
         if (currentGroup.length === 4) {
           groups.push(currentGroup);
@@ -118,7 +120,8 @@ function CharacterListScreen({ selectedId, onBack }: CharacterListScreenProps) {
 
     // 70-81 범위
     for (let i = 70; i <= 81; i++) {
-      if (character.abl[i] && character.abl[i] > 0) {
+      const ablValue = character.abl?.[i] ?? 0;
+      if (ablValue > 0) {
         currentGroup.push(i);
         if (currentGroup.length === 4) {
           groups.push(currentGroup);
