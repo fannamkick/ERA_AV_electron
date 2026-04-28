@@ -177,9 +177,45 @@ npm run ai-port -- autopilot --command COMF7 --sharded-analysis
 
 Batch output includes grouped classification counts, command ids by classification, gate reasons, validation issues, and the slowest stages so the next bottleneck is visible without reading every artifact.
 
+## Proven Model Route
+
+The current proven route for this project is:
+
+- analyze and synthesize primary: `minimax/minimax-m2.7`;
+- review primary: `deepseek/deepseek-v3.2`;
+- analyze and synthesize fallback: `deepseek/deepseek-v3.2`;
+- review fallback: `minimax/minimax-m2.7`.
+
+Do not use `z-ai/glm-5.1` as the default route for this workflow yet. In the same COMF7 benchmark shape it still produced length-limit failures and invalid conflict shapes, such as non-object conflict rows.
+
+`deepseek/deepseek-v3.2` is useful as a reviewer and fallback analyzer, but it is too slow and timeout-prone to be the primary analyzer for source-heavy command batches.
+
+## Small Batch Proof
+
+COMF7-9 was run as a small batch on 2026-04-29 with sharded analysis, concurrency 3, and the proven model route.
+
+```powershell
+$env:OPENROUTER_MODEL='minimax/minimax-m2.7'
+$env:OPENROUTER_REVIEW_MODEL='deepseek/deepseek-v3.2'
+$env:OPENROUTER_FALLBACK_MODELS='deepseek/deepseek-v3.2'
+$env:OPENROUTER_REVIEW_FALLBACK_MODELS='minimax/minimax-m2.7'
+npm run ai-port -- autopilot --range COMF7-9 --concurrency 3 --sharded-analysis
+```
+
+Result:
+
+- COMF7, COMF8, and COMF9 all completed end-to-end as `draft-only`;
+- each command produced a reviewed spec-only draft;
+- local gates blocked materialization for expected reasons only: design-ready family status and unresolved canonical conflicts;
+- COMF9 had a primary-model malformed `sideEffects` shard, then recovered through the `deepseek/deepseek-v3.2` fallback;
+- the slowest observed stage was the COMF9 `sideEffects` fallback at about 102 seconds;
+- source-heavy stages, especially `sourceFormula` and synthesis, remain the main latency bottleneck.
+
+This proves the workflow can keep moving to a classified, reviewable artifact without manual intervention when a model output is malformed. It does not prove executable migration for unresolved command families. Executable drafts should be attempted after the relevant canonical conflicts are resolved.
+
 ## Current Limits
 
-- The current version generates approval candidates; it does not auto-commit.
+- The current version generates classified artifacts and approval candidates; it does not auto-commit.
 - `blocked` and `design-ready` families cannot become approval candidates.
 - Self-fix loops exist for structural output repair, but semantic disagreements remain blocked/spec work until canonical evidence is resolved.
 - Generated artifacts are written under `artifacts/ai-port/`, which is ignored by git.

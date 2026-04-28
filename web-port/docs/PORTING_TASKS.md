@@ -22,12 +22,13 @@ Before broad command migration, the project must have:
 - Overall: 100% for training migration system readiness
 - Current milestone: Training migration system design completed
 - Current focus: next phase content migration backlog
-- AI-port automation: 85% toward repeatable approval-candidate factory
+- AI-port automation: 100% for repeatable AI-assisted migration workflow readiness
 - AI-port current proof point: COMF0 can reach `approval-candidate` with current implementation evidence, sharded analysis, no-op/spec synthesis, independent review, and local validation.
 - AI-port current proof point: COMF1 and COMF6 also reach clean `approval-candidate` results with zero local validation warnings.
 - AI-port current proof point: COMF7 reaches `draft-only` as a spec-only blocked draft, with blocking conflicts preserved and automatic materialization blocked.
 - AI-port current proof point: structural retry, validator-feedback repair, model fallback routing, and grouped batch summaries are implemented.
-- AI-port next proof point: benchmark default model routing and run a small COMF7-9 batch before broad migration is trusted.
+- AI-port current proof point: COMF7-9 small batch completes end-to-end; every command produces a reviewed spec-only draft and remains blocked from automatic materialization because canonical conflicts are unresolved.
+- AI-port next focus: resolve canonical conflicts in COMF7-9 or another command family, then rerun the workflow for actual executable migration candidates.
 
 ## Handoff Log
 
@@ -64,6 +65,9 @@ Before broad command migration, the project must have:
 - Added robust OpenRouter calls with transient retry, `max_tokens` expansion on length stops, validator-feedback repair loops, and model fallback routes.
 - Added grouped autopilot summary output with classification counts, commands by classification, gate reasons, validation issues, and slowest stages.
 - Re-ran COMF7 with retry/fallback routing; the pipeline completed as `draft-only` with only expected blocking-conflict warnings.
+- Benchmarked candidate analyze models on COMF7 sharded report-only runs. `minimax/minimax-m2.7` is the default analyze/synthesize model; `deepseek/deepseek-v3.2` remains the default review model and analyze fallback; `z-ai/glm-5.1` is not default because it still produces length and conflict-shape problems.
+- Ran COMF7-9 as a small batch with the default route. All three completed as `draft-only` with reviewed spec drafts and expected blocking-conflict warnings only.
+- Updated `AI_PORT_AUTOPILOT.md` with the proven retry/fallback operation and model route.
 
 ## Completion Scope
 
@@ -230,7 +234,7 @@ Goal: reduce the human bottleneck in repetitive command migration without allowi
 
 This milestone is separate from the already-completed training system readiness milestone. It is complete only when the AI flow can repeatedly produce mechanically reviewable reports, safe drafts, independent review, and local gate results for both already-migrated and not-yet-migrated commands.
 
-Progress: 85%
+Progress: 100%
 
 ### Completion Definition
 
@@ -260,17 +264,17 @@ The milestone reaches 100% when:
 - [x] AI-014: Decide whether COMF7 output is safe executable draft, spec-only blocked draft, or report-only; record why.
 - [x] AI-015: Materialize one safe approval candidate in a controlled path, then run typecheck and foundation verification.
 - [x] AI-016: Add a batch report summary that groups results by `approval-candidate`, `draft-only`, `report-only`, `blocked`, and `failed`.
-- [ ] AI-017: Benchmark the selected candidate models on the same sharded command set and choose default analyze/review models.
+- [x] AI-017: Benchmark the selected candidate models on the same sharded command set and choose default analyze/review models.
 - [x] AI-018: Add retry/fallback policy for provider timeout, 503, malformed JSON, and `max_tokens` length failures.
-- [ ] AI-019: Run a small batch such as COMF7-9 and confirm every output is either approval-candidate, report-only, or explicitly blocked.
-- [ ] AI-020: Update `AI_PORT_AUTOPILOT.md` with the proven operating procedure and model route.
+- [x] AI-019: Run a small batch such as COMF7-9 and confirm every output is either approval-candidate, report-only, or explicitly blocked.
+- [x] AI-020: Update `AI_PORT_AUTOPILOT.md` with the proven operating procedure and model route.
 
 ### Current Known AI-Port Risks
 
-- `sourceFormula` remains the slowest shard; COMF0 report-only re-test had a 119s sourceFormula shard while cached simple shards returned in under 1s.
-- COMF1, COMF6, and COMF7 confirm that source-heavy commands still spend most time in `sourceFormula` or synthesis even after slicing.
-- Some models still spend too much budget on reasoning or return malformed JSON unless response healing and strict prompts are used.
-- COMF7 confirms the first real not-yet-migrated path, but only as blocked/spec output; executable new-command generation is still unproven.
+- `sourceFormula` and synthesis remain the slowest stages for source-heavy commands.
+- `deepseek/deepseek-v3.2` is useful as a reviewer and fallback, but too slow/timeout-prone as the primary analyzer for this workload.
+- `z-ai/glm-5.1` is not a default route because it still hits length limits and can produce non-object conflict rows.
+- COMF7-9 prove the blocked/spec path, not executable new-command generation. Executable generation should be attempted only after canonical conflicts are resolved.
 - AI-generated executable drafts are still not trusted source edits until a real command reaches safe approval and passes materialize plus local verification.
 
 ## Reporting Format
