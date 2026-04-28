@@ -141,6 +141,17 @@ Sharding improves speed, but shard prompts and merge validation are stricter req
 
 Shard quality is checklist-gated. Each shard must report which required checks were completed, which checks were missing because evidence was absent, and which conflicts were recorded. The local validator warns when checklist ids are omitted or when area data is placed in the wrong field, such as blockers under `canonicalDecision`.
 
+The production sharded path uses area-specific prompts:
+
+- `training-command-shard-availability.md`;
+- `training-command-shard-sourceFormula.md`;
+- `training-command-shard-sideEffects.md`;
+- `training-command-shard-engineGaps.md`.
+
+Each prompt has its own required checklist and field contract. The generic `training-command-shard-analysis.md` remains as a reference/fallback, not the default sharded prompt.
+
+Shard calls also enable response healing for malformed JSON recovery. Truncated outputs are still treated as failures.
+
 ## Current Limits
 
 - The first version generates approval candidates; it does not auto-commit.

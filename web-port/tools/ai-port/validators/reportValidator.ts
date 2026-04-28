@@ -213,6 +213,9 @@ export function validateWorkerReportShard(value: unknown): ValidationResult {
     const shard = value as Partial<WorkerReportShard>;
     const completed = new Set(shard.checklist?.completed ?? []);
     const missing = new Set(shard.checklist?.missing ?? []);
+    for (const missingCheck of missing) {
+      warnings.push(`Shard checklist marks ${missingCheck} missing.`);
+    }
     for (const required of REQUIRED_SHARD_CHECKS[area]) {
       if (!completed.has(required) && !missing.has(required)) {
         warnings.push(`Shard checklist does not account for ${required}.`);

@@ -9,6 +9,7 @@ export interface OpenRouterOptions {
   stage?: string;
   timeoutMs?: number;
   cache?: boolean;
+  responseHealing?: boolean;
   providerSort?: 'price' | 'throughput' | 'latency';
   requireParameters?: boolean;
   reasoningEffort?: 'xhigh' | 'high' | 'medium' | 'low' | 'minimal' | 'none';
@@ -68,6 +69,7 @@ export async function callOpenRouterJson<T>(
     temperature: options.temperature ?? 0.1,
     max_tokens: options.maxTokens ?? 12000,
     response_format: { type: 'json_object' },
+    ...(options.responseHealing ? { plugins: [{ id: 'response-healing' }] } : {}),
     ...(Object.keys(reasoning).length > 0 ? { reasoning } : {}),
     ...(Object.keys(provider).length > 0 ? { provider } : {}),
   });

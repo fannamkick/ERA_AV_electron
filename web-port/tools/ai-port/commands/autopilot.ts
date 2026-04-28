@@ -14,6 +14,7 @@ import type {
   CommandDraft,
   EvidenceBundle,
   EvidenceFile,
+  LegacyReference,
   WorkerReport,
   WorkerReportShard,
   WorkerReportShardArea,
@@ -87,6 +88,42 @@ function uniqueStrings(values: readonly string[]): string[] {
   return Array.from(new Set(values.filter((value) => value.length > 0)));
 }
 
+function shardPromptFile(area: WorkerReportShardArea): string {
+  return `training-command-shard-${area}.md`;
+}
+
+function isLegacyReference(value: unknown): value is LegacyReference {
+  return value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    typeof (value as Partial<LegacyReference>).file === 'string' &&
+    typeof (value as Partial<LegacyReference>).confidence === 'string';
+}
+
+function mergeCanonicalDecision(
+  report: WorkerReport,
+  shard: WorkerReportShard,
+  warnings: string[],
+): void {
+  const allowedKeys = ['availability', 'sourceFormula', 'directEffects', 'sideEffects', 'chainRemap', 'messages'] as const;
+  for (const key of allowedKeys) {
+    const value = shard.canonicalDecision?.[key];
+    if (!value) continue;
+    if (isLegacyReference(value)) {
+      report.canonicalDecision[key] = value;
+    } else {
+      warnings.push(`${shard.area}: Dropped invalid canonicalDecision.${key}.`);
+    }
+  }
+}
+
+function shardOpenRouterOptions(area: WorkerReportShardArea): { maxTokens: number; timeoutMs: number } {
+  if (area === 'sourceFormula' || area === 'sideEffects') {
+    return { maxTokens: 6500, timeoutMs: 120000 };
+  }
+  return { maxTokens: 3200, timeoutMs: 90000 };
+}
+
 function filterEvidenceForShard(bundle: EvidenceBundle, area: WorkerReportShardArea): EvidenceBundle {
   const keep = (file: EvidenceFile): boolean => {
     const filePath = file.path;
@@ -122,7 +159,12 @@ function filterEvidenceForShard(bundle: EvidenceBundle, area: WorkerReportShardA
   };
 }
 
-function mergeShardReport(commandId: string, commandNumber: number, shards: readonly WorkerReportShard[]): WorkerReport {
+function mergeShardReport(
+  commandId: string,
+  commandNumber: number,
+  shards: readonly WorkerReportShard[],
+  warnings: string[],
+): WorkerReport {
   const report = defaultWorkerReport(commandId, commandNumber);
 
   for (const shard of shards) {
@@ -132,10 +174,7 @@ function mergeShardReport(commandId: string, commandNumber: number, shards: read
       id: shard.command.id || report.command.id,
       originalId: shard.command.originalId ?? report.command.originalId,
     };
-    report.canonicalDecision = {
-      ...report.canonicalDecision,
-      ...(shard.canonicalDecision ?? {}),
-    };
+    mergeCanonicalDecision(report, shard, warnings);
     if (shard.availability) report.availability = shard.availability;
     if (shard.sourceFormula) report.sourceFormula = shard.sourceFormula;
     if (shard.sideEffects) report.sideEffects = shard.sideEffects;
@@ -215,8 +254,8 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
   let shardWarnings: string[] = [];
 
   if (options.shardedAnalysis) {
-    const shardPrompt = readPrompt(options.webPortRoot, 'training-command-shard-analysis.md');
     const shards = await Promise.all(SHARD_AREAS.map(async (area) => {
+      const shardPrompt = readPrompt(options.webPortRoot, shardPromptFile(area));
       const shardBundle = filterEvidenceForShard(bundle, area);
       const shard = await callOpenRouterJson<WorkerReportShard>([
         { role: 'system', content: shardPrompt },
@@ -236,9 +275,9 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
         model: options.model,
         title: `ai-port analyze ${bundle.commandId} ${area}`,
         stage: `analyze:${area}`,
-        maxTokens: 4500,
-        timeoutMs: 120000,
+        ...shardOpenRouterOptions(area),
         cache: true,
+        responseHealing: true,
         providerSort: 'throughput',
         requireParameters: true,
         reasoningMaxTokens: 512,
@@ -256,7 +295,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       writeJson(path.join(commandDir, `${parsed.normalized}.${area}.shard.json`), shard);
       return shard;
     }));
-    report = mergeShardReport(bundle.commandId, bundle.commandNumber, shards);
+    report = mergeShardReport(bundle.commandId, bundle.commandNumber, shards, shardWarnings);
   } else {
     const analysisPrompt = readPrompt(options.webPortRoot, 'training-command-analysis.md');
     report = await callOpenRouterJson<WorkerReport>([
