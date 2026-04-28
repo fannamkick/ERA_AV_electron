@@ -22,6 +22,9 @@ Before broad command migration, the project must have:
 - Overall: 100% for training migration system readiness
 - Current milestone: Training migration system design completed
 - Current focus: next phase content migration backlog
+- AI-port automation: 55% toward repeatable approval-candidate factory
+- AI-port current proof point: COMF0 can reach `approval-candidate` with current implementation evidence, sharded analysis, no-op/spec synthesis, independent review, and local validation.
+- AI-port next proof point: COMF1, COMF6, and one real not-yet-migrated command such as COMF7 must pass the same flow before broad batch migration is trusted.
 
 ## Handoff Log
 
@@ -41,6 +44,15 @@ Before broad command migration, the project must have:
 - `materialize` can write draft files only when the saved autopilot result is already classified as `approval-candidate`.
 - `blocked` and `design-ready` command families are prevented from becoming automatic approval candidates.
 - OpenRouter credentials are environment-only via `OPENROUTER_API_KEY`; generated artifacts are ignored under `artifacts/`.
+
+2026-04-29 AI-port automation:
+
+- Added current web-port implementation evidence to sliced AI evidence bundles.
+- Current evidence now includes existing command definitions, resolver slices, and verification slices where available.
+- COMF0 was re-tested through the sharded OpenRouter flow and reached `approval-candidate` as a no-op/spec draft instead of duplicate implementation code.
+- A report-only COMF0 re-test reached `localValidation.ok: true` with zero warnings after tightening source-write and chain-remap checklist prompts.
+- Verified local safety after the change with `npx tsc --noEmit` and `npx ts-node tools/verify_foundation.ts`.
+- Committed the current implementation evidence flow in `b701200 Add current implementation evidence to AI port flow`.
 
 ## Completion Scope
 
@@ -200,6 +212,54 @@ Exit criteria for this milestone:
 - [x] Add a template for content definitions.
 - [x] Add validation that content IDs and original IDs do not collide.
 - [x] Add a changelog process for balance and content updates.
+
+## Milestone 8: AI-Assisted Content Migration Factory
+
+Goal: reduce the human bottleneck in repetitive command migration without allowing unreviewed AI code into the project.
+
+This milestone is separate from the already-completed training system readiness milestone. It is complete only when the AI flow can repeatedly produce mechanically reviewable reports, safe drafts, independent review, and local gate results for both already-migrated and not-yet-migrated commands.
+
+Progress: 55%
+
+### Completion Definition
+
+The milestone reaches 100% when:
+
+- already-migrated commands are recognized as already implemented and produce no-op/spec approval candidates instead of duplicate command code;
+- not-yet-migrated commands produce either a safe executable draft or a precise blocked/spec draft with concrete missing evidence;
+- local validation can reject malformed, conflicted, raw-state, or architecture-breaking outputs without human judgment;
+- model/provider latency and quality are measured enough to choose a default model route;
+- a small real batch can run end-to-end and leave only approval candidates, report-only items, or explicit blockers.
+
+### Task List
+
+- [x] AI-001: Add OpenRouter-backed CLI pipeline: analyze, synthesize, review, classify, materialize.
+- [x] AI-002: Load `.env.local` automatically without committing credentials.
+- [x] AI-003: Add local gate rules so raw state mutation, legacy imports, blocked families, and unsafe drafts cannot become approval candidates.
+- [x] AI-004: Add sliced evidence mode to avoid sending huge legacy files wholesale.
+- [x] AI-005: Add sharded analysis for `availability`, `sourceFormula`, `sideEffects`, and `engineGaps`.
+- [x] AI-006: Add area-specific checklist prompts and shard validation.
+- [x] AI-007: Add OpenRouter timing metrics, finish-reason checks, reasoning-token limits, provider sorting, cache, and response healing.
+- [x] AI-008: Add spec-only draft policy for conflicted or incomplete evidence.
+- [x] AI-009: Add current implementation evidence so AI can distinguish already-migrated commands from missing commands.
+- [x] AI-010: Prove COMF0 already-implemented path: `approval-candidate`, no executable duplicate code, independent review approved, local validation clean after prompt tightening.
+- [ ] AI-011: Prove COMF1 already-implemented path with the same criteria as COMF0.
+- [ ] AI-012: Prove COMF6 already-implemented path with the same criteria as COMF0.
+- [ ] AI-013: Run COMF7 as the first real not-yet-migrated command through report, draft, review, and gate.
+- [ ] AI-014: Decide whether COMF7 output is safe executable draft, spec-only blocked draft, or report-only; record why.
+- [ ] AI-015: Materialize one safe approval candidate in a controlled path, then run typecheck and foundation verification.
+- [ ] AI-016: Add a batch report summary that groups results by `approval-candidate`, `draft-only`, `report-only`, `blocked`, and `failed`.
+- [ ] AI-017: Benchmark the selected candidate models on the same sharded command set and choose default analyze/review models.
+- [ ] AI-018: Add retry/fallback policy for provider timeout, 503, malformed JSON, and `max_tokens` length failures.
+- [ ] AI-019: Run a small batch such as COMF7-9 and confirm every output is either approval-candidate, report-only, or explicitly blocked.
+- [ ] AI-020: Update `AI_PORT_AUTOPILOT.md` with the proven operating procedure and model route.
+
+### Current Known AI-Port Risks
+
+- `sourceFormula` remains the slowest shard; COMF0 report-only re-test had a 119s sourceFormula shard while cached simple shards returned in under 1s.
+- Some models still spend too much budget on reasoning or return malformed JSON unless response healing and strict prompts are used.
+- COMF0 success proves the already-implemented path, not the real new-command implementation path.
+- AI-generated drafts are still approval candidates, not trusted source edits, until materialize plus local verification is proven on a real command.
 
 ## Reporting Format
 
