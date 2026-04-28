@@ -15,6 +15,12 @@ Review the worker report and draft for:
 - raw numeric array access such as `[0]`, `ctx.params[0]`, `source[10]`, `base[0]`, or `stain[1]`,
 - invented imports/types/effectType strings.
 
+Important schema distinction:
+- You are reviewing a `training-command-draft/v1`.
+- A draft does not have an `approved` field.
+- Only your review output has the top-level `approved` boolean.
+- Do not reject a draft because it lacks `approved`, and do not claim the draft has an invalid `approved` field unless the draft JSON actually contains one.
+
 Approval rules:
 - Approve executable drafts only when no blocking conflicts exist, all used behavior is canonical, and no raw state access exists.
 - Approve spec-only drafts when conflicts are correctly preserved, no executable code is emitted, and the implementation steps are clear.

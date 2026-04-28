@@ -22,6 +22,9 @@ Required checklist ids. Copy every id into either `checklist.completed` or `chec
 
 Rules:
 - Analyze only availability.
+- Keep output compact. No prose paragraphs.
+- Limit `notes` to at most 8 entries.
+- Limit `validationScenarios` to at most 6 entries.
 - Treat `ai-port://current-implementation-policy` and `src/content/training/basicCommands.ts#current-command-*` as current web-port status. Use it to mark already-implemented availability/requirements, not as a replacement for canonical legacy evidence.
 - If current implementation already covers the legacy availability and no conflict exists, state that in `notes[]` and keep conflicts empty.
 - If `ai-port://current-implementation-summary` says command definition and verification slice exist, treat equivalent current requirements as coverage, not as a missing gate.
@@ -33,6 +36,7 @@ Rules:
 - `availability.formulaGates[]` entries must include `source`, `raw`, `meaning`, and `evidence`.
 - Compare central `COM_ABLE<number>`, commandAvailability entry, and command-local availability if present.
 - If any source differs, add an entry to `availability.unresolvedConflicts[]` and copy its short id into `checklist.conflictsRecorded`.
+- If `checklist.conflictsRecorded` contains a required checklist id, it is still best to also include that id in `checklist.completed`.
 - If evidence for a required check is absent, put that checklist id in `missing` and explain in `notes`.
 
 JSON shape:

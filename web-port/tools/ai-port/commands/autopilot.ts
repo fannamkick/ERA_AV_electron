@@ -100,6 +100,10 @@ function isLegacyReference(value: unknown): value is LegacyReference {
     typeof (value as Partial<LegacyReference>).confidence === 'string';
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
 function mergeCanonicalDecision(
   report: WorkerReport,
   shard: WorkerReportShard,
@@ -121,7 +125,7 @@ function shardOpenRouterOptions(area: WorkerReportShardArea): { maxTokens: numbe
   if (area === 'sourceFormula' || area === 'sideEffects') {
     return { maxTokens: 6500, timeoutMs: 120000 };
   }
-  return { maxTokens: 3200, timeoutMs: 90000 };
+  return { maxTokens: 5000, timeoutMs: 90000 };
 }
 
 function filterEvidenceForShard(bundle: EvidenceBundle, area: WorkerReportShardArea): EvidenceBundle {
@@ -214,6 +218,20 @@ function mergeShardReport(
   return report;
 }
 
+function normalizeWorkerReport(report: WorkerReport): WorkerReport {
+  const writes = report.sourceFormula.writes;
+  const indexedWrites = writes.filter((write) => isRecord(write) && typeof write.sourceIndex === 'number');
+  const droppedWrites = writes.length - indexedWrites.length;
+  if (droppedWrites > 0) {
+    report.sourceFormula.writes = indexedWrites;
+    report.notes = [
+      ...(report.notes ?? []),
+      `Local normalization moved/dropped ${droppedWrites} non-indexed source write row(s); named-key current coverage belongs in modifiers/notes, not sourceFormula.writes.`,
+    ];
+  }
+  return report;
+}
+
 function normalizeAiReview(value: AiReview): AiReview {
   const record = value as unknown as Record<string, unknown>;
   if (typeof record.approved === 'string') {
@@ -224,6 +242,12 @@ function normalizeAiReview(value: AiReview): AiReview {
         approved: normalized === 'true',
       };
     }
+  }
+  if (typeof record.approved === 'number' && (record.approved === 1 || record.approved === 0)) {
+    return {
+      ...value,
+      approved: record.approved === 1,
+    };
   }
   return value;
 }
@@ -345,6 +369,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       onTiming,
     });
   }
+  report = normalizeWorkerReport(report);
   writeJson(reportPath, report);
 
   const reportValidation = validateWorkerReport(report);

@@ -38,6 +38,8 @@ Spec-only draft rules:
 - Do not include TypeScript code fences.
 - `files[0].operation` must be `create`.
 - `unresolvedConflicts` must include every blocking conflict from the report.
+- Every item in `unresolvedConflicts` must include `area`, `sources`, `decisionNeeded`, and `blocksMigration`.
+- Use `"blocksMigration": true` for blocking/high-risk conflicts that must prevent executable code.
 
 Executable draft rules:
 - Prefer updating an existing command module only when the report proves the command is not already implemented.

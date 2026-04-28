@@ -55,6 +55,13 @@ function collectConflicts(report: WorkerReport, draft?: CommandDraft): WorkerCon
   ];
 }
 
+function conflictBlocksMigration(conflict: WorkerConflict): boolean {
+  const record = conflict as unknown as Record<string, unknown>;
+  return conflict.blocksMigration === true ||
+    record.blocking === true ||
+    String(record.severity ?? '').toLowerCase() === 'blocking';
+}
+
 function scanDraftContent(draft: CommandDraft | undefined): string[] {
   if (!draft) return [];
   const violations: string[] = [];
@@ -103,7 +110,7 @@ export function classifyAutopilotResult(
     ...(reviewValidation?.warnings ?? []),
   ];
   const gateReasons: string[] = [];
-  const blockingConflicts = collectConflicts(report, draft).filter((conflict) => conflict.blocksMigration);
+  const blockingConflicts = collectConflicts(report, draft).filter(conflictBlocksMigration);
   const draftViolations = scanDraftContent(draft);
 
   if (familyStatus === 'blocked') gateReasons.push('Family readiness is blocked; implementation drafts cannot be approval candidates.');

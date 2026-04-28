@@ -22,9 +22,11 @@ Before broad command migration, the project must have:
 - Overall: 100% for training migration system readiness
 - Current milestone: Training migration system design completed
 - Current focus: next phase content migration backlog
-- AI-port automation: 55% toward repeatable approval-candidate factory
+- AI-port automation: 75% toward repeatable approval-candidate factory
 - AI-port current proof point: COMF0 can reach `approval-candidate` with current implementation evidence, sharded analysis, no-op/spec synthesis, independent review, and local validation.
-- AI-port next proof point: COMF1, COMF6, and one real not-yet-migrated command such as COMF7 must pass the same flow before broad batch migration is trusted.
+- AI-port current proof point: COMF1 and COMF6 also reach clean `approval-candidate` results with zero local validation warnings.
+- AI-port current proof point: COMF7 reaches `draft-only` as a spec-only blocked draft, with blocking conflicts preserved and automatic materialization blocked.
+- AI-port next proof point: batch summary, provider fallback, and a small COMF7-9 batch must be proven before broad batch migration is trusted.
 
 ## Handoff Log
 
@@ -53,6 +55,11 @@ Before broad command migration, the project must have:
 - A report-only COMF0 re-test reached `localValidation.ok: true` with zero warnings after tightening source-write and chain-remap checklist prompts.
 - Verified local safety after the change with `npx tsc --noEmit` and `npx ts-node tools/verify_foundation.ts`.
 - Committed the current implementation evidence flow in `b701200 Add current implementation evidence to AI port flow`.
+- COMF1 and COMF6 were re-tested through the same sharded flow and both reached `approval-candidate` with `localValidation.ok: true` and zero warnings.
+- COMF7 was run as the first real not-yet-migrated command and correctly stopped at `draft-only` because its family is `design-ready` and source/side-effect conflicts block executable implementation.
+- Hardened local gates so `severity: "blocking"` and `blocking: true` conflicts are treated as migration blockers even if the AI omits `blocksMigration: true`.
+- Materialized the safe COMF1 no-op/spec approval candidate to `docs/ai-port/spec-drafts/COMF1.spec.md`.
+- Verified after materialization with `npx tsc --noEmit` and `npx ts-node tools/verify_foundation.ts`.
 
 ## Completion Scope
 
@@ -219,7 +226,7 @@ Goal: reduce the human bottleneck in repetitive command migration without allowi
 
 This milestone is separate from the already-completed training system readiness milestone. It is complete only when the AI flow can repeatedly produce mechanically reviewable reports, safe drafts, independent review, and local gate results for both already-migrated and not-yet-migrated commands.
 
-Progress: 55%
+Progress: 75%
 
 ### Completion Definition
 
@@ -243,11 +250,11 @@ The milestone reaches 100% when:
 - [x] AI-008: Add spec-only draft policy for conflicted or incomplete evidence.
 - [x] AI-009: Add current implementation evidence so AI can distinguish already-migrated commands from missing commands.
 - [x] AI-010: Prove COMF0 already-implemented path: `approval-candidate`, no executable duplicate code, independent review approved, local validation clean after prompt tightening.
-- [ ] AI-011: Prove COMF1 already-implemented path with the same criteria as COMF0.
-- [ ] AI-012: Prove COMF6 already-implemented path with the same criteria as COMF0.
-- [ ] AI-013: Run COMF7 as the first real not-yet-migrated command through report, draft, review, and gate.
-- [ ] AI-014: Decide whether COMF7 output is safe executable draft, spec-only blocked draft, or report-only; record why.
-- [ ] AI-015: Materialize one safe approval candidate in a controlled path, then run typecheck and foundation verification.
+- [x] AI-011: Prove COMF1 already-implemented path with the same criteria as COMF0.
+- [x] AI-012: Prove COMF6 already-implemented path with the same criteria as COMF0.
+- [x] AI-013: Run COMF7 as the first real not-yet-migrated command through report, draft, review, and gate.
+- [x] AI-014: Decide whether COMF7 output is safe executable draft, spec-only blocked draft, or report-only; record why.
+- [x] AI-015: Materialize one safe approval candidate in a controlled path, then run typecheck and foundation verification.
 - [ ] AI-016: Add a batch report summary that groups results by `approval-candidate`, `draft-only`, `report-only`, `blocked`, and `failed`.
 - [ ] AI-017: Benchmark the selected candidate models on the same sharded command set and choose default analyze/review models.
 - [ ] AI-018: Add retry/fallback policy for provider timeout, 503, malformed JSON, and `max_tokens` length failures.
@@ -257,9 +264,10 @@ The milestone reaches 100% when:
 ### Current Known AI-Port Risks
 
 - `sourceFormula` remains the slowest shard; COMF0 report-only re-test had a 119s sourceFormula shard while cached simple shards returned in under 1s.
+- COMF1, COMF6, and COMF7 confirm that source-heavy commands still spend most time in `sourceFormula` or synthesis even after slicing.
 - Some models still spend too much budget on reasoning or return malformed JSON unless response healing and strict prompts are used.
-- COMF0 success proves the already-implemented path, not the real new-command implementation path.
-- AI-generated drafts are still approval candidates, not trusted source edits, until materialize plus local verification is proven on a real command.
+- COMF7 confirms the first real not-yet-migrated path, but only as blocked/spec output; executable new-command generation is still unproven.
+- AI-generated executable drafts are still not trusted source edits until a real command reaches safe approval and passes materialize plus local verification.
 
 ## Reporting Format
 

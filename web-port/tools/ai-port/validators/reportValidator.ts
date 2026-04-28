@@ -18,7 +18,12 @@ function pushIfMissing(errors: string[], condition: unknown, message: string): v
 }
 
 function hasBlockingConflict(conflicts: readonly WorkerConflict[] | undefined): boolean {
-  return (conflicts ?? []).some((conflict) => conflict.blocksMigration);
+  return (conflicts ?? []).some((conflict) => {
+    const record = conflict as unknown as Record<string, unknown>;
+    return conflict.blocksMigration === true ||
+      record.blocking === true ||
+      String(record.severity ?? '').toLowerCase() === 'blocking';
+  });
 }
 
 function collectConflicts(report: Partial<WorkerReport>): WorkerConflict[] {
@@ -128,6 +133,16 @@ function canonicalDecisionLooksLikeReferenceMap(value: unknown): boolean {
   });
 }
 
+function isBooleanLike(value: unknown): boolean {
+  if (typeof value === 'boolean') return true;
+  if (typeof value === 'number') return value === 0 || value === 1;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    return normalized === 'true' || normalized === 'false';
+  }
+  return false;
+}
+
 function shardArea(value: unknown): WorkerReportShardArea | undefined {
   return ['availability', 'sourceFormula', 'sideEffects', 'engineGaps'].includes(String(value))
     ? value as WorkerReportShardArea
@@ -213,11 +228,12 @@ export function validateWorkerReportShard(value: unknown): ValidationResult {
     const shard = value as Partial<WorkerReportShard>;
     const completed = new Set(shard.checklist?.completed ?? []);
     const missing = new Set(shard.checklist?.missing ?? []);
+    const conflictsRecorded = new Set(shard.checklist?.conflictsRecorded ?? []);
     for (const missingCheck of missing) {
       warnings.push(`Shard checklist marks ${missingCheck} missing.`);
     }
     for (const required of REQUIRED_SHARD_CHECKS[area]) {
-      if (!completed.has(required) && !missing.has(required)) {
+      if (!completed.has(required) && !missing.has(required) && !conflictsRecorded.has(required)) {
         warnings.push(`Shard checklist does not account for ${required}.`);
       }
     }
@@ -264,7 +280,7 @@ export function validateAiReview(value: unknown): ValidationResult {
   }
 
   pushIfMissing(errors, value.schemaVersion === 'ai-port-review/v1', 'Invalid review schemaVersion.');
-  pushIfMissing(errors, typeof value.approved === 'boolean', 'Missing approved boolean.');
+  pushIfMissing(errors, isBooleanLike(value.approved), 'Missing approved boolean.');
   pushIfMissing(errors, ['low', 'medium', 'high'].includes(String(value.riskLevel)), 'Invalid riskLevel.');
   pushIfMissing(errors, Array.isArray(value.findings), 'Missing findings array.');
   pushIfMissing(errors, Array.isArray(value.missingEvidence), 'Missing missingEvidence array.');
