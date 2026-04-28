@@ -139,6 +139,8 @@ Recent COMF7 measurement after slicing plus sharding:
 
 Sharding improves speed, but shard prompts and merge validation are stricter requirements than single-report analysis. Treat sharded output as an optimization path, not as approval-candidate quality until conflict detection parity is proven.
 
+Shard quality is checklist-gated. Each shard must report which required checks were completed, which checks were missing because evidence was absent, and which conflicts were recorded. The local validator warns when checklist ids are omitted or when area data is placed in the wrong field, such as blockers under `canonicalDecision`.
+
 ## Current Limits
 
 - The first version generates approval candidates; it does not auto-commit.

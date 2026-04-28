@@ -5,6 +5,8 @@ import type {
   ValidationResult,
   WorkerConflict,
   WorkerReport,
+  WorkerReportShard,
+  WorkerReportShardArea,
 } from '../types';
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -55,6 +57,83 @@ function hasVagueExpectedValues(report: Partial<WorkerReport>): boolean {
   ) !== null;
 }
 
+const REQUIRED_SHARD_CHECKS: Record<WorkerReportShardArea, string[]> = {
+  availability: [
+    'identity.command-id-checked',
+    'identity.original-id-checked',
+    'canonical.generated-command-file-checked',
+    'canonical.improved-command-file-checked',
+    'canonical.conflicts-recorded-or-ruled-out',
+    'availability.central-availability-checked',
+    'availability.command-availability-checked',
+    'availability.command-local-availability-checked',
+    'availability.gender-gates-listed',
+    'availability.clothing-gates-listed',
+    'availability.equipment-gates-listed',
+    'availability.formula-gates-listed',
+    'availability.disagreements-recorded',
+  ],
+  sourceFormula: [
+    'identity.command-id-checked',
+    'identity.original-id-checked',
+    'canonical.generated-command-file-checked',
+    'canonical.improved-command-file-checked',
+    'canonical.conflicts-recorded-or-ruled-out',
+    'source.generated-source-writes-listed',
+    'source.improved-source-writes-listed',
+    'source.source-index-map-checked',
+    'source.index-disagreements-recorded',
+    'source.modifiers-listed',
+    'source.rounding-policy-checked',
+    'source.base-vs-losebase-conflict-checked',
+  ],
+  sideEffects: [
+    'identity.command-id-checked',
+    'identity.original-id-checked',
+    'canonical.generated-command-file-checked',
+    'canonical.improved-command-file-checked',
+    'canonical.conflicts-recorded-or-ruled-out',
+    'effects.direct-effects-listed',
+    'effects.post-effects-listed',
+    'effects.exp-effects-listed',
+    'effects.stain-effects-listed',
+    'effects.flag-effects-listed',
+    'effects.messages-classified',
+    'effects.chain-remap-checked',
+    'effects.phase-order-checked',
+    'effects.base-vs-losebase-conflict-recorded',
+  ],
+  engineGaps: [
+    'identity.command-id-checked',
+    'identity.original-id-checked',
+    'canonical.generated-command-file-checked',
+    'canonical.improved-command-file-checked',
+    'canonical.conflicts-recorded-or-ruled-out',
+    'gaps.condition-predicates-checked',
+    'gaps.effect-types-checked',
+    'gaps.phase-hooks-checked',
+    'gaps.state-adapters-checked',
+    'gaps.design-ready-blockers-listed',
+  ],
+};
+
+function canonicalDecisionLooksLikeReferenceMap(value: unknown): boolean {
+  if (!isObject(value)) return false;
+  return Object.values(value).every((entry) => {
+    if (!entry) return true;
+    if (!isObject(entry)) return false;
+    return typeof entry.file === 'string' &&
+      typeof entry.confidence === 'string' &&
+      !Array.isArray(entry);
+  });
+}
+
+function shardArea(value: unknown): WorkerReportShardArea | undefined {
+  return ['availability', 'sourceFormula', 'sideEffects', 'engineGaps'].includes(String(value))
+    ? value as WorkerReportShardArea
+    : undefined;
+}
+
 export function validateWorkerReport(value: unknown): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -99,6 +178,51 @@ export function validateWorkerReport(value: unknown): ValidationResult {
 
   if ((report.validationScenarios?.length ?? 0) < 2) {
     warnings.push('Report has fewer than two validation scenarios.');
+  }
+
+  return { ok: errors.length === 0, errors, warnings };
+}
+
+export function validateWorkerReportShard(value: unknown): ValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  if (!isObject(value)) {
+    return { ok: false, errors: ['Shard is not an object.'], warnings };
+  }
+
+  pushIfMissing(errors, value.schemaVersion === 'training-worker-report-shard/v1', 'Invalid shard schemaVersion.');
+  pushIfMissing(errors, isObject(value.command), 'Missing shard command object.');
+  if (isObject(value.command)) {
+    pushIfMissing(errors, typeof value.command.id === 'string', 'Missing shard command.id.');
+    pushIfMissing(errors, typeof value.command.originalId === 'number', 'Missing shard command.originalId.');
+  }
+
+  const area = shardArea(value.area);
+  pushIfMissing(errors, area !== undefined, 'Invalid shard area.');
+  pushIfMissing(errors, isObject(value.checklist), 'Missing shard checklist.');
+  pushIfMissing(errors, Array.isArray(isObject(value.checklist) ? value.checklist.completed : undefined), 'Missing checklist.completed.');
+  pushIfMissing(errors, Array.isArray(isObject(value.checklist) ? value.checklist.missing : undefined), 'Missing checklist.missing.');
+  pushIfMissing(errors, Array.isArray(isObject(value.checklist) ? value.checklist.conflictsRecorded : undefined), 'Missing checklist.conflictsRecorded.');
+
+  if (value.canonicalDecision !== undefined && !canonicalDecisionLooksLikeReferenceMap(value.canonicalDecision)) {
+    warnings.push('Shard canonicalDecision contains non-reference data.');
+  }
+
+  if (area) {
+    const shard = value as Partial<WorkerReportShard>;
+    const completed = new Set(shard.checklist?.completed ?? []);
+    const missing = new Set(shard.checklist?.missing ?? []);
+    for (const required of REQUIRED_SHARD_CHECKS[area]) {
+      if (!completed.has(required) && !missing.has(required)) {
+        warnings.push(`Shard checklist does not account for ${required}.`);
+      }
+    }
+
+    if (area === 'availability' && !isObject(value.availability)) warnings.push('Availability shard omitted availability object.');
+    if (area === 'sourceFormula' && !isObject(value.sourceFormula)) warnings.push('Source shard omitted sourceFormula object.');
+    if (area === 'sideEffects' && !isObject(value.sideEffects)) warnings.push('Side-effects shard omitted sideEffects object.');
+    if (area === 'engineGaps' && !isObject(value.engineGaps)) warnings.push('Engine-gaps shard omitted engineGaps object.');
   }
 
   return { ok: errors.length === 0, errors, warnings };

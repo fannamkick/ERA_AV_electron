@@ -19,7 +19,12 @@ import type {
   WorkerReportShardArea,
 } from '../types';
 import { classifyAutopilotResult } from '../validators/gateValidator';
-import { validateAiReview, validateCommandDraft, validateWorkerReport } from '../validators/reportValidator';
+import {
+  validateAiReview,
+  validateCommandDraft,
+  validateWorkerReport,
+  validateWorkerReportShard,
+} from '../validators/reportValidator';
 
 function readPrompt(webPortRoot: string, fileName: string): string {
   return fs.readFileSync(path.join(webPortRoot, 'tools', 'ai-port', 'openrouter', 'prompts', fileName), 'utf-8');
@@ -207,6 +212,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
 
   const analyzeOptions = optimizedOpenRouterOptions('analyze');
   let report: WorkerReport;
+  let shardWarnings: string[] = [];
 
   if (options.shardedAnalysis) {
     const shardPrompt = readPrompt(options.webPortRoot, 'training-command-shard-analysis.md');
@@ -230,7 +236,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
         model: options.model,
         title: `ai-port analyze ${bundle.commandId} ${area}`,
         stage: `analyze:${area}`,
-        maxTokens: 3200,
+        maxTokens: 4500,
         timeoutMs: 120000,
         cache: true,
         providerSort: 'throughput',
@@ -239,6 +245,14 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
         excludeReasoning: true,
         onTiming,
       });
+      const shardValidation = validateWorkerReportShard(shard);
+      if (!shardValidation.ok) {
+        throw new Error(`AI shard failed validation for ${area}:\n${shardValidation.errors.join('\n')}`);
+      }
+      shardWarnings = [
+        ...shardWarnings,
+        ...shardValidation.warnings.map((warning) => `${area}: ${warning}`),
+      ];
       writeJson(path.join(commandDir, `${parsed.normalized}.${area}.shard.json`), shard);
       return shard;
     }));
@@ -343,6 +357,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     aiReview,
     reviewValidation,
   );
+  classified.localValidation.warnings.push(...shardWarnings);
 
   const result: AutopilotResult = {
     schemaVersion: 'ai-port-autopilot-result/v1',

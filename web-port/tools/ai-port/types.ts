@@ -81,6 +81,11 @@ export interface WorkerReportShard {
     name?: string;
   };
   area: WorkerReportShardArea;
+  checklist?: {
+    completed: string[];
+    missing: string[];
+    conflictsRecorded: string[];
+  };
   canonicalDecision?: Partial<WorkerReport['canonicalDecision']>;
   availability?: WorkerReport['availability'];
   sourceFormula?: WorkerReport['sourceFormula'];
