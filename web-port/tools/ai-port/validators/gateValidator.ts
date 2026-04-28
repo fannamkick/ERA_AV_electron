@@ -60,6 +60,14 @@ function scanDraftContent(draft: CommandDraft | undefined): string[] {
   const violations: string[] = [];
 
   for (const file of draft.files) {
+    const isSpecOnly = file.path.startsWith('docs/ai-port/spec-drafts/') && file.path.endsWith('.spec.md');
+    if (isSpecOnly) {
+      if (/```(?:ts|typescript)|import\s+|export\s+const\s+|defineTrainingCommand\s*\(/i.test(file.content)) {
+        violations.push(`${file.path}: spec-only draft contains executable TypeScript.`);
+      }
+      continue;
+    }
+
     for (const pattern of BLOCKED_PATTERNS) {
       if (pattern.test(file.content)) {
         violations.push(`${file.path}: blocked pattern ${pattern}`);
