@@ -1,142 +1,273 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import './TrainingScreen.css';
+import { createBaseTrainingEngine } from '../content/training';
+import { createStoreTrainingContext } from '../domain/adapters';
+import { useTrainingStore } from '../legacy/training/stores/trainingStore';
+import { ImprovedTrainingModule } from '../legacy/training/ImprovedTrainingModule';
 import { useGameStore } from '../stores/gameStore';
-import { useTrainingStore } from '../modules/training/stores/trainingStore';
-import { ImprovedTrainingModule } from '../modules/training/ImprovedTrainingModule';
+import type { Character } from '../types/character';
 
 interface TrainingScreenProps {
   onBack: () => void;
 }
 
+type TrainingWindow = Window & {
+  __USE_MODULAR_TRAINING_ENGINE__?: boolean;
+  executeTrainingCommand?: (commandId: number) => Promise<void>;
+  getAvailableTrainingCommands?: () => number[];
+  getTrainingCommandName?: (commandId: number) => string | undefined;
+};
+
+const USE_MODULAR_TRAINING_ENGINE =
+  ((import.meta as unknown as { env?: Record<string, string> }).env?.VITE_USE_MODULAR_TRAINING_ENGINE === '1');
+
+function shouldUseModularTrainingEngine(): boolean {
+  return USE_MODULAR_TRAINING_ENGINE ||
+    (typeof window !== 'undefined' && Boolean((window as TrainingWindow).__USE_MODULAR_TRAINING_ENGINE__));
+}
+
+function cloneCharacter(character: Character): Character {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(character);
+  }
+
+  return JSON.parse(JSON.stringify(character)) as Character;
+}
+
+function cloneCharacters(characters: readonly Character[]): Character[] {
+  return characters.map((character) => cloneCharacter(character));
+}
+
+function palamEntries(character: Character | undefined): Array<[string, number]> {
+  if (!character?.palam) return [];
+
+  return Object.entries(character.palam)
+    .filter(([, value]) => typeof value === 'number' && value !== 0)
+    .sort(([left], [right]) => Number(left) - Number(right))
+    .map(([key, value]) => [`PALAM:${key}`, value as number]);
+}
+
 export const TrainingScreen: React.FC<TrainingScreenProps> = ({ onBack }) => {
-  const { currentCharacter, ownedCharacters } = useGameStore();
+  const {
+    currentCharacter,
+    ownedCharacters,
+    flags,
+    items,
+    assistantIds,
+    updateCharacter,
+  } = useGameStore();
   const { isTraining, parameters } = useTrainingStore();
   const [messages, setMessages] = useState<string[]>([]);
   const [availableCommands, setAvailableCommands] = useState<number[]>([]);
+  const [useModularEngine] = useState(() => shouldUseModularTrainingEngine());
   const messageEndRef = useRef<HTMLDivElement>(null);
 
-  const character = ownedCharacters.find((c) => c.id === currentCharacter);
+  const character = ownedCharacters.find((item) => item.id === currentCharacter);
+  const modularEngine = useMemo(() => createBaseTrainingEngine({
+    convertSourceToPalamAfterEffects: true,
+  }), []);
 
-  // 메시지가 추가될 때마다 자동 스크롤
+  const getModularAvailableCommands = () => {
+    if (!character) return [];
+
+    const draftCharacters = cloneCharacters(ownedCharacters);
+    const context = createStoreTrainingContext({
+      flags: { ...flags },
+      items: { ...items },
+      characters: draftCharacters,
+      actorIds: {
+        target: character.id,
+        trainer: character.id,
+        assistant: assistantIds[0],
+      },
+    }, character.id);
+
+    return modularEngine.getAvailableCommands(context)
+      .map((command) => command.originalId)
+      .filter((originalId): originalId is number => originalId !== undefined);
+  };
+
+  const refreshAvailableCommands = () => {
+    setAvailableCommands(useModularEngine
+      ? getModularAvailableCommands()
+      : ImprovedTrainingModule.getAvailableCommands());
+  };
+
   useEffect(() => {
-    if (messageEndRef.current) {
-      const container = messageEndRef.current.parentElement;
-      if (container) {
-        container.scrollTop = container.scrollHeight;
-      }
+    if (!messageEndRef.current) return;
+
+    const container = messageEndRef.current.parentElement;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages]);
 
-  // 커맨드 실행 함수 - window에 등록하여 GameLayout에서 호출 가능
   useEffect(() => {
-    (window as any).executeTrainingCommand = async (commandId: number) => {
-      const result = await ImprovedTrainingModule.executeCommand(commandId);
-      if (result) {
-        setMessages((prev) => [...prev, ...result.messages]);
+    const trainingWindow = window as TrainingWindow;
+
+    trainingWindow.executeTrainingCommand = async (commandId: number) => {
+      if (!useModularEngine) {
+        const result = await ImprovedTrainingModule.executeCommand(commandId);
+        if (result) {
+          setMessages((prev) => [...prev, ...result.messages]);
+        }
+        setAvailableCommands(ImprovedTrainingModule.getAvailableCommands());
+        return;
       }
-      // 커맨드 목록 갱신
-      setAvailableCommands(ImprovedTrainingModule.getAvailableCommands());
+
+      if (!character) return;
+
+      const command = modularEngine.getCommandByOriginalId(commandId);
+      if (!command) {
+        setMessages((prev) => [...prev, `Unknown modular training command: COMF${commandId}`]);
+        return;
+      }
+
+      const draftCharacters = cloneCharacters(ownedCharacters);
+      const draftTarget = draftCharacters.find((item) => item.id === character.id);
+      if (!draftTarget) return;
+
+      const context = createStoreTrainingContext({
+        flags: { ...flags },
+        items: { ...items },
+        characters: draftCharacters,
+        actorIds: {
+          target: character.id,
+          trainer: character.id,
+          assistant: assistantIds[0],
+        },
+      }, character.id);
+      context.requestTrainingDecision = (request) => window.confirm(request.prompt);
+      const result = modularEngine.execute(command.id, context);
+
+      if (result.success) {
+        updateCharacter(draftTarget.id, draftTarget);
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        ...result.messages,
+        ...result.warnings.map((warning) => `Warning: ${warning}`),
+      ]);
+      setAvailableCommands(getModularAvailableCommands());
+    };
+
+    trainingWindow.getAvailableTrainingCommands = () => useModularEngine
+      ? getModularAvailableCommands()
+      : ImprovedTrainingModule.getAvailableCommands();
+    trainingWindow.getTrainingCommandName = (commandId: number) => {
+      if (!useModularEngine) return undefined;
+      return modularEngine.getCommandByOriginalId(commandId)?.name;
     };
 
     return () => {
-      delete (window as any).executeTrainingCommand;
+      delete trainingWindow.executeTrainingCommand;
+      delete trainingWindow.getAvailableTrainingCommands;
+      delete trainingWindow.getTrainingCommandName;
     };
-  }, []);
+  }, [assistantIds, character, flags, items, modularEngine, ownedCharacters, updateCharacter, useModularEngine]);
 
-  // 조교 시작
   useEffect(() => {
-    if (currentCharacter && !isTraining) {
+    if (!currentCharacter) return;
+
+    if (useModularEngine) {
+      setMessages(['Modular training engine started behind feature flag.']);
+      setAvailableCommands(getModularAvailableCommands());
+      return;
+    }
+
+    if (!isTraining) {
       const success = ImprovedTrainingModule.startTraining(currentCharacter);
       if (success) {
-        setMessages(['조교를 시작합니다.']);
-        // 초기 커맨드 목록 로드
+        setMessages(['Training started.']);
         setAvailableCommands(ImprovedTrainingModule.getAvailableCommands());
-        // window에 커맨드 목록도 등록
-        (window as any).getAvailableTrainingCommands = () => ImprovedTrainingModule.getAvailableCommands();
       }
     }
 
-    // 클린업: 조교 종료
     return () => {
       if (isTraining) {
         try {
           ImprovedTrainingModule.endTraining();
-        } catch (e) {
-          // 이미 종료된 경우 무시
+        } catch {
+          // Legacy training can already be ended by the command menu path.
         }
       }
-      delete (window as any).getAvailableTrainingCommands;
     };
   }, []);
 
   if (!character) {
     return (
       <div className="training-screen">
-        <div className="training-empty">조교할 캐릭터를 선택하세요</div>
+        <div className="training-empty">Select a character to train.</div>
       </div>
     );
   }
 
-  // 조교 종료
   const handleEndTraining = () => {
+    if (useModularEngine) {
+      setMessages((prev) => [...prev, '\n=== Training ended ===\nModular pilot results were applied to the selected character.']);
+      setTimeout(() => onBack(), 800);
+      return;
+    }
+
     const result = ImprovedTrainingModule.endTraining();
-
-    // 결과 메시지
-    const summaryMsg = `\n=== 조교 종료 ===\n획득 구슬: ${result.totalJuel}개\n부정의 구슬 상쇄: ${result.negativeOffset}개`;
+    const summaryMsg = `\n=== Training ended ===\nJuel gained: ${result.totalJuel}\nNegative offset: ${result.negativeOffset}`;
     setMessages((prev) => [...prev, summaryMsg]);
-
-    // 잠시 후 메인으로
-    setTimeout(() => {
-      onBack();
-    }, 2000);
+    setTimeout(() => onBack(), 2000);
   };
+
+  const compactStats: Array<[string, number]> = useModularEngine
+    ? palamEntries(character).slice(0, 4)
+    : Object.entries(parameters).slice(0, 4).map(([key, value]) => [key, value as number]);
+  const detailStats: Array<[string, number]> = useModularEngine
+    ? palamEntries(character)
+    : Object.entries(parameters).map(([key, value]) => [key, value as number]);
 
   return (
     <div className="training-screen">
-      {/* 헤더: 캐릭터 정보 */}
       <div className="training-header">
         <div className="training-character">
           <span className="character-avatar">{character.name[0]}</span>
           <div className="character-info">
             <h2>{character.name}</h2>
-            <p className="character-subtitle">{character.callName || character.name}</p>
+            <p className="character-subtitle">
+              {character.callName || character.name}
+              {useModularEngine ? ' / modular pilot' : ''}
+            </p>
           </div>
         </div>
 
-        {/* 파라미터 표시 */}
         <div className="training-stats">
-          <div className="stat-compact">
-            <span className="stat-label">쾌C</span>
-            <span className="stat-value">{Math.floor(parameters.쾌C)}</span>
-          </div>
-          <div className="stat-compact">
-            <span className="stat-label">쾌V</span>
-            <span className="stat-value">{Math.floor(parameters.쾌V)}</span>
-          </div>
-          <div className="stat-compact">
-            <span className="stat-label">욕정</span>
-            <span className="stat-value">{Math.floor(parameters.욕정)}</span>
-          </div>
-          <div className="stat-compact">
-            <span className="stat-label">굴종</span>
-            <span className="stat-value">{Math.floor(parameters.굴종)}</span>
-          </div>
+          {compactStats.length === 0 ? (
+            <div className="stat-compact">
+              <span className="stat-label">PALAM</span>
+              <span className="stat-value">0</span>
+            </div>
+          ) : compactStats.map(([key, value]) => (
+            <div className="stat-compact" key={key}>
+              <span className="stat-label">{key}</span>
+              <span className="stat-value">{Math.floor(value).toLocaleString()}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* 메시지 표시 */}
       <div className="message-display">
-        {messages.map((msg, idx) => (
-          <p key={idx}>{msg}</p>
+        {messages.map((message, index) => (
+          <p key={`${index}-${message}`}>{message}</p>
         ))}
         <div ref={messageEndRef} />
       </div>
 
-      {/* 파라미터 상세 */}
       <div className="parameter-details">
-        <h3>파라미터</h3>
+        <h3>{useModularEngine ? 'PALAM' : 'Parameters'}</h3>
         <div className="parameter-grid">
-          {Object.entries(parameters).map(([key, value]) => (
+          {detailStats.length === 0 ? (
+            <div className="parameter-item">
+              <span className="param-name">No values yet</span>
+              <span className="param-value">0</span>
+            </div>
+          ) : detailStats.map(([key, value]) => (
             <div key={key} className="parameter-item">
               <span className="param-name">{key}</span>
               <span className="param-value">{Math.floor(value).toLocaleString()}</span>
@@ -145,19 +276,34 @@ export const TrainingScreen: React.FC<TrainingScreenProps> = ({ onBack }) => {
         </div>
       </div>
 
-      {/* 컨트롤 버튼 */}
       <div className="control-buttons">
-        <button onClick={onBack}>돌아가기</button>
+        <button onClick={onBack}>Back</button>
         <button className="end-button" onClick={handleEndTraining}>
-          조교 종료
+          End Training
         </button>
       </div>
+
+      {useModularEngine && (
+        <div className="parameter-details">
+          <h3>Modular Pilot Commands</h3>
+          <div className="parameter-grid">
+            {availableCommands.map((commandId) => (
+              <div key={commandId} className="parameter-item">
+                <span className="param-name">COMF{commandId}</span>
+                <span className="param-value">{modularEngine.getCommandByOriginalId(commandId)?.name ?? 'Unknown'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-// 커맨드 실행 함수 export - GameLayout에서 사용
-export const executeTrainingCommand = async (commandId: number, setMessages: React.Dispatch<React.SetStateAction<string[]>>) => {
+export const executeTrainingCommand = async (
+  commandId: number,
+  setMessages: React.Dispatch<React.SetStateAction<string[]>>,
+) => {
   const result = await ImprovedTrainingModule.executeCommand(commandId);
   if (result) {
     setMessages((prev) => [...prev, ...result.messages]);

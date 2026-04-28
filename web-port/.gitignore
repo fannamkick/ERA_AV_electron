@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-electron
 dist-ssr
 *.local
 
@@ -30,4 +31,4 @@ dist-ssr
 *.tmp
 __pycache__/
 *.pyc
-web-port/release/
+release/

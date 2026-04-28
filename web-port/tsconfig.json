@@ -30,8 +30,7 @@
   },
   "include": ["src"],
   "exclude": [
-    "src/modules/**/generated/**",
-    "src/modules/training/**",
+    "src/legacy/**",
     "src/components/CommandTestScreen.tsx",
     "src/components/TrainingScreen.tsx",
     "src/components/TrainingCommandMenu.tsx",

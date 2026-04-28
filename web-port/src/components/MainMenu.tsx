@@ -38,6 +38,9 @@ function MainMenu({ onSelectMenu, onRest }: MainMenuProps) {
         <button onClick={() => onSelectMenu('slave-market')}>
           배우 모집
         </button>
+        <button onClick={() => onSelectMenu('league')}>
+          리그
+        </button>
         <button onClick={() => onSelectMenu('info')}>
           정보
         </button>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useGameStore } from '../stores/gameStore'
 import MainMenu from './MainMenu'
 import { TrainingScreen } from './TrainingScreen'
@@ -17,22 +17,35 @@ import TitleScreen from './TitleScreen'
 import DifficultySelect from './DifficultySelect'
 import TrainingCommandMenu from './TrainingCommandMenu'
 import DebugMenu from './DebugMenu'
+import { CheckpointScreen } from './CheckpointScreen'
+import { LeagueScreen } from './LeagueScreen'
 import { useGameHandlers } from '../hooks/useGameHandlers'
 import { useGameData } from '../hooks/useGameData'
 import { getTimeName } from '../utils/timeSystem'
+import { getPhaseName } from '../core/time'
+import { getDivisionName } from '../gameplay/league'
 import './GameLayout.css'
 
-type SceneType = 'title' | 'difficulty' | 'main' | 'character-select' | 'character-list' | 'training' | 'brothel' | 'filming' | 'visit' | 'shop' | 'slave-market' | 'info' | 'save' | 'tips' | 'options' | 'debug' | 'rest' | 'end-turn';
+type SceneType = 'title' | 'difficulty' | 'main' | 'character-select' | 'character-list' | 'training' | 'brothel' | 'filming' | 'visit' | 'shop' | 'slave-market' | 'info' | 'save' | 'tips' | 'options' | 'debug' | 'rest' | 'end-turn' | 'checkpoint' | 'league';
 
 function GameLayout() {
   const [currentScene, setCurrentScene] = useState<SceneType>('title')
   const [selectedCharId, setSelectedCharId] = useState<number | null>(null)
   const [selectedListCharId, setSelectedListCharId] = useState<number | null>(null)
-  const { day, time, money, setCurrentCharacter, ownedCharacters } = useGameStore()
+  const { day, time, phase, money, economy, league, setCurrentCharacter, ownedCharacters, advancePhase } = useGameStore()
   const { handleNewGame, handleRest } = useGameHandlers()
 
   // 게임 데이터 로드
   useGameData()
+
+  // 체크포인트 페이즈 자동 트리거
+  useEffect(() => {
+    const checkpointPhases = ['morning_check', 'midday_check', 'night_check'];
+    if (checkpointPhases.includes(phase) && currentScene === 'main') {
+      console.log(`[CHECKPOINT] ${phase} 페이즈 진입 → CheckpointScreen 표시`);
+      setCurrentScene('checkpoint');
+    }
+  }, [phase, currentScene]);
 
   // 새 게임 시작 시 난이도 선택 화면으로
   const onNewGame = () => {
@@ -85,10 +98,16 @@ function GameLayout() {
             </span>
           </div>
 
-          {/* 시간대 */}
+          {/* 시간대 (페이즈) */}
           <div className="info-item-compact">
             <span className="info-label-inline">시간</span>
-            <span className="info-value-inline">{getTimeName(time)}</span>
+            <span className="info-value-inline">{getPhaseName(phase)}</span>
+          </div>
+
+          {/* 리그 */}
+          <div className="info-item-compact">
+            <span className="info-label-inline">리그</span>
+            <span className="info-value-inline">{getDivisionName(league.division)} {league.rank}위</span>
           </div>
 
           <div className="info-divider"></div>
@@ -103,6 +122,20 @@ function GameLayout() {
           <div className="info-item-compact">
             <span className="info-label-inline">목표</span>
             <span className="money-value target">₩{targetMoney.toLocaleString()}</span>
+          </div>
+
+          {/* 빚 (있을 때만) */}
+          {economy.debt > 0 && (
+            <div className="info-item-compact">
+              <span className="info-label-inline">빚</span>
+              <span className="money-value" style={{ color: '#f44336' }}>₩{economy.debt.toLocaleString()}</span>
+            </div>
+          )}
+
+          {/* 평판 */}
+          <div className="info-item-compact">
+            <span className="info-label-inline">평판</span>
+            <span className="info-value-inline">{economy.reputation}</span>
           </div>
 
           {/* 진행률 바 */}
@@ -192,6 +225,15 @@ function GameLayout() {
           {currentScene === 'options' && <OptionsScreen onBack={() => setCurrentScene('main')} onReturnToTitle={() => setCurrentScene('title')} />}
 
           {currentScene === 'debug' && <DebugMenu onBack={() => setCurrentScene('main')} />}
+
+          {currentScene === 'checkpoint' && (
+            <CheckpointScreen onComplete={() => {
+              advancePhase();
+              setCurrentScene('main');
+            }} />
+          )}
+
+          {currentScene === 'league' && <LeagueScreen onBack={() => setCurrentScene('main')} />}
         </main>
 
         {/* 오른쪽: 메뉴 선택지 */}
@@ -271,7 +313,7 @@ function GameLayout() {
           {(currentScene === 'brothel' || currentScene === 'filming' ||
             currentScene === 'visit' || currentScene === 'shop' ||
             currentScene === 'slave-market' ||
-            currentScene === 'info' || currentScene === 'save' || currentScene === 'tips' || currentScene === 'options' || currentScene === 'debug') && (
+            currentScene === 'info' || currentScene === 'save' || currentScene === 'tips' || currentScene === 'options' || currentScene === 'debug' || currentScene === 'league') && (
             <div className="action-buttons">
               <button onClick={() => setCurrentScene('main')}>메인 메뉴로</button>
             </div>

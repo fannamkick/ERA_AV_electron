@@ -1,13 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { GameState } from '../types/game';
+import type { GameState, GamePhase, LeagueState, EconomyState, WeeklyStats } from '../types/game';
 import type { Character } from '../types/character';
 import type { MasterCharacter } from '../types/master';
-import { createMasterCharacter, MasterHelpers } from '../types/master';
+import { createMasterCharacter } from '../types/master';
 import type { SaveData } from '../utils/saveSystem';
 import { saveGame } from '../utils/saveSystem';
+import { applyDailyDecay, applyConditionChanges } from '../core/condition';
+import { applyWeeklyInterest } from '../core/economy';
+import { runBrothelShift } from '../gameplay/brothel';
+import { weeklyEvaluation, endSeason, createNewSeasonState } from '../gameplay/league';
 
-// 시간대 타입 (0: 오전, 1: 오후)
+// 시간대 타입 (0: 오전, 1: 오후) - 레거시 호환
 export type TimeOfDay = 0 | 1;
 
 // 난이도 타입 (FLAG:5)
@@ -16,7 +20,17 @@ export type Difficulty = 1 | 2 | 3 | 4 | 9;
 
 interface GameStore extends GameState {
   // 시간 시스템
-  time: TimeOfDay; // 0: 오전, 1: 오후
+  time: TimeOfDay; // 0: 오전, 1: 오후 (레거시)
+  phase: GamePhase; // 새 페이즈 시스템
+
+  // 경제 시스템
+  economy: EconomyState;
+
+  // 리그 시스템
+  league: LeagueState;
+
+  // 주간 통계
+  weeklyStats: WeeklyStats;
 
   // 게임 설정
   difficulty: Difficulty; // 난이도 (FLAG:5)
@@ -76,6 +90,20 @@ interface GameStore extends GameState {
   updateCharacter: (id: number, updates: Partial<Character>) => void; // 캐릭터 정보 업데이트
   setAssistant: (id: number, isAssistant: boolean) => void; // 조수 설정/해제
 
+  // 새 시스템 액션
+  advancePhase: () => void;           // 페이즈 진행
+  addReputation: (amount: number) => void;
+  addDebt: (amount: number) => void;
+  payDebtAction: (amount: number) => void;
+  resetWeeklyStats: () => void;
+  addWeeklyStat: (key: keyof WeeklyStats, amount: number) => void;
+  setFlag: (key: number, value: number) => void; // 플래그 설정
+
+  // 자동화 액션
+  processDailyEnd: () => void;        // 일일 종료 처리
+  processWeeklyEnd: () => void;       // 주간 종료 처리
+  processSeasonEnd: () => void;       // 시즌 종료 처리
+
   // 저장/불러오기
   getSaveData: () => SaveData['gameState'];
   loadSaveData: (data: SaveData['gameState']) => void;
@@ -89,8 +117,37 @@ export const useGameStore = create<GameStore>()(
     (set, get) => ({
   // 초기 상태
   day: 1,
-  time: 0, // 오전부터 시작
+  time: 0, // 오전부터 시작 (레거시)
+  phase: 'morning_check' as GamePhase,
   money: 100000,
+
+  // 경제
+  economy: {
+    debt: 0,
+    interestRate: 0.05,
+    reputation: 10,
+    weeklyIncome: 0,
+    weeklyExpense: 0,
+  },
+
+  // 리그
+  league: {
+    division: 'bronze' as const,
+    rank: 1,
+    points: 0,
+    weeklyPoints: 0,
+    seasonWeek: 1,
+    season: 1,
+  },
+
+  // 주간 통계
+  weeklyStats: {
+    income: 0,
+    expense: 0,
+    trainingPoints: 0,
+    brothelCustomers: 0,
+    charactersSold: 0,
+  },
   playerName: '프로듀서',
   characters: [], // 소유 캐릭터 (GameState 호환용)
   currentCharacter: null,
@@ -126,6 +183,7 @@ export const useGameStore = create<GameStore>()(
   resetGame: () => set({
     day: 1,
     time: 0,
+    phase: 'morning_check' as GamePhase,
     money: 1000, // NORMAL 기본값
     playerName: '프로듀서',
     characters: [],
@@ -140,6 +198,9 @@ export const useGameStore = create<GameStore>()(
     masterAbilities: { 12: 0 },
     assistantIds: [],
     ownedCharacters: [],
+    economy: { debt: 0, interestRate: 0.05, reputation: 10, weeklyIncome: 0, weeklyExpense: 0 },
+    league: { division: 'bronze' as const, rank: 1, points: 0, weeklyPoints: 0, seasonWeek: 1, season: 1 },
+    weeklyStats: { income: 0, expense: 0, trainingPoints: 0, brothelCustomers: 0, charactersSold: 0 },
     playTime: 0,
     saveCount: 0,
     dayReached: 1,
@@ -260,54 +321,116 @@ export const useGameStore = create<GameStore>()(
   },
 
   // 턴 종료 처리 (간소화된 TURNEND)
+  /**
+   * 레거시 호환 액션: advancePhase()로 래핑
+   * @deprecated 새 코드는 advancePhase() 직접 사용
+   */
   endTurn: () => {
+    console.log(`[TURNEND] 레거시 호출 → advancePhase로 전환`);
+    get().advancePhase();
+  },
+
+  // === 새 시스템 액션 ===
+
+  advancePhase: () => {
     const state = get();
+    const phaseOrder: GamePhase[] = [
+      'morning_check', 'morning_action', 'midday_check', 'afternoon_action', 'night_check'
+    ];
+    const idx = phaseOrder.indexOf(state.phase);
 
-    // ERB EVENT_TURNEND.ERB 기반
-    // TIME == 1 (오후)면 다음날, TIME == 0 (오전)이면 오후로
+    if (idx >= phaseOrder.length - 1) {
+      // night_check → 다음날 morning_check
 
-    if (state.time === 1) {
-      // 오후 → 다음날 오전
-      console.log(`[TURNEND] Day ${state.day} 오후 → Day ${state.day + 1} 오전`);
-
-      // TODO: 여기에 일일 이벤트 추가
-      // - 창관 영업 결과 (YUUKAKU_RESULT)
-      // - 임신 판정 (IN_VAGINA_EXTRA, CONCEPTION_CHECK_EXTRA)
-      // - 일일 이벤트 (EVENT_NEXTDAY, EVENT_SCOUT)
-      // - NTR 이벤트 (FLAG:540 체크)
-      // - 아이돌/모델/클럽 이벤트
-      // - 경험치 → 능력치 변환 (ADD_EXABL)
-      // - 아르바이트/직업 처리
+      // 일일 처리 (TURNEND 로직)
+      get().processDailyEnd();
 
       set({
+        phase: 'morning_check',
         day: state.day + 1,
         time: 0,
         dayReached: Math.max(state.dayReached, state.day + 1),
-        flags: {
-          ...state.flags,
-          0: 0, // 휴식 플래그 해제 (FLAG:0)
-        }
       });
     } else {
-      // 오전 → 오후
-      console.log(`[TURNEND] Day ${state.day} 오전 → Day ${state.day} 오후`);
-      set({ time: 1 });
+      const nextPhase = phaseOrder[idx + 1];
+      // 레거시 time 동기화
+      const time: TimeOfDay = (nextPhase === 'afternoon_action' || nextPhase === 'night_check') ? 1 : 0;
+      set({ phase: nextPhase, time });
+    }
+  },
+
+  addReputation: (amount) => set((state) => ({
+    economy: {
+      ...state.economy,
+      reputation: Math.max(0, Math.min(100, state.economy.reputation + amount)),
+    },
+  })),
+
+  addDebt: (amount) => set((state) => ({
+    economy: {
+      ...state.economy,
+      debt: state.economy.debt + amount,
+    },
+  })),
+
+  payDebtAction: (amount) => set((state) => {
+    const paid = Math.min(amount, state.economy.debt, state.money);
+    return {
+      money: state.money - paid,
+      economy: { ...state.economy, debt: state.economy.debt - paid },
+    };
+  }),
+
+  resetWeeklyStats: () => set({
+    weeklyStats: { income: 0, expense: 0, trainingPoints: 0, brothelCustomers: 0, charactersSold: 0 },
+  }),
+
+  addWeeklyStat: (key, amount) => set((state) => ({
+    weeklyStats: { ...state.weeklyStats, [key]: state.weeklyStats[key] + amount },
+  })),
+
+  setFlag: (key, value) => set((state) => ({
+    flags: { ...state.flags, [key]: value },
+  })),
+
+  // === 자동화 액션 ===
+
+  processDailyEnd: () => {
+    const state = get();
+
+    // 1. 캐릭터 컨디션 감소 (core/condition.ts 사용)
+    state.ownedCharacters.forEach(char => {
+      const newCondition = applyDailyDecay(char.condition, char.assignment);
+      get().updateCharacter(char.id, { condition: newCondition });
+    });
+
+    // 2. 영업 결산 (brothel.ts 사용)
+    if (state.day % 1 === 0) {  // 매일
+      const brothelResults = runBrothelShift(
+        state.ownedCharacters.filter(c => c.assignment === 'brothel'),
+        state.economy.reputation
+      );
+      get().addMoney(brothelResults.totalIncome);
+      get().addReputation(brothelResults.reputationChange);
+      get().addWeeklyStat('brothelCustomers', brothelResults.results.length);
+      get().addWeeklyStat('income', brothelResults.totalIncome);
+
+      // 각 캐릭터의 condition 업데이트
+      brothelResults.results.forEach(result => {
+        if (result.newCondition) {
+          get().updateCharacter(result.match.character.id, {
+            condition: result.newCondition
+          });
+        }
+      });
     }
 
-    // 공통 처리 (오전/오후 모두)
-    // - TARGET, ASSI 초기화 (게임 컨텍스트에서 처리)
-    // - 체력/기력 회복 (RESTTIME)
-    // - 판매가능/조수화 판정 (CHECK_SELLASSIABLE)
-    // - 특수소질 획득 (CHECK_SPECIALSKIL)
-    // - 임신 판정 (IN_VAGINA_ALL, CONCEPTION_CHECK_ALL)
-    // - 위험일 계산 (OVULATION_CALC)
-    // - 질 형상 변화 (VAGINAFORM_CHANGE)
-    // - 음모 처리 (PUBLIC_HAIR)
-    // - 자동 아이템 구매 (AUTO_BUYING)
-    // - 엔딩 체크 (ENDING_CHECK)
-    // - 실적 판정 (CHECK_ACHIEVEMENT)
+    // 3. 주간 처리 (7일마다)
+    if (state.day % 7 === 0) {
+      get().processWeeklyEnd();
+    }
 
-    // 자동저장 (슬롯 0번을 자동저장 전용으로 사용)
+    // 4. 자동저장
     const updatedState = get();
     const gameState = updatedState.getSaveData();
     const metadata = updatedState.getMetadata();
@@ -315,12 +438,51 @@ export const useGameStore = create<GameStore>()(
     saveGame(0, gameState, metadata).then((success) => {
       if (success) {
         console.log('[AUTO-SAVE] 자동저장 완료 (슬롯 0)');
-      } else {
-        console.error('[AUTO-SAVE] 자동저장 실패');
       }
     }).catch((error) => {
       console.error('[AUTO-SAVE] 자동저장 오류:', error);
     });
+  },
+
+  processWeeklyEnd: () => {
+    const state = get();
+
+    // 1. 이자 적용 (core/economy.ts)
+    const interest = applyWeeklyInterest(state.economy);
+    get().addDebt(interest);
+
+    // 2. 리그 평가 (gameplay/league.ts)
+    const leagueResult = weeklyEvaluation(state.league, state.weeklyStats);
+    set({
+      league: {
+        ...state.league,
+        points: state.league.points + leagueResult.pointsEarned,
+        rank: leagueResult.newRank,
+        weeklyPoints: leagueResult.pointsEarned,
+        seasonWeek: state.league.seasonWeek + 1,
+      }
+    });
+
+    // 3. 시즌 종료 체크 (12주)
+    if (state.league.seasonWeek >= 12) {
+      get().processSeasonEnd();
+    }
+
+    // 4. 주간 통계 리셋
+    get().resetWeeklyStats();
+  },
+
+  processSeasonEnd: () => {
+    const state = get();
+    const seasonResult = endSeason(state.league);
+
+    set({
+      league: createNewSeasonState(state.league, seasonResult),
+    });
+
+    // 보상 지급
+    get().addMoney(seasonResult.rewards.money);
+    get().addReputation(seasonResult.rewards.reputation);
   },
 
   loadAvailableCharacters: (characters) => set((state) => ({
@@ -423,6 +585,7 @@ export const useGameStore = create<GameStore>()(
     return {
       day: state.day,
       time: state.time,
+      phase: state.phase,
       money: state.money,
       ownedCharacters: state.ownedCharacters,
       availableCharacters: state.availableCharacters,
@@ -431,21 +594,36 @@ export const useGameStore = create<GameStore>()(
       items: state.items,
       achievements: state.achievements,
       clearedEndings: state.clearedEndings,
+      economy: state.economy,
+      league: state.league,
+      weeklyStats: state.weeklyStats,
+      difficulty: state.difficulty,
+      weekLimit: state.weekLimit,
+      targetMoney: state.targetMoney,
+      nextCharacterId: state.nextCharacterId,
     };
   },
 
   loadSaveData: (data) => set({
     day: data.day,
-    time: (data as any).time || 0, // 하위 호환성
+    time: (data as any).time || 0,
+    phase: (data as any).phase || 'morning_check',
     money: data.money,
     ownedCharacters: data.ownedCharacters,
     availableCharacters: data.availableCharacters,
     currentCharacter: data.currentCharacter,
-    characters: data.ownedCharacters, // GameState 호환
+    characters: data.ownedCharacters,
     flags: data.globalFlags,
     items: data.items,
     achievements: data.achievements,
     clearedEndings: data.clearedEndings,
+    economy: (data as any).economy || { debt: 0, interestRate: 0.05, reputation: 10, weeklyIncome: 0, weeklyExpense: 0 },
+    league: (data as any).league || { division: 'bronze' as const, rank: 1, points: 0, weeklyPoints: 0, seasonWeek: 1, season: 1 },
+    weeklyStats: (data as any).weeklyStats || { income: 0, expense: 0, trainingPoints: 0, brothelCustomers: 0, charactersSold: 0 },
+    difficulty: (data as any).difficulty || 2,
+    weekLimit: (data as any).weekLimit || 100,
+    targetMoney: (data as any).targetMoney || 5000000,
+    nextCharacterId: (data as any).nextCharacterId || 10000,
   }),
 
   getMetadata: () => {
@@ -471,6 +649,7 @@ export const useGameStore = create<GameStore>()(
         // 저장할 상태만 선택
         day: state.day,
         time: state.time,
+        phase: state.phase,
         money: state.money,
         playerName: state.playerName,
         currentCharacter: state.currentCharacter,
@@ -484,6 +663,9 @@ export const useGameStore = create<GameStore>()(
         assistantIds: state.assistantIds,
         ownedCharacters: state.ownedCharacters,
         nextCharacterId: state.nextCharacterId,
+        economy: state.economy,
+        league: state.league,
+        weeklyStats: state.weeklyStats,
         playTime: state.playTime,
         saveCount: state.saveCount,
         dayReached: state.dayReached,

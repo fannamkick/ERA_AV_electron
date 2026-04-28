@@ -1,9 +1,8 @@
 // Electron Preload 스크립트
 // 렌더러 프로세스와 메인 프로세스 간의 안전한 통신 브리지
+export {}; // TS 모듈 스코프 활성화
 
-import electron from 'electron';
-
-const { contextBridge, ipcRenderer } = electron;
+const { contextBridge, ipcRenderer } = require('electron') as typeof import('electron');
 
 // window 객체에 안전하게 API 노출
 contextBridge.exposeInMainWorld('electronAPI', {

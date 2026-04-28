@@ -4,8 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { CommandExecutor } from '../modules/training/runtime/CommandExecutor';
-import { com0 } from '../modules/training/commands/improved/Com0Command';
+import { CommandExecutor } from '../legacy/training/runtime/CommandExecutor';
+import { com0 } from '../legacy/training/commands/improved/Com0Command';
 
 export function CommandTestScreen() {
   const [messages, setMessages] = useState<string[]>([]);

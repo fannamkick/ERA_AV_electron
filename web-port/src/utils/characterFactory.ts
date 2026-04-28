@@ -608,6 +608,16 @@ export function createCharacter(data: CharacterCreateData): Character {
     relation: data.relation || [],
     isOwned: false,
     isAssistant: false,
+
+    // 신규 시스템 필드 (기본값)
+    tier: 'N',
+    stars: 0,
+    condition: { hp: 100, mp: 100, mood: 0 },
+    traits: [],
+    assignment: null,
+    baseValue: 5000,
+    marketValue: 5000,
+    loyalty: 50,
   };
 }
 

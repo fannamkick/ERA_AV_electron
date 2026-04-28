@@ -1,65 +1,73 @@
-import { useState, useEffect } from 'react';
-import { commandRegistry } from '../modules/training/commands';
+import { useEffect, useState } from 'react';
+import { commandRegistry } from '../legacy/training/commands';
 import './TrainingCommandMenu.css';
 
 interface TrainingCommandMenuProps {
   onBack: () => void;
 }
 
+type TrainingWindow = Window & {
+  executeTrainingCommand?: (commandId: number) => Promise<void>;
+  getAvailableTrainingCommands?: () => number[];
+  getTrainingCommandName?: (commandId: number) => string | undefined;
+};
+
 function TrainingCommandMenu({ onBack }: TrainingCommandMenuProps) {
   const [commands, setCommands] = useState<number[]>([]);
 
-  useEffect(() => {
-    // 초기 로드만 수행 (턴제 게임이므로 폴링 불필요)
-    if ((window as any).getAvailableTrainingCommands) {
-      setCommands((window as any).getAvailableTrainingCommands());
+  const refreshCommands = () => {
+    const trainingWindow = window as TrainingWindow;
+    if (trainingWindow.getAvailableTrainingCommands) {
+      setCommands(trainingWindow.getAvailableTrainingCommands());
     }
+  };
+
+  useEffect(() => {
+    refreshCommands();
   }, []);
 
   const handleCommand = async (id: number) => {
-    if ((window as any).executeTrainingCommand) {
-      await (window as any).executeTrainingCommand(id);
-      // 커맨드 실행 후 목록 갱신
-      if ((window as any).getAvailableTrainingCommands) {
-        setCommands((window as any).getAvailableTrainingCommands());
-      }
+    const trainingWindow = window as TrainingWindow;
+    if (trainingWindow.executeTrainingCommand) {
+      await trainingWindow.executeTrainingCommand(id);
+      refreshCommands();
     }
   };
 
   return (
     <div className="command-menu">
-      <h3>조교 커맨드</h3>
+      <h3>Training Commands</h3>
       <div
         className="menu-list"
         style={{
-          gridTemplateColumns: commands.length > 10 ? 'repeat(2, 1fr)' : '1fr'
+          gridTemplateColumns: commands.length > 10 ? 'repeat(2, 1fr)' : '1fr',
         }}
       >
         {commands.map((id) => {
           const cmd = commandRegistry[id];
-          if (!cmd) return null;
+          const modularName = (window as TrainingWindow).getTrainingCommandName?.(id);
+          if (!cmd && !modularName) return null;
 
           return (
             <button
               key={id}
               onClick={() => handleCommand(id)}
             >
-              {cmd.name}
+              {modularName ?? cmd.name}
             </button>
           );
         })}
         {commands.length === 0 && (
           <div style={{ padding: '1rem', color: '#999', textAlign: 'center', gridColumn: '1 / -1' }}>
-            사용 가능한 커맨드가 없습니다
+            No available commands.
           </div>
         )}
 
-        {/* 항상 마지막에 돌아가기 버튼 */}
         <button
           onClick={onBack}
           className="back-button"
         >
-          돌아가기
+          Back
         </button>
       </div>
     </div>

@@ -245,6 +245,14 @@ export function generateRandomCharacter(id: number, config: RandomCharacterConfi
     relation: [],
     isOwned: false,
     isAssistant: false,
+    tier: 'N',
+    stars: 0,
+    condition: { hp: 100, mp: 100, mood: 0 },
+    traits: [],
+    assignment: null,
+    baseValue: 5000,
+    marketValue: 5000,
+    loyalty: 50,
   } as Character;
 }
 
@@ -308,5 +316,13 @@ export function createSampleCharacter(): Character {
     relation: [],
     isOwned: false,
     isAssistant: false,
+    tier: 'N',
+    stars: 0,
+    condition: { hp: 100, mp: 100, mood: 0 },
+    traits: [],
+    assignment: null,
+    baseValue: 5000,
+    marketValue: 5000,
+    loyalty: 50,
   } as Character;
 }

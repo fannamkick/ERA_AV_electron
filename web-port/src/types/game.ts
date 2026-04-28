@@ -6,6 +6,88 @@
 import type { Character } from './character';
 export type { Character };
 
+// === 주사위 시스템 타입 ===
+
+export type DieType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
+
+export interface RollResult {
+  die: DieType;
+  count: number;
+  rolls: number[];
+  total: number;
+  modifier: number;
+  finalTotal: number;
+}
+
+export interface D20Result extends RollResult {
+  isCritical: boolean;   // Nat 20
+  isFumble: boolean;     // Nat 1
+  advantage: boolean;
+  disadvantage: boolean;
+}
+
+export type CheckGrade = 'critical' | 'success' | 'fail' | 'fumble';
+
+export interface CheckResult {
+  roll: D20Result;
+  dc: number;
+  success: boolean;
+  margin: number;         // 성공/실패 차이
+  grade: CheckGrade;
+}
+
+// === 게임 시간 타입 ===
+
+export type GamePhase =
+  | 'morning_check'      // 기상 체크포인트
+  | 'morning_action'     // 오전 행동
+  | 'midday_check'       // 낮 체크포인트
+  | 'afternoon_action'   // 오후 행동
+  | 'night_check';       // 취침 체크포인트
+
+export type TimeOfDay = 'morning' | 'afternoon';
+
+// === 리그 시스템 타입 ===
+
+export type LeagueDivision = 'bronze' | 'silver' | 'gold' | 'platinum';
+
+export interface LeagueState {
+  division: LeagueDivision;
+  rank: number;           // 현재 순위
+  points: number;         // 누적 포인트
+  weeklyPoints: number;   // 이번 주 획득 포인트
+  seasonWeek: number;     // 시즌 내 주차 (1~12)
+  season: number;         // 시즌 번호
+}
+
+export interface SeasonResult {
+  finalRank: number;
+  totalPoints: number;
+  promotion: boolean;
+  relegation: boolean;
+  rewards: { money: number; reputation: number };
+}
+
+// === 경제 시스템 타입 ===
+
+export interface EconomyState {
+  debt: number;           // 빚
+  interestRate: number;   // 주간 이자율 (0.0~1.0)
+  reputation: number;     // 평판 (0~100)
+  weeklyIncome: number;   // 이번 주 수입
+  weeklyExpense: number;  // 이번 주 지출
+}
+
+// === 주간 통계 ===
+
+export interface WeeklyStats {
+  income: number;
+  expense: number;
+  trainingPoints: number;
+  brothelCustomers: number;
+  charactersSold: number;
+}
+
 /**
  * 기본 스탯 (BASE.csv)
  */
@@ -98,48 +180,40 @@ export interface GameState {
 }
 
 /**
- * 조교 커맨드
+ * 조교 커맨드 (레거시)
+ * @deprecated 새 시스템은 gameplay/training.ts의 TrainingCommand 사용
  */
-export interface TrainingCommand {
+export interface LegacyTrainingCommand {
   id: number;
   name: string;
   description: string;
-  category: string;       // 커맨드 분류
-
-  // 실행 조건
+  category: string;
   requirements?: {
     abilities?: Partial<Abilities>;
     flags?: Record<string, number>;
     items?: string[];
   };
-
-  // 효과
   effects: {
     parameters?: Partial<Parameters>;
     abilities?: Partial<Abilities>;
     flags?: Record<string, number>;
   };
-
-  // 실행 함수
   execute?: (char: Character, state: GameState) => void;
 }
 
 /**
- * 이벤트 데이터
+ * 이벤트 데이터 (레거시)
+ * @deprecated 새 시스템은 core/eventEngine.ts의 GameEvent 사용
  */
-export interface GameEvent {
+export interface LegacyGameEvent {
   id: string;
   name: string;
   type: 'daily' | 'training' | 'special' | 'ending';
-
-  // 발생 조건
   trigger?: {
     day?: number;
     flags?: Record<string, number>;
     abilities?: Partial<Abilities>;
   };
-
-  // 이벤트 실행
   execute: (state: GameState) => void;
 }
 

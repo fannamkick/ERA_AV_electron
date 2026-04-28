@@ -150,6 +150,45 @@ export const GameEvents = {
   // System 이벤트
   SYSTEM_SAVE: 'system:save',
   SYSTEM_LOAD: 'system:load',
+
+  // === 신규 시스템 이벤트 ===
+
+  // Checkpoint 이벤트
+  CHECKPOINT_MORNING: 'checkpoint:morning',
+  CHECKPOINT_MIDDAY: 'checkpoint:midday',
+  CHECKPOINT_NIGHT: 'checkpoint:night',
+
+  // Phase 이벤트
+  PHASE_ADVANCE: 'phase:advance',
+  DAY_START: 'day:start',
+  DAY_END: 'day:end',
+
+  // Dice 이벤트
+  DICE_ROLL: 'dice:roll',
+  DICE_CHECK: 'dice:check',
+
+  // Economy 이벤트
+  ECONOMY_INCOME: 'economy:income',
+  ECONOMY_EXPENSE: 'economy:expense',
+  ECONOMY_DEBT_CHANGE: 'economy:debtChange',
+  ECONOMY_BANKRUPT: 'economy:bankrupt',
+
+  // League 이벤트
+  LEAGUE_WEEKLY: 'league:weekly',
+  LEAGUE_PROMOTION: 'league:promotion',
+  LEAGUE_RELEGATION: 'league:relegation',
+  LEAGUE_SEASON_END: 'league:seasonEnd',
+
+  // Market 이벤트
+  MARKET_SALE: 'market:sale',
+  MARKET_COMMISSION: 'market:commission',
+
+  // Condition 이벤트
+  CONDITION_ESCAPE: 'condition:escape',
+  CONDITION_COLLAPSE: 'condition:collapse',
+
+  // Random Event 이벤트
+  RANDOM_EVENT: 'event:random',
 } as const;
 
 export type GameEventType = typeof GameEvents[keyof typeof GameEvents];

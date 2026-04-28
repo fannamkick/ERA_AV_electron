@@ -1,10 +1,14 @@
 // Electron 메인 프로세스
-import electron from 'electron';
+// Electron 28.x: CommonJS에서 named import가 작동하지 않는 경우가 있어 require 직접 사용
+// process.type === 'browser'이면 메인 프로세스
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
 import type { BrowserWindow as BrowserWindowType, IpcMainInvokeEvent, SaveDialogOptions, OpenDialogOptions } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs/promises';
-
-const { app, BrowserWindow, ipcMain, dialog } = electron;
 
 let mainWindow: BrowserWindowType | null = null;
 let storageCache: Record<string, any> = {};

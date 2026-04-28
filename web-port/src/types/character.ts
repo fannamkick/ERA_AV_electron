@@ -452,6 +452,28 @@ export interface CharacterStrings {
   [key: number]: string | undefined;
 }
 
+// === 신규 시스템 타입 ===
+
+/** 캐릭터 등급 */
+export type CharacterTier = 'N' | 'R' | 'SR' | 'SSR';
+
+/** 캐릭터 컨디션 */
+export interface CharacterCondition {
+  hp: number;    // 체력 (0~100, 0이면 행동불가)
+  mp: number;    // 정신력 (0~100, 낮으면 도주시도)
+  mood: number;  // 기분 (-100~100, 높으면 어드밴티지)
+}
+
+/** 캐릭터 배치 상태 */
+export type CharacterAssignment = 'training' | 'brothel' | 'rest' | null;
+
+/** 캐릭터 컨디션 기본값 */
+export const DEFAULT_CONDITION: CharacterCondition = {
+  hp: 100,
+  mp: 100,
+  mood: 0,
+};
+
 // 메인 캐릭터 데이터 구조
 export interface Character {
   id: number;
@@ -491,6 +513,19 @@ export interface Character {
   abilities?: number[];          // abl을 배열로 변환 (호환성)
   equipment?: Record<number, number>;  // 장비 상태 (TEQUIP)
   source?: number[];             // SOURCE 배열 (조교 중 쾌락 증가량)
+  loseBase?: number[];           // LOSEBASE 배열 (조교 중 체력/기력 소모)
+  up?: number[];                 // UP 배열 (조교 중 보조 증가/감소)
+  stain?: number[];              // STAIN 배열 (부위별 오염 비트마스크)
+
+  // === 신규 시스템 필드 ===
+  tier: CharacterTier;           // 캐릭터 등급
+  stars: number;                 // 성장 단계 (0~5)
+  condition: CharacterCondition; // 컨디션 (HP/MP/MOOD)
+  traits: string[];              // 특성 태그 (림월드 스타일)
+  assignment: CharacterAssignment; // 현재 배치
+  baseValue: number;             // 기본 가치
+  marketValue: number;           // 시장 가치
+  loyalty: number;               // 충성도 (0~100)
 }
 
 // 캐릭터 생성 시 초기 데이터

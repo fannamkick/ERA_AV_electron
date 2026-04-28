@@ -37,6 +37,9 @@ export interface SaveData {
     saveCount: number; // 저장 횟수
     dayReached: number; // 최대 도달 일수
   };
+  content: {
+    enabledPackIds: string[];
+  };
 }
 
 export interface SaveSlotInfo {
@@ -51,13 +54,36 @@ export interface SaveSlotInfo {
 const SAVE_KEY_PREFIX = 'erAV_save_';
 const SAVE_VERSION = '0.1.0';
 const MAX_SLOTS = 10;
+const DEFAULT_ENABLED_CONTENT_PACK_IDS = ['training.base'] as const;
+
+export interface SaveGameOptions {
+  readonly enabledContentPackIds?: readonly string[];
+}
+
+export function migrateSaveData(saveData: SaveData | Omit<SaveData, 'content'>): SaveData {
+  return {
+    ...saveData,
+    content: 'content' in saveData && saveData.content
+      ? {
+          enabledPackIds: [...saveData.content.enabledPackIds],
+        }
+      : {
+          enabledPackIds: [...DEFAULT_ENABLED_CONTENT_PACK_IDS],
+        },
+  };
+}
 
 /**
  * 게임 저장
  * 슬롯 0: 자동저장 전용
  * 슬롯 1-10: 수동저장
  */
-export async function saveGame(slotNumber: number, gameState: SaveData['gameState'], metadata: SaveData['metadata']): Promise<boolean> {
+export async function saveGame(
+  slotNumber: number,
+  gameState: SaveData['gameState'],
+  metadata: SaveData['metadata'],
+  options: SaveGameOptions = {},
+): Promise<boolean> {
   try {
     if (slotNumber < 0 || slotNumber > MAX_SLOTS) {
       throw new Error(`잘못된 슬롯 번호: ${slotNumber}`);
@@ -69,6 +95,9 @@ export async function saveGame(slotNumber: number, gameState: SaveData['gameStat
       slotNumber,
       gameState,
       metadata,
+      content: {
+        enabledPackIds: [...(options.enabledContentPackIds ?? DEFAULT_ENABLED_CONTENT_PACK_IDS)],
+      },
     };
 
     const json = JSON.stringify(saveData);
@@ -96,7 +125,7 @@ export async function loadGame(slotNumber: number): Promise<SaveData | null> {
       return null;
     }
 
-    const saveData: SaveData = JSON.parse(json);
+    const saveData = migrateSaveData(JSON.parse(json));
 
     // 버전 체크 (향후 마이그레이션 로직 추가 가능)
     if (saveData.version !== SAVE_VERSION) {
