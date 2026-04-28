@@ -6,7 +6,7 @@ import {
   parseCommandId,
   type EvidenceMode,
 } from '../adapters/legacyEvidenceLoader';
-import { callOpenRouterJson } from '../openrouter/client';
+import { callOpenRouterJson, type ChatMessage, type OpenRouterOptions } from '../openrouter/client';
 import type {
   AiPortTiming,
   AiReview,
@@ -88,6 +88,96 @@ function uniqueStrings(values: readonly string[]): string[] {
   return Array.from(new Set(values.filter((value) => value.length > 0)));
 }
 
+function shouldRetryError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return /timed out|max_tokens|not parseable JSON|content was not a string|OpenRouter request failed:\s*(429|500|502|503|504)/i.test(message);
+}
+
+function retryableValidationMessages(validation: { ok: boolean; errors: string[]; warnings: string[] }): string[] {
+  const retryableWarnings = [
+    /unexpected top-level keys/i,
+    /checklist/i,
+    /unknown id/i,
+    /does not account/i,
+    /missing sourceIndex/i,
+    /lacks reviewable conflict fields/i,
+    /blocking but does not set blocksMigration/i,
+    /non-reference data/i,
+    /invalid operation/i,
+    /missing path/i,
+    /missing string content/i,
+    /missing reason/i,
+  ];
+  return [
+    ...validation.errors,
+    ...validation.warnings.filter((warning) => retryableWarnings.some((pattern) => pattern.test(warning))),
+  ];
+}
+
+function correctionMessages<T>(
+  messages: readonly ChatMessage[],
+  previousOutput: T | undefined,
+  feedback: readonly string[],
+): ChatMessage[] {
+  return [
+    ...messages,
+    ...(previousOutput ? [{
+      role: 'assistant' as const,
+      content: JSON.stringify(previousOutput, null, 2),
+    }] : []),
+    {
+      role: 'user',
+      content: [
+        'The previous output failed local validation.',
+        'Return corrected JSON only. Do not explain.',
+        'Preserve all valid evidence and decisions, but fix these validation issues:',
+        ...feedback.map((item) => `- ${item}`),
+      ].join('\n'),
+    },
+  ];
+}
+
+async function callOpenRouterJsonRobust<T>(
+  messages: readonly ChatMessage[],
+  options: RobustCallOptions<T>,
+): Promise<T> {
+  const models = uniqueStrings([options.model, ...(options.modelFallbacks ?? [])]);
+  const maxCorrectionAttempts = options.maxCorrectionAttempts ?? 2;
+  const failures: string[] = [];
+
+  for (const model of models) {
+    let currentMessages = [...messages];
+    let maxTokens = options.maxTokens;
+
+    for (let attempt = 0; attempt <= maxCorrectionAttempts; attempt += 1) {
+      try {
+        const rawValue = await callOpenRouterJson<T>(currentMessages, {
+          ...options,
+          model,
+          maxTokens,
+          stage: attempt === 0 ? options.stage : `${options.stage ?? 'openrouter'}:repair${attempt}`,
+        });
+        const value = options.normalize ? options.normalize(rawValue) : rawValue;
+        const validation = options.validate?.(value);
+        if (!validation) return value;
+        const feedback = retryableValidationMessages(validation);
+        if (validation.ok && feedback.length === 0) return value;
+        if (attempt >= maxCorrectionAttempts) return value;
+        currentMessages = correctionMessages(messages, value, feedback);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        failures.push(`${model}: ${message}`);
+        if (!shouldRetryError(error)) break;
+        if (/max_tokens/i.test(message)) {
+          maxTokens = Math.min(Math.ceil((maxTokens ?? 6000) * 1.5), 14000);
+        }
+      }
+    }
+  }
+
+  throw new Error(`OpenRouter robust call failed after ${models.length} model route(s):\n${failures.join('\n')}`);
+}
+
 function shardPromptFile(area: WorkerReportShardArea): string {
   return `training-command-shard-${area}.md`;
 }
@@ -119,6 +209,13 @@ function mergeCanonicalDecision(
       warnings.push(`${shard.area}: Dropped invalid canonicalDecision.${key}.`);
     }
   }
+}
+
+interface RobustCallOptions<T> extends OpenRouterOptions {
+  modelFallbacks?: string[];
+  maxCorrectionAttempts?: number;
+  validate?: (value: T) => { ok: boolean; errors: string[]; warnings: string[] };
+  normalize?: (value: T) => T;
 }
 
 function shardOpenRouterOptions(area: WorkerReportShardArea): { maxTokens: number; timeoutMs: number } {
@@ -287,6 +384,8 @@ export interface AutopilotOptions {
   apiKey: string;
   model: string;
   reviewModel?: string;
+  fallbackModels?: string[];
+  reviewFallbackModels?: string[];
   synthesize: boolean;
   review: boolean;
   maxCharsPerFile?: number;
@@ -320,7 +419,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     const shards = await Promise.all(SHARD_AREAS.map(async (area) => {
       const shardPrompt = readPrompt(options.webPortRoot, shardPromptFile(area));
       const shardBundle = filterEvidenceForShard(bundle, area);
-      const shard = await callOpenRouterJson<WorkerReportShard>([
+      const shard = await callOpenRouterJsonRobust<WorkerReportShard>([
         { role: 'system', content: shardPrompt },
         {
           role: 'user',
@@ -336,6 +435,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       ], {
         apiKey: options.apiKey,
         model: options.model,
+        modelFallbacks: options.fallbackModels,
         title: `ai-port analyze ${bundle.commandId} ${area}`,
         stage: `analyze:${area}`,
         ...shardOpenRouterOptions(area),
@@ -346,6 +446,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
         reasoningMaxTokens: 512,
         excludeReasoning: true,
         onTiming,
+        validate: validateWorkerReportShard,
       });
       const shardValidation = validateWorkerReportShard(shard);
       if (!shardValidation.ok) {
@@ -361,7 +462,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     report = mergeShardReport(bundle.commandId, bundle.commandNumber, shards, shardWarnings);
   } else {
     const analysisPrompt = readPrompt(options.webPortRoot, 'training-command-analysis.md');
-    report = await callOpenRouterJson<WorkerReport>([
+    report = await callOpenRouterJsonRobust<WorkerReport>([
       { role: 'system', content: analysisPrompt },
       {
         role: 'user',
@@ -375,6 +476,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     ], {
       apiKey: options.apiKey,
       model: options.model,
+      modelFallbacks: options.fallbackModels,
       title: `ai-port analyze ${bundle.commandId}`,
       stage: 'analyze',
       ...analyzeOptions,
@@ -384,6 +486,8 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       reasoningMaxTokens: 512,
       excludeReasoning: true,
       onTiming,
+      validate: validateWorkerReport,
+      normalize: normalizeWorkerReport,
     });
   }
   report = normalizeWorkerReport(report);
@@ -398,7 +502,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
   if (options.synthesize && reportValidation.ok) {
     const synthesisPrompt = readPrompt(options.webPortRoot, 'command-draft-synthesis.md');
     const synthesizeOptions = optimizedOpenRouterOptions('synthesize');
-    draft = await callOpenRouterJson<CommandDraft>([
+    draft = await callOpenRouterJsonRobust<CommandDraft>([
       { role: 'system', content: synthesisPrompt },
       {
         role: 'user',
@@ -411,6 +515,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     ], {
       apiKey: options.apiKey,
       model: options.model,
+      modelFallbacks: options.fallbackModels,
       title: `ai-port synthesize ${bundle.commandId}`,
       stage: 'synthesize',
       ...synthesizeOptions,
@@ -420,6 +525,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       reasoningMaxTokens: 512,
       excludeReasoning: true,
       onTiming,
+      validate: validateCommandDraft,
     });
     draft.sourceReport = reportPath.replace(/\\/g, '/');
     writeJson(draftPath, draft);
@@ -429,7 +535,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
   if (options.review && draft && draftValidation?.ok) {
     const reviewPrompt = readPrompt(options.webPortRoot, 'command-draft-review.md');
     const reviewOptions = optimizedOpenRouterOptions('review');
-    aiReview = normalizeAiReview(await callOpenRouterJson<AiReview>([
+    aiReview = normalizeAiReview(await callOpenRouterJsonRobust<AiReview>([
       { role: 'system', content: reviewPrompt },
       {
         role: 'user',
@@ -438,6 +544,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     ], {
       apiKey: options.apiKey,
       model: options.reviewModel ?? options.model,
+      modelFallbacks: options.reviewFallbackModels ?? options.fallbackModels,
       title: `ai-port review ${bundle.commandId}`,
       stage: 'review',
       ...reviewOptions,
@@ -447,6 +554,8 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       reasoningMaxTokens: 128,
       excludeReasoning: true,
       onTiming,
+      validate: validateAiReview,
+      normalize: normalizeAiReview,
     }));
     writeJson(reviewPath, aiReview);
     reviewValidation = validateAiReview(aiReview);

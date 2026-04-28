@@ -152,9 +152,34 @@ Each prompt has its own required checklist and field contract. The generic `trai
 
 Shard calls also enable response healing for malformed JSON recovery. Truncated outputs are still treated as failures.
 
+## Retry And Fallback Policy
+
+Autopilot is designed to finish with a usable classified artifact instead of stopping on the first weak model output.
+
+The current policy is:
+
+- retry transient OpenRouter failures such as timeouts, 429/5xx responses, malformed JSON, null content, and `max_tokens` length stops;
+- increase `max_tokens` on length failures before retrying the same stage;
+- retry locally invalid JSON outputs by feeding the previous JSON and validator feedback back to the model;
+- retry shard, draft, and review outputs when local validation finds structural issues such as missing checklist ids, unexpected fields, missing conflict metadata, or invalid review booleans;
+- fall back to comma-separated models from `OPENROUTER_FALLBACK_MODELS` or `--fallback-models`;
+- fall back review calls separately through `OPENROUTER_REVIEW_FALLBACK_MODELS` or `--review-fallback-models`.
+
+Example:
+
+```powershell
+$env:OPENROUTER_MODEL='minimax/minimax-m2.7'
+$env:OPENROUTER_FALLBACK_MODELS='deepseek/deepseek-v3.2'
+$env:OPENROUTER_REVIEW_MODEL='deepseek/deepseek-v3.2'
+$env:OPENROUTER_REVIEW_FALLBACK_MODELS='minimax/minimax-m2.7'
+npm run ai-port -- autopilot --command COMF7 --sharded-analysis
+```
+
+Batch output includes grouped classification counts, command ids by classification, gate reasons, validation issues, and the slowest stages so the next bottleneck is visible without reading every artifact.
+
 ## Current Limits
 
-- The first version generates approval candidates; it does not auto-commit.
+- The current version generates approval candidates; it does not auto-commit.
 - `blocked` and `design-ready` families cannot become approval candidates.
-- Self-fix loops are intentionally deferred until approval-candidate quality is measured on COMF7-19.
+- Self-fix loops exist for structural output repair, but semantic disagreements remain blocked/spec work until canonical evidence is resolved.
 - Generated artifacts are written under `artifacts/ai-port/`, which is ignored by git.

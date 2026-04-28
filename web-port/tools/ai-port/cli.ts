@@ -6,6 +6,7 @@ import { expandCommandRange, runAutopilotForCommand, runWithConcurrency } from '
 import { materializeApprovalCandidate } from './commands/materialize';
 import { validateArtifact, validateReportDraftReview } from './commands/validate';
 import { loadLocalEnv } from './env';
+import type { AutopilotResult } from './types';
 
 interface ParsedArgs {
   command: string;
@@ -48,7 +49,9 @@ function usage(): void {
 Environment:
   OPENROUTER_API_KEY   required for analyze/autopilot
   OPENROUTER_MODEL     optional default model
-  OPENROUTER_REVIEW_MODEL optional reviewer model`);
+  OPENROUTER_REVIEW_MODEL optional reviewer model
+  OPENROUTER_FALLBACK_MODELS optional comma-separated analyze/synthesize fallback models
+  OPENROUTER_REVIEW_FALLBACK_MODELS optional comma-separated review fallback models`);
 }
 
 function flagString(args: ParsedArgs, key: string, fallback?: string): string | undefined {
@@ -59,6 +62,54 @@ function flagString(args: ParsedArgs, key: string, fallback?: string): string | 
 function requireString(value: string | undefined, message: string): string {
   if (!value) throw new Error(message);
   return value;
+}
+
+function csvList(value: string | undefined): string[] {
+  return (value ?? '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}
+
+function summarizeResults(results: readonly AutopilotResult[]): Record<string, unknown> {
+  const byClassification = results.reduce<Record<string, number>>((acc, result) => {
+    acc[result.classification] = (acc[result.classification] ?? 0) + 1;
+    return acc;
+  }, {});
+  const commandsByClassification = results.reduce<Record<string, string[]>>((acc, result) => {
+    acc[result.classification] = [...(acc[result.classification] ?? []), result.commandId];
+    return acc;
+  }, {});
+  const gateReasons = results
+    .filter((result) => result.gateReasons.length > 0)
+    .map((result) => ({ commandId: result.commandId, reasons: result.gateReasons }));
+  const validationIssues = results
+    .filter((result) => !result.localValidation.ok || result.localValidation.errors.length > 0 || result.localValidation.warnings.length > 0)
+    .map((result) => ({
+      commandId: result.commandId,
+      ok: result.localValidation.ok,
+      errors: result.localValidation.errors,
+      warnings: result.localValidation.warnings,
+    }));
+  const slowestStages = results
+    .flatMap((result) => (result.timings ?? []).map((timing) => ({
+      commandId: result.commandId,
+      stage: timing.stage,
+      model: timing.model,
+      totalMs: timing.totalMs,
+      ok: timing.ok,
+      error: timing.error,
+    })))
+    .sort((left, right) => right.totalMs - left.totalMs)
+    .slice(0, 8);
+
+  return {
+    byClassification,
+    commandsByClassification,
+    gateReasons,
+    validationIssues,
+    slowestStages,
+  };
 }
 
 function webPortRoot(): string {
@@ -124,6 +175,8 @@ async function main(): Promise<void> {
     const apiKey = requireString(process.env.OPENROUTER_API_KEY, 'OPENROUTER_API_KEY is required.');
     const model = requireString(flagString(args, 'model', process.env.OPENROUTER_MODEL), '--model or OPENROUTER_MODEL is required.');
     const reviewModel = flagString(args, 'review-model', process.env.OPENROUTER_REVIEW_MODEL);
+    const fallbackModels = csvList(flagString(args, 'fallback-models', process.env.OPENROUTER_FALLBACK_MODELS));
+    const reviewFallbackModels = csvList(flagString(args, 'review-fallback-models', process.env.OPENROUTER_REVIEW_FALLBACK_MODELS));
     const range = flagString(args, 'range');
     const commandId = flagString(args, 'command', args.positionals[0]);
     const commands = range ? expandCommandRange(range) : [requireString(commandId, '--command or --range is required.')];
@@ -141,6 +194,8 @@ async function main(): Promise<void> {
         apiKey,
         model,
         reviewModel,
+        fallbackModels,
+        reviewFallbackModels,
         synthesize,
         review,
         evidenceMode,
@@ -152,10 +207,7 @@ async function main(): Promise<void> {
       ok: true,
       outDir,
       loadedEnvFiles,
-      summary: results.reduce<Record<string, number>>((acc, result) => {
-        acc[result.classification] = (acc[result.classification] ?? 0) + 1;
-        return acc;
-      }, {}),
+      summary: summarizeResults(results),
       results,
     }, null, 2));
     return;

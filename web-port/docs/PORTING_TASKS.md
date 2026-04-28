@@ -22,11 +22,12 @@ Before broad command migration, the project must have:
 - Overall: 100% for training migration system readiness
 - Current milestone: Training migration system design completed
 - Current focus: next phase content migration backlog
-- AI-port automation: 75% toward repeatable approval-candidate factory
+- AI-port automation: 85% toward repeatable approval-candidate factory
 - AI-port current proof point: COMF0 can reach `approval-candidate` with current implementation evidence, sharded analysis, no-op/spec synthesis, independent review, and local validation.
 - AI-port current proof point: COMF1 and COMF6 also reach clean `approval-candidate` results with zero local validation warnings.
 - AI-port current proof point: COMF7 reaches `draft-only` as a spec-only blocked draft, with blocking conflicts preserved and automatic materialization blocked.
-- AI-port next proof point: batch summary, provider fallback, and a small COMF7-9 batch must be proven before broad batch migration is trusted.
+- AI-port current proof point: structural retry, validator-feedback repair, model fallback routing, and grouped batch summaries are implemented.
+- AI-port next proof point: benchmark default model routing and run a small COMF7-9 batch before broad migration is trusted.
 
 ## Handoff Log
 
@@ -60,6 +61,9 @@ Before broad command migration, the project must have:
 - Hardened local gates so `severity: "blocking"` and `blocking: true` conflicts are treated as migration blockers even if the AI omits `blocksMigration: true`.
 - Materialized the safe COMF1 no-op/spec approval candidate to `docs/ai-port/spec-drafts/COMF1.spec.md`.
 - Verified after materialization with `npx tsc --noEmit` and `npx ts-node tools/verify_foundation.ts`.
+- Added robust OpenRouter calls with transient retry, `max_tokens` expansion on length stops, validator-feedback repair loops, and model fallback routes.
+- Added grouped autopilot summary output with classification counts, commands by classification, gate reasons, validation issues, and slowest stages.
+- Re-ran COMF7 with retry/fallback routing; the pipeline completed as `draft-only` with only expected blocking-conflict warnings.
 
 ## Completion Scope
 
@@ -226,7 +230,7 @@ Goal: reduce the human bottleneck in repetitive command migration without allowi
 
 This milestone is separate from the already-completed training system readiness milestone. It is complete only when the AI flow can repeatedly produce mechanically reviewable reports, safe drafts, independent review, and local gate results for both already-migrated and not-yet-migrated commands.
 
-Progress: 75%
+Progress: 85%
 
 ### Completion Definition
 
@@ -255,9 +259,9 @@ The milestone reaches 100% when:
 - [x] AI-013: Run COMF7 as the first real not-yet-migrated command through report, draft, review, and gate.
 - [x] AI-014: Decide whether COMF7 output is safe executable draft, spec-only blocked draft, or report-only; record why.
 - [x] AI-015: Materialize one safe approval candidate in a controlled path, then run typecheck and foundation verification.
-- [ ] AI-016: Add a batch report summary that groups results by `approval-candidate`, `draft-only`, `report-only`, `blocked`, and `failed`.
+- [x] AI-016: Add a batch report summary that groups results by `approval-candidate`, `draft-only`, `report-only`, `blocked`, and `failed`.
 - [ ] AI-017: Benchmark the selected candidate models on the same sharded command set and choose default analyze/review models.
-- [ ] AI-018: Add retry/fallback policy for provider timeout, 503, malformed JSON, and `max_tokens` length failures.
+- [x] AI-018: Add retry/fallback policy for provider timeout, 503, malformed JSON, and `max_tokens` length failures.
 - [ ] AI-019: Run a small batch such as COMF7-9 and confirm every output is either approval-candidate, report-only, or explicitly blocked.
 - [ ] AI-020: Update `AI_PORT_AUTOPILOT.md` with the proven operating procedure and model route.
 
