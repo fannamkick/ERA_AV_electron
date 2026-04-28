@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "training-command-draft.schema.json",
+  "title": "Training Command Draft",
+  "type": "object",
+  "required": ["schemaVersion", "commandId", "sourceReport", "files", "requiredChecks", "unresolvedConflicts"],
+  "properties": {
+    "schemaVersion": { "const": "training-command-draft/v1" },
+    "commandId": { "type": "string" },
+    "sourceReport": { "type": "string" },
+    "files": { "type": "array" },
+    "requiredChecks": { "type": "array" },
+    "unresolvedConflicts": { "type": "array" }
+  },
+  "additionalProperties": true
+}

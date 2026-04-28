@@ -34,6 +34,14 @@ Before broad command migration, the project must have:
 - Remaining backlog is broad command/content parity, especially derived chain target effects for COM69, COM128, and COM133, plus executable legacy comparison once legacy sources are safe to run.
 - Last validation set passed: `npx tsc --noEmit`, `npx ts-node tools/verify_foundation.ts`, `npx ts-node tools/verify_content_ids.ts`, `npx ts-node tools/verify_training_pilot.ts`, `npx ts-node tools/verify_legacy_training_pilot.ts`, `npx vite build`, `npx tsc -p tsconfig.electron.json`.
 
+2026-04-28 AI-port automation:
+
+- Added the first `tools/ai-port` autopilot pipeline for OpenRouter-backed batch command migration.
+- The pipeline can analyze legacy evidence, synthesize draft file writes, request independent AI review, run local gate classification, and emit `approval-candidate` results.
+- `materialize` can write draft files only when the saved autopilot result is already classified as `approval-candidate`.
+- `blocked` and `design-ready` command families are prevented from becoming automatic approval candidates.
+- OpenRouter credentials are environment-only via `OPENROUTER_API_KEY`; generated artifacts are ignored under `artifacts/`.
+
 ## Completion Scope
 
 This `100%` does not mean every legacy training command has been ported.

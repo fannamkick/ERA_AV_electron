@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "training-worker-report.schema.json",
+  "title": "Training Worker Report",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "command",
+    "category",
+    "canonicalDecision",
+    "availability",
+    "sourceFormula",
+    "sideEffects",
+    "chainRemap",
+    "engineGaps",
+    "validationScenarios"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "training-worker-report/v1" },
+    "command": {
+      "type": "object",
+      "required": ["id", "originalId"],
+      "properties": {
+        "id": { "type": "string" },
+        "originalId": { "type": "number" },
+        "name": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": true
+}
