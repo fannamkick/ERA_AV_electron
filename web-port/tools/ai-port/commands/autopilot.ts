@@ -191,6 +191,23 @@ function mergeShardReport(
     if (shard.sourceFormula) report.sourceFormula = shard.sourceFormula;
     if (shard.sideEffects) report.sideEffects = shard.sideEffects;
     if (shard.chainRemap) report.chainRemap = shard.chainRemap;
+    if ((shard.unresolvedConflicts?.length ?? 0) > 0) {
+      if (shard.area === 'availability') {
+        report.availability.unresolvedConflicts.push(...(shard.unresolvedConflicts ?? []));
+      } else if (shard.area === 'sourceFormula') {
+        report.sourceFormula.unresolvedConflicts.push(...(shard.unresolvedConflicts ?? []));
+      } else if (shard.area === 'sideEffects') {
+        const sideEffects = report.sideEffects as typeof report.sideEffects & { unresolvedConflicts?: unknown[] };
+        sideEffects.unresolvedConflicts = [
+          ...(sideEffects.unresolvedConflicts ?? []),
+          ...(shard.unresolvedConflicts ?? []),
+        ];
+      } else {
+        report.notes?.push(...(shard.unresolvedConflicts ?? []).map((conflict) =>
+          `${shard.area}: unresolved conflict not tied to a report conflict array: ${JSON.stringify(conflict)}`,
+        ));
+      }
+    }
     if (shard.engineGaps) {
       report.engineGaps = {
         conditionPredicatesNeeded: uniqueStrings([

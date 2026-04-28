@@ -5,6 +5,15 @@ Task: produce one `training-worker-report-shard/v1` for area `sideEffects`.
 Output exactly these top-level keys:
 `schemaVersion`, `command`, `area`, `checklist`, `canonicalDecision`, `sideEffects`, `chainRemap`, `validationScenarios`, `unresolvedConflicts`, `notes`.
 
+Output invariants:
+- Do not add any top-level keys outside the exact list above.
+- Every `checklist.completed` and `checklist.missing` item must be one of the required checklist ids below.
+- Do not put the same checklist id in both `completed` and `missing`.
+- `checklist.conflictsRecorded` is for conflict ids or required checklist ids that were resolved by recording a conflict.
+- Every conflict object must include at least `id`, `description`, `severity`, and `blocksMigration`.
+- Use `"blocksMigration": true` for BASE/LOSEBASE conflicts, missing EXP/FLAG/stain effects, phase-order uncertainty, unsafe canonical decisions, or any conflict that prevents executable code.
+- Use `"blocksMigration": false` only for historical/non-blocking differences that current implementation already covers.
+
 Required checklist ids. Copy every id into either `checklist.completed` or `checklist.missing`:
 - `identity.command-id-checked`
 - `identity.original-id-checked`
@@ -40,6 +49,7 @@ Rules:
 - If no command-specific chain remap exists, set `chainRemap.dependencies` to [] and explain in `notes`.
 - Even when no command-specific chain remap exists, put `effects.chain-remap-checked` in `checklist.completed`.
 - If generated and improved disagree on BASE vs LOSEBASE, record a conflict and mark `effects.base-vs-losebase-conflict-recorded` completed.
+- If any side-effect conflict exists, put it in top-level `unresolvedConflicts[]`; `sideEffects` itself only contains `effects`, `postEffects`, and `messages`.
 
 JSON shape:
 {

@@ -5,6 +5,15 @@ Task: produce one `training-worker-report-shard/v1` for area `engineGaps`.
 Output exactly these top-level keys:
 `schemaVersion`, `command`, `area`, `checklist`, `canonicalDecision`, `engineGaps`, `validationScenarios`, `unresolvedConflicts`, `notes`.
 
+Output invariants:
+- Do not add any top-level keys outside the exact list above.
+- Every `checklist.completed` and `checklist.missing` item must be one of the required checklist ids below.
+- Do not put the same checklist id in both `completed` and `missing`.
+- `checklist.conflictsRecorded` is for conflict ids or required checklist ids that were resolved by recording a conflict.
+- Every conflict object must include at least `id`, `description`, `severity`, and `blocksMigration`.
+- Use `"blocksMigration": true` when a missing engine/domain/schema helper prevents safe executable code.
+- Use `"blocksMigration": false` for implementation notes that do not require a new helper.
+
 Required checklist ids. Copy every id into either `checklist.completed` or `checklist.missing`:
 - `identity.command-id-checked`
 - `identity.original-id-checked`
@@ -27,6 +36,7 @@ Rules:
 - `canonicalDecision` should usually be `{}` for this shard unless a readiness document is cited.
 - Do not repeat all command behavior. List only gaps needed to implement this command safely.
 - If readiness evidence says the family is `design-ready` or `blocked`, list concrete blockers in `notes[]` and mark `gaps.design-ready-blockers-listed` completed.
+- If readiness evidence says `design-ready` but no engine helper is missing, keep gap arrays empty and explain that the blocker is canonical/content resolution, not engine support.
 - If no gap is needed in a category, leave that array empty and explain briefly in `notes[]`.
 - Do not claim no gaps just because a legacy file implements behavior directly.
 

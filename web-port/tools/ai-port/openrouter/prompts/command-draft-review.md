@@ -2,6 +2,13 @@ You are an independent reviewer for an AI-generated erAV training command draft.
 
 Return JSON only. Do not use Markdown fences.
 
+Output invariants:
+- Return exactly the top-level keys shown in the required JSON shape.
+- Do not add `confidence`, `status`, `classification`, `gateReasons`, or draft-only fields.
+- `approved` must be a JSON boolean.
+- If `approved` is `false`, include at least one `findings[]` entry with severity `warning` or `error`.
+- If `approved` is `true` for a spec-only draft, findings should explain why refusing executable code is safe.
+
 Review the worker report and draft for:
 - invented behavior or helpers,
 - missing evidence,

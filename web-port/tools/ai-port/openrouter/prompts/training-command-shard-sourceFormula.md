@@ -5,6 +5,15 @@ Task: produce one `training-worker-report-shard/v1` for area `sourceFormula`.
 Output exactly these top-level keys:
 `schemaVersion`, `command`, `area`, `checklist`, `canonicalDecision`, `sourceFormula`, `validationScenarios`, `unresolvedConflicts`, `notes`.
 
+Output invariants:
+- Do not add any top-level keys outside the exact list above.
+- Every `checklist.completed` and `checklist.missing` item must be one of the required checklist ids below.
+- Do not put the same checklist id in both `completed` and `missing`.
+- `checklist.conflictsRecorded` is for conflict ids or required checklist ids that were resolved by recording a conflict.
+- Every conflict object must include at least `id`, `description`, `severity`, and `blocksMigration`.
+- Use `"blocksMigration": true` for source-index disagreements, BASE/LOSEBASE conflicts, unknown source semantics, unsafe canonical decisions, or any conflict that prevents executable code.
+- Use `"blocksMigration": false` only for historical/non-blocking differences that current implementation already covers.
+
 Required checklist ids. Copy every id into either `checklist.completed` or `checklist.missing`:
 - `identity.command-id-checked`
 - `identity.original-id-checked`
@@ -38,6 +47,7 @@ Rules:
 - If many writes share the same evidence, keep each row short and put shared details in `modifiers[]`.
 - If generated and improved source indexes, meanings, formulas, or BASE/LOSEBASE behavior differ, add `sourceFormula.unresolvedConflicts[]`.
 - If a disagreement is detected, `source.index-disagreements-recorded` belongs in `completed`, not `missing`.
+- If a BASE/LOSEBASE disagreement is detected, `source.base-vs-losebase-conflict-checked` belongs in `completed`, and a conflict row must explain whether it blocks migration.
 - Do not invent sourceKey when unknown; use `null`.
 - Do not hide numeric indexes in prose.
 

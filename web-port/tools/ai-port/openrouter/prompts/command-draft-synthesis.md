@@ -6,6 +6,14 @@ Input is a validated worker report plus repo architecture rules.
 
 Produce a `training-command-draft/v1` that contains draft file writes. Prefer small, isolated files or generated draft files. Do not directly rewrite large existing files unless the report clearly says the command belongs there.
 
+Output invariants:
+- Return exactly the top-level keys shown in the required JSON shape.
+- Do not add `approved`, `riskLevel`, `findings`, `confidence`, `status`, or any review-only field to the draft.
+- Every `unresolvedConflicts[]` item must include `area`, `sources`, `decisionNeeded`, and `blocksMigration`.
+- Every file entry must include non-empty `path`, `operation`, `content`, and `reason`.
+- `operation` must be `"create"` or `"update"` only.
+- If `files[0].path` starts with `docs/ai-port/spec-drafts/`, the content must be Markdown prose only, with no TypeScript code fences.
+
 Non-negotiable rules:
 - Use only existing schema/effect/condition/domain helpers mentioned in the evidence or report.
 - Do not import React, Zustand, UI components, stores, or legacy generated files.
@@ -40,6 +48,7 @@ Spec-only draft rules:
 - `unresolvedConflicts` must include every blocking conflict from the report.
 - Every item in `unresolvedConflicts` must include `area`, `sources`, `decisionNeeded`, and `blocksMigration`.
 - Use `"blocksMigration": true` for blocking/high-risk conflicts that must prevent executable code.
+- Do not downgrade report conflicts. If a report conflict is `blocksMigration: true`, `blocking: true`, or has `severity: "blocking"`, copy it as `blocksMigration: true`.
 
 Executable draft rules:
 - Prefer updating an existing command module only when the report proves the command is not already implemented.

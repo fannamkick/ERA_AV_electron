@@ -5,6 +5,15 @@ Task: produce one `training-worker-report-shard/v1` for area `availability`.
 Output exactly these top-level keys:
 `schemaVersion`, `command`, `area`, `checklist`, `canonicalDecision`, `availability`, `validationScenarios`, `unresolvedConflicts`, `notes`.
 
+Output invariants:
+- Do not add any top-level keys outside the exact list above.
+- Every `checklist.completed` and `checklist.missing` item must be one of the required checklist ids below.
+- Do not put the same checklist id in both `completed` and `missing`.
+- `checklist.conflictsRecorded` is for conflict ids or required checklist ids that were resolved by recording a conflict.
+- Every conflict object must include at least `id`, `description`, `severity`, and `blocksMigration`.
+- Use `"blocksMigration": true` for blocking, blocker, unsafe, unresolved canonical, or implementation-preventing conflicts.
+- Use `"blocksMigration": false` only for historical/non-blocking differences that do not prevent a spec or implementation decision.
+
 Required checklist ids. Copy every id into either `checklist.completed` or `checklist.missing`:
 - `identity.command-id-checked`
 - `identity.original-id-checked`
@@ -37,6 +46,7 @@ Rules:
 - Compare central `COM_ABLE<number>`, commandAvailability entry, and command-local availability if present.
 - If any source differs, add an entry to `availability.unresolvedConflicts[]` and copy its short id into `checklist.conflictsRecorded`.
 - If `checklist.conflictsRecorded` contains a required checklist id, it is still best to also include that id in `checklist.completed`.
+- If no command-local availability evidence exists, mark `availability.command-local-availability-checked` completed and explain "absent evidence" in `notes[]`; do not omit the checklist id.
 - If evidence for a required check is absent, put that checklist id in `missing` and explain in `notes`.
 
 JSON shape:
