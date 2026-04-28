@@ -39,8 +39,8 @@ function parseArgs(argv: string[]): ParsedArgs {
 
 function usage(): void {
   console.log(`Usage:
-  ts-node tools/ai-port/cli.ts analyze --command COMF7 --out artifacts/ai-port/COMF7.report.json --model <openrouter-model>
-  ts-node tools/ai-port/cli.ts autopilot --range COMF7-19 --concurrency 5 --model <openrouter-model>
+  ts-node tools/ai-port/cli.ts analyze --command COMF7 --out artifacts/ai-port/COMF7.report.json --model <openrouter-model> [--full-evidence]
+  ts-node tools/ai-port/cli.ts autopilot --range COMF7-19 --out-dir artifacts/ai-port --concurrency 5 --model <openrouter-model> [--full-evidence]
   ts-node tools/ai-port/cli.ts validate <artifact.json>
   ts-node tools/ai-port/cli.ts gate <report.json> [--draft draft.json] [--review review.json]
   ts-node tools/ai-port/cli.ts materialize artifacts/ai-port/COMF7/COMF7.result.json
@@ -108,7 +108,14 @@ async function main(): Promise<void> {
     const model = requireString(flagString(args, 'model', process.env.OPENROUTER_MODEL), '--model or OPENROUTER_MODEL is required.');
     const commandId = requireString(flagString(args, 'command', args.positionals[0]), '--command or positional command id is required.');
     const outPath = path.resolve(root, flagString(args, 'out', args.positionals[1] ?? `artifacts/ai-port/${commandId}.report.json`) ?? '');
-    const report = await analyzeCommand({ webPortRoot: root, commandId, outPath, apiKey, model });
+    const report = await analyzeCommand({
+      webPortRoot: root,
+      commandId,
+      outPath,
+      apiKey,
+      model,
+      evidenceMode: args.flags['full-evidence'] === true ? 'full' : 'sliced',
+    });
     console.log(JSON.stringify({ ok: true, outPath, command: report.command }, null, 2));
     return;
   }
@@ -120,10 +127,11 @@ async function main(): Promise<void> {
     const range = flagString(args, 'range');
     const commandId = flagString(args, 'command', args.positionals[0]);
     const commands = range ? expandCommandRange(range) : [requireString(commandId, '--command or --range is required.')];
-    const outDir = path.resolve(root, flagString(args, 'out-dir', 'artifacts/ai-port') ?? '');
+    const outDir = path.resolve(root, flagString(args, 'out-dir', flagString(args, 'out', 'artifacts/ai-port')) ?? '');
     const concurrency = Number(flagString(args, 'concurrency', '3'));
     const synthesize = args.flags['no-synthesize'] !== true;
     const review = args.flags['no-review'] !== true;
+    const evidenceMode = args.flags['full-evidence'] === true ? 'full' : 'sliced';
 
     const results = await runWithConcurrency(commands, Number.isFinite(concurrency) ? concurrency : 3, (id) =>
       runAutopilotForCommand({
@@ -135,6 +143,7 @@ async function main(): Promise<void> {
         reviewModel,
         synthesize,
         review,
+        evidenceMode,
       }),
     );
 

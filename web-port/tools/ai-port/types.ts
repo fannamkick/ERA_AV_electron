@@ -107,6 +107,27 @@ export interface ValidationResult {
   warnings: string[];
 }
 
+export interface AiPortTiming {
+  stage: string;
+  title?: string;
+  model: string;
+  ok: boolean;
+  requestChars: number;
+  responseChars?: number;
+  contentChars?: number;
+  fetchMs: number;
+  responseParseMs?: number;
+  contentParseMs?: number;
+  totalMs: number;
+  finishReason?: string;
+  nativeFinishReason?: string;
+  promptTokens?: number;
+  completionTokens?: number;
+  reasoningTokens?: number;
+  totalTokens?: number;
+  error?: string;
+}
+
 export interface AutopilotResult {
   schemaVersion: 'ai-port-autopilot-result/v1';
   commandId: string;
@@ -117,16 +138,23 @@ export interface AutopilotResult {
   reviewPath?: string;
   localValidation: ValidationResult;
   gateReasons: string[];
+  timings?: AiPortTiming[];
 }
 
 export interface EvidenceFile {
   path: string;
   content: string;
   truncated: boolean;
+  originalPath?: string;
+  range?: {
+    startLine: number;
+    endLine: number;
+  };
 }
 
 export interface EvidenceBundle {
   commandId: string;
   commandNumber: number;
+  mode?: 'full' | 'sliced';
   files: EvidenceFile[];
 }

@@ -48,6 +48,12 @@ Run a single command:
 npm run ai-port -- autopilot --command COMF7
 ```
 
+By default, the CLI uses sliced evidence: command-local files plus command-specific blocks from shared legacy files. Use `--full-evidence` only for diagnosis when the slicer may have omitted relevant context.
+
+```powershell
+npm run ai-port -- autopilot --command COMF7 --full-evidence
+```
+
 Validate an artifact without network access:
 
 ```powershell
@@ -86,6 +92,28 @@ The local validator warns when:
 - unresolved conflicts block migration.
 
 These warnings do not always mean the report is useless. They mean the result must not be materialized automatically.
+
+## Evidence Slicing
+
+The autopilot should not send broad legacy files wholesale. Local extraction reduces the model's job from search plus analysis to analysis only.
+
+For a command such as `COMF7`, sliced evidence includes:
+
+- the command-specific generated/improved files;
+- the matching `COM_ABLE<number>` block from `availability.ts`;
+- the matching `COMMAND_AVAILABLE[number]` block from `commandAvailability.ts`;
+- the source-index mapping excerpt from `SourceCheck.ts`;
+- short readiness/canonical-source excerpts;
+- a synthetic note when no command-specific chain remap evidence is found.
+
+Full evidence remains available through `--full-evidence`, but it is slower and more expensive.
+
+Recent COMF7 measurement:
+
+- full evidence: about `118k` request chars, `33k-35k` prompt tokens;
+- sliced evidence: about `29k` request chars, `8.8k-9.4k` prompt tokens.
+
+This reduces input size substantially, but model/provider latency can still dominate. The next optimization is responsibility-split analysis: availability/source/side-effects/gaps in parallel, followed by a compact merge.
 
 ## Current Limits
 

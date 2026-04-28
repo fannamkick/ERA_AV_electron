@@ -1,8 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { loadEvidenceBundle, formatEvidenceForPrompt, parseCommandId } from '../adapters/legacyEvidenceLoader';
+import {
+  loadEvidenceBundle,
+  formatEvidenceForPrompt,
+  parseCommandId,
+  type EvidenceMode,
+} from '../adapters/legacyEvidenceLoader';
 import { callOpenRouterJson } from '../openrouter/client';
-import type { AiReview, AutopilotResult, CommandDraft, WorkerReport } from '../types';
+import type { AiPortTiming, AiReview, AutopilotResult, CommandDraft, WorkerReport } from '../types';
 import { classifyAutopilotResult } from '../validators/gateValidator';
 import { validateAiReview, validateCommandDraft, validateWorkerReport } from '../validators/reportValidator';
 
@@ -36,6 +41,7 @@ export interface AutopilotOptions {
   synthesize: boolean;
   review: boolean;
   maxCharsPerFile?: number;
+  evidenceMode?: EvidenceMode;
 }
 
 export async function runAutopilotForCommand(options: AutopilotOptions): Promise<AutopilotResult> {
@@ -45,7 +51,16 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
   const draftPath = path.join(commandDir, `${parsed.normalized}.draft.json`);
   const reviewPath = path.join(commandDir, `${parsed.normalized}.review.json`);
   const resultPath = path.join(commandDir, `${parsed.normalized}.result.json`);
-  const bundle = loadEvidenceBundle(options.webPortRoot, parsed.normalized, options.maxCharsPerFile);
+  const bundle = loadEvidenceBundle(
+    options.webPortRoot,
+    parsed.normalized,
+    options.maxCharsPerFile,
+    options.evidenceMode,
+  );
+  const timings: AiPortTiming[] = [];
+  const onTiming = (timing: AiPortTiming): void => {
+    timings.push(timing);
+  };
 
   const analysisPrompt = readPrompt(options.webPortRoot, 'training-command-analysis.md');
   const report = await callOpenRouterJson<WorkerReport>([
@@ -63,6 +78,8 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     apiKey: options.apiKey,
     model: options.model,
     title: `ai-port analyze ${bundle.commandId}`,
+    stage: 'analyze',
+    onTiming,
   });
   writeJson(reportPath, report);
 
@@ -88,6 +105,8 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       apiKey: options.apiKey,
       model: options.model,
       title: `ai-port synthesize ${bundle.commandId}`,
+      stage: 'synthesize',
+      onTiming,
     });
     draft.sourceReport = reportPath.replace(/\\/g, '/');
     writeJson(draftPath, draft);
@@ -106,6 +125,8 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       apiKey: options.apiKey,
       model: options.reviewModel ?? options.model,
       title: `ai-port review ${bundle.commandId}`,
+      stage: 'review',
+      onTiming,
     });
     writeJson(reviewPath, aiReview);
     reviewValidation = validateAiReview(aiReview);
@@ -130,6 +151,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
     reviewPath: aiReview ? reviewPath.replace(/\\/g, '/') : undefined,
     localValidation: classified.localValidation,
     gateReasons: classified.gateReasons,
+    timings,
   };
   writeJson(resultPath, result);
   return result;

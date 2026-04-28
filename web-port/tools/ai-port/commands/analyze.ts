@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { loadEvidenceBundle, formatEvidenceForPrompt } from '../adapters/legacyEvidenceLoader';
+import { loadEvidenceBundle, formatEvidenceForPrompt, type EvidenceMode } from '../adapters/legacyEvidenceLoader';
 import { callOpenRouterJson } from '../openrouter/client';
 import type { WorkerReport } from '../types';
 import { validateWorkerReport } from '../validators/reportValidator';
@@ -16,10 +16,16 @@ export interface AnalyzeOptions {
   apiKey: string;
   model: string;
   maxCharsPerFile?: number;
+  evidenceMode?: EvidenceMode;
 }
 
 export async function analyzeCommand(options: AnalyzeOptions): Promise<WorkerReport> {
-  const bundle = loadEvidenceBundle(options.webPortRoot, options.commandId, options.maxCharsPerFile);
+  const bundle = loadEvidenceBundle(
+    options.webPortRoot,
+    options.commandId,
+    options.maxCharsPerFile,
+    options.evidenceMode,
+  );
   const system = readPrompt(options.webPortRoot, 'training-command-analysis.md');
   const user = [
     `Command: ${bundle.commandId}`,
