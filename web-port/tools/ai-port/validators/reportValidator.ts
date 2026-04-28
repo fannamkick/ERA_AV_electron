@@ -1,6 +1,7 @@
 import type {
   AiReview,
   CommandDraft,
+  LegacyReference,
   ValidationResult,
   WorkerConflict,
   WorkerReport,
@@ -16,6 +17,42 @@ function pushIfMissing(errors: string[], condition: unknown, message: string): v
 
 function hasBlockingConflict(conflicts: readonly WorkerConflict[] | undefined): boolean {
   return (conflicts ?? []).some((conflict) => conflict.blocksMigration);
+}
+
+function collectConflicts(report: Partial<WorkerReport>): WorkerConflict[] {
+  return [
+    ...(report.availability?.unresolvedConflicts ?? []),
+    ...(report.sourceFormula?.unresolvedConflicts ?? []),
+    ...(report.chainRemap?.unresolvedConflicts ?? []),
+  ];
+}
+
+function includesGeneratedAndImproved(report: Partial<WorkerReport>): boolean {
+  const refs = Object.values(report.canonicalDecision ?? {})
+    .filter((ref): ref is LegacyReference => Boolean(ref));
+  const canonicalFiles = refs
+    .filter((ref) => ref.confidence === 'canonical' && typeof ref.file === 'string')
+    .map((ref) => String(ref.file));
+  return canonicalFiles.some((file) => file.includes('/commands/commands/') || file.includes('\\commands\\commands\\')) &&
+    canonicalFiles.some((file) => file.includes('/commands/improved/') || file.includes('\\commands\\improved\\'));
+}
+
+function reportHasConcreteSourceEvidence(report: Partial<WorkerReport>): boolean {
+  const writes = report.sourceFormula?.writes ?? [];
+  if (writes.length === 0) return true;
+  return writes.every((write) => {
+    if (!isObject(write)) return false;
+    if (typeof write.sourceIndex !== 'number') return false;
+    const evidence = write.evidence;
+    if (!isObject(evidence)) return false;
+    return typeof evidence.file === 'string' && typeof evidence.symbol === 'string';
+  });
+}
+
+function hasVagueExpectedValues(report: Partial<WorkerReport>): boolean {
+  return JSON.stringify(report.validationScenarios ?? []).match(
+    /calculated with modifiers|source values calculated|effects? gained|shown/i,
+  ) !== null;
 }
 
 export function validateWorkerReport(value: unknown): ValidationResult {
@@ -42,14 +79,22 @@ export function validateWorkerReport(value: unknown): ValidationResult {
   pushIfMissing(errors, Array.isArray(value.validationScenarios), 'Missing validationScenarios array.');
 
   const report = value as Partial<WorkerReport>;
-  const conflicts = [
-    ...(report.availability?.unresolvedConflicts ?? []),
-    ...(report.sourceFormula?.unresolvedConflicts ?? []),
-    ...(report.chainRemap?.unresolvedConflicts ?? []),
-  ];
+  const conflicts = collectConflicts(report);
 
   if (hasBlockingConflict(conflicts)) {
     warnings.push('Report contains blocking unresolved conflicts.');
+  }
+
+  if (includesGeneratedAndImproved(report) && conflicts.length === 0) {
+    warnings.push('Report marks generated and improved sources as canonical without recording a conflict.');
+  }
+
+  if (!reportHasConcreteSourceEvidence(report)) {
+    warnings.push('One or more source writes lack concrete sourceIndex/evidence metadata.');
+  }
+
+  if (hasVagueExpectedValues(report)) {
+    warnings.push('Validation scenarios contain vague expected values instead of concrete deltas.');
   }
 
   if ((report.validationScenarios?.length ?? 0) < 2) {

@@ -74,6 +74,19 @@ npm run ai-port -- materialize artifacts/ai-port/COMF7/COMF7.result.json
 - `blocked`: family readiness or unresolved conflicts block implementation.
 - `failed`: schema or local validation failed.
 
+## Report Quality Gate
+
+The analysis prompt is checklist-driven. A worker report should not simply summarize a command; it must separate evidence, conflicts, source writes, engine gaps, and validation scenarios.
+
+The local validator warns when:
+
+- generated and improved sources are both treated as canonical without an explicit conflict;
+- source writes omit concrete `sourceIndex` or evidence metadata;
+- validation scenarios use vague expected values instead of concrete deltas;
+- unresolved conflicts block migration.
+
+These warnings do not always mean the report is useless. They mean the result must not be materialized automatically.
+
 ## Current Limits
 
 - The first version generates approval candidates; it does not auto-commit.
