@@ -106,8 +106,8 @@ async function main(): Promise<void> {
   if (args.command === 'analyze') {
     const apiKey = requireString(process.env.OPENROUTER_API_KEY, 'OPENROUTER_API_KEY is required.');
     const model = requireString(flagString(args, 'model', process.env.OPENROUTER_MODEL), '--model or OPENROUTER_MODEL is required.');
-    const commandId = requireString(flagString(args, 'command'), '--command is required.');
-    const outPath = path.resolve(root, flagString(args, 'out', `artifacts/ai-port/${commandId}.report.json`) ?? '');
+    const commandId = requireString(flagString(args, 'command', args.positionals[0]), '--command or positional command id is required.');
+    const outPath = path.resolve(root, flagString(args, 'out', args.positionals[1] ?? `artifacts/ai-port/${commandId}.report.json`) ?? '');
     const report = await analyzeCommand({ webPortRoot: root, commandId, outPath, apiKey, model });
     console.log(JSON.stringify({ ok: true, outPath, command: report.command }, null, 2));
     return;
@@ -118,7 +118,7 @@ async function main(): Promise<void> {
     const model = requireString(flagString(args, 'model', process.env.OPENROUTER_MODEL), '--model or OPENROUTER_MODEL is required.');
     const reviewModel = flagString(args, 'review-model', process.env.OPENROUTER_REVIEW_MODEL);
     const range = flagString(args, 'range');
-    const commandId = flagString(args, 'command');
+    const commandId = flagString(args, 'command', args.positionals[0]);
     const commands = range ? expandCommandRange(range) : [requireString(commandId, '--command or --range is required.')];
     const outDir = path.resolve(root, flagString(args, 'out-dir', 'artifacts/ai-port') ?? '');
     const concurrency = Number(flagString(args, 'concurrency', '3'));
