@@ -71,6 +71,27 @@ export interface WorkerReport {
   notes?: string[];
 }
 
+export type WorkerReportShardArea = 'availability' | 'sourceFormula' | 'sideEffects' | 'engineGaps';
+
+export interface WorkerReportShard {
+  schemaVersion: 'training-worker-report-shard/v1';
+  command: {
+    id: string;
+    originalId: number;
+    name?: string;
+  };
+  area: WorkerReportShardArea;
+  canonicalDecision?: Partial<WorkerReport['canonicalDecision']>;
+  availability?: WorkerReport['availability'];
+  sourceFormula?: WorkerReport['sourceFormula'];
+  sideEffects?: WorkerReport['sideEffects'];
+  chainRemap?: WorkerReport['chainRemap'];
+  engineGaps?: WorkerReport['engineGaps'];
+  validationScenarios?: JsonValue[];
+  unresolvedConflicts?: WorkerConflict[];
+  notes?: string[];
+}
+
 export interface DraftFile {
   path: string;
   operation: 'create' | 'update';

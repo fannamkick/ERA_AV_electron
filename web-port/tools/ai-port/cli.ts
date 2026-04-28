@@ -40,7 +40,7 @@ function parseArgs(argv: string[]): ParsedArgs {
 function usage(): void {
   console.log(`Usage:
   ts-node tools/ai-port/cli.ts analyze --command COMF7 --out artifacts/ai-port/COMF7.report.json --model <openrouter-model> [--full-evidence]
-  ts-node tools/ai-port/cli.ts autopilot --range COMF7-19 --out-dir artifacts/ai-port --concurrency 5 --model <openrouter-model> [--full-evidence]
+  ts-node tools/ai-port/cli.ts autopilot --range COMF7-19 --out-dir artifacts/ai-port --concurrency 5 --model <openrouter-model> [--full-evidence] [--sharded-analysis]
   ts-node tools/ai-port/cli.ts validate <artifact.json>
   ts-node tools/ai-port/cli.ts gate <report.json> [--draft draft.json] [--review review.json]
   ts-node tools/ai-port/cli.ts materialize artifacts/ai-port/COMF7/COMF7.result.json
@@ -144,6 +144,7 @@ async function main(): Promise<void> {
         synthesize,
         review,
         evidenceMode,
+        shardedAnalysis: args.flags['sharded-analysis'] === true,
       }),
     );
 

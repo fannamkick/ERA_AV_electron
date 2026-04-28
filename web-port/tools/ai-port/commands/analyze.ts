@@ -41,6 +41,14 @@ export async function analyzeCommand(options: AnalyzeOptions): Promise<WorkerRep
     apiKey: options.apiKey,
     model: options.model,
     title: `ai-port analyze ${bundle.commandId}`,
+    stage: 'analyze',
+    maxTokens: 6000,
+    timeoutMs: 150000,
+    cache: true,
+    providerSort: 'throughput',
+    requireParameters: true,
+    reasoningMaxTokens: 512,
+    excludeReasoning: true,
   });
 
   const validation = validateWorkerReport(report);

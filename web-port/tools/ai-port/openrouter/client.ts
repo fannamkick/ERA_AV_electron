@@ -7,6 +7,13 @@ export interface OpenRouterOptions {
   maxTokens?: number;
   title?: string;
   stage?: string;
+  timeoutMs?: number;
+  cache?: boolean;
+  providerSort?: 'price' | 'throughput' | 'latency';
+  requireParameters?: boolean;
+  reasoningEffort?: 'xhigh' | 'high' | 'medium' | 'low' | 'minimal' | 'none';
+  reasoningMaxTokens?: number;
+  excludeReasoning?: boolean;
   onTiming?: (timing: AiPortTiming) => void;
 }
 
@@ -46,12 +53,23 @@ export async function callOpenRouterJson<T>(
   messages: ChatMessage[],
   options: OpenRouterOptions,
 ): Promise<T> {
+  const reasoning: Record<string, unknown> = {};
+  if (options.reasoningEffort) reasoning.effort = options.reasoningEffort;
+  if (typeof options.reasoningMaxTokens === 'number') reasoning.max_tokens = options.reasoningMaxTokens;
+  if (options.excludeReasoning !== false) reasoning.exclude = true;
+
+  const provider: Record<string, unknown> = {};
+  if (options.providerSort) provider.sort = options.providerSort;
+  if (typeof options.requireParameters === 'boolean') provider.require_parameters = options.requireParameters;
+
   const requestBody = JSON.stringify({
     model: options.model,
     messages,
     temperature: options.temperature ?? 0.1,
     max_tokens: options.maxTokens ?? 12000,
     response_format: { type: 'json_object' },
+    ...(Object.keys(reasoning).length > 0 ? { reasoning } : {}),
+    ...(Object.keys(provider).length > 0 ? { provider } : {}),
   });
   const startedAt = Date.now();
   let fetchMs = 0;
@@ -60,6 +78,12 @@ export async function callOpenRouterJson<T>(
   let responseChars: number | undefined;
   let contentChars: number | undefined;
   let payload: Record<string, unknown> | undefined;
+  let finishReason: string | undefined;
+  let nativeFinishReason: string | undefined;
+  const controller = new AbortController();
+  const timeout = options.timeoutMs
+    ? setTimeout(() => controller.abort(new Error(`OpenRouter request timed out after ${options.timeoutMs}ms.`)), options.timeoutMs)
+    : undefined;
 
   try {
     const fetchStartedAt = Date.now();
@@ -69,8 +93,10 @@ export async function callOpenRouterJson<T>(
         Authorization: `Bearer ${options.apiKey}`,
         'Content-Type': 'application/json',
         'X-Title': options.title ?? 'erAV training ai-port',
+        ...(options.cache ? { 'X-OpenRouter-Cache': 'true' } : {}),
       },
       body: requestBody,
+      signal: controller.signal,
     });
     const rawResponse = await response.text();
     fetchMs = Date.now() - fetchStartedAt;
@@ -93,11 +119,14 @@ export async function callOpenRouterJson<T>(
 
     const firstChoice = choices[0];
     assertJsonObject(firstChoice);
-    const finishReason = stringField(firstChoice, 'finish_reason');
-    const nativeFinishReason = stringField(firstChoice, 'native_finish_reason');
+    finishReason = stringField(firstChoice, 'finish_reason');
+    nativeFinishReason = stringField(firstChoice, 'native_finish_reason');
     const message = firstChoice.message;
     assertJsonObject(message);
     const content = message.content;
+    if (finishReason === 'length' || nativeFinishReason === 'length') {
+      throw new Error('OpenRouter response stopped because max_tokens was reached.');
+    }
     if (typeof content !== 'string') {
       throw new Error('OpenRouter response content was not a string.');
     }
@@ -139,12 +168,17 @@ export async function callOpenRouterJson<T>(
       responseParseMs,
       contentParseMs,
       totalMs: Date.now() - startedAt,
+      finishReason,
+      nativeFinishReason,
       error: error instanceof Error ? error.message : String(error),
       promptTokens: payload ? numericUsage(payload, 'prompt_tokens') : undefined,
       completionTokens: payload ? numericUsage(payload, 'completion_tokens') : undefined,
+      reasoningTokens: payload ? numericCompletionTokenDetail(payload, 'reasoning_tokens') : undefined,
       totalTokens: payload ? numericUsage(payload, 'total_tokens') : undefined,
     });
     throw error;
+  } finally {
+    if (timeout) clearTimeout(timeout);
   }
 }
 

@@ -115,6 +115,30 @@ Recent COMF7 measurement:
 
 This reduces input size substantially, but model/provider latency can still dominate. The next optimization is responsibility-split analysis: availability/source/side-effects/gaps in parallel, followed by a compact merge.
 
+## Sharded Analysis
+
+`--sharded-analysis` splits analysis into four parallel OpenRouter calls:
+
+- `availability`;
+- `sourceFormula`;
+- `sideEffects`;
+- `engineGaps`.
+
+Each shard receives only the evidence relevant to its responsibility, then the local tool merges the shard outputs into the existing worker-report shape.
+
+```powershell
+npm run ai-port -- autopilot --command COMF7 --no-synthesize --no-review --sharded-analysis
+```
+
+Recent COMF7 measurement after slicing plus sharding:
+
+- `deepseek/deepseek-v3.2`: about 49 seconds wall time, with the slowest shard at about 44 seconds;
+- `minimax/minimax-m2.7`: about 34 seconds wall time, with cache hits on several shards and the slowest non-cached shard at about 30 seconds;
+- `deepseek/deepseek-v4-pro`: provider returned 503 during the benchmark;
+- `z-ai/glm-5.1` and `moonshotai/kimi-k2.6`: still hit `max_tokens` length limits in this shape.
+
+Sharding improves speed, but shard prompts and merge validation are stricter requirements than single-report analysis. Treat sharded output as an optimization path, not as approval-candidate quality until conflict detection parity is proven.
+
 ## Current Limits
 
 - The first version generates approval candidates; it does not auto-commit.
