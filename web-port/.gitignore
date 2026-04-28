@@ -13,6 +13,8 @@ dist-electron
 dist-ssr
 artifacts/
 *.local
+.env
+.env.local
 
 # Editor directories and files
 .vscode/*

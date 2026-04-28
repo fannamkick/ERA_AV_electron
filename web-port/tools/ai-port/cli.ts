@@ -5,6 +5,7 @@ import { analyzeCommand } from './commands/analyze';
 import { expandCommandRange, runAutopilotForCommand, runWithConcurrency } from './commands/autopilot';
 import { materializeApprovalCandidate } from './commands/materialize';
 import { validateArtifact, validateReportDraftReview } from './commands/validate';
+import { loadLocalEnv } from './env';
 
 interface ParsedArgs {
   command: string;
@@ -67,6 +68,7 @@ function webPortRoot(): string {
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   const root = webPortRoot();
+  const loadedEnvFiles = loadLocalEnv(root);
 
   if (args.command === 'help' || args.command === '--help' || args.command === '-h') {
     usage();
@@ -139,6 +141,7 @@ async function main(): Promise<void> {
     console.log(JSON.stringify({
       ok: true,
       outDir,
+      loadedEnvFiles,
       summary: results.reduce<Record<string, number>>((acc, result) => {
         acc[result.classification] = (acc[result.classification] ?? 0) + 1;
         return acc;

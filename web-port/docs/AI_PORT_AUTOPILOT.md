@@ -25,12 +25,16 @@ The tool does not automatically merge changes into source files during `autopilo
 
 ## Commands
 
-Set credentials outside the repo:
+Create `web-port/.env.local` for local credentials:
 
 ```powershell
-$env:OPENROUTER_API_KEY="..."
-$env:OPENROUTER_MODEL="..."
+OPENROUTER_API_KEY=...
+OPENROUTER_MODEL=openai/gpt-4.1-mini
 ```
+
+The CLI automatically loads `.env.local` first, then `.env`. Existing shell environment variables win over file values.
+
+Do not commit `.env.local`. Use `.env.example` as the template.
 
 Analyze, synthesize, review, and classify a batch:
 
