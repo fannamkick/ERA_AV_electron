@@ -128,18 +128,23 @@ function filterEvidenceForShard(bundle: EvidenceBundle, area: WorkerReportShardA
   const keep = (file: EvidenceFile): boolean => {
     const filePath = file.path;
     if (filePath.startsWith('ai-port://evidence-slice-policy')) return true;
+    if (filePath.startsWith('ai-port://current-implementation-policy')) return true;
+    if (filePath.startsWith('ai-port://current-implementation-summary')) return true;
     if (filePath.includes('TRAINING_MIGRATION_READINESS.md')) return true;
     if (filePath.includes('TRAINING_CANONICAL_SOURCES.md')) return true;
 
     if (area === 'availability') {
       return filePath.includes('availability.ts') ||
         filePath.includes('commandAvailability.ts') ||
+        filePath.includes('src/content/training/basicCommands.ts') ||
         filePath.includes('/commands/commands/') ||
         filePath.includes('/commands/improved/');
     }
 
     if (area === 'sourceFormula') {
       return filePath.includes('SourceCheck.ts') ||
+        filePath.includes('src/content/training/basicCommands.ts') ||
+        filePath.includes('sourceEffectResolvers.ts') ||
         filePath.includes('/commands/commands/') ||
         filePath.includes('/commands/improved/');
     }
@@ -147,6 +152,9 @@ function filterEvidenceForShard(bundle: EvidenceBundle, area: WorkerReportShardA
     if (area === 'sideEffects') {
       return filePath.includes('/commands/commands/') ||
         filePath.includes('/commands/improved/') ||
+        filePath.includes('src/content/training/basicCommands.ts') ||
+        filePath.includes('stainEffectResolvers.ts') ||
+        filePath.includes('experienceEffectResolvers.ts') ||
         filePath.includes('SourceCheck.ts');
     }
 
@@ -204,6 +212,20 @@ function mergeShardReport(
   }
 
   return report;
+}
+
+function normalizeAiReview(value: AiReview): AiReview {
+  const record = value as unknown as Record<string, unknown>;
+  if (typeof record.approved === 'string') {
+    const normalized = record.approved.trim().toLowerCase();
+    if (normalized === 'true' || normalized === 'false') {
+      return {
+        ...value,
+        approved: normalized === 'true',
+      };
+    }
+  }
+  return value;
 }
 
 export function expandCommandRange(range: string): string[] {
@@ -365,7 +387,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
   if (options.review && draft && draftValidation?.ok) {
     const reviewPrompt = readPrompt(options.webPortRoot, 'command-draft-review.md');
     const reviewOptions = optimizedOpenRouterOptions('review');
-    aiReview = await callOpenRouterJson<AiReview>([
+    aiReview = normalizeAiReview(await callOpenRouterJson<AiReview>([
       { role: 'system', content: reviewPrompt },
       {
         role: 'user',
@@ -383,7 +405,7 @@ export async function runAutopilotForCommand(options: AutopilotOptions): Promise
       reasoningMaxTokens: 128,
       excludeReasoning: true,
       onTiming,
-    });
+    }));
     writeJson(reviewPath, aiReview);
     reviewValidation = validateAiReview(aiReview);
   }

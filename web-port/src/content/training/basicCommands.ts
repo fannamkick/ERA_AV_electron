@@ -112,7 +112,7 @@ export const basicTrainingCommands = [
       addExp('caress', 1),
       addBase('health', 5),
       addBase('stamina', 50),
-      addMessage('COMF0 baseline effects were applied. Dynamic modifiers are pending migration.'),
+      addMessage('COMF0 original-ERB source and post effects were applied.'),
     ],
     dynamicEffects: [
       comf0SourceEffects(),

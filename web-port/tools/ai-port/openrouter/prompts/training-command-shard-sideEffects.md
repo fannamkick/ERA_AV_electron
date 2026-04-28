@@ -23,6 +23,11 @@ Required checklist ids. Copy every id into either `checklist.completed` or `chec
 
 Rules:
 - Analyze only direct effects, post effects, messages, and command-specific chain/remap.
+- Treat `ai-port://current-implementation-policy`, `src/content/training/basicCommands.ts#current-command-*`, `stainEffectResolvers.ts#comf*StainPostEffects`, and `experienceEffectResolvers.ts#comf*ExperiencePostEffects` as current web-port status. Use them to identify already-migrated effects and avoid duplicate work.
+- Current implementation evidence can prove implementation coverage, but original ERB/generated/improved evidence still decides canonical legacy behavior.
+- If current implementation and canonical legacy evidence disagree, record a conflict and make canonical confidence `conflicted` or `temporary`.
+- If `ai-port://current-implementation-summary` says command definition, resolver slices, and verification slice exist, and readiness evidence says the family is migration-ready, do not request duplicate implementation for already-covered effects.
+- Put stale status strings or historical generated-vs-improved differences in `notes[]` unless they require code changes.
 - Keep output compact. No prose paragraphs.
 - Limit `notes` to at most 8 entries.
 - `canonicalDecision` may contain only `directEffects`, `sideEffects`, `chainRemap`, and `messages`.
@@ -33,6 +38,7 @@ Rules:
 - Use one compact row per effect family when evidence clearly describes repeated effects.
 - Put message text under `sideEffects.messages[]`; garbled or encoding-dependent text must be temporary.
 - If no command-specific chain remap exists, set `chainRemap.dependencies` to [] and explain in `notes`.
+- Even when no command-specific chain remap exists, put `effects.chain-remap-checked` in `checklist.completed`.
 - If generated and improved disagree on BASE vs LOSEBASE, record a conflict and mark `effects.base-vs-losebase-conflict-recorded` completed.
 
 JSON shape:

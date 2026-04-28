@@ -80,11 +80,27 @@ function sliceAroundPattern(
 function sliceExportedFunction(filePath: string, symbol: string): EvidenceFile | undefined {
   const lines = readLinesIfExists(filePath);
   if (!lines) return undefined;
-  const pattern = new RegExp(`export\\s+const\\s+${symbol}\\b`);
+  const pattern = new RegExp(`export\\s+(?:const|function)\\s+${symbol}\\b`);
   const startIndex = lines.findIndex((line) => pattern.test(line));
   if (startIndex < 0) return undefined;
   const endIndex = findBraceBalancedEnd(lines, startIndex);
   return evidenceSlice(filePath, lines, startIndex + 1, endIndex + 1, symbol);
+}
+
+function sliceTrainingCommandDefinition(filePath: string, originalId: number): EvidenceFile | undefined {
+  const lines = readLinesIfExists(filePath);
+  if (!lines) return undefined;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    if (!/defineTrainingCommand\s*\(\s*\{/.test(lines[index])) continue;
+    const endIndex = findBraceBalancedEnd(lines, index);
+    const content = lines.slice(index, endIndex + 1).join('\n');
+    if (new RegExp(`originalId\\s*:\\s*${originalId}\\b`).test(content)) {
+      return evidenceSlice(filePath, lines, index + 1, endIndex + 1, `current-command-${originalId}`);
+    }
+  }
+
+  return undefined;
 }
 
 function sliceObjectPropertyFunction(filePath: string, property: number, label: string): EvidenceFile | undefined {
@@ -155,6 +171,73 @@ function findCommandEvidence(webPortRoot: string, commandNumber: number): string
   });
 }
 
+function currentResolverNames(commandNumber: number): string[] {
+  const prefixByCommand: Record<number, string> = {
+    0: 'comf0',
+    1: 'comf1',
+    6: 'comf6',
+  };
+  const prefix = prefixByCommand[commandNumber];
+  if (!prefix) return [];
+  return [
+    `${prefix}SourceEffects`,
+    `${prefix}StainPostEffects`,
+    `${prefix}ExperiencePostEffects`,
+  ];
+}
+
+function findCurrentImplementationEvidence(webPortRoot: string, commandNumber: number): EvidenceFile[] {
+  const basicCommandsPath = path.join(webPortRoot, 'src', 'content', 'training', 'basicCommands.ts');
+  const sourceResolversPath = path.join(webPortRoot, 'src', 'domain', 'training', 'sourceEffectResolvers.ts');
+  const stainResolversPath = path.join(webPortRoot, 'src', 'domain', 'training', 'stainEffectResolvers.ts');
+  const experienceResolversPath = path.join(webPortRoot, 'src', 'domain', 'training', 'experienceEffectResolvers.ts');
+  const verifyFoundationPath = path.join(webPortRoot, 'tools', 'verify_foundation.ts');
+
+  const commandDefinition = sliceTrainingCommandDefinition(basicCommandsPath, commandNumber);
+  const resolverNames = currentResolverNames(commandNumber);
+  const resolverPaths = [sourceResolversPath, stainResolversPath, experienceResolversPath];
+  const resolverSlices = resolverNames.flatMap((symbol) =>
+    resolverPaths.map((filePath) => sliceExportedFunction(filePath, symbol)),
+  ).filter((file): file is EvidenceFile => file !== undefined);
+  const verificationSlice = sliceAroundPattern(
+    verifyFoundationPath,
+    new RegExp(`COMF${commandNumber}\\s+should`, 'i'),
+    16,
+    80,
+    `current-verification-${commandNumber}`,
+  ) ?? sliceAroundPattern(
+    verifyFoundationPath,
+    new RegExp(`COMF${commandNumber}\\b|comf${commandNumber}(?:Source|Stain|Experience)`, 'i'),
+    10,
+    80,
+    `current-verification-${commandNumber}`,
+  );
+
+  const coverageNotes = [
+    `Command: COMF${commandNumber}.`,
+    `Current command definition found: ${commandDefinition ? 'yes' : 'no'}.`,
+    `Current resolver slices found: ${resolverSlices.map((file) => file.path.split('#').pop()).join(', ') || 'none'}.`,
+    `Current verification slice found: ${verificationSlice ? 'yes' : 'no'}.`,
+    'If current command definition, current resolvers, and verification evidence exist, treat the command as already implemented unless legacy evidence shows a concrete unresolved mismatch.',
+    'For already implemented commands, prefer a no-op/spec draft over duplicate executable code.',
+  ];
+
+  const slices: Array<EvidenceFile | undefined> = [
+    syntheticEvidence('ai-port://current-implementation-policy', [
+      'Current implementation evidence describes what the web port already implements.',
+      'Use it to avoid duplicate drafts and to identify already-migrated behavior.',
+      'Do not treat current implementation as the canonical legacy source when it conflicts with original ERB evidence.',
+      'If current implementation and legacy evidence disagree, report the conflict and prefer a spec-only draft.',
+    ].join('\n')),
+    syntheticEvidence('ai-port://current-implementation-summary', coverageNotes.join('\n')),
+    commandDefinition,
+    ...resolverSlices,
+    verificationSlice,
+  ];
+
+  return slices.filter((file): file is EvidenceFile => file !== undefined);
+}
+
 export function parseCommandId(commandId: string): { normalized: string; number: number } {
   const match = /^COMF?(\d+)$/i.exec(commandId.trim());
   if (!match) {
@@ -189,6 +272,7 @@ export function loadEvidenceBundle(
   const evidencePaths = [
     ...docs,
     ...findCommandEvidence(webPortRoot, parsed.number),
+    ...findCurrentImplementationEvidence(webPortRoot, parsed.number).map((file) => file.originalPath ?? file.path),
     path.join(webPortRoot, 'src', 'legacy', 'training', 'commands', 'availability.ts'),
     path.join(webPortRoot, 'src', 'legacy', 'training', 'commands', 'commandAvailability.ts'),
     path.join(webPortRoot, 'src', 'legacy', 'training', 'systems', 'SourceCheck.ts'),
@@ -223,6 +307,7 @@ function loadSlicedEvidenceBundle(
   const commandFiles = findCommandEvidence(webPortRoot, commandNumber)
     .map((file) => readIfExists(file, maxCharsPerFile))
     .filter((file): file is EvidenceFile => file !== undefined);
+  const currentImplementationFiles = findCurrentImplementationEvidence(webPortRoot, commandNumber);
 
   const availabilityPath = path.join(webPortRoot, 'src', 'legacy', 'training', 'commands', 'availability.ts');
   const commandAvailabilityPath = path.join(webPortRoot, 'src', 'legacy', 'training', 'commands', 'commandAvailability.ts');
@@ -246,6 +331,7 @@ function loadSlicedEvidenceBundle(
     sliceObjectPropertyFunction(commandAvailabilityPath, commandNumber, `COMMAND_AVAILABLE_${commandNumber}`),
     sliceAroundPattern(sourceCheckPath, /params\[[0-9]+\].*source\[[0-9]+\]|source\[[0-9]+\].*params\[[0-9]+\]/, 12, 70, 'source-index-map'),
     sliceAroundPattern(commandChainPath, new RegExp(`COMF?${commandNumber}\\b|case\\s+${commandNumber}\\b|previousCommand.*${commandNumber}\\b`, 'i'), 20, 80, `command-chain-${commandNumber}`),
+    ...currentImplementationFiles,
     ...commandFiles,
   ];
 

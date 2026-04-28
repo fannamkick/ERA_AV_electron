@@ -20,6 +20,8 @@ Non-negotiable rules:
 - Do not import from path aliases like `@/...`; use repo-relative imports only when executable code is allowed.
 - Do not use placeholder targets such as `TBD`, `unknown`, or invented effectType strings.
 - Do not output implementation code that local gate will reject.
+- If the report says the command is already implemented in current web-port evidence and there is no required change, output a spec-only no-op draft that records "already implemented; no materialization required".
+- Do not generate a second command definition for an `originalId` that already exists in current evidence unless the report explicitly requires an update.
 
 Executable code is allowed only when all of these are true:
 - no blocking unresolved conflicts in report;
@@ -32,6 +34,7 @@ Spec-only draft rules:
 - Use path `docs/ai-port/spec-drafts/COMF<number>.spec.md`.
 - Content must be Markdown text inside the JSON string.
 - Summarize canonical evidence, unresolved conflicts, missing engine helpers, and required implementation steps.
+- For no-op drafts, summarize implemented coverage and list the verification checks that should be run.
 - Do not include TypeScript code fences.
 - `files[0].operation` must be `create`.
 - `unresolvedConflicts` must include every blocking conflict from the report.

@@ -22,6 +22,10 @@ Required checklist ids. Copy every id into either `checklist.completed` or `chec
 
 Rules:
 - Analyze only availability.
+- Treat `ai-port://current-implementation-policy` and `src/content/training/basicCommands.ts#current-command-*` as current web-port status. Use it to mark already-implemented availability/requirements, not as a replacement for canonical legacy evidence.
+- If current implementation already covers the legacy availability and no conflict exists, state that in `notes[]` and keep conflicts empty.
+- If `ai-port://current-implementation-summary` says command definition and verification slice exist, treat equivalent current requirements as coverage, not as a missing gate.
+- If current implementation and legacy evidence disagree, record the disagreement instead of silently choosing one.
 - `canonicalDecision` may only contain `availability`.
 - `canonicalDecision.availability` must be `{ "file": "...", "symbol": "...", "confidence": "canonical|temporary|conflicted|unsafe", "notes": "..." }`.
 - Do not put blockers or gates under `canonicalDecision`.

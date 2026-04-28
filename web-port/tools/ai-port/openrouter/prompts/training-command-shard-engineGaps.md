@@ -19,6 +19,11 @@ Required checklist ids. Copy every id into either `checklist.completed` or `chec
 
 Rules:
 - Analyze only missing engine/domain/schema support.
+- Treat `ai-port://current-implementation-policy`, current command definitions, current resolver slices, and current verification slices as web-port implementation status.
+- If current implementation already provides the needed helper/schema support, do not list it as a gap.
+- If current implementation exists but no verification slice is present, list a validation scenario rather than inventing an engine gap.
+- If `ai-port://current-implementation-summary` says command definition, resolver slices, and verification slice exist, all gap checklist ids must be completed unless you cite a concrete missing helper from evidence.
+- Do not list a gap just because generated/improved legacy files use raw arrays; the web-port is allowed to use named helpers/resolvers instead.
 - `canonicalDecision` should usually be `{}` for this shard unless a readiness document is cited.
 - Do not repeat all command behavior. List only gaps needed to implement this command safely.
 - If readiness evidence says the family is `design-ready` or `blocked`, list concrete blockers in `notes[]` and mark `gaps.design-ready-blockers-listed` completed.

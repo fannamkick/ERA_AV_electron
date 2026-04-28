@@ -34,3 +34,8 @@ Required top-level JSON shape:
   "missingEvidence": [],
   "suggestedFixes": []
 }
+
+Type constraints:
+- `approved` must be a JSON boolean, not the strings `"true"` or `"false"`.
+- `riskLevel` must be exactly `"low"`, `"medium"`, or `"high"`.
+- `findings[].severity` must be exactly `"info"`, `"warning"`, or `"error"`.
