@@ -984,15 +984,18 @@ npm run build
 - 완료 결과: 이후 구현자가 어떤 row 묶음을 닫아야 하는지 단위별로 알 수 있다.
 - 누락 차단: 구현 단위가 원본 row 없이 생기거나 blocker owner가 비어 있으면 완료하지 않는다.
 
-- [ ] M28~M49의 기능군별 구현 큐를 coverage row 기준으로 생성
-- [ ] 각 구현 단위가 feature, definition, save, session, view row를 함께 참조하도록 template 보강
-- [ ] 각 단위가 성공, 실패, 취소, 저장 roundtrip 중 필요한 검증을 갖도록 규칙 보강
-- [ ] blocker row의 해소 마일스톤을 M28~M52 중 하나로 재배정
-- [ ] 사용자 승인 제외가 필요한 항목 목록을 별도 장부로 분리
-- [ ] 동일 원본 row를 여러 기능군이 소비할 때 주 owner와 참조 owner를 구분
-- [ ] M28 이후 새로 발견한 원본 항목을 즉시 coverage에 추가하는 절차 작성
-- [ ] `npm run build` 실행
-- [ ] 테스트 도구가 있으면 `npm run test --if-present` 실행
+- [x] M28~M49 및 M50~M51의 기능군별 구현 큐를 M26 review row 기준으로 생성. queue unit 37개, queued review row 14,700개
+- [x] 각 구현 단위가 feature, definition, save, session, view evidence template을 함께 갖도록 `implementation-queue.json`에 보강
+- [x] 각 단위가 성공, 실패, 취소, 저장 roundtrip, session cleanup 중 필요한 검증을 갖도록 verification template 보강
+- [x] blocker row 63개의 해소 마일스톤을 M28~M52 중 하나로 동결
+- [x] 사용자 승인 제외가 필요한 항목 63개를 `approved-exclusion-requests.json` 장부로 분리
+- [x] 동일 원본 row를 여러 기능군이 소비할 때 주 owner와 참조 owner를 구분하는 `sharedSourceOwnership` 규칙 추가
+- [x] M28 이후 새로 발견한 원본 항목을 즉시 coverage에 추가하는 gap intake 절차 작성
+- [x] M27이 구현 owner로 남은 source-file-review 2개를 M51 최종 누락 감사 owner로 이관
+- [x] `npm run coverage:implementation-queue` 실행
+- [x] `npm run gate:implementation-queue` 실행
+- [x] `npm run build` 실행
+- [x] 테스트 도구가 있으면 `npm run test --if-present` 실행
 
 ## M28. 메인 화면과 route 전수 연결
 

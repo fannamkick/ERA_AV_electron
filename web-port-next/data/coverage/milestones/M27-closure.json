@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M27",
+  "title": "구현 단위 큐와 blocker 동결",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "sourceInputs": {
+    "preImplementationGapAudit": "data/coverage/audits/pre-implementation-gap-audit.json",
+    "blockers": "data/coverage/blockers.json",
+    "approvedExclusions": "data/coverage/approved-exclusions.json"
+  },
+  "outputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "blockerFreezeList": "data/coverage/blocker-freeze-list.json",
+    "approvedExclusionRequests": "data/coverage/approved-exclusion-requests.json",
+    "builder": "tools/build_implementation_queue.mjs",
+    "gate": "tools/gate_implementation_queue.mjs"
+  },
+  "counts": {
+    "queueUnits": 37,
+    "queuedReviewRows": 14700,
+    "featureReviewRows": 5333,
+    "definitionReviewRows": 7999,
+    "saveMappingReviewRows": 989,
+    "sessionMappingReviewRows": 365,
+    "sourceFileReviewRows": 14,
+    "frozenBlockers": 63,
+    "approvalRequestCandidates": 63,
+    "ownerTransfers": 2
+  },
+  "ownerTransferPolicy": {
+    "rule": "M27 cannot remain an implementation owner after queue closure.",
+    "transfers": [
+      {
+        "from": "M27",
+        "to": "M51",
+        "row": "source-file-review:original-game/csv/variablesize.csv"
+      },
+      {
+        "from": "M27",
+        "to": "M51",
+        "row": "source-file-review:original-game/erb/組み込み関数/汎用関数/randchoose/#dim.erh"
+      }
+    ]
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:implementation-queue",
+      "npm run gate:implementation-queue",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "37 queue unit(s), 14700 review row(s), 63 frozen blocker(s), 63 approval request candidate(s)"
+  }
+}
