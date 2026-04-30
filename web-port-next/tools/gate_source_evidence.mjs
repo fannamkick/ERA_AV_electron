@@ -96,7 +96,11 @@ function validateEvidence(row, rowId, rowKind, manifestPaths) {
   }
 
   if (rowKind === 'definition') {
-    assert(evidence.csvRow, 'definition row requires csvRow/source id evidence', { rowId });
+    if (row.sourceKind === 'erb-derived-definition') {
+      assert(evidence.label && evidence.line, 'ERB-derived definition row requires label and line evidence', { rowId });
+    } else {
+      assert(evidence.csvRow, 'definition row requires csvRow/source id evidence', { rowId });
+    }
     if (row.sourceKind === 'character-seed') {
       assert(evidence.family && evidence.index, 'character seed evidence requires family and index', { rowId });
     }

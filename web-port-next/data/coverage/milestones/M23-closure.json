@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M23",
+  "ownerRole": "ERB-derived definition collector",
+  "ownedScope": [
+    "ERB-only menu definitions",
+    "ERB-only visit place definitions",
+    "ERB-only mission definitions",
+    "ERB-only work definitions",
+    "ERB-only filming scene definitions",
+    "ERB-only event definitions",
+    "ERB-only ending definitions",
+    "ERB-only achievement/help text definitions",
+    "ERB component labels for display, condition, calculation, effect, and text"
+  ],
+  "erbDerivedDefinitions": {
+    "totalRows": 160,
+    "componentLabels": 302,
+    "conflicts": 0,
+    "byDefinitionKey": {
+      "achievementDefinitions": 21,
+      "endingDefinitions": 2,
+      "eventDefinitions": 45,
+      "filmingSceneDefinitions": 6,
+      "helpTextDefinitions": 26,
+      "mainMenuOptions": 24,
+      "missionDefinitions": 21,
+      "visitPlaces": 7,
+      "workDefinitions": 8
+    },
+    "byStatusForDefinitionCoverage": {
+      "display-only": 47,
+      "listing": 113
+    },
+    "byRole": {
+      "display": 47,
+      "listing": 31,
+      "rule": 82
+    }
+  },
+  "definitionCoverage": {
+    "totalRows": 8000,
+    "erbDerivedDefinitionRows": 160,
+    "rawDefinitionRows": 918,
+    "characterSeedRows": 6922,
+    "m22DeferredDefinitionReadsRemaining": 0
+  },
+  "ownedTotal": 160,
+  "implemented": 0,
+  "mapped": 160,
+  "approvedExcluded": 0,
+  "transferredOut": 160,
+  "ownedBlocker": 0,
+  "missingEvidence": 0,
+  "missingConsumer": 0,
+  "missingVerification": 0,
+  "roleOnlyComplete": 0,
+  "unapprovedExcluded": 0,
+  "transferredToOwnerMilestones": {
+    "M28": [
+      "mainMenuOptions"
+    ],
+    "M36": [
+      "visitPlaces"
+    ],
+    "M37": [
+      "workDefinitions"
+    ],
+    "M38": [
+      "filmingSceneDefinitions"
+    ],
+    "M46": [
+      "missionDefinitions"
+    ],
+    "M47": [
+      "eventDefinitions"
+    ],
+    "M48": [
+      "endingDefinitions"
+    ],
+    "M49": [
+      "achievementDefinitions",
+      "helpTextDefinitions"
+    ]
+  },
+  "commandsRun": [
+    "npm run analyze:game-system",
+    "npm run coverage:source-manifest",
+    "npm run coverage:features",
+    "npm run coverage:erb-definitions",
+    "npm run coverage:definitions",
+    "npm run coverage:crosscheck",
+    "npm run gate:feature-coverage",
+    "npm run gate:definition-consumption",
+    "npm run gate:source-evidence",
+    "npm run gate:erb-definition-coverage",
+    "npm run gate:coverage-crosscheck",
+    "npm run gate:approved-exclusions",
+    "npm run build"
+  ],
+  "commitHash": "self: git commit containing this closure file"
+}

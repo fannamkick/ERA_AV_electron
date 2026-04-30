@@ -9,7 +9,7 @@
   },
   "summary": {
     "featureRows": 5344,
-    "definitionRows": 7840,
+    "definitionRows": 8000,
     "blockerRows": 63,
     "approvedExclusionRows": 0,
     "featureStatus": {
@@ -19,14 +19,14 @@
     "definitionStatus": {
       "blocker": 1735,
       "calculation-only": 35,
-      "display-only": 409,
-      "listing": 94,
+      "display-only": 456,
+      "listing": 207,
       "template": 5566,
       "used": 1
     },
-    "roleOnlyDefinitionRows": 6104,
+    "roleOnlyDefinitionRows": 6264,
     "implementedFeatureDefinitionReads": 12,
-    "implementedFeatureDefinitionReadMatched": 8
+    "implementedFeatureDefinitionReadMatched": 12
   },
   "assertions": {
     "hardFailures": {
@@ -45,7 +45,7 @@
     },
     "trackedDeferredUntilOwnerMilestone": {
       "implementedFeatureDefinitionReadUnmatched": {
-        "count": 4,
+        "count": 0,
         "ownerMilestone": "M23",
         "reason": "Some implemented feature definitionReads point to runtime definitions first created from ERB-derived or local code definitions. M23 owns adding those definition rows to coverage."
       },
@@ -68,12 +68,7 @@
     "approvedExcludedMissingRegistry": [],
     "invalidApprovedRegistryRows": [],
     "implementedFeatureMissingRuntimeConsumer": [],
-    "implementedFeatureDefinitionReadUnmatched": [
-      "feature:visit:office-room-basic -> definitions.visitPlaces",
-      "feature:mission:basic -> definitions.missionDefinitions",
-      "feature:work:basic -> definitions.workDefinitions",
-      "feature:shooting:basic -> definitions.filmingSceneDefinitions"
-    ],
+    "implementedFeatureDefinitionReadUnmatched": [],
     "nonBlockerDefinitionMissingConsumer": [],
     "roleOnlyMarkedComplete": [],
     "sourceEvidenceAuxiliaryCompleted": []

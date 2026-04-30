@@ -37,6 +37,10 @@ function normalizeSourcePath(value) {
 }
 
 function definitionSourceKind(partial, sourcePath) {
+  if (partial.sourceKind === 'erb-derived-definition') {
+    return sourcePath.toLowerCase().endsWith('.erh') ? 'erh-label' : 'erb-label';
+  }
+
   if (partial.sourceKind === 'character-template' || partial.sourceKind === 'character-seed') {
     return 'chara-csv-row';
   }
@@ -53,6 +57,10 @@ function definitionSourceKind(partial, sourcePath) {
 }
 
 function sourceEvidenceForDefinition(partial) {
+  if (partial.sourceEvidence) {
+    return partial.sourceEvidence;
+  }
+
   const sourcePath = normalizeSourcePath(partial.sourceFile);
   const isPrimary = sourcePath.startsWith('original-game/');
   return {
@@ -60,9 +68,9 @@ function sourceEvidenceForDefinition(partial) {
     sourceTier: isPrimary ? 'primary' : 'auxiliary',
     sourceKind: definitionSourceKind(partial, sourcePath),
     sourcePath,
-    label: '',
-    line: '',
-    csvRow: partial.sourceId ?? '',
+    label: partial.sourceLabel ?? '',
+    line: partial.sourceLine ?? '',
+    csvRow: partial.sourceKind === 'erb-derived-definition' ? '' : partial.sourceId ?? '',
     family: partial.seedFamily ?? '',
     index: partial.seedIndex ?? partial.sourceId ?? '',
     accessDirection: 'definition',
@@ -82,7 +90,7 @@ function itemRole(id) {
 
 function baseRow(partial) {
   const sourceEvidence = sourceEvidenceForDefinition(partial);
-  return {
+  const row = {
     definitionRowId: partial.definitionRowId,
     sourceKind: partial.sourceKind,
     definitionKey: partial.definitionKey ?? '',
@@ -111,6 +119,33 @@ function baseRow(partial) {
     rawValue: partial.rawValue ?? '',
     notes: partial.notes ?? '',
   };
+
+  const optionalFields = [
+    'sourceLabel',
+    'sourceLine',
+    'derivedDefinitionId',
+    'classification',
+    'menuCode',
+    'displayText',
+    'actionTarget',
+    'actionCondition',
+    'componentCoverage',
+    'conflictStatus',
+    'conflictWith',
+  ];
+
+  for (const field of optionalFields) {
+    if (partial[field]) row[field] = partial[field];
+  }
+
+  if (Array.isArray(partial.componentLabels) && partial.componentLabels.length > 0) {
+    row.componentLabels = partial.componentLabels;
+  }
+  if (Array.isArray(partial.requiredComponents) && partial.requiredComponents.length > 0) {
+    row.requiredComponents = partial.requiredComponents;
+  }
+
+  return row;
 }
 
 function blocker(partial) {
@@ -484,6 +519,60 @@ function characterSeedRow(row) {
   });
 }
 
+function readErbDerivedRows() {
+  const derivedPath = path.join(coverageDir, 'erb-derived-definitions.json');
+
+  if (!fs.existsSync(derivedPath)) {
+    return [];
+  }
+
+  const artifact = JSON.parse(fs.readFileSync(derivedPath, 'utf8'));
+  if (artifact.schemaVersion !== 'erb-derived-definitions/v1' || !Array.isArray(artifact.rows)) {
+    throw new Error('Invalid data/coverage/erb-derived-definitions.json; run npm run coverage:erb-definitions');
+  }
+
+  return artifact.rows.map((row) =>
+    baseRow({
+      definitionRowId: `definition:${row.derivedDefinitionId}`,
+      sourceKind: 'erb-derived-definition',
+      definitionKey: row.definitionKey,
+      sourceFile: row.sourceFile,
+      sourceLabel: row.sourceLabel,
+      sourceLine: row.sourceLine,
+      sourceId: row.sourceId,
+      sourceName: row.sourceName,
+      runtimeId: row.runtimeId,
+      runtimeOwner: row.runtimeOwner,
+      role: row.role,
+      consumerKind: row.consumerKind,
+      consumingFeature: row.consumingFeature,
+      consumingView: row.consumingView,
+      consumingCalculation: row.consumingCalculation,
+      saveInitPath: row.saveInitPath,
+      handlerPath: row.handlerPath,
+      viewPath: row.viewPath,
+      calculationPath: row.calculationPath,
+      status: row.statusForDefinitionCoverage,
+      ownerMilestone: row.ownerMilestone,
+      blockerId: row.blockerId,
+      sourceEvidenceId: row.sourceEvidenceId,
+      sourceEvidence: row.sourceEvidence,
+      notes: row.notes,
+      derivedDefinitionId: row.derivedDefinitionId,
+      classification: row.classification,
+      menuCode: row.menuCode,
+      displayText: row.displayText,
+      actionTarget: row.actionTarget,
+      actionCondition: row.actionCondition,
+      componentLabels: row.componentLabels,
+      componentCoverage: row.componentCoverage,
+      requiredComponents: row.requiredComponents,
+      conflictStatus: row.conflictStatus,
+      conflictWith: row.conflictWith,
+    }),
+  );
+}
+
 function countBy(rows, keyFn) {
   const result = {};
   for (const row of rows) {
@@ -556,6 +645,7 @@ const rows = [
   ...rawDefinitions.map(catalogDefinitionRow),
   ...characterTemplates.map(characterTemplateRow),
   ...characterSeeds.map(characterSeedRow),
+  ...readErbDerivedRows(),
 ];
 
 const rawDefinitionCount = rawDefinitions.length + characterTemplates.length;
@@ -578,9 +668,11 @@ const coverage = {
   },
   rowSchema: {
     definitionRowId: 'Stable definition coverage id.',
-    sourceKind: 'raw-catalog-definition, character-template, or character-seed.',
+    sourceKind: 'raw-catalog-definition, character-template, character-seed, or erb-derived-definition.',
     definitionKey: 'Runtime definition collection or seed collection.',
     sourceFile: 'Original CSV/Chara file.',
+    sourceLabel: 'Original ERB/ERH label when sourceKind is erb-derived-definition.',
+    sourceLine: 'Original ERB/ERH line when sourceKind is erb-derived-definition.',
     sourceId: 'Original id, row key, or family:index.',
     sourceName: 'Original display name or source key.',
     runtimeId: 'Runtime definition id.',
@@ -595,6 +687,8 @@ const coverage = {
     blockerId: 'Blocker registry id for blocker rows.',
     sourceEvidenceId: 'Common source evidence id shared by coverage/gate rows.',
     sourceEvidence: 'Common source evidence object with source path, CSV row, family/index, and access direction.',
+    derivedDefinitionId: 'ERB-derived definition id when sourceKind is erb-derived-definition.',
+    componentLabels: 'ERB component labels such as title, visible, fee, calc, report, or text pieces.',
   },
   summary: {
     totalRows: rows.length,

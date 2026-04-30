@@ -26,7 +26,7 @@
   "completionRules": [
     "A row may not be completed from project documentation alone.",
     "Implemented feature rows must have primary ERB/ERH/CSV source evidence and runtime consumer evidence.",
-    "Definition rows must have primary CSV/Chara/VariableSize source evidence.",
+    "Definition rows must have primary CSV/Chara/VariableSize or ERB label source evidence, depending on where the definition originates.",
     "Character seed rows must record family and index.",
     "Auxiliary evidence may explain primary evidence but cannot replace it.",
     "Derived project documents cannot complete a row without a primary original source.",

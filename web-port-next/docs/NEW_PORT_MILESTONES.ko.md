@@ -863,15 +863,30 @@ npm run build
 - 완료 결과: ERB 기반 정의가 M28~M49에서 실제 소비 검증 가능한 row가 된다.
 - 누락 차단: ERB에만 있는 컨텐츠가 coverage 밖에 남거나 충돌 정의가 미판정이면 완료하지 않는다.
 
-- [ ] CSV에 없고 ERB에서만 정의되는 선택지, 장면, 이벤트, 계산 상수를 수집
-- [ ] 미션, 업무, 촬영, 방문, 이벤트, 엔딩의 ERB 기반 정의 후보를 분류
-- [ ] ERB 기반 정의와 CSV 정의가 충돌하면 source evidence 우선순위 기록
-- [ ] ERB 기반 정의 데이터 산출물 경로 확정
-- [ ] ERB 기반 정의도 runtime 정의 데이터, blocker, approved-excluded 중 하나로 분류
-- [ ] 표시 전용 정의와 계산 입력 정의를 구분
-- [ ] M20 definition coverage에 ERB 기반 정의 보강 row를 연결
-- [ ] `npm run analyze:game-system` 실행
-- [ ] `npm run build` 실행
+- [x] CSV에 없고 ERB에서만 정의되는 선택지, 장면, 이벤트, 계산 상수를 수집
+- [x] 미션, 업무, 촬영, 방문, 이벤트, 엔딩의 ERB 기반 정의 후보를 분류
+- [x] ERB 기반 정의와 CSV 정의가 충돌하면 source evidence 우선순위 기록
+- [x] ERB 기반 정의 데이터 산출물 경로를 `data/coverage/erb-derived-definitions.json`으로 확정
+- [x] ERB 기반 정의도 runtime 정의 데이터, blocker, approved-excluded 중 하나로 분류
+- [x] 표시 전용 정의와 계산 입력 정의를 구분
+- [x] M20 definition coverage에 ERB 기반 정의 보강 row를 연결
+- [x] `data/coverage/erb-derived-definitions.json`에 ERB-only 정의 160행과 component label 302개 산출
+- [x] `data/coverage/definitions.json`에 `erb-derived-definition` 160행 병합
+- [x] M22에서 남긴 `visitPlaces`, `missionDefinitions`, `workDefinitions`, `filmingSceneDefinitions` read gap 0개 확인
+- [x] `data/coverage/milestones/M23-closure.json` 작성
+- [x] `npm run analyze:game-system` 실행
+- [x] `npm run coverage:source-manifest` 실행
+- [x] `npm run coverage:features` 실행
+- [x] `npm run coverage:erb-definitions` 실행
+- [x] `npm run coverage:definitions` 실행
+- [x] `npm run coverage:crosscheck` 실행
+- [x] `npm run gate:feature-coverage` 실행
+- [x] `npm run gate:definition-consumption` 실행
+- [x] `npm run gate:source-evidence` 실행
+- [x] `npm run gate:erb-definition-coverage` 실행
+- [x] `npm run gate:coverage-crosscheck` 실행
+- [x] `npm run gate:approved-exclusions` 실행
+- [x] `npm run build` 실행
 
 ## M24. 저장 상태 원본 주소 전수 매핑
 
