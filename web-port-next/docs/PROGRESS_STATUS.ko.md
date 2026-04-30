@@ -36,25 +36,25 @@
 | M14 훈련 1차 | 훈련 command 1개, 대상/실행자/조수 선택 상태, command 후보 view, 불가 사유, 자극/파라미터/체력 소모/session 계산 버퍼, 파라미터/자원/경험/신체 피로 저장 반영, 완료 후 턴 종료, interaction session 폐기 구현 |
 | M15 화면 정리와 진단 패널 | `AppLayout`을 runtime state/session과 action dispatch 소유자로 축소하고, route별 renderer를 `RouteScreens.tsx`로 분리. 공통 선택지/요약 UI와 읽기 전용 진단 패널을 추가해 route/state/session/effect/boundary 요약 표시 |
 | M16 테스트/검증 체계 확장 | `test:roundtrip`, `gate:boundaries`, `gate:raw-names`, `gate:stubs`, `verify:m16` 추가. 새 테스트 framework 없이 기존 Vite smoke와 Node gate script를 묶어 build 단독 완료를 차단 |
-| M17 원본 근거 대조 정책 | `LEGACY_MAPPING_POLICY.ko.md` 추가. mapping 상태값, M30 허용/차단 의미, evidence 요구사항, 불명확 주소 처리, `approved-excluded` 승인 조건, adapter import 금지 경계를 확정. `src/game` core에서 legacy adapter import를 제거하고 `src/runtime.ts` 조립 경계로 이동 |
-| M18 반복 구현 규칙 고정 | `IMPLEMENTATION_UNIT_RULES.ko.md` 추가. M23~M29 구현 단위를 1개 feature/item/scene/command 등으로 제한하고, 구현 전 template, 구현 후 template, blocker template, 완료 차단 규칙을 확정 |
+| M17 원본 근거 대조 정책 | `LEGACY_MAPPING_POLICY.ko.md` 추가. mapping 상태값, M52 허용/차단 의미, evidence 요구사항, 불명확 주소 처리, `approved-excluded` 승인 조건, adapter import 금지 경계를 확정. `src/game` core에서 legacy adapter import를 제거하고 `src/runtime.ts` 조립 경계로 이동 |
+| M18 반복 구현 규칙 고정 | `IMPLEMENTATION_UNIT_RULES.ko.md` 추가. M28~M49 구현 단위를 1개 feature/item/scene/command 등으로 제한하고, 구현 전 template, 구현 후 template, blocker template, 완료 차단 규칙을 확정 |
 | M19 원본 기능 커버리지 전수표 | `data/coverage/features.json`과 `data/coverage/blockers.json` 생성. dynamic call 66개, persistence 134개, exit 3,536개, pause 931개, engine entry 9개, unreferenced global 652개, 메인 흐름/메뉴 row를 feature id 또는 blocker로 분류. `gate:feature-coverage` 추가 |
-| M20 정의 데이터 전수 분류와 소비 책임 배정 | `data/coverage/definitions.json` 생성. raw 정의 918개와 Chara seed 6,922행을 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker로 분류. `gate:definition-consumption` 추가. M20 완료는 실제 컨텐츠 효과 구현 완료가 아니라 M24~M28 소비 책임 장부 완성 |
+| M20 정의 데이터 전수 분류와 소비 책임 배정 | `data/coverage/definitions.json` 생성. raw 정의 918개와 Chara seed 6,922행을 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker로 분류. `gate:definition-consumption` 추가. M20 완료는 실제 컨텐츠 효과 구현 완료가 아니라 M28~M49 소비 책임 장부 완성 |
 
 ## 미완료
 
 | 항목 | 상태 |
 | --- | --- |
-| 저장/로드 완성 | M9 최소 roundtrip은 완료. 모든 주요 기능 후 저장 roundtrip, migration, corrupted/future/old schema 전체 처리는 M29에서 완성 |
-| 방문/시설 완성 | M10 최소 장소/행동 1개는 완료. 모든 방문 장소/시설/특수 행동 전수 구현은 M26에서 완성 |
-| 미션 완성 | M11 최소 미션 1개는 완료. 미션 전체 정의/기한/성공/실패/보상/이벤트 연동은 M27에서 완성 |
-| 업무 완성 | M12 최소 업무 1개는 완료. 업무/창관/특수 업무 전체와 각 업무 후처리는 M26에서 완성 |
-| 촬영 완성 | M13 최소 촬영 장면 1개는 완료. 촬영 장면 전체와 대상 조건/촬영량/후처리 전수 구현은 M26에서 완성 |
-| 훈련 완성 | M14 최소 command 1개는 완료. 전체 command availability, 효과, 후처리, 이벤트 연동은 M28에서 완성 |
+| 저장/로드 완성 | M9 최소 roundtrip은 완료. 모든 주요 기능 후 저장 roundtrip, migration, corrupted/future/old schema 전체 처리는 M50에서 완성하고 M52에서 최종 검증 |
+| 방문/시설 완성 | M10 최소 장소/행동 1개는 완료. 모든 방문 장소/시설/특수 행동 전수 구현은 M36에서 완성 |
+| 미션 완성 | M11 최소 미션 1개는 완료. 미션 전체 정의/기한/성공/실패/보상/이벤트 연동은 M46에서 완성 |
+| 업무 완성 | M12 최소 업무 1개는 완료. 업무/창관/특수 업무 전체와 각 업무 후처리는 M37에서 완성 |
+| 촬영 완성 | M13 최소 촬영 장면 1개는 완료. 촬영 정의와 조건은 M38, 실행/결과/후처리는 M39에서 완성 |
+| 훈련 완성 | M14 최소 command 1개는 완료. 훈련 세션은 M40, 가능 조건은 M41, command 효과 0~34는 M42, 35~69는 M43, 70~104와 후처리는 M44에서 완성 |
 | 자동 테스트 | M16 기준 범용 검증 묶음은 `npm run verify:m16`. Phase 1 dispatch smoke, M7 영입 smoke, M8 턴 종료 smoke, M9 저장/로드 smoke, M10 방문 smoke, M11 미션 smoke, M12 업무 smoke, M13 촬영 smoke, M14 훈련 smoke, 저장 roundtrip, boundary gate, raw-name gate, stub gate, build를 포함 |
-| 확정 변환표 | M17에서 상태값/증거/차단 정책은 확정됨. 원본 주소 대량 확정 mapping은 아직 작성하지 않았으며 저장/세션 전수 mapping은 M21/M22에서 진행 |
-| 기능 전수 구현 | M19에서 기능 row 5,344개를 만들었고 11개만 현재 구현 완료 근거를 가진다. 나머지 5,333개는 M23~M29에서 구현 또는 사용자 승인 제외로 닫아야 할 blocker다 |
-| 정의 전수 구현 | 아직 완료 아님. M20에서 definition row 7,840개를 만들고 역할/소비 책임을 배정했다. 실제 구현 완료 근거가 있는 row는 현재 `used` 1개뿐이며, 특수 item/훈련 command/CFLAG 계열 1,735개는 M21/M24/M28 blocker로 남아 있다. `template`/`listing`/`display-only`/`calculation-only`는 역할 판정이지 최종 구현 완료가 아니다 |
+| 확정 변환표 | M17에서 상태값/증거/차단 정책은 확정됨. 원본 주소 대량 확정 mapping은 아직 작성하지 않았으며 저장 mapping은 M24, 세션/계산 mapping은 M25에서 진행 |
+| 기능 전수 구현 | M19에서 기능 row 5,344개를 만들었고 11개만 현재 구현 완료 근거를 가진다. 나머지 5,333개는 M28~M49에서 구현 또는 사용자 승인 제외로 닫아야 할 blocker다 |
+| 정의 전수 구현 | 아직 완료 아님. M20에서 definition row 7,840개를 만들고 역할/소비 책임을 배정했다. 실제 구현 완료 근거가 있는 row는 현재 `used` 1개뿐이며, 특수 item/훈련 command/CFLAG 계열 1,735개는 M30/M34/M41~M44 blocker로 남아 있다. `template`/`listing`/`display-only`/`calculation-only`는 역할 판정이지 최종 구현 완료가 아니다 |
 
 ## 데이터 완성도 판단
 
@@ -65,20 +65,20 @@
 - 변수, 정의 데이터, 기능 흐름, 저장/세션 판정의 1차 기준은 작업 루트의 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`이다.
 - `source.csv`, `cflag.csv`처럼 원본 CSV 폴더 밖에 있는 보조 정의는 수집 스크립트가 찾은 작업 루트의 보조 CSV를 기준으로 삼는다.
 - `docs/*` 문서는 원본을 읽기 쉽게 정리한 파생 해석이다. 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 않는다.
-- M30 전에는 `gate:coverage-crosscheck`와 `gate:source-evidence`를 추가해 feature/definition/save/session coverage가 서로 맞물리는지, source evidence가 실제 원본 또는 재생성 산출물에 존재하는지 확인해야 한다. 이 gate는 M30 최종 판정에서도 다시 실행한다.
+- M21~M27에서는 source evidence, feature, definition, save mapping, session mapping을 서로 대조하는 gate를 추가한다. 같은 gate는 M51/M52 최종 판정에서도 다시 실행한다.
 - 누락 전수 감사는 구현 전, 기능군 중간, 최종 직전 세 번 필요하다. 산출물은 `data/coverage/audits/pre-implementation-gap-audit.json`, `data/coverage/audits/Mxx-gap-audit.json`, `data/coverage/audits/final-gap-audit.json`이며, 미등록 원본 컨텐츠/role-only 완료/orphan coverage가 있으면 다음 단계로 넘어가지 않는다.
 
 | 구분 | 현재 상태 | 완료선 |
 | --- | --- | --- |
 | raw 정의 데이터 수집 | CSV/Chara 정의 918개 수집, Chara 초기값 6,922행 수집. 수집 진단 0건 | M20 coverage에서 raw 정의 918개와 Chara seed 6,922행이 모두 row를 가져야 함 |
-| definition coverage | row 7,840개 생성. `template` 5,566개, `display-only` 409개, `calculation-only` 35개, `listing` 94개, `used` 1개, `blocker` 1,735개. 이 중 `template`/`listing`/`display-only`/`calculation-only`는 역할 판정과 소비 책임 배정이며, 실제 소비 검증은 아직 남아 있음 | M24~M28에서 실제 handler/view/calculation/save-init 소비 검증을 붙이고 M30에서 미분류/미소비/미검증 정의 0개 |
-| runtime 보강 정의 | M11 최소 미션 정의 1개를 `missionDefinitions`로, M12 최소 업무 정의 1개를 `workDefinitions`로, M13 최소 촬영 장면 정의 1개를 `filmingSceneDefinitions`로, M14 최소 훈련 command 1개를 `trainingCommands` 실행 메타로 보강 | M26/M27/M28에서 원본 근거 기반 정의 전체를 실제 소비 검증해야 함 |
-| Item.csv 역할 분리 | 109개 중 구매형 listing 46개, 영입 listing 48개, 특수 item blocker 15개로 분류. 구매/영입 listing 판정은 소비 책임 배정이며 아이템별 사용 효과/특수 처리 완료가 아님 | M24/M26에서 각 item/listing이 구매/사용/영입/시설/특수 handler 또는 blocker를 가져야 함 |
-| 인물 원형/seed | 109개 template과 초기값 6,922행은 coverage row로 분류됨. Chara CFLAG seed 1,465개는 의미별 저장 owner blocker. template 분류는 실제 인물 생성/표시/저장 roundtrip 완료가 아님 | M25/M29에서 인물 생성/표시/저장 roundtrip까지 검증해야 함 |
-| 저장 상태 mapping | `map-save-state` 대상 1,215개, persistent missing mapping 724개가 남아 있음 | M21에서 save mapping을 만들고, M30에서 미정 저장 주소 0개 |
-| 세션/계산 mapping | `map-session-state` 대상 365개, session missing mapping 164개가 남아 있음 | M22에서 session/calculation mapping을 만들고, M30에서 미정 세션/계산 주소 0개 |
-| 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M19/M23~M28에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
-| feature coverage | row 5,344개 생성. `implemented` 11개, `blocker` 5,333개. dynamic/persistence/exit/pause/unreferenced global count가 원본 분석과 일치함 | M23~M29에서 blocker row를 줄이며 M30에서 미구현 feature 0개 |
+| definition coverage | row 7,840개 생성. `template` 5,566개, `display-only` 409개, `calculation-only` 35개, `listing` 94개, `used` 1개, `blocker` 1,735개. 이 중 `template`/`listing`/`display-only`/`calculation-only`는 역할 판정과 소비 책임 배정이며, 실제 소비 검증은 아직 남아 있음 | M28~M49에서 실제 handler/view/calculation/save-init 소비 검증을 붙이고 M52에서 미분류/미소비/미검증 정의 0개 |
+| runtime 보강 정의 | M11 최소 미션 정의 1개를 `missionDefinitions`로, M12 최소 업무 정의 1개를 `workDefinitions`로, M13 최소 촬영 장면 정의 1개를 `filmingSceneDefinitions`로, M14 최소 훈련 command 1개를 `trainingCommands` 실행 메타로 보강 | M23에서 ERB 기반 정의를 보강하고 M36~M48에서 원본 근거 기반 정의 전체를 실제 소비 검증해야 함 |
+| Item.csv 역할 분리 | 109개 중 구매형 listing 46개, 영입 listing 48개, 특수 item blocker 15개로 분류. 구매/영입 listing 판정은 소비 책임 배정이며 아이템별 사용 효과/특수 처리 완료가 아님 | M29~M31/M36에서 각 item/listing이 구매/사용/영입/시설/특수 handler 또는 blocker를 가져야 함 |
+| 인물 원형/seed | 109개 template과 초기값 6,922행은 coverage row로 분류됨. Chara CFLAG seed 1,465개는 의미별 저장 owner blocker. template 분류는 실제 인물 생성/표시/저장 roundtrip 완료가 아님 | M31~M34에서 인물 identity/seed/CFLAG 분해를 실제 인물 인스턴스에 연결하고 M50/M52에서 저장 roundtrip까지 검증해야 함 |
+| 저장 상태 mapping | `map-save-state` 대상 1,215개, persistent missing mapping 724개가 남아 있음 | M24에서 save mapping을 만들고, M52에서 미정 저장 주소 0개 |
+| 세션/계산 mapping | `map-session-state` 대상 365개, session missing mapping 164개가 남아 있음 | M25에서 session/calculation mapping을 만들고, M52에서 미정 세션/계산 주소 0개 |
+| 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M22/M26/M28~M49에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
+| feature coverage | row 5,344개 생성. `implemented` 11개, `blocker` 5,333개. dynamic/persistence/exit/pause/unreferenced global count가 원본 분석과 일치함 | M28~M49에서 blocker row를 줄이며 M52에서 미구현 feature 0개 |
 
 ## 마지막 검증
 
@@ -176,8 +176,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 12. 기존 M17 원본 근거 대조 정책은 `npm run inventory:legacy-mapping`, adapter import 경계 검색, `npm run typecheck`, `npm run build`, `npm run verify:m16`로 확인되었다.
 13. 기존 M18 반복 구현 규칙 고정은 `IMPLEMENTATION_UNIT_RULES.ko.md`, `npm run build`, `npm run test --if-present`, template 참조 검색으로 확인되었다.
 14. 기존 M19 원본 기능 커버리지 전수표는 `npm run coverage:features`, `npm run gate:feature-coverage`, `npm run analyze:game-system`, `npm run build`로 확인되었다.
-15. M20 정의 데이터 전수 분류와 소비 책임 배정은 `npm run collect:catalog`, `npm run coverage:definitions`, `npm run gate:definition-consumption`, `npm run build`로 확인되었다. 이것은 실제 컨텐츠 효과 구현 완료가 아니라 M24~M28의 실제 소비 검증을 위한 장부 완료다.
-16. 다음 작업은 M21 저장 상태 원본 주소 전수 매핑이다. 완전 이식 검증은 M19~M30의 전수 게이트로 닫는다.
+15. M20 정의 데이터 전수 분류와 소비 책임 배정은 `npm run collect:catalog`, `npm run coverage:definitions`, `npm run gate:definition-consumption`, `npm run build`로 확인되었다. 이것은 실제 컨텐츠 효과 구현 완료가 아니라 M28~M49의 실제 소비 검증을 위한 장부 완료다.
+16. 다음 작업은 M21 원본 근거 장부 확정이다. 완전 이식 검증은 M21~M52의 source evidence, 교차 대조, 저장/세션 mapping, 누락 감사, 기능군별 exit gate, 최종 판정으로 닫는다.
 
 ## 주의
 

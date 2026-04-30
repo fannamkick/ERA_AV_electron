@@ -29,7 +29,7 @@
 
 - [ ] 원본 위치: 파일, 라벨, 주소 또는 CSV 행
 - [ ] 차단 사유: 의미 불명, 근거 충돌, 구현 범위 밖, 사용자 승인 필요 중 하나
-- [ ] 해소 마일스톤: M19~M30 중 하나
+- [ ] 해소 마일스톤: M19~M52 중 하나
 - [ ] 완료 차단 범위: 어떤 기능/데이터/주소 완료를 막는지 명시
 
 ## 페이즈 구분
@@ -38,8 +38,10 @@
 | --- | --- | --- | --- |
 | Phase 1. 최소 세로 루프 | M0~M6 | 공통 실행 계약, 저장/세션/view 경계, 정의 데이터 입력, 새 게임, 메인 화면, 아이템 구매 1차를 연결한다 | 새 게임 -> 메인 화면 -> 아이템 상점 -> 상품 선택/수량 변경 -> 구매 성공/실패/취소 -> 돈/인벤토리 반영 -> `npm run build` 통과 |
 | Phase 2. 핵심 골격 확장 | M7~M16 | 주요 기능을 한 단위씩 얇게 붙이고 저장/로드, 턴 진행, 검증 체계를 만든다 | 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련이 각각 최소 성공/실패/취소 또는 예외 경로를 갖고 build가 통과 |
-| Phase 3. 원본 대조 체계 | M17~M22 | 완성 여부를 셀 수 있도록 원본 기능, 정의 데이터, 저장 상태, 세션/계산 상태의 전수표와 mapping 정책을 고정한다 | feature/definition/save/session coverage 산출물의 컬럼과 상태값이 확정되고, 미정 항목을 완료로 처리하지 않는 차단 규칙이 문서화됨 |
-| Phase 4. 전수표 기반 완성 | M23~M30 | 전수표를 기준으로 기능군별 누락을 제거하고 최종 누락 0 검증을 닫는다 | 미구현 기능 0개, 미분류 정의 0개, 미분류 저장/세션 주소 0개, 미해소 blocker 0개, 전체 smoke flow와 검증 명령 통과 |
+| Phase 3. 원본 대조 체계 | M17~M20 | 완성 여부를 셀 수 있도록 원본 기능과 정의 데이터의 1차 전수표, mapping 정책, 반복 구현 규칙을 고정한다 | feature/definition coverage 산출물의 컬럼과 상태값이 확정되고, 미정 항목을 완료로 처리하지 않는 차단 규칙이 문서화됨 |
+| Phase 4. 전수표 보강과 누락 감사 | M21~M27 | 원본 근거, 정의 데이터, 저장 상태, 세션/계산 상태 전수표를 서로 대조하고 구현 전 누락을 찾는다 | source evidence, feature, definition, save mapping, session mapping, blocker 장부가 서로 맞물리고 구현 전 누락 감사가 통과 |
+| Phase 5. 기능군별 전수 구현 | M28~M49 | 전수표를 기준으로 기능군별 원본 컨텐츠를 구현, 검증, 승인 제외, blocker 중 하나로 닫는다 | 각 기능군 종료 시 미구현 feature, 미소비 definition, 미정 save/session row가 해당 기능 범위에 남지 않음 |
+| Phase 6. 최종 저장/검증 | M50~M52 | 전체 저장/로드, 최종 누락 감사, 완전 이식 판정을 닫는다 | 미구현 기능 0개, 미분류 정의 0개, 미분류 저장/세션 주소 0개, 미해소 blocker 0개, 전체 smoke flow와 최종 검증 명령 통과 |
 
 ## 페이즈 근거
 
@@ -47,17 +49,20 @@
 - `GAME_DOMAIN_SYSTEM.md`는 데이터를 `definitions`, `save`, `session`, `views`로 나눈다. Phase 1은 이 경계가 실제 UI/action 흐름에서 지켜지는지 먼저 검증해야 하므로 M0~M6을 한 묶음으로 둔다.
 - `DOMAIN_INVENTORY.ko.md`와 `DOMAIN_REINTERPRETATION.ko.md`는 `ITEM`을 `inventory.itemCounts`, `ITEMSALES`를 view/session 판매 목록, `BOUGHT`를 `session.shop` 선택값으로 판정한다. Phase 1의 아이템 구매 루프는 이 핵심 분리를 검증하기에 충분하고, 아이템 사용/의복/시설/영입까지 넓히지 않는다.
 - M7~M16은 각 주요 기능을 1차 골격으로 세우는 구간이다. 이 구간의 완료는 완전 이식이 아니라, 기능별 성공/실패/취소 경로와 저장/로드/턴 진행/진단 체계를 갖추는 것을 뜻한다.
-- M17~M22는 구현량을 늘리는 구간이 아니라 원본 대조 정책과 전수표를 확정하는 구간이다. `needsDecision`, `missingMapping`, `needs-review`가 남은 항목은 기능 완료로 처리하지 않는다.
-- M23~M30은 전수표를 기준으로 완성도를 닫는 구간이다. M1~M18이 모두 끝나도 완전 이식 완료가 아니며, 완전 이식은 M30의 누락 0 검증으로만 판정한다.
+- M17~M20은 구현량을 늘리는 구간이 아니라 원본 대조 정책, 반복 구현 규칙, 기능/정의 데이터 1차 전수표를 확정하는 구간이다. `needsDecision`, `missingMapping`, `needs-review`가 남은 항목은 기능 완료로 처리하지 않는다.
+- M21~M27은 M19/M20 전수표를 원본 근거와 저장/세션 mapping까지 확장하고, 구현 전 누락을 찾는 구간이다. 이 구간을 통과하지 못하면 M28 이후 구현을 완료 처리하지 않는다.
+- M28~M49는 전수표를 기준으로 기능군별 완성도를 닫는 구간이다. 샘플 1개 구현, no-op handler, 표시만 되는 화면은 완료가 아니다.
+- M50~M52는 전체 저장/로드와 최종 누락 0 검증을 닫는 구간이다. 완전 이식은 M52의 최종 판정으로만 처리한다.
 
 ## 마일스톤 내부 단계
 
 - M0~M3: 구조와 데이터 입력 경계 확정
 - M4~M16: 실제로 도는 최소 게임 골격과 검증 체계 작성
 - M17~M18: 원본 대조 정책과 반복 구현 규칙 고정
-- M19~M22: 원본 기능, 정의 데이터, 저장 상태, 세션/계산 상태 전수표 작성
-- M23~M29: 전수표를 기준으로 기능군별 구현 완료
-- M30: 누락 0 검증
+- M19~M20: 원본 기능, 정의 데이터 1차 전수표 작성
+- M21~M27: 원본 근거, 저장 상태, 세션/계산 상태 전수표 보강과 구현 전 누락 감사
+- M28~M49: 전수표를 기준으로 기능군별 구현 완료
+- M50~M52: 전체 저장/로드, 최종 누락 감사, 완전 이식 판정
 - M1~M18 완료는 완전 이식 완료가 아님
 
 ## 세부도 기준
@@ -77,8 +82,8 @@
 | --- | --- | --- | --- |
 | M0 | Phase 1의 범위와 제외 범위를 고정한다 | `GAME_FLOW_MAP.ko.md`, `GAME_DOMAIN_SYSTEM.md`, `MODULE_SYSTEM.ko.md`, `PROGRESS_STATUS.ko.md` 대조 | M1~M6만 최소 세로 루프로 닫는다. 이후 기능은 포함하지 않는다 |
 | M1 | UI가 직접 상태를 바꾸지 않도록 action/result/effect 계약을 만든다 | `routes`, `actions`, `effects`, `results`, `dispatch`, `npm run build` | 성공/실패/no-op/route 전환 계약을 만든 단계이며, 기능별 상세 로직 완성은 아니다 |
-| M2 | 저장 상태, 세션 상태, 화면 계산 객체의 기본 경계를 만든다 | `GameState`, `GameSession`, save payload 경계 helper, `npm run build` | M6까지 필요한 최소 구조만 확정한다. 전수 저장 mapping은 M21에서 닫는다 |
-| M3 | 원본 CSV 기반 정의 데이터를 runtime 입력으로 연결한다 | 정의 데이터 bridge, item/recruit/shop listing 분류, `npm run collect:catalog`, `npm run build` | 정의 데이터를 저장 상태에 넣지 않는 경계를 검증한다. 모든 정의의 실제 소비 완료는 M20/M24~M28에서 닫는다 |
+| M2 | 저장 상태, 세션 상태, 화면 계산 객체의 기본 경계를 만든다 | `GameState`, `GameSession`, save payload 경계 helper, `npm run build` | M6까지 필요한 최소 구조만 확정한다. 전수 저장 mapping은 M24에서 닫는다 |
+| M3 | 원본 CSV 기반 정의 데이터를 runtime 입력으로 연결한다 | 정의 데이터 bridge, item/recruit/shop listing 분류, `npm run collect:catalog`, `npm run build` | 정의 데이터를 저장 상태에 넣지 않는 경계를 검증한다. 모든 정의의 실제 소비 완료는 M20/M28~M49에서 닫는다 |
 | M4 | 새 게임 생성이 저장 상태를 초기화하고 메인 화면으로 이어지게 한다 | `game/new` handler, EASY/NORMAL 입력, 초기 날짜/자금/인물/아이템, `npm run smoke:phase1` | 시작 상태 생성만 닫는다. 캐릭터 seed 전수 연결은 M25에서 닫는다 |
 | M5 | 메인 화면을 저장 상태 기반 view로 계산하고 action으로만 이동하게 한다 | `mainMenu` route, menu view, enabled/disabled reason, unknown route/action 처리, `npm run smoke:phase1` | 메인 화면 최소 선택지만 닫는다. 원본 메인 메뉴 전수 구현은 M23에서 닫는다 |
 | M6 | 아이템 구매 최소 루프를 성공/실패/취소까지 동작시킨다 | 상점 진입, listing view, 수량 선택, 돈 부족 실패, 구매 성공, 취소, `npm run smoke:phase1` | 구매형 listing 1차 루프만 닫는다. 아이템 사용/특수 효과/전체 상점은 M24에서 닫는다 |
@@ -92,10 +97,10 @@
 | M14 | 훈련 1차 command를 session 계산과 저장 결과 반영으로 분리한다 | `npm run smoke:m14`, 대상/실행자/command 선택, 누락 실패, 계산 버퍼, 결과 반영, session 폐기 | command 1개만 닫는다. 105개 command 전체와 후처리는 M28에서 닫는다 |
 | M15 | 화면 렌더링을 route별로 정리하고 진단 패널을 읽기 전용으로 둔다 | `RouteScreens`, `ScreenPrimitives`, `DiagnosticsPanel`, UI 직접 상태 변경 검색, `npm run build` | UI가 상태를 직접 바꾸지 않는 경계를 닫는다. UX 완성이나 전체 화면 구현 완료는 아니다 |
 | M16 | smoke/gate 검증 묶음으로 build 단독 완료를 차단한다 | `verify:m16`, `test:roundtrip`, `gate:boundaries`, `gate:raw-names`, `gate:stubs` | M6~M14 최소 루프와 경계 검증을 자동화한다. M21 이후 coverage gate는 별도다 |
-| M17 | 원본 근거 대조 정책과 adapter 경계를 확정한다 | `LEGACY_MAPPING_POLICY.ko.md`, `inventory:legacy-mapping`, adapter import 검색, `npm run build` | mapping 상태값과 승인/차단 규칙을 닫는다. 대량 mapping 자체는 M21/M22에서 한다 |
-| M18 | 이후 구현을 1개 단위씩 진행하는 규칙과 template을 고정한다 | `IMPLEMENTATION_UNIT_RULES.ko.md`, template 검색, `npm run build`, `npm run test --if-present` | M23~M29의 작업 방식만 닫는다. 기능 구현량을 늘리는 마일스톤이 아니다 |
+| M17 | 원본 근거 대조 정책과 adapter 경계를 확정한다 | `LEGACY_MAPPING_POLICY.ko.md`, `inventory:legacy-mapping`, adapter import 검색, `npm run build` | mapping 상태값과 승인/차단 규칙을 닫는다. 대량 mapping 자체는 M24/M25에서 한다 |
+| M18 | 이후 구현을 1개 단위씩 진행하는 규칙과 template을 고정한다 | `IMPLEMENTATION_UNIT_RULES.ko.md`, template 검색, `npm run build`, `npm run test --if-present` | M28~M49의 작업 방식만 닫는다. 기능 구현량을 늘리는 마일스톤이 아니다 |
 | M19 | 원본 기능 커버리지 전수표를 만들고 blocker 장부를 시작한다 | `data/coverage/features.json`, `data/coverage/blockers.json`, `coverage:features`, `gate:feature-coverage` | feature row 5,344개와 blocker 5,333개를 장부화한다. 구현 완료가 아니라 구현 대상을 셀 수 있게 만든 단계다 |
-| M20 | 원본 정의 데이터와 Chara seed를 역할/소비 책임으로 분류한다 | `data/coverage/definitions.json`, `coverage:definitions`, `gate:definition-consumption`, `npm run build` | definition row 7,840개를 장부화한다. `template/listing/display-only/calculation-only`는 역할 판정이며 실제 소비 완료가 아니다 |
+| M20 | 원본 정의 데이터와 Chara seed를 역할/소비 책임으로 분류한다 | `data/coverage/definitions.json`, `coverage:definitions`, `gate:definition-consumption`, `npm run build` | definition row 7,840개를 장부화한다. `template/listing/display-only/calculation-only`는 역할 판정이며 실제 소비 완료가 아니다. 실제 소비 검증은 M28~M49에서 닫는다 |
 
 ## M0. 기준 동결
 
@@ -507,16 +512,50 @@ npm run collect:catalog
 npm run build
 ```
 
-## M21. 저장 상태 원본 주소 전수 매핑
+## M21. 원본 근거 장부 확정
+
+- [ ] 원본 근거의 1차 위치를 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`로 고정
+- [ ] 보조 CSV와 파생 문서가 원본 근거인지 해석 보조 자료인지 구분
+- [ ] feature row, definition row, save row, session row가 공통으로 쓰는 `sourceEvidence` 형식 확정
+- [ ] evidence에 파일 경로, 라벨, CSV 행, family/index, read/write 방향을 기록
+- [ ] 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 못하게 차단
+- [ ] 원본 파일이 없거나 근거가 충돌하는 항목은 blocker로 기록
+- [ ] source evidence가 실제 파일에 존재하는지 확인하는 gate 설계
+- [ ] `npm run inventory:legacy-mapping` 실행
+- [ ] `npm run build` 실행
+
+## M22. 전수표 교차 대조 gate
+
+- [ ] M19 feature coverage와 M20 definition coverage를 서로 연결하는 교차 대조 규칙 작성
+- [ ] feature가 읽는 definition/save/session/view owner를 기록하는 컬럼 확정
+- [ ] definition row가 실제 handler, view, calculation, save init 중 어디서 소비되는지 기록
+- [ ] save mapping과 session mapping이 feature/definition row에 연결되지 않으면 orphan으로 표시
+- [ ] blocker와 approved-excluded의 승인 근거 형식 확정
+- [ ] `template`, `listing`, `display-only`, `calculation-only`를 구현 완료로 세지 않도록 gate 작성
+- [ ] orphan coverage, role-only 완료, source evidence 누락을 실패로 처리
+- [ ] `npm run coverage:features` 실행
+- [ ] `npm run coverage:definitions` 실행
+- [ ] `npm run build` 실행
+
+## M23. ERB 기반 정의 데이터 보강
+
+- [ ] CSV에 없고 ERB에서만 정의되는 선택지, 장면, 이벤트, 계산 상수를 수집
+- [ ] 미션, 업무, 촬영, 방문, 이벤트, 엔딩의 ERB 기반 정의 후보를 분류
+- [ ] ERB 기반 정의와 CSV 정의가 충돌하면 source evidence 우선순위 기록
+- [ ] ERB 기반 정의 데이터 산출물 경로 확정
+- [ ] ERB 기반 정의도 runtime 정의 데이터, blocker, approved-excluded 중 하나로 분류
+- [ ] 표시 전용 정의와 계산 입력 정의를 구분
+- [ ] M20 definition coverage에 ERB 기반 정의 보강 row를 연결
+- [ ] `npm run analyze:game-system` 실행
+- [ ] `npm run build` 실행
+
+## M24. 저장 상태 원본 주소 전수 매핑
 
 - [ ] `map-save-state` 대상 1,215개를 도메인 필드 또는 blocker로 분류
 - [ ] save mapping coverage 산출물 경로 확정
 - [ ] family, index, source evidence, runtime owner, field path, status 컬럼 확정
 - [ ] persistent 후보 1,016개 숫자 슬롯을 저장 필드, 정의 데이터, 세션, script scratch, blocker 중 하나로 재판정
 - [ ] `CFLAG`, `FLAG`, `GLOBAL`, `PBAND`를 family 단위가 아니라 index 의미 단위로 분해
-- [ ] `CFLAG` index별 owner domain 분류표 작성
-- [ ] `FLAG` index별 owner domain 분류표 작성
-- [ ] `PBAND` index별 owner domain 분류표 작성
 - [ ] 캐릭터 seed 근거가 있는 주소는 캐릭터 원형 초기값과 저장 인스턴스 필드를 구분
 - [ ] write-only 주소는 실제 쓰기 위치를 근거로 소유 도메인을 확정
 - [ ] read-only 주소는 실제 사용 기능과 기본값 근거를 확인
@@ -526,165 +565,338 @@ npm run build
 - [ ] `npm run audit:erb-states` 실행
 - [ ] `npm run build` 실행
 
-검증:
-
-```bash
-npm run inventory:legacy-mapping
-npm run audit:erb-states
-npm run build
-```
-
-## M22. 세션/계산 원본 주소 전수 매핑
+## M25. 세션/계산 원본 주소 전수 매핑
 
 - [ ] `map-session-state` 대상 365개를 session 필드 또는 계산 함수 내부값으로 분류
 - [ ] session mapping coverage 산출물 경로 확정
 - [ ] family, index, source evidence, session owner, calculation owner, status 컬럼 확정
 - [ ] session/runtime buffer 후보 234개를 화면 세션, 훈련 세션, 촬영 세션, 업무 세션, script scratch, blocker 중 하나로 분류
-- [ ] `TFLAG`, `TEQUIP`, `SOURCE`, `UP`, `DOWN`, `LOSEBASE`, `NOWEX`, `EJAC`를 원본명 그대로 모델명으로 쓰지 않도록 의미 단위로 재명명
-- [ ] `TFLAG` index별 의미표 작성
-- [ ] `TEQUIP` index별 의미표 작성
-- [ ] `SOURCE` id별 계산 owner 작성
-- [ ] 각 계산 버퍼가 기능 종료 후 저장 상태에 직접 남지 않는지 검증
+- [ ] `TFLAG`, `TEQUIP`, `SOURCE`, `UP`, `DOWN`, `LOSEBASE`, `NOWEX`, `EJAC`를 의미 단위로 재명명
+- [ ] 각 계산 버퍼의 생성 시점, 소비 시점, 폐기 시점 작성
 - [ ] 저장해야 하는 결과와 버려야 하는 중간값을 테스트로 분리
+- [ ] 각 계산 버퍼가 기능 종료 후 저장 상태에 직접 남지 않는지 검증
 - [ ] `npm run audit:erb-states` 실행
 - [ ] `npm run build` 실행
+- [ ] `rg "TFLAG|TEQUIP|SOURCE|LOSEBASE|NOWEX|EJAC" src/game src/domains src/features src/ui` 실행
 
-검증:
+## M26. 구현 전 누락 감사
 
-```bash
-npm run audit:erb-states
-npm run build
-rg "TFLAG|TEQUIP|SOURCE|LOSEBASE|NOWEX|EJAC" src/game src/domains src/features src/ui
-```
+- [ ] `data/coverage/audits/pre-implementation-gap-audit.json` 산출물 형식 확정
+- [ ] 원본 CSV/ERB 항목 중 coverage row가 없는 항목을 `discovered-gap`으로 기록
+- [ ] coverage row는 있지만 source evidence가 없는 항목을 `missing-evidence`로 기록
+- [ ] source evidence는 있지만 consumer가 없는 항목을 `orphan-coverage`로 기록
+- [ ] 역할 판정만 있고 구현 소비가 없는 항목을 `role-only`로 기록
+- [ ] 승인 없는 제외 항목을 실패로 처리
+- [ ] M28~M49 ownerMilestone 배정을 재확인
+- [ ] `discovered-gap`, `orphan-coverage`, `role-only`가 남으면 M28로 넘어가지 않음
+- [ ] `npm run build` 실행
 
-## M23. 메인 화면 기능 전수 구현
+## M27. 구현 단위 큐와 blocker 동결
+
+- [ ] M28~M49의 기능군별 구현 큐를 coverage row 기준으로 생성
+- [ ] 각 구현 단위가 feature, definition, save, session, view row를 함께 참조하도록 template 보강
+- [ ] 각 단위가 성공, 실패, 취소, 저장 roundtrip 중 필요한 검증을 갖도록 규칙 보강
+- [ ] blocker row의 해소 마일스톤을 M28~M52 중 하나로 재배정
+- [ ] 사용자 승인 제외가 필요한 항목 목록을 별도 장부로 분리
+- [ ] 동일 원본 row를 여러 기능군이 소비할 때 주 owner와 참조 owner를 구분
+- [ ] M28 이후 새로 발견한 원본 항목을 즉시 coverage에 추가하는 절차 작성
+- [ ] `npm run build` 실행
+- [ ] 테스트 도구가 있으면 `npm run test --if-present` 실행
+
+## M28. 메인 화면과 route 전수 연결
 
 - [ ] M19 feature coverage에서 메인 화면 직속 feature 목록을 읽음
-- [ ] 훈련 시작 메뉴 구현
-- [ ] 인물 영입 메뉴 구현
-- [ ] 아이템 구매/사용 메뉴 구현
-- [ ] 창관/업무 메뉴 구현
-- [ ] 촬영 메뉴 구현
-- [ ] 재단/의복 메뉴 구현
-- [ ] 방문 메뉴 구현
-- [ ] 휴식/시간 종료 메뉴 구현
-- [ ] 능력 상승 메뉴 구현
-- [ ] 미션 메뉴 구현
-- [ ] 저장/로드 메뉴 구현
-- [ ] 설정/정보/업적/도움말/디버그 메뉴를 구현 또는 승인된 제외로 분류
-- [ ] 엔딩 체크 메뉴 구현
-- [ ] 각 메뉴의 enabled/disabled 조건 구현
-- [ ] 각 메뉴의 표시 이름과 설명 구현
-- [ ] 각 메뉴의 route 전환 구현
+- [ ] 원본 메인 화면에서 직접 도달 가능한 선택지 전체를 route 또는 approved-excluded로 분류
+- [ ] 훈련, 영입, 아이템, 업무, 촬영, 방문, 능력 상승, 미션, 저장/로드, 설정/정보/엔딩 route를 연결
+- [ ] 각 메뉴의 enabled/disabled 조건을 view 계산으로 구현
+- [ ] 각 메뉴의 표시 이름과 설명을 정의 데이터 또는 화면 정의에 연결
+- [ ] route 전환이 저장 상태를 직접 바꾸지 않는지 검증
 - [ ] 모든 메뉴가 성공/취소 후 지정된 끝점으로 돌아가는지 검증
 - [ ] M19 coverage의 메인 화면 feature status 갱신
+- [ ] 기능군별 `Mxx-gap-audit.json` 첫 산출물 생성
 - [ ] `npm run build` 실행
 
-## M24. 상점/아이템/영입 완성
+## M29. 아이템 상점과 구매 완성
 
 - [ ] M20 definition coverage에서 item/listing 전체 목록을 읽음
-- [ ] 모든 아이템 정의의 표시 이름, 가격, 분류를 연결
-- [ ] 아이템 분류별 handler owner 지정
-- [ ] 모든 구매형 아이템의 구매 성공/실패/취소 처리 구현
-- [ ] 모든 사용형 아이템의 사용 조건과 효과를 구현 또는 blocker로 분류
+- [ ] 모든 구매형 아이템의 표시 이름, 가격, 분류를 연결
+- [ ] 모든 구매형 아이템의 구매 성공, 돈 부족 실패, 수량 제한 실패, 취소를 구현
+- [ ] 상점 노출 조건, 해금 조건, 숨김 조건을 `shop.progress`와 view 계산으로 분리
+- [ ] 인벤토리 수량과 상점 진행 상태를 분리 검증
+- [ ] 자동 구매 대상 아이템이 있으면 턴 종료와 연결하거나 blocker로 기록
+- [ ] 구매 결과 저장 roundtrip을 검증
+- [ ] M20/M24 coverage의 상점 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M30. 아이템 사용과 특수 아이템 완성
+
+- [ ] 모든 사용형 아이템의 사용 조건을 구현 또는 blocker로 분류
+- [ ] 아이템 사용 효과가 `inventory`, `people`, `body`, `world`, `mission`, `settings` 중 정확한 owner에 반영되는지 검증
+- [ ] 특수 item 15개를 실제 효과, 승인 제외, blocker 중 하나로 닫음
+- [ ] 시설 해금형 item과 방문/시설 기능의 소비 관계를 연결
+- [ ] 의복/장비형 item과 equipment/clothing owner를 연결
+- [ ] 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
+- [ ] 아이템 사용 후 저장 roundtrip을 검증
+- [ ] M20/M24/M26/M34 coverage의 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M31. 영입 listing과 인물 생성 완성
+
 - [ ] 모든 영입 listing의 표시 조건, 가격, 생성 결과를 구현
 - [ ] 영입 listing과 캐릭터 원형 연결 누락 0개 확인
-- [ ] 돈 부족, 수량 제한, 해금 조건, 중복 구매 조건을 검증
-- [ ] 상점 view 계산값이 저장 상태에 들어가지 않는지 검증
-- [ ] 인벤토리 수량과 상점 진행 상태를 분리 검증
-- [ ] M20/M21 coverage의 상점 관련 status 갱신
+- [ ] 중복 영입, 인원 제한, 돈 부족, 조건 미충족, 취소를 검증
+- [ ] 영입 성공 시 `people`, `body`, `social`, `equipment` 초기 상태를 생성
+- [ ] 영입 후 메인 화면, 정보 화면, 저장 roundtrip을 검증
+- [ ] 영입 불가 또는 제외 항목은 승인 근거 또는 blocker를 남김
+- [ ] M20/M24/M25 coverage의 영입 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M25. 인물/신체/관계 완성
+## M32. 인물 원형과 identity 완성
 
-- [ ] M20 Chara seed coverage 전체를 읽음
-- [ ] 모든 캐릭터 원형을 생성 가능한 캐릭터 인스턴스로 변환
-- [ ] 이름, 호칭, 별명, 표시 이름을 저장/정의 데이터 경계에 맞게 연결
-- [ ] 능력, 기초치, 소질, 경험, 각인, 파라미터 초기값을 연결
-- [ ] 신체/생식/성적 이력/오염/자원 상태를 하위 객체로 분리
+- [ ] M20 Chara template 109개 전체를 생성 가능한 캐릭터 원형으로 연결
+- [ ] 이름, 호칭, 별명, 표시 이름을 정의 데이터와 저장 상태 경계에 맞게 분리
+- [ ] 원형 정의와 플레이 중 인물 인스턴스를 구분
+- [ ] 삭제, 은퇴, 조수 가능, 영입 가능 상태를 저장 필드로 분리
+- [ ] 캐릭터 정보 화면에서 identity 값 표시를 검증
+- [ ] 원형에서 인스턴스 생성 후 저장 roundtrip을 검증
+- [ ] Chara seed 중 identity 관련 row의 coverage status 갱신
+- [ ] `npm run build` 실행
+
+## M33. 신체/능력/소질/경험 완성
+
+- [ ] Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`, `MARK`, `PALAM` 계열을 owner별로 연결
+- [ ] 능력, 기초치, 소질, 경험, 각인, 파라미터 초기값을 표시 정의와 저장 수치로 분리
+- [ ] 신체/생식/성적 이력/오염/자원 상태를 `body` 하위 객체로 분리
+- [ ] 업무, 촬영, 훈련 결과가 같은 신체 필드를 공유하는지 검증
+- [ ] 값 범위, 레벨 표시, 증가/감소 계산 기준을 정의 데이터와 연결
+- [ ] 인물 정보 화면과 저장 roundtrip을 검증
+- [ ] M20/M24 coverage의 body 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M34. 관계/CFLAG/장비/의복 owner 완성
+
+- [ ] CFLAG 정의 151개와 Chara CFLAG seed 1,465개를 의미별 owner로 분해
 - [ ] 관계값과 방향성 관계를 `social`에 연결
-- [ ] 캐릭터 삭제, 은퇴, 조수 가능, 영입 가능 상태를 검증
-- [ ] 캐릭터 정보 화면과 저장 roundtrip을 검증
-- [ ] M21 coverage의 people/body/social 관련 status 갱신
+- [ ] 장비, 의복, 착용 상태, 해금 상태를 `equipment`와 `inventory/shop/world` 경계에 맞게 분리
+- [ ] CFLAG 중 people/body/equipment/social/work/mission/settings/features owner를 구분
+- [ ] 의미 불명 CFLAG는 완료 처리하지 않고 blocker로 남김
+- [ ] 관계/장비/의복 변화가 저장 roundtrip에 남는지 검증
+- [ ] 원본명 `CFLAG`를 앱 모델명으로 직접 사용하지 않도록 검색
+- [ ] M20/M24/M25 coverage의 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M26. 방문/시설/업무/촬영 완성
+## M35. 턴 종료와 시간 진행 완성
 
-- [ ] M19 feature coverage에서 방문/시설/업무/촬영 feature 목록을 읽음
+- [ ] 원본 턴 종료 흐름의 day/week/month/year 진행 규칙을 구현
+- [ ] 전반/후반 또는 phase 전환 규칙을 저장 상태와 session 폐기로 분리
+- [ ] 턴 종료 전 hook, 턴 종료 후 hook, 월말 hook, 새 주 hook을 정의
+- [ ] 자동 구매, 자동 아이템 사용, 업무 결과, 미션 기한, 이벤트 발생 순서를 연결
+- [ ] 월말 비용, 판매, 보상, 패널티가 `economy/run/world` owner에 반영되는지 검증
+- [ ] 턴 종료 중 session 선택값이 남지 않는지 검증
+- [ ] 턴 종료 후 저장 roundtrip을 검증
+- [ ] M19/M24/M25 coverage의 turn-end 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M36. 방문/시설 완성
+
 - [ ] 방문 장소 전체를 장소 정의 또는 blocker로 분류
 - [ ] 장소별 행동 전체를 구현 또는 blocker로 분류
+- [ ] 장소 해금 조건과 현재 선택 session을 분리
+- [ ] 비용 부족, 조건 미충족, 중복 실행, 취소를 검증
+- [ ] 시설 해금과 세계 진행 상태를 `world` 또는 `featureState`에 연결
+- [ ] 방문 행동 결과가 인물, 신체, 돈, 시간 진행에 반영되는 경우 owner를 명시
+- [ ] 방문 후 저장 roundtrip을 검증
+- [ ] M19/M21/M24/M25 coverage의 방문 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M37. 업무/창관/특수 업무 완성
+
 - [ ] 업무 정의 전체를 구현 또는 blocker로 분류
-- [ ] 창관/아르바이트/업무 결과가 돈, 인물, 신체, 시간 진행에 반영되는지 검증
+- [ ] 창관, 아르바이트, 일반 업무, 특수 업무를 정의 데이터와 handler owner로 분리
+- [ ] 업무 참여 조건, 대상 조건, 시설 조건, 시간 조건을 view 계산으로 구현
+- [ ] 업무 결과가 돈, 인물, 신체, 경험, 업무 이력, 시간 진행에 반영되는지 검증
+- [ ] 업무 실행 중 선택값과 계산값은 session/calculation에만 둠
+- [ ] 성공, 조건 미충족, 대상 누락, 취소, 턴 종료를 검증
+- [ ] 업무 후 저장 roundtrip을 검증
+- [ ] M19/M20/M24/M25 coverage의 업무 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M38. 촬영 정의와 장면 조건 완성
+
 - [ ] 촬영 장면 전체를 장면 정의 또는 blocker로 분류
-- [ ] 촬영 대상 조건, 장면 선택, 촬영량, 결과 반영, 턴 종료를 검증
-- [ ] 시설 해금과 현재 선택 세션을 분리 검증
-- [ ] 방문/업무/촬영별 성공/실패/취소 smoke flow 추가
-- [ ] M19/M21/M22 coverage의 관련 status 갱신
+- [ ] 촬영 대상 후보 조건과 장면 후보 조건을 view 계산으로 구현
+- [ ] 장면별 표시 이름, 설명, 요구 상태, 예상 결과를 정의 데이터로 연결
+- [ ] 장면 선택, 대상 선택, 조건 실패, 취소를 검증
+- [ ] 촬영 중간 계산값은 session/calculation에만 둠
+- [ ] 장면 정의가 CSV/ERB 근거를 갖는지 확인
+- [ ] M20/M23/M25 coverage의 촬영 정의 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M27. 미션/세계/이벤트/엔딩 완성
+## M39. 촬영 실행/결과/판매 완성
 
-- [ ] M19 feature coverage에서 미션/이벤트/엔딩 feature 목록을 읽음
+- [ ] 촬영량, 수익, 팬, 점수, 경험, 신체 피로 계산을 구현
+- [ ] 촬영 결과가 `economy`, `people`, `body`, `world`, `featureState` 중 필요한 owner에만 반영되는지 검증
+- [ ] 촬영 이력과 출시/판매 상태를 저장 상태에 연결
+- [ ] 촬영 실패, 조건 미충족, 장면 누락, 대상 누락, 취소를 검증
+- [ ] 촬영 완료 후 턴 종료와 session 폐기를 검증
+- [ ] 촬영 후 저장 roundtrip을 검증
+- [ ] M19/M20/M24/M25 coverage의 촬영 실행 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M40. 훈련 메뉴와 세션 완성
+
+- [ ] 훈련 대상, 실행자, 조수, command 선택 상태를 session owner에 연결
+- [ ] 훈련 command 후보 view를 전체 command 기준으로 계산
+- [ ] 대상/실행자/조수 누락, 불가 조건, 취소를 검증
+- [ ] 훈련 장비/임시 모드/선택값은 session에만 둠
+- [ ] 훈련 화면 진입과 복귀가 저장 상태를 직접 바꾸지 않도록 검증
+- [ ] 훈련 session이 완료/취소/턴 종료 시 폐기되는지 검증
+- [ ] M19/M20/M25 coverage의 훈련 메뉴 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M41. 훈련 가능 조건 전수 구현
+
+- [ ] `Train.csv` 105개 command별 가능 조건을 구현 또는 blocker로 분류
+- [ ] command별 대상, 실행자, 조수 역할 조건을 구현
+- [ ] command별 장비, 상태, 자원, 장소, 이벤트 조건을 구현
+- [ ] 불가 사유를 view 계산 결과로 표시
+- [ ] availability 계산이 저장 상태를 바꾸지 않는지 검증
+- [ ] command별 가능/불가 smoke 또는 table 검증을 추가
+- [ ] M20/M25 coverage의 훈련 가능 조건 status 갱신
+- [ ] `npm run build` 실행
+
+## M42. 훈련 command 효과 0~34 완성
+
+- [ ] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
+- [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
+- [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
+- [ ] command 0~34의 source evidence와 consumer evidence를 연결
+- [ ] 관련 blocker를 해소하거나 승인 제외로 닫음
+- [ ] M20/M24/M25 coverage의 command 0~34 status 갱신
+- [ ] `npm run build` 실행
+
+## M43. 훈련 command 효과 35~69 완성
+
+- [ ] command 35~69의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
+- [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
+- [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
+- [ ] command 35~69의 source evidence와 consumer evidence를 연결
+- [ ] 관련 blocker를 해소하거나 승인 제외로 닫음
+- [ ] M20/M24/M25 coverage의 command 35~69 status 갱신
+- [ ] `npm run build` 실행
+
+## M44. 훈련 command 효과 70~104와 후처리 완성
+
+- [ ] command 70~104의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] 훈련 후처리, 이벤트, 장비 변화, 자원 변화가 올바른 owner에 반영되는지 검증
+- [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
+- [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
+- [ ] 전체 105개 command coverage에 미구현 row가 남지 않는지 확인
+- [ ] 원본명 `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` 직접 사용 검색 통과
+- [ ] M20/M24/M25 coverage의 command 70~104 및 후처리 status 갱신
+- [ ] `npm run build` 실행
+
+## M45. 능력 상승/휴식/공통 유지보수 완성
+
+- [ ] 능력 상승 메뉴와 조건을 구현 또는 blocker로 분류
+- [ ] 휴식, 회복, 자동 아이템 사용, 공통 유지보수 흐름을 구현
+- [ ] 공통 시스템 feature가 특정 기능 owner에 잘못 섞이지 않도록 분리
+- [ ] 성공, 조건 미충족, 취소, 턴 종료 연결을 검증
+- [ ] 결과가 `people`, `body`, `inventory`, `run`, `economy` owner에만 반영되는지 검증
+- [ ] 저장 roundtrip을 검증
+- [ ] M19/M20/M24/M25 coverage의 common-system 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M46. 미션 완성
+
 - [ ] 미션 전체를 정의, 진행 상태, 보상, 실패 조건으로 분리
+- [ ] 미션 수락, 진행, 보고, 완료, 실패, 만료를 구현
 - [ ] 미션 기한과 턴 종료 처리를 연결
+- [ ] 미션 보상과 패널티가 `economy`, `world`, `people`, `body`, `featureState`에 반영되는지 검증
+- [ ] 미션 목록 선택 session이 저장 payload에 남지 않는지 검증
+- [ ] 미션 후 저장 roundtrip을 검증
+- [ ] M19/M20/M24/M25 coverage의 미션 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M47. 세계/이벤트/스토리 진행 완성
+
+- [ ] 이벤트 발생 조건, 1회성/반복성, 결과 상태 변화를 구현 또는 blocker로 분류
 - [ ] 세계/장소/스토리 진행 플래그를 `world`에 연결
-- [ ] 회차 밖 업적/클리어 보너스/전역 해금을 `meta`에 연결
+- [ ] 이벤트 표시 화면과 상태 변경을 분리
+- [ ] 턴 종료, 방문, 미션, 훈련, 촬영에서 발생하는 이벤트 hook을 연결
+- [ ] 이벤트 결과가 저장 상태와 session에 섞이지 않도록 검증
+- [ ] 이벤트 후 저장 roundtrip을 검증
+- [ ] M19/M23/M24/M25 coverage의 event-world 관련 status 갱신
+- [ ] `npm run build` 실행
+
+## M48. 엔딩/계승/전역 상태 완성
+
 - [ ] 엔딩 조건 전체를 조건 id와 결과 화면으로 분류
-- [ ] 엔딩 후 계승 새 게임 흐름을 구현
-- [ ] LOADGLOBAL/SAVEGLOBAL 관련 상태와 save 상태를 분리 검증
-- [ ] M19/M21 coverage의 관련 status 갱신
+- [ ] 엔딩 조건 계산을 view/calculation으로 구현
+- [ ] 엔딩 결과, 계승 새 게임, 게임 종료 흐름을 구현
+- [ ] 회차 밖 업적, 클리어 보너스, 전역 해금을 `meta`에 연결
+- [ ] LOADGLOBAL/SAVEGLOBAL 성격의 상태와 회차 save 상태를 분리 검증
+- [ ] 엔딩 후 저장/로드 또는 새 게임 흐름을 검증
+- [ ] M19/M24/M25 coverage의 ending-event-meta 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M28. 훈련 커맨드 완성
+## M49. 정보/도움말/설정/남은 기능 닫기
 
-- [ ] M20 `Train.csv` command coverage 전체를 읽음
-- [ ] `Train.csv` 105개 command 전체를 구현 또는 blocker로 분류
-- [ ] command별 가능 조건을 view 계산으로 구현
-- [ ] command별 대상/조수/실행자 역할 조건을 구현
-- [ ] command별 계산 source, 파라미터 증감, 체력/기력 감소를 구현
-- [ ] command별 장비/임시 모드/결과 이벤트를 session 계산으로 구현
-- [ ] command별 최종 결과가 `people`, `body`, `social`, `inventory`, `economy`, `run`에만 반영되는지 검증
-- [ ] 훈련 중간값이 저장 payload에 섞이지 않는지 검증
-- [ ] command별 성공/불가/취소 smoke 검증 추가
-- [ ] M20/M21/M22 coverage의 훈련 관련 status 갱신
+- [ ] 정보, 도움말, 업적, 설정, 디버그 메뉴를 구현 또는 승인 제외로 분류
+- [ ] 설정 상태를 `settings`와 `meta` owner로 분리
+- [ ] 정보 화면이 정의 데이터와 저장 상태를 읽기 전용으로 표시하는지 검증
+- [ ] 디버그 기능은 개발 전용, 승인 제외, blocker 중 하나로 분류
+- [ ] M28~M49 전체 기능군의 gap audit을 취합
+- [ ] 기능군별 미구현 feature, 미소비 definition, 미정 save/session row가 남지 않는지 확인
 - [ ] `npm run build` 실행
+- [ ] 테스트 도구가 있으면 `npm run test --if-present` 실행
 
-검증:
-
-```bash
-npm run build
-rg "COMF|TFLAG|SOURCE|TEQUIP|LOSEBASE" src/game src/domains src/features src/ui
-```
-
-## M29. 저장/로드/마이그레이션 완성
+## M50. 전체 저장/로드/마이그레이션 완성
 
 - [ ] 저장 payload schema 확정
 - [ ] 저장 파일에 정의 데이터, view 계산 객체, session 계산 버퍼가 들어가지 않도록 검증
-- [ ] 새 게임 저장 후 로드 roundtrip 검증
-- [ ] 상점/영입/방문/업무/촬영/훈련 후 저장 roundtrip 검증
-- [ ] 엔딩 후 계승 데이터 저장/로드 검증
+- [ ] 새 게임, 상점, 영입, 방문, 업무, 촬영, 훈련, 미션, 이벤트, 엔딩 후 저장 roundtrip 검증
+- [ ] 전역 meta save와 회차 save를 분리 검증
 - [ ] corrupted save 처리 검증
 - [ ] unknown future schema 처리 검증
 - [ ] old schema migration 검증
 - [ ] schema version 변경 시 마이그레이션 경로 구현
-- [ ] 손상된 저장 파일 처리 구현
 - [ ] 저장/로드 실패 effect와 UI route 처리 검증
+- [ ] M24/M25 mapping row 전체가 저장 payload 또는 비저장 판정과 일치하는지 확인
 - [ ] `npm run build` 실행
 
-## M30. 최종 누락 0 검증
+## M51. 최종 누락 감사
+
+- [ ] `data/coverage/audits/final-gap-audit.json` 산출물 생성
+- [ ] 원본 CSV/ERB에서 coverage로 들어오지 않은 feature, definition, save address, session/calculation address가 0개인지 확인
+- [ ] coverage에는 있지만 실제 route/action/handler/view/calculation/save roundtrip에서 소비되지 않는 orphan row가 0개인지 확인
+- [ ] 역할만 있는 상태로 완료 처리된 row가 0개인지 확인
+- [ ] approved-excluded row가 사용자 승인 근거와 제외 범위를 갖는지 확인
+- [ ] blocker row가 남아 있으면 M52로 넘어가지 않음
+- [ ] source evidence와 runtime consumer evidence가 충돌하는 항목을 `needs-review`로 되돌림
+- [ ] `npm run collect:catalog` 실행
+- [ ] `npm run analyze:game-system` 실행
+- [ ] `npm run inventory:legacy-mapping` 실행
+- [ ] `npm run audit:erb-states` 실행
+- [ ] `npm run build` 실행
+
+## M52. 최종 완전 이식 판정
 
 - [ ] 기능 커버리지 전수표에서 미구현 기능 0개 확인
 - [ ] 정의 데이터 전수표에서 미분류 정의 0개 확인
 - [ ] 원본 주소 inventory에서 완료 기능 범위의 `needs-review`, `needsDecision`, `missingMapping` 0개 확인
 - [ ] 미해소 blocker 0개 확인
 - [ ] 사용자 승인 제외 항목은 승인 근거와 제외 범위를 확인
-- [ ] M19 feature coverage 상태값이 모두 implemented 또는 approved-excluded인지 확인
-- [ ] M20 definition coverage 상태값이 모두 used 또는 approved-excluded인지 확인
-- [ ] M21 save mapping coverage 상태값이 모두 mapped 또는 approved-excluded인지 확인
-- [ ] M22 session mapping coverage 상태값이 모두 mapped 또는 approved-excluded인지 확인
+- [ ] feature coverage 상태값이 모두 implemented 또는 approved-excluded인지 확인
+- [ ] definition coverage 상태값이 모두 used 또는 approved-excluded인지 확인
+- [ ] save mapping coverage 상태값이 모두 mapped, non-save, script-scratch, approved-excluded 중 하나인지 확인
+- [ ] session mapping coverage 상태값이 모두 mapped, calculation-only, script-scratch, approved-excluded 중 하나인지 확인
 - [ ] 저장 상태와 세션 상태 경계 검사 통과
 - [ ] 원본명 직접 사용 차단 검색 통과
-- [ ] 전체 smoke flow 통과: 새 게임, 메인, 구매, 영입, 방문, 업무, 촬영, 훈련, 턴 종료, 저장, 로드, 엔딩 체크
+- [ ] 전체 smoke flow 통과: 새 게임, 메인, 구매, 사용, 영입, 방문, 업무, 촬영, 훈련, 턴 종료, 미션, 이벤트, 엔딩, 저장, 로드
+- [ ] `npm run verify:m16` 실행
 - [ ] `npm run collect:catalog` 실행
 - [ ] `npm run analyze:game-system` 실행
 - [ ] `npm run inventory:legacy-mapping` 실행
@@ -695,6 +907,7 @@ rg "COMF|TFLAG|SOURCE|TEQUIP|LOSEBASE" src/game src/domains src/features src/ui
 검증:
 
 ```bash
+npm run verify:m16
 npm run collect:catalog
 npm run analyze:game-system
 npm run inventory:legacy-mapping
