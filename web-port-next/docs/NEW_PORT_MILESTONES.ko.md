@@ -157,6 +157,13 @@
 
 ## M0. 기준 동결
 
+책임 선언:
+- 역할: 신규 포트 작업의 첫 실행 범위를 동결한다.
+- 범위: M1~M6에 필요한 원본 흐름, 데이터 경계, 모듈 경계, 제외 기능만 다룬다.
+- 방식: 기준 문서와 현재 진행 상태를 대조해 Phase 1의 포함/제외와 blocker 가능 지점을 확정한다.
+- 완료 결과: M1이 바로 실행 가능한 상태가 되고, Phase 1 밖 기능은 완료로 착각되지 않는다.
+- 누락 차단: M1~M6 범위, 제외 기능, blocker 지점 중 하나라도 비어 있으면 완료하지 않는다.
+
 - [x] `GAME_FLOW_MAP.ko.md`에서 M1~M6에 필요한 기능 흐름만 확인
 - [x] `GAME_DOMAIN_SYSTEM.md`에서 `definitions/save/session/views` 경계 확인
 - [x] `MODULE_SYSTEM.ko.md`에서 import 방향 확인
@@ -173,6 +180,13 @@ rg "^## M[0-9]+" docs/NEW_PORT_MILESTONES.ko.md
 ```
 
 ## M1. 공통 실행 계약
+
+책임 선언:
+- 역할: 게임 실행을 UI 직접 조작이 아니라 action/result/effect 계약으로 통일한다.
+- 범위: route, action, effect, result, dispatch의 최소 공통 계약과 M6까지 필요한 action만 포함한다.
+- 방식: 성공, 실패, no-op, route 전환을 result로 표현하고 UI는 dispatch만 호출하게 한다.
+- 완료 결과: 이후 모든 기능이 같은 실행 계약 위에서 구현될 수 있다.
+- 누락 차단: 실패 action이 저장 상태를 바꾸거나 UI에 기능 로직이 남으면 완료하지 않는다.
 
 - [x] `src/game/routes.ts`에 `UiRoute` 정의
 - [x] `src/game/effects.ts`에 `GameEffect` 정의
@@ -197,6 +211,13 @@ npm run build
 ```
 
 ## M2. 데이터 구조 v1
+
+책임 선언:
+- 역할: 새 게임과 상점 1차 루프에 필요한 저장 상태, 세션 상태, 화면 계산 객체의 경계를 세운다.
+- 범위: `run`, `economy`, `people`, `inventory`, `shop`, `session.shop`, `views`, save payload helper의 최소 구조다.
+- 방식: 저장할 데이터와 화면/행동 중에만 필요한 데이터를 타입과 helper로 분리한다.
+- 완료 결과: M4~M6이 같은 상태 구조를 쓰며 save payload에 session/views가 들어가지 않는다.
+- 누락 차단: 저장, 세션, view 계산값 중 하나라도 owner가 불명확하면 완료하지 않는다.
 
 - [x] `GameState`와 `GameSession` 경계 정리
 - [x] `run`, `economy`, `people`, `inventory`, `shop`의 최소 저장 상태 확정
@@ -224,6 +245,13 @@ npm run build
 
 ## M3. 정의 데이터 연결
 
+책임 선언:
+- 역할: 원본 CSV 기반 정의 데이터를 runtime 입력으로 연결하되 저장 상태와 분리한다.
+- 범위: M6까지 필요한 item, shop listing, recruit listing, character template 조회와 실패 처리를 포함한다.
+- 방식: 원본 정의를 앱에서 조회 가능한 `GameDefinitions` 경계로 변환하고 기능 로직에 직접 CSV 구조를 노출하지 않는다.
+- 완료 결과: 정의 데이터는 runtime에서 읽히지만 `GameState`에는 저장되지 않는다.
+- 누락 차단: 정의 조회 실패 처리, item/listing 분류, 저장 상태 분리 중 하나라도 빠지면 완료하지 않는다.
+
 - [x] 생성된 정의 데이터 산출물을 runtime 정의 데이터 입력으로 연결
 - [x] 아이템 정의와 모집 listing 정의를 구분
 - [x] 정의 데이터 JSON schema 또는 타입 변환 경계 확정
@@ -246,6 +274,13 @@ npm run build
 ```
 
 ## M4. 새 게임 생성
+
+책임 선언:
+- 역할: 새 게임을 시작 가능한 저장 상태와 첫 route로 초기화한다.
+- 범위: 난이도 입력, 초기 날짜/목표/자금/시작 인물/시작 아이템, 실패 불변 처리를 포함한다.
+- 방식: 캐릭터 원형에서 시작 인스턴스를 만들고 신체/관계/장비 기본값 생성 지점을 분리한다.
+- 완료 결과: 새 게임 성공 후 메인 화면으로 이동하며 실패 시 저장 상태가 남지 않는다.
+- 누락 차단: 초기 상태 owner가 불명확하거나 실패 경로가 상태를 오염시키면 완료하지 않는다.
 
 - [x] 새 게임 action 구현
 - [x] 새 게임 action 입력값 타입 정의
@@ -270,6 +305,13 @@ npm run build
 
 ## M5. 메인 화면 view
 
+책임 선언:
+- 역할: 메인 화면을 저장 상태에서 계산되는 view와 action 진입점으로 만든다.
+- 범위: 메인 route, 메뉴 view model, enabled/disabled 사유, 로그/effect, unknown route/action 처리다.
+- 방식: UI는 저장 상태를 직접 수정하지 않고 action만 dispatch한다.
+- 완료 결과: 새 게임 직후 사용자가 메인 화면에서 다음 기능으로 이동할 수 있다.
+- 누락 차단: 메뉴가 표시만 되고 action이 없거나 UI 직접 상태 변경이 남으면 완료하지 않는다.
+
 - [x] 메인 화면 route 구현
 - [x] 저장 상태를 읽어 선택지 view 계산
 - [x] 메인 화면 view model 타입 정의
@@ -290,6 +332,13 @@ npm run build
 ```
 
 ## M6. 아이템 구매 1차
+
+책임 선언:
+- 역할: 아이템 구매의 최소 세로 루프를 실제 상태 변화까지 닫는다.
+- 범위: 상점 진입, 판매 listing 계산, 상품 선택, 수량 변경, 구매 성공/실패/취소, 돈/인벤토리 반영이다.
+- 방식: 판매 목록과 선택값은 session/view로 두고 보유 수량과 돈만 save에 반영한다.
+- 완료 결과: 구매 성공, 돈 부족 실패, 취소가 모두 동작하고 save payload 경계가 유지된다.
+- 누락 차단: 현재 선택값이 저장되거나 구매 실패가 돈/인벤토리를 바꾸면 완료하지 않는다.
 
 - [x] 상점 진입 action 구현
 - [x] 판매 가능 listing view 계산
@@ -315,6 +364,13 @@ npm run build
 
 ## M7. 고용/영입 1차
 
+책임 선언:
+- 역할: 영입 1차 루프를 돈, listing, 인물 생성 경계까지 닫는다.
+- 범위: 영입 후보 view, 가격/조건, 성공, 돈 부족 실패, 중복 실패, 취소, 인물 기본 상태 생성이다.
+- 방식: 영입 listing은 정의 데이터로 읽고 성공 결과만 `people/body/social/equipment` save owner에 반영한다.
+- 완료 결과: 최소 영입 흐름이 실제 캐릭터 추가와 저장 roundtrip 검증을 갖는다.
+- 누락 차단: listing과 캐릭터 원형 연결, 실패/취소, 생성 owner 중 하나라도 빠지면 완료하지 않는다.
+
 - [x] 모집 listing view 계산
 - [x] 영입 후보 정의와 캐릭터 원형 연결
 - [x] 영입 가격 계산
@@ -330,6 +386,13 @@ npm run build
 
 ## M8. 턴 종료/시간 진행
 
+책임 선언:
+- 역할: 턴 종료와 시간 진행의 실행 계약을 만든다.
+- 범위: `turn/end`, 주차/월 롤오버, phase 복귀, 예약 이벤트 소비, session 임시 상태 폐기를 포함한다.
+- 방식: 턴 종료 전후 hook 위치를 만들고 아직 전수 구현하지 않은 월말/미션 처리는 명시 stub/blocker로 남긴다.
+- 완료 결과: 한 턴이 끝나면 시간과 phase가 일관되게 바뀌고 임시 session이 비워진다.
+- 누락 차단: 턴 종료 후 session 선택값이 남거나 hook 미구현이 문서화되지 않으면 완료하지 않는다.
+
 - [x] `turn/end` action 구현
 - [x] 일/주차/기간 진행 규칙 구현
 - [x] 전반/후반 또는 phase 전환 규칙 구현
@@ -344,6 +407,13 @@ npm run build
 
 ## M9. 저장/로드
 
+책임 선언:
+- 역할: 최소 저장/로드 roundtrip과 오염 payload 차단을 만든다.
+- 범위: schema v1, 직렬화/역직렬화, 손상 JSON, future schema, runtime 오염, session 폐기를 포함한다.
+- 방식: save payload는 `GameState`와 metadata만 포함하고 definitions/session/views를 거부한다.
+- 완료 결과: 저장한 상태를 다시 로드하면 동일 save state가 복원된다.
+- 누락 차단: session/views/definitions가 payload에 들어가거나 손상 payload 실패가 없으면 완료하지 않는다.
+
 - [x] 저장 payload 형식 확정
 - [x] save schema version 필드 확정
 - [x] `GameState`와 metadata만 저장
@@ -356,6 +426,13 @@ npm run build
 - [x] `npm run build` 실행
 
 ## M10. 방문/시설 1차
+
+책임 선언:
+- 역할: 방문/시설 1차 루프를 장소 선택, 행동 결과, 시설 해금 save 경계까지 닫는다.
+- 범위: 장소 view, 행동 1개, 돈 부족/중복/취소 실패, `world.unlocks`, `featureState.visits`, `visit` session 폐기다.
+- 방식: 현재 선택값은 session에 두고 영구 해금/방문 진행만 save에 반영한다.
+- 완료 결과: 방문 성공/실패/취소가 실제 돈/해금/진행 상태와 연결된다.
+- 누락 차단: 장소 선택 session과 시설 진행 save가 섞이면 완료하지 않는다.
 
 - [x] 방문 가능 장소 view 계산
 - [x] 방문 장소 id와 표시 label 분리
@@ -370,6 +447,13 @@ npm run build
 - [x] `npm run build` 실행
 
 ## M11. 미션 1차
+
+책임 선언:
+- 역할: 미션 1개를 정의, 진행 상태, 조건, 보상까지 닫는다.
+- 범위: 미션 목록, 선택, 수락, 보고, 조건 미충족 실패, 방문 해금 조건, 보상 지급, mission session 폐기다.
+- 방식: 미션 정의와 미션 진행 save를 분리하고 목록 선택값은 session으로 처리한다.
+- 완료 결과: 미션 수락부터 완료 보고까지 하나의 검증 가능한 루프가 된다.
+- 누락 차단: 미션 정의와 진행 상태가 섞이거나 보고 실패/보상 경로가 빠지면 완료하지 않는다.
 
 - [x] 미션 정의와 진행 상태 분리
 - [x] 미션 목록 view 계산
@@ -386,6 +470,13 @@ npm run build
 
 ## M12. 업무 1차
 
+책임 선언:
+- 역할: 업무 1개를 선택, 계산, 저장 반영, 턴 종료까지 닫는다.
+- 범위: 업무 정의, 업무/참여 인물 선택, 조건 실패, 취소, 돈/경험/피로/업무 이력 반영, work session 폐기다.
+- 방식: 결과 계산은 session/calculation에서 하고 확정 결과만 save owner에 반영한다.
+- 완료 결과: 업무 실행 후 경제, 인물, 신체, 업무 이력, 시간이 일관되게 갱신된다.
+- 누락 차단: 계산 중간값이 save에 남거나 참여 인물 누락 실패가 없으면 완료하지 않는다.
+
 - [x] 업무 정의와 배정 상태 분리
 - [x] 업무 목록 view 계산
 - [x] 업무 참여 조건 계산
@@ -399,6 +490,13 @@ npm run build
 - [x] `npm run build` 실행
 
 ## M13. 촬영 1차
+
+책임 선언:
+- 역할: 촬영 1개 장면을 대상/장면 선택, 촬영량 계산, 결과 반영까지 닫는다.
+- 범위: 촬영 대상 후보, 장면 후보, 대상/장면 누락 실패, 선택/화면 취소, 수익/팬/점수/경험/피로/이력 반영이다.
+- 방식: 촬영 중간 계산은 session에 두고 결과만 economy/people/body/feature state에 반영한다.
+- 완료 결과: 촬영 확정 후 결과 반영, 턴 종료, session 폐기가 검증된다.
+- 누락 차단: 촬영량 session 계산이나 실패/취소 경로가 빠지면 완료하지 않는다.
 
 - [x] 촬영 정의와 session 상태 분리
 - [x] 촬영 대상 후보 view 계산
@@ -414,6 +512,13 @@ npm run build
 - [x] `npm run build` 실행
 
 ## M14. 훈련 1차
+
+책임 선언:
+- 역할: 훈련 command 1개를 선택, 가능 조건, 계산 버퍼, 결과 반영까지 닫는다.
+- 범위: 대상/실행자/조수 선택, command 후보 view, 불가 사유, 자극/source 계산, 파라미터/자원/피로 반영이다.
+- 방식: 훈련 중간값은 interaction/session에 두고 최종 결과만 save owner에 반영한다.
+- 완료 결과: command 하나가 성공/불가/취소/턴 종료/session 폐기를 검증한다.
+- 누락 차단: 원본명 raw state를 모델명으로 쓰거나 계산 버퍼가 save에 남으면 완료하지 않는다.
 
 - [x] command 1개 availability 계산
 - [x] 대상/조수/실행자 선택 상태 정의
@@ -437,6 +542,13 @@ rg "COMF|TFLAG|SOURCE|TEQUIP|LOSEBASE" src/game src/domains src/ui
 
 ## M15. 화면 정리와 진단 패널
 
+책임 선언:
+- 역할: 화면 구조를 route별 renderer와 읽기 전용 진단 패널로 정리한다.
+- 범위: runtime hook, route screen, 공통 선택지/요약 UI, effect log, diagnostics panel이다.
+- 방식: UI는 action dispatch 외에는 상태를 직접 바꾸지 않도록 검색과 구조로 차단한다.
+- 완료 결과: 현재 route, state/session 요약, boundary diagnostics를 읽기 전용으로 확인할 수 있다.
+- 누락 차단: UI에서 `state`나 `session`을 직접 변경하는 코드가 남으면 완료하지 않는다.
+
 - [x] runtime hook 정리
 - [x] UI가 읽는 runtime 값 목록 정리
 - [x] route별 화면 렌더러 정리
@@ -449,6 +561,13 @@ rg "COMF|TFLAG|SOURCE|TEQUIP|LOSEBASE" src/game src/domains src/ui
 - [x] `npm run build` 실행
 
 ## M16. 테스트/검증 체계 확장
+
+책임 선언:
+- 역할: M6~M14 최소 루프와 경계 검증을 자동 실행 가능한 gate로 묶는다.
+- 범위: smoke scripts, roundtrip, boundary gate, raw-name gate, stub gate, `verify:m16`이다.
+- 방식: build만 통과하는 상태를 완료로 보지 않고 smoke/gate 묶음을 통과해야 완료로 본다.
+- 완료 결과: 최소 게임 골격의 성공/실패/취소/저장 경계가 자동 검증된다.
+- 누락 차단: 미등록 stub, raw legacy name, save/session boundary 실패가 있으면 완료하지 않는다.
 
 - [x] 테스트 도구 추가 여부 결정
 - [x] 테스트 도구를 추가하면 package script 추가
@@ -472,6 +591,13 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_" src/game src/domains
 
 ## M17. 원본 근거 대조 정책
 
+책임 선언:
+- 역할: 원본 근거 대조 정책과 legacy adapter 경계를 확정한다.
+- 범위: mapping 상태값, evidence 요구사항, approved-excluded 조건, adapter import 금지 경계다.
+- 방식: core는 legacy adapter를 직접 import하지 않고 runtime 조립 경계에서만 결합한다.
+- 완료 결과: 이후 mapping은 상태값과 승인/차단 규칙을 따라 작성된다.
+- 누락 차단: 대량 mapping을 근거 없이 확정하거나 core에서 legacy adapter를 import하면 완료하지 않는다.
+
 - [x] M1~M16 완료 여부 확인
 - [x] `npm run inventory:legacy-mapping` 실행
 - [x] mapping 상태값과 작성 절차 확정
@@ -492,6 +618,13 @@ rg "adapters/legacy|legacy/" src/game src/domains src/catalog
 ```
 
 ## M18. 반복 구현 규칙 고정
+
+책임 선언:
+- 역할: M28~M49 구현을 한 단위씩 닫는 반복 규칙을 고정한다.
+- 범위: 구현 전 template, 구현 후 template, blocker template, 1회 최대 구현 단위다.
+- 방식: feature/item/scene/command 등 작은 단위마다 원본 근거, owner, 검증, blocker 갱신을 요구한다.
+- 완료 결과: 이후 기능 구현이 성공 경로만 붙이고 넘어가지 못한다.
+- 누락 차단: 단위 구현에 원본 근거, 저장/session/view owner, 성공/실패/취소 검증이 없으면 완료하지 않는다.
 
 - [x] 기능 구현은 항상 한 단위씩만 진행하도록 규칙 확정
 - [x] 각 단위는 `GAME_FLOW_MAP.ko.md`의 입력/상태 변화/종료 조건을 먼저 가진다고 명시
@@ -520,6 +653,13 @@ rg "adapters/legacy|legacy/" src/game src/domains src/catalog
 
 ## M19. 원본 기능 커버리지 전수표
 
+책임 선언:
+- 역할: 원본 기능 전체를 셀 수 있는 feature coverage 장부를 만든다.
+- 범위: main flow, dynamic call, persistence, exit, pause, engine entry, unreferenced global row다.
+- 방식: 기능을 구현하지 않고 feature id, source label/file, group, owner milestone, status/blocker를 기록한다.
+- 완료 결과: 무엇을 구현해야 완전 이식인지 수량과 blocker로 보인다.
+- 누락 차단: 미분류 feature id가 있거나 원본 라벨/파일 없는 row가 완료 상태면 완료하지 않는다.
+
 - [x] 메인 화면 선택지 전체를 `GAME_FLOW_MAP.ko.md` 기준으로 feature id로 분해
 - [x] 각 feature id에 원본 라벨, 원본 파일, 입력, 저장 변경, 종료 조건을 연결
 - [x] feature coverage 산출물 경로 확정
@@ -544,6 +684,13 @@ npm run build
 
 ## M20. 정의 데이터 전수 연결
 
+책임 선언:
+- 역할: 원본 정의 데이터와 Chara seed 전체를 역할과 소비 책임으로 분류한다.
+- 범위: raw 정의 918개, Chara seed 6,922행, item, Train, source, 능력/기초/소질/경험/각인/파라미터 정의다.
+- 방식: runtime owner 후보, source evidence, consumer 후보, status/blocker를 기록한다.
+- 완료 결과: 정의 데이터 전체가 실제 소비 검증을 기다리는 장부 상태가 된다.
+- 누락 차단: 정의 row가 owner 또는 blocker 없이 unused로 남거나 count가 원본 수량과 다르면 완료하지 않는다.
+
 - [x] CSV/Chara 정의 데이터 918개를 runtime 정의 데이터로 로드
 - [x] definition coverage 산출물 경로 확정
 - [x] definition key, source file, source id, runtime owner, status 컬럼 확정
@@ -567,6 +714,13 @@ npm run build
 
 ## M21. 원본 근거 장부 확정
 
+책임 선언:
+- 역할: 이후 모든 전수표가 믿고 참조할 원본 근거 장부를 확정한다.
+- 범위: CSV, ERB, Chara CSV, VariableSize CSV, 보조 CSV, 파생 문서의 근거 지위를 구분하는 일이다.
+- 방식: 공통 `sourceEvidence` 형식과 파일/라벨/행/family/index/read-write 기록 방식을 만든다.
+- 완료 결과: feature, definition, save, session row가 같은 근거 규격을 공유한다.
+- 누락 차단: 문서만 근거인 row, 원본 위치 없는 row, 근거 충돌 row가 완료 상태에 있으면 완료하지 않는다.
+
 - [ ] 원본 근거의 1차 위치를 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`로 고정
 - [ ] 보조 CSV와 파생 문서가 원본 근거인지 해석 보조 자료인지 구분
 - [ ] feature row, definition row, save row, session row가 공통으로 쓰는 `sourceEvidence` 형식 확정
@@ -578,6 +732,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M22. 전수표 교차 대조 gate
+
+책임 선언:
+- 역할: 기능/정의/save/session 장부가 서로 맞물리는지 검증하는 gate를 만든다.
+- 범위: orphan coverage, role-only 완료, source evidence 누락, approved-excluded 근거 형식이다.
+- 방식: feature가 읽는 definition/save/session/view owner와 definition의 실제 consumer를 서로 대조한다.
+- 완료 결과: 장부에만 있고 실제 소비가 없는 항목이 gate에서 실패한다.
+- 누락 차단: `template`, `listing`, `display-only`, `calculation-only`가 실제 소비 없이 완료로 잡히면 완료하지 않는다.
 
 - [ ] M19 feature coverage와 M20 definition coverage를 서로 연결하는 교차 대조 규칙 작성
 - [ ] feature가 읽는 definition/save/session/view owner를 기록하는 컬럼 확정
@@ -592,6 +753,13 @@ npm run build
 
 ## M23. ERB 기반 정의 데이터 보강
 
+책임 선언:
+- 역할: CSV에 없고 ERB에서 암묵적으로 정의된 컨텐츠를 정의 데이터 후보로 끌어올린다.
+- 범위: 메뉴 선택지, 장면, 이벤트, 미션/업무/촬영/방문/엔딩 정의, 계산 상수다.
+- 방식: ERB 근거와 CSV 근거의 충돌을 기록하고 runtime definition, blocker, approved-excluded 중 하나로 분류한다.
+- 완료 결과: ERB 기반 정의가 M28~M49에서 실제 소비 검증 가능한 row가 된다.
+- 누락 차단: ERB에만 있는 컨텐츠가 coverage 밖에 남거나 충돌 정의가 미판정이면 완료하지 않는다.
+
 - [ ] CSV에 없고 ERB에서만 정의되는 선택지, 장면, 이벤트, 계산 상수를 수집
 - [ ] 미션, 업무, 촬영, 방문, 이벤트, 엔딩의 ERB 기반 정의 후보를 분류
 - [ ] ERB 기반 정의와 CSV 정의가 충돌하면 source evidence 우선순위 기록
@@ -603,6 +771,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M24. 저장 상태 원본 주소 전수 매핑
+
+책임 선언:
+- 역할: 저장해야 하는 원본 주소를 새 save 도메인 필드 또는 비저장 판정으로 닫는다.
+- 범위: `map-save-state` 대상, persistent 후보, CFLAG/FLAG/GLOBAL/PBAND 의미 단위 분해다.
+- 방식: family/index별 source evidence, runtime owner, field path, status를 작성한다.
+- 완료 결과: 기능 구현 범위의 저장 주소가 모두 mapped, non-save, blocker, approved-excluded 중 하나가 된다.
+- 누락 차단: `needsDecision`, `missingMapping`, field path 없는 mapped row가 남으면 완료하지 않는다.
 
 - [ ] `map-save-state` 대상 1,215개를 도메인 필드 또는 blocker로 분류
 - [ ] save mapping coverage 산출물 경로 확정
@@ -620,6 +795,13 @@ npm run build
 
 ## M25. 세션/계산 원본 주소 전수 매핑
 
+책임 선언:
+- 역할: 원본 임시 버퍼와 계산 중간값을 session owner 또는 계산 함수 내부값으로 분리한다.
+- 범위: `map-session-state` 대상, TFLAG/TEQUIP/SOURCE/UP/DOWN/LOSEBASE/NOWEX/EJAC 의미 분해다.
+- 방식: 각 row의 생성 시점, 소비 시점, 폐기 시점, calculation owner를 기록한다.
+- 완료 결과: 세션/계산 값이 저장 payload에 들어가지 않고 기능 lifecycle에서 폐기된다.
+- 누락 차단: 원본 배열명이 앱 모델명으로 복사되거나 중간값이 save에 들어가면 완료하지 않는다.
+
 - [ ] `map-session-state` 대상 365개를 session 필드 또는 계산 함수 내부값으로 분류
 - [ ] session mapping coverage 산출물 경로 확정
 - [ ] family, index, source evidence, session owner, calculation owner, status 컬럼 확정
@@ -634,6 +816,13 @@ npm run build
 
 ## M26. 구현 전 누락 감사
 
+책임 선언:
+- 역할: 기능군 구현을 시작하기 전에 원본/coverage/consumer 누락을 전수 감사한다.
+- 범위: discovered gap, missing evidence, orphan coverage, role-only row, 미승인 제외 항목이다.
+- 방식: `pre-implementation-gap-audit.json`을 만들고 M28~M49 owner milestone 배정을 재확인한다.
+- 완료 결과: 구현 전에 발견 가능한 누락이 blocker 또는 수정 대상으로 전부 드러난다.
+- 누락 차단: 감사 결과에 gap/orphan/role-only가 남으면 M28로 넘어가지 않는다.
+
 - [ ] `data/coverage/audits/pre-implementation-gap-audit.json` 산출물 형식 확정
 - [ ] 원본 CSV/ERB 항목 중 coverage row가 없는 항목을 `discovered-gap`으로 기록
 - [ ] coverage row는 있지만 source evidence가 없는 항목을 `missing-evidence`로 기록
@@ -646,6 +835,13 @@ npm run build
 
 ## M27. 구현 단위 큐와 blocker 동결
 
+책임 선언:
+- 역할: M28~M49 구현 단위를 실제 작업 큐로 동결한다.
+- 범위: feature/definition/save/session/view row 묶음, blocker 해소 마일스톤, 승인 제외 요청 목록이다.
+- 방식: 각 단위가 원본 근거, owner, 성공/실패/취소/roundtrip 검증 요구를 갖도록 template화한다.
+- 완료 결과: 이후 구현자가 어떤 row 묶음을 닫아야 하는지 단위별로 알 수 있다.
+- 누락 차단: 구현 단위가 원본 row 없이 생기거나 blocker owner가 비어 있으면 완료하지 않는다.
+
 - [ ] M28~M49의 기능군별 구현 큐를 coverage row 기준으로 생성
 - [ ] 각 구현 단위가 feature, definition, save, session, view row를 함께 참조하도록 template 보강
 - [ ] 각 단위가 성공, 실패, 취소, 저장 roundtrip 중 필요한 검증을 갖도록 규칙 보강
@@ -657,6 +853,13 @@ npm run build
 - [ ] 테스트 도구가 있으면 `npm run test --if-present` 실행
 
 ## M28. 메인 화면과 route 전수 연결
+
+책임 선언:
+- 역할: 원본 메인 화면에서 직접 도달 가능한 기능 route를 전수 연결한다.
+- 범위: 훈련, 영입, 아이템, 업무, 촬영, 방문, 능력 상승, 미션, 저장/로드, 설정/정보/엔딩 route다.
+- 방식: 각 메뉴의 표시, enabled/disabled, action, route 전환, 종료 지점을 구현하거나 제외/blocker로 닫는다.
+- 완료 결과: 메인 화면에서 기능군 진입 경로가 누락 없이 정리된다.
+- 누락 차단: 표시만 있고 action 없는 메뉴, dead-end route, coverage 미갱신 메뉴가 남으면 완료하지 않는다.
 
 - [ ] M19 feature coverage에서 메인 화면 직속 feature 목록을 읽음
 - [ ] 원본 메인 화면에서 직접 도달 가능한 선택지 전체를 route 또는 approved-excluded로 분류
@@ -671,6 +874,13 @@ npm run build
 
 ## M29. 아이템 상점과 구매 완성
 
+책임 선언:
+- 역할: 구매형 아이템과 상점 구매 흐름을 전수 구현한다.
+- 범위: 모든 구매형 listing, 가격, 표시명, 구매 조건, 수량 제한, 돈 부족, 취소, 자동 구매 후보 포함이다.
+- 방식: 상점 노출/해금은 shop progress와 view 계산으로, 보유 수량은 inventory로 분리한다.
+- 완료 결과: 구매형 item 전체가 성공/실패/취소와 저장 roundtrip을 통과한다.
+- 누락 차단: 인벤토리 수량, 상점 진행 상태, 현재 선택 session이 섞이면 완료하지 않는다.
+
 - [ ] M20 definition coverage에서 item/listing 전체 목록을 읽음
 - [ ] 모든 구매형 아이템의 표시 이름, 가격, 분류를 연결
 - [ ] 모든 구매형 아이템의 구매 성공, 돈 부족 실패, 수량 제한 실패, 취소를 구현
@@ -682,6 +892,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M30. 아이템 사용과 특수 아이템 완성
+
+책임 선언:
+- 역할: 사용형 아이템과 특수 아이템의 조건과 효과를 전수 구현한다.
+- 범위: 사용 조건, 사용 효과, 시설 해금형, 의복/장비형, 특수 item 15개, 실패/취소 경로다.
+- 방식: 효과는 inventory/people/body/world/mission/settings/equipment 등 정확한 owner에만 반영한다.
+- 완료 결과: 사용형/특수 item이 구현, approved-excluded, blocker 중 하나로 닫힌다.
+- 누락 차단: no-op handler로 완료 처리하거나 효과 owner가 불명확하면 완료하지 않는다.
 
 - [ ] 모든 사용형 아이템의 사용 조건을 구현 또는 blocker로 분류
 - [ ] 아이템 사용 효과가 `inventory`, `people`, `body`, `world`, `mission`, `settings` 중 정확한 owner에 반영되는지 검증
@@ -695,6 +912,13 @@ npm run build
 
 ## M31. 영입 listing과 인물 생성 완성
 
+책임 선언:
+- 역할: 영입 listing 전체를 인물 원형과 생성 결과로 연결한다.
+- 범위: 모든 영입 listing, 가격, 표시 조건, 중복/인원/돈/조건 실패, 취소, 생성 결과다.
+- 방식: 성공 시 people/body/social/equipment 초기 상태를 만들고 listing-template 연결을 검증한다.
+- 완료 결과: 영입 가능한 항목 전체가 생성 결과 또는 approved-excluded/blocker로 닫힌다.
+- 누락 차단: listing과 캐릭터 원형 연결 누락 또는 생성 owner 누락이 있으면 완료하지 않는다.
+
 - [ ] 모든 영입 listing의 표시 조건, 가격, 생성 결과를 구현
 - [ ] 영입 listing과 캐릭터 원형 연결 누락 0개 확인
 - [ ] 중복 영입, 인원 제한, 돈 부족, 조건 미충족, 취소를 검증
@@ -705,6 +929,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M32. 인물 원형과 identity 완성
+
+책임 선언:
+- 역할: 인물 원형과 identity 정보를 정의/저장 경계에 맞게 완성한다.
+- 범위: 109개 Chara template, 이름, 호칭, 별명, 표시명, 삭제/은퇴/조수/영입 가능 상태다.
+- 방식: 변하지 않는 정의와 플레이 중 변하는 인스턴스 상태를 분리한다.
+- 완료 결과: 원형에서 인스턴스를 생성하고 정보 표시와 저장 roundtrip이 통과한다.
+- 누락 차단: 정의 문자열과 플레이 상태가 같은 save 필드에 섞이면 완료하지 않는다.
 
 - [ ] M20 Chara template 109개 전체를 생성 가능한 캐릭터 원형으로 연결
 - [ ] 이름, 호칭, 별명, 표시 이름을 정의 데이터와 저장 상태 경계에 맞게 분리
@@ -717,6 +948,13 @@ npm run build
 
 ## M33. 신체/능력/소질/경험 완성
 
+책임 선언:
+- 역할: 신체, 능력, 소질, 경험, 각인, 파라미터 초기값과 변화 owner를 완성한다.
+- 범위: BASE, ABL, TALENT, EXP, MARK, PALAM 계열과 표시/계산 정의다.
+- 방식: 표시 정의와 저장 수치를 분리하고 업무/촬영/훈련 결과가 같은 body/people 필드를 쓰게 한다.
+- 완료 결과: 초기값과 증가/감소 계산, 정보 화면, 저장 roundtrip이 일관된다.
+- 누락 차단: 표시 정의와 저장 수치가 섞이거나 중복 필드로 결과가 흩어지면 완료하지 않는다.
+
 - [ ] Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`, `MARK`, `PALAM` 계열을 owner별로 연결
 - [ ] 능력, 기초치, 소질, 경험, 각인, 파라미터 초기값을 표시 정의와 저장 수치로 분리
 - [ ] 신체/생식/성적 이력/오염/자원 상태를 `body` 하위 객체로 분리
@@ -727,6 +965,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M34. 관계/CFLAG/장비/의복 owner 완성
+
+책임 선언:
+- 역할: CFLAG, 관계, 장비, 의복 상태를 의미별 owner로 분해한다.
+- 범위: CFLAG 정의 151개, Chara CFLAG seed 1,465개, 관계값, 장비/의복/착용/해금 상태다.
+- 방식: people/body/equipment/social/work/mission/settings/features 등 실제 owner에 배정한다.
+- 완료 결과: 의미가 확인된 CFLAG는 owner와 lifecycle을 갖고, 의미 불명은 blocker로 남는다.
+- 누락 차단: 의미 불명 CFLAG를 mapped 처리하거나 raw `CFLAG` 모델명이 runtime에 남으면 완료하지 않는다.
 
 - [ ] CFLAG 정의 151개와 Chara CFLAG seed 1,465개를 의미별 owner로 분해
 - [ ] 관계값과 방향성 관계를 `social`에 연결
@@ -740,6 +985,13 @@ npm run build
 
 ## M35. 턴 종료와 시간 진행 완성
 
+책임 선언:
+- 역할: 원본 턴 종료와 시간 진행, 월말/주말/자동 처리 순서를 완성한다.
+- 범위: day/week/month/year 진행, phase 전환, 턴 전후 hook, 월말 hook, 자동 구매/사용, 미션/이벤트 hook이다.
+- 방식: hook 순서를 명시하고 결과는 economy/run/world 등 save owner에만 반영한다.
+- 완료 결과: 턴 종료 후 시간, 이벤트, 비용/보상, session 폐기, 저장 roundtrip이 검증된다.
+- 누락 차단: hook 순서가 불명확하거나 턴 종료 중 임시 선택값이 저장되면 완료하지 않는다.
+
 - [ ] 원본 턴 종료 흐름의 day/week/month/year 진행 규칙을 구현
 - [ ] 전반/후반 또는 phase 전환 규칙을 저장 상태와 session 폐기로 분리
 - [ ] 턴 종료 전 hook, 턴 종료 후 hook, 월말 hook, 새 주 hook을 정의
@@ -751,6 +1003,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M36. 방문/시설 완성
+
+책임 선언:
+- 역할: 방문 장소, 시설, 장소별 행동을 전수 구현한다.
+- 범위: 모든 방문 장소, 행동, 해금 조건, 비용/조건/중복 실패, 취소, 결과 반영이다.
+- 방식: 장소 선택 session과 시설/세계 진행 save를 분리하고 결과 owner를 명시한다.
+- 완료 결과: 방문/시설 feature 전체가 구현, approved-excluded, blocker 중 하나로 닫힌다.
+- 누락 차단: 장소 선택값과 시설 진행 상태가 섞이거나 행동 결과 owner가 불명확하면 완료하지 않는다.
 
 - [ ] 방문 장소 전체를 장소 정의 또는 blocker로 분류
 - [ ] 장소별 행동 전체를 구현 또는 blocker로 분류
@@ -764,6 +1023,13 @@ npm run build
 
 ## M37. 업무/창관/특수 업무 완성
 
+책임 선언:
+- 역할: 업무, 창관, 아르바이트, 특수 업무를 전수 구현한다.
+- 범위: 업무 정의 전체, 참여 조건, 대상/시설/시간 조건, 결과 계산, 턴 종료다.
+- 방식: 실행 중 선택값/계산값은 session/calculation에 두고 결과만 economy/people/body/work/run에 반영한다.
+- 완료 결과: 업무 전체가 성공/실패/취소/저장 roundtrip과 coverage 갱신을 갖는다.
+- 누락 차단: 계산값이 save에 남거나 업무 결과가 책임 owner 밖으로 흩어지면 완료하지 않는다.
+
 - [ ] 업무 정의 전체를 구현 또는 blocker로 분류
 - [ ] 창관, 아르바이트, 일반 업무, 특수 업무를 정의 데이터와 handler owner로 분리
 - [ ] 업무 참여 조건, 대상 조건, 시설 조건, 시간 조건을 view 계산으로 구현
@@ -776,6 +1042,13 @@ npm run build
 
 ## M38. 촬영 정의와 장면 조건 완성
 
+책임 선언:
+- 역할: 촬영 장면 정의와 촬영 가능 조건을 전수 구현한다.
+- 범위: 촬영 장면 전체, 대상 후보 조건, 장면 후보 조건, 표시명/설명/요구 상태/예상 결과다.
+- 방식: 장면 정의는 source evidence를 갖고 조건은 view 계산으로 구현한다.
+- 완료 결과: 촬영 장면 전체가 선택 가능/불가 사유와 원본 근거를 갖는다.
+- 누락 차단: 장면이 표시되지만 원본 근거나 조건 계산이 없으면 완료하지 않는다.
+
 - [ ] 촬영 장면 전체를 장면 정의 또는 blocker로 분류
 - [ ] 촬영 대상 후보 조건과 장면 후보 조건을 view 계산으로 구현
 - [ ] 장면별 표시 이름, 설명, 요구 상태, 예상 결과를 정의 데이터로 연결
@@ -786,6 +1059,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M39. 촬영 실행/결과/판매 완성
+
+책임 선언:
+- 역할: 촬영 실행, 결과 반영, 출시/판매 상태를 전수 구현한다.
+- 범위: 촬영량, 수익, 팬, 점수, 경험, 피로, 이력, 출시/판매, 턴 종료다.
+- 방식: 촬영 계산값은 session/calculation에 두고 결과만 economy/people/body/world/featureState에 반영한다.
+- 완료 결과: 촬영 성공/실패/취소/저장 roundtrip이 전체 장면에 대해 검증된다.
+- 누락 차단: 촬영 session 계산값이 save에 남거나 판매 상태 owner가 불명확하면 완료하지 않는다.
 
 - [ ] 촬영량, 수익, 팬, 점수, 경험, 신체 피로 계산을 구현
 - [ ] 촬영 결과가 `economy`, `people`, `body`, `world`, `featureState` 중 필요한 owner에만 반영되는지 검증
@@ -798,6 +1078,13 @@ npm run build
 
 ## M40. 훈련 메뉴와 세션 완성
 
+책임 선언:
+- 역할: 훈련 화면과 선택 session lifecycle을 완성한다.
+- 범위: 대상, 실행자, 조수, command 선택, command 후보 view, 누락/불가/취소, session 폐기다.
+- 방식: 화면 선택값과 임시 모드는 session에 두고 저장 상태를 직접 바꾸지 않는다.
+- 완료 결과: 훈련 진입, 선택, 취소, 완료, 턴 종료에서 session lifecycle이 검증된다.
+- 누락 차단: 훈련 선택값이 save에 남거나 command 후보 계산이 상태를 바꾸면 완료하지 않는다.
+
 - [ ] 훈련 대상, 실행자, 조수, command 선택 상태를 session owner에 연결
 - [ ] 훈련 command 후보 view를 전체 command 기준으로 계산
 - [ ] 대상/실행자/조수 누락, 불가 조건, 취소를 검증
@@ -808,6 +1095,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M41. 훈련 가능 조건 전수 구현
+
+책임 선언:
+- 역할: 105개 훈련 command의 가능 조건과 불가 사유를 전수 구현한다.
+- 범위: 대상/실행자/조수 역할 조건, 장비/상태/자원/장소/이벤트 조건이다.
+- 방식: availability는 view 계산으로 만들고 저장 상태 변경 없이 불가 사유를 표시한다.
+- 완료 결과: 각 command가 가능/불가 판정과 불가 사유 검증을 갖는다.
+- 누락 차단: 실행 가능한 command에 조건 row나 불가 사유가 없으면 완료하지 않는다.
 
 - [ ] `Train.csv` 105개 command별 가능 조건을 구현 또는 blocker로 분류
 - [ ] command별 대상, 실행자, 조수 역할 조건을 구현
@@ -820,6 +1114,13 @@ npm run build
 
 ## M42. 훈련 command 효과 0~34 완성
 
+책임 선언:
+- 역할: 훈련 command 0~34의 효과 계산과 결과 반영을 완성한다.
+- 범위: source 계산, 파라미터 증감, 체력/기력 감소, 결과 owner, 성공/불가/취소/session 폐기다.
+- 방식: 원본 계산 중간값은 calculation/session에서 처리하고 최종 결과만 save owner에 반영한다.
+- 완료 결과: command 0~34가 source evidence와 consumer evidence를 갖고 검증된다.
+- 누락 차단: source evidence 없거나 계산 중간값이 save에 들어가면 완료하지 않는다.
+
 - [ ] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
 - [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
 - [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
@@ -830,6 +1131,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M43. 훈련 command 효과 35~69 완성
+
+책임 선언:
+- 역할: 훈련 command 35~69의 효과 계산과 결과 반영을 완성한다.
+- 범위: source 계산, 파라미터 증감, 체력/기력 감소, 결과 owner, 성공/불가/취소/session 폐기다.
+- 방식: 각 command를 독립 단위로 구현하고 blocker/coverage를 command별로 닫는다.
+- 완료 결과: command 35~69가 구현, approved-excluded, blocker 중 하나로 닫힌다.
+- 누락 차단: 결과 owner가 불명확하거나 미구현 command가 blocker 없이 남으면 완료하지 않는다.
 
 - [ ] command 35~69의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
 - [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
@@ -842,6 +1150,13 @@ npm run build
 
 ## M44. 훈련 command 효과 70~104와 후처리 완성
 
+책임 선언:
+- 역할: 훈련 command 70~104와 훈련 후처리를 완성한다.
+- 범위: command 효과, 후처리, 이벤트, 장비 변화, 자원 변화, raw-name gate다.
+- 방식: 105개 command 전체 상태를 집계하고 남은 command/blocker를 닫는다.
+- 완료 결과: 전체 훈련 command coverage에 미구현 row가 남지 않는다.
+- 누락 차단: `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남으면 완료하지 않는다.
+
 - [ ] command 70~104의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
 - [ ] 훈련 후처리, 이벤트, 장비 변화, 자원 변화가 올바른 owner에 반영되는지 검증
 - [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
@@ -852,6 +1167,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M45. 능력 상승/휴식/공통 유지보수 완성
+
+책임 선언:
+- 역할: 능력 상승, 휴식, 회복, 자동 아이템 사용, 공통 유지보수 기능을 닫는다.
+- 범위: common-system feature, 결과 owner, 성공/조건 미충족/취소/턴 종료 연결이다.
+- 방식: 공통 기능을 특정 기능 내부 임시 로직이 아니라 별도 owner와 handler로 분리한다.
+- 완료 결과: 공통 유지보수 흐름이 저장 roundtrip과 coverage 갱신을 갖는다.
+- 누락 차단: common-system feature가 숨은 임시 코드로 남거나 owner가 불명확하면 완료하지 않는다.
 
 - [ ] 능력 상승 메뉴와 조건을 구현 또는 blocker로 분류
 - [ ] 휴식, 회복, 자동 아이템 사용, 공통 유지보수 흐름을 구현
@@ -864,6 +1186,13 @@ npm run build
 
 ## M46. 미션 완성
 
+책임 선언:
+- 역할: 미션 전체 lifecycle을 완성한다.
+- 범위: 미션 정의, 수락, 진행, 보고, 완료, 실패, 만료, 보상/패널티, 턴 종료 연동이다.
+- 방식: 미션 진행 save와 목록/보고 선택 session을 분리한다.
+- 완료 결과: 모든 미션이 조건/기한/보상/실패와 저장 roundtrip을 갖는다.
+- 누락 차단: 미션 상태와 선택 session이 섞이거나 보상 owner가 불명확하면 완료하지 않는다.
+
 - [ ] 미션 전체를 정의, 진행 상태, 보상, 실패 조건으로 분리
 - [ ] 미션 수락, 진행, 보고, 완료, 실패, 만료를 구현
 - [ ] 미션 기한과 턴 종료 처리를 연결
@@ -874,6 +1203,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M47. 세계/이벤트/스토리 진행 완성
+
+책임 선언:
+- 역할: 세계 진행, 이벤트, 스토리 플래그와 이벤트 hook을 완성한다.
+- 범위: 이벤트 발생 조건, 1회성/반복성, 결과 상태 변화, 표시 화면, hook 연결이다.
+- 방식: 이벤트 표시와 상태 변경을 분리하고 결과는 world/meta/featureState 등 owner에 반영한다.
+- 완료 결과: 이벤트가 발생 조건, 표시, 결과, 저장 roundtrip을 모두 갖는다.
+- 누락 차단: 표시만 있고 상태 변화나 발생 조건 근거가 없는 이벤트가 남으면 완료하지 않는다.
 
 - [ ] 이벤트 발생 조건, 1회성/반복성, 결과 상태 변화를 구현 또는 blocker로 분류
 - [ ] 세계/장소/스토리 진행 플래그를 `world`에 연결
@@ -886,6 +1222,13 @@ npm run build
 
 ## M48. 엔딩/계승/전역 상태 완성
 
+책임 선언:
+- 역할: 엔딩, 계승, 전역 meta 상태를 완성한다.
+- 범위: 엔딩 조건, 결과 화면, 계승 새 게임, 게임 종료, 업적/클리어 보너스/전역 해금이다.
+- 방식: 회차 save와 global/meta save를 분리하고 엔딩 조건은 view/calculation으로 구현한다.
+- 완료 결과: 엔딩과 계승 흐름이 실제 UI/action 경로와 저장/로드 검증을 갖는다.
+- 누락 차단: 회차 save와 전역 save가 섞이거나 승인 없는 엔딩 제외가 있으면 완료하지 않는다.
+
 - [ ] 엔딩 조건 전체를 조건 id와 결과 화면으로 분류
 - [ ] 엔딩 조건 계산을 view/calculation으로 구현
 - [ ] 엔딩 결과, 계승 새 게임, 게임 종료 흐름을 구현
@@ -897,6 +1240,13 @@ npm run build
 
 ## M49. 정보/도움말/설정/남은 기능 닫기
 
+책임 선언:
+- 역할: 정보/도움말/설정/디버그/남은 기능을 최종 정리한다.
+- 범위: 정보, 도움말, 업적, 설정, 디버그 메뉴와 M28~M49 기능군 gap audit이다.
+- 방식: 구현하지 않는 기능은 숨기지 않고 approved-excluded 또는 blocker로 근거를 남긴다.
+- 완료 결과: 기능군별 미구현 feature, 미소비 definition, 미정 mapping이 남지 않는다.
+- 누락 차단: 남은 기능을 설명 없이 제외하거나 디버그 기능의 범위가 불명확하면 완료하지 않는다.
+
 - [ ] 정보, 도움말, 업적, 설정, 디버그 메뉴를 구현 또는 승인 제외로 분류
 - [ ] 설정 상태를 `settings`와 `meta` owner로 분리
 - [ ] 정보 화면이 정의 데이터와 저장 상태를 읽기 전용으로 표시하는지 검증
@@ -907,6 +1257,13 @@ npm run build
 - [ ] 테스트 도구가 있으면 `npm run test --if-present` 실행
 
 ## M50. 전체 저장/로드/마이그레이션 완성
+
+책임 선언:
+- 역할: 전체 기능군 후 저장/로드와 schema/migration 처리를 완성한다.
+- 범위: 모든 주요 기능 후 roundtrip, 전역 meta save, corrupted/future/old schema, migration, 실패 effect다.
+- 방식: save payload에 definitions/views/session/calculation buffer가 들어가지 않도록 검증한다.
+- 완료 결과: M24/M25 mapping row 전체가 저장 payload 또는 비저장 판정과 일치한다.
+- 누락 차단: session/definitions/views/calculation buffer가 save payload에 들어가면 완료하지 않는다.
 
 - [ ] 저장 payload schema 확정
 - [ ] 저장 파일에 정의 데이터, view 계산 객체, session 계산 버퍼가 들어가지 않도록 검증
@@ -922,6 +1279,13 @@ npm run build
 
 ## M51. 최종 누락 감사
 
+책임 선언:
+- 역할: 최종 완전 이식 판정 전에 원본 누락과 장부 허위를 감사한다.
+- 범위: final gap, orphan coverage, role-only 완료, approved-excluded 근거, blocker, evidence 충돌이다.
+- 방식: `final-gap-audit.json`을 생성하고 source evidence와 runtime consumer evidence를 대조한다.
+- 완료 결과: final audit에서 gap, orphan, role-only, unapproved exclusion, unresolved blocker가 0개다.
+- 누락 차단: blocker가 남거나 source evidence와 consumer evidence가 충돌하면 M52로 넘어가지 않는다.
+
 - [ ] `data/coverage/audits/final-gap-audit.json` 산출물 생성
 - [ ] 원본 CSV/ERB에서 coverage로 들어오지 않은 feature, definition, save address, session/calculation address가 0개인지 확인
 - [ ] coverage에는 있지만 실제 route/action/handler/view/calculation/save roundtrip에서 소비되지 않는 orphan row가 0개인지 확인
@@ -936,6 +1300,13 @@ npm run build
 - [ ] `npm run build` 실행
 
 ## M52. 최종 완전 이식 판정
+
+책임 선언:
+- 역할: 게임이 원본 컨텐츠를 구현, 승인 제외, blocker 0 상태로 닫았는지 최종 판정한다.
+- 범위: feature, definition, save mapping, session mapping, 전체 smoke flow, build/test, raw-name gate다.
+- 방식: 모든 coverage 상태와 전체 UI/action 흐름, 저장/로드, 엔딩까지 최종 검증한다.
+- 완료 결과: 미구현 기능 0, 미분류 정의 0, 미정 주소 0, 미해소 blocker 0, 미승인 제외 0 상태가 된다.
+- 누락 차단: 어떤 row라도 미구현/미분류/미정/미승인/미해소 상태면 완전 이식 완료가 아니다.
 
 - [ ] 기능 커버리지 전수표에서 미구현 기능 0개 확인
 - [ ] 정의 데이터 전수표에서 미분류 정의 0개 확인
