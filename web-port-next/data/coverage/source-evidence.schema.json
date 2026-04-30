@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "source-evidence-schema/v1",
+  "description": "Common evidence contract for feature, definition, save, session, view, text, blocker, and approved-exclusion rows.",
+  "requiredFields": [
+    "sourceEvidenceId",
+    "sourceEvidence.evidenceId",
+    "sourceEvidence.sourceTier",
+    "sourceEvidence.sourceKind",
+    "sourceEvidence.sourcePath",
+    "sourceEvidence.accessDirection",
+    "sourceEvidence.sourceRole"
+  ],
+  "sourceEvidence": {
+    "evidenceId": "Stable id for this row's original evidence.",
+    "sourceTier": "primary, auxiliary, or derived.",
+    "sourceKind": "erb-label, erh-label, erb-file, csv-row, chara-csv-row, variable-size-row, source-note, derived-document, or unknown.",
+    "sourcePath": "Repository-relative original source path, normally under original-game/.",
+    "label": "ERB/ERH label or function name when applicable.",
+    "line": "Original source line when known.",
+    "csvRow": "Original CSV id, row key, or family:index when applicable.",
+    "family": "Original variable/state family such as CFLAG, BASE, TFLAG when applicable.",
+    "index": "Original family index or slot when applicable.",
+    "accessDirection": "definition, read, write, read-write, calculation, or unknown.",
+    "sourceRole": "original, auxiliary, or derived."
+  },
+  "completionRules": [
+    "A row may not be completed from project documentation alone.",
+    "Implemented feature rows must have primary ERB/ERH/CSV source evidence and runtime consumer evidence.",
+    "Definition rows must have primary CSV/Chara/VariableSize source evidence.",
+    "Character seed rows must record family and index.",
+    "Auxiliary evidence may explain primary evidence but cannot replace it.",
+    "Derived project documents cannot complete a row without a primary original source.",
+    "Conflicting or missing source evidence must remain a blocker and must not be marked implemented, used, mapped, or approved-excluded."
+  ],
+  "primarySourceRoots": [
+    "original-game/CSV",
+    "original-game/ERB",
+    "original-game/CSV/Chara*.csv",
+    "original-game/CSV/VariableSize.CSV"
+  ]
+}

@@ -23,6 +23,53 @@ function numericId(id) {
   return Number.isInteger(value) ? value : undefined;
 }
 
+function slug(value) {
+  return String(value || 'unknown')
+    .replace(/\\/g, '/')
+    .replace(/[^A-Za-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase()
+    .slice(0, 140) || 'unknown';
+}
+
+function normalizeSourcePath(value) {
+  return String(value || '').replace(/\\/g, '/');
+}
+
+function definitionSourceKind(partial, sourcePath) {
+  if (partial.sourceKind === 'character-template' || partial.sourceKind === 'character-seed') {
+    return 'chara-csv-row';
+  }
+
+  if (sourcePath.toLowerCase().endsWith('/variablesize.csv')) {
+    return 'variable-size-row';
+  }
+
+  if (sourcePath.toLowerCase().endsWith('.csv')) {
+    return 'csv-row';
+  }
+
+  return 'unknown';
+}
+
+function sourceEvidenceForDefinition(partial) {
+  const sourcePath = normalizeSourcePath(partial.sourceFile);
+  const isPrimary = sourcePath.startsWith('original-game/');
+  return {
+    evidenceId: `source:definition:${slug(partial.definitionRowId)}`,
+    sourceTier: isPrimary ? 'primary' : 'auxiliary',
+    sourceKind: definitionSourceKind(partial, sourcePath),
+    sourcePath,
+    label: '',
+    line: '',
+    csvRow: partial.sourceId ?? '',
+    family: partial.seedFamily ?? '',
+    index: partial.seedIndex ?? partial.sourceId ?? '',
+    accessDirection: 'definition',
+    sourceRole: isPrimary ? 'original' : 'auxiliary',
+  };
+}
+
 function itemRole(id) {
   const value = numericId(id);
 
@@ -34,6 +81,7 @@ function itemRole(id) {
 }
 
 function baseRow(partial) {
+  const sourceEvidence = sourceEvidenceForDefinition(partial);
   return {
     definitionRowId: partial.definitionRowId,
     sourceKind: partial.sourceKind,
@@ -55,6 +103,8 @@ function baseRow(partial) {
     status: partial.status,
     ownerMilestone: partial.ownerMilestone,
     blockerId: partial.blockerId ?? '',
+    sourceEvidenceId: sourceEvidence.evidenceId,
+    sourceEvidence,
     characterId: partial.characterId ?? '',
     seedFamily: partial.seedFamily ?? '',
     seedIndex: partial.seedIndex ?? '',
@@ -469,6 +519,8 @@ function blockerRegistryRows(rows) {
       blockerId: row.blockerId,
       ownerMilestone: row.ownerMilestone,
       sourceLocation: row.sourceFile,
+      sourceEvidenceId: row.sourceEvidenceId,
+      sourceEvidence: row.sourceEvidence,
       blockedTarget: row.definitionKey || row.seedFamily,
       status: 'blocker',
       reason: row.role || 'definition coverage not complete',
@@ -541,6 +593,8 @@ const coverage = {
     saveInitPath: 'Instantiation or save init owner, if applicable.',
     status: 'used, display-only, calculation-only, template, listing, blocker, or approved-excluded.',
     blockerId: 'Blocker registry id for blocker rows.',
+    sourceEvidenceId: 'Common source evidence id shared by coverage/gate rows.',
+    sourceEvidence: 'Common source evidence object with source path, CSV row, family/index, and access direction.',
   },
   summary: {
     totalRows: rows.length,

@@ -1,0 +1,4889 @@
+{
+  "schemaVersion": "source-manifest/v1",
+  "generatedBy": "tools/build_source_manifest.mjs",
+  "workspaceRoot": "..",
+  "sourcePriority": [
+    {
+      "sourceTier": "primary",
+      "completionUse": "May support implemented, used, mapped, non-save, calculation-only, template, listing, blocker, and approved-excluded statuses."
+    },
+    {
+      "sourceTier": "auxiliary",
+      "completionUse": "May explain or disambiguate primary evidence but cannot complete a coverage row without primary evidence."
+    },
+    {
+      "sourceTier": "derived",
+      "completionUse": "Project documents and generated reports are interpretation aids only. Derived evidence alone is not completion evidence."
+    }
+  ],
+  "roots": [
+    {
+      "rootId": "primary:csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "sourcePath": "original-game/CSV",
+      "role": "CSV definition root. Non-Chara, non-VariableSize CSV files are static definition evidence unless classified as auxiliary.",
+      "exists": true
+    },
+    {
+      "rootId": "primary:erb",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "sourcePath": "original-game/ERB",
+      "role": "ERB/ERH behavior, flow, condition, text, and effect evidence root.",
+      "exists": true
+    },
+    {
+      "rootId": "primary:chara-csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "sourcePath": "original-game/CSV/Chara*.csv",
+      "role": "Character template and initial state evidence.",
+      "exists": true
+    },
+    {
+      "rootId": "primary:variable-size-csv",
+      "sourceTier": "primary",
+      "sourceKind": "variable-size-csv",
+      "sourcePath": "original-game/CSV/VariableSize.CSV",
+      "role": "Original variable family size evidence.",
+      "exists": true
+    },
+    {
+      "rootId": "auxiliary:csv",
+      "sourceTier": "auxiliary",
+      "sourceKind": "auxiliary-csv",
+      "sourcePath": "original-game/CSV/_* and CSV config files",
+      "role": "Auxiliary CSV/config evidence. These files may explain original behavior but do not complete runtime coverage alone.",
+      "exists": true
+    },
+    {
+      "rootId": "auxiliary:root-doc",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "sourcePath": "original-game/*.txt",
+      "role": "Original package notes. They are interpretation aids, not completion evidence by themselves.",
+      "exists": true
+    },
+    {
+      "rootId": "auxiliary:ho-material",
+      "sourceTier": "auxiliary",
+      "sourceKind": "auxiliary-csv-or-note",
+      "sourcePath": "Ho版資料（作成中途）",
+      "role": "Bundled source-side notes and supplemental CSV. These are aids for interpretation and cannot complete runtime coverage without primary original evidence.",
+      "exists": true
+    }
+  ],
+  "summary": {
+    "totalFiles": 531,
+    "bySourceTier": {
+      "auxiliary": 35,
+      "primary": 496
+    },
+    "bySourceKind": {
+      "auxiliary-csv": 3,
+      "chara-csv": 109,
+      "csv": 11,
+      "csv-config": 3,
+      "erb": 372,
+      "erh": 3,
+      "runtime-binary": 1,
+      "runtime-config": 1,
+      "source-note": 12,
+      "unknown-original-file": 15,
+      "variable-size-csv": 1
+    },
+    "byRootId": {
+      "auxiliary:csv": 4,
+      "auxiliary:ho-material": 11,
+      "auxiliary:other": 15,
+      "auxiliary:root-doc": 3,
+      "auxiliary:runtime": 2,
+      "primary:chara-csv": 109,
+      "primary:csv": 11,
+      "primary:erb": 375,
+      "primary:variable-size-csv": 1
+    }
+  },
+  "files": [
+    {
+      "sourcePath": "Ho版資料（作成中途）/素質習得.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 3921,
+      "sha256": "816b4f10343890be9f27ac2d46b859025f0572b2f8fed88bdd11b2740ecb2430"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/abl_testcode.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 2887,
+      "sha256": "51dd634e87a5172d681ac9349b7a7dc680cb2d6139171cd643d053587ed313bc"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/cflag.csv",
+      "sourceTier": "auxiliary",
+      "sourceKind": "auxiliary-csv",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".csv",
+      "sizeBytes": 7292,
+      "sha256": "fd31fda288da8717e1822bfed9dc6b12df7713d36e379a4bf5dfa737bb233b8f"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/LIFELIST系関数.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 204,
+      "sha256": "d185097a6ab40cb2581a4a736de8927578b8648ec9b9901a0097062ee240d95e"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/NTR.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 1385,
+      "sha256": "0122486ba22780a7bd8eacc3c9b2bb28717ed5b4867483c2a99af6928c9d7d65"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/source.csv",
+      "sourceTier": "auxiliary",
+      "sourceKind": "auxiliary-csv",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".csv",
+      "sizeBytes": 228,
+      "sha256": "82ea10c0bb1faeaa5f57d6497a7bd210b9fa9cb0da1ff2f4e0746eaa45d8169c"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/かなりどうでもいいQandA.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 1410,
+      "sha256": "8beb9773fde1a1f1fbcea6b1271707709e22f1989870fd69f3b2f14290bde5b4"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/パッチ明細.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 1792,
+      "sha256": "56d6365cd2970ccbf12e15733fc4653539a0d54287c321688f7eb5c102990bc9"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/フラグまとめ補充.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 2614,
+      "sha256": "ce847351f2512b90a81583bb7fcdef3650ec09c21258e2f23a7169799afb05f3"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/ミッション報酬だったもの.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 1386,
+      "sha256": "90cf30fa4b4b3417e4d40b8401d066ab305ac19c622aeb5ab057443d0f8703f9"
+    },
+    {
+      "sourcePath": "Ho版資料（作成中途）/やらないこと.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:ho-material",
+      "extension": ".txt",
+      "sizeBytes": 254,
+      "sha256": "0f1028c17b37c99a6181a8cdb161269c4419a6de00c48b575992e53d5154cb5b"
+    },
+    {
+      "sourcePath": "original-game/CSV/_default.config",
+      "sourceTier": "auxiliary",
+      "sourceKind": "csv-config",
+      "rootId": "auxiliary:csv",
+      "extension": ".config",
+      "sizeBytes": 88,
+      "sha256": "29d1ca3be03de690557d8e45d70eb940bbb0a4fd5a9ddc691091ad3c465988ee"
+    },
+    {
+      "sourcePath": "original-game/CSV/_fixed.config",
+      "sourceTier": "auxiliary",
+      "sourceKind": "csv-config",
+      "rootId": "auxiliary:csv",
+      "extension": ".config",
+      "sizeBytes": 81,
+      "sha256": "6fe688e8e5c351b0694321f3a3835306b26ad4a12bc90f52888b03ff398a271b"
+    },
+    {
+      "sourcePath": "original-game/CSV/_REPLACE.CSV",
+      "sourceTier": "auxiliary",
+      "sourceKind": "auxiliary-csv",
+      "rootId": "auxiliary:csv",
+      "extension": ".csv",
+      "sizeBytes": 92,
+      "sha256": "103b9295dfd6a03a2d6538af5a11e16489fa697163b7e5b34ec87cca5bf9926a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Abl.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 1036,
+      "sha256": "de4a909cb3a57741e483bdeaddab9b098b60ad27a239792100c1b684d489f9b4"
+    },
+    {
+      "sourcePath": "original-game/CSV/BASE.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 596,
+      "sha256": "5c4318f6a2500ee1c0155e86f5bfc0c2fb23f90d5a63a120607bcff81928bef4"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara0.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 650,
+      "sha256": "cf972adca0568f8002e84e392e816be119fef2fb13234d6385fa8ed9e35341c1"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara01_宮間かなで.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1610,
+      "sha256": "6ebe735ffde62d7262011718bad72deb4069402e4be828a79260203468b0a56a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara02_佐々木美乃里.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1380,
+      "sha256": "6b323b1b05be7a95463608aa4262276ab9f2c05ce89bd421e2835072641d0f70"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara03_久留米紗英.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1408,
+      "sha256": "879677a10d538508fa65aebe7ff4c30c2b175de884c71766ff602dfbef2c2840"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara04_飯野美樹.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1184,
+      "sha256": "46718a3294bdee315afcabaa459c0bf878345b6502bcc3f74fd6af787bc28b2d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara05_渡会桔梗.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1334,
+      "sha256": "50b94e57cffeccb7b7f292aa51be932fc6597887f703d2800ec3bb209d4922c9"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara06_神田ひより.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1722,
+      "sha256": "3168308fe43c24aab0b88e66751a56ecabd2683f1f9bdf81c3685edc610710b0"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara07_多々良ひな.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1290,
+      "sha256": "e44c4facd83a3d8717b9dfe2c622d0b02a653f04c67bbf6f4e51b6ae9e927862"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara08_多々良ゆな.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1242,
+      "sha256": "2b3db3d8b955ef0ce2a869cb7ac63efc72142e6b4a82f42c0217633a2e9a8307"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara09_レイチェル・パラディスス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1432,
+      "sha256": "25ee53d0fd14545ee8093853044b357b6b7f20ffbf53cea510ad0c207f3424eb"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara10_桐生歌音.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1422,
+      "sha256": "26c4410af666801af65d989df2b31b05dc632320c3320c91f8ff05f01c11142b"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara100_後藤彩香.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1364,
+      "sha256": "ca15dce30c8b0c273ad24848c87d6effe4f6b5491a54ddb4f25bf2c5e820383f"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara101_柑野凛佳.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1422,
+      "sha256": "cfd15b8db0ee837c4ab02e934732bb3861412d873e4031a3bc6614fa6c6e1b70"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara102_篠崎聖沙.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1400,
+      "sha256": "712a91c900bd8efb0affd66a06051838b2504149fd826bbda9b69435491168b0"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara103_椎名海静.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1462,
+      "sha256": "beea1e8d0b8549b9381078884f322f90c05f511dfb989d93ff535aa857799251"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara104_エルファリア・ロココ・ラーグラーデ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 922,
+      "sha256": "6125d45efd556cb27027fb1561709a4f372a24049af6243823377b768ce03b3d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara105_ミーナ・クレイン.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1404,
+      "sha256": "362751723d04ae9f4b34c004e25a9bbca6319df21cb4d83db945833b236b4c74"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara106_槇原さち.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1468,
+      "sha256": "77a4216c3615ea1faf96c595e22cb1616a56710a3099434f42c9ba35cb05b32b"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara107_赤坂姫乃.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1570,
+      "sha256": "c1c642d39f99d54dc128c3ab5cf7ef7cd69cb4f9df2201d032760d09c73d0c29"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara108_桜野環.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1190,
+      "sha256": "f6022bc9a02329b0b13e1e1173000dc35dfc0eafcc80f582068d176ce84866d4"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara109_マルチナ・パラディスス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2052,
+      "sha256": "0c926e16c3c1d1a3b0dfe19a0bf7773ee41236e25283cd96d6e59cfcde7d9616"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara11_須野郁美.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1044,
+      "sha256": "9c4864f3f9dd622e42d151277280336d400dc0d8fe8d8db714b390956eeda996"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara12_後藤光希.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1398,
+      "sha256": "30e95774b1cf88ba74dc52e7886277e3d60c45f07383ba2c8a3ea712b7e1039f"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara120_操辻蜂香.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2038,
+      "sha256": "95e40f0dfb3599bb2251f4b48334b0173a2a2b89d1f4881dde95f6a4ae8ac164"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara121_ミスティ・ブラウン.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1682,
+      "sha256": "c5eab73ac7fadefcad46e22ef832efda7bc5c1bc1c0485f62faee2f46dd90136"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara13_榊あゆむ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1040,
+      "sha256": "1c23eb84126cdf8ea6d21413bd5ddd35e139660c14c36e75a55066d153b178f1"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara14_御弦伊月.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1108,
+      "sha256": "b5fa97c021f614c4459ed687e0baee02d4c2454ea01c3223cde2a54e1ee0aba3"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara15_雛見春乃.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1236,
+      "sha256": "bf5efabb7d3227f8d3f2d0daa72698ea82b852be04cec8232b8836e57cf054f3"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara150_佐倉由希.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1498,
+      "sha256": "4a73d9ee41b864182f984606dfc01b61755e337e9f3b5c7063dfd79f263a0fea"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara151_小鳥遊乃絵美.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1216,
+      "sha256": "034fea0239a7fcfd7c8e373575e504a81cddf426257ca6311a1f5bacfa1c570b"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara152_新堂あゆみ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1470,
+      "sha256": "35e0e8b27759fd647b2f84cb69a61bc78b526fbd1d6a5d9195ca176435d3bf7e"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara16_美咲エリカ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1186,
+      "sha256": "709e4a875f5709d240f810e82ee667bf3b1ac66635f460200c42b4c5fcc1cd9c"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara17_宮間未依.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1438,
+      "sha256": "0afacdb7afa799bf0bb5962fbec6bce5a192f88da921660b6a11ac52a3ea185b"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara18_恋歌・ロックウェル.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1228,
+      "sha256": "c0505c2c00470422cfe51bf748b17c7d6682b97c641dea54e61f8fd6b16c5531"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara19_ヒトミちゃん.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 594,
+      "sha256": "d1bee01e13aa4a2b076edf8ed80ffdb0d3e08bab1b9c225b8d1b78c4bedc6602"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara190_涼本鈴華.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1300,
+      "sha256": "2d5712275351560c7da95c6800c23fb9a065ff5c7f83fed2404eb69edfff9923"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara191_永江桜月.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1236,
+      "sha256": "8be9f09b3feddf6ebbde971613261c0ab0db2f41a86851d2b34a8d13088c66b9"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara192_宇野未歩.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1244,
+      "sha256": "1e41f8ff7e19ba174d624523daac7220d1c58fbb920537b99ee6c27ffcf91969"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara20_赤羽真理.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1598,
+      "sha256": "a533879feba8c70347c696e853dcb4a7f974f3fe5875ee7b088528d1b8124cf7"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara200_アイーシャ・アルハズラッド.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1346,
+      "sha256": "193e97817a9ca5fa89c0055800d3b125fabca47eb7339a5dd141a4a937ee55c9"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara201_アスカ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1186,
+      "sha256": "23e46adee79b720579fdc3fdf332c7ed853b6b3fdce9e7403698425b4fd55938"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara202_小野原あんず.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1888,
+      "sha256": "b7afd0fc915997831dc0676e4b350bfb98a2dad65bf349c5f82c015972e11f7d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara203_高階美夜.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1126,
+      "sha256": "365020f89cc1c8312c3e74f071d724ee5c50e0f37ac72ed38292c36f8fa263c3"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara204_和泉透子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1402,
+      "sha256": "f9f9f374496b8ceabc7ff4878600f613addb9c66f3e6f40c5153dd923462bed7"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara205_高屋敷春海.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1704,
+      "sha256": "77c68babd650b6bfa37921e2806fe7c8cfef7cc815ff85ca40f4b37a4948000a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara206_鏑木紫苑.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1888,
+      "sha256": "c7c080bf48c4e7899f8bc8baa12c6b57568630c0f90bfbb798287e5ef0f6f306"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara207_両島みちる..csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2146,
+      "sha256": "935a17ad345c183cc8f8335089feccbec00ffd2057f42f1d23d6d381b303f119"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara208_春日律花.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1684,
+      "sha256": "a2e77e1de9316897e49ae4d64dd917b04a8e3253d9b323a497f83654f480a28a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara209_上坂美紅.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1464,
+      "sha256": "7cd4f5e5f1a59f32cf2097f7ddfb23fed272f7cda33f7534c0d6f46b10d293e6"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara21_長谷川湊.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1252,
+      "sha256": "1ca752ddde00a89386a20cf7fcf969ecd6e4f9a130d3c47841320674cee65423"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara210_碧野乃衣瑠.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1478,
+      "sha256": "dfa7003ffc9e7a48cfaf062c821dad2a63c99f55147f4b65b8ba66ada430726d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara211_赤城ひかる.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2082,
+      "sha256": "bbab80024f81cdb63fb4b1427e99e223d1fba6cccd268dcd80881e45e58caadb"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara212_浅神智子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1282,
+      "sha256": "fae54a5936cb968d0dd6a677a19647673592e9adbbec571c6c8fd41df0858a25"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara213_神那悠喜.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1382,
+      "sha256": "8c4e0c2da3603d972106f19ab694b0ecdfaa64debcef4a4f2c6e0e2d513caaee"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara214_本城愛衣子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2058,
+      "sha256": "b225deb7fb8856a6e43c874d061b01f77ba2e3351e1aeddfed12cb9d5fbd323c"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara215_二見アン.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2022,
+      "sha256": "56f2bed5cac3be5b896262516ffc9b6036c8bf8ebf198502581fd2d579da6b78"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara216_クリスティナ・ロココ・ラーグラーデ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1086,
+      "sha256": "0bbb8797b4fb06d7bd68542bdcbf372ec3851d7294713bb44bf516812c47dde9"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara217_ニコル・パトリナターリ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1192,
+      "sha256": "578833c8e24e4bc1cb25a5ccbfbaa771f8c5f1f0e86f8e5326d084813884e5f2"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara218_瑞穂坂奈留.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1288,
+      "sha256": "12461928c2644a737d3f3a07c74d60ee2c22a66167e1dff2e96fa129abbaec67"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara22_織部真菜香.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1266,
+      "sha256": "5a8b2533dea8a7558bd8b81da4897e9dc57e6e1d0e31b0e1191f1ec1d0de0192"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara23_天海瑠衣.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1204,
+      "sha256": "047a437b5fc7c32ba1bbc86cd77b4b8c0e6891cc23cb940d06e19ff103a2caff"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara230_リーゼロッテ・パラディスス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1640,
+      "sha256": "4998e39c9086b9902d7d0c314457cbb534bd317333f5ffb742234b72fb46acb0"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara24_寺本祐香里.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1700,
+      "sha256": "f8d6bb397ad5c45d92a3d9b9ab4ee6739e5e080b2ad214d25d2eeec7d4d2720d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara240_鉢堂陽菜.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1256,
+      "sha256": "9b9a46d1b7a803cffd23a3dc552a16e5aba3d2677f74d8061bcfca184edfecfb"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara25_三上聖佳.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1626,
+      "sha256": "59e52fcc74a3d8843626cf4aeab696b504f1e0fd8ebfc471bc06346159062f2d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara26_清水桜子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1388,
+      "sha256": "e24f33b7b26972bf4aa4ec4d6fe6219b92bde021d00c75488c089c9faf04c0a6"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara27_知吉綾乃.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1040,
+      "sha256": "2f6ebb379727f356b7833e0a221228dcd3d9da1c8057658de317dd047f967a91"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara28_桜井プリシラ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 998,
+      "sha256": "790d1379ad97dda602c049c7833038c8ef85edb5ec1e2abc8d1b29e6f8157280"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara29_蒼井遙.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1388,
+      "sha256": "03c944c55d7099304e07c3ab971af13b063409443737b1b256905465bf8a0bd3"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara30_文野柚香.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1200,
+      "sha256": "e8fd2465c694c9ca5496b06718759a3b8043d47bce1b6ee8b32c7110e0f3a002"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara31_白波縁.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1232,
+      "sha256": "ebd75e366cf97cc448762274e88d2160f1da3c92de92723c9a11143b9eb20204"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara32_相田エレナ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1880,
+      "sha256": "a69ac5b5a40cee7d370ded9ce3c13dc0e5782ce67870a7870447e99633b02980"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara33_相田アリサ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1874,
+      "sha256": "e57ff12e6779108d4b84a83abe05e065f8dcd1cc4ca48f0ec49e8ccd78a1c78f"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara34_中島葉月.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2160,
+      "sha256": "d4576bea3d04122aa7cbfd3fe857c4f4e4347c2e3a6d1f9860172c2e0c647a65"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara35_織部夏美.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1688,
+      "sha256": "3fcbcac65ae83ee010c8c0e75b86b8c58ad4a25f34194928ce9fa07cbeb5cab1"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara36_川岸あさひ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2104,
+      "sha256": "aecfcf74e76c0cee2fe0e064f4019535f02d5c863e238cc95941230efa61f475"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara37_秋名未澪.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1052,
+      "sha256": "85085fc0965dfa7e9d5a4e52d1face24ea3c54c76b57ddc2f6a952c9f2e512d4"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara38_闇崎燐子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1344,
+      "sha256": "bb09361fb50828db09ea2943166bcd391a336522bd4367d2ba29a4364ed39819"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara39_小日向詩織.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1210,
+      "sha256": "a8cf09ab38114e8e3527b162aa44087da2f1aa1dbdcd4803a486807d5b5f528a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara40_庄野そら.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1408,
+      "sha256": "646fbe15823a0dd96672179faa2dba49d5093532904e8664b062100ae320adc8"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara41_羽生理沙.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1502,
+      "sha256": "d4982d894101d684c781e8d47ce80542d1f7c6b1129b5cfe743ac559c6b0970d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara42_富士川りえ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1294,
+      "sha256": "564edf64e7dad3e8c8798e86e47f5de5c9860dae3a282a18e68aa68d6b13c766"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara43_相葉瀬理奈.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1212,
+      "sha256": "4c8b5fb0ff12d02647bccc05bdf85805fc1188890ef46c900bac90b3a0c845fd"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara44_高城沙織.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1192,
+      "sha256": "5e866f5ee02d0f519fffff67ae94117578be59c8453732dfbda643ec24c0d94b"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara45_三好ゆか子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1224,
+      "sha256": "d4a7de9639429657fa451ef9f50d02cffe0bb27b05de5367066aaa21eebe06b5"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara46_小鳥遊音羽.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1368,
+      "sha256": "603f80b2f4a3e8a7c84bd73a5a0916956e6bc4c3955d7d5ddbe7ea092e2beb27"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara47_水森優樹菜.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1296,
+      "sha256": "faf3516a49b884723cf22738fa8ee02adfe9288ff6932202330cebbd6edf211f"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara51_【求人広告】.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 200,
+      "sha256": "67d5bb0ec73146a69aa06186a56c95b2f509c7aa6291d72498303af7570c38f8"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara79_キャバ嬢.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1272,
+      "sha256": "fdb58d41f20dc365ce731d63d6c411b416c8e6834daeff0d962d500c5d649db0"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara80_新島みひろ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1588,
+      "sha256": "12252f72d88e9b89340f5dcf7a98b9f3bbd5d6419e20fd35a538bad42552c072"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara81_エリス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1348,
+      "sha256": "6685c1ef08b4c92666494b6d72bb96317d74c63f5edefce8823cb31eac35407d"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara82_リリス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1486,
+      "sha256": "1a38d7389650fddcbb8ab421819476a69a6e155c5312c941ac10387574918cbf"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara83_佐倉結衣花.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1348,
+      "sha256": "67b2c18b1688d042a7d2ea7d04a0e5a72463d4f9c32df5bad5d0fa3663d21c3a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara84_アイリス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1550,
+      "sha256": "e4c1310e5374e8d9ff7cdf86d87636f92b96dbe3b0791e10a3ec54d8ff2f9e76"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara85_雛見まゆ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1540,
+      "sha256": "938c43f5234523ca5195d1d96ff63f52e9ca60dd8796bd189fb99f4b99168eab"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara86_ユーニス・パラディスス.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1678,
+      "sha256": "03adcd0471a4022b6ab286ff91acf41f474e3d75f4ce57d2e6765f201d541f2a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara87_桐島翔子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1214,
+      "sha256": "f559c22bccb9f6e16e60c9d3de602fb894823dbba6af82d87d6e18006930ef1a"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara88_雨草愛理.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1248,
+      "sha256": "10697e3daa14435ac55dad72ec28528c0e6bd9160653efea2677fd7e546908a2"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara89_西方杏子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1346,
+      "sha256": "34e38b7fb5e3926906d5ebddf8c253bec474ae6434b493a4b7875b1b6bca9433"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara90_加瀬芙美香.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1086,
+      "sha256": "563b5235a41ffa14c8d3da47279ffa1dd0b52376ffd8ba76a9710ed17effe4fb"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara91_宮間かなで.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1792,
+      "sha256": "e79b9585570253e40ec052a74ac8a409dc8e0a1785625748e5469c155db9ebd6"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara92_アンドロイド.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 736,
+      "sha256": "7eebb1e113665cb5e9eabd3a6fa5c3d9ae67a6b6ebee2d338a9881baa5d74374"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara93_李美鈴.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1392,
+      "sha256": "a4e807405dd5af7c69e112dfec83d08fb7e8ef27f4d3f81ce74a238e64b4f472"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara94_羽瀬川みこと.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1528,
+      "sha256": "85502290d675c651e0565ab8b45d719480cee506ea6f20f5ade83ac8d57f23e6"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara95_桐生エレン.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2040,
+      "sha256": "a62a316c26657511b9468b77f8d744ce7a6a86e6ea7e6ddbd4f7318031288c49"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara96_リーナ・レスピーチオ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1322,
+      "sha256": "a47e743c9dae00ab94d8aa6ac60fb0c847cefc77cdb73204c16a170f933ef2d7"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara97_黒井都子.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1422,
+      "sha256": "770cf7a4e658baa9606ab6679ab8f21989950182349db0aea6ca6a974ef10840"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara98_赤城ゆうひ.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 2018,
+      "sha256": "97f108f5cd14ba30c400ce385d20010740715b99c8b7c4c84ef67108df0826e2"
+    },
+    {
+      "sourcePath": "original-game/CSV/Chara99_伊原琴乃.csv",
+      "sourceTier": "primary",
+      "sourceKind": "chara-csv",
+      "rootId": "primary:chara-csv",
+      "extension": ".csv",
+      "sizeBytes": 1480,
+      "sha256": "100718afa0bb9f502c44a7f3feb5e9b395e9e2935cf0f841a5ac4d86310a1dc0"
+    },
+    {
+      "sourcePath": "original-game/CSV/CSTR.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 319,
+      "sha256": "35e92b10c20e7073f4955caf1e3611896298b3094c0616cde4b3705151c65143"
+    },
+    {
+      "sourcePath": "original-game/CSV/exp.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 1868,
+      "sha256": "02c9b9328ab61b0bccbf9bedbfc79c80b6c789abccba7a74b4fe0c4efe13a543"
+    },
+    {
+      "sourcePath": "original-game/CSV/GameBase.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 147,
+      "sha256": "c7da224111f5baeff0986fb9b3987c4a72d833b6deaf8f21a2cb20120d98ca80"
+    },
+    {
+      "sourcePath": "original-game/CSV/Item.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 3949,
+      "sha256": "15e875e5d6a9c1f4a2f0ecfd3fec738592fddeb9cef6082f38c567339e7e3eee"
+    },
+    {
+      "sourcePath": "original-game/CSV/Mark.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 233,
+      "sha256": "bdf3ce0fe4c0ccec0c2517753ec2086a2db9cfc5329f58cb2bd3c1e54e2f66af"
+    },
+    {
+      "sourcePath": "original-game/CSV/nul",
+      "sourceTier": "auxiliary",
+      "sourceKind": "csv-config",
+      "rootId": "auxiliary:csv",
+      "extension": "",
+      "sizeBytes": 47,
+      "sha256": "b39e49b71c879876a34874092f2e540230fef10ec63b6620d60d1530eb8032b5"
+    },
+    {
+      "sourcePath": "original-game/CSV/Palam.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 173,
+      "sha256": "64fc3e63dad171227c1d3d6d102a40cf554dec6a64a682779ef3762db53dd13b"
+    },
+    {
+      "sourcePath": "original-game/CSV/Str.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 150,
+      "sha256": "9159b144ff2d96662a098634f1821350a41076cb9494091ca3036dcb9c34ff67"
+    },
+    {
+      "sourcePath": "original-game/CSV/Talent.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 15975,
+      "sha256": "dd32f3fe203a2085775cc0af6a648a1cb0e0f5a886d35251d0b71d9f9f4f6345"
+    },
+    {
+      "sourcePath": "original-game/CSV/Train.csv",
+      "sourceTier": "primary",
+      "sourceKind": "csv",
+      "rootId": "primary:csv",
+      "extension": ".csv",
+      "sizeBytes": 4419,
+      "sha256": "54c6d1dea1a3c134a8f6dbcb42370f980aa56e9b3cd2349f4e52934388f37e83"
+    },
+    {
+      "sourcePath": "original-game/CSV/VariableSize.CSV",
+      "sourceTier": "primary",
+      "sourceKind": "variable-size-csv",
+      "rootId": "primary:variable-size-csv",
+      "extension": ".csv",
+      "sizeBytes": 2821,
+      "sha256": "e23c36d9d26f900029b81ba3ab2528056b7e8831bab55ea2d399fee202adc7ff"
+    },
+    {
+      "sourcePath": "original-game/emuera.config",
+      "sourceTier": "auxiliary",
+      "sourceKind": "runtime-config",
+      "rootId": "auxiliary:runtime",
+      "extension": ".config",
+      "sizeBytes": 2159,
+      "sha256": "985e9e5785417b3ba85b2a49369a85be7a8fdf295bd245555b0e491eeeb584f0"
+    },
+    {
+      "sourcePath": "original-game/Emuera1824+v9.exe",
+      "sourceTier": "auxiliary",
+      "sourceKind": "runtime-binary",
+      "rootId": "auxiliary:runtime",
+      "extension": ".exe",
+      "sizeBytes": 759296,
+      "sha256": "aa009eaa5965a1368ec3701f74c037047c97d57d9d0b21c64c64cdab904be15c"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABL_AUTO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15727,
+      "sha256": "2eeba3d69cb3e166935157cc0e1eeebe326e4caf30ba5d508d417279d87b3914"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2835,
+      "sha256": "48d3a0841c2cf2c7b01dfc12fc8f8a2acb5d67ce8aa137596ede71a4c0aabdfa"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP0.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2878,
+      "sha256": "55bc504c7a2b8d8dca06890f164661db017435f4aae00fdbf9ca48d6e382a3cf"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP1.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2959,
+      "sha256": "19aa7a5fe02d230f6be6f96836f2366a3a573dac813e9943341919e78ca779fa"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP10.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7385,
+      "sha256": "d1e79f5608cc24d0847140e54a320d470e56f4f0330e6920fba37c29de875f57"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP11.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4563,
+      "sha256": "b9d736babebb555f7eebaa15261c2faa098cbbe7e26daf812ca11c56435dd953"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP12.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3313,
+      "sha256": "a986b92ee4fa92a66077d3f8056229075f1fb8a17535ba7123c88877120315f0"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP13.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4525,
+      "sha256": "1bf9a7fcdb1e0dea480f34f633571510df802ff33e498acd63e60e09f0efddb1"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP14.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4307,
+      "sha256": "7f8a36eff109e573e7c9ad2c05c094a67e6354b8395c1edd8b40eccbcc61e383"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP15.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5089,
+      "sha256": "b1f4178640f7d24da73dd37e20a0a3ac85250df1bf76b139209c3a0ab30759ac"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP16.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10211,
+      "sha256": "3d6e63eddf399609e5c92fb14ba6b56f95eba7565592584f3ec1db8f3fb11e98"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP17.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6852,
+      "sha256": "45deb994b4c17bc975f0c1301e3105c5782c590805cc5259cdd357b282318e39"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP2.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3485,
+      "sha256": "721b630b9dbeac2a3aa2bab644fcf5942fe01110359351bfb4071014f819c49c"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP20.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7232,
+      "sha256": "abdf1990dafefe7e743a5200005aede64a648c30ddcd34c7745f0d4c051096d5"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP21.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10829,
+      "sha256": "e6cf08d93d0ce947aef8f850dfa15023a46baf9e3550b368e608518eeccd7165"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP22.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7740,
+      "sha256": "c7c8d541d6dcee980181edf0d59468563a87d5399f0b7678ef45632e72ccb287"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP23.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6423,
+      "sha256": "015b8389d2f512256662ba506d0baf0f1883acb80e4d6778a9373cf445f2173b"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP3.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3381,
+      "sha256": "020a230193b137137ff7bea08468186bfd7e2741a20980979224f3bfafe23574"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP30.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7582,
+      "sha256": "60a77b74b0411b75d2bed4ddd24d808fa2490110e46b6b395338088431a06598"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP31.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7644,
+      "sha256": "fcb7a307c9f409aa9eeb2ce8be343f87148cc38f0f5ab66a6f47890334df87af"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP32.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8314,
+      "sha256": "f02141921cce8c7348a7c6dde679e9fe78e15443a919cf8046e2f0aa52a5ac68"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP33.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8066,
+      "sha256": "a062f7af253ec8040442795d65dd155ea327a937fb1854f435aff292493f9212"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP37.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7895,
+      "sha256": "ee1d33ebb1e0237c4eeac489814dd70652cce710b72ccef2ee82d6a337d410ae"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP38.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4750,
+      "sha256": "7529430e93a08e79b716574b6a15ec3a67cb8c8642e5abe36753d8cc09cb1979"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP39.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4692,
+      "sha256": "eb9b58bde3a181fb0010f3fec3f407e13292a738de30e7137ec17f53f956f05e"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP40.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5846,
+      "sha256": "e1d81776513c24c39eeed4c6556e76e557dfa75ecdae786f3a862b4d76f2d9af"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP41.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5021,
+      "sha256": "1c6a5eeaeb133c9e33c92c2b5ff1681713acc74a50b8e8f6f539aecfe02f809f"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP70.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2939,
+      "sha256": "2d29e6a25a307d32a99ee05524b57254ab35b972f2fcf1da10e3cf9a5ee5cafd"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP71.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3419,
+      "sha256": "5b2fb1b8a9079a8a06198f3de604f2f748fccaa666234d8fcf949a48bc8200e5"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP72.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3214,
+      "sha256": "5487f136416f979d9cc716f50f693ae97ca52e7d5ce8298d5fe84b5785c615bc"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP73.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3428,
+      "sha256": "8f59e1cee9ac1fddf2a08a6d661b8c5ff509cd86beeb8cfd4cfdde44d6038ab7"
+    },
+    {
+      "sourcePath": "original-game/ERB/能力上昇関係/ABLUP99.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3100,
+      "sha256": "f7cc2de11603cb67675b867eabc6410da76b457a3e172c3d2ffd1eb2bd224f9e"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/AYANO_ORDER_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4356,
+      "sha256": "5d75b25165413a7b6afe91cbad260e9562dc8f029e16ca634cd186c93f4b9b87"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/AYANO_ORDER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1173,
+      "sha256": "107d2101dd524911e2bb29130333c9094b16977e13b5fc6d1d386895bd503ff1"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/ELLEN_MISSION_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 36076,
+      "sha256": "a957d6aeaaa3beacd3618b684938435d9fb42e99245512953f5f569ea8402674"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/ELLEN_MISSION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1011,
+      "sha256": "e458159cd6ab3931b060f7c20325a8eac177b9350b8118c9ead41200eac367ef"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 28601,
+      "sha256": "eef1ac590f9ecd66e0ecf66ba15e9570078ecf512a369b3b652929a3bbe419f3"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/EUNICE_LABO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3259,
+      "sha256": "ca901172ade68a75f9d9ba4542496bc3089bf3659ad61d6b0d7d5e94e86f4473"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/HOUMON.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2028,
+      "sha256": "f5e1bd8367a62e855aa71291cdef7818ee3c51a0a84fa54d0b4bffc4de0a7359"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/IKUMI_LABO_CALC.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7878,
+      "sha256": "37dd841886e714c6bc1b9020955bc83b57f10db393fa6004e55ba6d892a1068a"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/IKUMI_LABO_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 25033,
+      "sha256": "116538bc38b349a6652a09e891b2bd8924518f1cb0e96263d92995e0e7f83555"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/IKUMI_LABO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1466,
+      "sha256": "2b82961dc92c3496e219cb9945374f9e6f7af20d2cb5ab31ab63474887e916ce"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/KANON_ORDER_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 34579,
+      "sha256": "575c118ce2f86f000075efe49c9097aa0165029e042bf30bc7eed48141b9e600"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/KANON_ORDER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1992,
+      "sha256": "aa0296bd26cdeb9f32e09b211ac3990fbeb1a8cfa164d7be016a43adc077e081"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/KIRYU_GUMI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3456,
+      "sha256": "1924a5acbec8569c7c2dc367171fa255ff6ee35006ae25f4b749dc3256fb4086"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/MIYAKO_LABO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10429,
+      "sha256": "bb9e70206f497153bfd6b60f258cbec429a003c5871b38e276dfd867d362a0ab"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/MIYAKO_LABO2.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9761,
+      "sha256": "846eb396536007ac9a2657e24ac93220e5edf6aa257057bb4a25ba617313d1bc"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/RACHEL_LABO_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 29586,
+      "sha256": "d97b591b319b6b5da612c86ac310cf1fabaeaaff313d692d1cebaf650da4820c"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/RACHEL_LABO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1995,
+      "sha256": "f2ad671d5bdd24a9bede4082c9eaebfe8c3d595f94390bd5fd45d9d4d7505a03"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/SAKURA_AZITO_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 27467,
+      "sha256": "942f207bef6c40816e171b0817f5ded9898f078ac39cba0a6208cf2cd78f2900"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/SAKURA_AZITO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2895,
+      "sha256": "8193dad1bcd1295f1626f66a157809bdac59588eab9b38a8d7bf66f66bd94bad"
+    },
+    {
+      "sourcePath": "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 26763,
+      "sha256": "eb8d73e4f541024de845422a4e77397ec13e7562e66bbdb871475b39430729d7"
+    },
+    {
+      "sourcePath": "original-game/ERB/組み込み関数/汎用関数/RANDCHOOSE/#DIM.ERH",
+      "sourceTier": "primary",
+      "sourceKind": "erh",
+      "rootId": "primary:erb",
+      "extension": ".erh",
+      "sizeBytes": 284,
+      "sha256": "9e43ba5af690acc89a4ca8a178fc5d3c88e7c47e6223b493a79a11724131fb89"
+    },
+    {
+      "sourcePath": "original-game/ERB/組み込み関数/汎用関数/RANDCHOOSE/RANDCHOOSE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1950,
+      "sha256": "2dbb93f493796a2439b4bc269fe17bd0a6321920f846a8dda69d7192e8f54056"
+    },
+    {
+      "sourcePath": "original-game/ERB/組み込み関数/FUNCTIONS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4116,
+      "sha256": "4222ea821bbcb46815bbb250f1d9cb6e6e0811b65348db4820c42867b79479c5"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMABLE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 148267,
+      "sha256": "c336f248fb03c36a4a00d48b1ad4d2150d5f4fa052662027510b496f80b69f18"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF_ANALSEX.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7870,
+      "sha256": "c94b582ba268779bfd16c34d8cffb08010b308afcc179cc207abd69c48f77974"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF_KISS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 441,
+      "sha256": "f7348bdd84967d1ed7fae6e3ef6ac01326914c9ffa46eb242135d2ac3cef9112"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF_VAGINASEX.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 14772,
+      "sha256": "9af36ccdc7157b2c923dab530f879186905bd55aff237f03c1f52b2b595c1ebf"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF0.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3547,
+      "sha256": "59bc2c1d8c07b466ada9dd3fd6d90a94399b0258e5188e6e7ccec33dac8f468a"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF1.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2332,
+      "sha256": "33fdb83e98fbfbf3fbbc6fdbbe52fa3c83b7ca58d9a403a049ffd9b9d9fe5d0a"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF10.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1348,
+      "sha256": "cfdf9419f0dd4e47e62f3c7faf171791eadc94bc28a409a29c1d3640e64f9f2d"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF100.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7228,
+      "sha256": "aa7188186d92fbf05b85281093ace453586e9a909730ae31c674750ebf85e1e2"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF11.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6501,
+      "sha256": "01a0f110294034648fba20fd270e85ca9c9e0ca566ff9deeb6bcf4a6138814d7"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF110.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 21133,
+      "sha256": "3a86f268c9c106d8c021ffbcd22fe9ed0482db45477a493d95fc6625ba331917"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF111.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6320,
+      "sha256": "712e4bffaeb2561bbe1a5f5ea355a9abcd94bfd67a89911881ac7861c579d9b2"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF12.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1493,
+      "sha256": "37c0089dc16f6b315343f09652b63cf9ca4833486dc9449ce008a0714dcb52d9"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF120.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7236,
+      "sha256": "1c01d2f7b87bd876f1f1ad6878c9756b7df257999e34a0594349186a0a02aadb"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF121.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7937,
+      "sha256": "5910f9b80dd4104edd22d9bc9edfca2f1d3ae5cb55ece4ab12ad02bc5a9dcb45"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF122.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8972,
+      "sha256": "113327cdc12387e6c5cd3075e9f748a7c67d113685913fec8f2c529b7fdbd246"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF123.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9409,
+      "sha256": "72268c41bc61240e77f6c135eba63645171aa2e8d9e58c731b39940e0c2a62b6"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF124.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8826,
+      "sha256": "dc834cd18d963a23c0fd26533969e778145170dc038ea89a75ed67c7793c7744"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF125.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 20998,
+      "sha256": "a0a8be6556fb3266df6d8435c589688d7e6110851389c8e161074894f8fb6132"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF126.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9872,
+      "sha256": "6f4fa12f8e69d125d92aa17526487adcadc15ba33f9924bb7207ec3a95923633"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF127.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9713,
+      "sha256": "a8e950fb2cc27e7185111326cc5e9425e3df3ce01a31b7ffede0375d83faccfb"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF128.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4909,
+      "sha256": "60ba47a83dfd27720333bf4b0e65fb64b142c43c93e2ccedfb24d7c7e75aeb3c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF129.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3934,
+      "sha256": "0bc05bc9f0fd0c6b9e679a8e9b1f4c7716be072674470796e97f998b8e69bf84"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF13.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7528,
+      "sha256": "1f2af3b6332d3e6ada41c0391dd1756e97ccaa410c7e3d83410746eede020f72"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF130.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5530,
+      "sha256": "16a99e29a585b6f3eb904adf21d304f39b3578d5c39c639b2d5048191b4f2d73"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF131.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4090,
+      "sha256": "132800603e7c8033092933e90a41606dd9dcfce590a520806528c4c9f2feac47"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF132.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4582,
+      "sha256": "2bada97e4fb6ed682ee04063c05fad76b878d3d0071b616c7a5182d3e6b7df7d"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF133.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5224,
+      "sha256": "66e99e16f7990a993462cde33a43007c53e4f158bc0dda03f1a494b2b3a77a30"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF134.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5900,
+      "sha256": "b1b77ed73654bc4144724fc2d297b63b8cefeead6fb2c387e8e84f8bb5a28c4b"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF135.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4078,
+      "sha256": "1fe893dd78501dc81b10e5175f9181f24692c875632efe1d8e44b6cb218bf45b"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF136.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1978,
+      "sha256": "a81548f8be8820ac6bc3c94e1792045304eb25f1d669d13c55e15522c2fb2658"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF137.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3974,
+      "sha256": "ab214eb36c557d6391c85bc4f41dfa406e8b9ab1f046de21d9ae4dbef8785bdd"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF138.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9686,
+      "sha256": "8c23bb92f3c0b2232eb0ad0c320147c51beeed74fbae6de4789af485cf68a988"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF14.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3311,
+      "sha256": "47e0818ff65eb7602c57c269b22dd0a4743cdbf3d5ecb5f9cd6b1948cb149d9f"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF140.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8174,
+      "sha256": "091a0b513226188353397f051d5a5d7f7a55b28e50a10741742cabf021f1de2a"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF141.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8651,
+      "sha256": "86033bca3a506e2543b48cdfe9cd286dc91ee42cd75d0c8c6200b8a9c9034f5f"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF142.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8466,
+      "sha256": "abb30928e4d7a6b672b9810686060e6ae23c3027d35307f8a3bc6c6a7dfde7f4"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF143.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7452,
+      "sha256": "8f183271dde88d82b1ad2ebddb8355507f82ff394ee2fc437cb1c8b30cdeea6c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF144.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1159,
+      "sha256": "5bcfb23a2e94650962a35721b0e145ea703694a77be7f13e13104f033f2132f5"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF15.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3742,
+      "sha256": "a17735b5a1e25c25a6703dfb8c6e05bef245c558129092ba40f35870447306c1"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF150.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6370,
+      "sha256": "2cd386ae1c0e12dd6496d52ec8d1817874dae5969553428f2ec2b8065020043c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF151.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5277,
+      "sha256": "d230037713a42dc7f090680c1fd8452144c57cad64181f3623d2234a2f792e47"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF152.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6307,
+      "sha256": "374df52964fcd3947f7a5b9a90085874648e30f3b4e36fac8ee65c6a099cc82f"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF16.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4676,
+      "sha256": "827335ce8a6329f26d4300b9580ea087b540823a5e149ce59d3e7f4518cc7dd3"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF17.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3609,
+      "sha256": "2f2e6fd585d3b1cf5611b7b5ee19a27aab002e5e2020c0364bb739931f382beb"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF18.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4069,
+      "sha256": "72ce9f5bfb21323219dac63cd81e3ec0a1e28a4378462bdf2802d6e9cb031959"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF180.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 898,
+      "sha256": "1fbbf39d30a42dc3bc893336d6b85a83b06bb107c0d48f6c886fe378b6b409d3"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF19.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6368,
+      "sha256": "d1a25fa32c7670d9aaed486e67035379c96cf1f90c68198ff71b7603a1002435"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF2.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3792,
+      "sha256": "01950956ebdb9a8e9a52a5f8d907c40a6a7b9689e3022e591ddef767b7c65673"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF20.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5817,
+      "sha256": "6340b109a8ed57ec2fa15b1e8e148e6b96140ba27873fc4c8430c4a69ee09d3f"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF21.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5651,
+      "sha256": "3f808c34b42f1fe60ee15ef693c9f535ac4e7686660f6897ebb11f789d7f95a5"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF22.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6035,
+      "sha256": "b34b80502139ec717a5e64892b123592071360d2b0239cf4be5577746fd16e8b"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF23.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6099,
+      "sha256": "1d12226e0012dd149789268b3e69a6f8f42130932c661c2b84de246e2a392270"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF24.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9915,
+      "sha256": "1502641fb1829480c72626aee2182220468628ae0c8087a97c2cc01d66a4aefd"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF25.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7460,
+      "sha256": "83d4d95508f4f869580c67bfca81ca7a37f552e1f8d00ea7d7517ccc7000a2d0"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF26.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4626,
+      "sha256": "4b441dcbb795ac83a2368a92f803a9b4e8cfa7f9182da1641bec44dae5f49dac"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF27.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3952,
+      "sha256": "32c44d1bb0a98a1441a627d9a896c38f4c8fad18d8fed29aa3a08ac5a18b023a"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF28.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5054,
+      "sha256": "0f4a53c718bbb7bf2d2de530969f7c3d7907a9519e66db7936c30ebad77c3bda"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF29.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5245,
+      "sha256": "690e9131ecfbbe8bb13b81aaaf3eaeb6972c23a4b6e8a86ec669741243a9e489"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF3.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 18238,
+      "sha256": "c2f47c319f7948ad36dbf1b99cf2fc3fe59caea79b0503232f6d85ab6fc75447"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF30.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8987,
+      "sha256": "c096ac4b7f2ebf597faeed9e9d4154d3d12257f53cb16988c8d9e06adc2b2806"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF31.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 11270,
+      "sha256": "8b68272625121198e9a333afff997c6b114db1db8bb2cf788869f8282bb3ddcb"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF32.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9738,
+      "sha256": "b511293863082bd2d1b0d11ef7734f282e103bf72ddffb860eb4d54e1740a150"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF33.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9152,
+      "sha256": "29889e2dbb37d2893f3eba986c554e87133df2a6000561d68ac827aefb615788"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF34.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10216,
+      "sha256": "be356e941cee454fc168673c06990c8b7e96927787c1e309b631f97376811104"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF35.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8962,
+      "sha256": "1472025e2a466d41b45aa2f324902e0f2b27e441a468dda33bc17594bcc9b2f6"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF36.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8950,
+      "sha256": "734a875466916c6c125fb7578b1c11e30554abfc2ce657d94aa9d16f3cd5a139"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF37.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9637,
+      "sha256": "46e995603f1bb5809e1ea54805826cfcefa2f1b42682d298db39914356818c59"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF38.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9511,
+      "sha256": "565e0fe64074b2144dc1cc61c3cd86d0ecc6bc4590e0143ec774084a41f20db0"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF39.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8630,
+      "sha256": "046076735a55ce1f545b54287c1ade753b3a5aaa449008f58d90f410274c0a30"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF4.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2833,
+      "sha256": "c6958d0ed63e301326f854eddb99c69171bac411d8bcb74f3922577183562619"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF40.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1642,
+      "sha256": "68351b58f585d6eaf2c52c5d30b4bb822c3bb72dc913963ca868d0f0605c7712"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF41.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1516,
+      "sha256": "e31cb58101d199eb350895d010904da8b184a85fd06dc808d157fabf18b1c8ed"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF42.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1514,
+      "sha256": "221dd6d035190038d76c28a0e92c9d03a52a5d869e9efd3bbdaa92d4a9644d4c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF43.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3638,
+      "sha256": "6ec4e0f1fd1e5ff5664915e4bca2bfe062895f772fde16fce162e1249e575173"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF44.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4231,
+      "sha256": "5cca22f1958eaf93115ad3f00535eff50e03986bb0dbbe1ccd43e6c186da1df3"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF45.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2318,
+      "sha256": "14a9a2438cc0bad8d3ef9d893c4ed991934dce730146e6f26803530578ec0e31"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF46.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6608,
+      "sha256": "bdea107dfcd7d2f3ffd23b1da13a79366cb822c74be0bcedf58b1037b2d3caab"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF47.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2401,
+      "sha256": "a8d2e50f27ad60e44a7a116060220f68f9426ac55aea8fe733ed9f9c6055b3a7"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF48.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2782,
+      "sha256": "7f7f1ecfdfad4577a7f458fef5f8fc03c61076a03f10f56d903a4b8f13d26425"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF49.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5487,
+      "sha256": "f064d4895d274e59ae0e23e5c13472c867420ab0be7df3aca8ba8917b1c5cc5f"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF5.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4203,
+      "sha256": "caba0b4f761a61c9501d788ada7733808ba0d482dc3bf6ffc378ac5e50b2aa21"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF50.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 379,
+      "sha256": "2b640371d566993fe7edaf33508c4c0c4dc163935473b08cd91011d7ecf8707c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF51.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2330,
+      "sha256": "844998a552333779d9c55c1e178b5b24af5ca5ff2fc0b61f06196d1677500580"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF52.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1554,
+      "sha256": "2e347d6cfd211c246cba47d49c388ddf0125aa95d6dbabd921ec7cc619a041db"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF53.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3264,
+      "sha256": "9871cf6594de5908d407ea4966446653beb769604a46ea456c2e09fae47f81ad"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF54.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4676,
+      "sha256": "4edda6783bb143284c1bb2a55508cadf02845b85eed3700bfec75f38b02f1aae"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF55.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1646,
+      "sha256": "a35e21a625e97e75ae2d3209929ab32610a4bf25e82acdcbcd9ca97001f3b37f"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF56.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3658,
+      "sha256": "b0556f1e109a944ab92d7d247862552720ecd9226389879bb4cafa0beab26f50"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF57.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3974,
+      "sha256": "695fa069d640d476f50c3dd141e3841ec2aa1046c24d3d173fc67896394473c7"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF58.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3753,
+      "sha256": "24c381953e38724fe2f59bbb0ea1613110f7aaa02c4a95345c4689ba7553e5b7"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF59.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5580,
+      "sha256": "00ed677ff3efc9b3f1810a74421047b51559487e578140c1389cd893014ed1f0"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF6.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7355,
+      "sha256": "8e2676b82ef3fb9c8164c05b49d80948f66be43e7089cf89893bc2912ee690ca"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF60.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7353,
+      "sha256": "bd49ac9a230e19491280f45a6735fc35fc4941e6d9866f9dd041ee44cafae1c1"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF61.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7553,
+      "sha256": "b79bdede4dc568916a8f6f5bed6260075101c52d9359927b74cc277b3ef8ff76"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF62.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10540,
+      "sha256": "47aeffcfb1e222f3b276b86850370059623ac2743367fd3245a7cd5f4f0079c6"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF63.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2945,
+      "sha256": "43d7d78eade5d7e8839f2636b18a24ea2eed3ba791dadb2e40d7549ff0fcd04c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF64.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 13740,
+      "sha256": "18a2a7e099852f807eb7e812a60099583a21290624e8f6edb819f2d1c362f6e5"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF65.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 12590,
+      "sha256": "01b1ddf6e21e0ccd968c0d8ce3937eddb4f7989c42c364c803a430e551643508"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF66.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 11014,
+      "sha256": "18b28a640ab1c21cbc2429ac847e25c23440f4234f891e3ec8890f2999440050"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF67.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4111,
+      "sha256": "5f74b1859a0c4714aabf9d151d20ccc7b14673f14b19c19426ed599377370d50"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF68.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10661,
+      "sha256": "8e4af8baa45982cda49298944a72f0fbff738582e0a64457e910f474db8599e1"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF69.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10848,
+      "sha256": "7c80d375598db877c0fa9b4b639990d4977636162b2958da6d23c6acaae6f84e"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF7.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5700,
+      "sha256": "96b026304bdca46804078294f52b90cffeaf861d265c316d8d21a049ab7b23d3"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF70.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10536,
+      "sha256": "e1c50e226bfb876036aae8d255fb218848348bd767429a0f6ba21c4da2753e5c"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF71.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 13245,
+      "sha256": "8985f59f9822fd58d2f9f817b70be9c14d6e4cf6f7ac863bf21f289abe89f925"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF72.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2329,
+      "sha256": "12076f53250b01c6f9aa1ae853345dec682d647bdbf8a14beed8364ee0cbf51b"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF73.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3008,
+      "sha256": "384ae20b3949b596c996d32aee2b67a467e43101acdc349e924d12e6753c8a82"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF8.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3646,
+      "sha256": "00abfc52ce8f851a2559f7a7cda82c69e0ef9ce3911ce172b7ab5f188059ba50"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF80.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8630,
+      "sha256": "4d37f900e7e9ecc0f8b7c464ff3aee7e81f09a63520819a69bd5efac03112694"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF81.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1065,
+      "sha256": "3815ac37db35844bce9f027ceb37d4da85a2a80a0930c2078cb2816d41f61121"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF82.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2699,
+      "sha256": "f7b360aeb05848f559c54406607d4a88dc781da91491a58c18a58c354e358416"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF83.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5289,
+      "sha256": "ec43845411a87a954dd5c13125d17e8e1498cef082879916bb8acbb5f4b6dd53"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF84.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2616,
+      "sha256": "b9c9f4765e8f8575911dbcaec35746cfd04332b11a9f67d3437bb0fc1473bc6d"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF85.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3538,
+      "sha256": "01514af8b517e446a90b807dbb134e2a53e040c0190749c1f577bad18e30b4f1"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF87.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8442,
+      "sha256": "512d55f0fa81d39c10d2ed589aeb01cb1baa03cb177d2747005336c5dd351080"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF88.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5906,
+      "sha256": "f148a8a38ef988594cc70baa6f8b4143269b5f9b31d0626889a2fa6c72330281"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF89.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6081,
+      "sha256": "53ce8966935606222d8cc40c2db94dfc88a442f4540944ade82567b7f706c6ad"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF9.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1538,
+      "sha256": "faff77d5a7857ce6c2d826508229f47e6ad60fd9d7d472daef796be293c4db07"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF90.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 16204,
+      "sha256": "b48bbb584ae1933e57d126703c996a243dba1ca3819983d739ed905bca34e369"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF91.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 16260,
+      "sha256": "20295bacbe35c26718574ffd65c71bc9cca56cd0f3cca438ef838f703998d5b8"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMF92.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1415,
+      "sha256": "73f36d64c2b2e9ebf8dff96443e9bdf5e54f7635f7ba150ea7236bd7add34615"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMORDER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6250,
+      "sha256": "7b8cccb7e6b91982a0858f5fca40ae3c70ab02beacb4a8075b66f06dfde0b55d"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/COMSEQ_REGISTER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4958,
+      "sha256": "1e84eeb7c6f7f254b52632d2478a641e14f107c14d7385d7daaabea4c080432e"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/TRAIN_MAIN.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15911,
+      "sha256": "836401fd81448e23f1515ca79200a08be71964a6a0c52de3184b1c525591f796"
+    },
+    {
+      "sourcePath": "original-game/ERB/指導関係/USERCOM.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9195,
+      "sha256": "3706beb4dfb31785476aaf0042b647748dab414e4680e68263683fe9db5b07c0"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_NORMAL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 16991,
+      "sha256": "63958062f7d427fa8374431b19115a778add9948065559975611ef9f5d0c2ed3"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 40448,
+      "sha256": "15bc068ff31dcc9dd972013a6f73beaddb729b89df6dde16cb19dd5227363f50"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_RESULT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 26428,
+      "sha256": "1bce6cc1d00a5ba2838bc6456d8f3e8424aade18e246ed22003b7c053f854304"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_CONCERT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 23377,
+      "sha256": "b0e8ca2968ab38918da5423ae1358bb7f1198105c3874b08436f903bb4763064"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 16839,
+      "sha256": "09ff4649ac31cfcf37945da1adc96191902a2c1320a8e61654a88f2be7627296"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_LUNCHSTALL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 23360,
+      "sha256": "30627f9441935b0f211c0e57da43b1e6914e5a40a874e9ffd9f04c665fdcd7ab"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_SEXORGY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 38765,
+      "sha256": "583212ea5b688040b91d630a8c564585d5000b7bbc0ff90a45ce30cae3db4567"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 35524,
+      "sha256": "f14ca30fcbe5d391861c47504a0c2e25eab033207587c334012fdbf9091b02d0"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_SUB.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7743,
+      "sha256": "b7a2426385e30845d0e03b4957209b0b199820c7b6826d22a57529fc393ddd85"
+    },
+    {
+      "sourcePath": "original-game/ERB/娼館関係/WORK_S_VAUCTION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10228,
+      "sha256": "ab2d7101971cf73f6f14441d285d6d6589cfc5016fae1ba2d6e0a2d97eeb4181"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_0_PLAYBOY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1141,
+      "sha256": "fe896681b495dc43cb17020c61d713e6d6bf73db9920684c97eab704ec99a602"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_1_LOLICOM.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1319,
+      "sha256": "d08f30a786c6d7856e70cbcdd982d2e840dacb720e23929ffb435529ca5c5b82"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_10_GOLDRUSH.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1545,
+      "sha256": "6f9bcd7801b4e9632300518d95bcd128b0da2ef0c22c26556e360fb59030ab27"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_11_YAOH.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1210,
+      "sha256": "bd8e01b908576dd3aa13e6592bdc0a00808385a7c448f8a6a74205e236fca7cf"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_12_CHURCH.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2559,
+      "sha256": "2fed4b220c0251c237fc3a762d1e656da8fe2ddbefc110a6d7978c6fa407b27a"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_13_3RDGIRLFRIEND.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2657,
+      "sha256": "6ba26670d9b9b83e4d980f1c21cdfaade4bcab68dd49d5b9dc4b8a30b8e2724a"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_14_BIG3.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2283,
+      "sha256": "0c7af9524685d51c98acdfe224a81291f516aa8868e7beac3d5b81d2a8d6ca80"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_15_HAERETICUS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1356,
+      "sha256": "e4aa3ab1c477ad8415d8768d5ab682d08dbc9479cc1ed0637ebb13864e6dda4c"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_16_MIYAMA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1603,
+      "sha256": "6ea3bf574108da93d7a39004218d46de6256e07807b88963ec602213d20857f1"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_17_FALLENANGELS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1813,
+      "sha256": "4a605a5c991e2b0ebada79ed84af6c55956952fadfbf692ef114379f5df93d9f"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_18_HUTANARI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1685,
+      "sha256": "7be25a5263436ab9d7c144222af8b3e7f8fad99fdcbbd4ecf59612f8d0a1cef0"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_19_ONLYONE_KANADE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2149,
+      "sha256": "f3841baa5fbb99b8d71bfc881367f88b49eb0b3b4f4b9ba8fed56ccf833ddb05"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_2_OLDERSISTER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4670,
+      "sha256": "4a20ef15ddef088f177b7c9d971be31cf66274ea2fecd831ff9961f45802705f"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_20_STRAWBERRY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1363,
+      "sha256": "dd4b90f513c39b2109f7d3b82b526a20f1bdb631c2977bb035e961b371d14dfd"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_3_IMOPARA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1344,
+      "sha256": "013fe15bb25659e5bd26d905b210f1b0ebec025fd7420fb0edbaa1cd8ec6f0d3"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_30_ACTRESS_LIST_COMPLETE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1450,
+      "sha256": "3229d9e4e8608ae091915d46ff840ee52c5de24f511d8c2182f9c963415ead48"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_4_TOLOVERU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3738,
+      "sha256": "a089f4dd8e4b2c940104171a6895af720bb2f3ed2bac5b58e3305f80e271a0b3"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_5_VIRGINMANIA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5484,
+      "sha256": "b956ba731c2c0af354cf0934a154a5761f17b8eb4971b52b7b6f122ce41a9293"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_6_NTR.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1488,
+      "sha256": "33a9117a019e2d32ab84693ade51d5ac4f165b59bfdbcbe153fec10b51207a83"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_7_BLACKIMPACT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3732,
+      "sha256": "36f2954d49f776265a8438302efdb89d722728fd7d61a5a2ab47ddd96657a06c"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT_8_BLACKKANADE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2517,
+      "sha256": "6d15460ad66d9ad258c84f36514ed29d6fbfe38bd29e56f6e85a506ce2cf01ae"
+    },
+    {
+      "sourcePath": "original-game/ERB/実績関係/ACHIEVEMENT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2999,
+      "sha256": "529ea94ad259d190dc2b054c0d96d17a51fa5d0abdae6ec035abf9ef7a41466d"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE01_INTERVIEW.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4528,
+      "sha256": "27c33e98e94f26d5337b50468221960ef13565b7b6c89aa58e2d8856b9f483f8"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE02_MUSTERBATION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4767,
+      "sha256": "033cdf1d23ac7e0330c3a50a91f88ec3968155354b3e945e9a15c88db7873d6c"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE03_FELLATIO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4688,
+      "sha256": "058ec72fb6f485e6feac42ab6e0cc8aa2e33d0370fe81ca4b711f906e3795938"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE04_AV_HARDSEX.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7620,
+      "sha256": "4a1be2ca0bdec44b01633913414597f992e239937f0bc4dba97655e6b78d13a1"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE05_AV_HARDANALSEX.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7100,
+      "sha256": "5ed26a0049e5bf6339eceb3db6c7971e7ecbe4f5b9e94efa154a659f80a27371"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE10_AV_SM.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5009,
+      "sha256": "f069d46fecc3c090f9aea86f61c22b3ebee6e8071f2780a673b5d011a3584710"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/AV_POINTCALC.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5559,
+      "sha256": "3bad9892d526e758c42cfc76532c660c8915d9aebdb8b2ba451a66c7256cffd0"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/ITEM_AV.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 408,
+      "sha256": "0a0ed0e9d0fd4f61c57471b118983fdfcf58d8f821ad369d9abd12d910786297"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/LIFELIST_AV.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 856,
+      "sha256": "3011af08a39a1d21b39c466b6752a0eb438d21687e49a44d3b4d900eba14a8ed"
+    },
+    {
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/SHOP_AV.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 12985,
+      "sha256": "18335c6c0c557bb6c98ff8b3be5d56891f9b9ef6153ef4a0eca3a2c0b12ef067"
+    },
+    {
+      "sourcePath": "original-game/ERB/TIPS関係/TESTMODE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 163,
+      "sha256": "4cdbca6774e9519ae45f4c570034f2bb48d54e68be2b13dcb4c6ef23a6861e2b"
+    },
+    {
+      "sourcePath": "original-game/ERB/TIPS関係/TIPS_BEAUTY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4628,
+      "sha256": "966ee9739075564b0b982471de2b6383979876df273f167f08faa6887582af46"
+    },
+    {
+      "sourcePath": "original-game/ERB/TIPS関係/TIPS_CHARACLEAR.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6898,
+      "sha256": "d36a0c43883a86743b6c5603c1b8ca229f1ed94038962de1490db8e63a6e5d28"
+    },
+    {
+      "sourcePath": "original-game/ERB/TIPS関係/TIPS_TALENT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4462,
+      "sha256": "77c812afd13e90688cb10afddcf73d69e588fc227e56a745f75d0df172230bc2"
+    },
+    {
+      "sourcePath": "original-game/ERB/TIPS関係/TIPS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 20428,
+      "sha256": "13ac8e34190306443edb8de21a62136359c0e091201e492e7ce5236873c4245e"
+    },
+    {
+      "sourcePath": "original-game/ERB/ZNAME.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 65312,
+      "sha256": "64d728b6c6b5571ad815b3a55cc5061c1ba4ed863ffa6dcdcc9911537cb746c3"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/C_CLUB_GIRLNAME.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2892,
+      "sha256": "052138bb4a79805011c6548141348f05103cd105254cf1b82aca7533bfa78d17"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/C_CLUB.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7306,
+      "sha256": "a9efb8e2e4d8740b6eb3df38262c4bc5cebe4481ec8e0f20769b8df0ec1e989c"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/IDOL_PRODUCE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7033,
+      "sha256": "939a684c0f166e72d09b33615364094daec44e81aff25abd7c0a14c28a86ab3f"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/IDOL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2405,
+      "sha256": "813e5c4cb15a4fc650131a36454da58d37b5824c371b744fecf6a9a260ec45ba"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/JOB_EXEC.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1653,
+      "sha256": "7ab270a58f4695bd6f591092b6028209b94f7dcf3e674d576c2bf3c67d576b1b"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/MODEL_EVENT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2407,
+      "sha256": "3417cd755cbea5a20b4d3e97bac1a8d1e2bd6d1c87d30ed912661a8b3aabf768"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/SCOUT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 11142,
+      "sha256": "f83e1a00351d202f4394de583aaf7cdb808dc617bda3056c4aaa74d40255f038"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/誕生日関係/SHOP_BIRTHDAY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9787,
+      "sha256": "9ba43d8e547649dd27a49894cb471092d8ae3539f69e35869f126be34dea423a"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4638,
+      "sha256": "4b7aac2b97f70d622059acd63a234102d497a7f76f1642c3e2a5b6984b80adb6"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/ADD_CATASTROPH.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2255,
+      "sha256": "d05e13e23ce9952c9fb81bc98b732047a9015065373c35622828609414e3e2cb"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 17363,
+      "sha256": "2bd44ae087fa564a693ca2e83de02fc8415e6e869edde4f92d05ef0a03485aa6"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/CALC_COOKING.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3283,
+      "sha256": "302db3be1c20f9534fc21bd7711788937674278b0a2b03596163c7771ced2587"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EGG_ITEM.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2957,
+      "sha256": "f8332e005e1bec6f6924538c98f0fe1717386b2cfd88481cbbb3aabe5c2239b1"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/ENDING.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7633,
+      "sha256": "35f63dab5dd8529b4a18fa9fb12ac4df46cf9f60223a376ba4d33689bbc0e100"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_ADDICT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10410,
+      "sha256": "62f1e2b3f559ff3f5af700188f4a74c7a668b4ae114c6d1f96f17eee53457c99"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 24660,
+      "sha256": "d55d2900800073ac8c118ada69f18466a9092ad3266ccb57dec22f7c235bb271"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 29326,
+      "sha256": "daef692ee0630b07767b335ce22bff0b60568f063ac338c42aa06a6cea67dfde"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_K.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3695,
+      "sha256": "483cc85c7e9df71440744603d95873e5eb98a5c767a58a8dc042c3a2f55443e5"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10367,
+      "sha256": "163f2ce8b9464f96070b6f6856f548c4fddfb665ffa5bbf6b1d2bbb17bff7441"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_MAEKOJO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10269,
+      "sha256": "eedb7b4a23270448ac782740d8a5a9fe0cade8882c91dfb6e975986f8f1a6904"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_MORNING.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6336,
+      "sha256": "bc7df5ae35f26253562d234ff8e51e207d76880c5b8452cd582903f9467bb74c"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 34565,
+      "sha256": "041470d32f13350dcd1a4b756fac628fe1c6cdbda99844703801ba538840e029"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTMONTH.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2491,
+      "sha256": "dbe81c90d00adc6044f2d9e1192797e49b2d8b57da840f1daf4457c124374a92"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 18992,
+      "sha256": "cd839b306fad9a7281905ba4c04e58ba28575361f26a1e90f5707ec9f5dcef70"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 36445,
+      "sha256": "647438e16bf368d0926ba84e89027ceba4f7ab57df21c4a84f504eaf53f086a7"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_SELL_AFTER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 20983,
+      "sha256": "99e909eb208f7ef7b272fc4859e4f8bfbdab16860075469171cd7d551c8792a1"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 71008,
+      "sha256": "b6f8809146768c2d52484b857b7b3aaed502cf9edde1b675035c455e86f681fd"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 131075,
+      "sha256": "002c01146d981c1124942e4958c46ffcdc30ddc0afc65e7dac21248a999d97f8"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 13001,
+      "sha256": "bd9657d3e08c65d4bb5c7877b039104884147225f3e03dee6173081417d2b85a"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_WORK_MESSAGE_SP.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 24113,
+      "sha256": "8abd7ab2da11c6c89ec9e650b112244a31b20d93967f8f7973649ac9e99e6544"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 57845,
+      "sha256": "f6d235c2906ff9d7a71e06ade0f4b7ad95e9c28dc256af7d69d31d0b9edb8b6e"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/GETTALENT_GAL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1864,
+      "sha256": "be84c71db8d4ac7642ded8067d49ff3463037e61a5d483ee8ef03a4902e819c6"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/BADBOY_RAPE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7390,
+      "sha256": "f9f62b511bf3eb8e6881b707626b1050565c1c63d7813804a9a3d0394f7987d8"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/BOYFRIEND_LOOKSCHANGE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7978,
+      "sha256": "391e90f2050372b517b201fcd4f9d2420d8c3b9a2cd9a10f873595b41bd369bf"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/BOYFRIEND.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 14506,
+      "sha256": "71fdf09aebdfcce9105e2dbd1914223c1761ffddf6b2cff22c37726288b426c4"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/BOYFRIENDNAME_CALC.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7971,
+      "sha256": "08704c40dd0a4170d6f4d93204c92d1a071c3f36bcc75f25d3d684d52a023b38"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/BOYFRIENDNAME_CALC2.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 14552,
+      "sha256": "cb038a44af451540a8a5d80a55f1c7548ee36e331525731fcf8ee404e8c3279e"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/COMPA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2673,
+      "sha256": "e95c931bc7e032428b83a1d41e3c3fd379865853b89c04a224f232de127dfbd4"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/MOLESTER_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9405,
+      "sha256": "55bd3b666a4e23db53a94c323dcae2cc5e7fcc51736b1168744502c4dd7e0af4"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/MOLESTER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3159,
+      "sha256": "684ac884354e57cabc1342659adc5fc5f08e5403e75dda630df30fd98b498f29"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/NTR_STAFF.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15352,
+      "sha256": "c464491a23e9d545717d1a93a48be098f079e8cac81985358671ac0c1d92cd3b"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/OPENING.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8612,
+      "sha256": "8d241eeb12f2862e61c6b61bab27bfb77199d9531088b2f219419b924e94f0b6"
+    },
+    {
+      "sourcePath": "original-game/ERB/イベント関係/SUCCUBUS_STATUS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3888,
+      "sha256": "efc71e4110f4ee2c15d8bdf990a9c7c8aa9804d2e534312250f4452d180c53b6"
+    },
+    {
+      "sourcePath": "original-game/ERB/クリアボーナス関係/CLEARBONUS_BOYFRIEND.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15135,
+      "sha256": "a527899203af75a7630d8c79225c3d0597c43b596fcad1d78a83f105581a5b5d"
+    },
+    {
+      "sourcePath": "original-game/ERB/クリアボーナス関係/CLEARBONUS_CALL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1074,
+      "sha256": "ca0b5cf8b61e2f9429bd5a6e08ae380b3b0411f5472e6935317d5dc5ba5df978"
+    },
+    {
+      "sourcePath": "original-game/ERB/クリアボーナス関係/CLEARBONUS_CHARA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4893,
+      "sha256": "e27b42786b656c2a3063f85a3423edb081ce6fd3739f2c0836ac0672e992a5bd"
+    },
+    {
+      "sourcePath": "original-game/ERB/クリアボーナス関係/CLEARBONUS_FUTANARI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2379,
+      "sha256": "4c83fbf990adaf767edabb016a84896f9c2039c12c17fa980f86018836324d76"
+    },
+    {
+      "sourcePath": "original-game/ERB/クリアボーナス関係/CLEARBONUS_HENTAI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 874,
+      "sha256": "fc598e3a88c7725d5836309354d02c927bf42458fbfa5d178dc2c676ff3e4393"
+    },
+    {
+      "sourcePath": "original-game/ERB/クリアボーナス関係/CLEARBONUS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 21491,
+      "sha256": "17367d00cb641924a65e8761f09181125fd194030d97aa4a9df3cf2c01153f20"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/面接/INTERVIEW.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 55606,
+      "sha256": "09fc0a6ba148723853e0254d0e85911967dc1b2d24097ffef6a2d4cf9da502e0"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/面接/NAME.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9437,
+      "sha256": "47a29b336e4a327ada57d68ec520cf8f46cf2b72364ab5594068dec3c40eab61"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/未使用/JOBNAME.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8130,
+      "sha256": "9a47a4d98d2036a1150faf2242e7a5f110181ccc22abfc4e1d312fbd69074498"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/未使用/LIFELIST_PRINT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2090,
+      "sha256": "96a1ee88260707b8fb74cf85e3ec446b1d5c848f35bde61aef06c3e3a2ceb907"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/未使用/LIFELIST.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1917,
+      "sha256": "b93a1eb4832aaf3a7190abf00ea01bd390d37b2ee1f2c68f8be76a721c27c2af"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/未使用/SHOP_SLAVE1.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4996,
+      "sha256": "01cf4fd12a82e41dcba3cbd94ec4a6b565d838e7b53cd1a9dd1181d884eac751"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/COSPLAY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6662,
+      "sha256": "4068e70350c98460a0432f7ef85d09f2561099ad77cdfcec623a3a52f1c3e614"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/FUNC_CLOTH.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 29759,
+      "sha256": "ec7383e50ae67bf9c3669416db23aef4f5affbdb4c114ac1afef2e7f4b92421a"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/FUNC_HAIRSTYLE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5396,
+      "sha256": "359f308f18c99e120cfe86a62c7f097c712abdaa8a779bc02a8f94c1c0e056bd"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/FUNC_SHOES.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4703,
+      "sha256": "f28c3417ced0561914bac53d819d89e41d2e917b2643e39f6ae746e968f92426"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/FUNC_TATTO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 763,
+      "sha256": "8650d3c3cdbb8f0dec83ad327f31d96137db0dc0dd62407f8a161110be27c27f"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/FUNC_UNDERWEAR.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6442,
+      "sha256": "650648b280cd0bcce2729f818e2b5acdab010181a885c5aed2ba428c62a50442"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/INFO_CASUALWEAR.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5611,
+      "sha256": "b3557a161b59e8c320a2fa419f8054ad9a561e450a0dc142d121d955b4e4206b"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/SHOP_TAILOR_UNDER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6849,
+      "sha256": "fd65053d4b5ab7a2c20da807503f7a22c74263a276f0cb87f30e5a57641d4a1a"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 43017,
+      "sha256": "ea62feedb19e0bb154cc9f1d8e88a2b1e685f1096314199905d76f773be719c5"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/初体験/FIRSTKISS_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4772,
+      "sha256": "97d78a45291500dcbd5f645d4898f286be9de6451100a6b06f0345fbb83a562f"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/初体験/LOSTANALVIRGIN_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5247,
+      "sha256": "72a612f9ad17fe433897d71576dbd2cf769ddfd3056f0c767d353579de8a0b61"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/初体験/LOSTVIRGIN_DETAIL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5191,
+      "sha256": "5af19aa5fee669c89198270d0d389c108aefe620ec293d363c024f8b4689c00b"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ACTRESS_INFO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 143409,
+      "sha256": "a5d9e1057943ec1df058cd57b10f0435f926879f4f2b5b67cb50ceeca61e3a29"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ACTRESS_LIST.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2488,
+      "sha256": "cac8c2a4dab5bf775e2089a0d0eb83056159a62244065cf0fbceaefa28c5e6a0"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/AUTOSAVE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 605,
+      "sha256": "1f3f76a2130bd28b58a4a9d571e42e1c212b09958281cc50107ddeb4254512e9"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/CALC_BEAUTY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1527,
+      "sha256": "11729f6f00698429e298bc769fa22f0c4ed7a83bb484216d7f81ed0a114d28e4"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/CALC_EXABL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15138,
+      "sha256": "c5052183adf5b337d03507241e27393745a18672405c7d8d32b63ca0c50af677"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/CHEAT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 28222,
+      "sha256": "6a7c1fc660377cc688cab4b15ebc366b49522eeb0d2e3bf3a999547425add403"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/DELCHARA.erb",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 665,
+      "sha256": "2d6df29f31e9deb6f7b12d27b28a6fc2babf67f0e5c1992323b6687564bd1505"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/GENITAL_SLANG.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8134,
+      "sha256": "fb9095b4c04ec3ac6a30359cef0de6f4ae7ac5d6bf8e53ae3297ebf9b22b69f3"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/GENITALFORM.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 3493,
+      "sha256": "067447c16561b8ee0f423c5056916dbf8cad05312c59d39e1779acfbae33b14d"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/INFO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 33151,
+      "sha256": "8b9ad621c91493f74fb9aa7c0fe38e515b5f99d88d79aad78a95ba07e12a50b3"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/INFORMATION_MASTER.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1347,
+      "sha256": "7aab3d6ff95e4154fa546926c1f3f8e27990d96da799dab977b7adca54ade7f0"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/LABELNAME.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 2262,
+      "sha256": "7eb3edcd3dc1f8018f55fd8d8eede60e3b1ef8874ce53e3b4a7300d0c920f52e"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/LIFELIST_NEW.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5724,
+      "sha256": "e37dd717f89ec43b2354d2633ea60d143bec01aa4b0b651bb5c4870e4c715961"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/LYCEE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 17685,
+      "sha256": "3bdaa7b7861642d0b67cd545dece1bac48eca0a3877e7e714348132bd4a1c360"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ORIGINAL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6223,
+      "sha256": "9ad40115f2034ead99a8091ed7361742912385c351f034d4f056ffe7b320bf63"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/OTHER_CALC.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5485,
+      "sha256": "0a7e516efd4e9ce03bb9973e5f1a4f2fb55ea661ded1665a60273f86c15da96b"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/PASSOUT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 18596,
+      "sha256": "4390604494bd1ff1022af721b9c827b5480e15cd86ccf74be73d4a3d93338151"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/PLEASE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 12436,
+      "sha256": "840236dd6050bea6b128656cacca1fb490e85ed6c131fa5400beee03952f86d4"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/PRINT_OTHERS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 1658,
+      "sha256": "6aacc3554f97a0d0286028ca1464c1b13084c0989495443d07b9122ad20a623c"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/PROF.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4048,
+      "sha256": "3a3ab061109b9e7e30e9be6b23ff306221478ee54fc35948efc2e2a1ba55716f"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SEIIN.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4704,
+      "sha256": "51bc36f4be16f10046527c926da00038b4f6319f71c9db36cf628ddc1922a332"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SELL_CHARA_ESTIMATE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15942,
+      "sha256": "f0ba180014d94daa0b9cab6b84e443948f9c5b0fe8697f8e1fae892b7226dff4"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SELL_CHARA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9779,
+      "sha256": "b58a54cbae7efd3ffafaa9fadf39a71db21b622728f070d6d285352b471c681e"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SELL_MILK.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 962,
+      "sha256": "1dc79675785ccf7401fb03d4237c59041d39e5fbbbc15ef15a3de7f6da799dcc"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_ACTRESS_INFO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4256,
+      "sha256": "95433927c510bab35b2ad65850913bb52562f38bed46049c722d095aa063e48f"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_CHARABUY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5475,
+      "sha256": "aece4e404ff491305cdb3393f30293c60461f48e911aa7c96cc135e3d8ee55b0"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 15715,
+      "sha256": "ade40079ef6dc044edd4609afecf57b01b1a9a7ebe99298fbd58b04e3d3584f4"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 26570,
+      "sha256": "e8955c396c5bbc5ef38ac94c460abc9dc04de68590b40d06b3ddd54ffbc599c0"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_SLAVE2.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 67281,
+      "sha256": "b8b350778a6012073712c15820c7957f6e144282931d7270803065ca0905343a"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_SLAVE3.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 530,
+      "sha256": "6cd7170e3204deca62d945aaab5db0ee1de25f4b0177b919f7fa1c7505f8d4ae"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_SLAVE4.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 11703,
+      "sha256": "87d142ddcad711a8fd2d6b9fa3f0a61199f4534d13ca2162b85333248c745af6"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 22789,
+      "sha256": "ecde497f1f19fb451b8ed605466eaa51b9463633e88918656ad1fa48fca89624"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SHOP.ERH",
+      "sourceTier": "primary",
+      "sourceKind": "erh",
+      "rootId": "primary:erb",
+      "extension": ".erh",
+      "sizeBytes": 211,
+      "sha256": "e4a21f11cc0b056537f09c1062745375e1781462037a216fe62f2407c7c312f8"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_BIRTHDAY.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 13540,
+      "sha256": "e1bf24d148f558b20abd0e923d7873f3224713a6a35139e2d9200d3a4ce4e66f"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_CHARASORT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9586,
+      "sha256": "e51b54d6a529a8803834d35e80dac2187d3b09f7a92b1d831385e6973fe4f747"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_CONFIG.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 24049,
+      "sha256": "061ca761a573850807c2612395b6c2027a420b9ed0c1a268a1e22e544eaf4be3"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_DEBUG.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4387,
+      "sha256": "5433e463b57c5b56bad04197cdbb818535dc8a547f7b45e7c3393fb46157ec8e"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_GAMESTART.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5803,
+      "sha256": "d85a21383b1d919b81ae3143ae192934102d1298aea4bc8299d6b62de90d383e"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_IWS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 16403,
+      "sha256": "72e3b03861052e90418c88fdf525a2cfb5c61366587eae6e03f46c7a047f6497"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_NEWGAME.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 9130,
+      "sha256": "12bf3b4d15bb9fa5239622461fc79e1a063db119beb3a5aaa7f486f3526af7a2"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_OTHERS.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 405,
+      "sha256": "d0a204969c326780a75290fa06579afacc909ac83943b986b5657d9910112264"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 44559,
+      "sha256": "f17eec69b445da6af569939e2033f024301263065f77713400c32d8d59ab816d"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB2.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6345,
+      "sha256": "5ab5f8f63ab51d57fa02e279e5489bdf9a491bb582bc61bbcc1a223569d3af1b"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 49916,
+      "sha256": "dff701f57dff8acaf833bb039348ee0122000834d59178b39c0ab1bffa5f8b4a"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_01_KANON.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5651,
+      "sha256": "1b29eaddef519dfde7fc002a04935f08b840c33cceb39761c38352729bff2b62"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_02_SAORI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5486,
+      "sha256": "0aad9a8f6f52868903477bcfebec045e9b80ba212dc01b24272e555098bbb2f1"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_03_YUKAKO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5466,
+      "sha256": "794c88a628af8dc7f02b143790fa7d42166d19a477d09d956c442f4a0c672ffa"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_04_HARUNO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5478,
+      "sha256": "71ae2c64ed1a6e7288b9a523288a2e02e9c79ad976a6eed22b94d810099c2237"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_05_ELENA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5466,
+      "sha256": "c469a51535eb8d888d3f000b53596ba1b0ac5a69cd4c6d76a738910baf546650"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_06_AYESHA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5439,
+      "sha256": "68d3385f7da8b43b3fede8edd0077aef49f1587d49c5979c6a70e58fc67c4e82"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_07_OTOHA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5514,
+      "sha256": "b9dd5cbf22c21acfa3292d3ef57d8fca6296090d89d8f6391c797de214099e47"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT_08_MARI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5487,
+      "sha256": "08f14e3f5243f58103782aa8b84cd102706d4d16a036a5b51b28af4f9aa866c7"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/アルバイト関係/ARBEIT.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8972,
+      "sha256": "323711822c210aeddbd8c0d80bc36b3dc8160324e761767f580445be814f751f"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ビデオ周り/SELL_VIDEO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 29092,
+      "sha256": "0f335e4397bada5db2d510943b578ea964328ad14f8357d9284025dc403f6293"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ビデオ周り/SET_VIDEOSALE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4614,
+      "sha256": "e2bb191cccbde0dd779bfe6d0fde17a8cdf919ebef99e6e45181ad1ad80b3148"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ビデオ周り/SPECIAL_TITLE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 56546,
+      "sha256": "91f7afb5f084ebd8c8da41d56c477cc83ec70a4f60abae100ca95172f2740fa6"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ビデオ周り/VIDEO_TITLE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 58136,
+      "sha256": "2ad43b4edfa37a1690f64f8fcb1c6a830baa823af7a2c0f0860fff32e092a77d"
+    },
+    {
+      "sourcePath": "original-game/ERB/システム関係/ビデオ周り/VIDEO.ERH",
+      "sourceTier": "primary",
+      "sourceKind": "erh",
+      "rootId": "primary:erb",
+      "extension": ".erh",
+      "sizeBytes": 591,
+      "sha256": "ab55ce486dbc6b4e1dba7d118aea3e1618b9b829bcaa9a48971da57f5e03be31"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/MISSION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 12957,
+      "sha256": "fc41639a4d9a52a4b2322c2e884659f6ce0b0192209c5d943a873757eaaf3dea"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_1_AYESHA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4876,
+      "sha256": "b38837bb5e20a493fffe91562be0f3194e0fd48f47d800b231578b709f4dac52"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_10_MIKU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4937,
+      "sha256": "8b5e7b9fee70c1b06cbf688952f46b9d25c80ecb1975f6611e9d1bdaf1c0e9f1"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_11_NOEL.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5951,
+      "sha256": "3d0e710f71b703bc90fc384e02dd897740ae42d18ea51d8c879dcb1be6d9c0ff"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_12_HIKARU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7162,
+      "sha256": "ced0585fc7a2006af389d65a5816f730eac887f80432e2aae41a8e584aaec2ff"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_13_TOMOKO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5512,
+      "sha256": "b239cef4c871b90c0914e59535ae8976097c32976264eb1dd89dbce400dba275"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_14_YUUKI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5610,
+      "sha256": "aec589f8638f5fb0d483ca398bb013f2f03dcc4f3028c96688f631edc0875847"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_15_MEIKO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 6242,
+      "sha256": "d832e830a8932a20a4089be9e92cde3af22584046774b0877ed441ffbfb1ac77"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_16_ANN.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5304,
+      "sha256": "94d9ac1b7be5babe996a751858126037327fa9f62ee5f40c114fcc05f0a66ca8"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_17_KURSTINA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 8558,
+      "sha256": "d540f256d6990bd8bbd35ebf5eeaa182e1c6d60abddf92a300ed4c7f1e0b5a12"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_18_NICOLE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5455,
+      "sha256": "6f8d5c1767c7d8698ff9e48a332d4a8b9aeb1fcf1a38828940ac9e80ebc958cf"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_19_NARU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5411,
+      "sha256": "3d16356c377f01e5ec1420ad541e2d7b4a34845de1e65eb37bf407b7623979cc"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_2_ASUKA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4824,
+      "sha256": "d26e4f795fe64d80307215c3a386884c5a42056d694364e265a42d2f36297d4b"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_20_NEWGENERATION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 10279,
+      "sha256": "be6eb33fb9d044dd6e4e6c0750f784f830d025232f1c806df6636bd02360e6c3"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_3_ANZU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 4890,
+      "sha256": "cc9d496234d0954040944db4d8b2aee30c5f08341cd0848b78859a4511c4d615"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_30_LIESELOTTE.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 7281,
+      "sha256": "a78102044fefac4cb776f883202fe8cdc79bf0e8fc5c6e764bd027fca1832cd7"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_4_MIYA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5403,
+      "sha256": "d2b94c9ca99c66781d02cef65641e85adf006e747b5f470718631bb09a5e3ea8"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_5_TOHKO.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5852,
+      "sha256": "aa3a2c7c0411c0c8a0167ac1758726b10bd02f15f234be83ffffede383c75414"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_6_HARUMI.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5246,
+      "sha256": "6baee80f24023d6c2ec4af4544fc901ba683c5318ba6ea005deee07a3e8c847e"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_7_SHION.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5002,
+      "sha256": "225f60d3a73a2c57f47aad1ffbf355137f999635a6567601ae2f0276b9884180"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_8_MICHIRU.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5331,
+      "sha256": "624ec9fe9a712e11def518ee256a83f2d694f29028557ed62a57a6a2a1d316fa"
+    },
+    {
+      "sourcePath": "original-game/ERB/ミッション関係/キャラ/MISSION_9_RIKKA.ERB",
+      "sourceTier": "primary",
+      "sourceKind": "erb",
+      "rootId": "primary:erb",
+      "extension": ".erb",
+      "sizeBytes": 5025,
+      "sha256": "38d0b0fb9a82646aed015734e1df69e2d600134c3f51c09a18edc2328efce6f3"
+    },
+    {
+      "sourcePath": "original-game/readme.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:root-doc",
+      "extension": ".txt",
+      "sizeBytes": 3513,
+      "sha256": "c6f34084cb62517f11c2968861e62962acbd4f1c98e71862c214dbeff5832444"
+    },
+    {
+      "sourcePath": "original-game/sav/global.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 110,
+      "sha256": "15c0eaeb29998cab5cd596374c2f68a037bddaea4d8d285cc2429c3b99c44a99"
+    },
+    {
+      "sourcePath": "original-game/sav/save00.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 4198,
+      "sha256": "7a89b01d42779178516e424ac27f571f2f094cf6c5dd012b0dcdfb112c139799"
+    },
+    {
+      "sourcePath": "original-game/sav/save01.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 4741,
+      "sha256": "0d43003826505b36a1a79af2b50f0d8dc88329b543e2a29ba58f597c7e87c30e"
+    },
+    {
+      "sourcePath": "original-game/sav/save02.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 6086,
+      "sha256": "947c3c1b555676b910f8f89e4dd87cf6308a7d3b624577c0a80811110f6958a2"
+    },
+    {
+      "sourcePath": "original-game/sav/save03.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 7705,
+      "sha256": "985c44863904d7f0f10743d9212ad05191c3bdfc5218ffc2f0a9064eb5037a04"
+    },
+    {
+      "sourcePath": "original-game/sav/save04.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 7997,
+      "sha256": "6ab2ebb1bea8ef8acb762594d46e04ce59b43702ed29b6733440bbdc278d9062"
+    },
+    {
+      "sourcePath": "original-game/sav/save05.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 8714,
+      "sha256": "6f76fe9b1bfd9280f4f54e8fcab068a2287345226089be82b54bdc9e6138b8a8"
+    },
+    {
+      "sourcePath": "original-game/sav/save06.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 8939,
+      "sha256": "4e966f8accc3e45b90b772ea1076251d28785f5364d781d6c0f2a084e7b09976"
+    },
+    {
+      "sourcePath": "original-game/sav/save07.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 9047,
+      "sha256": "f3735c78f82017586de217e9debd6dd811aec47f85d0c8183ffcfc2520a14e92"
+    },
+    {
+      "sourcePath": "original-game/sav/save08.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 3186,
+      "sha256": "82a71bcab6fdd4c81e8ae2c2de1a747cb3e118458b760e87b9e0906b1dc4ca67"
+    },
+    {
+      "sourcePath": "original-game/sav/save09.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 9986,
+      "sha256": "4d3360700b1ec663ba48e71bdcc42e819133c959fb24a741d4ec142bd6d9070b"
+    },
+    {
+      "sourcePath": "original-game/sav/save10.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 11740,
+      "sha256": "97e85c551023abb3816bbcbcdff4291ac52c83c210bc0cb3ba20fb8a7e97e2fe"
+    },
+    {
+      "sourcePath": "original-game/sav/save99.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 11730,
+      "sha256": "6a0447246d2c876560aad1b56e7dc0e1dcdef11b7c74e199702d730ac3d1eb65"
+    },
+    {
+      "sourcePath": "original-game/sav/save991.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 11734,
+      "sha256": "9d3896aa2db489f581bdd3b960ebb014521ffc282d5790d8d80b59b4a167dbc0"
+    },
+    {
+      "sourcePath": "original-game/sav/save992.sav",
+      "sourceTier": "auxiliary",
+      "sourceKind": "unknown-original-file",
+      "rootId": "auxiliary:other",
+      "extension": ".sav",
+      "sizeBytes": 11730,
+      "sha256": "6a0447246d2c876560aad1b56e7dc0e1dcdef11b7c74e199702d730ac3d1eb65"
+    },
+    {
+      "sourcePath": "original-game/todo.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:root-doc",
+      "extension": ".txt",
+      "sizeBytes": 3094,
+      "sha256": "4b79f395c84505fc5747b9ca53e2eb54088ab6cdd8cd7a17af5a386e375f5a00"
+    },
+    {
+      "sourcePath": "original-game/とりくみ.txt",
+      "sourceTier": "auxiliary",
+      "sourceKind": "source-note",
+      "rootId": "auxiliary:root-doc",
+      "extension": ".txt",
+      "sizeBytes": 21643,
+      "sha256": "81025ed9fe7a6fe572eab2851a9c340c3ce83a59bd23d315e66e8a8b62d0e98a"
+    }
+  ]
+}

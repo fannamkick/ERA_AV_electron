@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M21",
+  "ownerRole": "원본 근거 관리자",
+  "ownedScope": [
+    "source evidence schema",
+    "source manifest",
+    "feature coverage source evidence",
+    "definition coverage source evidence",
+    "blocker registry source evidence",
+    "source evidence gate"
+  ],
+  "sourceManifest": {
+    "totalFiles": 531,
+    "primaryFiles": 496,
+    "auxiliaryFiles": 35,
+    "charaCsvFiles": 109,
+    "variableSizeCsvFiles": 1
+  },
+  "coverageRows": {
+    "featureRows": 5344,
+    "definitionRows": 7840,
+    "blockerRows": 63,
+    "rowsWithSourceEvidence": 13247
+  },
+  "ownedTotal": 13247,
+  "implemented": 0,
+  "mapped": 13247,
+  "approvedExcluded": 0,
+  "transferredOut": 0,
+  "ownedBlocker": 0,
+  "missingEvidence": 0,
+  "missingConsumer": 0,
+  "missingVerification": 0,
+  "roleOnlyComplete": 0,
+  "unapprovedExcluded": 0,
+  "sourceEvidencePolicy": {
+    "primaryRoots": [
+      "original-game/CSV",
+      "original-game/ERB",
+      "original-game/CSV/Chara*.csv",
+      "original-game/CSV/VariableSize.CSV"
+    ],
+    "auxiliaryRoots": [
+      "Ho版資料（作成中途）",
+      "original-game/*.txt",
+      "original-game/CSV/_*"
+    ],
+    "derivedDocumentsCanCompleteRows": false,
+    "auxiliaryEvidenceCanCompleteRows": false
+  },
+  "commandsRun": [
+    "npm run coverage:source-manifest",
+    "npm run coverage:features",
+    "npm run coverage:definitions",
+    "npm run gate:feature-coverage",
+    "npm run gate:definition-consumption",
+    "npm run gate:source-evidence",
+    "npm run inventory:legacy-mapping",
+    "npm run build"
+  ],
+  "commitHash": "self: git commit containing this closure file"
+}

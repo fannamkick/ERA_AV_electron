@@ -28,6 +28,41 @@ function slug(value) {
     .slice(0, 120) || 'unknown';
 }
 
+function normalizeSourcePath(value) {
+  return String(value || '').replace(/\\/g, '/');
+}
+
+function featureSourceKind(sourcePath) {
+  const lower = sourcePath.toLowerCase();
+  if (lower.endsWith('.erb')) return 'erb-label';
+  if (lower.endsWith('.erh')) return 'erh-label';
+  if (lower.endsWith('.csv')) return 'csv-row';
+  return 'unknown';
+}
+
+function featureAccessDirection(partial) {
+  const writesState = Array.isArray(partial.stateWrites) && partial.stateWrites.length > 0;
+  const writesSession = Array.isArray(partial.sessionWrites) && partial.sessionWrites.length > 0;
+  return writesState || writesSession ? 'read-write' : 'read';
+}
+
+function sourceEvidenceForFeature(partial) {
+  const sourcePath = normalizeSourcePath(partial.sourceFile);
+  return {
+    evidenceId: `source:feature:${slug(partial.featureId)}`,
+    sourceTier: 'primary',
+    sourceKind: featureSourceKind(sourcePath),
+    sourcePath,
+    label: partial.sourceLabel ?? '',
+    line: partial.sourceLine ?? '',
+    csvRow: '',
+    family: '',
+    index: '',
+    accessDirection: featureAccessDirection(partial),
+    sourceRole: 'original',
+  };
+}
+
 function areaGroup(row) {
   const area = row.area || '';
   const label = row.sourceLabel || row.label || '';
@@ -68,6 +103,7 @@ function areaGroup(row) {
 }
 
 function baseRow(partial) {
+  const sourceEvidence = sourceEvidenceForFeature(partial);
   return {
     featureId: partial.featureId,
     parentFeatureId: partial.parentFeatureId ?? '',
@@ -93,6 +129,8 @@ function baseRow(partial) {
     cancelSmokeId: partial.cancelSmokeId ?? '',
     saveRoundtripId: partial.saveRoundtripId ?? '',
     blockerId: partial.blockerId ?? '',
+    sourceEvidenceId: sourceEvidence.evidenceId,
+    sourceEvidence,
     classification: partial.classification ?? '',
     notes: partial.notes ?? '',
   };
@@ -195,7 +233,7 @@ function createMainRows() {
       sourceKind: 'main-menu-child',
       groupKey: 'recruit',
       ownerMilestone: 'M7',
-      sourceFile: 'original-game/ERB/システム関係/CHARA_BUY.ERB',
+      sourceFile: 'original-game/ERB/システム関係/SHOP_CHARABUY.ERB',
       sourceLabel: 'CHARA_BUY_NEW',
       playerInput: '101',
       endRoute: 'mainMenu',
@@ -301,7 +339,7 @@ function createMainRows() {
       sourceKind: 'main-menu-child',
       groupKey: 'work',
       ownerMilestone: 'M12',
-      sourceFile: 'original-game/ERB/娼館関係/YUUKAKU_TOP.ERB',
+      sourceFile: 'original-game/ERB/システム関係/SHOP_YUUKAKU.ERB',
       sourceLabel: 'YUUKAKU_TOP/ARBEIT_EXEC',
       playerInput: '103',
       endRoute: 'turn/end -> mainMenu',
@@ -323,7 +361,7 @@ function createMainRows() {
       sourceKind: 'main-menu-child',
       groupKey: 'shooting',
       ownerMilestone: 'M13',
-      sourceFile: 'original-game/ERB/ＡＶ撮影関係/AV_TOP.ERB',
+      sourceFile: 'original-game/ERB/ＡＶ撮影関係/SHOP_AV.ERB',
       sourceLabel: 'AV_TOP',
       playerInput: '104',
       endRoute: 'turn/end -> mainMenu',
@@ -522,6 +560,8 @@ function createBlockers(rows) {
       blockerId: row.blockerId,
       ownerMilestone: row.ownerMilestone,
       sourceLocation: row.sourceFile,
+      sourceEvidenceId: row.sourceEvidenceId,
+      sourceEvidence: row.sourceEvidence,
       blockedTarget: row.groupKey,
       status: 'blocker',
       reason: row.classification || 'feature coverage not implemented yet',
@@ -618,6 +658,8 @@ const coverage = {
     cancelSmokeId: 'Cancel smoke/assertion id when applicable.',
     saveRoundtripId: 'Roundtrip/boundary assertion id when save is affected.',
     blockerId: 'Blocker registry id for blocker rows.',
+    sourceEvidenceId: 'Common source evidence id shared by coverage/gate rows.',
+    sourceEvidence: 'Common source evidence object with source path, label/line or CSV row, family/index, and access direction.',
     classification: 'M19 classification for flow/dynamic/unreachable rows.',
     notes: 'Short source evidence note.',
   },

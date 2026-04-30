@@ -24,6 +24,8 @@
     "gate:feature-coverage": "node tools/gate_feature_coverage.mjs",
     "coverage:definitions": "node tools/build_definition_coverage.mjs",
     "gate:definition-consumption": "node tools/gate_definition_consumption.mjs",
+    "coverage:source-manifest": "node tools/build_source_manifest.mjs",
+    "gate:source-evidence": "node tools/gate_source_evidence.mjs",
     "verify:m16": "node tools/verify_m16.mjs",
     "collect:catalog": "python tools/collect_csv_catalog.py",
     "analyze:game-system": "python tools/analyze_game_system.py",

@@ -114,7 +114,7 @@
 
 | M | 책임 역할 | 소유 범위 | 필수 산출물/gate | 완료 차단 |
 | --- | --- | --- | --- | --- |
-| M21 | 원본 근거 관리자 | 원본 파일 manifest, source evidence schema, CSV/ERB/Chara/VariableSize/보조 CSV의 근거 지위 | `source-manifest.json`, `source-evidence.schema.json`, `gate:source-manifest`, `gate:source-evidence` | 실제 원본 위치 없는 row, 문서만 근거인 완료 row, source conflict 미판정 |
+| M21 | 원본 근거 관리자 | 원본 파일 manifest, source evidence schema, CSV/ERB/Chara/VariableSize/보조 CSV의 근거 지위 | `source-manifest.json`, `source-evidence.schema.json`, `coverage:source-manifest`, `gate:source-evidence` | 실제 원본 위치 없는 row, 문서만 근거인 완료 row, source conflict 미판정 |
 | M22 | 전수표 관계 검증자 | feature/definition/save/session/view/text/blocker/approved-exclusion 사이의 참조 규칙 | `coverage-crosscheck.json`, `gate:coverage-crosscheck`, `gate:approved-exclusions` | orphan row, role-only 완료, consumer 없는 used row, 승인 근거 없는 제외 |
 | M23 | ERB 기반 정의 수집자 | ERB 내부 메뉴/장면/이벤트/미션/업무/촬영/훈련/엔딩/텍스트/계산 상수 | `erb-derived-definitions.json`, `gate:erb-definition-coverage` | ERB-only 컨텐츠 coverage 밖 존재, trigger/condition/effect/text 미분해, owner 없는 ERB row |
 | M24 | 저장 상태 매핑 관리자 | persistent 후보, CFLAG/FLAG/GLOBAL/PBAND 등 save 후보의 index/slot 단위 mapping | `save-mapping.json`, `gate:save-mapping`, `gate:state-family-index-coverage` | `needsDecision`, `missingMapping`, field path 없는 mapped row, family-level blanket mapping |
@@ -780,15 +780,37 @@ npm run build
 - 완료 결과: feature, definition, save, session row가 같은 근거 규격을 공유한다.
 - 누락 차단: 문서만 근거인 row, 원본 위치 없는 row, 근거 충돌 row가 완료 상태에 있으면 완료하지 않는다.
 
-- [ ] 원본 근거의 1차 위치를 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`로 고정
-- [ ] 보조 CSV와 파생 문서가 원본 근거인지 해석 보조 자료인지 구분
-- [ ] feature row, definition row, save row, session row가 공통으로 쓰는 `sourceEvidence` 형식 확정
-- [ ] evidence에 파일 경로, 라벨, CSV 행, family/index, read/write 방향을 기록
-- [ ] 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 못하게 차단
-- [ ] 원본 파일이 없거나 근거가 충돌하는 항목은 blocker로 기록
-- [ ] source evidence가 실제 파일에 존재하는지 확인하는 gate 설계
-- [ ] `npm run inventory:legacy-mapping` 실행
-- [ ] `npm run build` 실행
+- [x] 원본 근거의 1차 위치를 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`로 고정
+- [x] 보조 CSV와 파생 문서가 원본 근거인지 해석 보조 자료인지 구분
+- [x] feature row, definition row, save row, session row가 공통으로 쓰는 `sourceEvidence` 형식 확정
+- [x] evidence에 파일 경로, 라벨, CSV 행, family/index, read/write 방향을 기록
+- [x] 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 못하게 차단
+- [x] 원본 파일이 없거나 근거가 충돌하는 항목은 blocker로 기록
+- [x] source evidence가 실제 파일에 존재하는지 확인하는 gate 구현
+- [x] `data/coverage/source-evidence.schema.json` 작성
+- [x] `data/coverage/source-manifest.json` 생성
+- [x] feature/definition/blocker row에 `sourceEvidenceId`와 `sourceEvidence` 추가
+- [x] 보조 CSV `Ho版資料（作成中途）/source.csv`, `Ho版資料（作成中途）/cflag.csv`를 auxiliary evidence로 분리
+- [x] auxiliary evidence가 `implemented`, `used`, `template`, `listing`, `approved-excluded` 완료 근거가 되지 않도록 차단
+- [x] `npm run coverage:source-manifest` 실행
+- [x] `npm run coverage:features` 실행
+- [x] `npm run coverage:definitions` 실행
+- [x] `npm run gate:source-evidence` 실행
+- [x] `npm run inventory:legacy-mapping` 실행
+- [x] `npm run build` 실행
+
+검증:
+
+```bash
+npm run coverage:source-manifest
+npm run coverage:features
+npm run coverage:definitions
+npm run gate:feature-coverage
+npm run gate:definition-consumption
+npm run gate:source-evidence
+npm run inventory:legacy-mapping
+npm run build
+```
 
 ## M22. 전수표 교차 대조 gate
 
