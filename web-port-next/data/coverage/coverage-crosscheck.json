@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "coverage-crosscheck/v1",
+  "generatedBy": "tools/build_coverage_crosscheck.mjs",
+  "sourceInputs": {
+    "features": "data/coverage/features.json",
+    "definitions": "data/coverage/definitions.json",
+    "blockers": "data/coverage/blockers.json",
+    "approvedExclusions": "data/coverage/approved-exclusions.json"
+  },
+  "summary": {
+    "featureRows": 5344,
+    "definitionRows": 7840,
+    "blockerRows": 63,
+    "approvedExclusionRows": 0,
+    "featureStatus": {
+      "blocker": 5333,
+      "implemented": 11
+    },
+    "definitionStatus": {
+      "blocker": 1735,
+      "calculation-only": 35,
+      "display-only": 409,
+      "listing": 94,
+      "template": 5566,
+      "used": 1
+    },
+    "roleOnlyDefinitionRows": 6104,
+    "implementedFeatureDefinitionReads": 12,
+    "implementedFeatureDefinitionReadMatched": 8
+  },
+  "assertions": {
+    "hardFailures": {
+      "featureMissingSourceEvidence": 0,
+      "definitionMissingSourceEvidence": 0,
+      "blockerMissingSourceEvidence": 0,
+      "featureBlockerMissingRegistry": 0,
+      "definitionBlockerMissingRegistry": 0,
+      "approvedExcludedMissingRegistry": 0,
+      "invalidApprovedRegistryRows": 0,
+      "implementedFeatureMissingRuntimeConsumer": 0,
+      "nonBlockerDefinitionMissingConsumer": 0,
+      "roleOnlyMarkedComplete": 0,
+      "sourceEvidenceAuxiliaryCompleted": 0,
+      "total": 0
+    },
+    "trackedDeferredUntilOwnerMilestone": {
+      "implementedFeatureDefinitionReadUnmatched": {
+        "count": 4,
+        "ownerMilestone": "M23",
+        "reason": "Some implemented feature definitionReads point to runtime definitions first created from ERB-derived or local code definitions. M23 owns adding those definition rows to coverage."
+      },
+      "saveMappingCrosscheck": {
+        "ownerMilestone": "M24",
+        "reason": "Save mapping rows do not exist before M24, so M22 records the rule and M24 must make this gate strict."
+      },
+      "sessionMappingCrosscheck": {
+        "ownerMilestone": "M25",
+        "reason": "Session/calculation mapping rows do not exist before M25, so M22 records the rule and M25 must make this gate strict."
+      }
+    }
+  },
+  "samples": {
+    "featureMissingSourceEvidence": [],
+    "definitionMissingSourceEvidence": [],
+    "blockerMissingSourceEvidence": [],
+    "featureBlockerMissingRegistry": [],
+    "definitionBlockerMissingRegistry": [],
+    "approvedExcludedMissingRegistry": [],
+    "invalidApprovedRegistryRows": [],
+    "implementedFeatureMissingRuntimeConsumer": [],
+    "implementedFeatureDefinitionReadUnmatched": [
+      "feature:visit:office-room-basic -> definitions.visitPlaces",
+      "feature:mission:basic -> definitions.missionDefinitions",
+      "feature:work:basic -> definitions.workDefinitions",
+      "feature:shooting:basic -> definitions.filmingSceneDefinitions"
+    ],
+    "nonBlockerDefinitionMissingConsumer": [],
+    "roleOnlyMarkedComplete": [],
+    "sourceEvidenceAuxiliaryCompleted": []
+  }
+}

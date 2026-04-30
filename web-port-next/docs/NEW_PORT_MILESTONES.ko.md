@@ -833,16 +833,26 @@ npm run build
 - 완료 결과: 장부에만 있고 실제 소비가 없는 항목이 gate에서 실패한다.
 - 누락 차단: `template`, `listing`, `display-only`, `calculation-only`가 실제 소비 없이 완료로 잡히면 완료하지 않는다.
 
-- [ ] M19 feature coverage와 M20 definition coverage를 서로 연결하는 교차 대조 규칙 작성
-- [ ] feature가 읽는 definition/save/session/view owner를 기록하는 컬럼 확정
-- [ ] definition row가 실제 handler, view, calculation, save init 중 어디서 소비되는지 기록
-- [ ] save mapping과 session mapping이 feature/definition row에 연결되지 않으면 orphan으로 표시
-- [ ] blocker와 approved-excluded의 승인 근거 형식 확정
-- [ ] `template`, `listing`, `display-only`, `calculation-only`를 구현 완료로 세지 않도록 gate 작성
-- [ ] orphan coverage, role-only 완료, source evidence 누락을 실패로 처리
-- [ ] `npm run coverage:features` 실행
-- [ ] `npm run coverage:definitions` 실행
-- [ ] `npm run build` 실행
+- [x] M19 feature coverage와 M20 definition coverage를 서로 연결하는 교차 대조 규칙 작성
+- [x] feature가 읽는 definition/save/session/view owner를 기록하는 컬럼 확정
+- [x] definition row가 실제 handler, view, calculation, save init 중 어디서 소비되는지 기록
+- [x] save mapping과 session mapping이 feature/definition row에 연결되지 않으면 orphan으로 잡는 규칙을 기록하고, 실제 mapping row가 생기는 M24/M25에서 strict gate로 전환
+- [x] blocker와 approved-excluded의 승인 근거 형식 확정
+- [x] `template`, `listing`, `display-only`, `calculation-only`를 구현 완료로 세지 않도록 gate 작성
+- [x] orphan coverage, role-only 완료, source evidence 누락을 실패로 처리
+- [x] `data/coverage/coverage-crosscheck.json` 산출
+- [x] `data/coverage/approved-exclusions.json` 형식 확정
+- [x] `data/coverage/milestones/M22-closure.json` 작성
+- [x] `npm run coverage:source-manifest` 실행
+- [x] `npm run coverage:features` 실행
+- [x] `npm run coverage:definitions` 실행
+- [x] `npm run coverage:crosscheck` 실행
+- [x] `npm run gate:feature-coverage` 실행
+- [x] `npm run gate:definition-consumption` 실행
+- [x] `npm run gate:source-evidence` 실행
+- [x] `npm run gate:coverage-crosscheck` 실행
+- [x] `npm run gate:approved-exclusions` 실행
+- [x] `npm run build` 실행
 
 ## M23. ERB 기반 정의 데이터 보강
 

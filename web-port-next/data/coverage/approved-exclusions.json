@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "approved-exclusions/v1",
+  "description": "Registry for rows intentionally excluded from the port. Empty means no exclusion is approved.",
+  "rowSchema": {
+    "approvedExclusionId": "Stable id referenced by feature/definition/save/session/text coverage rows.",
+    "rowKind": "feature, definition, save, session, text, blocker, or other coverage row kind.",
+    "rowId": "Coverage row id that is excluded.",
+    "ownerMilestone": "Milestone that owns the exclusion decision.",
+    "sourceEvidenceId": "Primary source evidence id for the excluded row.",
+    "approvalId": "User approval record id or issue id.",
+    "approvedBy": "Approver identity.",
+    "approvedAt": "ISO date or explicit approval timestamp.",
+    "approvalScope": "Exact scope of what is excluded.",
+    "reason": "Why this source behavior is excluded.",
+    "replacementBehavior": "Runtime behavior replacing the original content.",
+    "verificationCommand": "Command that verifies the exclusion is wired and documented."
+  },
+  "exclusions": []
+}

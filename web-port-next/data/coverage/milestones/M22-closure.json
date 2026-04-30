@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M22",
+  "ownerRole": "coverage crosscheck gate owner",
+  "ownedScope": [
+    "feature coverage to definition coverage crosscheck",
+    "definition consumer evidence crosscheck",
+    "blocker registry crosscheck",
+    "approved-excluded registry format and gate",
+    "role-only completion guard",
+    "source evidence presence guard"
+  ],
+  "coverageRows": {
+    "featureRows": 5344,
+    "definitionRows": 7840,
+    "blockerRows": 63,
+    "approvedExclusionRows": 0,
+    "roleOnlyDefinitionRows": 6104,
+    "implementedFeatureDefinitionReads": 12,
+    "implementedFeatureDefinitionReadMatched": 8,
+    "implementedFeatureDefinitionReadDeferredToM23": 4
+  },
+  "ownedTotal": 13247,
+  "implemented": 0,
+  "mapped": 13247,
+  "approvedExcluded": 0,
+  "transferredOut": 4,
+  "ownedBlocker": 0,
+  "missingEvidence": 0,
+  "missingConsumer": 0,
+  "missingVerification": 0,
+  "roleOnlyComplete": 0,
+  "unapprovedExcluded": 0,
+  "hardFailures": {
+    "featureMissingSourceEvidence": 0,
+    "definitionMissingSourceEvidence": 0,
+    "blockerMissingSourceEvidence": 0,
+    "featureBlockerMissingRegistry": 0,
+    "definitionBlockerMissingRegistry": 0,
+    "approvedExcludedMissingRegistry": 0,
+    "invalidApprovedRegistryRows": 0,
+    "implementedFeatureMissingRuntimeConsumer": 0,
+    "nonBlockerDefinitionMissingConsumer": 0,
+    "roleOnlyMarkedComplete": 0,
+    "sourceEvidenceAuxiliaryCompleted": 0,
+    "total": 0
+  },
+  "deferredToOwnerMilestones": {
+    "M23": [
+      "definitions.visitPlaces",
+      "definitions.missionDefinitions",
+      "definitions.workDefinitions",
+      "definitions.filmingSceneDefinitions"
+    ],
+    "M24": [
+      "save mapping crosscheck becomes strict after save-mapping rows exist"
+    ],
+    "M25": [
+      "session/calculation mapping crosscheck becomes strict after session-mapping rows exist"
+    ]
+  },
+  "commandsRun": [
+    "npm run coverage:source-manifest",
+    "npm run coverage:features",
+    "npm run coverage:definitions",
+    "npm run coverage:crosscheck",
+    "npm run gate:feature-coverage",
+    "npm run gate:definition-consumption",
+    "npm run gate:source-evidence",
+    "npm run gate:coverage-crosscheck",
+    "npm run gate:approved-exclusions",
+    "npm run build"
+  ],
+  "commitHash": "self: git commit containing this closure file"
+}
