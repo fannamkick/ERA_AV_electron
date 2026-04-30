@@ -931,17 +931,28 @@ npm run build
 - 완료 결과: 세션/계산 값이 저장 payload에 들어가지 않고 기능 lifecycle에서 폐기된다.
 - 누락 차단: 원본 배열명이 앱 모델명으로 복사되거나 중간값이 save에 들어가면 완료하지 않는다.
 
-- [ ] `map-session-state` 대상 365개를 session 필드 또는 계산 함수 내부값으로 분류
-- [ ] session mapping coverage 산출물 경로 확정
-- [ ] family, index, source evidence, session owner, calculation owner, status 컬럼 확정
-- [ ] session/runtime buffer 후보 234개를 화면 세션, 훈련 세션, 촬영 세션, 업무 세션, script scratch, 사용자 승인 제외 중 하나로 분류하고 소유 blocker 0개 확인
-- [ ] `TFLAG`, `TEQUIP`, `SOURCE`, `UP`, `DOWN`, `LOSEBASE`, `NOWEX`, `EJAC`를 의미 단위로 재명명
-- [ ] 각 계산 버퍼의 생성 시점, 소비 시점, 폐기 시점 작성
-- [ ] 저장해야 하는 결과와 버려야 하는 중간값을 테스트로 분리
-- [ ] 각 계산 버퍼가 기능 종료 후 저장 상태에 직접 남지 않는지 검증
-- [ ] `npm run audit:erb-states` 실행
-- [ ] `npm run build` 실행
-- [ ] `rg "TFLAG|TEQUIP|SOURCE|LOSEBASE|NOWEX|EJAC" src/game src/domains src/features src/ui` 실행
+- [x] `map-session-state` 대상 365개를 session 필드 또는 계산 함수 내부값으로 분류
+- [x] session mapping coverage 산출물 경로를 `data/coverage/session-mapping.json`으로 확정
+- [x] family, index, source evidence, session owner, calculation owner, status 컬럼 확정
+- [x] session/runtime buffer 후보 234개를 화면 세션, 훈련 세션, 촬영 세션, 업무 세션, script scratch, 사용자 승인 제외 중 하나로 분류하고 소유 blocker 0개 확인
+- [x] `TFLAG`, `TEQUIP`, `SOURCE`, `UP`, `DOWN`, `LOSEBASE`, `NOWEX`, `EJAC`를 의미 단위로 재명명
+- [x] 각 계산 버퍼의 생성 시점, 소비 시점, 폐기 시점 작성
+- [x] 저장해야 하는 결과와 버려야 하는 중간값을 테스트로 분리
+- [x] 각 계산 버퍼가 기능 종료 후 저장 상태에 직접 남지 않는지 검증
+- [x] `data/coverage/session-mapping.json`에 source row 365개와 runtime session candidate row 234개 산출
+- [x] source row 298개를 session-field로, 67개를 calculation-internal로 분류
+- [x] M24에서 session-state로 이관한 `ITEMSALES`, `EX`, `GOTJUEL` 31개가 M25 session mapping에 포함되는지 확인
+- [x] M25 전 `missingMapping` domain이 붙은 session 후보 164개가 M25 후 미판정 0개인지 확인
+- [x] session/calculation runtime path에 원본 배열명을 복사하지 않았는지 gate로 확인
+- [x] `data/coverage/milestones/M25-closure.json` 작성
+- [x] `npm run audit:erb-states` 실행
+- [x] `npm run coverage:session-mapping` 실행
+- [x] `npm run coverage:crosscheck` 실행
+- [x] `npm run gate:session-mapping` 실행
+- [x] `npm run gate:session-save-boundary` 실행
+- [x] `npm run gate:coverage-crosscheck` 실행
+- [x] `npm run build` 실행
+- [x] `rg "TFLAG|TEQUIP|SOURCE|LOSEBASE|NOWEX|EJAC" src/game src/domains src/features src/ui` 실행
 
 ## M26. 구현 전 누락 감사
 

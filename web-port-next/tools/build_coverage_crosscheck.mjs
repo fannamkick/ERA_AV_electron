@@ -88,6 +88,9 @@ const definitions = readJson('data/coverage/definitions.json');
 const blockers = readJson('data/coverage/blockers.json');
 const approvedExclusions = readJson('data/coverage/approved-exclusions.json');
 const saveMapping = fileExists('data/coverage/save-mapping.json') ? readJson('data/coverage/save-mapping.json') : null;
+const sessionMapping = fileExists('data/coverage/session-mapping.json')
+  ? readJson('data/coverage/session-mapping.json')
+  : null;
 
 const featureRows = features.rows ?? [];
 const definitionRows = definitions.rows ?? [];
@@ -95,6 +98,8 @@ const blockerRows = blockers.blockers ?? [];
 const approvedRows = approvedExclusions.exclusions ?? [];
 const saveMappingRows = saveMapping?.rows ?? [];
 const persistentCandidateRows = saveMapping?.persistentCandidateCoverage ?? [];
+const sessionMappingRows = sessionMapping?.rows ?? [];
+const runtimeSessionCandidateRows = sessionMapping?.runtimeSessionCandidateCoverage ?? [];
 
 const blockerIds = new Set(blockerRows.map((row) => row.blockerId));
 const approvedIds = new Set(approvedRows.map((row) => row.approvedExclusionId));
@@ -184,6 +189,30 @@ const saveMappingSemanticFlagNotSplit = saveMappingRows.filter((row) => {
   if (!['CFLAG', 'FLAG', 'GLOBAL', 'GLOBALS', 'PBAND'].includes(row.family)) return false;
   return row.index === '' || row.semanticOwnerSource !== 'index-evidence-rule';
 });
+const rawSessionNames = /\b(TFLAG|TEQUIP|SOURCE|UP|DOWN|LOSEBASE|NOWEX|EJAC|ITEMSALES|BOUGHT|GOTJUEL)\b/;
+const sessionMappingMissingSourceEvidence = sessionMappingRows.filter((row) => !hasSourceEvidence(row));
+const sessionMappingForbiddenStatus = sessionMappingRows.filter((row) =>
+  ['save-field', 'blocker', 'needsDecision', 'missingMapping'].includes(row.status),
+);
+const sessionMappingFieldPathMissing = sessionMappingRows.filter(
+  (row) =>
+    (row.status === 'session-field' && (!row.sessionOwner || !row.sessionFieldPath)) ||
+    (row.status === 'calculation-internal' && (!row.calculationOwner || !row.calculationPath)),
+);
+const sessionMappingMissingLifecycle = sessionMappingRows.filter(
+  (row) => !row.createdAt || !row.consumedAt || !row.disposedAt,
+);
+const sessionMappingSavePolicyViolation = sessionMappingRows.filter(
+  (row) => row.savePayloadPolicy !== 'never-save-directly',
+);
+const sessionMappingRawNameCopied = sessionMappingRows.filter((row) =>
+  [row.sessionOwner, row.sessionFieldPath, row.calculationOwner, row.calculationPath]
+    .filter(Boolean)
+    .some((value) => rawSessionNames.test(String(value))),
+);
+const runtimeSessionCandidateUnresolved = runtimeSessionCandidateRows.filter((row) =>
+  ['save-field', 'blocker', 'needsDecision', 'missingMapping'].includes(row.status),
+);
 
 const hardFailures = {
   featureMissingSourceEvidence: featureMissingSourceEvidence.length,
@@ -202,7 +231,14 @@ const hardFailures = {
   saveMappingMappedMissingPath: saveMappingMappedMissingPath.length,
   saveMappingMappedWithoutCoverageLinks: saveMappingMappedWithoutCoverageLinks.length,
   saveMappingSemanticFlagNotSplit: saveMappingSemanticFlagNotSplit.length,
-  persistentCandidateUnresolved: persistentCandidateUnresolved.length
+  persistentCandidateUnresolved: persistentCandidateUnresolved.length,
+  sessionMappingMissingSourceEvidence: sessionMappingMissingSourceEvidence.length,
+  sessionMappingForbiddenStatus: sessionMappingForbiddenStatus.length,
+  sessionMappingFieldPathMissing: sessionMappingFieldPathMissing.length,
+  sessionMappingMissingLifecycle: sessionMappingMissingLifecycle.length,
+  sessionMappingSavePolicyViolation: sessionMappingSavePolicyViolation.length,
+  sessionMappingRawNameCopied: sessionMappingRawNameCopied.length,
+  runtimeSessionCandidateUnresolved: runtimeSessionCandidateUnresolved.length
 };
 
 hardFailures.total = Object.entries(hardFailures)
@@ -217,7 +253,8 @@ const report = {
     definitions: 'data/coverage/definitions.json',
     blockers: 'data/coverage/blockers.json',
     approvedExclusions: 'data/coverage/approved-exclusions.json',
-    saveMapping: saveMapping ? 'data/coverage/save-mapping.json' : ''
+    saveMapping: saveMapping ? 'data/coverage/save-mapping.json' : '',
+    sessionMapping: sessionMapping ? 'data/coverage/session-mapping.json' : ''
   },
   summary: {
     featureRows: featureRows.length,
@@ -226,10 +263,14 @@ const report = {
     approvedExclusionRows: approvedRows.length,
     saveMappingRows: saveMappingRows.length,
     persistentCandidateRows: persistentCandidateRows.length,
+    sessionMappingRows: sessionMappingRows.length,
+    runtimeSessionCandidateRows: runtimeSessionCandidateRows.length,
     featureStatus: countBy(featureRows, 'status'),
     definitionStatus: countBy(definitionRows, 'status'),
     saveMappingStatus: countBy(saveMappingRows, 'status'),
     persistentCandidateStatus: countBy(persistentCandidateRows, 'status'),
+    sessionMappingStatus: countBy(sessionMappingRows, 'status'),
+    runtimeSessionCandidateStatus: countBy(runtimeSessionCandidateRows, 'status'),
     roleOnlyDefinitionRows: definitionRows.filter((row) => roleOnlyStatuses.has(row.status)).length,
     implementedFeatureDefinitionReads: implementedFeatureDefinitionReads.length,
     implementedFeatureDefinitionReadMatched:
@@ -252,8 +293,11 @@ const report = {
           : 'Save mapping rows do not exist before M24, so M22 records the rule and M24 must make this gate strict.'
       },
       sessionMappingCrosscheck: {
+        count: sessionMapping ? 0 : 1,
         ownerMilestone: 'M25',
-        reason: 'Session/calculation mapping rows do not exist before M25, so M22 records the rule and M25 must make this gate strict.'
+        reason: sessionMapping
+          ? 'Session/calculation mapping exists and is included in hard failures from M25 onward.'
+          : 'Session/calculation mapping rows do not exist before M25, so M22 records the rule and M25 must make this gate strict.'
       }
     }
   },
@@ -281,12 +325,19 @@ const report = {
     saveMappingMappedMissingPath: sample(saveMappingMappedMissingPath, (row) => row.mappingRowId),
     saveMappingMappedWithoutCoverageLinks: sample(saveMappingMappedWithoutCoverageLinks, (row) => row.mappingRowId),
     saveMappingSemanticFlagNotSplit: sample(saveMappingSemanticFlagNotSplit, (row) => row.mappingRowId),
-    persistentCandidateUnresolved: sample(persistentCandidateUnresolved, (row) => row.candidate)
+    persistentCandidateUnresolved: sample(persistentCandidateUnresolved, (row) => row.candidate),
+    sessionMappingMissingSourceEvidence: sample(sessionMappingMissingSourceEvidence, (row) => row.mappingRowId),
+    sessionMappingForbiddenStatus: sample(sessionMappingForbiddenStatus, (row) => row.mappingRowId),
+    sessionMappingFieldPathMissing: sample(sessionMappingFieldPathMissing, (row) => row.mappingRowId),
+    sessionMappingMissingLifecycle: sample(sessionMappingMissingLifecycle, (row) => row.mappingRowId),
+    sessionMappingSavePolicyViolation: sample(sessionMappingSavePolicyViolation, (row) => row.mappingRowId),
+    sessionMappingRawNameCopied: sample(sessionMappingRawNameCopied, (row) => row.mappingRowId),
+    runtimeSessionCandidateUnresolved: sample(runtimeSessionCandidateUnresolved, (row) => row.candidate)
   }
 };
 
 writeJson('data/coverage/coverage-crosscheck.json', report);
 
 console.log(
-  `coverage:crosscheck wrote ${path.relative(root, outputPath)} (${featureRows.length} feature row(s), ${definitionRows.length} definition row(s), ${saveMappingRows.length} save mapping row(s), ${hardFailures.total} hard failure(s)).`,
+  `coverage:crosscheck wrote ${path.relative(root, outputPath)} (${featureRows.length} feature row(s), ${definitionRows.length} definition row(s), ${saveMappingRows.length} save mapping row(s), ${sessionMappingRows.length} session mapping row(s), ${hardFailures.total} hard failure(s)).`,
 );

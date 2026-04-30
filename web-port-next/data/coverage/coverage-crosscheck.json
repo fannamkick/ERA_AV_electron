@@ -6,7 +6,8 @@
     "definitions": "data/coverage/definitions.json",
     "blockers": "data/coverage/blockers.json",
     "approvedExclusions": "data/coverage/approved-exclusions.json",
-    "saveMapping": "data/coverage/save-mapping.json"
+    "saveMapping": "data/coverage/save-mapping.json",
+    "sessionMapping": "data/coverage/session-mapping.json"
   },
   "summary": {
     "featureRows": 5344,
@@ -15,6 +16,8 @@
     "approvedExclusionRows": 0,
     "saveMappingRows": 1215,
     "persistentCandidateRows": 1016,
+    "sessionMappingRows": 365,
+    "runtimeSessionCandidateRows": 234,
     "featureStatus": {
       "blocker": 5333,
       "implemented": 11
@@ -34,6 +37,22 @@
     "persistentCandidateStatus": {
       "save-field": 985,
       "session-state": 31
+    },
+    "sessionMappingStatus": {
+      "calculation-internal": 67,
+      "session-field": 298
+    },
+    "runtimeSessionCandidateStatus": {
+      "filming-session": 17,
+      "interaction-session": 6,
+      "recruit-session": 25,
+      "screen-session": 3,
+      "script-scratch": 5,
+      "shop-session": 1,
+      "training-calculation": 47,
+      "training-session": 127,
+      "work-calculation": 1,
+      "work-session": 2
     },
     "roleOnlyDefinitionRows": 6264,
     "implementedFeatureDefinitionReads": 12,
@@ -58,6 +77,13 @@
       "saveMappingMappedWithoutCoverageLinks": 0,
       "saveMappingSemanticFlagNotSplit": 0,
       "persistentCandidateUnresolved": 0,
+      "sessionMappingMissingSourceEvidence": 0,
+      "sessionMappingForbiddenStatus": 0,
+      "sessionMappingFieldPathMissing": 0,
+      "sessionMappingMissingLifecycle": 0,
+      "sessionMappingSavePolicyViolation": 0,
+      "sessionMappingRawNameCopied": 0,
+      "runtimeSessionCandidateUnresolved": 0,
       "total": 0
     },
     "trackedDeferredUntilOwnerMilestone": {
@@ -72,8 +98,9 @@
         "reason": "Save mapping exists and is included in hard failures from M24 onward."
       },
       "sessionMappingCrosscheck": {
+        "count": 0,
         "ownerMilestone": "M25",
-        "reason": "Session/calculation mapping rows do not exist before M25, so M22 records the rule and M25 must make this gate strict."
+        "reason": "Session/calculation mapping exists and is included in hard failures from M25 onward."
       }
     }
   },
@@ -95,6 +122,13 @@
     "saveMappingMappedMissingPath": [],
     "saveMappingMappedWithoutCoverageLinks": [],
     "saveMappingSemanticFlagNotSplit": [],
-    "persistentCandidateUnresolved": []
+    "persistentCandidateUnresolved": [],
+    "sessionMappingMissingSourceEvidence": [],
+    "sessionMappingForbiddenStatus": [],
+    "sessionMappingFieldPathMissing": [],
+    "sessionMappingMissingLifecycle": [],
+    "sessionMappingSavePolicyViolation": [],
+    "sessionMappingRawNameCopied": [],
+    "runtimeSessionCandidateUnresolved": []
   }
 }
