@@ -1034,15 +1034,26 @@ npm run build
 - 완료 결과: 구매형 item 전체가 성공/실패/취소와 저장 roundtrip을 통과한다.
 - 누락 차단: 인벤토리 수량, 상점 진행 상태, 현재 선택 session이 섞이면 완료하지 않는다.
 
-- [ ] M20 definition coverage에서 item/listing 전체 목록을 읽음
-- [ ] 모든 구매형 아이템의 표시 이름, 가격, 분류를 연결
-- [ ] 모든 구매형 아이템의 구매 성공, 돈 부족 실패, 수량 제한 실패, 취소를 구현
-- [ ] 상점 노출 조건, 해금 조건, 숨김 조건을 `shop.progress`와 view 계산으로 분리
-- [ ] 인벤토리 수량과 상점 진행 상태를 분리 검증
-- [ ] 자동 구매 대상 아이템이 있으면 턴 종료와 연결하거나 blocker로 기록
-- [ ] 구매 결과 저장 roundtrip을 검증
-- [ ] M20/M24 coverage의 상점 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] M27 implementation queue의 `unit:M29:shop-purchase`를 기준으로 M29 소유 row 206개를 읽음
+- [x] `SHOP_ITEM.ERB`에서 실제 구매형 listing으로 닫을 item 30개를 확정하고 `definitions.shopListings`로 연결
+- [x] M20에서 구매형으로 과분류된 즉시 사용/특수 item, 코스프레 pack, 방문/이벤트 특수 item을 M30/M34/M36/M49 owner로 책임 이관
+- [x] 모든 M29 구매형 아이템의 표시 이름, 가격, 분류를 정의 데이터와 연결
+- [x] 모든 M29 구매형 아이템의 구매 성공, 돈 부족 실패, 수량 제한 실패, 숨김 listing 선택 실패, 취소를 구현
+- [x] `SALEITEM_CHECK`의 핵심 노출 조건을 view/session 계산으로 구현. 단일 보유품 숨김, trait 93 조건, 조합지식 조건, 복수 구매 최대 보유 수량을 검증
+- [x] `ITEMSALES`는 저장 상태가 아니라 `session.shop.visibleListingIds` 계산값으로 처리하고, 구매 성공 후 새 save 기준으로 재계산
+- [x] `BOUGHT`는 저장 상태가 아니라 `session.shop.selectedItemId` 선택값으로 처리하고, 구매 성공/취소 시 폐기
+- [x] 인벤토리 수량, 상점 노출/진행 상태, 현재 선택 session을 분리 검증
+- [x] 자동 구매/즉시 사용/특수 효과 대상은 M30/M34/M36/M49로 이관하고 transferReason을 기록
+- [x] 구매 결과 저장 roundtrip을 검증하고 save payload에 `BOUGHT`, `ITEMSALES`, `selectedItemId`, `visibleListingIds`가 들어가지 않음을 확인
+- [x] `data/coverage/shop-purchase-coverage.json` 생성. M29 queue 206행 전부 구현/소비/이관으로 닫음
+- [x] `data/coverage/audits/M29-gap-audit.json` 생성. unresolved gap 0, owned blocker 0
+- [x] `data/coverage/milestones/M29-closure.json` 생성. ownedTotal 206, implemented 43, mapped 40, transferredOut 123, blocker/missing/unapproved 0
+- [x] `npm run coverage:shop-purchase` 실행
+- [x] `npm run gate:shop-purchase-coverage` 실행
+- [x] `npm run gate:milestone-scope-closure -- M29` 실행
+- [x] `npm run smoke:item-shop` 실행
+- [x] `npm run smoke:phase1` 실행
+- [x] `npm run build` 실행
 
 ## M30. 아이템 사용과 특수 아이템 완성
 

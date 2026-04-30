@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M29",
+  "title": "Item shop purchase coverage",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M29 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json",
+    "features": "data/coverage/features.json",
+    "saveMapping": "data/coverage/save-mapping.json",
+    "sessionMapping": "data/coverage/session-mapping.json"
+  },
+  "outputs": {
+    "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json",
+    "gapAudit": "data/coverage/audits/M29-gap-audit.json",
+    "builder": "tools/build_shop_purchase_coverage.mjs",
+    "coverageGate": "tools/gate_shop_purchase_coverage.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m29_item_shop_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 206,
+    "implemented": 43,
+    "mapped": 40,
+    "approvedExcluded": 0,
+    "transferredOut": 123,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 206,
+    "implemented": 43,
+    "mapped": 40,
+    "approvedExcluded": 0,
+    "transferredOut": 123,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:shop-purchase",
+      "npm run gate:shop-purchase-coverage",
+      "npm run gate:milestone-scope-closure -- M29",
+      "npm run smoke:item-shop",
+      "npm run smoke:phase1",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "206 M29 queue row(s), 0 unresolved issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:shop-purchase",
+    "npm run gate:shop-purchase-coverage",
+    "npm run gate:milestone-scope-closure -- M29",
+    "npm run smoke:item-shop",
+    "npm run smoke:phase1",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}

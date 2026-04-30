@@ -1,10 +1,12 @@
 import { getItemDefinition, getShopListingDefinition } from '../catalog/lookup';
+import { itemShopPluralInventoryItemIdSet, itemShopSingleInventoryItemIdSet } from '../catalog/shopItemIds';
 import type { CatalogId, GameDefinitions, ShopListingDefinition } from '../catalog/types';
 import type { ShopSessionState } from '../domains/shop/types';
 import type { GameSession, GameState } from '../game/state';
 import type { ItemShopView, ShopListingView } from '../game/views';
 
 export const MAX_PHASE_ONE_PURCHASE_QUANTITY = 99;
+const MAX_ITEM_SHOP_STACK_COUNT = 99;
 
 export type ShopFailure = {
   readonly code: string;
@@ -24,8 +26,90 @@ export type ShopUpdateResult =
       readonly session?: GameSession;
     };
 
-function isVisibleListing(state: GameState, listing: ShopListingDefinition): boolean {
+function playerCharacter(state: GameState) {
+  return Object.values(state.people.characters).find((character) => character.roles.includes('trainer'));
+}
+
+function hasTrait(state: GameState, traitId: string): boolean {
+  return Object.values(state.people.characters).some((character) => character.attributes.traits[traitId] === true);
+}
+
+function isNormalOrEasyMode(state: GameState): boolean {
+  const modeId = state.run.runFlags.modeId;
+  return modeId === 'normal' || modeId === 'easy' || modeId === undefined;
+}
+
+function hasCombinationKnowledge(state: GameState): boolean {
+  return hasTrait(state, '55');
+}
+
+function originalShopVisibilityFailure(state: GameState, itemId: CatalogId): ShopFailure | undefined {
+  const currentCount = state.inventory.itemCounts[itemId] ?? 0;
+  const player = playerCharacter(state);
+  const playerAbility = player?.attributes.abilities['12'] ?? 0;
+  const clearCount = state.meta.clearBonuses.characterClearCounts[player?.id ?? ''] ?? 0;
+
+  if (itemShopSingleInventoryItemIdSet.has(itemId) && currentCount > 0) {
+    return {
+      code: 'shop-listing-already-owned',
+      message: 'Already owned non-consumable item.',
+    };
+  }
+
+  if (itemShopPluralInventoryItemIdSet.has(itemId) && currentCount >= MAX_ITEM_SHOP_STACK_COUNT) {
+    return {
+      code: 'shop-inventory-limit',
+      message: 'Item stack limit reached.',
+    };
+  }
+
+  if ((itemId === '21' || itemId === '23') && !hasTrait(state, '93')) {
+    return {
+      code: 'shop-visibility-condition-unmet',
+      message: 'Requires charisma trait.',
+    };
+  }
+
+  if ((itemId === '17' || itemId === '20') && !isNormalOrEasyMode(state)) {
+    return {
+      code: 'shop-visibility-condition-unmet',
+      message: 'Requires NORMAL/EASY or EXTRA-equivalent mode.',
+    };
+  }
+
+  if ((itemId === '26' || itemId === '27') && !hasCombinationKnowledge(state)) {
+    return {
+      code: 'shop-visibility-condition-unmet',
+      message: 'Requires combination knowledge.',
+    };
+  }
+
+  if (itemId === '52' && (playerAbility >= 10 || playerAbility > clearCount + 1)) {
+    return {
+      code: 'shop-visibility-condition-unmet',
+      message: 'Technique level item cap reached.',
+    };
+  }
+
+  return undefined;
+}
+
+function inventoryLimitForItem(itemId: CatalogId): number {
+  if (itemShopPluralInventoryItemIdSet.has(itemId)) return MAX_ITEM_SHOP_STACK_COUNT;
+  return 1;
+}
+
+function isVisibleListing(definitions: GameDefinitions, state: GameState, listing: ShopListingDefinition): boolean {
   if (state.shop.progress.hiddenListingIds.includes(listing.id)) {
+    return false;
+  }
+
+  const itemResult = getItemDefinition(definitions, listing.itemId);
+  if (!itemResult.ok) {
+    return false;
+  }
+
+  if (originalShopVisibilityFailure(state, itemResult.definition.id)) {
     return false;
   }
 
@@ -39,7 +123,7 @@ function isVisibleListing(state: GameState, listing: ShopListingDefinition): boo
 export function computeVisibleShopListingIds(definitions: GameDefinitions, state: GameState): readonly CatalogId[] {
   return Object.values(definitions.shopListings)
     .filter((listing) => listing.listingKind === 'item')
-    .filter((listing) => isVisibleListing(state, listing))
+    .filter((listing) => isVisibleListing(definitions, state, listing))
     .map((listing) => listing.id)
     .sort((left, right) => Number(left.split(':')[1]) - Number(right.split(':')[1]));
 }
@@ -147,7 +231,7 @@ export function selectShopListing(
     };
   }
 
-  if (!isVisibleListing(state, listingResult.definition)) {
+  if (!isVisibleListing(definitions, state, listingResult.definition)) {
     return {
       ok: false,
       failure: {
@@ -272,7 +356,7 @@ export function purchaseSelectedShopItem(
     };
   }
 
-  if (!isVisibleListing(state, listingResult.definition)) {
+  if (!isVisibleListing(definitions, state, listingResult.definition)) {
     return {
       ok: false,
       failure: {
@@ -326,36 +410,50 @@ export function purchaseSelectedShopItem(
   }
 
   const currentCount = state.inventory.itemCounts[itemResult.definition.id] ?? 0;
+  const inventoryLimit = inventoryLimitForItem(itemResult.definition.id);
+  if (currentCount + session.shop.quantity > inventoryLimit) {
+    return {
+      ok: false,
+      failure: {
+        code: 'shop-inventory-limit',
+        message: `Cannot hold more than ${inventoryLimit} of item ${itemResult.definition.id}.`,
+      },
+    };
+  }
+
   const nextCount = currentCount + session.shop.quantity;
+
+  const nextState: GameState = {
+    ...state,
+    economy: {
+      ...state.economy,
+      account: {
+        currentMoney: state.economy.account.currentMoney - totalPrice,
+      },
+      accountingEntries: [
+        ...state.economy.accountingEntries,
+        `purchase:item:${itemResult.definition.id}:quantity:${session.shop.quantity}:total:${totalPrice}`,
+      ],
+    },
+    inventory: {
+      ...state.inventory,
+      itemCounts: {
+        ...state.inventory.itemCounts,
+        [itemResult.definition.id]: nextCount,
+      },
+    },
+  };
 
   return {
     ok: true,
-    state: {
-      ...state,
-      economy: {
-        ...state.economy,
-        account: {
-          currentMoney: state.economy.account.currentMoney - totalPrice,
-        },
-        accountingEntries: [
-          ...state.economy.accountingEntries,
-          `purchase:item:${itemResult.definition.id}:quantity:${session.shop.quantity}:total:${totalPrice}`,
-        ],
-      },
-      inventory: {
-        ...state.inventory,
-        itemCounts: {
-          ...state.inventory.itemCounts,
-          [itemResult.definition.id]: nextCount,
-        },
-      },
-    },
+    state: nextState,
     session: {
       ...session,
       shop: {
         ...session.shop,
         selectedItemId: undefined,
         selectedListingId: undefined,
+        visibleListingIds: computeVisibleShopListingIds(definitions, nextState),
         quantity: 1,
       },
     },

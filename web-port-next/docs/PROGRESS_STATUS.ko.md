@@ -80,6 +80,7 @@
 | 구현 전 누락 감사 | M26에서 implementation review 14,700행을 생성했다. source-file-review 14행은 M27 또는 구현 owner에 배정했고 missing evidence/orphan/role-only/unknown owner/unapproved exclusion 미해소 issue는 0개다 | M27에서 이 review row를 구현 큐로 동결하고 M28~M50에서 owner별로 닫아야 함 |
 | 구현 큐와 blocker 동결 | M27에서 queue unit 37개, queued review row 14,700개, frozen blocker 63개, approved exclusion request candidate 63개를 생성했다. M27 owner로 남은 source-file-review 2개는 M51로 이관했다 | M28부터 queue unit과 blocker freeze list를 기준으로 각 owner가 자기 범위를 닫아야 함 |
 | 메인 route 전수 연결 | M28에서 `unit:M28:main-route` 27행을 닫았다. 메인 메뉴 정의 24개는 `definitions.mainMenuOptions` -> `buildMainMenuView` -> `dispatchGameAction` -> route로 연결했고, BOYFRIEND event-local screen session row 3개는 M47로 책임 이관했다 | 다음은 M29 구매 상점 구현. 구매형 listing 46개와 shop/session/save mapping을 성공/실패/취소/roundtrip으로 닫아야 함 |
+| 아이템 상점 구매 완성 | M29에서 `unit:M29:shop-purchase` 206행을 닫았다. `SHOP_ITEM.ERB` 기준 실제 구매형 listing 30개를 구현했고, `ITEMSALES`는 session visible listing, `BOUGHT`는 session 선택값으로 처리했다. 즉시 사용/특수 효과/의복 pack/비상점 item은 M30/M34/M36/M49로 책임 이관했다 | 다음은 M30 아이템 사용과 특수 아이템. M29에서 이관된 즉시 사용/특수 효과 row를 실제 효과와 저장 roundtrip으로 닫아야 함 |
 | 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M22/M26/M28~M49에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
 | feature coverage | row 5,344개 생성. `implemented` 11개, `blocker` 5,333개. dynamic/persistence/exit/pause/unreferenced global count가 원본 분석과 일치함 | M28~M49에서 blocker row를 줄이며 M52에서 미구현 feature 0개 |
 
@@ -188,7 +189,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 21. M26 구현 전 누락 감사는 `npm run audit:pre-implementation`, `npm run gate:pre-implementation-audit`, `npm run build`로 확인되었다. implementation review 14,700행, source-file-review 14행, 미해소 issue 0개로 닫았다.
 22. M27 구현 단위 큐와 blocker 동결은 `npm run coverage:implementation-queue`, `npm run gate:implementation-queue`, `npm run build`, `npm run test --if-present`로 확인되었다. queue unit 37개, review row 14,700개, frozen blocker 63개, 승인 제외 요청 후보 63개로 닫았다.
 23. M28 메인 화면과 route 전수 연결은 `npm run coverage:main-routes`, `npm run gate:main-route-coverage`, `npm run gate:milestone-scope-closure -- M28`, `npm run smoke:main-routes`, `npm run build`로 확인되었다. menu row 24개, enabled route 12개, disabled owner contract 12개, M47 transfer 3개, unresolved issue 0개로 닫았다.
-24. 다음 작업은 M29 아이템 상점과 구매 완성이다. M27 queue에서 M29 owner로 배정된 206개 review row를 기준으로 구매형 listing, 가격/노출, shop session, inventory/save 분리, 성공/실패/취소/roundtrip evidence를 채워야 한다.
+24. M29 아이템 상점과 구매 완성은 `npm run coverage:shop-purchase`, `npm run gate:shop-purchase-coverage`, `npm run gate:milestone-scope-closure -- M29`, `npm run smoke:item-shop`, `npm run smoke:phase1`, `npm run build`로 확인되었다. M29 queue 206행 중 implemented 43, mapped 40, transferredOut 123, unresolved issue 0개로 닫았다.
+25. 다음 작업은 M30 아이템 사용과 특수 아이템 완성이다. M29에서 M30으로 이관된 즉시 사용/특수 item 효과와 item-use queue row를 실제 효과, 실패/취소, 저장 roundtrip으로 닫아야 한다.
 
 ## 주의
 

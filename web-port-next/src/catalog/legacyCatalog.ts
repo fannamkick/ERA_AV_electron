@@ -1,4 +1,5 @@
 import rawLegacyCatalog from '../../data/catalog/legacy-catalog.json';
+import { itemShopPurchaseItemIdSet } from './shopItemIds';
 import rawErbDerivedDefinitions from '../../data/coverage/erb-derived-definitions.json';
 import type {
   CatalogId,
@@ -76,7 +77,7 @@ function createShopListing(item: ItemDefinition): ShopListingDefinition {
 }
 
 function isPhaseOneShopItem(item: ItemDefinition): boolean {
-  return item.category === 'tool' || item.category === 'consumable';
+  return itemShopPurchaseItemIdSet.has(item.id);
 }
 
 function createRecruitListing(item: ItemDefinition): RecruitListingDefinition {
