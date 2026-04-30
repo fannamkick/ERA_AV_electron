@@ -77,6 +77,7 @@
 | 인물 원형/seed | 109개 template과 초기값 6,922행은 coverage row로 분류됨. Chara CFLAG seed 1,465개는 의미별 저장 owner blocker. template 분류는 실제 인물 생성/표시/저장 roundtrip 완료가 아님 | M31~M34에서 인물 identity/seed/CFLAG 분해를 실제 인물 인스턴스에 연결하고 M50/M52에서 저장 roundtrip까지 검증해야 함 |
 | 저장 상태 mapping | M24에서 `map-save-state` 1,215행을 `mapped` 989개, `non-save` 226개로 닫았다. persistent 후보 1,016개는 save-field 985개, M25 session-state 이관 31개이며 M24 후 미판정 0개 | M28~M49에서 매핑된 save field를 실제 기능 구현과 roundtrip 검증에 소비하고 M52에서 미정 저장 주소 0개 |
 | 세션/계산 mapping | M25에서 `map-session-state` 365행을 session-field 298개, calculation-internal 67개로 닫았다. runtime session 후보 234개는 화면/훈련/촬영/업무/script scratch 계열로 분류되었고 M25 후 미판정 0개 | M28~M49에서 매핑된 session/calculation row를 실제 기능 lifecycle에 소비하고 M52에서 미정 세션/계산 주소 0개 |
+| 구현 전 누락 감사 | M26에서 implementation review 14,700행을 생성했다. source-file-review 14행은 M27 또는 구현 owner에 배정했고 missing evidence/orphan/role-only/unknown owner/unapproved exclusion 미해소 issue는 0개다 | M27에서 이 review row를 구현 큐로 동결하고 M28~M50에서 owner별로 닫아야 함 |
 | 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M22/M26/M28~M49에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
 | feature coverage | row 5,344개 생성. `implemented` 11개, `blocker` 5,333개. dynamic/persistence/exit/pause/unreferenced global count가 원본 분석과 일치함 | M28~M49에서 blocker row를 줄이며 M52에서 미구현 feature 0개 |
 
@@ -182,7 +183,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 18. M23 ERB 기반 정의 데이터 보강은 `npm run coverage:erb-definitions`, `npm run coverage:definitions`, `npm run gate:erb-definition-coverage`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
 19. M24 저장 상태 원본 주소 전수 매핑은 `npm run coverage:save-mapping`, `npm run gate:save-mapping`, `npm run gate:state-family-index-coverage`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
 20. M25 세션/계산 원본 주소 전수 매핑은 `npm run coverage:session-mapping`, `npm run gate:session-mapping`, `npm run gate:session-save-boundary`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
-21. 다음 작업은 M26 구현 전 누락 감사다. 완전 이식 검증은 M26~M52의 누락 감사, 기능군별 exit gate, 최종 판정으로 닫는다.
+21. M26 구현 전 누락 감사는 `npm run audit:pre-implementation`, `npm run gate:pre-implementation-audit`, `npm run build`로 확인되었다. implementation review 14,700행, source-file-review 14행, 미해소 issue 0개로 닫았다.
+22. 다음 작업은 M27 구현 단위 큐와 blocker 동결이다. M26 audit row를 기반으로 M28~M50 owner별 작업 큐를 만들고, blocker 해소 책임과 verification id를 고정한다.
 
 ## 주의
 

@@ -963,15 +963,17 @@ npm run build
 - 완료 결과: 구현 전에 발견 가능한 누락이 blocker 또는 수정 대상으로 전부 드러난다.
 - 누락 차단: 감사 결과에 gap/orphan/role-only가 남으면 M28로 넘어가지 않는다.
 
-- [ ] `data/coverage/audits/pre-implementation-gap-audit.json` 산출물 형식 확정
-- [ ] 원본 CSV/ERB 항목 중 coverage row가 없는 항목을 `discovered-gap`으로 기록
-- [ ] coverage row는 있지만 source evidence가 없는 항목을 `missing-evidence`로 기록
-- [ ] source evidence는 있지만 consumer가 없는 항목을 `orphan-coverage`로 기록
-- [ ] 역할 판정만 있고 구현 소비가 없는 항목을 `role-only`로 기록
-- [ ] 승인 없는 제외 항목을 실패로 처리
-- [ ] M28~M49 ownerMilestone 배정을 재확인
-- [ ] `discovered-gap`, `orphan-coverage`, `role-only`가 남으면 M28로 넘어가지 않음
-- [ ] `npm run build` 실행
+- [x] `data/coverage/audits/pre-implementation-gap-audit.json` 산출물 형식 확정
+- [x] 원본 CSV/ERB 항목 중 coverage row가 없는 항목 14개를 source-file-review row로 기록하고 M27 또는 구현 owner에 배정
+- [x] coverage row는 있지만 source evidence가 없는 항목을 `missing-evidence`로 기록. M26 결과 0개
+- [x] source evidence는 있지만 consumer가 없는 항목을 `orphan-coverage`로 기록. M26 결과 0개
+- [x] 역할 판정만 있고 구현 소비가 없는 항목을 implementation review row로 기록하고 owner/closureRule/verificationCommand를 부여
+- [x] 승인 없는 제외 항목을 실패로 처리. M26 결과 승인 제외 0개, 미승인 제외 0개
+- [x] M28~M49 및 M50 owner 배정을 재확인. implementation review 14,700행 모두 owner와 verificationCommand 보유
+- [x] `discovered-gap`, `orphan-coverage`, `role-only`, `unknownOwner` 미해소 항목 0개 확인
+- [x] `npm run audit:pre-implementation` 실행
+- [x] `npm run gate:pre-implementation-audit` 실행
+- [x] `npm run build` 실행
 
 ## M27. 구현 단위 큐와 blocker 동결
 

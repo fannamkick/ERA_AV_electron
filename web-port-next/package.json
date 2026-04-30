@@ -36,6 +36,8 @@
     "gate:source-evidence": "node tools/gate_source_evidence.mjs",
     "coverage:crosscheck": "node tools/build_coverage_crosscheck.mjs",
     "gate:coverage-crosscheck": "node tools/gate_coverage_crosscheck.mjs",
+    "audit:pre-implementation": "node tools/build_pre_implementation_gap_audit.mjs",
+    "gate:pre-implementation-audit": "node tools/gate_pre_implementation_audit.mjs",
     "gate:approved-exclusions": "node tools/gate_approved_exclusions.mjs",
     "verify:m16": "node tools/verify_m16.mjs",
     "collect:catalog": "python tools/collect_csv_catalog.py",

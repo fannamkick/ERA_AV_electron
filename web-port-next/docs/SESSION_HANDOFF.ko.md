@@ -58,7 +58,7 @@
 - 누락 전수 감사 마일스톤은 세 종류로 둔다: M26 구현 전 `pre-implementation-gap-audit.json`, M28~M49 기능군 종료 `Mxx-gap-audit.json`, M51 최종 `final-gap-audit.json`. 감사에서 `discovered-gap`, `orphan-coverage`, `role-only`가 남으면 다음 단계로 넘어가지 않는다.
 - M24에서 `map-save-state` 1,215행은 save-field 989개와 non-save 226개로 닫혔다. ERB persistent 후보 1,016개는 save-field 985개와 M25 session-state 이관 31개로 판정되었고 M24 후 미판정은 0개다.
 - M25에서 `map-session-state` 365행은 session-field 298개와 calculation-internal 67개로 닫혔다. runtime session 후보 234개는 화면/훈련/촬영/업무/script scratch 계열로 분류되었고 M25 후 미판정은 0개다.
-- 현재 M26의 다음 책임은 구현 전 누락 감사다. save/session mapping row가 기능 완료 범위에 남거나 orphan/role-only로 남으면 해당 기능을 완료 처리하지 않는다.
+- M26에서 구현 전 누락 감사는 implementation review 14,700행, source-file-review 14행, 미해소 issue 0개로 닫혔다. save/session mapping row가 기능 완료 범위에 남거나 orphan/role-only로 남으면 해당 기능을 완료 처리하지 않는다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -156,7 +156,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 18. M23 ERB 기반 정의 데이터 보강은 완료되었고 `npm run coverage:erb-definitions`, `npm run coverage:definitions`, `npm run gate:erb-definition-coverage`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
 19. M24 저장 상태 원본 주소 전수 매핑은 완료되었고 `npm run coverage:save-mapping`, `npm run gate:save-mapping`, `npm run gate:state-family-index-coverage`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
 20. M25 세션/계산 원본 주소 전수 매핑은 완료되었고 `npm run coverage:session-mapping`, `npm run gate:session-mapping`, `npm run gate:session-save-boundary`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
-21. 다음 작업은 M26 구현 전 누락 감사다.
+21. M26 구현 전 누락 감사는 완료되었고 `npm run audit:pre-implementation`, `npm run gate:pre-implementation-audit`, `npm run build`로 확인되었다.
+22. 다음 작업은 M27 구현 단위 큐와 blocker 동결이다.
 
 ## 읽을 문서
 

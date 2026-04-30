@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M26",
+  "title": "구현 전 누락 감사",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "sourceInputs": {
+    "sourceManifest": "data/coverage/source-manifest.json",
+    "features": "data/coverage/features.json",
+    "definitions": "data/coverage/definitions.json",
+    "saveMapping": "data/coverage/save-mapping.json",
+    "sessionMapping": "data/coverage/session-mapping.json",
+    "coverageCrosscheck": "data/coverage/coverage-crosscheck.json",
+    "blockers": "data/coverage/blockers.json",
+    "approvedExclusions": "data/coverage/approved-exclusions.json"
+  },
+  "outputs": {
+    "preImplementationGapAudit": "data/coverage/audits/pre-implementation-gap-audit.json",
+    "builder": "tools/build_pre_implementation_gap_audit.mjs",
+    "gate": "tools/gate_pre_implementation_audit.mjs"
+  },
+  "counts": {
+    "sourceManifestPrimaryFiles": 496,
+    "sourceFilesWithoutDirectCoverageRows": 14,
+    "implementationReviewRows": 14700,
+    "featureReviewRows": 5333,
+    "definitionReviewRows": 7999,
+    "saveMappingReviewRows": 989,
+    "sessionMappingReviewRows": 365,
+    "unresolvedIssues": 0,
+    "approvedExclusionRows": 0
+  },
+  "ownerReview": {
+    "rule": "Every review row must have an implementationOwnerMilestone, closureRule, and verificationCommand before M28+ implementation starts.",
+    "ownerMilestonesReviewed": [
+      "M27",
+      "M28",
+      "M29",
+      "M30",
+      "M31",
+      "M32",
+      "M33",
+      "M34",
+      "M35",
+      "M36",
+      "M37",
+      "M38",
+      "M39",
+      "M40",
+      "M41",
+      "M42",
+      "M43",
+      "M44",
+      "M45",
+      "M46",
+      "M47",
+      "M48",
+      "M49",
+      "M50"
+    ],
+    "sourceFileReviewRows": {
+      "total": 14,
+      "closure": "Queued for M27 review or assigned to the owning implementation milestone."
+    }
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:crosscheck",
+      "npm run gate:coverage-crosscheck",
+      "npm run audit:pre-implementation",
+      "npm run gate:pre-implementation-audit",
+      "npm run build"
+    ],
+    "expectedGateResult": "0 unresolved issue(s)"
+  }
+}
