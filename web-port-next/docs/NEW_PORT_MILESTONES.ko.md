@@ -76,9 +76,9 @@
 
 ## M0~M20 진행 근거 보강
 
-이 절은 기존 체크리스트를 대체하지 않는다. 이미 진행된 M0~M20의 책임, 산출물, 완료선, 남은 한계를 한눈에 보기 위한 보강 기록이다.
+이 절은 기존 체크리스트를 대체하지 않는다. 이미 진행된 M0~M20의 역할, 책임, 산출물, 완료선, 남은 한계를 한눈에 보기 위한 보강 기록이다.
 
-| 마일스톤 | 책임 | 산출물/검증 근거 | 완료선과 한계 |
+| 마일스톤 | 역할/책임 | 산출물/검증 근거 | 완료선과 한계 |
 | --- | --- | --- | --- |
 | M0 | Phase 1의 범위와 제외 범위를 고정한다 | `GAME_FLOW_MAP.ko.md`, `GAME_DOMAIN_SYSTEM.md`, `MODULE_SYSTEM.ko.md`, `PROGRESS_STATUS.ko.md` 대조 | M1~M6만 최소 세로 루프로 닫는다. 이후 기능은 포함하지 않는다 |
 | M1 | UI가 직접 상태를 바꾸지 않도록 action/result/effect 계약을 만든다 | `routes`, `actions`, `effects`, `results`, `dispatch`, `npm run build` | 성공/실패/no-op/route 전환 계약을 만든 단계이며, 기능별 상세 로직 완성은 아니다 |
@@ -101,6 +101,45 @@
 | M18 | 이후 구현을 1개 단위씩 진행하는 규칙과 template을 고정한다 | `IMPLEMENTATION_UNIT_RULES.ko.md`, template 검색, `npm run build`, `npm run test --if-present` | M28~M49의 작업 방식만 닫는다. 기능 구현량을 늘리는 마일스톤이 아니다 |
 | M19 | 원본 기능 커버리지 전수표를 만들고 blocker 장부를 시작한다 | `data/coverage/features.json`, `data/coverage/blockers.json`, `coverage:features`, `gate:feature-coverage` | feature row 5,344개와 blocker 5,333개를 장부화한다. 구현 완료가 아니라 구현 대상을 셀 수 있게 만든 단계다 |
 | M20 | 원본 정의 데이터와 Chara seed를 역할/소비 책임으로 분류한다 | `data/coverage/definitions.json`, `coverage:definitions`, `gate:definition-consumption`, `npm run build` | definition row 7,840개를 장부화한다. `template/listing/display-only/calculation-only`는 역할 판정이며 실제 소비 완료가 아니다. 실제 소비 검증은 M28~M49에서 닫는다 |
+
+## M21~M52 실행 기준 보강
+
+이 절은 기존 체크리스트를 대체하지 않는다. M21~M52를 진행할 때 각 마일스톤이 무엇을 소유하고, 어디까지 처리해야 완료인지, 어떤 상태가 남으면 완료 차단인지 명확히 하기 위한 기준이다.
+
+| 마일스톤 | 역할 | 책임 범위 | 필수 산출물 | 완료 판정 | 완료 차단 기준 |
+| --- | --- | --- | --- | --- | --- |
+| M21 | 원본 근거 관리자 | 모든 coverage row가 참조할 원본 근거 형식을 고정하고 문서 해석과 실제 원본을 구분한다 | source evidence schema, source priority rule, source evidence gate 초안 | feature/definition/save/session row가 같은 근거 형식을 쓸 수 있고, 문서만 근거인 row가 완료 상태가 아님 | 원본 파일/라벨/CSV 행/family index가 비어 있거나 근거 충돌이 blocker가 아닌 상태 |
+| M22 | 전수표 관계 검증자 | feature, definition, save, session, blocker 장부를 서로 대조하는 gate를 만든다 | coverage crosscheck rule, orphan/role-only detection, approved-excluded registry format | orphan coverage, role-only 완료, source evidence 누락을 gate가 실패로 잡음 | `template`, `listing`, `display-only`, `calculation-only`가 실제 소비 없이 완료로 계산됨 |
+| M23 | ERB 기반 정의 데이터 수집자 | CSV 밖에서 ERB가 암묵적으로 정의하는 메뉴, 장면, 이벤트, 계산 상수를 정의 데이터 후보로 만든다 | ERB-derived definition coverage, conflict list, owner candidate list | CSV/ERB 정의 후보가 runtime definition, blocker, approved-excluded 중 하나로 분류됨 | ERB에서만 존재하는 컨텐츠가 coverage 밖에 남거나 CSV와 충돌한 정의가 미판정 상태 |
+| M24 | 저장 상태 매핑 관리자 | 원본 persistent 후보를 새 save 도메인 필드 또는 비저장 판정으로 분해한다 | save mapping coverage, domain field path, owner decision, save blocker list | 저장해야 하는 원본 주소가 `field path`를 갖거나 blocker/approved-excluded로 닫힘 | `map-save-state`, `needsDecision`, `missingMapping`이 기능 완료 범위에 남음 |
+| M25 | 세션/계산 매핑 관리자 | 원본 임시 버퍼와 계산 중간값을 session owner 또는 계산 함수 내부값으로 분리한다 | session/calculation mapping coverage, lifecycle table, raw-name ban check | 각 session/calculation row가 생성, 소비, 폐기 시점을 갖고 save payload에 들어가지 않음 | `TFLAG`, `SOURCE`, `TEQUIP` 등 원본 배열명이 앱 모델명으로 복사되거나 비저장 중간값이 save에 들어감 |
+| M26 | 구현 전 누락 감사자 | M28 이후 구현 전에 원본 누락, orphan row, role-only row를 찾아낸다 | `pre-implementation-gap-audit.json`, gap classification, ownerMilestone review | `discovered-gap`, `orphan-coverage`, `role-only`가 0개이거나 blocker로 닫힘 | 감사 결과가 남아 있는데 기능군 구현으로 넘어감 |
+| M27 | 구현 큐 관리자 | M28~M49의 구현 단위를 coverage row 기준으로 큐화하고 blocker 해소 마일스톤을 고정한다 | implementation queue, blocker freeze list, approved-excluded request list | 모든 구현 단위가 feature/definition/save/session/view row와 검증 요구를 가짐 | 구현 단위가 원본 row 없이 생성되거나 blocker 해소 마일스톤이 비어 있음 |
+| M28 | 메인 route 연결자 | 원본 메인 화면에서 직접 도달 가능한 기능 route를 모두 연결한다 | route map, menu enabled/disabled table, main feature status update | 모든 메인 메뉴가 route/action/result 계약을 갖거나 approved-excluded/blocker로 닫힘 | 표시만 있고 action이 없거나 route dead-end가 남음 |
+| M29 | 구매 상점 구현자 | 구매형 아이템과 상점 노출/해금/구매 결과를 전수 구현한다 | item shop handlers, shop view tests, purchase roundtrip tests | 구매형 listing 전체가 성공/실패/취소와 저장 roundtrip을 통과 | 인벤토리 수량, 상점 진행 상태, 현재 선택 session이 섞임 |
+| M30 | 아이템 사용/특수 효과 구현자 | 사용형 아이템과 특수 아이템의 조건, 효과, owner 반영을 닫는다 | item use handlers, special item blocker/implementation list, usage tests | 사용형/특수 item 전체가 실제 효과, approved-excluded, blocker 중 하나로 닫힘 | no-op handler로 특수 아이템을 완료 처리하거나 효과 owner가 불명확함 |
+| M31 | 영입 구현자 | 영입 listing 전체를 캐릭터 원형, 비용, 생성 결과와 연결한다 | recruit handlers, listing-to-template map, recruit roundtrip tests | 모든 영입 listing이 생성 결과 또는 승인 제외/blocker를 가짐 | 영입 후 `people/body/social/equipment` 초기 상태 누락 또는 listing-template 미연결 |
+| M32 | 인물 identity 관리자 | Chara template 전체와 이름/호칭/별명/표시 identity를 정의/저장 경계에 맞춘다 | character identity model, template-to-instance conversion, identity view tests | 109개 원형이 인스턴스 생성과 표시, 저장 roundtrip을 통과 | 정의 문자열과 플레이 중 상태가 같은 save 필드에 섞임 |
+| M33 | 신체/능력/소질 관리자 | BASE, ABL, TALENT, EXP, MARK, PALAM 계열을 body/people 정의와 저장 수치로 분해한다 | body/ability state model, seed mapping, stat display tests | 초기값, 표시명, 레벨/증감 계산이 owner별로 분리되고 저장 roundtrip이 통과 | 표시 정의와 저장 수치가 섞이거나 업무/촬영/훈련 결과가 서로 다른 중복 필드를 씀 |
+| M34 | 관계/CFLAG/장비 owner 관리자 | CFLAG, 관계, 장비, 의복 상태를 의미별 owner로 분해한다 | CFLAG owner table, social/equipment model, raw-name search | CFLAG seed와 정의가 people/body/equipment/social/work/mission/settings/features 등으로 분해됨 | 의미 불명 CFLAG가 mapped로 처리되거나 `CFLAG` raw name이 runtime model에 남음 |
+| M35 | 턴 종료/시간 관리자 | 원본 턴 종료, 시간 진행, 월말/주말 hook, 자동 처리 순서를 구현한다 | turn pipeline, hook order table, turn roundtrip tests | 시간 진행과 hook 결과가 save owner에 반영되고 session이 폐기됨 | hook 순서가 원본과 충돌하거나 턴 종료 중 임시 선택값이 저장됨 |
+| M36 | 방문/시설 구현자 | 방문 장소, 장소별 행동, 시설 해금과 결과 반영을 전수 구현한다 | visit/facility definitions, visit handlers, visit smoke/roundtrip tests | 장소/행동 전체가 구현, approved-excluded, blocker 중 하나로 닫힘 | 장소 선택 session과 시설 진행 save가 섞이거나 방문 행동 결과 owner가 불명확함 |
+| M37 | 업무/창관 구현자 | 업무, 창관, 아르바이트, 특수 업무의 조건과 결과를 전수 구현한다 | work definitions, work handlers, work result tests | 업무 전체가 조건, 성공/실패/취소, 저장 반영, 턴 종료를 검증함 | 업무 계산값이 session이 아닌 save에 남거나 결과가 economy/people/body/work/run 밖으로 흩어짐 |
+| M38 | 촬영 정의/조건 관리자 | 촬영 장면 정의, 대상 조건, 장면 조건, 예상 결과를 구현한다 | filming scene definitions, scene condition tests, definition evidence table | 촬영 장면 전체가 정의와 조건 검증을 갖거나 blocker로 닫힘 | 장면이 UI에 표시되지만 원본 근거나 조건 계산이 없음 |
+| M39 | 촬영 실행/판매 구현자 | 촬영량, 수익, 팬, 점수, 이력, 출시/판매 상태를 구현한다 | filming execution handlers, release/sales state, filming roundtrip tests | 촬영 성공/실패/취소/턴 종료와 저장 반영이 검증됨 | 촬영 session 계산값이 저장 payload에 남거나 판매 상태 owner가 불명확함 |
+| M40 | 훈련 세션 관리자 | 훈련 대상, 실행자, 조수, command 선택과 화면 session lifecycle을 완성한다 | training session model, command candidate view, session cleanup tests | 훈련 화면 진입/취소/완료/턴 종료에서 session 생성과 폐기가 검증됨 | 훈련 선택값이 save에 남거나 command 후보 계산이 상태를 변경함 |
+| M41 | 훈련 가능 조건 구현자 | 105개 command의 availability와 불가 사유를 전수 구현한다 | command availability table, unavailable reason tests | 각 command가 가능/불가 조건과 표시 사유를 가짐 | command가 실행 가능하지만 조건 row 또는 불가 사유가 없음 |
+| M42 | 훈련 효과 0~34 구현자 | command 0~34의 source 계산, 파라미터 변화, 자원 소모, 결과 반영을 구현한다 | command 0~34 handlers, source calculation tests, coverage updates | command 0~34가 성공/불가/취소/결과 적용/session 폐기를 통과 | 원본 계산 중간값이 save에 들어가거나 source evidence가 없음 |
+| M43 | 훈련 효과 35~69 구현자 | command 35~69의 계산과 결과 반영을 구현한다 | command 35~69 handlers, source calculation tests, coverage updates | command 35~69가 성공/불가/취소/결과 적용/session 폐기를 통과 | command 결과 owner가 불명확하거나 blocker 없이 미구현 command가 남음 |
+| M44 | 훈련 효과 70~104/후처리 구현자 | command 70~104와 훈련 후처리, 이벤트, 장비/자원 변화를 구현한다 | command 70~104 handlers, post-training pipeline, raw-name gate | 105개 command 전체와 후처리가 구현/승인 제외/blocker로 닫힘 | `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남음 |
+| M45 | 공통 유지보수 구현자 | 능력 상승, 휴식, 회복, 자동 아이템 사용, 공통 시스템 흐름을 구현한다 | common-system handlers, rest/ability tests, roundtrip tests | 공통 기능이 owner별 결과 반영과 성공/실패/취소를 검증함 | common-system feature가 특정 기능군 내부 임시 로직으로 숨어 있음 |
+| M46 | 미션 구현자 | 미션 정의, 수락, 진행, 보고, 완료, 실패, 만료, 보상을 전수 구현한다 | mission definitions, mission lifecycle handlers, mission roundtrip tests | 미션 전체가 조건/기한/보상/패널티와 턴 종료 연동을 검증함 | 미션 상태와 미션 선택 session이 섞이거나 보상 owner가 불명확함 |
+| M47 | 세계/이벤트 구현자 | 이벤트 조건, 스토리 진행, 장소/세계 플래그, hook 발생을 구현한다 | event/world handlers, event hook table, world roundtrip tests | 이벤트가 발생 조건, 표시, 상태 변화, 저장 반영을 모두 가짐 | 이벤트 표시만 있고 상태 변화나 발생 조건 근거가 없음 |
+| M48 | 엔딩/전역 상태 구현자 | 엔딩 조건, 결과 화면, 계승, 전역 meta save를 구현한다 | ending condition table, global/meta save model, ending flow tests | 엔딩과 계승 새 게임, 전역 상태 roundtrip이 검증됨 | 회차 save와 global/meta save가 섞이거나 승인 없는 엔딩 제외가 있음 |
+| M49 | 남은 메뉴/설정 정리자 | 정보, 도움말, 업적, 설정, 디버그, 남은 기능을 구현 또는 승인 제외로 닫는다 | remaining-feature audit, settings model, final feature-group gap audit | M28~M49 기능군 범위에 미구현 feature, 미소비 definition, 미정 mapping이 남지 않음 | 남은 기능을 숨기거나 설명 없이 제외 처리함 |
+| M50 | 전체 저장/로드 관리자 | 모든 기능군 후 저장/로드, schema, migration, corrupted/future/old save 처리를 완성한다 | save schema, migration tests, full roundtrip suite | M24/M25 mapping row 전체가 저장 payload 또는 비저장 판정과 일치함 | session/definitions/views/calculation buffer가 save payload에 들어감 |
+| M51 | 최종 감사자 | 원본 누락, orphan coverage, role-only 완료, 승인 없는 제외를 최종 감사한다 | `final-gap-audit.json`, unresolved blocker list, final evidence report | final audit에서 gap, orphan, role-only, unapproved exclusion이 0개 | blocker가 남아 있거나 source evidence와 consumer evidence가 충돌함 |
+| M52 | 완전 이식 판정자 | 전체 게임이 원본 컨텐츠를 구현, 승인 제외, blocker 0 상태로 닫았는지 판정한다 | final coverage summary, full smoke flow, final verification log | feature/definition/save/session coverage가 모두 완료 상태이고 전체 smoke/build/test가 통과 | 미구현 기능, 미분류 정의, 미정 주소, 미해소 blocker, 승인 없는 제외가 1개라도 남음 |
 
 ## M0. 기준 동결
 
