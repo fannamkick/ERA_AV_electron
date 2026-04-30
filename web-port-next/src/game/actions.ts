@@ -28,6 +28,10 @@ export type GameAction =
   | { readonly type: 'shop/selectItem'; readonly itemId: CatalogId }
   | { readonly type: 'shop/changeQuantity'; readonly quantity: number }
   | { readonly type: 'shop/confirmPurchase' }
+  | { readonly type: 'shop/selectUseItem'; readonly itemId: CatalogId }
+  | { readonly type: 'shop/selectUseTarget'; readonly characterId: string }
+  | { readonly type: 'shop/confirmUseItem' }
+  | { readonly type: 'shop/cancelUseItem' }
   | { readonly type: 'shop/cancel' }
   | { readonly type: 'recruit/selectListing'; readonly listingId: CatalogId }
   | { readonly type: 'recruit/confirm' }

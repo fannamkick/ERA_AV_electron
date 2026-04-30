@@ -42,15 +42,39 @@ export type ShopListingView = {
   readonly disabledReason?: string;
 };
 
+export type ItemUseOptionView = {
+  readonly itemId: CatalogId;
+  readonly label: string;
+  readonly unitPrice: number;
+  readonly targetRequired: boolean;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+  readonly description?: string;
+};
+
+export type ItemUseTargetView = {
+  readonly characterId: string;
+  readonly label: string;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
 export type ItemShopView = {
   readonly kind: 'itemShop';
   readonly route: 'itemShop';
   readonly currentMoney: number;
   readonly visibleListings: readonly ShopListingView[];
+  readonly visibleUseItems: readonly ItemUseOptionView[];
+  readonly eligibleUseTargets: readonly ItemUseTargetView[];
   readonly selectedListingId?: CatalogId;
   readonly selectedItemId?: CatalogId;
+  readonly selectedUseItemId?: CatalogId;
+  readonly selectedUseTargetCharacterId?: string;
+  readonly selectedUseItem?: ItemUseOptionView;
+  readonly selectedUseTarget?: ItemUseTargetView;
   readonly quantity: number;
   readonly totalPrice?: number;
+  readonly useTotalPrice?: number;
 };
 
 export type RecruitListingView = {

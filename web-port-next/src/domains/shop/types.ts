@@ -12,7 +12,10 @@ export type ShopState = {
 export type ShopSessionState = {
   readonly selectedItemId?: string;
   readonly selectedListingId?: string;
+  readonly selectedUseItemId?: string;
+  readonly selectedUseTargetCharacterId?: string;
   readonly visibleListingIds: readonly string[];
+  readonly visibleUseItemIds: readonly string[];
   readonly quantity: number;
 };
 
@@ -27,5 +30,6 @@ export const initialShopState: ShopState = {
 
 export const initialShopSessionState: ShopSessionState = {
   visibleListingIds: [],
+  visibleUseItemIds: [],
   quantity: 0,
 };

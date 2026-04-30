@@ -116,6 +116,22 @@ function ItemShopScreen({ catalog, state, session, onAction }: ScreenProps) {
               onClick={() => onAction({ type: 'shop/selectListing', listingId: listing.listingId })}
             />
           ))}
+          {view.visibleUseItems.length > 0 && (
+            <div className="section-heading">
+              <p>M30</p>
+              <h2>Item Use</h2>
+            </div>
+          )}
+          {view.visibleUseItems.map((item) => (
+            <ChoiceButton
+              detail={!item.available ? item.disabledReason : item.description}
+              key={`use:${item.itemId}`}
+              label={item.label}
+              meta={money(item.unitPrice)}
+              selected={item.itemId === view.selectedUseItemId}
+              onClick={() => onAction({ type: 'shop/selectUseItem', itemId: item.itemId })}
+            />
+          ))}
         </div>
 
         <aside className="detail-panel">
@@ -142,6 +158,42 @@ function ItemShopScreen({ catalog, state, session, onAction }: ScreenProps) {
             </button>
             <button type="button" onClick={() => onAction({ type: 'shop/cancel' })}>
               돌아가기
+            </button>
+          </ActionRow>
+          <div className="section-heading">
+            <p>Use</p>
+            <h2>{view.selectedUseItem ? view.selectedUseItem.label : 'Item Use'}</h2>
+          </div>
+          <SummaryList
+            items={[
+              { label: 'Cost', value: view.useTotalPrice === undefined ? '-' : money(view.useTotalPrice) },
+              { label: 'Target', value: view.selectedUseTarget?.label ?? '-' },
+            ]}
+          />
+          {view.selectedUseItem?.targetRequired && (
+            <div className="listing-list compact-list" aria-label="Item use targets">
+              {view.eligibleUseTargets.map((target) => (
+                <ChoiceButton
+                  detail={!target.available ? target.disabledReason : undefined}
+                  disabled={!target.available}
+                  key={target.characterId}
+                  label={target.label}
+                  selected={target.characterId === view.selectedUseTargetCharacterId}
+                  onClick={() => onAction({ type: 'shop/selectUseTarget', characterId: target.characterId })}
+                />
+              ))}
+            </div>
+          )}
+          <ActionRow compact>
+            <button
+              type="button"
+              disabled={!view.selectedUseItem || (view.selectedUseItem.targetRequired && !view.selectedUseTarget)}
+              onClick={() => onAction({ type: 'shop/confirmUseItem' })}
+            >
+              Use
+            </button>
+            <button type="button" disabled={!view.selectedUseItem && !view.selectedUseTarget} onClick={() => onAction({ type: 'shop/cancelUseItem' })}>
+              Clear
             </button>
           </ActionRow>
         </aside>

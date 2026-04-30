@@ -94,6 +94,10 @@ export function validateStateSessionBoundary(state: GameState, session: GameSess
     diagnostics.push({ severity: 'error', message: 'GameSession.shop.visibleListingIds must remain session/view state.' });
   }
 
+  if (!Array.isArray(session.shop.visibleUseItemIds)) {
+    diagnostics.push({ severity: 'error', message: 'GameSession.shop.visibleUseItemIds must remain session/view state.' });
+  }
+
   if (typeof session.shop.quantity !== 'number') {
     diagnostics.push({ severity: 'error', message: 'GameSession.shop.quantity must remain a numeric session selection.' });
   }

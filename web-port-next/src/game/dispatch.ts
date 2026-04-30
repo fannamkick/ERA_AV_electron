@@ -1,6 +1,16 @@
 import { initialRecruitSessionState } from '../domains/recruit/types';
 import { initialShopSessionState } from '../domains/shop/types';
-import { changeShopQuantity, createShopSession, purchaseSelectedShopItem, selectShopItem, selectShopListing } from '../features/itemShop';
+import {
+  cancelShopUseSelection,
+  changeShopQuantity,
+  createShopSession,
+  purchaseSelectedShopItem,
+  selectShopItem,
+  selectShopListing,
+  selectShopUseItem,
+  selectShopUseTarget,
+  useSelectedShopItem,
+} from '../features/itemShop';
 import { acceptSelectedMission, cancelMission, createMissionSession, reportSelectedMission, selectMission } from '../features/mission';
 import { createNewGame } from '../features/newGame';
 import { createRecruitSession, recruitSelectedCharacter, selectRecruitListing } from '../features/recruit';
@@ -364,6 +374,54 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
         state: purchase.state,
         session: purchase.session,
         effects: [logEffect(purchase.message, 'success')],
+      });
+    }
+    case 'shop/selectUseItem': {
+      const selection = selectShopUseItem(context.catalog, context.state, context.session, action.itemId);
+      if (!selection.ok) {
+        return failureResult(context, selection.failure);
+      }
+
+      return successResult(context, {
+        state: selection.state,
+        session: selection.session,
+        effects: [logEffect(selection.message)],
+      });
+    }
+    case 'shop/selectUseTarget': {
+      const selection = selectShopUseTarget(context.state, context.session, action.characterId);
+      if (!selection.ok) {
+        return failureResult(context, selection.failure);
+      }
+
+      return successResult(context, {
+        state: selection.state,
+        session: selection.session,
+        effects: [logEffect(selection.message)],
+      });
+    }
+    case 'shop/confirmUseItem': {
+      const itemUse = useSelectedShopItem(context.catalog, context.state, context.session);
+      if (!itemUse.ok) {
+        return failureResult(context, itemUse.failure);
+      }
+
+      return successResult(context, {
+        state: itemUse.state,
+        session: itemUse.session,
+        effects: [logEffect(itemUse.message, 'success')],
+      });
+    }
+    case 'shop/cancelUseItem': {
+      const cancel = cancelShopUseSelection(context.state, context.session);
+      if (!cancel.ok) {
+        return failureResult(context, cancel.failure);
+      }
+
+      return successResult(context, {
+        state: cancel.state,
+        session: cancel.session,
+        effects: [logEffect(cancel.message)],
       });
     }
     case 'shop/cancel':

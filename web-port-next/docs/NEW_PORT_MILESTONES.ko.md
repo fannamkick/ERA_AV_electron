@@ -1064,15 +1064,34 @@ npm run build
 - 완료 결과: 사용형/특수 item이 실제 효과 또는 사용자 승인 제외를 갖고 소유 blocker 0개 상태가 된다.
 - 누락 차단: no-op handler로 완료 처리하거나 효과 owner가 불명확하면 완료하지 않는다.
 
-- [ ] 모든 사용형 아이템의 사용 조건을 구현하거나 사용자 승인 제외로 분류하고, 미구현 조건은 blocker로 남겨 완료 차단
-- [ ] 아이템 사용 효과가 `inventory`, `people`, `body`, `world`, `mission`, `settings` 중 정확한 owner에 반영되는지 검증
-- [ ] 특수 item 15개를 실제 효과 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
-- [ ] 시설 해금형 item과 방문/시설 기능의 소비 관계를 연결
-- [ ] 의복/장비형 item과 equipment/clothing owner를 연결
-- [ ] 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
-- [ ] 아이템 사용 후 저장 roundtrip을 검증
-- [ ] M20/M24/M26/M34 coverage의 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 모든 사용형 아이템의 사용 조건을 구현하거나 사용자 승인 제외로 분류하고, 미구현 조건은 blocker로 남겨 완료 차단
+- [x] 아이템 사용 효과가 `inventory`, `people`, `body`, `world`, `mission`, `settings` 중 정확한 owner에 반영되는지 검증
+- [x] 특수 item 15개를 실제 효과 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [x] 시설 해금형 item과 방문/시설 기능의 소비 관계를 연결
+- [x] 의복/장비형 item과 equipment/clothing owner를 연결
+- [x] 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
+- [x] 아이템 사용 후 저장 roundtrip을 검증
+- [x] M20/M24/M26/M34 coverage의 관련 status 갱신
+- [x] `npm run build` 실행
+
+M30 완료 근거:
+- M30 owned scope는 `unit:M30:item-use` 26행과 M29에서 M30으로 이관된 49행을 합쳐 총 75행이다.
+- 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop.visibleUseItemIds`, `shop/selectUseItem`, `shop/selectUseTarget`, `shop/confirmUseItem`, `shop/cancelUseItem`으로 실제 소비된다.
+- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 훈련 command별 효과 적용은 M42~M44가 소비한다.
+- item 22/90/91은 M30 사용형 아이템이 아니라 훈련 가능 조건을 여는 아이템이므로 M41로 이관했다.
+- cosplay/clothing pack은 M29에서 M34로 이관되어 M30 소유 범위가 아니다.
+
+검증:
+
+```bash
+npm run coverage:item-use
+npm run gate:item-use-coverage
+npm run gate:milestone-scope-closure -- M30
+npm run smoke:item-use
+npm run smoke:item-shop
+npm run build
+npm run test --if-present
+```
 
 ## M31. 영입 listing과 인물 생성 완성
 
