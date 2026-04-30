@@ -1,10 +1,12 @@
 import rawLegacyCatalog from '../../data/catalog/legacy-catalog.json';
+import rawErbDerivedDefinitions from '../../data/coverage/erb-derived-definitions.json';
 import type {
   CatalogId,
   FilmingSceneDefinition,
   GameDefinitions,
   ItemCategory,
   ItemDefinition,
+  MainMenuOptionDefinition,
   MissionDefinition,
   RecruitListingDefinition,
   ShopListingDefinition,
@@ -14,12 +16,31 @@ import type {
 
 type LegacyCatalogArtifact = {
   readonly schemaVersion: string;
-  readonly catalog: Omit<GameDefinitions, 'recruitListings' | 'missionDefinitions' | 'workDefinitions' | 'filmingSceneDefinitions'> & {
+  readonly catalog: Omit<
+    GameDefinitions,
+    'recruitListings' | 'missionDefinitions' | 'workDefinitions' | 'filmingSceneDefinitions' | 'mainMenuOptions'
+  > & {
     readonly recruitListings?: GameDefinitions['recruitListings'];
     readonly missionDefinitions?: GameDefinitions['missionDefinitions'];
     readonly workDefinitions?: GameDefinitions['workDefinitions'];
     readonly filmingSceneDefinitions?: GameDefinitions['filmingSceneDefinitions'];
+    readonly mainMenuOptions?: GameDefinitions['mainMenuOptions'];
   };
+};
+
+type ErbDerivedDefinitionsArtifact = {
+  readonly rows: readonly {
+    readonly definitionKey: string;
+    readonly sourceId: string;
+    readonly sourceName: string;
+    readonly sourceFile: string;
+    readonly sourceLine?: number;
+    readonly sourceEvidenceId: string;
+    readonly menuCode?: string;
+    readonly displayText?: string;
+    readonly actionTarget?: string;
+    readonly actionCondition?: string;
+  }[];
 };
 
 function classifyItemCsvId(itemId: CatalogId): ItemCategory {
@@ -171,6 +192,67 @@ const phaseTwoTrainingCommandDefinitions: Record<CatalogId, TrainingCommandDefin
   },
 };
 
+const mainMenuRouteContracts: Record<
+  string,
+  Pick<MainMenuOptionDefinition, 'actionId' | 'routeId' | 'defaultEnabled' | 'disabledReason' | 'ownerMilestone'>
+> = {
+  '100': { actionId: 'main/openTraining', routeId: 'training', defaultEnabled: true, ownerMilestone: 'M40' },
+  '101': { actionId: 'main/openRecruit', routeId: 'recruit', defaultEnabled: true, ownerMilestone: 'M31' },
+  '102': { actionId: 'main/openItemShop', routeId: 'itemShop', defaultEnabled: true, ownerMilestone: 'M29' },
+  '103': { actionId: 'main/openWork', routeId: 'work', defaultEnabled: true, ownerMilestone: 'M37' },
+  '104': { actionId: 'main/openShooting', routeId: 'shooting', defaultEnabled: true, ownerMilestone: 'M39' },
+  '105': { actionId: 'turn/end', routeId: 'mainMenu', defaultEnabled: true, ownerMilestone: 'M35' },
+  '108': { defaultEnabled: false, disabledReason: 'M34 equipment/clothing owner must implement this route.', ownerMilestone: 'M34' },
+  '109': { actionId: 'main/openVisit', routeId: 'visit', defaultEnabled: true, ownerMilestone: 'M36' },
+  '111': { actionId: 'main/openRoster', routeId: 'roster', defaultEnabled: true, ownerMilestone: 'M32' },
+  '112': { defaultEnabled: false, disabledReason: 'M45 ability-up owner must implement this route.', ownerMilestone: 'M45' },
+  '113': { defaultEnabled: false, disabledReason: 'M32 character identity owner must implement sorting.', ownerMilestone: 'M32' },
+  '115': { defaultEnabled: false, disabledReason: 'M49 remaining-feature owner must classify and implement this route.', ownerMilestone: 'M49' },
+  '116': { defaultEnabled: false, disabledReason: 'M47 world/event owner must implement this route.', ownerMilestone: 'M47' },
+  '120': { actionId: 'main/openMission', routeId: 'mission', defaultEnabled: true, ownerMilestone: 'M46' },
+  '150': { defaultEnabled: false, disabledReason: 'M48 ending/meta owner must implement this route.', ownerMilestone: 'M48' },
+  '200': { actionId: 'main/openSaveLoad', routeId: 'saveLoad', defaultEnabled: true, ownerMilestone: 'M50' },
+  '300': { actionId: 'main/openSaveLoad', routeId: 'saveLoad', defaultEnabled: true, ownerMilestone: 'M50' },
+  '400': { defaultEnabled: false, disabledReason: 'M49 settings owner must implement this route.', ownerMilestone: 'M49' },
+  '500': { defaultEnabled: false, disabledReason: 'M48 achievement/meta owner must implement this route.', ownerMilestone: 'M48' },
+  '600': { defaultEnabled: false, disabledReason: 'M49 information owner must implement this route.', ownerMilestone: 'M49' },
+  '700': { actionId: 'main/openRoster', routeId: 'roster', defaultEnabled: true, ownerMilestone: 'M32' },
+  '750': { defaultEnabled: false, disabledReason: 'M49 tips/help owner must implement this route.', ownerMilestone: 'M49' },
+  '888': { defaultEnabled: false, disabledReason: 'M49 debug owner must implement this route.', ownerMilestone: 'M49' },
+  '8826': { defaultEnabled: false, disabledReason: 'M49 debug owner must implement this hidden route.', ownerMilestone: 'M49' },
+};
+
+function createMainMenuOptions(): Record<CatalogId, MainMenuOptionDefinition> {
+  const artifact = rawErbDerivedDefinitions as ErbDerivedDefinitionsArtifact;
+  const result: Record<CatalogId, MainMenuOptionDefinition> = {};
+
+  for (const row of artifact.rows.filter((item) => item.definitionKey === 'mainMenuOptions')) {
+    const menuCode = row.menuCode ?? row.sourceId.replace(/^main-menu:/, '');
+    const contract = mainMenuRouteContracts[menuCode] ?? {
+      defaultEnabled: false,
+      disabledReason: 'M49 remaining-feature owner must classify this route.',
+      ownerMilestone: 'M49',
+    };
+    result[menuCode] = {
+      id: menuCode,
+      label: row.displayText ?? row.sourceName,
+      source: {
+        path: row.sourceFile,
+        originalId: row.sourceId,
+        originalName: row.sourceName,
+      },
+      tags: ['main-menu', `M28:${contract.ownerMilestone}`],
+      menuCode,
+      actionTarget: row.actionTarget ?? '',
+      actionCondition: row.actionCondition,
+      sourceEvidenceId: row.sourceEvidenceId,
+      ...contract,
+    };
+  }
+
+  return Object.fromEntries(Object.entries(result).sort(([a], [b]) => Number(a) - Number(b)));
+}
+
 export function normalizeLegacyCatalog(artifact: LegacyCatalogArtifact): GameDefinitions {
   const items: Record<CatalogId, ItemDefinition> = {};
   const recruitListings: Record<CatalogId, RecruitListingDefinition> = {};
@@ -216,6 +298,10 @@ export function normalizeLegacyCatalog(artifact: LegacyCatalogArtifact): GameDef
     filmingSceneDefinitions: {
       ...phaseTwoFilmingSceneDefinitions,
       ...(artifact.catalog.filmingSceneDefinitions ?? {}),
+    },
+    mainMenuOptions: {
+      ...createMainMenuOptions(),
+      ...(artifact.catalog.mainMenuOptions ?? {}),
     },
   };
 }

@@ -1006,16 +1006,24 @@ npm run build
 - 완료 결과: 메인 화면에서 기능군 진입 경로가 누락 없이 정리된다.
 - 누락 차단: 표시만 있고 action 없는 메뉴, dead-end route, coverage 미갱신 메뉴가 남으면 완료하지 않는다.
 
-- [ ] M19 feature coverage에서 메인 화면 직속 feature 목록을 읽음
-- [ ] 원본 메인 화면에서 직접 도달 가능한 선택지 전체를 route 또는 approved-excluded로 분류
-- [ ] 훈련, 영입, 아이템, 업무, 촬영, 방문, 능력 상승, 미션, 저장/로드, 설정/정보/엔딩 route를 연결
-- [ ] 각 메뉴의 enabled/disabled 조건을 view 계산으로 구현
-- [ ] 각 메뉴의 표시 이름과 설명을 정의 데이터 또는 화면 정의에 연결
-- [ ] route 전환이 저장 상태를 직접 바꾸지 않는지 검증
-- [ ] 모든 메뉴가 성공/취소 후 지정된 끝점으로 돌아가는지 검증
-- [ ] M19 coverage의 메인 화면 feature status 갱신
-- [ ] 기능군별 `Mxx-gap-audit.json` 첫 산출물 생성
-- [ ] `npm run build` 실행
+- [x] M27 implementation queue의 `unit:M28:main-route`를 기준으로 M28 소유 row 27개를 읽음
+- [x] 원본 메인 화면 선택지 24개를 `definitions.mainMenuOptions`로 연결하고 `main-route-coverage.json`에 모두 기록
+- [x] 12개 enabled 메뉴를 actionId, routeId, view consumer, dispatch consumer, smoke 검증과 연결
+- [x] 12개 disabled 메뉴를 disabledReason과 향후 owner milestone로 고정
+- [x] 훈련, 영입, 아이템, 업무, 촬영, 방문, 미션, 저장/로드, 인물 목록, 턴 종료 route를 실제 dispatch로 연결
+- [x] 능력 상승, 정렬, 설정/정보/엔딩/디버그 계열은 M32/M34/M45/M47/M48/M49 owner를 가진 disabled route contract로 기록
+- [x] 각 메뉴의 enabled/disabled 조건을 `buildMainMenuView`의 view 계산으로 구현
+- [x] 각 메뉴의 표시 이름과 원본 근거를 ERB 기반 정의 데이터와 sourceEvidenceId에 연결
+- [x] route 진입 action이 저장 상태를 직접 바꾸지 않는지 검증. 단 `turn/end`는 M35 owner의 의도된 저장 변경으로 분리
+- [x] enabled 메뉴 12개가 성공/취소 후 지정된 끝점으로 돌아가는지 `smoke:main-routes`로 검증
+- [x] M28 범위 밖 BOYFRIEND NTR event-local screen session row 3개를 M47로 책임 이관하고 transferReason을 기록
+- [x] 기능군별 `data/coverage/audits/M28-gap-audit.json` 산출물 생성
+- [x] `data/coverage/milestones/M28-closure.json` 생성. ownedTotal 27, implemented 24, transferredOut 3, blocker/missing/unapproved 0
+- [x] `npm run coverage:main-routes` 실행
+- [x] `npm run gate:main-route-coverage` 실행
+- [x] `npm run gate:milestone-scope-closure -- M28` 실행
+- [x] `npm run smoke:main-routes` 실행
+- [x] `npm run build` 실행
 
 ## M29. 아이템 상점과 구매 완성
 

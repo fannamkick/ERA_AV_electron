@@ -87,8 +87,8 @@ function main() {
   context = step.context;
   const characterId = firstCharacterId(context);
 
-  const menu = buildMainMenuView(context.state);
-  const trainingMenuItem = menu.menuItems.find((item) => item.id === 'training');
+  const menu = buildMainMenuView(context.state, context.catalog);
+  const trainingMenuItem = menu.menuItems.find((item) => item.id === '100');
   assert(trainingMenuItem?.enabled === true, 'M14 should enable training from the main menu.');
   assert(trainingMenuItem.route === 'training', 'training menu item should route to training.');
 

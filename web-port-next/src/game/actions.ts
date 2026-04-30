@@ -13,6 +13,7 @@ export type GameAction =
   | { readonly type: 'main/openItemShop' }
   | { readonly type: 'main/openMission' }
   | { readonly type: 'main/openRecruit' }
+  | { readonly type: 'main/openRoster' }
   | { readonly type: 'main/openSaveLoad' }
   | { readonly type: 'main/openVisit' }
   | { readonly type: 'main/openWork' }

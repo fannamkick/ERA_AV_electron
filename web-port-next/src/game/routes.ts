@@ -28,6 +28,7 @@ export const phaseTwoRoutes = {
   saveLoad: 'saveLoad',
   work: 'work',
   shooting: 'shooting',
+  roster: 'roster',
   training: 'training',
 } as const satisfies Record<string, UiRoute>;
 

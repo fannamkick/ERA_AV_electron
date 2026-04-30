@@ -85,8 +85,8 @@ function main() {
   context = step.context;
   const characterId = firstCharacterId(context);
 
-  const menu = buildMainMenuView(context.state);
-  const shootingMenuItem = menu.menuItems.find((item) => item.id === 'shooting');
+  const menu = buildMainMenuView(context.state, context.catalog);
+  const shootingMenuItem = menu.menuItems.find((item) => item.id === '104');
   assert(shootingMenuItem?.enabled === true, 'M13 should enable shooting from the main menu.');
   assert(shootingMenuItem.route === 'shooting', 'shooting menu item should route to shooting.');
 

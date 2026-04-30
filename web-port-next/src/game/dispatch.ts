@@ -267,6 +267,8 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
       return enterMission(context);
     case 'main/openRecruit':
       return enterRecruit(context);
+    case 'main/openRoster':
+      return routeResult(context, phaseTwoRoutes.roster, 'Moving to the roster screen.');
     case 'main/openSaveLoad':
       return enterSaveLoad(context);
     case 'main/openVisit':

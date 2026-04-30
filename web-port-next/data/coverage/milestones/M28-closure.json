@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M28",
+  "title": "Main screen route coverage",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M28 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json",
+    "sessionMapping": "data/coverage/session-mapping.json"
+  },
+  "outputs": {
+    "mainRouteCoverage": "data/coverage/main-route-coverage.json",
+    "gapAudit": "data/coverage/audits/M28-gap-audit.json",
+    "builder": "tools/build_main_route_coverage.mjs",
+    "coverageGate": "tools/gate_main_route_coverage.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m28_main_routes_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 27,
+    "menuRows": 24,
+    "enabledMenuRows": 12,
+    "disabledMenuRows": 12,
+    "sessionRows": 3,
+    "implemented": 24,
+    "mapped": 0,
+    "approvedExcluded": 0,
+    "transferredOut": 3,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 27,
+    "implemented": 24,
+    "mapped": 0,
+    "approvedExcluded": 0,
+    "transferredOut": 3,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:main-routes",
+      "npm run gate:main-route-coverage",
+      "npm run gate:milestone-scope-closure -- M28",
+      "npm run smoke:main-routes",
+      "npm run smoke:m13",
+      "npm run smoke:m14",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "24 menu row(s), 3 transferred session row(s), 0 unresolved M28 issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:main-routes",
+    "npm run gate:main-route-coverage",
+    "npm run gate:milestone-scope-closure -- M28",
+    "npm run smoke:main-routes",
+    "npm run smoke:m13",
+    "npm run smoke:m14",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}

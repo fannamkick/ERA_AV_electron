@@ -60,6 +60,7 @@
 - M25에서 `map-session-state` 365행은 session-field 298개와 calculation-internal 67개로 닫혔다. runtime session 후보 234개는 화면/훈련/촬영/업무/script scratch 계열로 분류되었고 M25 후 미판정은 0개다.
 - M26에서 구현 전 누락 감사는 implementation review 14,700행, source-file-review 14행, 미해소 issue 0개로 닫혔다. save/session mapping row가 기능 완료 범위에 남거나 orphan/role-only로 남으면 해당 기능을 완료 처리하지 않는다.
 - M27에서 구현 큐는 queue unit 37개, queued review row 14,700개, frozen blocker 63개, approved exclusion request candidate 63개로 동결했다. M27 owner로 남은 source-file-review 2개는 M51 최종 누락 감사 owner로 이관했다.
+- M28에서 메인 화면 route 연결은 완료했다. `unit:M28:main-route` 27행 중 메인 메뉴 정의 24개는 route/action/view/dispatch/smoke 근거를 갖고, BOYFRIEND event-local screen session row 3개는 M47로 책임 이관했다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -159,7 +160,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 20. M25 세션/계산 원본 주소 전수 매핑은 완료되었고 `npm run coverage:session-mapping`, `npm run gate:session-mapping`, `npm run gate:session-save-boundary`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
 21. M26 구현 전 누락 감사는 완료되었고 `npm run audit:pre-implementation`, `npm run gate:pre-implementation-audit`, `npm run build`로 확인되었다.
 22. M27 구현 단위 큐와 blocker 동결은 완료되었고 `npm run coverage:implementation-queue`, `npm run gate:implementation-queue`, `npm run build`, `npm run test --if-present`로 확인되었다.
-23. 다음 작업은 M28 메인 화면과 route 전수 연결이다.
+23. M28 메인 화면과 route 전수 연결은 완료되었고 `npm run coverage:main-routes`, `npm run gate:main-route-coverage`, `npm run gate:milestone-scope-closure -- M28`, `npm run smoke:main-routes`, `npm run build`로 확인되었다.
+24. 다음 작업은 M29 아이템 상점과 구매 완성이다.
 
 ## 읽을 문서
 

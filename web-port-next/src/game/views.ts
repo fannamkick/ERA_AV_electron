@@ -5,6 +5,10 @@ export type MenuItemView = {
   readonly id: string;
   readonly label: string;
   readonly route?: UiRoute;
+  readonly actionId?: string;
+  readonly sourceId?: string;
+  readonly sourceEvidenceId?: string;
+  readonly ownerMilestone?: string;
   readonly enabled: boolean;
   readonly disabledReason?: string;
 };
@@ -14,6 +18,19 @@ export type MainMenuView = {
   readonly route: 'mainMenu';
   readonly currentMoney: number;
   readonly menuItems: readonly MenuItemView[];
+};
+
+export type RosterEntryView = {
+  readonly characterId: string;
+  readonly displayName: string;
+  readonly templateId: CatalogId;
+  readonly roleSummary: string;
+};
+
+export type RosterView = {
+  readonly kind: 'roster';
+  readonly route: 'roster';
+  readonly entries: readonly RosterEntryView[];
 };
 
 export type ShopListingView = {
@@ -219,6 +236,7 @@ export type TrainingView = {
 export type GameView =
   | MainMenuView
   | ItemShopView
+  | RosterView
   | RecruitView
   | SaveLoadView
   | VisitView
@@ -231,6 +249,7 @@ export type BuiltGameViews = {
   readonly mainMenu?: MainMenuView;
   readonly itemShop?: ItemShopView;
   readonly mission?: MissionView;
+  readonly roster?: RosterView;
   readonly recruit?: RecruitView;
   readonly saveLoad?: SaveLoadView;
   readonly shooting?: ShootingView;

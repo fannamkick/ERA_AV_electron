@@ -3,6 +3,7 @@ import { buildItemShopView } from '../features/itemShop';
 import { buildMainMenuView } from '../features/mainMenu';
 import { buildMissionView } from '../features/mission';
 import { buildRecruitView } from '../features/recruit';
+import { buildRosterView } from '../features/roster';
 import { buildSaveLoadView } from '../features/saveLoad';
 import { buildShootingView } from '../features/shooting';
 import { buildTrainingView } from '../features/training';
@@ -27,9 +28,20 @@ function money(value: number): string {
 
 function mainMenuAction(itemId: string): GameAction | undefined {
   const actions: Record<string, GameAction> = {
+    'main/openItemShop': { type: 'main/openItemShop' },
+    'main/openMission': { type: 'main/openMission' },
+    'main/openRecruit': { type: 'main/openRecruit' },
+    'main/openRoster': { type: 'main/openRoster' },
+    'main/openSaveLoad': { type: 'main/openSaveLoad' },
+    'main/openShooting': { type: 'main/openShooting' },
+    'main/openTraining': { type: 'main/openTraining' },
+    'main/openVisit': { type: 'main/openVisit' },
+    'main/openWork': { type: 'main/openWork' },
+    'turn/end': { type: 'turn/end' },
     itemShop: { type: 'main/openItemShop' },
     mission: { type: 'main/openMission' },
     recruit: { type: 'main/openRecruit' },
+    roster: { type: 'main/openRoster' },
     rest: { type: 'turn/end' },
     saveLoad: { type: 'main/openSaveLoad' },
     shooting: { type: 'main/openShooting' },
@@ -57,15 +69,15 @@ function BootScreen({ onAction }: ScreenProps) {
   );
 }
 
-function MainMenuScreen({ state, onAction }: ScreenProps) {
-  const view = buildMainMenuView(state);
+function MainMenuScreen({ catalog, state, onAction }: ScreenProps) {
+  const view = buildMainMenuView(state, catalog);
 
   return (
     <section className="screen-panel">
       <ScreenHeading eyebrow="메인 화면" title={`현재 자금 ${money(view.currentMoney)}`} />
       <div className="menu-grid">
         {view.menuItems.map((item) => {
-          const action = mainMenuAction(item.id);
+          const action = mainMenuAction(item.actionId ?? item.id);
 
           return (
             <ChoiceButton
@@ -489,6 +501,31 @@ function SaveLoadScreen({ state, session, onAction }: ScreenProps) {
   );
 }
 
+function RosterScreen({ state, onAction }: ScreenProps) {
+  const view = buildRosterView(state);
+
+  return (
+    <section className="screen-panel">
+      <ScreenHeading eyebrow="Roster" title="Characters" />
+      <div className="listing-list" aria-label="Characters">
+        {view.entries.map((entry) => (
+          <div className="choice-button" key={entry.characterId}>
+            <span>{entry.displayName}</span>
+            <small>
+              {entry.characterId} / template {entry.templateId} / {entry.roleSummary}
+            </small>
+          </div>
+        ))}
+      </div>
+      <ActionRow>
+        <button type="button" onClick={() => onAction({ type: 'route/change', route: 'mainMenu' })}>
+          Back
+        </button>
+      </ActionRow>
+    </section>
+  );
+}
+
 function VisitScreen({ state, session, onAction }: ScreenProps) {
   const view = buildVisitView(state, session);
 
@@ -566,6 +603,7 @@ export function RouteScreen(props: RouteScreenProps) {
   if (route === 'itemShop') return <ItemShopScreen {...props} />;
   if (route === 'mission') return <MissionScreen {...props} />;
   if (route === 'recruit') return <RecruitScreen {...props} />;
+  if (route === 'roster') return <RosterScreen {...props} />;
   if (route === 'shooting') return <ShootingScreen {...props} />;
   if (route === 'training') return <TrainingScreen {...props} />;
   if (route === 'visit') return <VisitScreen {...props} />;

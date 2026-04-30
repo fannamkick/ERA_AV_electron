@@ -66,6 +66,18 @@ export type FilmingSceneDefinition = CatalogDefinition & {
   readonly completesTimeBlock: boolean;
 };
 
+export type MainMenuOptionDefinition = CatalogDefinition & {
+  readonly menuCode: string;
+  readonly actionTarget: string;
+  readonly actionCondition?: string;
+  readonly sourceEvidenceId: string;
+  readonly actionId?: string;
+  readonly routeId?: string;
+  readonly defaultEnabled: boolean;
+  readonly disabledReason?: string;
+  readonly ownerMilestone: string;
+};
+
 export type TrainingCommandDefinition = CatalogDefinition & {
   readonly defaultAvailable?: boolean;
   readonly requiresTarget?: boolean;
@@ -124,6 +136,7 @@ export type GameCatalog = {
   readonly missionDefinitions: Record<CatalogId, MissionDefinition>;
   readonly workDefinitions: Record<CatalogId, WorkDefinition>;
   readonly filmingSceneDefinitions: Record<CatalogId, FilmingSceneDefinition>;
+  readonly mainMenuOptions: Record<CatalogId, MainMenuOptionDefinition>;
   readonly thresholds: Record<CatalogId, ThresholdTable>;
 };
 
@@ -147,6 +160,7 @@ export const emptyCatalog: GameCatalog = {
   missionDefinitions: {},
   workDefinitions: {},
   filmingSceneDefinitions: {},
+  mainMenuOptions: {},
   thresholds: {},
 };
 
