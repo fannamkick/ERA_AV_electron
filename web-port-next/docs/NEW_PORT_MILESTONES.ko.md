@@ -1102,14 +1102,33 @@ npm run test --if-present
 - 완료 결과: 영입 가능한 항목 전체가 생성 결과 또는 사용자 승인 제외를 갖고 소유 blocker 0개 상태가 된다.
 - 누락 차단: listing과 캐릭터 원형 연결 누락 또는 생성 owner 누락이 있으면 완료하지 않는다.
 
-- [ ] 모든 영입 listing의 표시 조건, 가격, 생성 결과를 구현
-- [ ] 영입 listing과 캐릭터 원형 연결 누락 0개 확인
-- [ ] 중복 영입, 인원 제한, 돈 부족, 조건 미충족, 취소를 검증
-- [ ] 영입 성공 시 `people`, `body`, `social`, `equipment` 초기 상태를 생성
-- [ ] 영입 후 메인 화면, 정보 화면, 저장 roundtrip을 검증
-- [ ] 영입 불가 또는 제외 항목은 사용자 승인 근거를 남기고, 미승인 blocker가 있으면 완료하지 않음
-- [ ] M20/M24/M25 coverage의 영입 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 모든 영입 listing의 표시 조건, 가격, 생성 결과를 구현
+- [x] 영입 listing과 캐릭터 원형 연결 누락 0개 확인
+- [x] 중복 영입, 인원 제한, 돈 부족, 조건 미충족, 취소를 검증
+- [x] 영입 성공 시 `people`, `body`, `social`, `equipment` 초기 상태를 생성
+- [x] 영입 후 메인 화면, 정보 화면, 저장 roundtrip을 검증
+- [x] 영입 불가 또는 제외 항목은 사용자 승인 근거를 남기고, 미승인 blocker가 있으면 완료하지 않음
+- [x] M20/M24/M25 coverage의 영입 관련 status 갱신
+- [x] `npm run build` 실행
+
+M31 완료 근거:
+- `Item.csv` 영입 listing 48개를 전수 확인했다. `100~146`은 `Chara 1~47`, `150`은 `Chara 51`로 연결한다.
+- `recruit:150` 구인광고는 원본 `FLAG:90 < 5` 흐름에 맞춰 5회 반복 영입으로 닫고, 각 인스턴스는 `character:51:n`으로 저장한다.
+- `SELL_CHARA.ERB` 은퇴/매각 row 27개는 M31 범위가 아니라 M32 생명주기 owner로 이관했다.
+- `TFLAG:100`, `TFLAG:400~421`, `TFLAG:430~431`, `TSTR:50~51`은 save가 아니라 `session.recruit` 버퍼로 소비한다.
+
+검증:
+```bash
+npm run coverage:recruit
+npm run gate:recruit-coverage
+npm run gate:milestone-scope-closure -- M31
+npm run smoke:recruit-all
+npm run smoke:m7
+npm run smoke:main-routes
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M32. 인물 원형과 identity 완성
 

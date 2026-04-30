@@ -1,11 +1,12 @@
 import { getRecruitListingDefinition } from '../catalog/lookup';
+import { recruitAdvertisementMaxCount, recruitAdvertisementTemplateId } from '../catalog/recruitListingIds';
 import type { CatalogId, GameDefinitions, RecruitListingDefinition } from '../catalog/types';
-import type { RecruitSessionState } from '../domains/recruit/types';
+import type { RecruitInterviewDraft, RecruitSessionState } from '../domains/recruit/types';
 import type { GameSession, GameState } from '../game/state';
 import type { RecruitListingView, RecruitView } from '../game/views';
-import { characterIdForTemplate, createCharacterBundle, getCharacterTemplate } from './characterCreation';
+import { characterIdForTemplate, createCharacterBundleFromSpecs, getCharacterTemplate } from './characterCreation';
 
-export const MAX_PHASE_TWO_RECRUITED_CHARACTERS = 99;
+export const DEFAULT_RECRUIT_ROSTER_LIMIT = 99;
 
 export type RecruitFailure = {
   readonly code: string;
@@ -25,19 +26,98 @@ export type RecruitUpdateResult =
     };
 
 function isUnlockedOrDefault(state: GameState, listing: RecruitListingDefinition): boolean {
-  if (state.shop.progress.hiddenListingIds.includes(listing.id)) {
-    return false;
-  }
-
-  if (state.shop.progress.unlockedListingIds.includes(listing.id)) {
-    return true;
-  }
-
+  if (state.shop.progress.hiddenListingIds.includes(listing.id)) return false;
+  if (state.shop.progress.unlockedListingIds.includes(listing.id)) return true;
   return listing.defaultAvailable;
 }
 
-function recruitCharacterId(listing: RecruitListingDefinition): string | undefined {
-  return listing.characterTemplateId ? characterIdForTemplate(listing.characterTemplateId) : undefined;
+function recruitRosterLimit(state: GameState): number {
+  const value = state.run.runFlags.recruitRosterLimit;
+  return typeof value === 'number' && Number.isFinite(value) ? value : DEFAULT_RECRUIT_ROSTER_LIMIT;
+}
+
+function recruitTemplateCount(state: GameState, templateId: CatalogId): number {
+  return Object.values(state.people.characters).filter((character) => character.identity.templateId === templateId).length;
+}
+
+function maxRecruitCount(listing: RecruitListingDefinition): number {
+  if (listing.maxRecruitCount !== undefined) return listing.maxRecruitCount;
+  return listing.repeatable ? recruitAdvertisementMaxCount : 1;
+}
+
+function isRepeatableRecruitListing(listing: RecruitListingDefinition): boolean {
+  return listing.repeatable === true || listing.characterTemplateId === recruitAdvertisementTemplateId;
+}
+
+function hasRemainingRecruitCount(state: GameState, listing: RecruitListingDefinition): boolean {
+  if (!listing.characterTemplateId) return false;
+  return recruitTemplateCount(state, listing.characterTemplateId) < maxRecruitCount(listing);
+}
+
+function recruitCharacterId(listing: RecruitListingDefinition, state: GameState): string | undefined {
+  if (!listing.characterTemplateId) return undefined;
+  if (!isRepeatableRecruitListing(listing)) return characterIdForTemplate(listing.characterTemplateId);
+  return `${characterIdForTemplate(listing.characterTemplateId)}:${recruitTemplateCount(state, listing.characterTemplateId) + 1}`;
+}
+
+function createRecruitInterviewDraft(listing: RecruitListingDefinition, state: GameState): RecruitInterviewDraft | undefined {
+  if (!listing.characterTemplateId || !isRepeatableRecruitListing(listing)) return undefined;
+
+  const instanceIndex = recruitTemplateCount(state, listing.characterTemplateId) + 1;
+  const commandFlags: Record<string, number> = {
+    '400': 0,
+    '401': 18 + instanceIndex,
+    '402': ((instanceIndex - 1) % 12) + 1,
+    '403': ((instanceIndex * 3) % 28) + 1,
+    '404': ((instanceIndex - 1) % 4) + 1,
+    '405': instanceIndex <= 2 ? 0 : ((instanceIndex - 1) % 9) + 1,
+    '406': (instanceIndex * 2) % 21,
+    '407': (instanceIndex * 17) % 100,
+    '408': instanceIndex % 5,
+    '409': instanceIndex % 10,
+    '410': 100 + instanceIndex * 10,
+    '411': instanceIndex % 2,
+    '412': instanceIndex % 2,
+    '413': instanceIndex % 3 === 0 ? 1 : 0,
+    '414': instanceIndex % 19,
+    '415': instanceIndex % 20,
+    '416': 23 + (instanceIndex % 15),
+    '417': instanceIndex % 5 === 0 ? 40 : 0,
+    '418': instanceIndex % 5 === 1 ? 42 : 0,
+    '419': instanceIndex % 5 === 2 ? 99 : 0,
+    '420': listing.basePrice ?? 300,
+    '421': 0,
+    '430': 0,
+    '431': 1500,
+  };
+  const scratchTexts = {
+    '50': 'Interview',
+    '51': `Candidate ${instanceIndex}`,
+  };
+
+  return {
+    sourceListingId: listing.id,
+    templateId: listing.characterTemplateId,
+    instanceIndex,
+    displayName: `${scratchTexts['50']} ${scratchTexts['51']}`,
+    commandFlags,
+    scratchTexts,
+  };
+}
+
+function commandFlagsForSession(session: GameSession, draft?: RecruitInterviewDraft): Record<string, number> {
+  return {
+    ...session.recruit.commandFlags,
+    '100': session.recruit.pageIndex,
+    ...(draft?.commandFlags ?? {}),
+  };
+}
+
+function scratchTextsForSession(session: GameSession, draft?: RecruitInterviewDraft): Record<string, string> {
+  return {
+    ...session.recruit.scratchTexts,
+    ...(draft?.scratchTexts ?? {}),
+  };
 }
 
 function unavailableReason(
@@ -45,27 +125,20 @@ function unavailableReason(
   state: GameState,
   listing: RecruitListingDefinition,
 ): string | undefined {
-  if (!isUnlockedOrDefault(state, listing)) {
-    return '현재 표시 가능한 영입 후보가 아닙니다.';
-  }
+  if (!isUnlockedOrDefault(state, listing)) return 'Recruit listing is currently hidden.';
 
   if (!listing.characterTemplateId || !getCharacterTemplate(definitions, listing.characterTemplateId)) {
-    return '연결된 캐릭터 원형이 없습니다.';
+    return 'Recruit listing is missing a character template.';
   }
 
-  const characterId = recruitCharacterId(listing);
-  if (characterId && state.people.characters[characterId]) {
-    return '이미 영입한 인물입니다.';
+  if (!hasRemainingRecruitCount(state, listing)) {
+    return isRepeatableRecruitListing(listing) ? 'Recruitment limit reached for this listing.' : 'Character already recruited.';
   }
 
-  if (Object.keys(state.people.characters).length >= MAX_PHASE_TWO_RECRUITED_CHARACTERS) {
-    return '영입 가능한 인원 한도에 도달했습니다.';
-  }
-
-  const price = listing.basePrice ?? 0;
-  if (state.economy.account.currentMoney < price) {
-    return '돈 부족';
-  }
+  const characterId = recruitCharacterId(listing, state);
+  if (characterId && state.people.characters[characterId]) return 'Character already recruited.';
+  if (Object.keys(state.people.characters).length >= recruitRosterLimit(state)) return 'Roster limit reached.';
+  if (state.economy.account.currentMoney < (listing.basePrice ?? 0)) return 'Not enough money.';
 
   return undefined;
 }
@@ -74,7 +147,8 @@ function canEnterRecruitList(definitions: GameDefinitions, state: GameState, lis
   return (
     isUnlockedOrDefault(state, listing) &&
     listing.characterTemplateId !== undefined &&
-    getCharacterTemplate(definitions, listing.characterTemplateId) !== undefined
+    getCharacterTemplate(definitions, listing.characterTemplateId) !== undefined &&
+    hasRemainingRecruitCount(state, listing)
   );
 }
 
@@ -91,9 +165,7 @@ function listingViewFromDefinition(
   listingId: CatalogId,
 ): RecruitListingView | undefined {
   const listingResult = getRecruitListingDefinition(definitions, listingId);
-  if (!listingResult.ok) {
-    return undefined;
-  }
+  if (!listingResult.ok) return undefined;
 
   const listing = listingResult.definition;
   const disabledReason = unavailableReason(definitions, state, listing);
@@ -101,7 +173,7 @@ function listingViewFromDefinition(
   return {
     listingId: listing.id,
     characterTemplateId: listing.characterTemplateId,
-    characterId: recruitCharacterId(listing),
+    characterId: recruitCharacterId(listing, state),
     label: listing.label,
     price: listing.basePrice ?? 0,
     available: disabledReason === undefined,
@@ -134,6 +206,9 @@ export function createRecruitSession(definitions: GameDefinitions, state: GameSt
   return {
     selectedListingId: undefined,
     visibleListingIds: computeVisibleRecruitListingIds(definitions, state),
+    pageIndex: 0,
+    commandFlags: { '100': 0 },
+    scratchTexts: {},
   };
 }
 
@@ -145,29 +220,38 @@ function selectableRecruitFailure(
   if (!isUnlockedOrDefault(state, listing)) {
     return {
       code: 'recruit-listing-not-visible',
-      message: `현재 표시 가능한 영입 후보가 아닙니다: ${listing.id}`,
+      message: `Recruit listing is currently hidden: ${listing.id}`,
     };
   }
 
   if (!listing.characterTemplateId || !getCharacterTemplate(definitions, listing.characterTemplateId)) {
     return {
       code: 'recruit-template-missing',
-      message: `영입 후보에 연결된 캐릭터 원형이 없습니다: ${listing.id}`,
+      message: `Recruit listing is missing a character template: ${listing.id}`,
     };
   }
 
-  const characterId = recruitCharacterId(listing);
+  if (!hasRemainingRecruitCount(state, listing)) {
+    return {
+      code: isRepeatableRecruitListing(listing) ? 'recruit-repeat-limit' : 'recruit-duplicate-character',
+      message: isRepeatableRecruitListing(listing)
+        ? `Recruit listing reached its repeat limit: ${listing.id}`
+        : `Character already recruited: ${listing.label}`,
+    };
+  }
+
+  const characterId = recruitCharacterId(listing, state);
   if (characterId && state.people.characters[characterId]) {
     return {
       code: 'recruit-duplicate-character',
-      message: `이미 영입한 인물입니다: ${listing.label}`,
+      message: `Character already recruited: ${listing.label}`,
     };
   }
 
-  if (Object.keys(state.people.characters).length >= MAX_PHASE_TWO_RECRUITED_CHARACTERS) {
+  if (Object.keys(state.people.characters).length >= recruitRosterLimit(state)) {
     return {
       code: 'recruit-roster-limit',
-      message: '영입 가능한 인원 한도에 도달했습니다.',
+      message: 'Recruit roster limit reached.',
     };
   }
 
@@ -191,16 +275,6 @@ export function selectRecruitListing(
     };
   }
 
-  if (session.recruit.visibleListingIds.length > 0 && !session.recruit.visibleListingIds.includes(listingId)) {
-    return {
-      ok: false,
-      failure: {
-        code: 'recruit-listing-not-in-session',
-        message: `현재 영입 화면의 표시 목록에 없는 후보입니다: ${listingId}`,
-      },
-    };
-  }
-
   const failure = selectableRecruitFailure(definitions, state, listingResult.definition);
   if (failure) {
     return {
@@ -208,6 +282,18 @@ export function selectRecruitListing(
       failure,
     };
   }
+
+  if (session.recruit.visibleListingIds.length > 0 && !session.recruit.visibleListingIds.includes(listingId)) {
+    return {
+      ok: false,
+      failure: {
+        code: 'recruit-listing-not-in-session',
+        message: `Recruit listing is not visible in the current session: ${listingId}`,
+      },
+    };
+  }
+
+  const draft = createRecruitInterviewDraft(listingResult.definition, state);
 
   return {
     ok: true,
@@ -217,9 +303,12 @@ export function selectRecruitListing(
       recruit: {
         ...session.recruit,
         selectedListingId: listingResult.definition.id,
+        commandFlags: commandFlagsForSession(session, draft),
+        scratchTexts: scratchTextsForSession(session, draft),
+        interviewDraft: draft,
       },
     },
-    message: `${listingResult.definition.label}을 영입 후보로 선택했습니다.`,
+    message: `${listingResult.definition.label} selected for recruitment.`,
   };
 }
 
@@ -234,7 +323,7 @@ export function recruitSelectedCharacter(
       ok: false,
       failure: {
         code: 'recruit-selection-required',
-        message: '영입할 후보를 먼저 선택해야 합니다.',
+        message: 'Select a recruit listing first.',
       },
     };
   }
@@ -265,7 +354,7 @@ export function recruitSelectedCharacter(
       ok: false,
       failure: {
         code: 'recruit-price-missing',
-        message: `영입 가격 정의가 없습니다: ${listing.id}`,
+        message: `Recruit listing is missing a price: ${listing.id}`,
       },
     };
   }
@@ -275,12 +364,31 @@ export function recruitSelectedCharacter(
       ok: false,
       failure: {
         code: 'not-enough-money',
-        message: `돈이 부족합니다. 필요 금액: ${price}Pt`,
+        message: `Not enough money. Required: ${price}Pt`,
       },
     };
   }
 
-  const characterResult = createCharacterBundle(definitions, [listing.characterTemplateId!]);
+  const draft = session.recruit.interviewDraft ?? createRecruitInterviewDraft(listing, state);
+  const characterId = recruitCharacterId(listing, state);
+  const characterResult = createCharacterBundleFromSpecs(definitions, [
+    {
+      templateId: listing.characterTemplateId!,
+      characterId,
+      identityOverrides: draft
+        ? {
+            displayName: draft.displayName,
+            callName: draft.displayName,
+            nickname: draft.displayName,
+          }
+        : undefined,
+      featureProgress: draft
+        ? {
+            recruitInterviewInstance: draft.instanceIndex,
+          }
+        : undefined,
+    },
+  ]);
   if (!characterResult.ok) {
     return {
       ok: false,
@@ -297,7 +405,7 @@ export function recruitSelectedCharacter(
       },
       accountingEntries: [
         ...state.economy.accountingEntries,
-        `recruit:template:${listing.characterTemplateId}:total:${price}`,
+        `recruit:template:${listing.characterTemplateId}:character:${characterId}:total:${price}`,
       ],
     },
     people: {
@@ -332,11 +440,8 @@ export function recruitSelectedCharacter(
     state: nextState,
     session: {
       ...session,
-      recruit: {
-        selectedListingId: undefined,
-        visibleListingIds: computeVisibleRecruitListingIds(definitions, nextState),
-      },
+      recruit: createRecruitSession(definitions, nextState),
     },
-    message: `${listing.label}을 영입했습니다.`,
+    message: `${listing.label} recruited.`,
   };
 }

@@ -1,7 +1,7 @@
 import type { CatalogId, CharacterTemplate, GameDefinitions } from '../catalog/types';
 import type { CharacterBodyState } from '../domains/body/types';
 import type { CharacterEquipmentState } from '../domains/equipment/types';
-import type { CharacterId, CharacterRole, CharacterState } from '../domains/people/types';
+import type { CharacterId, CharacterIdentity, CharacterRole, CharacterState } from '../domains/people/types';
 import type { RelationshipState } from '../domains/social/types';
 
 export type CharacterCreationFailure = {
@@ -15,6 +15,14 @@ export type CharacterCreationBundle = {
   readonly equipment: Record<CharacterId, CharacterEquipmentState>;
   readonly relationships: Record<string, RelationshipState>;
   readonly createdCharacterIds: readonly CharacterId[];
+};
+
+export type CharacterCreationSpec = {
+  readonly templateId: CatalogId;
+  readonly characterId?: CharacterId;
+  readonly identityOverrides?: Partial<Pick<CharacterIdentity, 'displayName' | 'callName' | 'nickname' | 'firstPerson'>>;
+  readonly featureProgress?: Record<string, boolean | number | string>;
+  readonly legacyFlagsNeedingMapping?: Record<string, boolean | number | string>;
 };
 
 export type CharacterCreationResult =
@@ -39,14 +47,15 @@ function createCharacterRoles(templateId: CatalogId): readonly CharacterRole[] {
   return ['owned'];
 }
 
-function createCharacterFromTemplate(template: CharacterTemplate): CharacterState {
+function createCharacterFromTemplate(template: CharacterTemplate, spec: CharacterCreationSpec): CharacterState {
   return {
-    id: characterIdForTemplate(template.id),
+    id: spec.characterId ?? characterIdForTemplate(template.id),
     identity: {
       templateId: template.id,
-      displayName: template.displayName,
-      callName: template.callName || undefined,
-      nickname: template.nickname || undefined,
+      displayName: spec.identityOverrides?.displayName ?? template.displayName,
+      callName: spec.identityOverrides?.callName ?? (template.callName || undefined),
+      nickname: spec.identityOverrides?.nickname ?? (template.nickname || undefined),
+      firstPerson: spec.identityOverrides?.firstPerson,
     },
     attributes: {
       baseStats: {
@@ -70,8 +79,13 @@ function createCharacterFromTemplate(template: CharacterTemplate): CharacterStat
         legacyRelationIndexes: {},
       },
       settings: {},
-      featureProgress: {},
-      legacyFlagsNeedingMapping: { ...template.initialState.characterFlags },
+      featureProgress: {
+        ...spec.featureProgress,
+      },
+      legacyFlagsNeedingMapping: {
+        ...template.initialState.characterFlags,
+        ...spec.legacyFlagsNeedingMapping,
+      },
     },
     roles: createCharacterRoles(template.id),
   };
@@ -123,13 +137,24 @@ export function createCharacterBundle(
   definitions: GameDefinitions,
   templateIds: readonly CatalogId[],
 ): CharacterCreationResult {
+  return createCharacterBundleFromSpecs(
+    definitions,
+    templateIds.map((templateId) => ({ templateId })),
+  );
+}
+
+export function createCharacterBundleFromSpecs(
+  definitions: GameDefinitions,
+  specs: readonly CharacterCreationSpec[],
+): CharacterCreationResult {
   const characters: Record<CharacterId, CharacterState> = {};
   const bodies: Record<CharacterId, CharacterBodyState> = {};
   const equipment: Record<CharacterId, CharacterEquipmentState> = {};
   const relationships: Record<string, RelationshipState> = {};
   const createdCharacterIds: CharacterId[] = [];
 
-  for (const templateId of templateIds) {
+  for (const spec of specs) {
+    const templateId = spec.templateId;
     const template = getCharacterTemplate(definitions, templateId);
     if (!template) {
       return {
@@ -141,7 +166,7 @@ export function createCharacterBundle(
       };
     }
 
-    const character = createCharacterFromTemplate(template);
+    const character = createCharacterFromTemplate(template, spec);
     characters[character.id] = character;
     bodies[character.id] = createCharacterBody();
     equipment[character.id] = createCharacterEquipment();

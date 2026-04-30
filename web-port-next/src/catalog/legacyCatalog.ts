@@ -1,5 +1,10 @@
 import rawLegacyCatalog from '../../data/catalog/legacy-catalog.json';
 import { itemShopPurchaseItemIdSet } from './shopItemIds';
+import {
+  characterTemplateIdForRecruitListingItemId,
+  isRepeatableRecruitListingItemId,
+  recruitAdvertisementMaxCount,
+} from './recruitListingIds';
 import rawErbDerivedDefinitions from '../../data/coverage/erb-derived-definitions.json';
 import type {
   CatalogId,
@@ -81,13 +86,17 @@ function isPhaseOneShopItem(item: ItemDefinition): boolean {
 }
 
 function createRecruitListing(item: ItemDefinition): RecruitListingDefinition {
+  const repeatable = isRepeatableRecruitListingItemId(item.source.originalId ?? item.id);
+
   return {
     id: `recruit:${item.id}`,
     label: item.label,
     source: item.source,
     basePrice: item.basePrice,
-    characterTemplateId: item.source.originalId,
+    characterTemplateId: characterTemplateIdForRecruitListingItemId(item.source.originalId ?? item.id),
     defaultAvailable: true,
+    repeatable,
+    maxRecruitCount: repeatable ? recruitAdvertisementMaxCount : 1,
   };
 }
 

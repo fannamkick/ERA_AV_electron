@@ -38,6 +38,8 @@ export type RecruitListingDefinition = {
   readonly basePrice?: number;
   readonly characterTemplateId?: CatalogId;
   readonly defaultAvailable: boolean;
+  readonly repeatable?: boolean;
+  readonly maxRecruitCount?: number;
 };
 
 export type MissionDefinition = CatalogDefinition & {

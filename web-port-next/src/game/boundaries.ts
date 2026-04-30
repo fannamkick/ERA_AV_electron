@@ -106,6 +106,10 @@ export function validateStateSessionBoundary(state: GameState, session: GameSess
     diagnostics.push({ severity: 'error', message: 'GameSession.recruit.visibleListingIds must remain session/view state.' });
   }
 
+  if (!isRecord(session.recruit.commandFlags) || !isRecord(session.recruit.scratchTexts)) {
+    diagnostics.push({ severity: 'error', message: 'GameSession.recruit must own recruit/interview calculation buffers.' });
+  }
+
   if (!Array.isArray(session.mission.visibleMissionIds)) {
     diagnostics.push({ severity: 'error', message: 'GameSession.mission.visibleMissionIds must remain session/view state.' });
   }

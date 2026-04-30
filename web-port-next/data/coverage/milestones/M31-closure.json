@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M31",
+  "title": "Recruit listing and character creation coverage",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M31 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json",
+    "definitions": "data/coverage/definitions.json",
+    "features": "data/coverage/features.json",
+    "saveMapping": "data/coverage/save-mapping.json",
+    "sessionMapping": "data/coverage/session-mapping.json"
+  },
+  "outputs": {
+    "recruitCoverage": "data/coverage/recruit-coverage.json",
+    "gapAudit": "data/coverage/audits/M31-gap-audit.json",
+    "builder": "tools/build_recruit_coverage.mjs",
+    "coverageGate": "tools/gate_recruit_coverage.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m31_recruit_all_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 237,
+    "implemented": 52,
+    "mapped": 158,
+    "approvedExcluded": 0,
+    "transferredOut": 27,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 237,
+    "implemented": 52,
+    "mapped": 158,
+    "approvedExcluded": 0,
+    "transferredOut": 27,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:recruit",
+      "npm run gate:recruit-coverage",
+      "npm run gate:milestone-scope-closure -- M31",
+      "npm run smoke:recruit-all",
+      "npm run smoke:m7",
+      "npm run smoke:main-routes",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "237 M31 owned row(s), 0 unresolved issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:recruit",
+    "npm run gate:recruit-coverage",
+    "npm run gate:milestone-scope-closure -- M31",
+    "npm run smoke:recruit-all",
+    "npm run smoke:m7",
+    "npm run smoke:main-routes",
+    "npm run typecheck",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}
