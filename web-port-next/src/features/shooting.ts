@@ -5,6 +5,7 @@ import { initialShootingSessionState } from '../domains/shootingSession/types';
 import { logEffect, type GameEffect } from '../game/effects';
 import type { GameSession, GameState } from '../game/state';
 import type { ShootingSceneView, ShootingTargetView, ShootingView } from '../game/views';
+import { isCharacterActive } from './characterLifecycle';
 import { endTurn } from './turnEnd';
 
 export type ShootingFailure = {
@@ -51,8 +52,8 @@ function targetDisabledReason(state: GameState, characterId: string): string | u
     return 'Target character does not exist.';
   }
 
-  if (character.flags.lifecycle.retired) {
-    return 'Retired characters cannot be selected for filming.';
+  if (!isCharacterActive(character)) {
+    return 'Inactive characters cannot be selected for filming.';
   }
 
   if (!state.body.byCharacterId[characterId]) {

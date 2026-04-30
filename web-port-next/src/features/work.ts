@@ -5,6 +5,7 @@ import { initialWorkSessionState } from '../domains/workSession/types';
 import { logEffect, type GameEffect } from '../game/effects';
 import type { GameSession, GameState } from '../game/state';
 import type { WorkCharacterCandidateView, WorkListingView, WorkView } from '../game/views';
+import { isCharacterActive } from './characterLifecycle';
 import { endTurn } from './turnEnd';
 
 export type WorkFailure = {
@@ -47,7 +48,7 @@ function workDisabledReason(state: GameState, work: WorkDefinition): string | un
 
 function eligibleCharacterIds(state: GameState): readonly string[] {
   return Object.values(state.people.characters)
-    .filter((character) => !character.flags.lifecycle.retired)
+    .filter((character) => isCharacterActive(character))
     .map((character) => character.id)
     .sort();
 }
@@ -78,7 +79,7 @@ function characterViewFromState(state: GameState, characterId: string): WorkChar
     return undefined;
   }
 
-  const available = !character.flags.lifecycle.retired;
+  const available = isCharacterActive(character);
 
   return {
     characterId,
@@ -227,7 +228,7 @@ function validateWorkExecution(state: GameState, work: WorkDefinition, character
     };
   }
 
-  if (character.flags.lifecycle.retired) {
+  if (!isCharacterActive(character)) {
     return {
       code: 'work-character-unavailable',
       message: `업무에 참여할 수 없는 인물입니다: ${character.identity.displayName}`,

@@ -1114,7 +1114,7 @@ npm run test --if-present
 M31 완료 근거:
 - `Item.csv` 영입 listing 48개를 전수 확인했다. `100~146`은 `Chara 1~47`, `150`은 `Chara 51`로 연결한다.
 - `recruit:150` 구인광고는 원본 `FLAG:90 < 5` 흐름에 맞춰 5회 반복 영입으로 닫고, 각 인스턴스는 `character:51:n`으로 저장한다.
-- `SELL_CHARA.ERB` 은퇴/매각 row 27개는 M31 범위가 아니라 M32 생명주기 owner로 이관했다.
+- `SELL_CHARA.ERB` 은퇴/매각 및 `CSTR` save row 중 M32 owner 20개는 인물 생명주기/identity owner로 이관했다. 나머지 transfer는 M34/M35/M47 owner로 남긴다.
 - `TFLAG:100`, `TFLAG:400~421`, `TFLAG:430~431`, `TSTR:50~51`은 save가 아니라 `session.recruit` 버퍼로 소비한다.
 
 검증:
@@ -1139,14 +1139,34 @@ npm run test --if-present
 - 완료 결과: 원형에서 인스턴스를 생성하고 정보 표시와 저장 roundtrip이 통과한다.
 - 누락 차단: 정의 문자열과 플레이 상태가 같은 save 필드에 섞이면 완료하지 않는다.
 
-- [ ] M20 Chara template 109개 전체를 생성 가능한 캐릭터 원형으로 연결
-- [ ] 이름, 호칭, 별명, 표시 이름을 정의 데이터와 저장 상태 경계에 맞게 분리
-- [ ] 원형 정의와 플레이 중 인물 인스턴스를 구분
-- [ ] 삭제, 은퇴, 조수 가능, 영입 가능 상태를 저장 필드로 분리
-- [ ] 캐릭터 정보 화면에서 identity 값 표시를 검증
-- [ ] 원형에서 인스턴스 생성 후 저장 roundtrip을 검증
-- [ ] Chara seed 중 identity 관련 row의 coverage status 갱신
-- [ ] `npm run build` 실행
+- [x] M20 Chara template 109개 전체를 생성 가능한 캐릭터 원형으로 연결
+- [x] 이름, 호칭, 별명, 표시 이름을 정의 데이터와 저장 상태 경계에 맞게 분리
+- [x] 원형 정의와 플레이 중 인물 인스턴스를 구분
+- [x] 삭제, 은퇴, 조수 가능, 영입 가능 상태를 저장 필드로 분리
+- [x] 캐릭터 정보 화면에서 identity 값 표시를 검증
+- [x] 원형에서 인스턴스 생성 후 저장 roundtrip을 검증
+- [x] Chara seed 중 identity 관련 row의 coverage status 갱신
+- [x] `npm run build` 실행
+
+M32 완료 근거:
+- M32 scope는 implementation queue 274개와 M31 inbound transfer 20개를 합친 294개 row다.
+- Chara template 109개는 `definitions.characters` 원형에서 `createCharacterBundleFromSpecs`를 통해 `people.characters.*.identity` 인스턴스로 생성된다.
+- `CSTR` seed 157개는 원형의 `initialState.characterTexts`에 남고, 생성 시 save 상태의 `identity.profileTextSlots`로 복사된다. `CSTR:9`는 `firstPerson`으로도 노출한다.
+- `NAME/CALLNAME/NICKNAME` 계열은 정의 문자열과 인스턴스 identity를 분리하고, roster view에서 표시를 검증한다.
+- 삭제/은퇴/조수 가능/영입 상태는 `CharacterLifecycleState`의 `deleted`, `retired`, `assistantEligible`, `recruitmentStatus`로 분리했다.
+- `SELL_CHARA.ERB`에서 넘어온 M32 lifecycle row는 `characterLifecycle` helper와 roster/work/shooting/training active 판정으로 소비한다.
+
+검증:
+```bash
+npm run coverage:character-identity
+npm run gate:character-identity
+npm run gate:milestone-scope-closure -- M32
+npm run smoke:character-identity
+npm run smoke:recruit-all
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M33. 신체/능력/소질/경험 완성
 

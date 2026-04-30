@@ -20,7 +20,9 @@ export type CharacterCreationBundle = {
 export type CharacterCreationSpec = {
   readonly templateId: CatalogId;
   readonly characterId?: CharacterId;
-  readonly identityOverrides?: Partial<Pick<CharacterIdentity, 'displayName' | 'callName' | 'nickname' | 'firstPerson'>>;
+  readonly identityOverrides?: Partial<
+    Pick<CharacterIdentity, 'displayName' | 'callName' | 'nickname' | 'firstPerson' | 'profileTextSlots'>
+  >;
   readonly featureProgress?: Record<string, boolean | number | string>;
   readonly legacyFlagsNeedingMapping?: Record<string, boolean | number | string>;
 };
@@ -55,7 +57,11 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
       displayName: spec.identityOverrides?.displayName ?? template.displayName,
       callName: spec.identityOverrides?.callName ?? (template.callName || undefined),
       nickname: spec.identityOverrides?.nickname ?? (template.nickname || undefined),
-      firstPerson: spec.identityOverrides?.firstPerson,
+      firstPerson: spec.identityOverrides?.firstPerson ?? template.initialState.characterTexts['9'],
+      profileTextSlots: {
+        ...template.initialState.characterTexts,
+        ...spec.identityOverrides?.profileTextSlots,
+      },
     },
     attributes: {
       baseStats: {
@@ -71,6 +77,8 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
         sellable: template.id !== '0',
         assistantEligible: template.id !== '0',
         retired: false,
+        deleted: false,
+        recruitmentStatus: template.id === '0' ? 'notRecruitable' : 'recruited',
         specialTags: [],
       },
       affection: {},

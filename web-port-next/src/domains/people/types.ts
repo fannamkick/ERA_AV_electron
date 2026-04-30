@@ -10,6 +10,7 @@ export type CharacterIdentity = {
   readonly callName?: string;
   readonly nickname?: string;
   readonly firstPerson?: string;
+  readonly profileTextSlots: Record<CatalogId, string>;
 };
 
 export type CharacterBaseStats = {
@@ -33,6 +34,8 @@ export type CharacterLifecycleState = {
   readonly sellable: boolean;
   readonly assistantEligible: boolean;
   readonly retired: boolean;
+  readonly deleted: boolean;
+  readonly recruitmentStatus: 'notRecruitable' | 'recruitable' | 'recruited';
   readonly specialTags: readonly string[];
 };
 

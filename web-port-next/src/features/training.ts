@@ -5,6 +5,7 @@ import { initialInteractionSessionState, type InteractionSessionState } from '..
 import { logEffect, type GameEffect } from '../game/effects';
 import type { GameSession, GameState } from '../game/state';
 import type { TrainingCommandView, TrainingParticipantView, TrainingView } from '../game/views';
+import { isCharacterActive } from './characterLifecycle';
 import { endTurn } from './turnEnd';
 
 export type TrainingFailure = {
@@ -44,8 +45,8 @@ function participantDisabledReason(state: GameState, characterId: string): strin
     return 'Training participant does not exist.';
   }
 
-  if (character.flags.lifecycle.retired) {
-    return 'Retired characters cannot participate in training.';
+  if (!isCharacterActive(character)) {
+    return 'Inactive characters cannot participate in training.';
   }
 
   if (!state.body.byCharacterId[characterId]) {

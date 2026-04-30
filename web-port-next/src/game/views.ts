@@ -23,8 +23,18 @@ export type MainMenuView = {
 export type RosterEntryView = {
   readonly characterId: string;
   readonly displayName: string;
+  readonly callName?: string;
+  readonly nickname?: string;
+  readonly firstPerson?: string;
   readonly templateId: CatalogId;
   readonly roleSummary: string;
+  readonly lifecycleSummary: string;
+  readonly profileTextSlotCount: number;
+  readonly profileTextSlots: Record<CatalogId, string>;
+  readonly retired: boolean;
+  readonly deleted: boolean;
+  readonly assistantEligible: boolean;
+  readonly recruitmentStatus: 'notRecruitable' | 'recruitable' | 'recruited';
 };
 
 export type RosterView = {

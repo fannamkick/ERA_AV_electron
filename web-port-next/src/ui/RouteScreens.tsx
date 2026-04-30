@@ -566,6 +566,12 @@ function RosterScreen({ state, onAction }: ScreenProps) {
             <small>
               {entry.characterId} / template {entry.templateId} / {entry.roleSummary}
             </small>
+            <small>
+              call {entry.callName ?? '-'} / nick {entry.nickname ?? '-'} / first {entry.firstPerson ?? '-'}
+            </small>
+            <small>
+              {entry.lifecycleSummary} / CSTR slots {entry.profileTextSlotCount}
+            </small>
           </div>
         ))}
       </div>
