@@ -48,15 +48,16 @@
 - M19에서 `data/coverage/features.json`과 `data/coverage/blockers.json`을 생성했다. feature row는 5,344개이고, `implemented` 11개, `blocker` 5,333개다.
 - M19 coverage에는 dynamic call 66개, persistence 134개, exit 3,536개, pause 931개, engine entry 9개, unreferenced global 652개가 포함된다. 원본 분석 count와 gate count가 일치한다.
 - M19는 구현 완료 수를 늘리는 단계가 아니다. M28~M49가 `groupKey`와 `ownerMilestone` 기준으로 feature blocker를 줄여야 한다.
-- M20에서 `data/coverage/definitions.json`을 생성했다. definition row는 7,840개이고, raw 정의 918개와 Chara seed 6,922행이 모두 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker를 가진다.
+- M20에서 `data/coverage/definitions.json`을 생성했고 M23에서 ERB 기반 정의 160행을 병합했다. 현재 definition row는 8,000개이고, raw 정의 918개와 Chara seed 6,922행, ERB-derived 정의 160행이 모두 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker를 가진다.
 - M20은 정의 데이터 전수 분류와 소비 책임 배정이다. 실제 컨텐츠 효과 구현 완료가 아니다.
-- M20 definition status는 `template` 5,566개, `display-only` 409개, `calculation-only` 35개, `listing` 94개, `used` 1개, `blocker` 1,735개다. 이 중 실제 구현 완료 근거가 있는 row는 현재 `used` 1개뿐이고, `template`/`listing`/`display-only`/`calculation-only`는 M28~M49에서 실제 소비 검증으로 승격해야 한다.
+- M20/M23 definition status는 `template` 5,566개, `display-only` 456개, `calculation-only` 35개, `listing` 207개, `used` 1개, `blocker` 1,735개다. 이 중 실제 구현 완료 근거가 있는 row는 현재 `used` 1개뿐이고, `template`/`listing`/`display-only`/`calculation-only`는 M28~M49에서 실제 소비 검증으로 승격해야 한다.
 - M20 blocker는 특수 item 15개, 미구현 훈련 command 104개, CFLAG 정의 151개, Chara CFLAG seed 1,465개가 중심이다. 특수 item은 M30, CFLAG 계열은 M34, 훈련 command는 M41~M44에서 의미별 owner와 lifecycle로 분해해야 하며 완료 처리하지 않았다.
 - 데이터 완성도는 수집 수량이 아니라 실제 게임 구성 역할 기준으로 판정한다. 현재 feature coverage와 definition coverage는 v1로 생성되었지만, 전체 게임 완료 기준의 source/save/session coverage는 M21~M27과 M51/M52에서 닫는다.
 - 변수, 정의 데이터, 기능 흐름, 저장/세션 판정의 1차 기준은 문서가 아니라 작업 루트의 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`이다. 문서는 파생 해석이므로 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 않는다.
 - M21~M27에서는 source evidence, feature, definition, save mapping, session mapping, blocker/approved exclusion registry를 대조하는 gate를 추가해야 한다. 같은 gate는 M51/M52 최종 판정에서도 다시 실행한다.
 - 누락 전수 감사 마일스톤은 세 종류로 둔다: M26 구현 전 `pre-implementation-gap-audit.json`, M28~M49 기능군 종료 `Mxx-gap-audit.json`, M51 최종 `final-gap-audit.json`. 감사에서 `discovered-gap`, `orphan-coverage`, `role-only`가 남으면 다음 단계로 넘어가지 않는다.
-- 현재 미정 mapping 규모는 `map-save-state` 1,215개 중 persistent missing mapping 724개, `map-session-state` 365개 중 session missing mapping 164개다. 이 값은 M24/M25에서 장부화하고, 기능 완료 범위에 남으면 해당 기능을 완료 처리하지 않는다.
+- M24에서 `map-save-state` 1,215행은 save-field 989개와 non-save 226개로 닫혔다. ERB persistent 후보 1,016개는 save-field 985개와 M25 session-state 이관 31개로 판정되었고 M24 후 미판정은 0개다.
+- 현재 남은 미정 mapping 규모는 `map-session-state` 365개 중 session missing mapping 164개다. 이 값은 M25에서 장부화하고, 기능 완료 범위에 남으면 해당 기능을 완료 처리하지 않는다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -149,7 +150,11 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 13. M18 반복 구현 규칙 고정은 완료되었고 `IMPLEMENTATION_UNIT_RULES.ko.md`, `npm run build`, `npm run test --if-present`, template 참조 검색으로 확인되었다.
 14. M19 원본 기능 커버리지 전수표는 완료되었고 `npm run coverage:features`, `npm run gate:feature-coverage`, `npm run analyze:game-system`, `npm run build`로 확인되었다.
 15. M20 정의 데이터 전수 분류와 소비 책임 배정은 완료되었고 `npm run collect:catalog`, `npm run coverage:definitions`, `npm run gate:definition-consumption`, `npm run build`로 확인되었다. 이것은 실제 컨텐츠 효과 구현 완료가 아니라 M28~M49의 실제 소비 검증을 위한 장부 완료다.
-16. 다음 작업은 M21 원본 근거 장부 확정이다.
+16. M21 원본 근거 장부 확정은 완료되었고 `npm run coverage:source-manifest`, `npm run gate:source-evidence`, `npm run build`로 확인되었다.
+17. M22 coverage 교차 대조 gate는 완료되었고 `npm run coverage:crosscheck`, `npm run gate:coverage-crosscheck`, `npm run gate:approved-exclusions`, `npm run build`로 확인되었다.
+18. M23 ERB 기반 정의 데이터 보강은 완료되었고 `npm run coverage:erb-definitions`, `npm run coverage:definitions`, `npm run gate:erb-definition-coverage`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
+19. M24 저장 상태 원본 주소 전수 매핑은 완료되었고 `npm run coverage:save-mapping`, `npm run gate:save-mapping`, `npm run gate:state-family-index-coverage`, `npm run gate:coverage-crosscheck`, `npm run build`로 확인되었다.
+20. 다음 작업은 M25 세션/계산 원본 주소 전수 매핑이다.
 
 ## 읽을 문서
 

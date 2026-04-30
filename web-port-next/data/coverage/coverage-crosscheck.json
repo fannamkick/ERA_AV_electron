@@ -5,13 +5,16 @@
     "features": "data/coverage/features.json",
     "definitions": "data/coverage/definitions.json",
     "blockers": "data/coverage/blockers.json",
-    "approvedExclusions": "data/coverage/approved-exclusions.json"
+    "approvedExclusions": "data/coverage/approved-exclusions.json",
+    "saveMapping": "data/coverage/save-mapping.json"
   },
   "summary": {
     "featureRows": 5344,
     "definitionRows": 8000,
     "blockerRows": 63,
     "approvedExclusionRows": 0,
+    "saveMappingRows": 1215,
+    "persistentCandidateRows": 1016,
     "featureStatus": {
       "blocker": 5333,
       "implemented": 11
@@ -23,6 +26,14 @@
       "listing": 207,
       "template": 5566,
       "used": 1
+    },
+    "saveMappingStatus": {
+      "mapped": 989,
+      "non-save": 226
+    },
+    "persistentCandidateStatus": {
+      "save-field": 985,
+      "session-state": 31
     },
     "roleOnlyDefinitionRows": 6264,
     "implementedFeatureDefinitionReads": 12,
@@ -41,6 +52,12 @@
       "nonBlockerDefinitionMissingConsumer": 0,
       "roleOnlyMarkedComplete": 0,
       "sourceEvidenceAuxiliaryCompleted": 0,
+      "saveMappingMissingSourceEvidence": 0,
+      "saveMappingForbiddenStatus": 0,
+      "saveMappingMappedMissingPath": 0,
+      "saveMappingMappedWithoutCoverageLinks": 0,
+      "saveMappingSemanticFlagNotSplit": 0,
+      "persistentCandidateUnresolved": 0,
       "total": 0
     },
     "trackedDeferredUntilOwnerMilestone": {
@@ -50,8 +67,9 @@
         "reason": "Some implemented feature definitionReads point to runtime definitions first created from ERB-derived or local code definitions. M23 owns adding those definition rows to coverage."
       },
       "saveMappingCrosscheck": {
+        "count": 0,
         "ownerMilestone": "M24",
-        "reason": "Save mapping rows do not exist before M24, so M22 records the rule and M24 must make this gate strict."
+        "reason": "Save mapping exists and is included in hard failures from M24 onward."
       },
       "sessionMappingCrosscheck": {
         "ownerMilestone": "M25",
@@ -71,6 +89,12 @@
     "implementedFeatureDefinitionReadUnmatched": [],
     "nonBlockerDefinitionMissingConsumer": [],
     "roleOnlyMarkedComplete": [],
-    "sourceEvidenceAuxiliaryCompleted": []
+    "sourceEvidenceAuxiliaryCompleted": [],
+    "saveMappingMissingSourceEvidence": [],
+    "saveMappingForbiddenStatus": [],
+    "saveMappingMappedMissingPath": [],
+    "saveMappingMappedWithoutCoverageLinks": [],
+    "saveMappingSemanticFlagNotSplit": [],
+    "persistentCandidateUnresolved": []
   }
 }

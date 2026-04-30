@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M24",
+  "ownerRole": "save state source address mapper",
+  "ownedScope": [
+    "map-save-state source addresses",
+    "runtime persistent numeric slot candidates",
+    "family/index save owner decomposition",
+    "CFLAG/FLAG/GLOBAL/PBAND semantic owner split",
+    "character seed-only versus save instance boundary",
+    "read-only default and write-source evidence requirements"
+  ],
+  "saveMapping": {
+    "sourceRows": 1215,
+    "mappedRows": 989,
+    "nonSaveRows": 226,
+    "approvedExcludedRows": 0,
+    "ownerBlockers": 0,
+    "sourceRowsByClassification": {
+      "character-template-seed-only": 121,
+      "definition-display-text": 3,
+      "definition-only": 92,
+      "save-field": 989,
+      "variable-size-declaration": 10
+    }
+  },
+  "persistentCandidateCoverage": {
+    "runtimePersistentNumericSlots": 1016,
+    "saveFieldRows": 985,
+    "sessionStateRows": 31,
+    "persistentCandidatesWithMissingMappingDomainBeforeM24": 724,
+    "persistentCandidatesUnclassifiedAfterM24": 0,
+    "bySourceMappingAction": {
+      "map-save-state": 985,
+      "map-session-state": 31
+    }
+  },
+  "semanticFlagSplit": {
+    "semanticFlagRows": 412,
+    "semanticFlagMappedRows": 408,
+    "runtimeOwners": {
+      "body": 70,
+      "economy": 4,
+      "equipment": 35,
+      "filming": 16,
+      "meta": 108,
+      "mission": 70,
+      "people": 17,
+      "run": 27,
+      "work": 30,
+      "world": 31
+    }
+  },
+  "ownedTotal": 2231,
+  "implemented": 0,
+  "mapped": 1974,
+  "nonSave": 257,
+  "approvedExcluded": 0,
+  "transferredOut": 31,
+  "ownedBlocker": 0,
+  "missingEvidence": 0,
+  "missingConsumer": 0,
+  "missingVerification": 0,
+  "roleOnlyComplete": 0,
+  "unapprovedExcluded": 0,
+  "transferredToOwnerMilestones": {
+    "M25": [
+      "ITEMSALES session.shop.visibleListingIds",
+      "EX session.interaction.resultBuffers",
+      "GOTJUEL session.interaction.resultBuffers"
+    ],
+    "M28-M49": [
+      "Mapped save field paths must be consumed by feature implementation milestones and their roundtrip checks."
+    ]
+  },
+  "commandsRun": [
+    "npm run inventory:legacy-mapping",
+    "npm run audit:erb-states",
+    "npm run coverage:save-mapping",
+    "npm run coverage:crosscheck",
+    "npm run gate:save-mapping",
+    "npm run gate:state-family-index-coverage",
+    "npm run gate:coverage-crosscheck",
+    "npm run build"
+  ],
+  "commitHash": "self: git commit containing this closure file"
+}

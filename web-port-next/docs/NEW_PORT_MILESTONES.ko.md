@@ -897,19 +897,30 @@ npm run build
 - 완료 결과: 기능 구현 범위의 저장 주소가 모두 mapped, non-save, blocker, approved-excluded 중 하나가 된다.
 - 누락 차단: `needsDecision`, `missingMapping`, field path 없는 mapped row가 남으면 완료하지 않는다.
 
-- [ ] `map-save-state` 대상 1,215개를 도메인 필드, 비저장 판정, 사용자 승인 제외 중 하나로 분류하고 소유 blocker 0개 확인
-- [ ] save mapping coverage 산출물 경로 확정
-- [ ] family, index, source evidence, runtime owner, field path, status 컬럼 확정
-- [ ] persistent 후보 1,016개 숫자 슬롯을 저장 필드, 정의 데이터, 세션, script scratch, 사용자 승인 제외 중 하나로 재판정하고 소유 blocker 0개 확인
-- [ ] `CFLAG`, `FLAG`, `GLOBAL`, `PBAND`를 family 단위가 아니라 index 의미 단위로 분해
-- [ ] 캐릭터 seed 근거가 있는 주소는 캐릭터 원형 초기값과 저장 인스턴스 필드를 구분
-- [ ] write-only 주소는 실제 쓰기 위치를 근거로 소유 도메인을 확정
-- [ ] read-only 주소는 실제 사용 기능과 기본값 근거를 확인
-- [ ] 저장 roundtrip에서 사라지는 필드가 없는지 검증
-- [ ] `needsDecision`, `missingMapping` 저장 주소가 기능 완료 상태에 남지 않도록 차단
-- [ ] `npm run inventory:legacy-mapping` 실행
-- [ ] `npm run audit:erb-states` 실행
-- [ ] `npm run build` 실행
+- [x] `map-save-state` 대상 1,215개를 도메인 필드, 비저장 판정, 사용자 승인 제외 중 하나로 분류하고 소유 blocker 0개 확인
+- [x] save mapping coverage 산출물 경로를 `data/coverage/save-mapping.json`으로 확정
+- [x] family, index, source evidence, runtime owner, field path, status 컬럼 확정
+- [x] persistent 후보 1,016개 숫자 슬롯을 저장 필드, 정의 데이터, 세션, script scratch, 사용자 승인 제외 중 하나로 재판정하고 소유 blocker 0개 확인
+- [x] `CFLAG`, `FLAG`, `GLOBAL`, `PBAND`를 family 단위가 아니라 index 의미 단위로 분해
+- [x] 캐릭터 seed 근거가 있는 주소는 캐릭터 원형 초기값과 저장 인스턴스 필드를 구분
+- [x] write-only 주소는 실제 쓰기 위치를 근거로 소유 도메인을 확정
+- [x] read-only 주소는 실제 사용 기능과 기본값 근거를 확인
+- [x] 저장 roundtrip에서 사라지는 필드가 없는지 `roundtripRequirement`와 save mapping gate로 검증
+- [x] `needsDecision`, `missingMapping` 저장 주소가 기능 완료 상태에 남지 않도록 차단
+- [x] `data/coverage/save-mapping.json`에 source row 1,215개, persistent candidate row 1,016개 산출
+- [x] source row 989개를 save field로 매핑하고 226개를 비저장으로 판정
+- [x] persistent candidate 985개를 save field로 판정하고 31개를 M25 session-state로 이관
+- [x] M24 전 `missingMapping` domain이 붙은 persistent 후보 724개가 M24 후 미판정 0개인지 확인
+- [x] `ITEMSALES`, `EX`, `GOTJUEL`은 save가 아니라 M25 session mapping 대상으로 이관
+- [x] `data/coverage/milestones/M24-closure.json` 작성
+- [x] `npm run inventory:legacy-mapping` 실행
+- [x] `npm run audit:erb-states` 실행
+- [x] `npm run coverage:save-mapping` 실행
+- [x] `npm run coverage:crosscheck` 실행
+- [x] `npm run gate:save-mapping` 실행
+- [x] `npm run gate:state-family-index-coverage` 실행
+- [x] `npm run gate:coverage-crosscheck` 실행
+- [x] `npm run build` 실행
 
 ## M25. 세션/계산 원본 주소 전수 매핑
 

@@ -8,6 +8,10 @@ function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(root, relativePath), 'utf8'));
 }
 
+function fileExists(relativePath) {
+  return fs.existsSync(path.join(root, relativePath));
+}
+
 function writeJson(relativePath, value) {
   fs.writeFileSync(path.join(root, relativePath), `${JSON.stringify(value, null, 2)}\n`);
 }
@@ -83,11 +87,14 @@ const features = readJson('data/coverage/features.json');
 const definitions = readJson('data/coverage/definitions.json');
 const blockers = readJson('data/coverage/blockers.json');
 const approvedExclusions = readJson('data/coverage/approved-exclusions.json');
+const saveMapping = fileExists('data/coverage/save-mapping.json') ? readJson('data/coverage/save-mapping.json') : null;
 
 const featureRows = features.rows ?? [];
 const definitionRows = definitions.rows ?? [];
 const blockerRows = blockers.blockers ?? [];
 const approvedRows = approvedExclusions.exclusions ?? [];
+const saveMappingRows = saveMapping?.rows ?? [];
+const persistentCandidateRows = saveMapping?.persistentCandidateCoverage ?? [];
 
 const blockerIds = new Set(blockerRows.map((row) => row.blockerId));
 const approvedIds = new Set(approvedRows.map((row) => row.approvedExclusionId));
@@ -156,6 +163,28 @@ const sourceEvidenceAuxiliaryCompleted = [
   ...definitionRows.filter((row) => isAuxiliaryCompletion(row, definitionCompleteStatuses)),
 ];
 
+const saveMappingMissingSourceEvidence = saveMappingRows.filter((row) => !hasSourceEvidence(row));
+const saveMappingForbiddenStatus = saveMappingRows.filter((row) =>
+  ['blocker', 'needsDecision', 'missingMapping'].includes(row.status),
+);
+const saveMappingMappedMissingPath = saveMappingRows.filter(
+  (row) => row.status === 'mapped' && (!row.runtimeOwner || !row.fieldPath),
+);
+const saveMappingMappedWithoutCoverageLinks = saveMappingRows.filter(
+  (row) =>
+    row.status === 'mapped' &&
+    (!Array.isArray(row.relatedFeatureGroups) || row.relatedFeatureGroups.length === 0) &&
+    (!Array.isArray(row.relatedDefinitionKeys) || row.relatedDefinitionKeys.length === 0),
+);
+const persistentCandidateUnresolved = persistentCandidateRows.filter((row) =>
+  ['blocker', 'needsDecision', 'missingMapping'].includes(row.status),
+);
+const saveMappingSemanticFlagNotSplit = saveMappingRows.filter((row) => {
+  if (row.status !== 'mapped') return false;
+  if (!['CFLAG', 'FLAG', 'GLOBAL', 'GLOBALS', 'PBAND'].includes(row.family)) return false;
+  return row.index === '' || row.semanticOwnerSource !== 'index-evidence-rule';
+});
+
 const hardFailures = {
   featureMissingSourceEvidence: featureMissingSourceEvidence.length,
   definitionMissingSourceEvidence: definitionMissingSourceEvidence.length,
@@ -167,7 +196,13 @@ const hardFailures = {
   implementedFeatureMissingRuntimeConsumer: implementedFeatureMissingRuntimeConsumer.length,
   nonBlockerDefinitionMissingConsumer: nonBlockerDefinitionMissingConsumer.length,
   roleOnlyMarkedComplete: roleOnlyMarkedComplete.length,
-  sourceEvidenceAuxiliaryCompleted: sourceEvidenceAuxiliaryCompleted.length
+  sourceEvidenceAuxiliaryCompleted: sourceEvidenceAuxiliaryCompleted.length,
+  saveMappingMissingSourceEvidence: saveMappingMissingSourceEvidence.length,
+  saveMappingForbiddenStatus: saveMappingForbiddenStatus.length,
+  saveMappingMappedMissingPath: saveMappingMappedMissingPath.length,
+  saveMappingMappedWithoutCoverageLinks: saveMappingMappedWithoutCoverageLinks.length,
+  saveMappingSemanticFlagNotSplit: saveMappingSemanticFlagNotSplit.length,
+  persistentCandidateUnresolved: persistentCandidateUnresolved.length
 };
 
 hardFailures.total = Object.entries(hardFailures)
@@ -181,15 +216,20 @@ const report = {
     features: 'data/coverage/features.json',
     definitions: 'data/coverage/definitions.json',
     blockers: 'data/coverage/blockers.json',
-    approvedExclusions: 'data/coverage/approved-exclusions.json'
+    approvedExclusions: 'data/coverage/approved-exclusions.json',
+    saveMapping: saveMapping ? 'data/coverage/save-mapping.json' : ''
   },
   summary: {
     featureRows: featureRows.length,
     definitionRows: definitionRows.length,
     blockerRows: blockerRows.length,
     approvedExclusionRows: approvedRows.length,
+    saveMappingRows: saveMappingRows.length,
+    persistentCandidateRows: persistentCandidateRows.length,
     featureStatus: countBy(featureRows, 'status'),
     definitionStatus: countBy(definitionRows, 'status'),
+    saveMappingStatus: countBy(saveMappingRows, 'status'),
+    persistentCandidateStatus: countBy(persistentCandidateRows, 'status'),
     roleOnlyDefinitionRows: definitionRows.filter((row) => roleOnlyStatuses.has(row.status)).length,
     implementedFeatureDefinitionReads: implementedFeatureDefinitionReads.length,
     implementedFeatureDefinitionReadMatched:
@@ -205,8 +245,11 @@ const report = {
           'Some implemented feature definitionReads point to runtime definitions first created from ERB-derived or local code definitions. M23 owns adding those definition rows to coverage.'
       },
       saveMappingCrosscheck: {
+        count: saveMapping ? 0 : 1,
         ownerMilestone: 'M24',
-        reason: 'Save mapping rows do not exist before M24, so M22 records the rule and M24 must make this gate strict.'
+        reason: saveMapping
+          ? 'Save mapping exists and is included in hard failures from M24 onward.'
+          : 'Save mapping rows do not exist before M24, so M22 records the rule and M24 must make this gate strict.'
       },
       sessionMappingCrosscheck: {
         ownerMilestone: 'M25',
@@ -232,12 +275,18 @@ const report = {
     sourceEvidenceAuxiliaryCompleted: sample(
       sourceEvidenceAuxiliaryCompleted,
       (row) => row.featureId || row.definitionRowId || row.blockerId,
-    )
+    ),
+    saveMappingMissingSourceEvidence: sample(saveMappingMissingSourceEvidence, (row) => row.mappingRowId),
+    saveMappingForbiddenStatus: sample(saveMappingForbiddenStatus, (row) => row.mappingRowId),
+    saveMappingMappedMissingPath: sample(saveMappingMappedMissingPath, (row) => row.mappingRowId),
+    saveMappingMappedWithoutCoverageLinks: sample(saveMappingMappedWithoutCoverageLinks, (row) => row.mappingRowId),
+    saveMappingSemanticFlagNotSplit: sample(saveMappingSemanticFlagNotSplit, (row) => row.mappingRowId),
+    persistentCandidateUnresolved: sample(persistentCandidateUnresolved, (row) => row.candidate)
   }
 };
 
 writeJson('data/coverage/coverage-crosscheck.json', report);
 
 console.log(
-  `coverage:crosscheck wrote ${path.relative(root, outputPath)} (${featureRows.length} feature row(s), ${definitionRows.length} definition row(s), ${hardFailures.total} hard failure(s)).`,
+  `coverage:crosscheck wrote ${path.relative(root, outputPath)} (${featureRows.length} feature row(s), ${definitionRows.length} definition row(s), ${saveMappingRows.length} save mapping row(s), ${hardFailures.total} hard failure(s)).`,
 );
