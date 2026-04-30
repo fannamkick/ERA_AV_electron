@@ -1,0 +1,134 @@
+[
+  {
+    "path": "src/features/turnEnd.ts",
+    "contains": "status: 'implemented' | 'stub'",
+    "reason": "M8 declared turn-end extension hook statuses; unresolved hooks are tracked for M27.",
+    "milestone": "M27"
+  },
+  {
+    "path": "src/features/turnEnd.ts",
+    "contains": "status: 'stub'",
+    "reason": "M8 declared mission/month automatic processing as explicit extension hooks.",
+    "milestone": "M27"
+  },
+  {
+    "path": "src/features/turnEnd.ts",
+    "contains": "M8 stub: mission deadline processing remains in M11/M27.",
+    "reason": "Mission deadline processing is intentionally deferred to mission/event completion.",
+    "milestone": "M27"
+  },
+  {
+    "path": "src/features/turnEnd.ts",
+    "contains": "M8 stub: month/week automatic events remain in M27.",
+    "reason": "Calendar automatic events are intentionally deferred to event/world completion.",
+    "milestone": "M27"
+  },
+  {
+    "path": "src/features/characterCreation.ts",
+    "contains": "legacyFlagsNeedingMapping",
+    "reason": "Character CFLAG-like source slots are preserved only as explicit M21 mapping blockers.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/features/characterCreation.ts",
+    "contains": "legacyBodyFlagsNeedingMapping",
+    "reason": "Body source slots are preserved only as explicit M21 mapping blockers.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/features/characterCreation.ts",
+    "contains": "legacyEquipmentIndexesNeedingMapping",
+    "reason": "Equipment source slots are preserved only as explicit M21 mapping blockers.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/features/characterCreation.ts",
+    "contains": "legacyRelationIndexesNeedingMapping",
+    "reason": "Relationship source slots are preserved only as explicit M21 mapping blockers.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/body/types.ts",
+    "contains": "legacyBodyFlagsNeedingMapping",
+    "reason": "Body source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/equipment/types.ts",
+    "contains": "legacyEquipmentIndexesNeedingMapping",
+    "reason": "Equipment source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/featureState/types.ts",
+    "contains": "legacyFeatureFlagsNeedingMapping",
+    "reason": "Feature progress source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/interaction/types.ts",
+    "contains": "legacySessionIndexesNeedingMapping",
+    "reason": "Interaction buffer source slots are tracked until session mapping coverage is complete.",
+    "milestone": "M22"
+  },
+  {
+    "path": "src/domains/inventory/types.ts",
+    "contains": "legacyItemRestrictionIndexesNeedingMapping",
+    "reason": "Item restriction source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/meta/types.ts",
+    "contains": "legacyGlobalsNeedingMapping",
+    "reason": "Global source slots are tracked until save/global mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/mission/types.ts",
+    "contains": "legacyPBandNeedingMapping",
+    "reason": "Mission progress source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/people/types.ts",
+    "contains": "legacyFlagsNeedingMapping",
+    "reason": "Character source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/settings/types.ts",
+    "contains": "legacySettingsFlagsNeedingMapping",
+    "reason": "Settings source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/shop/types.ts",
+    "contains": "legacyShopFlagsNeedingMapping",
+    "reason": "Shop source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/social/types.ts",
+    "contains": "legacyRelationIndexesNeedingMapping",
+    "reason": "Relationship source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/text/types.ts",
+    "contains": "legacyTextIndexesNeedingMapping",
+    "reason": "Text source slots are tracked until definition/save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/work/types.ts",
+    "contains": "legacyWorkFlagsNeedingMapping",
+    "reason": "Work source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  },
+  {
+    "path": "src/domains/world/types.ts",
+    "contains": "legacyWorldFlagsNeedingMapping",
+    "reason": "World source slots are tracked until save mapping coverage is complete.",
+    "milestone": "M21"
+  }
+]

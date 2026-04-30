@@ -1,0 +1,110 @@
+id	displayName	callName	nickname	sourcePath	baseStatCount	abilityCount	talentCount	experienceCount	characterFlagCount	characterTextCount	relationCount
+0	당신	당신		original-game/CSV/Chara0.csv	9	1	4	0	10	0	3
+1	미야마 카나데	카나데	후카야마 카나미	original-game/CSV/Chara01_宮間かなで.csv	13	9	22	5	13	4	10
+2	사사키 미노리	미노리	사사노 리사	original-game/CSV/Chara02_佐々木美乃里.csv	14	8	16	4	11	1	10
+3	쿠루메 사에	사에	사에키 쿠루루	original-game/CSV/Chara03_久留米紗英.csv	14	9	14	6	18	1	3
+4	이이노 미키	미키	카미노 미키	original-game/CSV/Chara04_飯野美樹.csv	13	5	21	2	12	1	3
+5	와타라이 키쿄우	키쿄우	ALICE	original-game/CSV/Chara05_渡会桔梗.csv	13	8	27	3	12	1	3
+6	칸다 히요리	히요리	카미노 히요리	original-game/CSV/Chara06_神田ひより.csv	13	10	19	10	20	5	5
+7	타타라 히나	히나	히나	original-game/CSV/Chara07_多々良ひな.csv	13	9	18	3	16	2	1
+8	타타라 유나	유나	유나	original-game/CSV/Chara08_多々良ゆな.csv	13	8	16	3	16	2	1
+9	레이첼・파라디수스	레이첼	루쉐	original-game/CSV/Chara09_レイチェル・パラディスス.csv	13	6	21	1	13	1	12
+100	고토 아야카	아야카	아구미 아야	original-game/CSV/Chara100_後藤彩香.csv	13	3	19	0	14	1	8
+101	칸노 린카	린카	이마이 카요	original-game/CSV/Chara101_柑野凛佳.csv	13	3	25	1	14	1	8
+102	시노자키 미사	미사	츠키시로 세라	original-game/CSV/Chara102_篠崎聖沙.csv	13	3	26	0	14	1	7
+103	시이나 미시즈	미시즈	우츠미 마키	original-game/CSV/Chara103_椎名海静.csv	13	3	27	0	15	1	8
+104	엘파리아・라그라데	엘리아	엘파리나	original-game/CSV/Chara104_エルファリア・ロココ・ラーグラーデ.csv	13	5	18	0	7	1	0
+105	미나・크레인	미나	캠벨	original-game/CSV/Chara105_ミーナ・クレイン.csv	13	4	24	4	12	1	3
+106	마키하라 사치	사치	미나세 사토리	original-game/CSV/Chara106_槇原さち.csv	13	5	38	2	11	1	5
+107	아카사카 히메노	히메노	노다 아카네	original-game/CSV/Chara107_赤坂姫乃.csv	13	8	29	2	13	1	13
+108	사쿠라노 타마키	타마키	타마키	original-game/CSV/Chara108_桜野環.csv	13	3	24	0	13	1	3
+109	마르티나・파라디수스	마르티나	메루메루	original-game/CSV/Chara109_マルチナ・パラディスス.csv	14	15	32	14	13	4	7
+10	키류 카논	카논	키리시마 카논	original-game/CSV/Chara10_桐生歌音.csv	13	6	23	1	15	1	9
+11	스노 이쿠미	이쿠미	코우노 스미	original-game/CSV/Chara11_須野郁美.csv	13	4	15	2	12	1	2
+120	아야츠지 호카	호카	아야카	original-game/CSV/Chara120_操辻蜂香.csv	13	12	43	10	12	1	12
+121	미스티 브라운	미스티	미오나	original-game/CSV/Chara121_ミスティ・ブラウン.csv	13	8	30	8	10	1	13
+12	고토 미츠키	미츠키	고토 노조미	original-game/CSV/Chara12_後藤光希.csv	13	11	13	3	21	3	2
+13	사카키 아유무	아유무		original-game/CSV/Chara13_榊あゆむ.csv	11	4	15	3	11	1	5
+14	미츠루 이즈키	이즈키	이츠키 미츠루	original-game/CSV/Chara14_御弦伊月.csv	13	3	22	0	11	1	3
+150	사쿠라 유키	유키	오구라 유유카	original-game/CSV/Chara150_佐倉由希.csv	13	7	29	3	17	1	2
+151	타카나시 노에미	노에미	타카이 노에루	original-game/CSV/Chara151_小鳥遊乃絵美.csv	13	11	14	0	16	1	1
+152	신도 아유미	아유미	美波あらた	original-game/CSV/Chara152_新堂あゆみ.csv	13	5	26	0	15	1	10
+15	히나미 하루노	하루노	하루노 히나코	original-game/CSV/Chara15_雛見春乃.csv	13	4	22	0	12	1	7
+16	미사키 에리카	에리카	미사키 에리코	original-game/CSV/Chara16_美咲エリカ.csv	13	4	21	2	11	1	5
+17	미야마 미이	미이	MII	original-game/CSV/Chara17_宮間未依.csv	14	7	31	1	11	1	7
+18	렌카・록웰	렌카	이와이즈미 렌	original-game/CSV/Chara18_恋歌・ロックウェル.csv	13	6	21	4	12	1	4
+190	스즈모토 스즈카	스즈카	아오이 린	original-game/CSV/Chara190_涼本鈴華.csv	13	4	21	3	16	1	2
+191	나가에 사츠키	사츠키	니시지마 우즈메	original-game/CSV/Chara191_永江桜月.csv	13	5	16	3	16	1	2
+192	우노 미호	미호	아마미야 사유리	original-game/CSV/Chara192_宇野未歩.csv	13	4	18	3	16	1	2
+19	히토미쨩	히토미쨩	히토미쨩	original-game/CSV/Chara19_ヒトミちゃん.csv	4	0	18	0	5	0	0
+200	아이샤・알하즈랏드	아이샤	파티마	original-game/CSV/Chara200_アイーシャ・アルハズラッド.csv	13	5	29	1	14	1	2
+201	아스카	아스카	아스카	original-game/CSV/Chara201_アスカ.csv	13	4	20	1	15	1	3
+202	오노하라 안즈	안즈	타카하라 아즈사	original-game/CSV/Chara202_小野原あんず.csv	13	7	18	2	15	3	5
+203	타카시나 미야	미야	아마하라 야야	original-game/CSV/Chara203_高階美夜.csv	13	3	21	0	14	1	0
+204	이즈미 토코	토코	토노 이즈미	original-game/CSV/Chara204_和泉透子.csv	13	4	26	1	15	1	7
+205	타카야시키 하루미	하루미	카자네 링고	original-game/CSV/Chara205_高屋敷春海.csv	13	4	20	1	15	1	2
+206	카부라기 시온	시온	키도 마리아	original-game/CSV/Chara206_鏑木紫苑.csv	14	6	23	0	13	3	4
+207	료지마 미치루	미치루	Ryo	original-game/CSV/Chara207_両島みちる..csv	13	8	23	9	15	4	0
+208	카스가 릿카	릿카	와카츠키 리츠	original-game/CSV/Chara208_春日律花.csv	13	9	24	5	16	3	3
+209	우에사카 미쿠	미쿠	MIKU	original-game/CSV/Chara209_上坂美紅.csv	13	4	27	1	14	1	6
+20	아카바 마리	마리	MARI	original-game/CSV/Chara20_赤羽真理.csv	13	10	19	12	16	2	5
+210	아오노 노에루	노에루	마츠다 미노리	original-game/CSV/Chara210_碧野乃衣瑠.csv	13	4	28	1	15	3	4
+211	아카기 히카루	히카루	아카나 아카리	original-game/CSV/Chara211_赤城ひかる.csv	13	3	18	0	14	2	6
+212	아사가미 토모코	토모코	코시미즈 토모	original-game/CSV/Chara212_浅神智子.csv	13	7	20	0	14	1	4
+213	카미나 유우키	유우키	하시모토 후우카	original-game/CSV/Chara213_神那悠喜.csv	13	4	30	0	14	1	5
+214	혼죠 메이코	메이코	May	original-game/CSV/Chara214_本城愛衣子.csv	13	3	24	0	16	1	6
+215	후타미 안	안	후타바 안즈	original-game/CSV/Chara215_二見アン.csv	13	7	20	3	9	1	3
+216	크리스티나・라그라데	크리스	세레스티아	original-game/CSV/Chara216_クリスティナ・ロココ・ラーグラーデ.csv	13	5	21	0	8	1	4
+217	니콜・파트리나탈리	니콜	니코	original-game/CSV/Chara217_ニコル・パトリナターリ.csv	13	6	26	0	5	1	9
+218	미즈호사카 나루	나루	호즈미 나루	original-game/CSV/Chara218_瑞穂坂奈留.csv	14	6	26	0	14	1	3
+21	하세가와 미나토	미나토	칸베 미나토	original-game/CSV/Chara21_長谷川湊.csv	13	8	18	0	14	1	6
+22	오리베 마나카	마나카	오리하라 마나	original-game/CSV/Chara22_織部真菜香.csv	13	6	17	3	14	1	6
+230	리젤롯테・파라디수스	리젤롯테	리젤롯테	original-game/CSV/Chara230_リーゼロッテ・パラディスス.csv	13	6	40	1	14	6	2
+23	아마미 루이	루이	루이	original-game/CSV/Chara23_天海瑠衣.csv	13	5	19	3	13	1	4
+240	하치도우 하루나	하루나	하루하치 아오이	original-game/CSV/Chara240_鉢堂陽菜.csv	14	2	42	1	5	1	0
+24	테라모토 유카리	유카리	니시모토 유카	original-game/CSV/Chara24_寺本祐香里.csv	13	15	18	9	21	4	0
+25	미카미 키요카	키요카	카미요 키요카	original-game/CSV/Chara25_三上聖佳.csv	13	8	25	6	15	2	11
+26	시미즈 사쿠라코	사쿠라코	사쿠라 아이	original-game/CSV/Chara26_清水桜子.csv	13	6	26	4	13	1	6
+27	토모요시 아야노	아야노	야아노코우지 토모요	original-game/CSV/Chara27_知吉綾乃.csv	13	7	12	1	10	1	4
+28	사쿠라이 프리실라	프리실라	코다이 체리	original-game/CSV/Chara28_桜井プリシラ.csv	13	4	12	2	10	1	4
+29	아오이 하루카	하루카	토오자키 미오	original-game/CSV/Chara29_蒼井遙.csv	13	6	15	0	14	1	11
+30	후미노 유즈카	유즈카	아야노 유리카	original-game/CSV/Chara30_文野柚香.csv	13	5	19	1	14	1	3
+31	시라나미 유카리	유카리	소라노 하루미	original-game/CSV/Chara31_白波縁.csv	13	5	22	0	14	1	3
+32	아이다 엘레나	엘레나	에루 선생님	original-game/CSV/Chara32_相田エレナ.csv	13	7	26	1	15	1	4
+33	아이다 알리사	알리사	아이다 아루루	original-game/CSV/Chara33_相田アリサ.csv	13	7	27	0	13	1	4
+34	나카지마 하즈키	하즈키	타카지마 미즈나	original-game/CSV/Chara34_中島葉月.csv	13	9	21	7	19	1	2
+35	오리베 나츠미	나츠미	오리하라 카나	original-game/CSV/Chara35_織部夏美.csv	13	5	21	1	14	1	4
+36	카와기시 아사히	아사히	후지타 아카리	original-game/CSV/Chara36_川岸あさひ.csv	13	7	20	4	20	1	5
+37	아키나 미레이	미레이	아야나 미오	original-game/CSV/Chara37_秋名未澪.csv	13	5	14	1	14	0	2
+38	야미자키 린코	린코	RIN	original-game/CSV/Chara38_闇崎燐子.csv	13	6	24	3	14	1	6
+39	코히나타 시오리	시오리	코히나타 오리카	original-game/CSV/Chara39_小日向詩織.csv	13	9	19	4	12	1	0
+40	쇼우노 소라	소라	엔도 미쿠	original-game/CSV/Chara40_庄野そら.csv	13	4	25	4	13	4	4
+41	하뉴 리사	리사	LISA	original-game/CSV/Chara41_羽生理沙.csv	13	8	29	0	12	1	10
+42	후지카와 리에	리에	이나바 히미코	original-game/CSV/Chara42_富士川りえ.csv	13	8	27	0	11	1	5
+43	아이바 세리나	세리나	세리나 아이	original-game/CSV/Chara43_相葉瀬理奈.csv	13	6	24	1	11	1	4
+44	타카기 사오리	사오리	はやみかえで	original-game/CSV/Chara44_高城沙織.csv	13	6	21	2	11	1	3
+45	미요시 유카코	유카코	大村美佳	original-game/CSV/Chara45_三好ゆか子.csv	13	4	25	3	11	1	4
+46	타카나시 오토하	오토하	코토리 아소비	original-game/CSV/Chara46_小鳥遊音羽.csv	13	6	20	3	13	1	9
+47	미즈모리 유키나	유키나	森本ゆかり	original-game/CSV/Chara47_水森優樹菜.csv	13	3	25	0	12	1	8
+51	면접 상대			original-game/CSV/Chara51_【求人広告】.csv	4	0	0	0	1	1	0
+79	캬바레녀	마요	나나이로 아카리	original-game/CSV/Chara79_キャバ嬢.csv	13	7	19	2	15	1	4
+80	니지마 미히로	미히로	미시마 치히로	original-game/CSV/Chara80_新島みひろ.csv	13	9	32	3	14	1	7
+81	에리스	에리스	에리스	original-game/CSV/Chara81_エリス.csv	14	7	25	3	13	2	3
+82	리리스	리리스	리리스	original-game/CSV/Chara82_リリス.csv	14	9	28	4	13	3	3
+83	사쿠라 유이카	유이카	오구라 모모카	original-game/CSV/Chara83_佐倉結衣花.csv	13	9	23	5	13	1	3
+84	아이리스	아이리스	아이리스	original-game/CSV/Chara84_アイリス.csv	15	9	27	6	11	4	3
+85	히나미 마유	마유	마유미 히나	original-game/CSV/Chara85_雛見まゆ.csv	16	5	24	0	16	1	14
+86	유니스 파라디수스	유니스	아루마 유니	original-game/CSV/Chara86_ユーニス・パラディスス.csv	14	5	37	1	17	2	6
+87	키리시마 쇼코	쇼코	카스가 히카루	original-game/CSV/Chara87_桐島翔子.csv	13	4	16	0	14	1	5
+88	아마쿠사 에리	에리	아마노 시즈쿠	original-game/CSV/Chara88_雨草愛理.csv	13	6	14	0	14	1	4
+89	니시카타 쿄우코	쿄우코	안즈	original-game/CSV/Chara89_西方杏子.csv	13	6	14	5	15	3	3
+90	카세 후미카	후미카	타니마치 노조미	original-game/CSV/Chara90_加瀬芙美香.csv	13	6	19	1	10	1	2
+91	미야마 카나	카나	미야마 카나코	original-game/CSV/Chara91_宮間かなで.csv	13	11	24	7	17	1	12
+92	92			original-game/CSV/Chara92_アンドロイド.csv	13	0	7	0	7	1	3
+93	리 메이링	메이링	텐도우 미스즈	original-game/CSV/Chara93_李美鈴.csv	13	3	26	1	16	1	5
+94	하세카와 미코토	미코토	하세 미이코	original-game/CSV/Chara94_羽瀬川みこと.csv	13	6	28	2	16	1	8
+95	키류 엘렌	엘렌	키리시마 엘렌	original-game/CSV/Chara95_桐生エレン.csv	13	10	29	7	30	3	3
+96	리나・레스피치오	리나	리온	original-game/CSV/Chara96_リーナ・レスピーチオ.csv	13	4	20	1	15	1	7
+97	쿠로이 미야코	사토코	우사기쨩	original-game/CSV/Chara97_黒井都子.csv	13	12	21	5	7	1	9
+98	아카기 유우히	유우히	아카나 아카네	original-game/CSV/Chara98_赤城ゆうひ.csv	13	6	23	3	15	2	3
+99	이하라 코토노	코토노	미코토 히토미	original-game/CSV/Chara99_伊原琴乃.csv	13	4	25	1	13	1	9

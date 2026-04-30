@@ -1,0 +1,810 @@
+catalogKey	id	label	basePrice	category	tags	sourcePath	originalId	originalName
+baseStats	0	체력				original-game/CSV/BASE.csv	0	체력
+baseStats	1	기력				original-game/CSV/BASE.csv	1	기력
+baseStats	2	사정게이지				original-game/CSV/BASE.csv	2	사정게이지
+baseStats	3	출연료				original-game/CSV/BASE.csv	3	출연료
+baseStats	7	외견연령				original-game/CSV/BASE.csv	7	외견연령
+baseStats	8	어림연령				original-game/CSV/BASE.csv	8	어림연령
+baseStats	9	진짜연령				original-game/CSV/BASE.csv	9	진짜연령
+baseStats	10	수명				original-game/CSV/BASE.csv	10	수명
+baseStats	11	탄생월				original-game/CSV/BASE.csv	11	탄생월
+baseStats	12	탄생일				original-game/CSV/BASE.csv	12	탄생일
+baseStats	13	혈액형				original-game/CSV/BASE.csv	13	혈액형
+baseStats	20	키				original-game/CSV/BASE.csv	20	키
+baseStats	21	체중				original-game/CSV/BASE.csv	21	체중
+baseStats	22	가슴				original-game/CSV/BASE.csv	22	가슴
+baseStats	23	허리				original-game/CSV/BASE.csv	23	허리
+baseStats	24	엉덩이				original-game/CSV/BASE.csv	24	엉덩이
+baseStats	30	출연료				original-game/CSV/BASE.csv	30	출연료
+baseStats	31	매력치				original-game/CSV/BASE.csv	31	매력치
+baseStats	32	가슴(소수)				original-game/CSV/BASE.csv	32	가슴(소수)
+baseStats	33	허리(소수)				original-game/CSV/BASE.csv	33	허리(소수)
+baseStats	34	엉덩이(소수)				original-game/CSV/BASE.csv	34	엉덩이(소수)
+baseStats	40	마력				original-game/CSV/BASE.csv	40	마력
+baseStats	50	자지사이즈				original-game/CSV/BASE.csv	50	자지사이즈
+abilities	0	C감각				original-game/CSV/Abl.csv	0	C감각
+abilities	1	B감각				original-game/CSV/Abl.csv	1	B감각
+abilities	2	V감각				original-game/CSV/Abl.csv	2	V감각
+abilities	3	A감각				original-game/CSV/Abl.csv	3	A감각
+abilities	10	신뢰				original-game/CSV/Abl.csv	10	신뢰
+abilities	11	욕망				original-game/CSV/Abl.csv	11	욕망
+abilities	12	기교				original-game/CSV/Abl.csv	12	기교
+abilities	13	봉사기술				original-game/CSV/Abl.csv	13	봉사기술
+abilities	14	성교기술				original-game/CSV/Abl.csv	14	성교기술
+abilities	15	화술				original-game/CSV/Abl.csv	15	화술
+abilities	16	봉사정신				original-game/CSV/Abl.csv	16	봉사정신
+abilities	17	노출벽				original-game/CSV/Abl.csv	17	노출벽
+abilities	20	새드끼				original-game/CSV/Abl.csv	20	새드끼
+abilities	21	마조끼				original-game/CSV/Abl.csv	21	마조끼
+abilities	22	레즈끼				original-game/CSV/Abl.csv	22	레즈끼
+abilities	23	BL끼				original-game/CSV/Abl.csv	23	BL끼
+abilities	30	성교중독				original-game/CSV/Abl.csv	30	성교중독
+abilities	31	자위중독				original-game/CSV/Abl.csv	31	자위중독
+abilities	32	정액중독				original-game/CSV/Abl.csv	32	정액중독
+abilities	33	레즈중독				original-game/CSV/Abl.csv	33	레즈중독
+abilities	37	매춘중독				original-game/CSV/Abl.csv	37	매춘중독
+abilities	38	사정중독				original-game/CSV/Abl.csv	38	사정중독
+abilities	39	분유중독				original-game/CSV/Abl.csv	39	분유중독
+abilities	40	수간중독				original-game/CSV/Abl.csv	40	수간중독
+abilities	41	촉수중독				original-game/CSV/Abl.csv	41	촉수중독
+abilities	50	미용감각				original-game/CSV/Abl.csv	50	미용감각
+abilities	51	운동능력				original-game/CSV/Abl.csv	51	운동능력
+abilities	52	학력				original-game/CSV/Abl.csv	52	학력
+abilities	70	피사기능				original-game/CSV/Abl.csv	70	피사기능
+abilities	71	가창기능				original-game/CSV/Abl.csv	71	가창기능
+abilities	72	무용기능				original-game/CSV/Abl.csv	72	무용기능
+abilities	73	요리기능				original-game/CSV/Abl.csv	73	요리기능
+abilities	80	과학지식				original-game/CSV/Abl.csv	80	과학지식
+abilities	81	오타쿠지식				original-game/CSV/Abl.csv	81	오타쿠지식
+talents	0	처녀				original-game/CSV/Talent.csv	0	처녀
+talents	1	동정				original-game/CSV/Talent.csv	1	동정
+talents	2	애널처녀				original-game/CSV/Talent.csv	2	애널처녀
+talents	9	붕괴				original-game/CSV/Talent.csv	9	붕괴
+talents	10	겁쟁이				original-game/CSV/Talent.csv	10	겁쟁이
+talents	11	건방짐				original-game/CSV/Talent.csv	11	건방짐
+talents	12	다부짐				original-game/CSV/Talent.csv	12	다부짐
+talents	13	솔직함				original-game/CSV/Talent.csv	13	솔직함
+talents	14	얌전함				original-game/CSV/Talent.csv	14	얌전함
+talents	15	프라이드 높음				original-game/CSV/Talent.csv	15	프라이드 높음
+talents	16	활발함				original-game/CSV/Talent.csv	16	활발함
+talents	17	프라이드 낮음				original-game/CSV/Talent.csv	17	프라이드 낮음
+talents	18	츤데레				original-game/CSV/Talent.csv	18	츤데레
+talents	20	자제심				original-game/CSV/Talent.csv	20	자제심
+talents	21	쿨				original-game/CSV/Talent.csv	21	쿨
+talents	22	감정부족				original-game/CSV/Talent.csv	22	감정부족
+talents	23	호기심				original-game/CSV/Talent.csv	23	호기심
+talents	24	보수적				original-game/CSV/Talent.csv	24	보수적
+talents	25	포지티브				original-game/CSV/Talent.csv	25	포지티브
+talents	26	네거티브				original-game/CSV/Talent.csv	26	네거티브
+talents	27	일선을 넘지않음				original-game/CSV/Talent.csv	27	일선을 넘지않음
+talents	28	튀고 싶어함				original-game/CSV/Talent.csv	28	튀고 싶어함
+talents	30	정조관념				original-game/CSV/Talent.csv	30	정조관념
+talents	31	정조 무관심				original-game/CSV/Talent.csv	31	정조 무관심
+talents	32	억압				original-game/CSV/Talent.csv	32	억압
+talents	33	해방				original-game/CSV/Talent.csv	33	해방
+talents	34	저항				original-game/CSV/Talent.csv	34	저항
+talents	35	수줍음				original-game/CSV/Talent.csv	35	수줍음
+talents	36	부끄럼 없음				original-game/CSV/Talent.csv	36	부끄럼 없음
+talents	37	약점				original-game/CSV/Talent.csv	37	약점
+talents	40	아픔에 약함				original-game/CSV/Talent.csv	40	아픔에 약함
+talents	41	아픔에 강함				original-game/CSV/Talent.csv	41	아픔에 강함
+talents	42	젖기쉬움				original-game/CSV/Talent.csv	42	젖기쉬움
+talents	43	젖기힘듬				original-game/CSV/Talent.csv	43	젖기힘듬
+talents	44	울보				original-game/CSV/Talent.csv	44	울보
+talents	45	울지 않음				original-game/CSV/Talent.csv	45	울지 않음
+talents	46	약물중독				original-game/CSV/Talent.csv	46	약물중독
+talents	47	정애미각				original-game/CSV/Talent.csv	47	정애미각
+talents	50	소질있음				original-game/CSV/Talent.csv	50	소질있음
+talents	51	습득느림				original-game/CSV/Talent.csv	51	습득느림
+talents	52	혀놀림				original-game/CSV/Talent.csv	52	혀놀림
+talents	55	조합지식				original-game/CSV/Talent.csv	55	조합지식
+talents	56	약독내성				original-game/CSV/Talent.csv	56	약독내성
+talents	57	오줌싸개				original-game/CSV/Talent.csv	57	오줌싸개
+talents	60	자위하기 쉬움				original-game/CSV/Talent.csv	60	자위하기 쉬움
+talents	61	악취둔감				original-game/CSV/Talent.csv	61	악취둔감
+talents	62	악취민감				original-game/CSV/Talent.csv	62	악취민감
+talents	63	헌신적				original-game/CSV/Talent.csv	63	헌신적
+talents	64	불결무시				original-game/CSV/Talent.csv	64	불결무시
+talents	70	쾌감에 솔직				original-game/CSV/Talent.csv	70	쾌감에 솔직
+talents	71	쾌감을 부정				original-game/CSV/Talent.csv	71	쾌감을 부정
+talents	72	중독되기 쉬움				original-game/CSV/Talent.csv	72	중독되기 쉬움
+talents	73	즉각함락				original-game/CSV/Talent.csv	73	즉각함락
+talents	74	자위광				original-game/CSV/Talent.csv	74	자위광
+talents	75	섹스광				original-game/CSV/Talent.csv	75	섹스광
+talents	76	음란				original-game/CSV/Talent.csv	76	음란
+talents	77	애널광				original-game/CSV/Talent.csv	77	애널광
+talents	78	가슴광				original-game/CSV/Talent.csv	78	가슴광
+talents	79	보이시				original-game/CSV/Talent.csv	79	보이시
+talents	80	도착적				original-game/CSV/Talent.csv	80	도착적
+talents	81	바이				original-game/CSV/Talent.csv	81	바이
+talents	82	남성불신				original-game/CSV/Talent.csv	82	남성불신
+talents	83	새드				original-game/CSV/Talent.csv	83	새드
+talents	84	질투				original-game/CSV/Talent.csv	84	질투
+talents	85	연심				original-game/CSV/Talent.csv	85	연심
+talents	86	망신				original-game/CSV/Talent.csv	86	망신
+talents	87	소악마				original-game/CSV/Talent.csv	87	소악마
+talents	88	마조				original-game/CSV/Talent.csv	88	마조
+talents	89	노출광				original-game/CSV/Talent.csv	89	노출광
+talents	90	섹프				original-game/CSV/Talent.csv	90	섹프
+talents	91	매혹				original-game/CSV/Talent.csv	91	매혹
+talents	92	수수께끼의 매력				original-game/CSV/Talent.csv	92	수수께끼의 매력
+talents	93	카리스마				original-game/CSV/Talent.csv	93	카리스마
+talents	99	큰체구				original-game/CSV/Talent.csv	99	큰체구
+talents	100	작은체형				original-game/CSV/Talent.csv	100	작은체형
+talents	101	C둔감				original-game/CSV/Talent.csv	101	C둔감
+talents	102	C민감				original-game/CSV/Talent.csv	102	C민감
+talents	103	V둔감				original-game/CSV/Talent.csv	103	V둔감
+talents	104	V민감				original-game/CSV/Talent.csv	104	V민감
+talents	105	A둔감				original-game/CSV/Talent.csv	105	A둔감
+talents	106	A민감				original-game/CSV/Talent.csv	106	A민감
+talents	107	B둔감				original-game/CSV/Talent.csv	107	B둔감
+talents	108	B민감				original-game/CSV/Talent.csv	108	B민감
+talents	109	빈유				original-game/CSV/Talent.csv	109	빈유
+talents	110	거유				original-game/CSV/Talent.csv	110	거유
+talents	111	회복 빠름				original-game/CSV/Talent.csv	111	회복 빠름
+talents	112	회복 느림				original-game/CSV/Talent.csv	112	회복 느림
+talents	113	매력				original-game/CSV/Talent.csv	113	매력
+talents	114	폭유				original-game/CSV/Talent.csv	114	폭유
+talents	115	비만				original-game/CSV/Talent.csv	115	비만
+talents	116	절벽				original-game/CSV/Talent.csv	116	절벽
+talents	117	치료				original-game/CSV/Talent.csv	117	치료
+talents	118	고무				original-game/CSV/Talent.csv	118	고무
+talents	119	통통함				original-game/CSV/Talent.csv	119	통통함
+talents	121	후타나리				original-game/CSV/Talent.csv	121	후타나리
+talents	122	남성				original-game/CSV/Talent.csv	122	남성
+talents	123	광기				original-game/CSV/Talent.csv	123	광기
+talents	124	동물귀				original-game/CSV/Talent.csv	124	동물귀
+talents	125	음모 없음				original-game/CSV/Talent.csv	125	음모 없음
+talents	126	인기인				original-game/CSV/Talent.csv	126	인기인
+talents	127	역습				original-game/CSV/Talent.csv	127	역습
+talents	128	음모 빽빽함				original-game/CSV/Talent.csv	128	음모 빽빽함
+talents	130	모유체질				original-game/CSV/Talent.csv	130	모유체질
+talents	131	유아퇴행				original-game/CSV/Talent.csv	131	유아퇴행
+talents	132	유치				original-game/CSV/Talent.csv	132	유치
+talents	133	조루				original-game/CSV/Talent.csv	133	조루
+talents	134	유리멘탈				original-game/CSV/Talent.csv	134	유리멘탈
+talents	135	미숙함				original-game/CSV/Talent.csv	135	미숙함
+talents	136	암캐				original-game/CSV/Talent.csv	136	암캐
+talents	137	묘판				original-game/CSV/Talent.csv	137	묘판
+talents	140	동물 좋아함				original-game/CSV/Talent.csv	140	동물 좋아함
+talents	141	동물 싫어함				original-game/CSV/Talent.csv	141	동물 싫어함
+talents	150	자위 안함				original-game/CSV/Talent.csv	150	자위 안함
+talents	151	봉사 안함				original-game/CSV/Talent.csv	151	봉사 안함
+talents	152	세뇌 안당함				original-game/CSV/Talent.csv	152	세뇌 안당함
+talents	153	임신				original-game/CSV/Talent.csv	153	임신
+talents	154	육아 중				original-game/CSV/Talent.csv	154	육아 중
+talents	155	모성				original-game/CSV/Talent.csv	155	모성
+talents	156	부성				original-game/CSV/Talent.csv	156	부성
+talents	157	알 품음				original-game/CSV/Talent.csv	157	알 품음
+talents	160	마더콘				original-game/CSV/Talent.csv	160	마더콘
+talents	161	브라콘				original-game/CSV/Talent.csv	161	브라콘
+talents	162	시스콘				original-game/CSV/Talent.csv	162	시스콘
+talents	163	로리콘				original-game/CSV/Talent.csv	163	로리콘
+talents	180	업소여성				original-game/CSV/Talent.csv	180	업소여성
+talents	181	고급 창부				original-game/CSV/Talent.csv	181	고급 창부
+talents	182	요설스러움				original-game/CSV/Talent.csv	182	요설스러움
+talents	183	단골손님				original-game/CSV/Talent.csv	183	단골손님
+talents	184	남친있음				original-game/CSV/Talent.csv	184	남친있음
+talents	185	가희				original-game/CSV/Talent.csv	185	가희
+talents	186	무희				original-game/CSV/Talent.csv	186	무희
+talents	187	미희				original-game/CSV/Talent.csv	187	미희
+talents	190	깨끗한 교제				original-game/CSV/Talent.csv	190	깨끗한 교제
+talents	197	악성 겁쟁이				original-game/CSV/Talent.csv	197	악성 겁쟁이
+talents	198	왕도짓코				original-game/CSV/Talent.csv	198	왕도짓코
+talents	199	매각 불가				original-game/CSV/Talent.csv	199	매각 불가
+talents	201	프로듀서				original-game/CSV/Talent.csv	201	프로듀서
+talents	202	매니저				original-game/CSV/Talent.csv	202	매니저
+talents	203	아이돌				original-game/CSV/Talent.csv	203	아이돌
+talents	204	운동부				original-game/CSV/Talent.csv	204	운동부
+talents	205	아가씨				original-game/CSV/Talent.csv	205	아가씨
+talents	206	유부녀				original-game/CSV/Talent.csv	206	유부녀
+talents	207	무녀				original-game/CSV/Talent.csv	207	무녀
+talents	208	귀족				original-game/CSV/Talent.csv	208	귀족
+talents	209	야마토 나데시코				original-game/CSV/Talent.csv	209	야마토 나데시코
+talents	210	가난뱅이				original-game/CSV/Talent.csv	210	가난뱅이
+talents	211	협상에 능숙함				original-game/CSV/Talent.csv	211	협상에 능숙함
+talents	212	미망인				original-game/CSV/Talent.csv	212	미망인
+talents	220	고등학생				original-game/CSV/Talent.csv	220	고등학생
+talents	221	중학생				original-game/CSV/Talent.csv	221	중학생
+talents	222	초등학생				original-game/CSV/Talent.csv	222	초등학생
+talents	223	대학생				original-game/CSV/Talent.csv	223	대학생
+talents	224	우등생				original-game/CSV/Talent.csv	224	우등생
+talents	225	원교소녀				original-game/CSV/Talent.csv	225	원교소녀
+talents	230	음핵				original-game/CSV/Talent.csv	230	음핵
+talents	231	음유				original-game/CSV/Talent.csv	231	음유
+talents	232	음호				original-game/CSV/Talent.csv	232	음호
+talents	233	음항				original-game/CSV/Talent.csv	233	음항
+talents	251	초유				original-game/CSV/Talent.csv	251	초유
+talents	252	마유				original-game/CSV/Talent.csv	252	마유
+talents	253	신유				original-game/CSV/Talent.csv	253	신유
+talents	271	항상발정				original-game/CSV/Talent.csv	271	항상발정
+talents	272	성호				original-game/CSV/Talent.csv	272	성호
+talents	310	가이노이드				original-game/CSV/Talent.csv	310	가이노이드
+talents	311	안경				original-game/CSV/Talent.csv	311	안경
+talents	319	소꿉친구				original-game/CSV/Talent.csv	319	소꿉친구
+talents	320	여동생				original-game/CSV/Talent.csv	320	여동생
+talents	321	성형미인				original-game/CSV/Talent.csv	321	성형미인
+talents	322	쉬메일				original-game/CSV/Talent.csv	322	쉬메일
+talents	323	스트레스성 비만				original-game/CSV/Talent.csv	323	스트레스성 비만
+talents	324	언니				original-game/CSV/Talent.csv	324	언니
+talents	325	비밀지식				original-game/CSV/Talent.csv	325	비밀지식
+talents	326	멋쟁이				original-game/CSV/Talent.csv	326	멋쟁이
+talents	330	미션				original-game/CSV/Talent.csv	330	미션
+talents	398	훈장				original-game/CSV/Talent.csv	398	훈장
+talents	400	AV배우				original-game/CSV/Talent.csv	400	AV배우
+talents	401	인기 AV배우				original-game/CSV/Talent.csv	401	인기 AV배우
+talents	402	패션모델				original-game/CSV/Talent.csv	402	패션모델
+talents	403	알바생				original-game/CSV/Talent.csv	403	알바생
+talents	404	알바전사				original-game/CSV/Talent.csv	404	알바전사
+talents	405	니트				original-game/CSV/Talent.csv	405	니트
+talents	406	코스플레이어				original-game/CSV/Talent.csv	406	코스플레이어
+talents	407	공주님				original-game/CSV/Talent.csv	407	공주님
+talents	408	외국인				original-game/CSV/Talent.csv	408	외국인
+talents	409	혼혈				original-game/CSV/Talent.csv	409	혼혈
+talents	410	쿼터				original-game/CSV/Talent.csv	410	쿼터
+talents	411	간호사				original-game/CSV/Talent.csv	411	간호사
+talents	412	교사				original-game/CSV/Talent.csv	412	교사
+talents	413	여장소년				original-game/CSV/Talent.csv	413	여장소년
+talents	414	동안				original-game/CSV/Talent.csv	414	동안
+talents	415	OL				original-game/CSV/Talent.csv	415	OL
+talents	416	홀린듯함				original-game/CSV/Talent.csv	416	홀린듯함
+talents	417	메이드				original-game/CSV/Talent.csv	417	메이드
+talents	418	요리잘함				original-game/CSV/Talent.csv	418	요리잘함
+talents	419	이상회복				original-game/CSV/Talent.csv	419	이상회복
+talents	420	피임중				original-game/CSV/Talent.csv	420	피임중
+talents	421	캬바레녀				original-game/CSV/Talent.csv	421	캬바레녀
+talents	422	갈색피부				original-game/CSV/Talent.csv	422	갈색피부
+talents	423	영향받기 쉬움				original-game/CSV/Talent.csv	423	영향받기 쉬움
+talents	424	흡연자				original-game/CSV/Talent.csv	424	흡연자
+talents	425	섹프있음				original-game/CSV/Talent.csv	425	섹프있음
+talents	426	수수함				original-game/CSV/Talent.csv	426	수수함
+talents	427	성직자				original-game/CSV/Talent.csv	427	성직자
+talents	428	신앙심				original-game/CSV/Talent.csv	428	신앙심
+talents	429	경찰				original-game/CSV/Talent.csv	429	경찰
+talents	430	영원한 사랑				original-game/CSV/Talent.csv	430	영원한 사랑
+talents	431	저널리스트				original-game/CSV/Talent.csv	431	저널리스트
+talents	432	갸루계				original-game/CSV/Talent.csv	432	갸루계
+talents	433	의사				original-game/CSV/Talent.csv	433	의사
+talents	434	휠체어				original-game/CSV/Talent.csv	434	휠체어
+talents	440	절륜				original-game/CSV/Talent.csv	440	절륜
+talents	450	바람둥이				original-game/CSV/Talent.csv	450	바람둥이
+talents	451	호스트				original-game/CSV/Talent.csv	451	호스트
+talents	452	불량				original-game/CSV/Talent.csv	452	불량
+talents	500	이계 지식				original-game/CSV/Talent.csv	500	이계 지식
+talents	501	최첨단 과학				original-game/CSV/Talent.csv	501	최첨단 과학
+talents	502	야쿠자의 딸				original-game/CSV/Talent.csv	502	야쿠자의 딸
+talents	503	호신술				original-game/CSV/Talent.csv	503	호신술
+talents	504	안드로이드				original-game/CSV/Talent.csv	504	안드로이드
+talents	505	음마				original-game/CSV/Talent.csv	505	음마
+talents	506	성우				original-game/CSV/Talent.csv	506	성우
+talents	507	하루우라레				original-game/CSV/Talent.csv	507	하루우라레
+talents	508	더치와이프				original-game/CSV/Talent.csv	508	더치와이프
+talents	509	Colorful Pure Girls				original-game/CSV/Talent.csv	509	Colorful Pure Girls
+talents	510	무당				original-game/CSV/Talent.csv	510	무당
+talents	511	천사				original-game/CSV/Talent.csv	511	천사
+talents	512	그랜드마스터				original-game/CSV/Talent.csv	512	그랜드마스터
+talents	513	악의 조직				original-game/CSV/Talent.csv	513	악의 조직
+talents	514	실험체				original-game/CSV/Talent.csv	514	실험체
+talents	515	오리지널 밴드(아이돌)				original-game/CSV/Talent.csv	515	오리지널 밴드(아이돌)
+talents	516	야쿠자의 아내				original-game/CSV/Talent.csv	516	야쿠자의 아내
+talents	517	탐정				original-game/CSV/Talent.csv	517	탐정
+talents	518	Mermaid girl				original-game/CSV/Talent.csv	518	Mermaid girl
+talents	519	Triptych				original-game/CSV/Talent.csv	519	Triptych
+talents	520	성마술				original-game/CSV/Talent.csv	520	성마술
+talents	521	유령				original-game/CSV/Talent.csv	521	유령
+talents	522	Emerald Queen				original-game/CSV/Talent.csv	522	Emerald Queen
+talents	523	Lily Princess				original-game/CSV/Talent.csv	523	Lily Princess
+talents	530	평화의 가희?				original-game/CSV/Talent.csv	530	평화의 가희?
+talents	531	타락한 가희				original-game/CSV/Talent.csv	531	타락한 가희
+talents	532	룬마스터				original-game/CSV/Talent.csv	532	룬마스터
+talents	550	근성				original-game/CSV/Talent.csv	550	근성
+talents	551	기적				original-game/CSV/Talent.csv	551	기적
+talents	552	ONLY ONE IDOL				original-game/CSV/Talent.csv	552	ONLY ONE IDOL
+talents	553	ONLY ONE EMPRESS				original-game/CSV/Talent.csv	553	ONLY ONE EMPRESS
+talents	554	LUXURIA				original-game/CSV/Talent.csv	554	LUXURIA
+talents	555	SUPERBIA				original-game/CSV/Talent.csv	555	SUPERBIA
+talents	556	INVIDIA				original-game/CSV/Talent.csv	556	INVIDIA
+talents	557	IRA				original-game/CSV/Talent.csv	557	IRA
+talents	558	ACEDIA				original-game/CSV/Talent.csv	558	ACEDIA
+talents	559	AVARITIA				original-game/CSV/Talent.csv	559	AVARITIA
+talents	560	구현				original-game/CSV/Talent.csv	560	구현
+talents	561	GULA				original-game/CSV/Talent.csv	561	GULA
+talents	562	SUPER HEROINE				original-game/CSV/Talent.csv	562	SUPER HEROINE
+talents	601	귀가 얇음				original-game/CSV/Talent.csv	601	귀가 얇음
+talents	602	유명인				original-game/CSV/Talent.csv	602	유명인
+talents	603	기억상실				original-game/CSV/Talent.csv	603	기억상실
+talents	604	부스트: 미노리				original-game/CSV/Talent.csv	604	부스트: 미노리
+talents	605	부스트: 유카리				original-game/CSV/Talent.csv	605	부스트: 유카리
+talents	606	부스트: 하루카				original-game/CSV/Talent.csv	606	부스트: 하루카
+talents	607	부스트: 쇼코				original-game/CSV/Talent.csv	607	부스트: 쇼코
+experiences	0	V경험				original-game/CSV/exp.csv	0	V경험
+experiences	1	A경험				original-game/CSV/exp.csv	1	A경험
+experiences	2	절정경험				original-game/CSV/exp.csv	2	절정경험
+experiences	3	사정경험				original-game/CSV/exp.csv	3	사정경험
+experiences	4	삽입경험				original-game/CSV/exp.csv	4	삽입경험
+experiences	5	성교경험				original-game/CSV/exp.csv	5	성교경험
+experiences	8	정음절정경험				original-game/CSV/exp.csv	8	정음절정경험
+experiences	9	감독경험				original-game/CSV/exp.csv	9	감독경험
+experiences	10	자위경험				original-game/CSV/exp.csv	10	자위경험
+experiences	11	지도자위경험				original-game/CSV/exp.csv	11	지도자위경험
+experiences	12	야외노출경험				original-game/CSV/exp.csv	12	야외노출경험
+experiences	13	C개발경험				original-game/CSV/exp.csv	13	C개발경험
+experiences	14	B개발경험				original-game/CSV/exp.csv	14	B개발경험
+experiences	15	V개발경험				original-game/CSV/exp.csv	15	V개발경험
+experiences	16	A개발경험				original-game/CSV/exp.csv	16	A개발경험
+experiences	20	정액경험				original-game/CSV/exp.csv	20	정액경험
+experiences	21	봉사쾌락경험				original-game/CSV/exp.csv	21	봉사쾌락경험
+experiences	22	펠라경험				original-game/CSV/exp.csv	22	펠라경험
+experiences	23	애정경험				original-game/CSV/exp.csv	23	애정경험
+experiences	30	피학쾌락경험				original-game/CSV/exp.csv	30	피학쾌락경험
+experiences	31	방뇨경험				original-game/CSV/exp.csv	31	방뇨경험
+experiences	32	A쾌락경험				original-game/CSV/exp.csv	32	A쾌락경험
+experiences	33	가학쾌락경험				original-game/CSV/exp.csv	33	가학쾌락경험
+experiences	34	C경험				original-game/CSV/exp.csv	34	C경험
+experiences	35	B경험				original-game/CSV/exp.csv	35	B경험
+experiences	40	레즈경험				original-game/CSV/exp.csv	40	레즈경험
+experiences	41	BL경험				original-game/CSV/exp.csv	41	BL경험
+experiences	50	이상경험				original-game/CSV/exp.csv	50	이상경험
+experiences	51	긴박경험				original-game/CSV/exp.csv	51	긴박경험
+experiences	52	V확장경험				original-game/CSV/exp.csv	52	V확장경험
+experiences	53	A확장경험				original-game/CSV/exp.csv	53	A확장경험
+experiences	54	분유경험				original-game/CSV/exp.csv	54	분유경험
+experiences	55	촉수경험				original-game/CSV/exp.csv	55	촉수경험
+experiences	56	수간경험				original-game/CSV/exp.csv	56	수간경험
+experiences	57	약물경험				original-game/CSV/exp.csv	57	약물경험
+experiences	58	유간경험				original-game/CSV/exp.csv	58	유간경험
+experiences	59	산란경험				original-game/CSV/exp.csv	59	산란경험
+experiences	60	출산경험				original-game/CSV/exp.csv	60	출산경험
+experiences	65	지도실신경험				original-game/CSV/exp.csv	65	지도실신경험
+experiences	61	요리경험				original-game/CSV/exp.csv	61	요리경험
+experiences	70	피사경험				original-game/CSV/exp.csv	70	피사경험
+experiences	71	가창경험				original-game/CSV/exp.csv	71	가창경험
+experiences	72	무용경험				original-game/CSV/exp.csv	72	무용경험
+experiences	73	대화경험				original-game/CSV/exp.csv	73	대화경험
+experiences	74	매춘경험				original-game/CSV/exp.csv	74	매춘경험
+experiences	75	영업애정경험				original-game/CSV/exp.csv	75	영업애정경험
+experiences	76	AV출연경험				original-game/CSV/exp.csv	76	AV출연경험
+experiences	77	아르바이트경험				original-game/CSV/exp.csv	77	아르바이트경험
+experiences	78	접객경험				original-game/CSV/exp.csv	78	접객경험
+experiences	79	모델경험				original-game/CSV/exp.csv	79	모델경험
+experiences	80	지명경험				original-game/CSV/exp.csv	80	지명경험
+experiences	81	애프터경험				original-game/CSV/exp.csv	81	애프터경험
+experiences	82	성우경험				original-game/CSV/exp.csv	82	성우경험
+experiences	83	작화경험				original-game/CSV/exp.csv	83	작화경험
+experiences	84	치료효과경험				original-game/CSV/exp.csv	84	치료효과경험
+experiences	90	공헌도				original-game/CSV/exp.csv	90	공헌도
+experiences	91	인기				original-game/CSV/exp.csv	91	인기
+experiences	92	훈계경험				original-game/CSV/exp.csv	92	훈계경험
+experiences	101	남친과의 SEX회수				original-game/CSV/exp.csv	101	남친과의 SEX회수
+experiences	102	코스프레경험				original-game/CSV/exp.csv	102	코스프레경험
+experiences	103	치한경험				original-game/CSV/exp.csv	103	치한경험
+experiences	104	섹프와의 SEX회수				original-game/CSV/exp.csv	104	섹프와의 SEX회수
+experiences	105	레이프회수				original-game/CSV/exp.csv	105	레이프회수
+experiences	107	캐릭터 매각경험(MASTER)				original-game/CSV/exp.csv	107	캐릭터 매각경험(MASTER)
+experiences	108	직원 네토라레경험				original-game/CSV/exp.csv	108	직원 네토라레경험
+experiences	109	교제인원수				original-game/CSV/exp.csv	109	교제인원수
+experiences	110	RB단 성격개선경험				original-game/CSV/exp.csv	110	RB단 성격개선경험
+experiences	111	이미지체인지횟수				original-game/CSV/exp.csv	111	이미지체인지횟수
+experiences	112	비속어 지도횟수				original-game/CSV/exp.csv	112	비속어 지도횟수
+experiences	120	미용트레이닝경험				original-game/CSV/exp.csv	120	미용트레이닝경험
+experiences	121	운동트레이닝경험				original-game/CSV/exp.csv	121	운동트레이닝경험
+experiences	122	학업트레이닝경험				original-game/CSV/exp.csv	122	학업트레이닝경험
+experiences	123	오타쿠트레이닝경험				original-game/CSV/exp.csv	123	오타쿠트레이닝경험
+experiences	124	스페셜 에스테사용경험				original-game/CSV/exp.csv	124	스페셜 에스테사용경험
+experiences	130	카논 아르바이트				original-game/CSV/exp.csv	130	카논 아르바이트
+experiences	131	사오리 아르바이트				original-game/CSV/exp.csv	131	사오리 아르바이트
+experiences	132	유카코 아르바이트				original-game/CSV/exp.csv	132	유카코 아르바이트
+experiences	133	하루노 아르바이트				original-game/CSV/exp.csv	133	하루노 아르바이트
+experiences	134	엘레나 아르바이트				original-game/CSV/exp.csv	134	엘레나 아르바이트
+experiences	135	아이샤 아르바이트				original-game/CSV/exp.csv	135	아이샤 아르바이트
+experiences	136	오토하 아르바이트				original-game/CSV/exp.csv	136	오토하 아르바이트
+experiences	137	마리 아르바이트				original-game/CSV/exp.csv	137	마리 아르바이트
+marks	0	고통각인				original-game/CSV/Mark.csv	0	고통각인
+marks	1	쾌락각인				original-game/CSV/Mark.csv	1	쾌락각인
+marks	2	굴복각인				original-game/CSV/Mark.csv	2	굴복각인
+marks	3	반발각인				original-game/CSV/Mark.csv	3	반발각인
+trainingParams	0	쾌C				original-game/CSV/Palam.csv	0	쾌C
+trainingParams	1	쾌V				original-game/CSV/Palam.csv	1	쾌V
+trainingParams	2	쾌A				original-game/CSV/Palam.csv	2	쾌A
+trainingParams	3	윤활				original-game/CSV/Palam.csv	3	윤활
+trainingParams	4	온순				original-game/CSV/Palam.csv	4	온순
+trainingParams	5	욕정				original-game/CSV/Palam.csv	5	욕정
+trainingParams	6	굴복				original-game/CSV/Palam.csv	6	굴복
+trainingParams	7	습득				original-game/CSV/Palam.csv	7	습득
+trainingParams	8	치정				original-game/CSV/Palam.csv	8	치정
+trainingParams	9	고통				original-game/CSV/Palam.csv	9	고통
+trainingParams	10	공포				original-game/CSV/Palam.csv	10	공포
+trainingParams	11	반감				original-game/CSV/Palam.csv	11	반감
+trainingParams	12	불쾌				original-game/CSV/Palam.csv	12	불쾌
+trainingParams	13	억울				original-game/CSV/Palam.csv	13	억울
+trainingParams	14	쾌B				original-game/CSV/Palam.csv	14	쾌B
+trainingParams	15	향락				original-game/CSV/Palam.csv	15	향락
+trainingParams	100	부정				original-game/CSV/Palam.csv	100	부정
+trainingCommands	0	애무				original-game/CSV/Train.csv	0	애무
+trainingCommands	1	커닐링구스				original-game/CSV/Train.csv	1	커닐링구스
+trainingCommands	2	애널애무				original-game/CSV/Train.csv	2	애널애무
+trainingCommands	3	자위				original-game/CSV/Train.csv	3	자위
+trainingCommands	4	펠라한다				original-game/CSV/Train.csv	4	펠라한다
+trainingCommands	5	가슴애무				original-game/CSV/Train.csv	5	가슴애무
+trainingCommands	6	키스한다				original-game/CSV/Train.csv	6	키스한다
+trainingCommands	7	조개벌리기				original-game/CSV/Train.csv	7	조개벌리기
+trainingCommands	8	손가락삽입				original-game/CSV/Train.csv	8	손가락삽입
+trainingCommands	9	애널핥기				original-game/CSV/Train.csv	9	애널핥기
+trainingCommands	10	로터				original-game/CSV/Train.csv	10	로터
+trainingCommands	11	바이브				original-game/CSV/Train.csv	11	바이브
+trainingCommands	12	E마사지기				original-game/CSV/Train.csv	12	E마사지기
+trainingCommands	13	애널바이브				original-game/CSV/Train.csv	13	애널바이브
+trainingCommands	14	클리캡				original-game/CSV/Train.csv	14	클리캡
+trainingCommands	15	니플캡				original-game/CSV/Train.csv	15	니플캡
+trainingCommands	16	착유기				original-game/CSV/Train.csv	16	착유기
+trainingCommands	17	오나홀				original-game/CSV/Train.csv	17	오나홀
+trainingCommands	18	샤워				original-game/CSV/Train.csv	18	샤워
+trainingCommands	19	애널스틱				original-game/CSV/Train.csv	19	애널스틱
+trainingCommands	20	정상위				original-game/CSV/Train.csv	20	정상위
+trainingCommands	21	후배위				original-game/CSV/Train.csv	21	후배위
+trainingCommands	22	대면좌위				original-game/CSV/Train.csv	22	대면좌위
+trainingCommands	23	배면좌위				original-game/CSV/Train.csv	23	배면좌위
+trainingCommands	24	역강간				original-game/CSV/Train.csv	24	역강간
+trainingCommands	25	역애널강간				original-game/CSV/Train.csv	25	역애널강간
+trainingCommands	26	정상위애널				original-game/CSV/Train.csv	26	정상위애널
+trainingCommands	27	후배위애널				original-game/CSV/Train.csv	27	후배위애널
+trainingCommands	28	대면좌위애널				original-game/CSV/Train.csv	28	대면좌위애널
+trainingCommands	29	배면좌위애널				original-game/CSV/Train.csv	29	배면좌위애널
+trainingCommands	30	수음				original-game/CSV/Train.csv	30	수음
+trainingCommands	31	펠라치오				original-game/CSV/Train.csv	31	펠라치오
+trainingCommands	32	파이즈리				original-game/CSV/Train.csv	32	파이즈리
+trainingCommands	33	스마타				original-game/CSV/Train.csv	33	스마타
+trainingCommands	34	기승위				original-game/CSV/Train.csv	34	기승위
+trainingCommands	35	거품춤				original-game/CSV/Train.csv	35	거품춤
+trainingCommands	36	기승위애널				original-game/CSV/Train.csv	36	기승위애널
+trainingCommands	37	애널봉사				original-game/CSV/Train.csv	37	애널봉사
+trainingCommands	38	풋잡				original-game/CSV/Train.csv	38	풋잡
+trainingCommands	39	오나홀애무				original-game/CSV/Train.csv	39	오나홀애무
+trainingCommands	40	스팽킹				original-game/CSV/Train.csv	40	스팽킹
+trainingCommands	41	채찍				original-game/CSV/Train.csv	41	채찍
+trainingCommands	42	바늘				original-game/CSV/Train.csv	42	바늘
+trainingCommands	43	아이마스크				original-game/CSV/Train.csv	43	아이마스크
+trainingCommands	44	밧줄				original-game/CSV/Train.csv	44	밧줄
+trainingCommands	45	볼개그				original-game/CSV/Train.csv	45	볼개그
+trainingCommands	46	관장기+플러그				original-game/CSV/Train.csv	46	관장기+플러그
+trainingCommands	47	본디지 착용				original-game/CSV/Train.csv	47	본디지 착용
+trainingCommands	48	풋잡한다				original-game/CSV/Train.csv	48	풋잡한다
+trainingCommands	49	애널전극				original-game/CSV/Train.csv	49	애널전극
+trainingCommands	50	로션				original-game/CSV/Train.csv	50	로션
+trainingCommands	51	프린세스포이즌				original-game/CSV/Train.csv	51	프린세스포이즌
+trainingCommands	52	이뇨제				original-game/CSV/Train.csv	52	이뇨제
+trainingCommands	53	비디오카메라				original-game/CSV/Train.csv	53	비디오카메라
+trainingCommands	54	촬영세트변경				original-game/CSV/Train.csv	54	촬영세트변경
+trainingCommands	55	아무것도 안한다				original-game/CSV/Train.csv	55	아무것도 안한다
+trainingCommands	56	대화한다				original-game/CSV/Train.csv	56	대화한다
+trainingCommands	57	수치 플레이				original-game/CSV/Train.csv	57	수치 플레이
+trainingCommands	58	목욕탕 플레이				original-game/CSV/Train.csv	58	목욕탕 플레이
+trainingCommands	59	코스프레				original-game/CSV/Train.csv	59	코스프레
+trainingCommands	60	조수한테키스				original-game/CSV/Train.csv	60	조수한테키스
+trainingCommands	61	커닐링구스강제				original-game/CSV/Train.csv	61	커닐링구스강제
+trainingCommands	62	조수를 범한다				original-game/CSV/Train.csv	62	조수를 범한다
+trainingCommands	63	조개맞대기				original-game/CSV/Train.csv	63	조개맞대기
+trainingCommands	65	조수를 범하게 한다				original-game/CSV/Train.csv	65	조수를 범하게 한다
+trainingCommands	66	두개 펠라				original-game/CSV/Train.csv	66	두개 펠라
+trainingCommands	68	더블 펠라				original-game/CSV/Train.csv	68	더블 펠라
+trainingCommands	71	더블 파이즈리				original-game/CSV/Train.csv	71	더블 파이즈리
+trainingCommands	80	이라마치오				original-game/CSV/Train.csv	80	이라마치오
+trainingCommands	81	피스트퍽				original-game/CSV/Train.csv	81	피스트퍽
+trainingCommands	82	애널피스트				original-game/CSV/Train.csv	82	애널피스트
+trainingCommands	83	양구멍피스트				original-game/CSV/Train.csv	83	양구멍피스트
+trainingCommands	85	방뇨				original-game/CSV/Train.csv	85	방뇨
+trainingCommands	87	피어싱				original-game/CSV/Train.csv	87	피어싱
+trainingCommands	88	제모				original-game/CSV/Train.csv	88	제모
+trainingCommands	89	수간 플레이				original-game/CSV/Train.csv	89	수간 플레이
+trainingCommands	90	로터자위				original-game/CSV/Train.csv	90	로터자위
+trainingCommands	91	전동마사지기자위				original-game/CSV/Train.csv	91	전동마사지기자위
+trainingCommands	92	유두로터				original-game/CSV/Train.csv	92	유두로터
+trainingCommands	100	촉수생물				original-game/CSV/Train.csv	100	촉수생물
+trainingCommands	101	촉수 삽입				original-game/CSV/Train.csv	101	촉수 삽입
+trainingCommands	102	애널촉수				original-game/CSV/Train.csv	102	애널촉수
+trainingCommands	103	촉수 클리자극				original-game/CSV/Train.csv	103	촉수 클리자극
+trainingCommands	104	촉수 유두자극				original-game/CSV/Train.csv	104	촉수 유두자극
+trainingCommands	105	촉수 착유				original-game/CSV/Train.csv	105	촉수 착유
+trainingCommands	106	촉수 긴박				original-game/CSV/Train.csv	106	촉수 긴박
+trainingCommands	107	촉수 관장				original-game/CSV/Train.csv	107	촉수 관장
+trainingCommands	108	촉수 구욕				original-game/CSV/Train.csv	108	촉수 구욕
+trainingCommands	109	촉수페니스자극				original-game/CSV/Train.csv	109	촉수페니스자극
+trainingCommands	110	갈아입히기				original-game/CSV/Train.csv	110	갈아입히기
+trainingCommands	122	투구비비기				original-game/CSV/Train.csv	122	투구비비기
+trainingCommands	135	안면기승 플레이				original-game/CSV/Train.csv	135	안면기승 플레이
+trainingCommands	136	칭찬한다				original-game/CSV/Train.csv	136	칭찬한다
+trainingCommands	137	삼각목마				original-game/CSV/Train.csv	137	삼각목마
+trainingCommands	140	콘돔정음				original-game/CSV/Train.csv	140	콘돔정음
+trainingCommands	141	나이즈리				original-game/CSV/Train.csv	141	나이즈리
+trainingCommands	142	세로파이즈리				original-game/CSV/Train.csv	142	세로파이즈리
+trainingCommands	143	가슴구멍				original-game/CSV/Train.csv	143	가슴구멍
+trainingCommands	144	배빵				original-game/CSV/Train.csv	144	배빵
+trainingCommands	150	슬라임 생성				original-game/CSV/Train.csv	150	슬라임 생성
+trainingCommands	151	슬라임 질내진입				original-game/CSV/Train.csv	151	슬라임 질내진입
+trainingCommands	152	슬라임 항문진입				original-game/CSV/Train.csv	152	슬라임 항문진입
+trainingCommands	153	슬라임자위				original-game/CSV/Train.csv	153	슬라임자위
+trainingCommands	154	슬라임 구욕				original-game/CSV/Train.csv	154	슬라임 구욕
+trainingCommands	180	구현				original-game/CSV/Train.csv	180	구현
+sourceDefinitions	0	快Ｃ				Ho版資料（作成中途）/source.csv	0	快Ｃ
+sourceDefinitions	1	快Ｖ				Ho版資料（作成中途）/source.csv	1	快Ｖ
+sourceDefinitions	2	快Ａ				Ho版資料（作成中途）/source.csv	2	快Ａ
+sourceDefinitions	3	情愛				Ho版資料（作成中途）/source.csv	3	情愛
+sourceDefinitions	4	性行動				Ho版資料（作成中途）/source.csv	4	性行動
+sourceDefinitions	5	達成感				Ho版資料（作成中途）/source.csv	5	達成感
+sourceDefinitions	6	痛み				Ho版資料（作成中途）/source.csv	6	痛み
+sourceDefinitions	7	中毒充足				Ho版資料（作成中途）/source.csv	7	中毒充足
+sourceDefinitions	8	不潔				Ho版資料（作成中途）/source.csv	8	不潔
+sourceDefinitions	9	液体追加				Ho版資料（作成中途）/source.csv	9	液体追加
+sourceDefinitions	10	愛液分泌				Ho版資料（作成中途）/source.csv	10	愛液分泌
+sourceDefinitions	11	欲情追加				Ho版資料（作成中途）/source.csv	11	欲情追加
+sourceDefinitions	12	露出				Ho版資料（作成中途）/source.csv	12	露出
+sourceDefinitions	13	屈従				Ho版資料（作成中途）/source.csv	13	屈従
+sourceDefinitions	14	逸脱				Ho版資料（作成中途）/source.csv	14	逸脱
+sourceDefinitions	15	反感追加				Ho版資料（作成中途）/source.csv	15	反感追加
+sourceDefinitions	16	恭順追加				Ho版資料（作成中途）/source.csv	16	恭順追加
+sourceDefinitions	17	快Ｂ				Ho版資料（作成中途）/source.csv	17	快Ｂ
+characterTextDefinitions	0	처녀상실의 상대				original-game/CSV/CSTR.csv	0	처녀상실의 상대
+characterTextDefinitions	1	첫 키스의 상대				original-game/CSV/CSTR.csv	1	첫 키스의 상대
+characterTextDefinitions	2	동정상실의 상대				original-game/CSV/CSTR.csv	2	동정상실의 상대
+characterTextDefinitions	3	애널처녀상실의 상대				original-game/CSV/CSTR.csv	3	애널처녀상실의 상대
+characterTextDefinitions	90	직업				original-game/CSV/CSTR.csv	90	직업
+legacyCharacterFlagDefinitions	0	SPキャラ				Ho版資料（作成中途）/cflag.csv	0	SPキャラ
+legacyCharacterFlagDefinitions	1	売却及び助手可能;(1で売却、2で助手)				Ho版資料（作成中途）/cflag.csv	1	売却及び助手可能;(1で売却、2で助手)
+legacyCharacterFlagDefinitions	2	好感度				Ho版資料（作成中途）/cflag.csv	2	好感度
+legacyCharacterFlagDefinitions	3	公開自慰経験				Ho版資料（作成中途）/cflag.csv	3	公開自慰経験
+legacyCharacterFlagDefinitions	4	浣腸経験				Ho版資料（作成中途）/cflag.csv	4	浣腸経験
+legacyCharacterFlagDefinitions	5	野外露出経験				Ho版資料（作成中途）/cflag.csv	5	野外露出経験
+legacyCharacterFlagDefinitions	6	陰毛の状態				Ho版資料（作成中途）/cflag.csv	6	陰毛の状態
+legacyCharacterFlagDefinitions	7	ピアスの装着状況				Ho版資料（作成中途）/cflag.csv	7	ピアスの装着状況
+legacyCharacterFlagDefinitions	8	淫語設定				Ho版資料（作成中途）/cflag.csv	8	淫語設定
+legacyCharacterFlagDefinitions	10	調教経験回数				Ho版資料（作成中途）/cflag.csv	10	調教経験回数
+legacyCharacterFlagDefinitions	12	労役中フラグ				Ho版資料（作成中途）/cflag.csv	12	労役中フラグ
+legacyCharacterFlagDefinitions	13	労役でコンドーム使用				Ho版資料（作成中途）/cflag.csv	13	労役でコンドーム使用
+legacyCharacterFlagDefinitions	15	V喪失相手種別				Ho版資料（作成中途）/cflag.csv	15	V喪失相手種別
+legacyCharacterFlagDefinitions	16	M喪失相手種別				Ho版資料（作成中途）/cflag.csv	16	M喪失相手種別
+legacyCharacterFlagDefinitions	17	娼館デビュー				Ho版資料（作成中途）/cflag.csv	17	娼館デビュー
+legacyCharacterFlagDefinitions	18	ふたなり童貞				Ho版資料（作成中途）/cflag.csv	18	ふたなり童貞
+legacyCharacterFlagDefinitions	20	口上表示				Ho版資料（作成中途）/cflag.csv	20	口上表示
+legacyCharacterFlagDefinitions	21	親族1				Ho版資料（作成中途）/cflag.csv	21	親族1
+legacyCharacterFlagDefinitions	22	親族2				Ho版資料（作成中途）/cflag.csv	22	親族2
+legacyCharacterFlagDefinitions	23	親族3				Ho版資料（作成中途）/cflag.csv	23	親族3
+legacyCharacterFlagDefinitions	24	親族4				Ho版資料（作成中途）/cflag.csv	24	親族4
+legacyCharacterFlagDefinitions	25	ミッション期限				Ho版資料（作成中途）/cflag.csv	25	ミッション期限
+legacyCharacterFlagDefinitions	26	コンドーム使用しない;逆レ時2。				Ho版資料（作成中途）/cflag.csv	26	コンドーム使用しない;逆レ時2。
+legacyCharacterFlagDefinitions	28	アイドル引退判定				Ho版資料（作成中途）/cflag.csv	28	アイドル引退判定
+legacyCharacterFlagDefinitions	31	体内媚薬残留度				Ho版資料（作成中途）/cflag.csv	31	体内媚薬残留度
+legacyCharacterFlagDefinitions	32	媚薬中毒禁断症状判定				Ho版資料（作成中途）/cflag.csv	32	媚薬中毒禁断症状判定
+legacyCharacterFlagDefinitions	34	剛毛剤使用フラグ				Ho版資料（作成中途）/cflag.csv	34	剛毛剤使用フラグ
+legacyCharacterFlagDefinitions	36	カップサイズ				Ho版資料（作成中途）/cflag.csv	36	カップサイズ
+legacyCharacterFlagDefinitions	40	着衣状態				Ho版資料（作成中途）/cflag.csv	40	着衣状態
+legacyCharacterFlagDefinitions	41	上着のタイプ				Ho版資料（作成中途）/cflag.csv	41	上着のタイプ
+legacyCharacterFlagDefinitions	42	特別コスチュームのタイプ				Ho版資料（作成中途）/cflag.csv	42	特別コスチュームのタイプ
+legacyCharacterFlagDefinitions	43	パンツの状態				Ho版資料（作成中途）/cflag.csv	43	パンツの状態
+legacyCharacterFlagDefinitions	44	ブラジャーの状態				Ho版資料（作成中途）/cflag.csv	44	ブラジャーの状態
+legacyCharacterFlagDefinitions	45	上着上の状態				Ho版資料（作成中途）/cflag.csv	45	上着上の状態
+legacyCharacterFlagDefinitions	46	上着下の状態				Ho版資料（作成中途）/cflag.csv	46	上着下の状態
+legacyCharacterFlagDefinitions	47	特別コスチュームの状態				Ho版資料（作成中途）/cflag.csv	47	特別コスチュームの状態
+legacyCharacterFlagDefinitions	48	現在のパンツを穿き続けている期間				Ho版資料（作成中途）/cflag.csv	48	現在のパンツを穿き続けている期間
+legacyCharacterFlagDefinitions	49	貞操帯のカギを捨てた				Ho版資料（作成中途）/cflag.csv	49	貞操帯のカギを捨てた
+legacyCharacterFlagDefinitions	50	Ｖ売春で処女喪失フラグ				Ho版資料（作成中途）/cflag.csv	50	Ｖ売春で処女喪失フラグ
+legacyCharacterFlagDefinitions	51	Ｖ売春で否定の珠増加フラグ				Ho版資料（作成中途）/cflag.csv	51	Ｖ売春で否定の珠増加フラグ
+legacyCharacterFlagDefinitions	52	Ａ売春で否定の珠増加フラグ				Ho版資料（作成中途）/cflag.csv	52	Ａ売春で否定の珠増加フラグ
+legacyCharacterFlagDefinitions	53	公開浣腸ショー判定				Ho版資料（作成中途）/cflag.csv	53	公開浣腸ショー判定
+legacyCharacterFlagDefinitions	54	営業でＶ使用不能フラグ				Ho版資料（作成中途）/cflag.csv	54	営業でＶ使用不能フラグ
+legacyCharacterFlagDefinitions	60	起こしに来てもらう				Ho版資料（作成中途）/cflag.csv	60	起こしに来てもらう
+legacyCharacterFlagDefinitions	70	性転換済				Ho版資料（作成中途）/cflag.csv	70	性転換済
+legacyCharacterFlagDefinitions	71	処女膜再生回数				Ho版資料（作成中途）/cflag.csv	71	処女膜再生回数
+legacyCharacterFlagDefinitions	81	潤滑蓄積量				Ho版資料（作成中途）/cflag.csv	81	潤滑蓄積量
+legacyCharacterFlagDefinitions	82	欲情蓄積量				Ho版資料（作成中途）/cflag.csv	82	欲情蓄積量
+legacyCharacterFlagDefinitions	101	マスター膣射カウント				Ho版資料（作成中途）/cflag.csv	101	マスター膣射カウント
+legacyCharacterFlagDefinitions	102	妊娠させた相手				Ho版資料（作成中途）/cflag.csv	102	妊娠させた相手
+legacyCharacterFlagDefinitions	103	助手から奴隷への膣射カウント				Ho版資料（作成中途）/cflag.csv	103	助手から奴隷への膣射カウント
+legacyCharacterFlagDefinitions	104	奴隷から助手への膣射カウント				Ho版資料（作成中途）/cflag.csv	104	奴隷から助手への膣射カウント
+legacyCharacterFlagDefinitions	105	娼館などの客膣射カウント				Ho版資料（作成中途）/cflag.csv	105	娼館などの客膣射カウント
+legacyCharacterFlagDefinitions	106	ノラ犬からの膣射カウント				Ho版資料（作成中途）/cflag.csv	106	ノラ犬からの膣射カウント
+legacyCharacterFlagDefinitions	107	触手からの膣射カウント				Ho版資料（作成中途）/cflag.csv	107	触手からの膣射カウント
+legacyCharacterFlagDefinitions	109	排卵促進剤の使用の有無				Ho版資料（作成中途）/cflag.csv	109	排卵促進剤の使用の有無
+legacyCharacterFlagDefinitions	110	出産日				Ho版資料（作成中途）/cflag.csv	110	出産日
+legacyCharacterFlagDefinitions	111	父親のキャラ番号				Ho版資料（作成中途）/cflag.csv	111	父親のキャラ番号
+legacyCharacterFlagDefinitions	112	スライム抱卵判定用				Ho版資料（作成中途）/cflag.csv	112	スライム抱卵判定用
+legacyCharacterFlagDefinitions	121	妊娠時の増加体重				Ho版資料（作成中途）/cflag.csv	121	妊娠時の増加体重
+legacyCharacterFlagDefinitions	122	妊娠時の増加バスト（IWSによるボーナス除く）				Ho版資料（作成中途）/cflag.csv	122	妊娠時の増加バスト（IWSによるボーナス除く）
+legacyCharacterFlagDefinitions	123	妊娠時の増加ウェスト				Ho版資料（作成中途）/cflag.csv	123	妊娠時の増加ウェスト
+legacyCharacterFlagDefinitions	124	妊娠時の増加ヒップ				Ho版資料（作成中途）/cflag.csv	124	妊娠時の増加ヒップ
+legacyCharacterFlagDefinitions	130	特殊営業参加フラグ/強くてニューゲーム選択時の引継ぎ決定フラグ				Ho版資料（作成中途）/cflag.csv	130	特殊営業参加フラグ/強くてニューゲーム選択時の引継ぎ決定フラグ
+legacyCharacterFlagDefinitions	140	女子寮入寮				Ho版資料（作成中途）/cflag.csv	140	女子寮入寮
+legacyCharacterFlagDefinitions	160	V喪失年齢				Ho版資料（作成中途）/cflag.csv	160	V喪失年齢
+legacyCharacterFlagDefinitions	161	V喪失月				Ho版資料（作成中途）/cflag.csv	161	V喪失月
+legacyCharacterFlagDefinitions	162	V喪失週				Ho版資料（作成中途）/cflag.csv	162	V喪失週
+legacyCharacterFlagDefinitions	163	V喪失場所				Ho版資料（作成中途）/cflag.csv	163	V喪失場所
+legacyCharacterFlagDefinitions	164	V喪失状況				Ho版資料（作成中途）/cflag.csv	164	V喪失状況
+legacyCharacterFlagDefinitions	165	V喪失日付固定用				Ho版資料（作成中途）/cflag.csv	165	V喪失日付固定用
+legacyCharacterFlagDefinitions	166	V喪失誕生日記念				Ho版資料（作成中途）/cflag.csv	166	V喪失誕生日記念
+legacyCharacterFlagDefinitions	167	元カレでV喪失				Ho版資料（作成中途）/cflag.csv	167	元カレでV喪失
+legacyCharacterFlagDefinitions	170	靴下の種類				Ho版資料（作成中途）/cflag.csv	170	靴下の種類
+legacyCharacterFlagDefinitions	171	靴の種類				Ho版資料（作成中途）/cflag.csv	171	靴の種類
+legacyCharacterFlagDefinitions	173	靴下の着用状態				Ho版資料（作成中途）/cflag.csv	173	靴下の着用状態
+legacyCharacterFlagDefinitions	174	ブラの色				Ho版資料（作成中途）/cflag.csv	174	ブラの色
+legacyCharacterFlagDefinitions	175	ブラの種類				Ho版資料（作成中途）/cflag.csv	175	ブラの種類
+legacyCharacterFlagDefinitions	176	パンツの色				Ho版資料（作成中途）/cflag.csv	176	パンツの色
+legacyCharacterFlagDefinitions	177	パンツの種類				Ho版資料（作成中途）/cflag.csv	177	パンツの種類
+legacyCharacterFlagDefinitions	580	精飲絶頂回数;EXPにしたい				Ho版資料（作成中途）/cflag.csv	580	精飲絶頂回数;EXPにしたい
+legacyCharacterFlagDefinitions	600	髪の色				Ho版資料（作成中途）/cflag.csv	600	髪の色
+legacyCharacterFlagDefinitions	601	染髪の有無				Ho版資料（作成中途）/cflag.csv	601	染髪の有無
+legacyCharacterFlagDefinitions	602	髪型				Ho版資料（作成中途）/cflag.csv	602	髪型
+legacyCharacterFlagDefinitions	603	染色前髪色				Ho版資料（作成中途）/cflag.csv	603	染色前髪色
+legacyCharacterFlagDefinitions	606	タトゥー				Ho版資料（作成中途）/cflag.csv	606	タトゥー
+legacyCharacterFlagDefinitions	607	腋毛の有無				Ho版資料（作成中途）/cflag.csv	607	腋毛の有無
+legacyCharacterFlagDefinitions	608	性器の形状				Ho版資料（作成中途）/cflag.csv	608	性器の形状
+legacyCharacterFlagDefinitions	609	ペニスのサイズ				Ho版資料（作成中途）/cflag.csv	609	ペニスのサイズ
+legacyCharacterFlagDefinitions	610	ペニスアクセサリの有無				Ho版資料（作成中途）/cflag.csv	610	ペニスアクセサリの有無
+legacyCharacterFlagDefinitions	611	包皮の状態				Ho版資料（作成中途）/cflag.csv	611	包皮の状態
+legacyCharacterFlagDefinitions	613	合コン参加判定				Ho版資料（作成中途）/cflag.csv	613	合コン参加判定
+legacyCharacterFlagDefinitions	616	A喪失相手種別				Ho版資料（作成中途）/cflag.csv	616	A喪失相手種別
+legacyCharacterFlagDefinitions	618	タバコの種類				Ho版資料（作成中途）/cflag.csv	618	タバコの種類
+legacyCharacterFlagDefinitions	619	寝取られ進行ポイント				Ho版資料（作成中途）/cflag.csv	619	寝取られ進行ポイント
+legacyCharacterFlagDefinitions	620	寝取られ完了値				Ho版資料（作成中途）/cflag.csv	620	寝取られ完了値
+legacyCharacterFlagDefinitions	621	彼氏の有無				Ho版資料（作成中途）/cflag.csv	621	彼氏の有無
+legacyCharacterFlagDefinitions	622	彼氏の種類				Ho版資料（作成中途）/cflag.csv	622	彼氏の種類
+legacyCharacterFlagDefinitions	623	彼氏とラブホに寄る判定用				Ho版資料（作成中途）/cflag.csv	623	彼氏とラブホに寄る判定用
+legacyCharacterFlagDefinitions	624	彼氏とのセックスの有無				Ho版資料（作成中途）/cflag.csv	624	彼氏とのセックスの有無
+legacyCharacterFlagDefinitions	625	彼氏の好みの服装に変更したかどうか				Ho版資料（作成中途）/cflag.csv	625	彼氏の好みの服装に変更したかどうか
+legacyCharacterFlagDefinitions	626	服装変更の判定用				Ho版資料（作成中途）/cflag.csv	626	服装変更の判定用
+legacyCharacterFlagDefinitions	633	護衛の有無				Ho版資料（作成中途）/cflag.csv	633	護衛の有無
+legacyCharacterFlagDefinitions	641	ビデオタイトルの改行の有無				Ho版資料（作成中途）/cflag.csv	641	ビデオタイトルの改行の有無
+legacyCharacterFlagDefinitions	655	レズイベントの実行判定				Ho版資料（作成中途）/cflag.csv	655	レズイベントの実行判定
+legacyCharacterFlagDefinitions	660	スタッフNTRスタート前進行度				Ho版資料（作成中途）/cflag.csv	660	スタッフNTRスタート前進行度
+legacyCharacterFlagDefinitions	661	スタッフ寝取られイベントの進行度				Ho版資料（作成中途）/cflag.csv	661	スタッフ寝取られイベントの進行度
+legacyCharacterFlagDefinitions	662	スタッフ寝取られイベントの進行度				Ho版資料（作成中途）/cflag.csv	662	スタッフ寝取られイベントの進行度
+legacyCharacterFlagDefinitions	663	寝取りスタッフ抹殺依頼判定				Ho版資料（作成中途）/cflag.csv	663	寝取りスタッフ抹殺依頼判定
+legacyCharacterFlagDefinitions	671	お弁当作成判定				Ho版資料（作成中途）/cflag.csv	671	お弁当作成判定
+legacyCharacterFlagDefinitions	672	ユニット加入せず;アイドル				Ho版資料（作成中途）/cflag.csv	672	ユニット加入せず;アイドル
+legacyCharacterFlagDefinitions	680	エステ通い判定				Ho版資料（作成中途）/cflag.csv	680	エステ通い判定
+legacyCharacterFlagDefinitions	681	ジム通い判定				Ho版資料（作成中途）/cflag.csv	681	ジム通い判定
+legacyCharacterFlagDefinitions	682	学習塾通い判定				Ho版資料（作成中途）/cflag.csv	682	学習塾通い判定
+legacyCharacterFlagDefinitions	683	新作アニメチェック判定				Ho版資料（作成中途）/cflag.csv	683	新作アニメチェック判定
+legacyCharacterFlagDefinitions	684	習い事判定				Ho版資料（作成中途）/cflag.csv	684	習い事判定
+legacyCharacterFlagDefinitions	691	セフレあり取得予定				Ho版資料（作成中途）/cflag.csv	691	セフレあり取得予定
+legacyCharacterFlagDefinitions	692	二重BGSEX抑止				Ho版資料（作成中途）/cflag.csv	692	二重BGSEX抑止
+legacyCharacterFlagDefinitions	694	スタッフ動向調査				Ho版資料（作成中途）/cflag.csv	694	スタッフ動向調査
+legacyCharacterFlagDefinitions	700	体力増強剤				Ho版資料（作成中途）/cflag.csv	700	体力増強剤
+legacyCharacterFlagDefinitions	701	気力増強剤				Ho版資料（作成中途）/cflag.csv	701	気力増強剤
+legacyCharacterFlagDefinitions	703	淫魔召喚判定;MASTER				Ho版資料（作成中途）/cflag.csv	703	淫魔召喚判定;MASTER
+legacyCharacterFlagDefinitions	704	みひろ・結衣花				Ho版資料（作成中途）/cflag.csv	704	みひろ・結衣花
+legacyCharacterFlagDefinitions	709	新型アンドロイド;MASTER				Ho版資料（作成中途）/cflag.csv	709	新型アンドロイド;MASTER
+legacyCharacterFlagDefinitions	712	リーナ雇用判定				Ho版資料（作成中途）/cflag.csv	712	リーナ雇用判定
+legacyCharacterFlagDefinitions	720	淫魔化判定				Ho版資料（作成中途）/cflag.csv	720	淫魔化判定
+legacyCharacterFlagDefinitions	730	個人のビデオ総売上				Ho版資料（作成中途）/cflag.csv	730	個人のビデオ総売上
+legacyCharacterFlagDefinitions	731	個人のビデオ代表作売上				Ho版資料（作成中途）/cflag.csv	731	個人のビデオ代表作売上
+legacyCharacterFlagDefinitions	732	個人のビデオ最新作売上				Ho版資料（作成中途）/cflag.csv	732	個人のビデオ最新作売上
+legacyCharacterFlagDefinitions	733	AVファン人数				Ho版資料（作成中途）/cflag.csv	733	AVファン人数
+legacyCharacterFlagDefinitions	734	個人のビデオデビュー作売上				Ho版資料（作成中途）/cflag.csv	734	個人のビデオデビュー作売上
+legacyCharacterFlagDefinitions	758	翔子・愛理・杏子				Ho版資料（作成中途）/cflag.csv	758	翔子・愛理・杏子
+legacyCharacterFlagDefinitions	760	誕生日プレゼント				Ho版資料（作成中途）/cflag.csv	760	誕生日プレゼント
+legacyCharacterFlagDefinitions	761	加瀬芙美香雇用判定				Ho版資料（作成中途）/cflag.csv	761	加瀬芙美香雇用判定
+legacyCharacterFlagDefinitions	770	ミッション受領数				Ho版資料（作成中途）/cflag.csv	770	ミッション受領数
+legacyCharacterFlagDefinitions	801	バイト				Ho版資料（作成中途）/cflag.csv	801	バイト
+legacyCharacterFlagDefinitions	820	M喪失年齢				Ho版資料（作成中途）/cflag.csv	820	M喪失年齢
+legacyCharacterFlagDefinitions	821	M喪失月				Ho版資料（作成中途）/cflag.csv	821	M喪失月
+legacyCharacterFlagDefinitions	822	M喪失週				Ho版資料（作成中途）/cflag.csv	822	M喪失週
+legacyCharacterFlagDefinitions	823	M喪失場所				Ho版資料（作成中途）/cflag.csv	823	M喪失場所
+legacyCharacterFlagDefinitions	824	M喪失状況				Ho版資料（作成中途）/cflag.csv	824	M喪失状況
+legacyCharacterFlagDefinitions	825	M喪失日付固定用				Ho版資料（作成中途）/cflag.csv	825	M喪失日付固定用
+legacyCharacterFlagDefinitions	826	M喪失誕生日記念				Ho版資料（作成中途）/cflag.csv	826	M喪失誕生日記念
+legacyCharacterFlagDefinitions	827	彼氏別れた				Ho版資料（作成中途）/cflag.csv	827	彼氏別れた
+legacyCharacterFlagDefinitions	830	A喪失年齢				Ho版資料（作成中途）/cflag.csv	830	A喪失年齢
+legacyCharacterFlagDefinitions	831	A喪失月				Ho版資料（作成中途）/cflag.csv	831	A喪失月
+legacyCharacterFlagDefinitions	832	A喪失週				Ho版資料（作成中途）/cflag.csv	832	A喪失週
+legacyCharacterFlagDefinitions	833	A喪失場所				Ho版資料（作成中途）/cflag.csv	833	A喪失場所
+legacyCharacterFlagDefinitions	834	A喪失状況				Ho版資料（作成中途）/cflag.csv	834	A喪失状況
+legacyCharacterFlagDefinitions	835	A喪失日付固定用				Ho版資料（作成中途）/cflag.csv	835	A喪失日付固定用
+legacyCharacterFlagDefinitions	836	A喪失誕生日記念				Ho版資料（作成中途）/cflag.csv	836	A喪失誕生日記念
+items	0	로터	200	unknown		original-game/CSV/Item.csv	0	로터
+items	1	바이브	500	unknown		original-game/CSV/Item.csv	1	바이브
+items	2	E마사지기	2000	unknown		original-game/CSV/Item.csv	2	E마사지기
+items	3	애널바이브	5000	unknown		original-game/CSV/Item.csv	3	애널바이브
+items	4	페니스밴드	2000	unknown		original-game/CSV/Item.csv	4	페니스밴드
+items	5	아이마스크	4000	unknown		original-game/CSV/Item.csv	5	아이마스크
+items	6	비디오카메라	7000	unknown		original-game/CSV/Item.csv	6	비디오카메라
+items	7	클리캡	2000	unknown		original-game/CSV/Item.csv	7	클리캡
+items	8	니플캡	3000	unknown		original-game/CSV/Item.csv	8	니플캡
+items	9	볼개그	1000	unknown		original-game/CSV/Item.csv	9	볼개그
+items	10	채찍	200	unknown		original-game/CSV/Item.csv	10	채찍
+items	11	바늘	2000	unknown		original-game/CSV/Item.csv	11	바늘
+items	12	오나홀	4000	unknown		original-game/CSV/Item.csv	12	오나홀
+items	13	플레이매트	5000	unknown		original-game/CSV/Item.csv	13	플레이매트
+items	14	밧줄	3000	unknown		original-game/CSV/Item.csv	14	밧줄
+items	15	관장기+플러그	8000	unknown		original-game/CSV/Item.csv	15	관장기+플러그
+items	16	큰거울	30000	unknown		original-game/CSV/Item.csv	16	큰거울
+items	17	착유기	1500	unknown		original-game/CSV/Item.csv	17	착유기
+items	18	촬영세트・기초	5000	unknown		original-game/CSV/Item.csv	18	촬영세트・기초
+items	19	코스프레의상	20000	unknown		original-game/CSV/Item.csv	19	코스프레의상
+items	20	애널비즈	700	unknown		original-game/CSV/Item.csv	20	애널비즈
+items	21	전극플러그	50000	unknown		original-game/CSV/Item.csv	21	전극플러그
+items	22	개	150000000	unknown		original-game/CSV/Item.csv	22	개
+items	23	본디지	10000	unknown		original-game/CSV/Item.csv	23	본디지
+items	24	콘돔	10	unknown		original-game/CSV/Item.csv	24	콘돔
+items	25	로션	200	unknown		original-game/CSV/Item.csv	25	로션
+items	26	프린세스포이즌	2000	unknown		original-game/CSV/Item.csv	26	프린세스포이즌
+items	27	이뇨제	1000	unknown		original-game/CSV/Item.csv	27	이뇨제
+items	29	싸인펜	100	unknown		original-game/CSV/Item.csv	29	싸인펜
+items	30	영양제	1000	unknown		original-game/CSV/Item.csv	30	영양제
+items	31	향	3000	unknown		original-game/CSV/Item.csv	31	향
+items	34	피어스링	5000	unknown		original-game/CSV/Item.csv	34	피어스링
+items	37	러브스코프	1000	unknown		original-game/CSV/Item.csv	37	러브스코프
+items	38	부스터메일	100000	unknown		original-game/CSV/Item.csv	38	부스터메일
+items	39	【비밀지식】	200000	unknown		original-game/CSV/Item.csv	39	【비밀지식】
+items	40	배란유발제	2000	unknown		original-game/CSV/Item.csv	40	배란유발제
+items	41	강모제	2000	unknown		original-game/CSV/Item.csv	41	강모제
+items	42	【조합지식】	50000	unknown		original-game/CSV/Item.csv	42	【조합지식】
+items	43	배란억제제	50000	unknown		original-game/CSV/Item.csv	43	배란억제제
+items	52	【기교Lv】	5000	unknown		original-game/CSV/Item.csv	52	【기교Lv】
+items	60	코스프레의상・라이트노벨팩	90000	unknown		original-game/CSV/Item.csv	60	코스프레의상・라이트노벨팩
+items	61	코스프레의상・아니메팩	50000	unknown		original-game/CSV/Item.csv	61	코스프레의상・아니메팩
+items	62	코스프레의상・망가팩	70000	unknown		original-game/CSV/Item.csv	62	코스프레의상・망가팩
+items	63	코스프레의상・미소녀게임팩	80000	unknown		original-game/CSV/Item.csv	63	코스프레의상・미소녀게임팩
+items	90	촉수생물	1000000	unknown		original-game/CSV/Item.csv	90	촉수생물
+items	91	파란마술서	1000000	unknown		original-game/CSV/Item.csv	91	파란마술서
+items	100	미야마 카나데	500	unknown		original-game/CSV/Item.csv	100	미야마 카나데
+items	101	사사키 미노리	500	unknown		original-game/CSV/Item.csv	101	사사키 미노리
+items	102	쿠루메 사에	300	unknown		original-game/CSV/Item.csv	102	쿠루메 사에
+items	103	이이노 미키	1000	unknown		original-game/CSV/Item.csv	103	이이노 미키
+items	104	와타라이 키쿄우	500	unknown		original-game/CSV/Item.csv	104	와타라이 키쿄우
+items	105	칸다 히요리	700	unknown		original-game/CSV/Item.csv	105	칸다 히요리
+items	106	타타라 히나	1000	unknown		original-game/CSV/Item.csv	106	타타라 히나
+items	107	타타라 유나	1000	unknown		original-game/CSV/Item.csv	107	타타라 유나
+items	108	레이첼・파라디수스	50000	unknown		original-game/CSV/Item.csv	108	레이첼・파라디수스
+items	109	키류 카논	50000	unknown		original-game/CSV/Item.csv	109	키류 카논
+items	110	스노 이쿠미	20000	unknown		original-game/CSV/Item.csv	110	스노 이쿠미
+items	111	고토 미츠키	600	unknown		original-game/CSV/Item.csv	111	고토 미츠키
+items	112	사카키 아유무	1000	unknown		original-game/CSV/Item.csv	112	사카키 아유무
+items	113	미츠루 이즈키	5000	unknown		original-game/CSV/Item.csv	113	미츠루 이즈키
+items	114	히나미 하루노	1000	unknown		original-game/CSV/Item.csv	114	히나미 하루노
+items	115	미사키 에리카	700	unknown		original-game/CSV/Item.csv	115	미사키 에리카
+items	116	미야마 미이	250000	unknown		original-game/CSV/Item.csv	116	미야마 미이
+items	117	렌카・록웰	8000	unknown		original-game/CSV/Item.csv	117	렌카・록웰
+items	118	히토미쨩	100	unknown		original-game/CSV/Item.csv	118	히토미쨩
+items	119	아카바 마리	600	unknown		original-game/CSV/Item.csv	119	아카바 마리
+items	120	하세가와 미나토	500	unknown		original-game/CSV/Item.csv	120	하세가와 미나토
+items	121	오리베 마나카	500	unknown		original-game/CSV/Item.csv	121	오리베 마나카
+items	122	아마미 루이	700	unknown		original-game/CSV/Item.csv	122	아마미 루이
+items	123	테라모토 유카리	3000	unknown		original-game/CSV/Item.csv	123	테라모토 유카리
+items	124	미카미 키요카	4000	unknown		original-game/CSV/Item.csv	124	미카미 키요카
+items	125	시미즈 사쿠라코	40000	unknown		original-game/CSV/Item.csv	125	시미즈 사쿠라코
+items	126	토모요시 아야노	12000	unknown		original-game/CSV/Item.csv	126	토모요시 아야노
+items	127	사쿠라이 프리실라	4000	unknown		original-game/CSV/Item.csv	127	사쿠라이 프리실라
+items	128	아오이 하루카	2000	unknown		original-game/CSV/Item.csv	128	아오이 하루카
+items	129	후미노 유즈카	3000	unknown		original-game/CSV/Item.csv	129	후미노 유즈카
+items	130	시라나미 유카리	1500	unknown		original-game/CSV/Item.csv	130	시라나미 유카리
+items	131	아이다 엘레나	2000	unknown		original-game/CSV/Item.csv	131	아이다 엘레나
+items	132	아이다 알리사	1000	unknown		original-game/CSV/Item.csv	132	아이다 알리사
+items	133	나카지마 하즈키	3000	unknown		original-game/CSV/Item.csv	133	나카지마 하즈키
+items	134	오리베 나츠미	4000	unknown		original-game/CSV/Item.csv	134	오리베 나츠미
+items	135	카와기시 아사히	500	unknown		original-game/CSV/Item.csv	135	카와기시 아사히
+items	136	아키나 미레이	1500	unknown		original-game/CSV/Item.csv	136	아키나 미레이
+items	137	야미자키 린코	200000	unknown		original-game/CSV/Item.csv	137	야미자키 린코
+items	138	코히나타 시오리	700	unknown		original-game/CSV/Item.csv	138	코히나타 시오리
+items	139	쇼우노 소라	18000	unknown		original-game/CSV/Item.csv	139	쇼우노 소라
+items	140	하뉴 리사	7500	unknown		original-game/CSV/Item.csv	140	하뉴 리사
+items	141	후지카와 리에	10000	unknown		original-game/CSV/Item.csv	141	후지카와 리에
+items	142	아이바 세리나	7500	unknown		original-game/CSV/Item.csv	142	아이바 세리나
+items	143	타카기 사오리	700	unknown		original-game/CSV/Item.csv	143	타카기 사오리
+items	144	미요시 유카코	500	unknown		original-game/CSV/Item.csv	144	미요시 유카코
+items	145	타카나시 오토하	1500	unknown		original-game/CSV/Item.csv	145	타카나시 오토하
+items	146	미즈모리 유키나	2000	unknown		original-game/CSV/Item.csv	146	미즈모리 유키나
+items	150	【구인광고】	300	unknown		original-game/CSV/Item.csv	150	【구인광고】
+items	200	마술식로터	500	unknown		original-game/CSV/Item.csv	200	마술식로터
+items	201	마술식바이브	500	unknown		original-game/CSV/Item.csv	201	마술식바이브
+items	202	마술식E마사지	500	unknown		original-game/CSV/Item.csv	202	마술식E마사지
+items	203	마술식애널바이브	500	unknown		original-game/CSV/Item.csv	203	마술식애널바이브
+items	204	마술식클리캡	500	unknown		original-game/CSV/Item.csv	204	마술식클리캡
+items	205	마술식유두캡	500	unknown		original-game/CSV/Item.csv	205	마술식유두캡
+items	206	고성능채찍	500	unknown		original-game/CSV/Item.csv	206	고성능채찍
+items	207	고성능바늘	500	unknown		original-game/CSV/Item.csv	207	고성능바늘
+items	208	피로회복용입욕제	500	unknown		original-game/CSV/Item.csv	208	피로회복용입욕제
+items	209	살아있는밧줄	500	unknown		original-game/CSV/Item.csv	209	살아있는밧줄
+items	210	마술식착유기	500	unknown		original-game/CSV/Item.csv	210	마술식착유기
+items	211	에이프런	500	unknown		original-game/CSV/Item.csv	211	에이프런
+items	212	마술식애널비즈	500	unknown		original-game/CSV/Item.csv	212	마술식애널비즈
+items	213	마술식삼각목마	500	unknown		original-game/CSV/Item.csv	213	마술식삼각목마
+items	214	마술식오나홀	500	unknown		original-game/CSV/Item.csv	214	마술식오나홀

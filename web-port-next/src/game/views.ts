@@ -1,0 +1,240 @@
+import type { CatalogId } from '../catalog/types';
+import type { UiRoute } from './routes';
+
+export type MenuItemView = {
+  readonly id: string;
+  readonly label: string;
+  readonly route?: UiRoute;
+  readonly enabled: boolean;
+  readonly disabledReason?: string;
+};
+
+export type MainMenuView = {
+  readonly kind: 'mainMenu';
+  readonly route: 'mainMenu';
+  readonly currentMoney: number;
+  readonly menuItems: readonly MenuItemView[];
+};
+
+export type ShopListingView = {
+  readonly listingId: CatalogId;
+  readonly itemId: CatalogId;
+  readonly label: string;
+  readonly unitPrice: number;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type ItemShopView = {
+  readonly kind: 'itemShop';
+  readonly route: 'itemShop';
+  readonly currentMoney: number;
+  readonly visibleListings: readonly ShopListingView[];
+  readonly selectedListingId?: CatalogId;
+  readonly selectedItemId?: CatalogId;
+  readonly quantity: number;
+  readonly totalPrice?: number;
+};
+
+export type RecruitListingView = {
+  readonly listingId: CatalogId;
+  readonly characterTemplateId?: CatalogId;
+  readonly characterId?: string;
+  readonly label: string;
+  readonly price: number;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type RecruitView = {
+  readonly kind: 'recruit';
+  readonly route: 'recruit';
+  readonly currentMoney: number;
+  readonly visibleListings: readonly RecruitListingView[];
+  readonly selectedListingId?: CatalogId;
+  readonly selectedListing?: RecruitListingView;
+};
+
+export type SaveLoadView = {
+  readonly kind: 'saveLoad';
+  readonly route: 'saveLoad';
+  readonly schemaVersion: number;
+  readonly currentMoney: number;
+  readonly month: number;
+  readonly week: number;
+  readonly turn: number;
+  readonly snapshotText: string;
+  readonly loadText: string;
+  readonly lastSnapshotAt?: string;
+};
+
+export type VisitPlaceView = {
+  readonly placeId: string;
+  readonly label: string;
+  readonly source: string;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type VisitActionView = {
+  readonly actionId: string;
+  readonly placeId: string;
+  readonly label: string;
+  readonly cost: number;
+  readonly source: string;
+  readonly completed: boolean;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type VisitView = {
+  readonly kind: 'visit';
+  readonly route: 'visit';
+  readonly currentMoney: number;
+  readonly visiblePlaces: readonly VisitPlaceView[];
+  readonly selectedPlaceId?: string;
+  readonly selectedPlace?: VisitPlaceView;
+  readonly visibleActions: readonly VisitActionView[];
+  readonly selectedActionId?: string;
+  readonly selectedAction?: VisitActionView;
+};
+
+export type MissionListingView = {
+  readonly missionId: CatalogId;
+  readonly label: string;
+  readonly status: 'available' | 'accepted' | 'completed' | 'failed' | 'locked';
+  readonly rewardMoney: number;
+  readonly remainingWeeks?: number;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type MissionView = {
+  readonly kind: 'mission';
+  readonly route: 'mission';
+  readonly currentMoney: number;
+  readonly visibleMissions: readonly MissionListingView[];
+  readonly selectedMissionId?: CatalogId;
+  readonly selectedMission?: MissionListingView;
+};
+
+export type WorkListingView = {
+  readonly workId: CatalogId;
+  readonly label: string;
+  readonly rewardMoney: number;
+  readonly completesTimeBlock: boolean;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type WorkCharacterCandidateView = {
+  readonly characterId: string;
+  readonly label: string;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type WorkView = {
+  readonly kind: 'work';
+  readonly route: 'work';
+  readonly currentMoney: number;
+  readonly visibleWorks: readonly WorkListingView[];
+  readonly selectedWorkId?: CatalogId;
+  readonly selectedWork?: WorkListingView;
+  readonly eligibleCharacters: readonly WorkCharacterCandidateView[];
+  readonly selectedCharacterId?: string;
+  readonly selectedCharacter?: WorkCharacterCandidateView;
+};
+
+export type ShootingTargetView = {
+  readonly characterId: string;
+  readonly label: string;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type ShootingSceneView = {
+  readonly sceneId: CatalogId;
+  readonly label: string;
+  readonly revenueMoney: number;
+  readonly fanGain: number;
+  readonly score: number;
+  readonly filmingAmount: number;
+  readonly completesTimeBlock: boolean;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type ShootingView = {
+  readonly kind: 'shooting';
+  readonly route: 'shooting';
+  readonly currentMoney: number;
+  readonly visibleTargets: readonly ShootingTargetView[];
+  readonly selectedCharacterId?: string;
+  readonly selectedTarget?: ShootingTargetView;
+  readonly visibleScenes: readonly ShootingSceneView[];
+  readonly selectedSceneId?: CatalogId;
+  readonly selectedScene?: ShootingSceneView;
+  readonly filmingAmount: number;
+};
+
+export type TrainingParticipantView = {
+  readonly characterId: string;
+  readonly label: string;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+};
+
+export type TrainingCommandView = {
+  readonly commandId: CatalogId;
+  readonly label: string;
+  readonly available: boolean;
+  readonly disabledReason?: string;
+  readonly completesTimeBlock: boolean;
+  readonly stimulusPreview: Record<CatalogId, number>;
+  readonly paramPreview: Record<CatalogId, { readonly up: number; readonly down: number }>;
+};
+
+export type TrainingView = {
+  readonly kind: 'training';
+  readonly route: 'training';
+  readonly currentMoney: number;
+  readonly participants: readonly TrainingParticipantView[];
+  readonly selectedTargetId?: string;
+  readonly selectedTarget?: TrainingParticipantView;
+  readonly selectedExecutorId?: string;
+  readonly selectedExecutor?: TrainingParticipantView;
+  readonly selectedAssistantId?: string;
+  readonly selectedAssistant?: TrainingParticipantView;
+  readonly visibleCommands: readonly TrainingCommandView[];
+  readonly selectedCommandId?: CatalogId;
+  readonly selectedCommand?: TrainingCommandView;
+  readonly bufferSummary: {
+    readonly stimulusTotal: number;
+    readonly paramUpTotal: number;
+    readonly bodyCostTotal: number;
+  };
+};
+
+export type GameView =
+  | MainMenuView
+  | ItemShopView
+  | RecruitView
+  | SaveLoadView
+  | VisitView
+  | MissionView
+  | WorkView
+  | ShootingView
+  | TrainingView;
+
+export type BuiltGameViews = {
+  readonly mainMenu?: MainMenuView;
+  readonly itemShop?: ItemShopView;
+  readonly mission?: MissionView;
+  readonly recruit?: RecruitView;
+  readonly saveLoad?: SaveLoadView;
+  readonly shooting?: ShootingView;
+  readonly training?: TrainingView;
+  readonly visit?: VisitView;
+  readonly work?: WorkView;
+};
