@@ -1,5 +1,15 @@
 # 세션 인수인계
 
+## 2026-05-02 handoff after M42-M44 criteria manifests
+
+Criteria call 1 is complete.
+
+- M42: `data/coverage/manifests/M42-source-units.json`, total 35, implemented-verified 0, blocked 35.
+- M43: `data/coverage/manifests/M43-source-units.json`, total 35, implemented-verified 0, blocked 32, scope-redesign-required 3.
+- M44: `data/coverage/manifests/M44-source-units.json`, total 61, implemented-verified 0, blocked 38, scope-redesign-required 23.
+
+Next criteria calls are M45-M49, then M50-M52, then a full M28-M52 consistency pass. Do not start implementation from these manifests as if M42-M44 were complete.
+
 ## 2026-05-02 handoff after M35-M41 manifests
 
 M35-M41 source-unit manifest pass 1 was added.

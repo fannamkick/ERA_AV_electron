@@ -1,5 +1,17 @@
 # 진행 상태
 
+## 2026-05-02 M42-M44 criteria pass added
+
+First-pass source-unit criteria manifests were added for M42-M44.
+
+| milestone | manifest | total | implemented-verified | blocked | scope-redesign-required | completedAllowedNow |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| M42 | `data/coverage/manifests/M42-source-units.json` | 35 | 0 | 35 | 0 | false |
+| M43 | `data/coverage/manifests/M43-source-units.json` | 35 | 0 | 32 | 3 | false |
+| M44 | `data/coverage/manifests/M44-source-units.json` | 61 | 0 | 38 | 23 | false |
+
+This closes criteria call 1 only. Training effects are still not implemented.
+
 ## 2026-05-02 M35-M41 reassessment added
 
 Parallel agent review was incorporated into first-pass source-unit manifests for M35-M41. None of these milestones can keep `completed` under the strict rule.

@@ -1,5 +1,16 @@
 # Next Milestone
 
+## 2026-05-02 criteria pass progress
+
+Criteria call 1 is complete: M42-M44 now have strict source-unit manifests.
+
+Next criteria work:
+1. M45-M49 criteria manifests.
+2. M50-M52 criteria manifests.
+3. Full M28-M52 consistency pass.
+
+Do not treat M42-M44 as implemented. Current counts are M42 0/35, M43 0/35, and M44 0/61 implemented-verified.
+
 ## 2026-05-02 next order reset
 
 M35-M41 source-unit manifest pass 1 is complete. Since every M28-M41 manifest is currently `completedAllowedNow: false`, the next task is not M42 implementation. The next task is closing M28-M41 blocked/scope-redesign-required units.

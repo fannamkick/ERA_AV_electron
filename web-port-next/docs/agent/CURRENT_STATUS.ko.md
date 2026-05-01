@@ -1,5 +1,15 @@
 # Current Status
 
+## 2026-05-02 M42-M44 criteria manifest pass 1
+
+- M42-M44 criteria manifests were added.
+- New artifacts: `data/coverage/manifests/M42-source-units.json`, `M43-source-units.json`, `M44-source-units.json`.
+- Current strict counts:
+  - M42: total 35, implemented-verified 0, blocked 35.
+  - M43: total 35, implemented-verified 0, blocked 32, scope-redesign-required 3.
+  - M44: total 61, implemented-verified 0, blocked 38, scope-redesign-required 23.
+- These are criteria manifests only. They do not implement training effects. They prevent M42-M44 from being marked complete through static profiles, line indexes, or unassigned COMF files.
+
 ## 2026-05-02 M35-M41 source-unit manifest pass 1
 
 - M35-M41 were all reassessed as `completedAllowedNow: false`.
