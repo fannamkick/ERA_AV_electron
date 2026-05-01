@@ -53,7 +53,7 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 | M27 구현 단위 큐와 blocker 동결 | `implementation-queue.json`, `blocker-freeze-list.json` 생성. queue unit 36개, review row 14,546개, frozen blocker 59개, approved exclusion request candidate 59개로 동결 |
 | M28 메인 화면 route 전수 연결 | `unit:M28:main-route` 27행을 닫음. 메인 메뉴 정의 24개는 route/action/view/dispatch/smoke 근거를 갖고 BOYFRIEND event-local screen session row 3개는 M47로 이관 |
 | M29 아이템 상점과 구매 완성 | `unit:M29:shop-purchase` 206행을 implemented 43, mapped 40, transferredOut 123, unresolved issue 0개로 닫음. 실제 `SHOP_ITEM.ERB` 구매형 listing 30개 구현 |
-| M30 아이템 사용과 특수 아이템 완성 | `unit:M30:item-use`와 M29 inbound transfer 총 75행을 implemented 37, mapped 32, transferredOut 6, unresolved issue 0개로 닫음. 즉시 사용 아이템과 특수 item 200~214의 소비/분류를 검증 |
+| M30 아이템 사용 정정 필요 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 사용 flow와 효과는 구현했다. closure 기준 ownedTotal 74, implemented 21, mapped 16, transferredOut 37 | 특수 item 200~214의 훈련 효과는 M30에서 구현되지 않았다. M42~M44에서 닫아야 하며 M30 완료 선언은 정정 필요 |
 | M31 영입 listing과 인물 생성 완성 | 영입 listing scope 237행을 implemented 52, mapped 158, transferredOut 27, unresolved issue 0개로 닫음. `Item.csv` 영입 listing 48개와 `recruit:150` 반복 영입을 원형/생성 결과에 연결 |
 | M32 인물 원형과 identity 완성 | implementation queue 274행과 M31 inbound transfer 20행, 총 294행을 implemented 286, mapped 8, unresolved issue 0개로 닫음. Chara template 109개, identity, CSTR seed, lifecycle 상태를 정의/save 경계에 연결 |
 | M33 신체/능력/소질/경험 완성 | M27 queue 5,283행과 M33 필수 `Palam.csv` 정의 17행, 총 5,300행을 implemented 4,768, mapped 465, transferredOut 67, unresolved issue 0개로 닫음. Chara `BASE/ABL/TALENT/EXP` seed와 `BASE/ABL/TALENT/EXP/MARK/PALAM` 표시 정의를 people/body owner로 연결 |
@@ -88,7 +88,7 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 - 원본 `COMSEQ_REGISTER.ERB` dynamic call row와 `COMORDER.ERB` source-file-review row를 coverage/audit/closure에 반영했다.
 - availability는 저장 상태를 바꾸지 않는 view 계산으로 연결했고, 불가 command는 원본 availability rule 기반 사유를 표시한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
 - `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`는 placeholder가 아니라 실제 script다.
-- 다음 작업은 M42 훈련 command 효과 0~34 완성이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫아야 한다.
+- 다음 작업은 M28~M41 완료 선언 재정렬이다. 그 뒤 M42 훈련 command 효과 0~34를 원본 기준으로 닫는다.
 
 ## 미완료
 
@@ -130,7 +130,7 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 | 구현 큐와 blocker 동결 | M27에서 queue unit 36개, queued review row 14,546개, frozen blocker 59개, approved exclusion request candidate 59개를 생성했다. M27 owner로 남은 source-file-review 2개는 M51로 이관했다 | M28부터 queue unit과 blocker freeze list를 기준으로 각 owner가 자기 범위를 닫아야 함 |
 | 메인 route 전수 연결 | M28에서 `unit:M28:main-route` 27행을 닫았다. 메인 메뉴 정의 24개는 `definitions.mainMenuOptions` -> `buildMainMenuView` -> `dispatchGameAction` -> route로 연결했고, BOYFRIEND event-local screen session row 3개는 M47로 책임 이관했다 | M28 소유 route row는 unresolved issue 0개 |
 | 아이템 상점 구매 완성 | M29에서 `unit:M29:shop-purchase` 206행을 닫았다. `SHOP_ITEM.ERB` 기준 실제 구매형 listing 30개를 구현했고, `ITEMSALES`는 session visible listing, `BOUGHT`는 session 선택값으로 처리했다. 즉시 사용/특수 효과/의복 pack/비상점 item은 M30/M34/M36/M49로 책임 이관했다 | M29 소유 구매 row는 unresolved issue 0개 |
-| 아이템 사용과 특수 아이템 완성 | M30에서 owned scope 75행을 닫았다. 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop` 사용 선택 흐름으로 소비하고, 특수 item 200~214는 특수 장비/훈련 해금 상태로 분류했다 | item 22/90/91은 M41, cosplay/clothing pack은 M34에서 후속 owner로 닫았다. M30 소유 blocker 0개 |
+| 아이템 사용 정정 필요 | M30에서 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop` 사용 선택 흐름으로 소비했다 | 특수 item 200~214는 효과 구현이 아니라 특수 장비/훈련 해금 상태 분류만 되어 있다. 훈련 효과는 M42~M44에서 닫아야 한다 |
 | 영입 listing과 인물 생성 완성 | M31에서 `Item.csv` 영입 listing 48개를 캐릭터 원형과 생성 결과로 연결했다. `recruit:150`은 `FLAG:90 < 5` 반복 영입 흐름에 맞춰 5회 생성으로 닫았다 | 은퇴/매각 및 일부 lifecycle/identity row는 M32/M34/M35/M47로 이관. M31 소유 blocker 0개 |
 | 인물 원형과 identity 완성 | M32에서 Chara template 109개, 이름/호칭/별명/표시명, CSTR identity seed, 삭제/은퇴/조수 가능/영입 상태를 정의와 save 경계에 연결했다 | M33에서 신체/능력/소질/경험 계열을 이어서 닫았다 |
 | 관계/CFLAG/장비/의복 owner 완성 | M34에서 `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`을 추가해 CFLAG seed와 의복/장비 route를 실제 소비 경로에 연결했다. raw `CFLAG`는 runtime 모델명으로 남기지 않는다 | M34.5에서 auxiliary evidence 완료 근거와 최종 gate 부재를 해소했다 |
@@ -330,6 +330,11 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 
 ## 다음 작업
 
+1. 먼저 M28~M41 완료 선언을 `docs/milestones/PORT_COMPLETION_COVERAGE_REVIEW.ko.md`와 `docs/milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 재정렬한다. 특히 M30, M35, M38, M39, M41을 completed/blocked 중 하나로 재판정한다.
+2. 그 뒤 M42 훈련 command 효과 0~34 구현을 재개한다. M42가 닫히기 전에는 M43으로 넘어가지 않는다.
+
+## 이전 완료 요약
+
 1. Phase 1 구현은 M0~M6 기준으로 완료되었고, `npm run smoke:phase1`와 `npm run build`로 다시 확인되었다.
 2. 기존 M7 고용/영입 1차는 `npm run smoke:m7`와 `npm run build`로 확인되었다.
 3. 기존 M8 턴 종료/시간 진행은 `npm run smoke:m8`와 `npm run build`로 확인되었다.
@@ -354,7 +359,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 22. M27 구현 단위 큐와 blocker 동결은 `npm run coverage:implementation-queue`, `npm run gate:implementation-queue`, `npm run build`, `npm run test --if-present`로 확인되었다. queue unit 36개, review row 14,546개, frozen blocker 59개, 승인 제외 요청 후보 59개로 닫았다.
 23. M28 메인 화면과 route 전수 연결은 `npm run coverage:main-routes`, `npm run gate:main-route-coverage`, `npm run gate:milestone-scope-closure -- M28`, `npm run smoke:main-routes`, `npm run build`로 확인되었다. menu row 24개, enabled route 12개, disabled owner contract 12개, M47 transfer 3개, unresolved issue 0개로 닫았다.
 24. M29 아이템 상점과 구매 완성은 `npm run coverage:shop-purchase`, `npm run gate:shop-purchase-coverage`, `npm run gate:milestone-scope-closure -- M29`, `npm run smoke:item-shop`, `npm run smoke:phase1`, `npm run build`로 확인되었다. M29 queue 206행 중 implemented 43, mapped 40, transferredOut 123, unresolved issue 0개로 닫았다.
-25. M30 아이템 사용과 특수 아이템 완성은 `npm run coverage:item-use`, `npm run gate:item-use-coverage`, `npm run gate:milestone-scope-closure -- M30`, `npm run smoke:item-use`, `npm run smoke:item-shop`, `npm run build`, `npm run test --if-present`로 확인되었다. M30 owned scope 75행 중 implemented 37, mapped 32, transferredOut 6, unresolved issue 0개로 닫았다.
+25. M30 아이템 사용은 즉시 사용 아이템 flow 기준으로는 `npm run coverage:item-use`, `npm run gate:item-use-coverage`, `npm run smoke:item-use`, `npm run smoke:item-shop`, `npm run build`, `npm run test --if-present` 근거가 있다. 다만 특수 item 200~214 효과는 M30에서 구현되지 않았고 M42~M44 책임으로 남아 있어 완료 선언 정정이 필요하다.
 26. M31 영입 listing과 인물 생성 완성은 `npm run coverage:recruit`, `npm run gate:recruit-coverage`, `npm run gate:milestone-scope-closure -- M31`, `npm run smoke:recruit-all`, `npm run smoke:m7`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M31 owned scope 237행 중 implemented 52, mapped 158, transferredOut 27, unresolved issue 0개로 닫았다.
 27. M32 인물 원형과 identity 완성은 `npm run coverage:character-identity`, `npm run gate:character-identity`, `npm run gate:milestone-scope-closure -- M32`, `npm run smoke:character-identity`, `npm run smoke:recruit-all`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M32 owned scope 294행 중 implemented 286, mapped 8, unresolved issue 0개로 닫았다.
 28. M33 신체/능력/소질/경험 완성은 `npm run coverage:body-stat`, `npm run gate:body-stat-mapping`, `npm run gate:milestone-scope-closure -- M33`, `npm run smoke:body-stat`, `npm run smoke:character-identity`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M33 owned scope 5,300행 중 implemented 4,768, mapped 465, transferredOut 67, unresolved issue 0개로 닫았다.
@@ -368,7 +373,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 36. M39 촬영 실행/결과/판매 완성은 `npm run coverage:filming-execution`, `npm run gate:filming-execution`, `npm run gate:milestone-scope-closure -- M39`, `npm run smoke:filming-all`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M39 owned scope 174행 중 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
 37. M40 훈련 메뉴와 세션 완성은 `npm run coverage:training-session`, `npm run gate:training-session`, `npm run gate:milestone-scope-closure -- M40`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M40 owned scope 11행 중 implemented 5, mapped 6, unresolved issue 0개로 닫았다.
 38. M41 훈련 가능 조건 전수 구현은 `npm run coverage:training-availability`, `npm run gate:training-availability`, `npm run gate:milestone-scope-closure -- M41`, `npm run smoke:training-availability`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run gate:raw-names`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M41 owned scope 1,625행 중 implemented 1,371, mapped 254, unresolved issue 0개로 닫았다.
-39. 다음 작업은 M42 훈련 command 효과 0~34 완성이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
+39. 다음 작업은 M28~M41 완료 선언 재정렬 후 M42 훈련 command 효과 0~34 구현이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
 
 ## 주의
 
@@ -386,4 +391,4 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - `data/coverage/milestones/M42-closure.json`은 `status: blocked`다.
 - `npm run gate:training-effect -- 0-34`는 현재 실패해야 정상이다.
 - `npm run coverage:definitions`와 `npm run gate:definition-consumption` 기준으로 M20 definition coverage는 command 1~34를 다시 M42 blocker로 유지한다. command 0은 M14 최소 훈련 1차 consumer만으로 used다.
-- 다음 작업은 M42 재개다. M43로 넘어가지 않는다.
+- 다음 작업은 M28~M41 완료 선언 재정렬 후 M42 재개다. M43로 넘어가지 않는다.

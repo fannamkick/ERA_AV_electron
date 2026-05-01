@@ -5,7 +5,7 @@
 ## 현재 위치
 
 - 마지막 완료 마일스톤: M41. 훈련 가능 조건 필수 구현
-- 현재 마일스톤: M42. 훈련 command 효과 0~34 완성
+- 현재 마일스톤: M28~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
 - M42 상태: blocked. 이전 M42 커밋은 원본 효과 계산을 구현한 완료 커밋으로 신뢰하지 않는다.
 - 최종 완전 이식 판정: 아직 아님. M52에서만 판정한다.
 
@@ -15,13 +15,14 @@
 - M41은 105개 훈련 command availability와 불가 사유를 원본 `COMABLE.ERB`, `COMSEQ_REGISTER.ERB`, `COMORDER.ERB` 근거로 닫았다.
 - M42는 원본 `COMF0.ERB`~`COMF34.ERB`의 `SOURCE/LOSEBASE/EXP` 라인을 인덱싱하고 static profile을 만들었지만, 원본 branch/expression/effect behavior를 구현하지 않았으므로 완료가 아니다.
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
+- M28~M41은 개별 coverage/gate/smoke 통과 기록이 있지만, 일부 `[구현]` 마일스톤이 `mapped`/`transferredOut`을 완료 totals에 포함한다. `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`와 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 완료 선언을 재정렬해야 한다.
 
 ## 현재 미완료 초점
 
 - command 0~34의 원본 효과 계산을 실제 runtime behavior로 구현해야 한다.
 - 원본 효과/조건/후처리 책임은 라인 존재 확인이나 profile 생성으로 대체할 수 없다.
 - `npm run gate:training-effect -- 0-34`는 M42가 실제 구현되기 전까지 실패해야 한다.
-- command 35~69는 M43, 70~104와 후처리는 M44가 소유한다. M42가 닫히기 전에는 M43로 넘어가지 않는다.
+- command 35~69는 M43, 70~104와 후처리는 M44가 소유한다. M28~M41 정정과 M42가 닫히기 전에는 M43로 넘어가지 않는다.
 
 ## 권위 자료
 

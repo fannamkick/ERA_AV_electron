@@ -64,18 +64,18 @@
 - [x] `npm run smoke:phase1` 실행
 - [x] `npm run build` 실행
 
-## M30. [구현] 아이템 사용과 특수 아이템 완성
+## M30. [구현/정정필요] 즉시 사용 아이템 구현과 특수 훈련 아이템 미완료 정리
 
 책임 선언:
-- 역할: 사용형 아이템과 특수 아이템의 조건과 효과를 전수 구현한다.
-- 범위: 사용 조건, 사용 효과, 시설 해금형, 의복/장비형, 특수 item 15개, 실패/취소 경로다.
+- 역할: 즉시 사용 아이템의 조건과 효과를 구현하고, 특수 훈련 아이템은 실제 소비 owner를 명확히 남긴다.
+- 범위: 즉시 사용 조건, 사용 효과, 실패/취소 경로다. 특수 item 200~214의 훈련 효과는 M30 완료 범위가 아니라 M42~M44 구현 범위다.
 - 방식: 효과는 inventory/people/body/world/mission/settings/equipment 등 정확한 owner에만 반영한다.
-- 완료 결과: 사용형/특수 item이 실제 효과 또는 사용자 승인 제외를 갖고 소유 blocker 0개 상태가 된다.
+- 완료 결과: 즉시 사용 item이 실제 효과 또는 사용자 승인 제외를 갖고, 특수 훈련 item의 미구현 효과가 M42~M44에서 닫혀야 할 책임으로 남는다.
 - 누락 차단: no-op handler로 완료 처리하거나 효과 owner가 불명확하면 완료하지 않는다.
 
 - [x] 모든 사용형 아이템의 사용 조건을 구현하거나 사용자 승인 제외로 분류하고, 미구현 조건은 blocker로 남겨 완료 차단
 - [x] 아이템 사용 효과가 `inventory`, `people`, `body`, `world`, `mission`, `settings` 중 정확한 owner에 반영되는지 검증
-- [x] 특수 item 15개를 실제 효과 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [ ] 특수 item 200~214의 실제 훈련 효과를 M42~M44에서 구현하고, M30 완료 문구와 충돌하지 않게 닫는다
 - [x] 시설 해금형 item과 방문/시설 기능의 소비 관계를 연결
 - [x] 의복/장비형 item과 equipment/clothing owner를 연결
 - [x] 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
@@ -83,12 +83,13 @@
 - [x] M20/M24/M26/M34 coverage의 관련 status 갱신
 - [x] `npm run build` 실행
 
-M30 완료 근거:
-- M30 owned scope는 `unit:M30:item-use` 26행과 M29에서 M30으로 이관된 49행을 합쳐 총 75행이다.
+M30 정정 기록:
+- M30 owned scope는 현재 closure 기준 `unit:M30:item-use`와 M29 inbound transfer를 합쳐 ownedTotal 74행이다.
 - 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop.visibleUseItemIds`, `shop/selectUseItem`, `shop/selectUseTarget`, `shop/confirmUseItem`, `shop/cancelUseItem`으로 실제 소비된다.
-- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 훈련 command별 효과 적용은 M42~M44가 소비한다.
+- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 이것은 효과 구현 완료가 아니다. 훈련 command별 효과 적용은 M42~M44에서 구현해야 한다.
 - item 22/90/91은 M30 사용형 아이템이 아니라 훈련 가능 조건을 여는 아이템이므로 M41로 이관했다.
 - cosplay/clothing pack은 M29에서 M34로 이관되어 M30 소유 범위가 아니다.
+- M30은 기존 "특수 아이템 완성" 완료 선언을 신뢰하지 않는다. M42~M44에서 특수 item 효과 소비가 닫히기 전까지 전체 아이템 특수 효과는 미완료다.
 
 검증:
 

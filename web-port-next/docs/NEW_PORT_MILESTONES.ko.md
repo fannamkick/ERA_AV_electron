@@ -34,6 +34,16 @@
 - [ ] 기능별 성공/실패/취소/저장 roundtrip 검증이 있음
 - [ ] 최종 coverage 산출물에 미구현 기능 0개, 미분류 원본 주소 0개가 기록됨
 
+## 전체 포팅 완성 불변식
+
+마일스톤 전체를 완료했다고 선언했는데 게임이 완성되지 않는다면 마일스톤 분할 또는 완료 판정이 틀린 것이다. 각 마일스톤은 전체 게임 포팅 목표의 한 책임 단위이며, 자기 책임을 다른 마일스톤으로 넘겨 완료 처리하지 않는다.
+
+- [ ] `[구현]` 마일스톤은 부여받은 원본 기능/데이터/상태 변화를 runtime behavior로 끝낸다.
+- [ ] `[구현]` 마일스톤의 `transferredOut`은 완료가 아니다. 발견되면 해당 마일스톤을 blocked로 두거나, 실행 전에 마일스톤 책임을 재설계한다.
+- [ ] `[조사]`, `[정책]`, `[계획]`, `[검증]`, `[감사]`, `[판정]` 마일스톤은 구현 완료를 대신하지 않는다.
+- [ ] 모든 `[구현]` 마일스톤이 완료되고 M50~M52 최종 검증이 통과하면, 원본 게임 기능이 실제 플레이 가능한 web port behavior로 닫혀야 한다.
+- [ ] 이 불변식을 검토한 기준 문서는 `docs/milestones/PORT_COMPLETION_COVERAGE_REVIEW.ko.md`다.
+
 ## blocker 기록 형식
 
 - [ ] 원본 위치: 파일, 라벨, 주소 또는 CSV 행
@@ -65,7 +75,7 @@
 - [ ] 완료 선언 전에 "완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 사람이 읽을 수 있는 사실 장부로 남긴다. 산출물 count만으로 완료를 선언하지 않는다.
 - [ ] `Mxx-closure.json`에는 `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash` 근거를 남긴다.
 - [ ] `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded` 중 하나라도 0이 아니면 완료하지 않는다.
-- [ ] 다른 마일스톤으로 넘긴 row는 transfer 근거를 남긴다. `fromMilestone`, `toMilestone`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`가 없으면 이관 완료가 아니다.
+- [ ] 다른 마일스톤으로 넘긴 row는 완료 근거가 아니다. 실행 중 transfer가 필요해지면 현재 마일스톤을 완료하지 말고, 책임 재설계 또는 blocked 판정으로 남긴다.
 - [ ] 사용자 승인 제외는 승인 근거 없이 기록하지 않는다. `approvalId`, `approvedBy`, `approvalScope`, `sourceEvidenceId`, `replacementBehavior`가 없으면 완료 근거가 아니다.
 - [ ] 마지막 검증 명령을 실제로 실행하고 문서에 남긴다. 실행하지 않은 명령을 통과한 것처럼 적지 않는다.
 - [ ] `npm run build`는 모든 마일스톤 완료 전에 필수다. 마일스톤별 gate/smoke가 있으면 build와 함께 실행한다.

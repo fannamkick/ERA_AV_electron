@@ -1,8 +1,15 @@
 # Next Milestone
 
-## M42. 훈련 command 효과 0~34 완성
+## M28~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
 
-목표는 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는 것이다.
+현재 즉시 목표는 M28~M41 완료 선언이 전체 포팅 완성 불변식과 충돌하지 않게 정렬하는 것이다. 그 다음 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.
+
+## 먼저 해야 하는 것
+
+- `../milestones/PORT_COMPLETION_COVERAGE_REVIEW.ko.md`의 즉시 수정 대상 확인
+- `../milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 재확인 필요 항목 정리
+- M30, M35, M38, M39, M41을 completed/blocked 중 하나로 재판정
+- `[구현]` 마일스톤의 `transferredOut`을 완료로 세지 않도록 문서와 closure 정리
 
 ## 완료해야 하는 것
 
