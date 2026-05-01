@@ -1,5 +1,16 @@
 # Current Status
 
+## 2026-05-02 criteria baseline complete
+
+- M28~M52 criteria consistency pass is complete.
+- Report: `data/coverage/manifests/M28-M52-criteria-consistency.json`.
+- Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
+- All M28~M52 source-unit manifests exist.
+- All 26 manifests currently have `completedAllowedNow: false`.
+- Aggregate totals: total units 11,106; implemented-verified 7,893; blocked 2,913; scope-redesign-required 300.
+- Known criteria gap: `coverage-gate-registry.json` has contracts for M34.5~M52, but not M28~M34.
+- Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
+
 ## 2026-05-02 M50-M52 criteria manifest pass 1
 
 - M50-M52 criteria manifests were added.

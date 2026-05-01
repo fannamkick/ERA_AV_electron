@@ -77,3 +77,17 @@ M50-M52 completion rules:
 
 Remaining criteria call:
 - Call 4: full M28-M52 consistency pass across manifests, registry, phase docs, status docs, and handoff.
+
+## 2026-05-02 M28-M52 consistency pass
+
+Artifacts:
+- `data/coverage/manifests/M28-M52-criteria-consistency.json`
+- `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`
+
+Result:
+- All M28~M52 source-unit manifests exist.
+- All 26 manifests currently have `completedAllowedNow: false`.
+- Aggregate totals: total units 11,106; implemented-verified 7,893; blocked 2,913; scope-redesign-required 300; approved-excluded 0.
+- Registry contracts exist for M34.5~M52, but not for M28~M34.
+
+Criteria-side baseline is now complete with a known registry gap. Future work should close manifest units through evidence or add M28~M34 registry contracts before claiming uniform gate enforcement.

@@ -1,5 +1,16 @@
 # Next Milestone
 
+## 2026-05-02 next work after criteria baseline
+
+Criteria-side baseline is complete with one known gap: registry contracts are missing for M28~M34.
+
+Next work is not more criteria discovery. Choose one of these tracks:
+
+1. Add M28~M34 registry contracts for uniform gate enforcement.
+2. Start closing manifest `blocked` / `scope-redesign-required` units, beginning with the highest-risk owners such as M41 and M42.
+
+Do not mark any milestone complete until its manifest reaches `completedAllowedNow: true` or all remaining non-implemented units are explicitly approved-excluded.
+
 ## 2026-05-02 criteria pass progress 3
 
 Criteria call 3 is complete: M50-M52 now have strict verification/verdict manifests.

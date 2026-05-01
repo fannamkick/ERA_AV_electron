@@ -1,5 +1,24 @@
 # 진행 상태
 
+## 2026-05-02 M28-M52 criteria consistency complete
+
+The criteria-side baseline is complete.
+
+| item | result |
+| --- | --- |
+| Consistency report | `data/coverage/manifests/M28-M52-criteria-consistency.json` |
+| Summary doc | `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md` |
+| Manifests present | M28~M52 all present |
+| `completedAllowedNow: true` | 0 |
+| `completedAllowedNow: false` | 26 |
+| Total units | 11,106 |
+| Implemented-verified | 7,893 |
+| Blocked | 2,913 |
+| Scope-redesign-required | 300 |
+| Known criteria gap | Registry contracts missing for M28~M34 |
+
+Next work is closure/implementation evidence, not more checklist invention.
+
 ## 2026-05-02 M50-M52 criteria manifests added
 
 First-pass criteria manifests were added for M50-M52.
