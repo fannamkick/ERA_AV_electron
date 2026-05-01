@@ -44,6 +44,26 @@
 - [ ] 여러 마일스톤의 변경을 한 커밋에 섞지 않는다. 단, 이전 마일스톤의 누락 수정이 필요하면 그 누락 수정 커밋을 먼저 남긴 뒤 현재 마일스톤을 진행한다.
 - [ ] unrelated dirty files는 커밋에 포함하지 않는다.
 
+## 마일스톤 완료 운영 의무
+
+이 절은 각 마일스톤의 개별 체크리스트보다 우선한다. 아래 항목 중 하나라도 빠지면 그 마일스톤은 완료가 아니다. 코드가 동작해도, gate가 통과해도, 체크박스가 채워져도, 문서와 인수인계와 커밋이 빠지면 완료 처리하지 않는다.
+
+- [ ] `NEW_PORT_MILESTONES.ko.md`의 해당 마일스톤 체크박스, 완료 근거, 검증 명령, 다음 마일스톤 연결을 실제 결과와 맞게 갱신한다.
+- [ ] `PROGRESS_STATUS.ko.md`를 갱신한다. 완료 표, 미완료 표, 데이터 완성도 판단, 마지막 검증, 다음 작업이 현재 마일스톤 종료 상태와 일치해야 한다.
+- [ ] `SESSION_HANDOFF.ko.md`를 갱신한다. 새 세션이 이 문서만 읽고 바로 다음 마일스톤을 시작할 수 있도록 현재 상태, 완료된 마일스톤, 마지막 검증, 바로 다음 작업을 갱신한다.
+- [ ] 새 소유권, 데이터 경계, import 경계, mapping 정책, 구현 단위 규칙이 생겼으면 해당 기준 문서도 갱신한다. 예: `GAME_DOMAIN_SYSTEM.md`, `DOMAIN_INVENTORY.ko.md`, `MODULE_SYSTEM.ko.md`, `LEGACY_MAPPING_POLICY.ko.md`, `IMPLEMENTATION_UNIT_RULES.ko.md`, `README.md`.
+- [ ] coverage 산출물과 audit 산출물을 갱신한다. 해당 마일스톤이 요구하는 `*-coverage.json`, `Mxx-gap-audit.json`, `Mxx-closure.json`이 실제 결과와 맞아야 한다.
+- [ ] `Mxx-closure.json`에는 `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash` 근거를 남긴다.
+- [ ] `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded` 중 하나라도 0이 아니면 완료하지 않는다.
+- [ ] 다른 마일스톤으로 넘긴 row는 transfer 근거를 남긴다. `fromMilestone`, `toMilestone`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`가 없으면 이관 완료가 아니다.
+- [ ] 사용자 승인 제외는 승인 근거 없이 기록하지 않는다. `approvalId`, `approvedBy`, `approvalScope`, `sourceEvidenceId`, `replacementBehavior`가 없으면 완료 근거가 아니다.
+- [ ] 마지막 검증 명령을 실제로 실행하고 문서에 남긴다. 실행하지 않은 명령을 통과한 것처럼 적지 않는다.
+- [ ] `npm run build`는 모든 마일스톤 완료 전에 필수다. 마일스톤별 gate/smoke가 있으면 build와 함께 실행한다.
+- [ ] 문서 갱신까지 포함한 변경 세트를 확인한 뒤 해당 마일스톤 단위 커밋을 남긴다.
+- [ ] 커밋 후 `Mxx-closure.json`의 `commitHash` 또는 커밋 근거 문구가 실제 커밋을 가리키도록 갱신한다. 이 갱신이 별도 커밋을 필요로 하면 같은 마일스톤 후속 문서 커밋으로 남긴다.
+- [ ] 완료 직후 다음 작업이 무엇인지 `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`에 같은 내용으로 남긴다.
+- [ ] unrelated dirty files, 기존 `web-port` 산출물, `.env.local`, 유료 AI/OpenRouter 관련 변경이나 호출을 완료 커밋에 섞지 않는다.
+
 ## 페이즈 구분
 
 | Phase | 범위 | 목표 | 완료 기준 |
@@ -174,7 +194,7 @@
 | M6 | 아이템 구매 최소 루프를 성공/실패/취소까지 동작시킨다 | 상점 진입, listing view, 수량 선택, 돈 부족 실패, 구매 성공, 취소, `npm run smoke:phase1` | 구매형 listing 1차 루프만 닫는다. 아이템 사용/특수 효과/전체 상점은 M24에서 닫는다 |
 | M7 | 영입 1차 루프를 정의 데이터, 돈, 인물 생성 경계와 연결한다 | `npm run smoke:m7`, 영입 listing, 돈 부족 실패, 영입 성공, 중복 실패, 취소 | 영입 성공 시 `people/body/social/equipment` 생성 경계를 닫는다. 전체 영입 listing 완성은 M24/M25에서 닫는다 |
 | M8 | 턴 종료와 시간 진행의 최소 실행 계약을 만든다 | `npm run smoke:m8`, 주차/월 롤오버, phase 복귀, 예약 이벤트 소비, session 폐기 | 턴 종료 골격과 hook 위치를 닫는다. 원본 월말/주말/이벤트 전수 처리는 M27에서 닫는다 |
-| M9 | 저장/로드 최소 roundtrip과 오염 payload 차단을 만든다 | `npm run smoke:m9`, schema v1, 직렬화/역직렬화, 손상/future/runtime 오염 실패 | 최소 저장/로드는 닫는다. 전체 기능 후 roundtrip과 migration은 M29에서 닫는다 |
+| M9 | 저장/로드 최소 roundtrip과 오염 payload 차단을 만든다 | `npm run smoke:m9`, schema v1, 직렬화/역직렬화, 손상/future/runtime 오염 실패 | 최소 저장/로드는 닫는다. 전체 기능 후 roundtrip과 migration은 M50에서 닫는다 |
 | M10 | 방문/시설 1차 루프를 장소, 행동, 해금 저장 상태와 연결한다 | `npm run smoke:m10`, 방문 view, 기본 방 사용 허가, 돈 부족/중복/취소, `visit` session 폐기 | 장소/행동 1개만 닫는다. 방문/시설 전체는 M26에서 닫는다 |
 | M11 | 미션 1차 루프를 정의, 진행 저장 상태, 보상과 연결한다 | `npm run smoke:m11`, 미션 수락/보고, 조건 미충족, 방문 해금 조건, 보상 지급 | 미션 1개만 닫는다. 전체 미션, 기한, 실패, 이벤트 연동은 M27에서 닫는다 |
 | M12 | 업무 1차 루프를 결과 계산과 저장 반영으로 분리한다 | `npm run smoke:m12`, 업무/인물 선택, 누락 실패, 돈/경험/피로/이력 반영, 턴 종료 | 업무 1개만 닫는다. 업무/창관/특수 업무 전체는 M26에서 닫는다 |
@@ -1177,14 +1197,38 @@ npm run test --if-present
 - 완료 결과: 초기값과 증가/감소 계산, 정보 화면, 저장 roundtrip이 일관된다.
 - 누락 차단: 표시 정의와 저장 수치가 섞이거나 중복 필드로 결과가 흩어지면 완료하지 않는다.
 
-- [ ] Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`, `MARK`, `PALAM` 계열을 owner별로 연결
-- [ ] 능력, 기초치, 소질, 경험, 각인, 파라미터 초기값을 표시 정의와 저장 수치로 분리
-- [ ] 신체/생식/성적 이력/오염/자원 상태를 `body` 하위 객체로 분리
-- [ ] 업무, 촬영, 훈련 결과가 같은 신체 필드를 공유하는지 검증
-- [ ] 값 범위, 레벨 표시, 증가/감소 계산 기준을 정의 데이터와 연결
-- [ ] 인물 정보 화면과 저장 roundtrip을 검증
-- [ ] M20/M24 coverage의 body 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`, `MARK`, `PALAM` 계열을 owner별로 연결
+- [x] 능력, 기초치, 소질, 경험, 각인, 파라미터 초기값을 표시 정의와 저장 수치로 분리
+- [x] 신체/생식/성적 이력/오염/자원 상태를 `body` 하위 객체로 분리
+- [x] 업무, 촬영, 훈련 결과가 같은 신체 필드를 공유하는지 검증
+- [x] 값 범위, 레벨 표시, 증가/감소 계산 기준을 정의 데이터와 연결
+- [x] 인물 정보 화면과 저장 roundtrip을 검증
+- [x] M20/M24 coverage의 body 관련 status 갱신
+- [x] `npm run build` 실행
+
+M33 완료 근거:
+- M33 scope는 M27 implementation queue의 `unit:M33:body-stat` 5,283행과 M33 본문 필수 범위인 `Palam.csv` training param 정의 17행을 합쳐 총 5,300행이다.
+- `BASE` Chara seed 1,408행은 `createPeopleBaseStatsFromTemplate`와 `createBodyStateFromTemplate`에서 people 일반 base stat과 body base/body result stat으로 분리된다.
+- `ABL` seed 660행, `TALENT` seed 2,435행, `EXP` seed 265행은 `createCharacterBundleFromSpecs`를 통해 `people.characters.*.attributes`의 abilities, traits, experiences로 연결된다.
+- `BASE.csv` 23개, `Abl.csv` 34개, `Talent.csv` 261개, `exp.csv` 82개, `Mark.csv` 4개, `Palam.csv` 17개 정의는 표시 정의와 runtime consumer 근거를 가진다.
+- M24 save mapping 중 `BASE/MAXBASE/EXP/MARK` 44행은 body/people save field로 소비된다.
+- M33 queue에 섞여 있던 `CFLAG/FLAG/PBAND` 67행은 M34 관계/CFLAG/장비 owner 범위이므로 `fromMilestone=M33`, `toMilestone=M34`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`를 가진 transfer로 이관했다.
+- 업무, 촬영, 훈련 결과 반영은 `src/features/bodyStats.ts`의 공통 helper를 사용한다. 업무/촬영의 `bodyStatDeltas`, 훈련의 `bodyStatDeltas`, `paramDeltas`, `resourceDeltas`가 같은 `body.byCharacterId.*` 필드를 갱신한다.
+- roster view는 인물별 ability/trait/experience/body stat/condition param/resource/imprint count를 읽기 전용 summary로 노출한다.
+- `data/coverage/body-stat-coverage.json`, `data/coverage/audits/M33-gap-audit.json`, `data/coverage/milestones/M33-closure.json`을 생성했다. closure는 ownedTotal 5,300, implemented 4,768, mapped 465, transferredOut 67, blocker/missing/unapproved 0이다.
+
+검증:
+
+```bash
+npm run coverage:body-stat
+npm run gate:body-stat-mapping
+npm run gate:milestone-scope-closure -- M33
+npm run smoke:body-stat
+npm run smoke:character-identity
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M34. 관계/CFLAG/장비/의복 owner 완성
 

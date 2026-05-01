@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M33",
+  "title": "Body, stat, ability, talent, experience coverage",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M33 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json",
+    "saveMapping": "data/coverage/save-mapping.json"
+  },
+  "outputs": {
+    "bodyStatCoverage": "data/coverage/body-stat-coverage.json",
+    "gapAudit": "data/coverage/audits/M33-gap-audit.json",
+    "builder": "tools/build_body_stat_coverage.mjs",
+    "coverageGate": "tools/gate_body_stat_mapping.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m33_body_stat_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 5300,
+    "implemented": 4768,
+    "mapped": 465,
+    "approvedExcluded": 0,
+    "transferredOut": 67,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 5300,
+    "implemented": 4768,
+    "mapped": 465,
+    "approvedExcluded": 0,
+    "transferredOut": 67,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:body-stat",
+      "npm run gate:body-stat-mapping",
+      "npm run gate:milestone-scope-closure -- M33",
+      "npm run smoke:body-stat",
+      "npm run smoke:character-identity",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "5300 M33 owned row(s), 0 unresolved issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:body-stat",
+    "npm run gate:body-stat-mapping",
+    "npm run gate:milestone-scope-closure -- M33",
+    "npm run smoke:body-stat",
+    "npm run smoke:character-identity",
+    "npm run typecheck",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}

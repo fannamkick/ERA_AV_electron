@@ -19,22 +19,35 @@ export function buildRosterView(state: GameState): RosterView {
     kind: 'roster',
     route: 'roster',
     entries: Object.values(state.people.characters)
-      .map((character) => ({
-        characterId: character.id,
-        displayName: character.identity.displayName,
-        callName: character.identity.callName,
-        nickname: character.identity.nickname,
-        firstPerson: character.identity.firstPerson,
-        templateId: character.identity.templateId,
-        roleSummary: character.roles.join(', ') || 'owned',
-        lifecycleSummary: lifecycleSummary(character),
-        profileTextSlotCount: Object.keys(character.identity.profileTextSlots).length,
-        profileTextSlots: { ...character.identity.profileTextSlots },
-        retired: character.flags.lifecycle.retired,
-        deleted: character.flags.lifecycle.deleted,
-        assistantEligible: character.flags.lifecycle.assistantEligible,
-        recruitmentStatus: character.flags.lifecycle.recruitmentStatus,
-      }))
+      .map((character) => {
+        const body = state.body.byCharacterId[character.id];
+
+        return {
+          characterId: character.id,
+          displayName: character.identity.displayName,
+          callName: character.identity.callName,
+          nickname: character.identity.nickname,
+          firstPerson: character.identity.firstPerson,
+          templateId: character.identity.templateId,
+          roleSummary: character.roles.join(', ') || 'owned',
+          lifecycleSummary: lifecycleSummary(character),
+          profileTextSlotCount: Object.keys(character.identity.profileTextSlots).length,
+          profileTextSlots: { ...character.identity.profileTextSlots },
+          peopleBaseStatCount: Object.keys(character.attributes.baseStats.current).length,
+          bodyBaseStatCount: Object.keys(body?.baseStats ?? {}).length,
+          bodyResultStatCount: Object.keys(body?.bodyStats ?? {}).length,
+          abilityCount: Object.keys(character.attributes.abilities).length,
+          traitCount: Object.keys(character.attributes.traits).length,
+          experienceCount: Object.keys(character.attributes.experiences).length,
+          conditionParamCount: Object.keys(body?.conditionParams ?? {}).length,
+          trainingResourceCount: Object.keys(body?.trainingResources ?? {}).length,
+          imprintCount: Object.keys(body?.imprints ?? {}).length,
+          retired: character.flags.lifecycle.retired,
+          deleted: character.flags.lifecycle.deleted,
+          assistantEligible: character.flags.lifecycle.assistantEligible,
+          recruitmentStatus: character.flags.lifecycle.recruitmentStatus,
+        };
+      })
       .sort((a, b) => a.characterId.localeCompare(b.characterId)),
   };
 }

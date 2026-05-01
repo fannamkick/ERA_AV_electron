@@ -3,6 +3,12 @@ import type { CharacterBodyState } from '../domains/body/types';
 import type { CharacterEquipmentState } from '../domains/equipment/types';
 import type { CharacterId, CharacterIdentity, CharacterRole, CharacterState } from '../domains/people/types';
 import type { RelationshipState } from '../domains/social/types';
+import {
+  createBodyStateFromTemplate,
+  createEquipmentAvailabilityFlagsFromTemplate,
+  createPeopleBaseStatsFromTemplate,
+  createUnmappedLegacyCharacterFlags,
+} from './bodyStats';
 
 export type CharacterCreationFailure = {
   readonly code: string;
@@ -65,8 +71,8 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
     },
     attributes: {
       baseStats: {
-        current: { ...template.initialState.baseStats },
-        maximum: { ...template.initialState.baseStats },
+        current: createPeopleBaseStatsFromTemplate(template),
+        maximum: createPeopleBaseStatsFromTemplate(template),
       },
       abilities: { ...template.initialState.abilities },
       traits: Object.fromEntries(template.initialState.talents.map((talentId) => [talentId, true])),
@@ -91,7 +97,7 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
         ...spec.featureProgress,
       },
       legacyFlagsNeedingMapping: {
-        ...template.initialState.characterFlags,
+        ...createUnmappedLegacyCharacterFlags(template),
         ...spec.legacyFlagsNeedingMapping,
       },
     },
@@ -99,28 +105,17 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
   };
 }
 
-function createCharacterBody(): CharacterBodyState {
-  return {
-    anatomyTags: [],
-    bodyStats: {},
-    reproduction: {},
-    sexualHistory: {},
-    appearance: {},
-    conditionParams: {},
-    trainingResources: {},
-    imprints: {},
-    contamination: {},
-    milestones: {},
-    legacyBodyFlagsNeedingMapping: {},
-  };
+function createCharacterBody(template: CharacterTemplate): CharacterBodyState {
+  return createBodyStateFromTemplate(template);
 }
 
-function createCharacterEquipment(): CharacterEquipmentState {
+function createCharacterEquipment(template: CharacterTemplate): CharacterEquipmentState {
   return {
     persistentEquipmentItemIds: [],
     clothing: {},
     piercings: [],
     restrictions: [],
+    availabilityFlags: createEquipmentAvailabilityFlagsFromTemplate(template),
     legacyEquipmentIndexesNeedingMapping: {},
   };
 }
@@ -176,8 +171,8 @@ export function createCharacterBundleFromSpecs(
 
     const character = createCharacterFromTemplate(template, spec);
     characters[character.id] = character;
-    bodies[character.id] = createCharacterBody();
-    equipment[character.id] = createCharacterEquipment();
+    bodies[character.id] = createCharacterBody(template);
+    equipment[character.id] = createCharacterEquipment(template);
     createdCharacterIds.push(character.id);
 
     for (const [targetTemplateId, affinity] of Object.entries(template.initialState.relations)) {

@@ -31,6 +31,15 @@ export type RosterEntryView = {
   readonly lifecycleSummary: string;
   readonly profileTextSlotCount: number;
   readonly profileTextSlots: Record<CatalogId, string>;
+  readonly peopleBaseStatCount: number;
+  readonly bodyBaseStatCount: number;
+  readonly bodyResultStatCount: number;
+  readonly abilityCount: number;
+  readonly traitCount: number;
+  readonly experienceCount: number;
+  readonly conditionParamCount: number;
+  readonly trainingResourceCount: number;
+  readonly imprintCount: number;
   readonly retired: boolean;
   readonly deleted: boolean;
   readonly assistantEligible: boolean;

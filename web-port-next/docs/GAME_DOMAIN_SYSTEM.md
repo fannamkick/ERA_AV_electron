@@ -52,7 +52,7 @@ type GameState = {
 | `run` | 현재 주차, 월, 월 안의 주차, 연도, 전반/후반, 게임 목표, 현재 진행 단계, 예약 이벤트 | 돈, 아이템, 인물 능력치 |
 | `economy` | 현재 자금과 회계 결과 | 아이템 수량, 현재 상점 선택값 |
 | `people` | 현재 회차에 존재하는 인물 목록과 인물별 기본 상태 | 현재 훈련 대상/촬영 대상 선택값 |
-| `body` | 인물별 신체, 자원, 상태 파라미터, 각인, 오염, 생식/성적 이력 | 현재 커맨드 계산 버퍼 |
+| `body` | 인물별 신체 기초치, 결과용 신체 수치, 자원, 상태 파라미터, 각인, 오염, 생식/성적 이력, body owner 조건 플래그 | 현재 커맨드 계산 버퍼 |
 | `social` | 인물 간 관계와 관계 역할 | 일회성 대화 선택값 |
 | `inventory` | 보유 아이템 수량, 아이템별 영구 제한 | 현재 판매 가능 목록 |
 | `equipment` | 인물별 지속 장비/의복 상태 | 훈련 중 임시 장비 |
@@ -79,11 +79,15 @@ type CharacterRecord = {
 
 type CharacterBodyRecord = {
   characterId: CharacterId;
-  baseCondition: BodyCondition;
+  baseStats: Record<BaseStatId, number>;
+  maxBaseStats: Record<BaseStatId, number>;
+  bodyStats: Record<string, number>;
   reproduction: ReproductionState;
   sexualHistory: SexualHistory;
   imprints: Record<MarkId, number>;
-  resources: Record<ResourceId, number>;
+  conditionParams: Record<ParamId, number>;
+  trainingResources: Record<ResourceId, number>;
+  conditionFlags: Record<string, boolean | number | string>;
 };
 
 type RelationshipRecord = {
@@ -232,7 +236,7 @@ type GameSession = {
 | `run` | 날짜, 월, 주차, 시간대, 현재 진행 단계, 예약 이벤트, 마지막 대상/조수 기억 | 캐릭터 능력치, 현재 화면 선택값 |
 | `economy` | 현재 자금, 확정된 거래 기록, 경제 관련 확정 플래그 | 목표 금액, 부채, 평판, 누적 매출처럼 근거가 확정되지 않은 값 |
 | `people` | 캐릭터 인스턴스, 이름, 호칭, 일반 능력/소질/경험, 소속/역할 가능 상태 | 현재 훈련 대상/조수 선택값 |
-| `body` | 캐릭터별 신체, 생식, 성적 이력, 상태 파라미터, 각인, 오염 | 훈련 중 증가 예정치 |
+| `body` | 캐릭터별 신체 기초치, 결과용 신체 수치, 생식, 성적 이력, 상태 파라미터, 훈련 자원, 각인, 오염, body owner 조건 플래그 | 훈련 중 증가 예정치 |
 | `social` | 캐릭터 간 관계, 호감, 관계 역할, 관계 이력 | 캐릭터 기본 identity |
 | `inventory` | 아이템 보유 수량, 확정된 사용 제한 | 현재 상점 선택값, 판매 가능 목록 |
 | `equipment` | 지속 장비, 의복, 피어싱, 제한 | 훈련 중 임시 장비 모드 |
@@ -347,6 +351,8 @@ type GameSession = {
 | 업무 배정/업무 경력 | `work`에서 캐릭터 id로 참조 |
 
 현재 훈련 대상, 현재 촬영 대상, 현재 미션 선택 대상은 캐릭터 저장 데이터가 아니다. 그것은 실행 중 역할 바인딩이다.
+
+M33 기준으로 Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`는 생성 시점에 정의 데이터에서 인스턴스 저장 상태로 복사된다. 일반 능력/소질/경험은 `people.characters[id].attributes`가 소유하고, body owner로 판정된 신체형 `BASE/MAXBASE`, 업무/촬영/훈련 결과가 공유하는 `bodyStats`, `PALAM` 결과인 `conditionParams`, `JUEL` 결과인 `trainingResources`, `MARK` 결과인 `imprints`는 `body.byCharacterId[id]`가 소유한다. CFLAG/FLAG/PBAND 조건 플래그의 최종 의미 분해는 M34가 owner이며, M33에서는 M34로 transfer 근거를 남긴다.
 
 ### 아이템과 상점
 

@@ -5,6 +5,7 @@ import { initialInteractionSessionState, type InteractionSessionState } from '..
 import { logEffect, type GameEffect } from '../game/effects';
 import type { GameSession, GameState } from '../game/state';
 import type { TrainingCommandView, TrainingParticipantView, TrainingView } from '../game/views';
+import { applyBodyStatDeltas, applyConditionParamDeltas, applyTrainingResourceDeltas } from './bodyStats';
 import { isCharacterActive } from './characterLifecycle';
 import { endTurn } from './turnEnd';
 
@@ -483,26 +484,12 @@ function applyBodyTrainingResult(body: CharacterBodyState | undefined, result: T
     return body;
   }
 
-  const nextConditionParams = { ...body.conditionParams };
-  for (const [paramId, delta] of Object.entries(result.paramDeltas)) {
-    nextConditionParams[paramId] = (nextConditionParams[paramId] ?? 0) + delta.up - delta.down;
-  }
-
-  const nextBodyStats = { ...body.bodyStats };
-  for (const [statId, delta] of Object.entries(result.bodyStatDeltas)) {
-    nextBodyStats[statId] = (nextBodyStats[statId] ?? 0) + delta;
-  }
-
-  const nextTrainingResources = { ...body.trainingResources };
-  for (const [resourceId, delta] of Object.entries(result.resourceDeltas)) {
-    nextTrainingResources[resourceId] = (nextTrainingResources[resourceId] ?? 0) + delta;
-  }
+  const withParams = applyConditionParamDeltas(body, result.paramDeltas);
+  const withBodyStats = applyBodyStatDeltas(withParams, result.bodyStatDeltas)!;
+  const withResources = applyTrainingResourceDeltas(withBodyStats, result.resourceDeltas);
 
   return {
-    ...body,
-    conditionParams: nextConditionParams,
-    bodyStats: nextBodyStats,
-    trainingResources: nextTrainingResources,
+    ...withResources,
     milestones: {
       ...body.milestones,
       'training.latestCommandId': result.commandId,

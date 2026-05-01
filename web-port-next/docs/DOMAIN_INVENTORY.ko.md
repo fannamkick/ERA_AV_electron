@@ -29,7 +29,7 @@
 | `BOUGHT` | `GameSession.shop.selectedItemId`, `quantity` | 현재 상점 화면의 임시 선택값 | `SHOP_ITEM.ERB`에서 `ITEMNAME:BOUGHT`, `ITEM:BOUGHT`, 취소/구매 후 `BOUGHT = 0` |
 | `DITEMTYPE` | 예약, 의미 확정 전 런타임 모델 금지 | `VariableSize.CSV` 선언은 있으나 현재 확인한 원본 ERB 검색 범위에서는 직접 사용처 미확인 | 원본 ERB 직접 검색 결과 기준. 미사용 확정이 아니라 런타임 모델 보류 근거 |
 | `ABL` | `GameState.people.characters[id].attributes.abilities` | 캐릭터 능력치 | `Abl.csv`, Chara CSV `能力` |
-| `BASE`, `MAXBASE` | `GameState.people.characters[id].attributes.baseStats` 또는 `GameState.body.byCharacterId[id].bodyStats` | 일반 기초치와 신체성 기초치. index별 의미 확정 필요 | `BASE.csv`, Chara CSV `基礎` |
+| `BASE`, `MAXBASE` | `GameState.people.characters[id].attributes.baseStats` 또는 `GameState.body.byCharacterId[id].baseStats/maxBaseStats/bodyStats` | 일반 기초치는 `people`, 신체형 기초치와 업무/촬영/훈련 결과 공유 필드는 `body`. M33에서 body owner BASE/MAXBASE를 분리 | `BASE.csv`, Chara CSV `基礎` |
 | `TALENT` | `GameState.people.characters[id].attributes.traits` 또는 `GameState.body` | 일반 소질/특성. 신체/생식 특성은 body로 분리 | `Talent.csv`, Chara CSV `素質` |
 | `EXP` | `GameState.people.characters[id].attributes.experiences` 또는 `GameState.body.milestones` | 일반 경험과 신체/성적 이정표. index별 의미 확정 필요 | `exp.csv`, Chara CSV `経験` |
 | `PALAM` | `GameState.body.byCharacterId[id].conditionParams` | 쾌감, 윤활, 욕정, 공포, 반감 같은 현재 상태 파라미터 | `Palam.csv`, `COMABLE.ERB` 조건식 |
@@ -115,13 +115,15 @@
 | `social` | `relationships[pairKey]` | 방향성 관계값, 호감, 관계 역할, 이력 태그 | `RELATION`, Chara CSV `相性` |
 | `social` | `ntrProgress`, `partnerProgress` | NTR/연인/파트너 진행 | boyfriend/NTR ERB, `CFLAG:619`, `CFLAG:620` 후보 |
 | `body` | `byCharacterId[id].anatomyTags` | 신체 구조 태그 | 신체성 `TALENT`, `CFLAG` |
-| `body` | `byCharacterId[id].bodyStats` | 체력/기력/신체성 기초값 | `BASE`, `MAXBASE` 중 신체 값 |
+| `body` | `byCharacterId[id].baseStats`, `maxBaseStats` | body owner로 판정된 신체형 기초값과 최대치 | `BASE`, `MAXBASE` 중 신체 값 |
+| `body` | `byCharacterId[id].bodyStats` | 업무/촬영/훈련 결과가 공유하는 체력/기력/신체 변화 필드 | `BASE`, `LOSEBASE`, 업무/촬영/훈련 결과 |
 | `body` | `byCharacterId[id].reproduction` | 임신, 출산일, 부친, 배란/수정, 약물 사용 | `CFLAG:101`~`CFLAG:124`, `CFLAG:109`~`CFLAG:112` 후보 |
 | `body` | `byCharacterId[id].sexualHistory` | 처녀성, 상실 상대/나이/월/주/장소/상황 | `CFLAG:15`, `CFLAG:16`, `CFLAG:160`~`CFLAG:167`, `CFLAG:820`~`CFLAG:836` 후보 |
 | `body` | `byCharacterId[id].appearance` | 음모, 컵, 머리색/머리형, 외형 | `CFLAG:6`, `CFLAG:36`, `CFLAG:600`~`CFLAG:611` 후보 |
 | `body` | `byCharacterId[id].conditionParams` | 지속 감각/욕정/반감/고통 등 현재 상태 파라미터 | `PALAM` |
 | `body` | `byCharacterId[id].trainingResources` | 훈련 결과로 획득/소비되는 구슬/자원 | `JUEL` |
 | `body` | `byCharacterId[id].imprints` | 각인 | `MARK` |
+| `body` | `byCharacterId[id].conditionFlags` | body owner로 판정된 조건/상태 플래그. CFLAG/FLAG/PBAND 전체 의미 분해는 M34에서 닫음 | `CFLAG`, `FLAG` 중 body owner 후보 |
 | `body` | `byCharacterId[id].contamination` | 오염/액체 부착 상태 | `STAIN` |
 | `body` | `byCharacterId[id].milestones` | 신체/성적 이정표 | 신체성 `EXP`, `TALENT`, `CFLAG` |
 | `text` | `displayRules`, `particleRules`, `addressRules` | 표시 이름, 조사, 호칭 렌더링 규칙 | `STR`, 호칭 처리 ERB |
@@ -205,8 +207,8 @@
 | `GLOBAL` | `meta` | save | `LOADGLOBAL`/`SAVEGLOBAL` 기반 회차 밖 진행 값 |
 | `GLOBALS` | `meta` 또는 `text` | save | 전역 문자열. 표시/저장 텍스트 성격이면 `text`. 현재 확인한 원본 ERB 검색 범위에서는 직접 사용처 미확인 |
 | `PBAND` | `mission`, `meta`, `world`, `featureState` | save | 진행 밴드/해금 단계. 슬롯별 의미 확정 필수 |
-| `BASE` | `body` 또는 `people` | save | 기초 상태. 신체/체력성 값은 `body`, 일반 성장값은 `people.attributes` |
-| `MAXBASE` | `body` 또는 `people` | save | 기초 최대치 |
+| `BASE` | `body` 또는 `people` | save | 기초 상태. M33 기준 신체/체력성 값은 `body.baseStats/bodyStats`, 일반 성장값은 `people.attributes.baseStats` |
+| `MAXBASE` | `body` 또는 `people` | save | M33 기준 신체형 최대치는 `body.maxBaseStats`, 일반 최대치는 `people.attributes.baseStats.maximum` |
 | `ABL` | `people` | save | 캐릭터별 능력치 |
 | `TALENT` | `people` 또는 `body` | save | 일반 소질은 `people`, 신체/생식 소질은 `body` |
 | `EXP` | `people` 또는 `body` | save | 일반 경험은 `people`, 성적/신체 이정표는 `body` |

@@ -1,10 +1,10 @@
 import { getWorkDefinition } from '../catalog/lookup';
 import type { CatalogId, GameDefinitions, WorkDefinition } from '../catalog/types';
-import type { CharacterBodyState } from '../domains/body/types';
 import { initialWorkSessionState } from '../domains/workSession/types';
 import { logEffect, type GameEffect } from '../game/effects';
 import type { GameSession, GameState } from '../game/state';
 import type { WorkCharacterCandidateView, WorkListingView, WorkView } from '../game/views';
+import { applyBodyStatDeltas } from './bodyStats';
 import { isCharacterActive } from './characterLifecycle';
 import { endTurn } from './turnEnd';
 
@@ -245,22 +245,6 @@ export function calculateWorkResult(work: WorkDefinition, characterId: string): 
     rewardMoney: work.rewardMoney,
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
-  };
-}
-
-function applyBodyStatDeltas(body: CharacterBodyState | undefined, deltas: Record<string, number>): CharacterBodyState | undefined {
-  if (!body) {
-    return body;
-  }
-
-  const nextBodyStats = { ...body.bodyStats };
-  for (const [statId, delta] of Object.entries(deltas)) {
-    nextBodyStats[statId] = (nextBodyStats[statId] ?? 0) + delta;
-  }
-
-  return {
-    ...body,
-    bodyStats: nextBodyStats,
   };
 }
 

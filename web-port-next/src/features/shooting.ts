@@ -1,10 +1,10 @@
 import { getFilmingSceneDefinition } from '../catalog/lookup';
 import type { CatalogId, FilmingSceneDefinition, GameDefinitions } from '../catalog/types';
-import type { CharacterBodyState } from '../domains/body/types';
 import { initialShootingSessionState } from '../domains/shootingSession/types';
 import { logEffect, type GameEffect } from '../game/effects';
 import type { GameSession, GameState } from '../game/state';
 import type { ShootingSceneView, ShootingTargetView, ShootingView } from '../game/views';
+import { applyBodyStatDeltas } from './bodyStats';
 import { isCharacterActive } from './characterLifecycle';
 import { endTurn } from './turnEnd';
 
@@ -286,22 +286,6 @@ export function calculateShootingResult(scene: FilmingSceneDefinition, character
     filmingAmount: scene.filmingAmount,
     bodyStatDeltas: { ...scene.bodyStatDeltas },
     experienceDeltas: { ...scene.experienceDeltas },
-  };
-}
-
-function applyBodyStatDeltas(body: CharacterBodyState | undefined, deltas: Record<string, number>): CharacterBodyState | undefined {
-  if (!body) {
-    return body;
-  }
-
-  const nextBodyStats = { ...body.bodyStats };
-  for (const [statId, delta] of Object.entries(deltas)) {
-    nextBodyStats[statId] = (nextBodyStats[statId] ?? 0) + delta;
-  }
-
-  return {
-    ...body,
-    bodyStats: nextBodyStats,
   };
 }
 
