@@ -2,10 +2,10 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M42",
   "title": "Training command effects 0-34",
-  "status": "completed",
-  "completedAt": "2026-05-01",
-  "commitPolicy": "Commit after every milestone closure.",
-  "commitHash": "recorded by the M42 git commit that includes this closure file",
+  "status": "blocked",
+  "blockedAt": "2026-05-01",
+  "blockerReason": "The previous M42 closure reduced the responsibility from original effect calculation to SOURCE/LOSEBASE/EXP evidence indexing and generated static profiles. M42 requires implementation and verification of original command effect behavior.",
+  "commitPolicy": "Do not mark M42 completed until the original effect calculations are implemented and verified.",
   "sourceInputs": {
     "originalCommandSources": "original-game/ERB/*/COMF0.ERB through COMF34.ERB",
     "trainingCatalog": "data/catalog/legacy-catalog.json",
@@ -23,49 +23,52 @@
   },
   "counts": {
     "ownedTotal": 35,
-    "implemented": 35,
+    "implemented": 0,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 35,
     "missingEvidence": 0,
     "missingConsumer": 0,
-    "missingVerification": 0,
+    "missingVerification": 35,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
     "ownedTotal": 35,
-    "implemented": 35,
+    "implemented": 0,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 35,
     "missingEvidence": 0,
     "missingConsumer": 0,
-    "missingVerification": 0,
+    "missingVerification": 35,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
   },
-  "verification": {
-    "commands": [
-      "npm run coverage:training-effect-0-34",
-      "npm run gate:training-effect -- 0-34",
-      "npm run coverage:definitions",
-      "npm run gate:definition-consumption",
-      "npm run smoke:training-effect-0-34",
-      "npm run build",
-      "npm run gate:milestone-scope-closure -- M42"
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": false,
+    "sourceBehaviorImplementedNotJustIndexed": false,
+    "gateValidatesResponsibilityNotOwnScaffold": false,
+    "limitationsBlockCompletion": true,
+    "responsibilityItems": [
+      "Implement original command 0-34 source calculation behavior.",
+      "Implement param/body/resource/experience result owner behavior.",
+      "Verify success, unavailable, cancel, result application, session cleanup, and save boundary per command."
     ],
-    "expectedGateResult": "35 M42 command effect row(s), 0 unresolved issue(s)"
+    "implementationEvidence": [
+      "Current artifacts index SOURCE/LOSEBASE/EXP lines and generate static profiles only."
+    ],
+    "verificationEvidence": [
+      "npm run gate:training-effect -- 0-34 must fail until original effect calculation behavior is implemented."
+    ]
   },
   "commandsRun": [
     "npm run coverage:training-effect-0-34",
-    "npm run gate:training-effect -- 0-34",
     "npm run coverage:definitions",
     "npm run gate:definition-consumption",
-    "npm run smoke:training-effect-0-34",
-    "npm run build",
-    "npm run gate:milestone-scope-closure -- M42"
+    "npm run gate:training-effect -- 0-34 (expected failure while blocked)"
   ]
 }

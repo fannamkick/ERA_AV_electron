@@ -207,7 +207,7 @@ function rowForProfile(profile) {
     sourcePath: profile.sourceEvidence.sourcePath,
     sourceFile: profile.sourceEvidence.sourceFile,
     sourceLine: profile.sourceEvidence.sourceLine,
-    completionStatus: 'implemented-training-effect-profile',
+    completionStatus: 'blocked-evidence-only-profile',
     resultOwner: 'body',
     runtimeRoute: 'training',
     runtimeAction: 'training/selectCommand -> training/execute',
@@ -215,6 +215,9 @@ function rowForProfile(profile) {
     runtimeConsumerId:
       'training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners',
     verificationId: 'smoke:training-effect-0-34',
+    blockerId: `blocker:m42:original-effect-formula:${profile.commandId}`,
+    blockerReason:
+      'M42 responsibility requires original command effect calculation, not only SOURCE/LOSEBASE/EXP line indexing and generated static profiles.',
     sourceAssignmentCount: profile.sourceAssignmentCount,
     bodyLossAssignmentCount: profile.bodyLossAssignmentCount,
     experienceAssignmentCount: profile.experienceAssignmentCount,
@@ -235,24 +238,24 @@ for (let commandId = commandRange.start; commandId <= commandRange.end; commandI
   rows.push(rowForProfile(profile));
 }
 
-const unresolvedIssues = rows
-  .filter((row) => row.sourceAssignmentCount === 0 || row.bodyLossAssignmentCount === 0)
-  .map((row) => ({
-    coverageRowId: row.coverageRowId,
-    issue: 'M42 command effect row is missing SOURCE or LOSEBASE evidence.',
-  }));
+const unresolvedIssues = rows.map((row) => ({
+  coverageRowId: row.coverageRowId,
+  blockerId: row.blockerId,
+  issue:
+    'M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion.',
+}));
 
 const summary = {
   commandRange: commandRange.label,
   ownedTotal: rows.length,
-  implemented: rows.length - unresolvedIssues.length,
+  implemented: 0,
   mapped: 0,
   approvedExcluded: 0,
   transferredOut: 0,
   ownedBlocker: unresolvedIssues.length,
-  missingEvidence: unresolvedIssues.length,
+  missingEvidence: 0,
   missingConsumer: 0,
-  missingVerification: 0,
+  missingVerification: unresolvedIssues.length,
   roleOnlyComplete: 0,
   unapprovedExcluded: 0,
 };

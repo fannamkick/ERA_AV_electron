@@ -10,6 +10,7 @@
 - 기존 `web-port` 산출물은 참고 자료이며 구현 기준으로 승격하지 않는다.
 - 원본 변수명(`CFLAG`, `TFLAG`, `SOURCE`, `TEQUIP`, `COMF`, `LOSEBASE` 등)을 앱 모델명으로 복사하지 않는다.
 - `blocker`, `needsDecision`, `missingMapping`, `needs-review`, `role-only`, 승인 없는 `approved-excluded`는 완료가 아니다.
+- 마일스톤 책임을 라인 색인, static profile, 자체 scaffold gate로 축소하지 않는다.
 
 ## 완료 권위
 
@@ -21,9 +22,12 @@
 4. coverage/gap/closure: 마일스톤 coverage, `Mxx-gap-audit.json`, `Mxx-closure.json`
 5. 검증 명령: 전용 coverage/gate/smoke, `gate:milestone-scope-closure -- Mxx`, `npm run build`
 
+`Mxx-closure.json`이 `completed`이면 `responsibilityIntegrity`가 있어야 한다. 마일스톤 책임 동사가 runtime behavior와 검증으로 닫히지 않았거나, 알려진 한계가 책임 범위 안에 있으면 완료가 아니라 blocked다.
+
 ## I/O 누수 방지
 
 - 긴 문서 전체 읽기 금지. `rg` 또는 section 조회로 현재 마일스톤과 관련 줄만 읽는다.
+- 마일스톤 전후 맥락은 `docs/milestones/README.ko.md`와 해당 phase 문서로 먼저 좁힌다.
 - 대형 coverage/audit JSON 전체 출력 금지. summary, count, blocking row id, 특정 row만 조회한다.
 - 원본 ERB/CSV 전체 출력 금지. 라벨/호출 흐름 주변을 읽되, 구현 판단에는 필요한 원본 block을 직접 확인한다.
 - 명령 성공 로그는 대화에 길게 남기지 않는다. 명령명, exit code, 핵심 count만 남긴다.

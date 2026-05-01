@@ -354,10 +354,10 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 | `docs/LEGACY_MAPPING_POLICY.ko.md` | 원본 근거 대조 상태값, evidence, 승인/차단 정책 |
 | `docs/IMPLEMENTATION_UNIT_RULES.ko.md` | 구현 전/후 template, blocker template, 1회 최대 구현 단위 |
 
-## 최신 인수인계: M42 완료
+## 최신 인수인계: M42 blocked
 
-- 마지막 완료 마일스톤은 M42다. command 0~34 효과 profile, source/param/body/resource/experience 결과 반영, success/unavailable/cancel/session cleanup 검증을 닫았다.
-- 생성 산출물은 `data/coverage/training-effect-0-34.json`, `data/catalog/training-effect-profiles-0-34.json`, `data/coverage/audits/M42-gap-audit.json`, `data/coverage/milestones/M42-closure.json`이다.
-- 새 runtime 연결은 `src/catalog/legacyCatalog.ts`의 `trainingEffectProfilesArtifact` overlay이며, 소비 경로는 기존 `src/features/training.ts`의 `calculateTrainingResult`와 `applyTrainingResult`다.
-- 전용 검증은 `coverage:training-effect-0-34`, `gate:training-effect -- 0-34`, `smoke:training-effect-0-34`다. `npm run build`도 통과했다.
-- 다음 세션은 M43부터 시작한다. 먼저 `docs/agent/CODEX_BOOTSTRAP.ko.md`, `docs/agent/CURRENT_STATUS.ko.md`, `docs/agent/NEXT_MILESTONE.ko.md`를 읽고, 원본 `COMF35.ERB`~`COMF69.ERB` 증거를 직접 확인한다.
+- M42는 완료가 아니다.
+- 이유: 이전 산출물은 원본 `COMF0.ERB`~`COMF34.ERB` 효과 계산을 구현한 것이 아니라 `SOURCE/LOSEBASE/EXP` 라인 인덱싱과 static profile 생성을 완료로 오판했다.
+- 현재 M42 closure는 `status: blocked`이며, `training-effect-0-34.json`은 implemented 0, ownedBlocker 35, missingVerification 35를 기록한다.
+- `npm run gate:training-effect -- 0-34`는 원본 효과 계산 구현 전까지 실패해야 한다.
+- 다음 세션은 M42를 재개한다. M43로 넘어가지 않는다.

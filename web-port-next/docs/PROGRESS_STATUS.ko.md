@@ -378,14 +378,12 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - 기존 `web-port` 산출물은 참고 자료이며 구현 기준으로 승격하지 않는다.
 - 마일스톤 완료 시 `NEW_PORT_MILESTONES.ko.md`의 "마일스톤 완료 운영 의무"를 모두 지킨다. `PROGRESS_STATUS.ko.md`, `SESSION_HANDOFF.ko.md`, 필요한 기준 문서, coverage/audit/closure 산출물, 검증 명령, 별도 커밋이 빠지면 완료 처리하지 않는다.
 
-## M42 업데이트
+## M42 정정: blocked
 
-- M42 훈련 command 효과 0~34 완성 완료.
-- `tools/build_training_effect_0_34_coverage.mjs`가 `original-game/ERB/*/COMF0.ERB` through `COMF34.ERB`에서 SOURCE/LOSEBASE/EXP 증거를 추출하고 `data/coverage/training-effect-0-34.json`, `data/catalog/training-effect-profiles-0-34.json`, `data/coverage/audits/M42-gap-audit.json`을 생성한다.
-- runtime은 `src/catalog/legacyCatalog.ts`의 M42 profile overlay를 통해 command 0~34를 `definitions.trainingCommands`에 연결하고, 기존 `src/features/training.ts`의 `calculateTrainingResult`, session preview buffer, `applyTrainingResult` 경로로 소비한다.
-- `smoke:training-effect-0-34`는 command 0~34 전체를 계상하고, 기본 상태에서 success 8개와 unavailable 27개를 검증했다. success 경로는 source/param/baseLoss preview, cancelSelection cleanup, execute result owner 반영, session cleanup, save payload buffer 미포함을 확인한다.
-- M42 closure 기준: ownedTotal 35, implemented 35, blocker/missingEvidence/missingConsumer/missingVerification 0.
-- M42 검증 명령: `npm run coverage:training-effect-0-34`, `npm run gate:training-effect -- 0-34`, `npm run smoke:training-effect-0-34`, `npm run build`, `npm run gate:milestone-scope-closure -- M42`.
-- 다음 작업은 M43 훈련 command 효과 35~69 완성이다.
-
-M42 추가 확인: `npm run coverage:definitions`와 `npm run gate:definition-consumption`으로 M20 definition coverage에서 training command 0~34를 `used`, 35~104를 M43/M44 blocker로 갱신했다.
+- M42는 완료가 아니다. 이전 M42 산출물은 원본 효과 계산 구현이 아니라 원본 `SOURCE/LOSEBASE/EXP` 라인 인덱싱과 static profile 생성에 머물렀다.
+- M42 책임은 command 0~34의 원본 효과 계산, 분기, 배율, 결과 owner, 성공/불가/취소/session cleanup/save boundary 검증이다. 이 책임은 산출물 생성이나 자체 gate 통과로 축소할 수 없다.
+- `data/coverage/training-effect-0-34.json`은 현재 ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35를 기록한다.
+- `data/coverage/milestones/M42-closure.json`은 `status: blocked`다.
+- `npm run gate:training-effect -- 0-34`는 현재 실패해야 정상이다.
+- `npm run coverage:definitions`와 `npm run gate:definition-consumption` 기준으로 M20 definition coverage는 command 1~34를 다시 M42 blocker로 유지한다. command 0은 M14 최소 훈련 1차 consumer만으로 used다.
+- 다음 작업은 M42 재개다. M43로 넘어가지 않는다.

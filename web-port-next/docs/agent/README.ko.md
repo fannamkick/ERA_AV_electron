@@ -7,8 +7,9 @@
 1. `CODEX_BOOTSTRAP.ko.md`
 2. `CURRENT_STATUS.ko.md`
 3. `NEXT_MILESTONE.ko.md`
-4. 필요한 경우에만 `../NEW_PORT_MILESTONES.ko.md`의 현재 마일스톤 section
-5. 구현 판단이 필요하면 원본 파일, coverage row, gate, runtime code를 직접 확인
+4. 현재 마일스톤의 전후 맥락이 필요하면 `../milestones/README.ko.md`와 해당 phase 문서
+5. 필요한 경우에만 `../NEW_PORT_MILESTONES.ko.md`의 현재 마일스톤 section
+6. 구현 판단이 필요하면 원본 파일, coverage row, gate, runtime code를 직접 확인
 
 ## 권위 경계
 
@@ -26,3 +27,4 @@
 - 대형 JSON과 긴 문서는 전체 출력하지 않는다. 필요한 row, section, blocking metric만 좁게 조회한다.
 - gate 실패 출력은 요약만 대화에 남기고, 전체 실패 목록은 artifact로 남겨야 한다.
 - milestone 완료 전에는 원본 row, runtime consumer, verification, closure/gap audit을 직접 확인한다.
+- phase 문서는 탐색 시작점일 뿐이며, 책임 축소나 완료 판정 근거로 쓰지 않는다.

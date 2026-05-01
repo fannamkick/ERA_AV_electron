@@ -39,6 +39,33 @@ assert(closure.status === 'completed', 'closure status must be completed before 
 assert(closure.commitPolicy, 'closure must record commit policy');
 assert(closure.outputs && Object.keys(closure.outputs).length > 0, 'closure must record output artifacts');
 
+const responsibilityIntegrity = closure.responsibilityIntegrity;
+assert(responsibilityIntegrity, 'closure must include responsibilityIntegrity against arbitrary scope reduction');
+for (const [field, value] of Object.entries({
+  scopeReductionProhibited: responsibilityIntegrity.scopeReductionProhibited,
+  checklistMatchedToResponsibility: responsibilityIntegrity.checklistMatchedToResponsibility,
+  sourceBehaviorImplementedNotJustIndexed: responsibilityIntegrity.sourceBehaviorImplementedNotJustIndexed,
+  gateValidatesResponsibilityNotOwnScaffold: responsibilityIntegrity.gateValidatesResponsibilityNotOwnScaffold,
+  limitationsBlockCompletion: responsibilityIntegrity.limitationsBlockCompletion === false,
+})) {
+  assert(value === true, `responsibilityIntegrity.${field} must be true`, responsibilityIntegrity);
+}
+assert(
+  Array.isArray(responsibilityIntegrity.responsibilityItems) && responsibilityIntegrity.responsibilityItems.length > 0,
+  'responsibilityIntegrity must list responsibilityItems',
+  responsibilityIntegrity,
+);
+assert(
+  Array.isArray(responsibilityIntegrity.implementationEvidence) && responsibilityIntegrity.implementationEvidence.length > 0,
+  'responsibilityIntegrity must list implementationEvidence',
+  responsibilityIntegrity,
+);
+assert(
+  Array.isArray(responsibilityIntegrity.verificationEvidence) && responsibilityIntegrity.verificationEvidence.length > 0,
+  'responsibilityIntegrity must list verificationEvidence',
+  responsibilityIntegrity,
+);
+
 const metrics = closure.closureMetrics ?? closure.counts;
 assert(metrics, 'closure must include closureMetrics or counts');
 

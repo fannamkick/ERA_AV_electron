@@ -73,6 +73,30 @@
 - [ ] 완료 직후 다음 작업이 무엇인지 `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`에 같은 내용으로 남긴다.
 - [ ] unrelated dirty files, 기존 `web-port` 산출물, `.env.local`, 유료 AI/OpenRouter 관련 변경이나 호출을 완료 커밋에 섞지 않는다.
 
+## 책임 축소 절대 금지
+
+이 절은 모든 마일스톤에 적용한다. 마일스톤 문서에 적힌 책임과 체크리스트를 구현자가 임의로 낮춰 해석하면 안 된다. 산출물 생성, 원본 라인 인덱싱, 자체 gate 통과, 일부 smoke 성공은 책임 완료가 아니다.
+
+- [ ] 마일스톤 책임 문구의 동사를 그대로 만족해야 한다. `구현한다`, `완성한다`, `계산한다`, `반영한다`, `검증한다`는 문서/coverage 기록이 아니라 runtime behavior와 검증을 뜻한다.
+- [ ] 원본 효과/조건/후처리 구현 책임은 원본 라인 존재 확인이나 static profile 생성으로 대체할 수 없다.
+- [ ] gate는 자신이 만든 scaffold가 존재하는지만 검사하면 안 된다. 원본 책임 항목이 runtime에서 실제 소비되고, 실패할 수 있는 검증을 가져야 한다.
+- [ ] closure는 `responsibilityIntegrity`를 반드시 포함한다. 이 항목이 없거나 `sourceBehaviorImplementedNotJustIndexed`, `gateValidatesResponsibilityNotOwnScaffold`가 참이 아니면 `gate:milestone-scope-closure`는 실패해야 한다.
+- [ ] 이전에 완료로 기록된 마일스톤도 재검증 또는 재개 시 이 규칙을 적용한다. 기존 closure에 `responsibilityIntegrity`가 없으면 보강 전에는 재완료 판정하지 않는다.
+- [ ] 알려진 한계가 책임 범위 안에 있으면 그 마일스톤은 `completed`가 아니라 `blocked` 또는 미완료다.
+- [ ] 체크박스는 산출물이 생겼다는 뜻으로 체크하지 않는다. 해당 책임이 원본 근거, runtime 구현, 검증에서 모두 닫혔을 때만 체크한다.
+- [ ] 의심되면 완료하지 않는다. blocker로 남기고 gap audit에 기록한다.
+
+## Phase별 마일스톤 문서
+
+긴 마일스톤 목록은 phase별 문서로 분리한다. `NEW_PORT_MILESTONES.ko.md`는 실행 체크리스트와 현재 상세 기록을 유지하고, phase별 문서는 에이전트가 읽을 마일스톤 목록의 시작점으로 쓴다.
+
+- Phase 1: `docs/milestones/PHASE_1_M0_M6.ko.md`
+- Phase 2: `docs/milestones/PHASE_2_M7_M16.ko.md`
+- Phase 3: `docs/milestones/PHASE_3_M17_M20.ko.md`
+- Phase 4: `docs/milestones/PHASE_4_M21_M27.ko.md`
+- Phase 5: `docs/milestones/PHASE_5_M28_M49.ko.md`
+- Phase 6: `docs/milestones/PHASE_6_M50_M52.ko.md`
+
 ## 페이즈 구분
 
 | Phase | 범위 | 목표 | 완료 기준 |
@@ -1673,21 +1697,23 @@ npm run test --if-present
 - 완료 결과: command 0~34가 source evidence와 consumer evidence를 갖고 검증된다.
 - 누락 차단: source evidence 없거나 계산 중간값이 save에 들어가면 완료하지 않는다.
 
-- [x] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
-- [x] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
-- [x] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
-- [x] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
-- [x] command 0~34의 source evidence와 consumer evidence를 연결
-- [x] 관련 blocker 0개 확인. 해소 불가 항목은 사용자 승인 제외 근거가 있을 때만 완료 처리
-- [x] M20/M24/M25 coverage의 command 0~34 status 갱신
-- [x] `npm run build` 실행
+- [ ] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
+- [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
+- [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
+- [ ] command 0~34의 source evidence와 consumer evidence를 연결
+- [ ] 관련 blocker 0개 확인. 해소 불가 항목은 사용자 승인 제외 근거가 있을 때만 완료 처리
+- [ ] M20/M24/M25 coverage의 command 0~34 status 갱신
+- [ ] `npm run build` 실행
 
-M42 완료 기록:
+M42 차단 기록:
 - coverage: `data/coverage/training-effect-0-34.json`
 - runtime profiles: `data/catalog/training-effect-profiles-0-34.json`
 - gap audit: `data/coverage/audits/M42-gap-audit.json`
 - closure: `data/coverage/milestones/M42-closure.json`
-- verification: `npm run coverage:training-effect-0-34`, `npm run gate:training-effect -- 0-34`, `npm run smoke:training-effect-0-34`, `npm run build`, `npm run gate:milestone-scope-closure -- M42`
+- 현재 상태: 원본 `SOURCE/LOSEBASE/EXP` 라인 인덱싱과 static profile 생성만 되어 있어 책임 축소 상태다.
+- `npm run gate:training-effect -- 0-34`는 원본 효과 계산 구현이 완료될 때까지 실패해야 한다.
+- 이 마일스톤은 완료가 아니다. M43으로 넘어가지 않는다.
 
 ## M43. 훈련 command 효과 35~69 완성
 

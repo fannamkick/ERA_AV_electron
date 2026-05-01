@@ -59,6 +59,8 @@ for (const row of rows) {
   assert(profile, 'missing runtime training effect profile', row);
   assert(row.sourceEvidenceId && row.sourcePath && row.sourceLine, 'row missing source evidence', row);
   assert(row.runtimeConsumerId && row.handlerOwner && row.verificationId, 'row missing consumer or verification', row);
+  assert(row.completionStatus === 'implemented-original-effect-calculation', 'row must implement original effect calculation, not an evidence-only profile', row);
+  assert(!row.blockerId, 'row with blockerId cannot pass training effect gate', row);
   assert(row.sourceAssignmentCount > 0, 'row missing SOURCE evidence', row);
   assert(row.bodyLossAssignmentCount > 0, 'row missing LOSEBASE evidence', row);
   assert(Object.keys(profile.definitionPatch?.stimulusDeltas ?? {}).length > 0, 'profile missing stimulus deltas', row);

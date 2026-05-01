@@ -234,8 +234,7 @@ function catalogDefinitionRow(row) {
     }
 
     case 'trainingCommands': {
-      const commandId = numericId(row.id);
-      if (commandId !== undefined && commandId <= 34) {
+      if (row.id === '0') {
         return baseRow({
           ...common,
           definitionRowId: `definition:training-command:${row.id}`,
@@ -244,28 +243,26 @@ function catalogDefinitionRow(row) {
           consumerKind: 'feature',
           consumingFeature: 'feature:training:basic-command',
           consumingView: 'buildTrainingView',
-          consumingCalculation: 'M42 training command source/param/body/resource/experience result calculation',
+          consumingCalculation: 'training command result calculation',
           handlerPath: 'src/features/training.ts',
           viewPath: 'src/ui/RouteScreens.tsx',
           calculationPath: 'src/features/training.ts',
           status: 'used',
-          ownerMilestone: commandId === 0 ? 'M14/M42' : 'M42',
-          notes:
-            commandId === 0
-              ? 'M14 minimum command, refreshed by M42 training-effect-0-34 coverage and runtime profile.'
-              : 'M42 training-effect-0-34 coverage connects this command to original COMF source evidence, runtime profile, and smoke verification.',
+          ownerMilestone: 'M14',
+          notes: 'M14 minimum command. M42 must still complete original effect calculation coverage before command 0 is counted as fully closed.',
         });
       }
 
+      const commandId = numericId(row.id);
       return blocker({
         ...common,
         definitionRowId: `definition:training-command:${row.id}`,
         runtimeOwner: 'definitions.trainingCommands',
         role: 'blocker',
         consumerKind: 'blocker',
-        ownerMilestone: commandId !== undefined && commandId <= 69 ? 'M43' : 'M44',
+        ownerMilestone: commandId !== undefined && commandId <= 34 ? 'M42' : commandId !== undefined && commandId <= 69 ? 'M43' : 'M44',
         blockerId: 'blocker:m20:training-command-effect',
-        notes: 'Train.csv command still requires command-specific effect/session cleanup in its assigned training-effect milestone.',
+        notes: 'Train.csv command requires command-specific original effect calculation, availability/effect/session cleanup in its assigned training-effect milestone.',
       });
     }
 

@@ -3,9 +3,185 @@
   "generatedBy": "tools/build_training_effect_0_34_coverage.mjs",
   "milestone": "M42",
   "summary": {
-    "unresolvedGaps": 0,
+    "unresolvedGaps": 35,
     "ownedRows": 35,
-    "implemented": 35
+    "implemented": 0
   },
-  "gaps": []
+  "gaps": [
+    {
+      "coverageRowId": "training-effect-0-34:command:0",
+      "blockerId": "blocker:m42:original-effect-formula:0",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:1",
+      "blockerId": "blocker:m42:original-effect-formula:1",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:2",
+      "blockerId": "blocker:m42:original-effect-formula:2",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:3",
+      "blockerId": "blocker:m42:original-effect-formula:3",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:4",
+      "blockerId": "blocker:m42:original-effect-formula:4",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:5",
+      "blockerId": "blocker:m42:original-effect-formula:5",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:6",
+      "blockerId": "blocker:m42:original-effect-formula:6",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:7",
+      "blockerId": "blocker:m42:original-effect-formula:7",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:8",
+      "blockerId": "blocker:m42:original-effect-formula:8",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:9",
+      "blockerId": "blocker:m42:original-effect-formula:9",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:10",
+      "blockerId": "blocker:m42:original-effect-formula:10",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:11",
+      "blockerId": "blocker:m42:original-effect-formula:11",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:12",
+      "blockerId": "blocker:m42:original-effect-formula:12",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:13",
+      "blockerId": "blocker:m42:original-effect-formula:13",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:14",
+      "blockerId": "blocker:m42:original-effect-formula:14",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:15",
+      "blockerId": "blocker:m42:original-effect-formula:15",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:16",
+      "blockerId": "blocker:m42:original-effect-formula:16",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:17",
+      "blockerId": "blocker:m42:original-effect-formula:17",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:18",
+      "blockerId": "blocker:m42:original-effect-formula:18",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:19",
+      "blockerId": "blocker:m42:original-effect-formula:19",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:20",
+      "blockerId": "blocker:m42:original-effect-formula:20",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:21",
+      "blockerId": "blocker:m42:original-effect-formula:21",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:22",
+      "blockerId": "blocker:m42:original-effect-formula:22",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:23",
+      "blockerId": "blocker:m42:original-effect-formula:23",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:24",
+      "blockerId": "blocker:m42:original-effect-formula:24",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:25",
+      "blockerId": "blocker:m42:original-effect-formula:25",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:26",
+      "blockerId": "blocker:m42:original-effect-formula:26",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:27",
+      "blockerId": "blocker:m42:original-effect-formula:27",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:28",
+      "blockerId": "blocker:m42:original-effect-formula:28",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:29",
+      "blockerId": "blocker:m42:original-effect-formula:29",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:30",
+      "blockerId": "blocker:m42:original-effect-formula:30",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:31",
+      "blockerId": "blocker:m42:original-effect-formula:31",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:32",
+      "blockerId": "blocker:m42:original-effect-formula:32",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:33",
+      "blockerId": "blocker:m42:original-effect-formula:33",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:34",
+      "blockerId": "blocker:m42:original-effect-formula:34",
+      "issue": "M42 command effect is evidence-indexed only. Original branch/expression behavior must be implemented and verified before completion."
+    }
+  ]
 }
