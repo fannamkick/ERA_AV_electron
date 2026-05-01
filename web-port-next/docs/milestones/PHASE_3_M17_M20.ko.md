@@ -6,7 +6,7 @@
 
 ## 상세 마일스톤
 
-## M17. 원본 근거 대조 정책
+## M17. [정책] 원본 근거 대조 정책
 
 책임 선언:
 - 역할: 원본 근거 대조 정책과 legacy adapter 경계를 확정한다.
@@ -34,7 +34,7 @@ npm run build
 rg "adapters/legacy|legacy/" src/game src/domains src/catalog
 ```
 
-## M18. 반복 구현 규칙 고정
+## M18. [정책] 반복 구현 규칙 고정
 
 책임 선언:
 - 역할: M28~M49 구현을 한 단위씩 닫는 반복 규칙을 고정한다.
@@ -68,7 +68,7 @@ rg "adapters/legacy|legacy/" src/game src/domains src/catalog
 | 훈련 | command 1개 |
 | 엔딩 | 조건 1개 또는 결과 화면 1개 |
 
-## M19. 원본 기능 커버리지 전수표
+## M19. [조사] 원본 기능 커버리지 전수표
 
 책임 선언:
 - 역할: 원본 기능 전체를 셀 수 있는 feature coverage 장부를 만든다.
@@ -99,7 +99,7 @@ npm run analyze:game-system
 npm run build
 ```
 
-## M20. 정의 데이터 전수 연결
+## M20. [조사/분류] 정의 데이터 전수 연결
 
 책임 선언:
 - 역할: 원본 정의 데이터와 Chara seed 전체를 역할과 소비 책임으로 분류한다.

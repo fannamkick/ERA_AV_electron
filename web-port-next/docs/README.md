@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | `agent/README.ko.md` | Codex/서브에이전트 시작 문서의 읽기 순서와 권위 경계 | 완료 판정 |
 | `agent/CODEX_BOOTSTRAP.ko.md` | 세션 시작용 절대 규칙과 I/O 누수 방지 규칙 | 마일스톤별 상세 이력 |
+| `agent/KNOWN_ISSUES.ko.md` | 반복되는 shell/도구 사용 실수와 우회 규칙 | 마일스톤 완료 판정 |
 | `agent/CURRENT_STATUS.ko.md` | 현재 완료 지점과 다음 마일스톤 dashboard | 완료 근거 원장 |
 | `agent/NEXT_MILESTONE.ko.md` | 바로 다음 마일스톤의 압축 시작점 | 전체 실행 계획 |
 | `GAME_DOMAIN_SYSTEM.md` | 정의 데이터, 저장 상태, 세션 상태, view 계산 객체의 소유권과 경계 | 진행 체크박스, 구현 일정 |
@@ -26,7 +27,7 @@
 
 ## 운영 규칙
 
-- Codex/서브에이전트는 세션 시작 시 `agent/CODEX_BOOTSTRAP.ko.md`, `agent/CURRENT_STATUS.ko.md`, `agent/NEXT_MILESTONE.ko.md`를 먼저 읽는다.
+- Codex/서브에이전트는 세션 시작 시 `agent/CODEX_BOOTSTRAP.ko.md`, `agent/KNOWN_ISSUES.ko.md`, `agent/CURRENT_STATUS.ko.md`, `agent/NEXT_MILESTONE.ko.md`를 먼저 읽는다.
 - 현재 마일스톤의 상세 체크리스트는 `milestones/README.ko.md`에서 해당 phase 문서를 찾아 그 section만 좁게 조회한다. `NEW_PORT_MILESTONES.ko.md`는 공통 규칙과 phase 경계만 본다.
 - `agent/*` 문서는 dashboard와 탐색 시작점이다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON이 소유한다.
 - 긴 문서와 대형 JSON은 전체 출력하지 않는다. 필요한 section, row, blocking metric, source block만 좁게 조회한다.

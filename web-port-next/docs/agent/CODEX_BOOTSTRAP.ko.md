@@ -8,6 +8,7 @@
 - 유료 AI/OpenRouter 호출을 실행하지 않는다.
 - unrelated dirty files를 되돌리거나 커밋에 섞지 않는다.
 - 기존 `web-port` 산출물은 참고 자료이며 구현 기준으로 승격하지 않는다.
+- 기본 shell은 PowerShell이다. Bash heredoc(`node - <<'NODE'`)과 Bash redirection 예시를 그대로 실행하지 않는다. 반복 이슈는 `KNOWN_ISSUES.ko.md`를 따른다.
 - 원본 변수명(`CFLAG`, `TFLAG`, `SOURCE`, `TEQUIP`, `COMF`, `LOSEBASE` 등)을 앱 모델명으로 복사하지 않는다.
 - `blocker`, `needsDecision`, `missingMapping`, `needs-review`, `role-only`, 승인 없는 `approved-excluded`는 완료가 아니다.
 - 마일스톤 책임을 라인 색인, static profile, 자체 scaffold gate로 축소하지 않는다.
@@ -34,6 +35,7 @@
 - 원본 ERB/CSV 전체 출력 금지. 라벨/호출 흐름 주변을 읽되, 구현 판단에는 필요한 원본 block을 직접 확인한다.
 - 명령 성공 로그는 대화에 길게 남기지 않는다. 명령명, exit code, 핵심 count만 남긴다.
 - 실패 로그는 콘솔 요약과 full failure artifact를 분리한다.
+- inline script가 길거나 한글 marker가 필요하면 PowerShell 파이프 대신 기존 `tools/` script를 사용하거나 ASCII-only `node -e`로 줄인다.
 
 ## 요약 사용 한계
 

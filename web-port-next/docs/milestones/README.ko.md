@@ -19,6 +19,7 @@
 - `PHASE_5_M28_M49.ko.md`: 기능군별 전수 구현
 - `PHASE_6_M50_M52.ko.md`: 최종 저장/검증
 - `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`: M28~M41에서 완료로 처리한 것과 하지 않았거나 넘긴 것의 사실 장부
+- `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`: 마일스톤 유형 구분이 전체 게임 포팅 완성으로 이어지는지 검토한 문서
 
 ## 공통 금지
 
@@ -26,3 +27,4 @@
 - `implemented`, `mapped`, `approved-excluded`는 원본 row와 full artifact 대조 없이 부여하지 않는다.
 - blocker가 남은 마일스톤은 다음 phase로 넘어가지 않는다.
 - 완료 선언은 반드시 완료/미완료/이관 사실 장부를 동반한다.
+- `[조사]`, `[정책]`, `[계획]`, `[검증]`, `[감사]`, `[판정]` 마일스톤을 `[구현]` 완료로 읽지 않는다.

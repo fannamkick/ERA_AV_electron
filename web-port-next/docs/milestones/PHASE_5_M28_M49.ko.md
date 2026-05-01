@@ -6,7 +6,7 @@
 
 ## 상세 마일스톤
 
-## M28. 메인 화면과 route 전수 연결
+## M28. [구현] 메인 화면과 route 전수 연결
 
 책임 선언:
 - 역할: 원본 메인 화면에서 직접 도달 가능한 기능 route를 전수 연결한다.
@@ -34,7 +34,7 @@
 - [x] `npm run smoke:main-routes` 실행
 - [x] `npm run build` 실행
 
-## M29. 아이템 상점과 구매 완성
+## M29. [구현] 아이템 상점과 구매 완성
 
 책임 선언:
 - 역할: 구매형 아이템과 상점 구매 흐름을 전수 구현한다.
@@ -64,7 +64,7 @@
 - [x] `npm run smoke:phase1` 실행
 - [x] `npm run build` 실행
 
-## M30. 아이템 사용과 특수 아이템 완성
+## M30. [구현] 아이템 사용과 특수 아이템 완성
 
 책임 선언:
 - 역할: 사용형 아이템과 특수 아이템의 조건과 효과를 전수 구현한다.
@@ -102,7 +102,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M31. 영입 listing과 인물 생성 완성
+## M31. [구현] 영입 listing과 인물 생성 완성
 
 책임 선언:
 - 역할: 영입 listing 전체를 인물 원형과 생성 결과로 연결한다.
@@ -139,7 +139,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M32. 인물 원형과 identity 완성
+## M32. [구현] 인물 원형과 identity 완성
 
 책임 선언:
 - 역할: 인물 원형과 identity 정보를 정의/저장 경계에 맞게 완성한다.
@@ -177,7 +177,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M33. 신체/능력/소질/경험 완성
+## M33. [구현] 신체/능력/소질/경험 완성
 
 책임 선언:
 - 역할: 신체, 능력, 소질, 경험, 각인, 파라미터 초기값과 변화 owner를 완성한다.
@@ -219,7 +219,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M34. 관계/CFLAG/장비/의복 owner 완성
+## M34. [구현] 관계/CFLAG/장비/의복 owner 완성
 
 책임 선언:
 - 역할: CFLAG, 관계, 장비, 의복 상태를 의미별 owner로 분해한다.
@@ -269,7 +269,7 @@ rg "CFLAG" src/game src/domains src/features src/ui
 - M34 closure gate와 M34 전용 coverage gate에는 unresolved issue가 없다.
 - 단, M34 이후 전수 검토에서 `npm run gate:source-evidence` 현재 실패가 확인되었다. auxiliary evidence 완료 근거와 M35~M52 gate 부재는 M34.5가 소유하는 차단 사항이며, M35로 넘어가기 전에 반드시 해소해야 한다.
 
-## M34.5. 전수 이식 gate hardening
+## M34.5. [검증] 전수 이식 gate hardening
 
 책임 선언:
 - 역할: M35 이후 기능군 구현이 누락을 숫자나 문서로 숨기지 못하게 gate를 실제 script와 실패 조건으로 고정한다.
@@ -316,7 +316,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M35. 턴 종료와 시간 진행 완성
+## M35. [구현] 턴 종료와 시간 진행 완성
 
 책임 선언:
 - 역할: 원본 턴 종료와 시간 진행, 월말/주말/자동 처리 순서를 완성한다.
@@ -358,7 +358,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M36. 방문/시설 완성
+## M36. [구현] 방문/시설 완성
 
 책임 선언:
 - 역할: 방문 장소, 시설, 장소별 행동을 전수 구현한다.
@@ -397,7 +397,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M37. 업무/창관/특수 업무 완성
+## M37. [구현] 업무/창관/특수 업무 완성
 
 책임 선언:
 - 역할: 업무, 창관, 아르바이트, 특수 업무를 전수 구현한다.
@@ -437,7 +437,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M38. 촬영 정의와 장면 조건 완성
+## M38. [구현] 촬영 정의와 장면 조건 완성
 
 책임 선언:
 - 역할: 촬영 장면 정의와 촬영 가능 조건을 전수 구현한다.
@@ -475,7 +475,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M39. 촬영 실행/결과/판매 완성
+## M39. [구현] 촬영 실행/결과/판매 완성
 
 책임 선언:
 - 역할: 촬영 실행, 결과 반영, 출시/판매 상태를 전수 구현한다.
@@ -515,7 +515,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M40. 훈련 메뉴와 세션 완성
+## M40. [구현] 훈련 메뉴와 세션 완성
 
 책임 선언:
 - 역할: 훈련 화면과 선택 session lifecycle을 완성한다.
@@ -555,7 +555,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M41. 훈련 가능 조건 전수 구현
+## M41. [구현] 훈련 가능 조건 전수 구현
 
 책임 선언:
 - 역할: 105개 훈련 command의 가능 조건과 불가 사유를 전수 구현한다.
@@ -598,7 +598,7 @@ npm run build
 npm run test --if-present
 ```
 
-## M42. 훈련 command 효과 0~34 완성
+## M42. [구현] 훈련 command 효과 0~34 완성
 
 책임 선언:
 - 역할: 훈련 command 0~34의 효과 계산과 결과 반영을 완성한다.
@@ -625,7 +625,7 @@ M42 차단 기록:
 - `npm run gate:training-effect -- 0-34`는 원본 효과 계산 구현이 완료될 때까지 실패해야 한다.
 - 이 마일스톤은 완료가 아니다. M43으로 넘어가지 않는다.
 
-## M43. 훈련 command 효과 35~69 완성
+## M43. [구현] 훈련 command 효과 35~69 완성
 
 책임 선언:
 - 역할: 훈련 command 35~69의 효과 계산과 결과 반영을 완성한다.
@@ -643,7 +643,7 @@ M42 차단 기록:
 - [ ] M20/M24/M25 coverage의 command 35~69 status 갱신
 - [ ] `npm run build` 실행
 
-## M44. 훈련 command 효과 70~104와 후처리 완성
+## M44. [구현] 훈련 command 효과 70~104와 후처리 완성
 
 책임 선언:
 - 역할: 훈련 command 70~104와 훈련 후처리를 완성한다.
@@ -661,7 +661,7 @@ M42 차단 기록:
 - [ ] M20/M24/M25 coverage의 command 70~104 및 후처리 status 갱신
 - [ ] `npm run build` 실행
 
-## M45. 능력 상승/휴식/공통 유지보수 완성
+## M45. [구현] 능력 상승/휴식/공통 유지보수 완성
 
 책임 선언:
 - 역할: 능력 상승, 휴식, 회복, 자동 아이템 사용, 공통 유지보수 기능을 닫는다.
@@ -679,7 +679,7 @@ M42 차단 기록:
 - [ ] M19/M20/M24/M25 coverage의 common-system 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M46. 미션 완성
+## M46. [구현] 미션 완성
 
 책임 선언:
 - 역할: 미션 전체 lifecycle을 완성한다.
@@ -697,7 +697,7 @@ M42 차단 기록:
 - [ ] M19/M20/M24/M25 coverage의 미션 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M47. 세계/이벤트/스토리 진행 완성
+## M47. [구현] 세계/이벤트/스토리 진행 완성
 
 책임 선언:
 - 역할: 세계 진행, 이벤트, 스토리 플래그와 이벤트 hook을 완성한다.
@@ -715,7 +715,7 @@ M42 차단 기록:
 - [ ] M19/M23/M24/M25 coverage의 event-world 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M48. 엔딩/계승/전역 상태 완성
+## M48. [구현] 엔딩/계승/전역 상태 완성
 
 책임 선언:
 - 역할: 엔딩, 계승, 전역 meta 상태를 완성한다.
@@ -733,7 +733,7 @@ M42 차단 기록:
 - [ ] M19/M24/M25 coverage의 ending-event-meta 관련 status 갱신
 - [ ] `npm run build` 실행
 
-## M49. 정보/도움말/설정/남은 기능 닫기
+## M49. [구현/정리] 정보/도움말/설정/남은 기능 닫기
 
 책임 선언:
 - 역할: 정보/도움말/설정/디버그/남은 기능을 최종 정리한다.

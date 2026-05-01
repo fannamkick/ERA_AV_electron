@@ -6,7 +6,7 @@
 
 ## 상세 마일스톤
 
-## M21. 원본 근거 장부 확정
+## M21. [조사/장부] 원본 근거 장부 확정
 
 책임 선언:
 - 역할: 이후 모든 전수표가 믿고 참조할 원본 근거 장부를 확정한다.
@@ -47,7 +47,7 @@ npm run inventory:legacy-mapping
 npm run build
 ```
 
-## M22. 전수표 교차 대조 gate
+## M22. [검증] 전수표 교차 대조 gate
 
 책임 선언:
 - 역할: 기능/정의/save/session 장부가 서로 맞물리는지 검증하는 gate를 만든다.
@@ -77,7 +77,7 @@ npm run build
 - [x] `npm run gate:approved-exclusions` 실행
 - [x] `npm run build` 실행
 
-## M23. ERB 기반 정의 데이터 보강
+## M23. [조사/보강] ERB 기반 정의 데이터 보강
 
 책임 선언:
 - 역할: CSV에 없고 ERB에서 암묵적으로 정의된 컨텐츠를 정의 데이터 후보로 끌어올린다.
@@ -111,7 +111,7 @@ npm run build
 - [x] `npm run gate:approved-exclusions` 실행
 - [x] `npm run build` 실행
 
-## M24. 저장 상태 원본 주소 전수 매핑
+## M24. [조사/매핑] 저장 상태 원본 주소 전수 매핑
 
 책임 선언:
 - 역할: 저장해야 하는 원본 주소를 새 save 도메인 필드 또는 비저장 판정으로 닫는다.
@@ -145,7 +145,7 @@ npm run build
 - [x] `npm run gate:coverage-crosscheck` 실행
 - [x] `npm run build` 실행
 
-## M25. 세션/계산 원본 주소 전수 매핑
+## M25. [조사/매핑] 세션/계산 원본 주소 전수 매핑
 
 책임 선언:
 - 역할: 원본 임시 버퍼와 계산 중간값을 session owner 또는 계산 함수 내부값으로 분리한다.
@@ -177,7 +177,7 @@ npm run build
 - [x] `npm run build` 실행
 - [x] `rg "TFLAG|TEQUIP|SOURCE|LOSEBASE|NOWEX|EJAC" src/game src/domains src/features src/ui` 실행
 
-## M26. 구현 전 누락 감사
+## M26. [감사] 구현 전 누락 감사
 
 책임 선언:
 - 역할: 기능군 구현을 시작하기 전에 원본/coverage/consumer 누락을 전수 감사한다.
@@ -198,7 +198,7 @@ npm run build
 - [x] `npm run gate:pre-implementation-audit` 실행
 - [x] `npm run build` 실행
 
-## M27. 구현 단위 큐와 blocker 동결
+## M27. [계획] 구현 단위 큐와 blocker 동결
 
 책임 선언:
 - 역할: M28~M49 구현 단위를 실제 작업 큐로 동결한다.
