@@ -14,6 +14,15 @@
 - [ ] 유료 AI/OpenRouter 호출 없음
 - [ ] 마일스톤 하나를 완료할 때마다 검증 결과를 확인한 뒤 별도 커밋을 남김
 
+## 에이전트 I/O 누수 방지 원칙
+
+- [ ] Codex/서브에이전트는 세션 시작 시 `docs/agent/CODEX_BOOTSTRAP.ko.md`, `docs/agent/CURRENT_STATUS.ko.md`, `docs/agent/NEXT_MILESTONE.ko.md`를 먼저 읽는다.
+- [ ] `docs/agent/*`는 dashboard와 탐색 시작점이며 완료 판정 권위가 아니다.
+- [ ] query/검색 결과는 읽을 위치를 찾는 도구다. 완료 선언, blocker 해소, transfer, approved-excluded 판정은 원본 row와 full artifact 대조 없이 하지 않는다.
+- [ ] 긴 문서와 대형 coverage/audit JSON은 전체 출력하지 않는다. 필요한 section, row, blocking metric, source block만 좁게 조회한다.
+- [ ] gate/smoke/build는 전체 검증을 수행한다. 콘솔 출력은 줄일 수 있지만, cap된 실패는 full failure artifact를 남겨야 한다.
+- [ ] 새 coverage/gate/smoke script 작성, placeholder 교체, owner 변경, blocker/transfer/approved-excluded 처리, milestone closure 작성, final gap/complete verdict 때는 토큰 절약보다 직접 확인을 우선한다.
+
 ## 완전 이식 완료 기준
 
 - [ ] 원본 메인 화면 선택지 전체가 구현 또는 사용자 승인 제외로 분류됨

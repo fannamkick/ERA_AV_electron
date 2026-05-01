@@ -2,6 +2,10 @@
 
 기준 날짜: 2026-05-01
 
+## 에이전트 시작점
+
+Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOOTSTRAP.ko.md`, `docs/agent/CURRENT_STATUS.ko.md`, `docs/agent/NEXT_MILESTONE.ko.md`를 먼저 읽는다. 이 문서들은 dashboard이며 완료 판정 권위가 아니다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON으로만 한다.
+
 ## 완료
 
 | 항목 | 상태 |

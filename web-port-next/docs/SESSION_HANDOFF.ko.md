@@ -2,6 +2,16 @@
 
 새 세션은 아래 요약만 읽고 M42 훈련 command 효과 0~34 완성부터 진행한다. M40 훈련 메뉴와 세션 완성, M41 훈련 가능 조건 전수 구현은 완료되었고, 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
 
+## 에이전트 시작 문서
+
+토큰 누수를 막기 위해 Codex/서브에이전트는 먼저 아래 문서를 읽는다.
+
+- `docs/agent/CODEX_BOOTSTRAP.ko.md`
+- `docs/agent/CURRENT_STATUS.ko.md`
+- `docs/agent/NEXT_MILESTONE.ko.md`
+
+위 문서는 dashboard와 탐색 시작점이다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON이 소유한다. query/검색 결과만으로 `implemented`, `used`, `mapped`, `approved-excluded`를 부여하지 않는다.
+
 ## 작업 위치
 
 - 루트: `e:\ERA\AV간편개조\erAV_Ho_0.022(간편개조) - 복사본`
