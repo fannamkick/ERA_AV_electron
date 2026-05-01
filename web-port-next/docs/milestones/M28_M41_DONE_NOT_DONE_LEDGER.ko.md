@@ -1,5 +1,36 @@
 # M28~M41 완료/미완료 사실 장부
 
+## 2026-05-02 M35-M41 source-unit manifest pass 1
+
+Artifacts:
+- `data/coverage/manifests/M35-source-units.json`
+- `data/coverage/manifests/M36-source-units.json`
+- `data/coverage/manifests/M37-source-units.json`
+- `data/coverage/manifests/M38-source-units.json`
+- `data/coverage/manifests/M39-source-units.json`
+- `data/coverage/manifests/M40-source-units.json`
+- `data/coverage/manifests/M41-source-units.json`
+
+| M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | completable now | strict finding |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| M35 | 8 | 0 | 7 | 1 | no | The old 7 save-field mapped rows are not completion evidence. Clock/hook/deadline/session cleanup units need direct source evidence or responsibility redesign. |
+| M36 | 93 | 86 | 7 | 0 | no | The old 552 line rows are source evidence for 86 visit actions, not 552 completed units. Seven visit place definitions remain blocked. |
+| M37 | 461 | 294 | 167 | 0 | no | 286 work feature rows and 8 work definitions are completion candidates. Save/session/calculation mapped rows remain blocked. |
+| M38 | 6 | 0 | 6 | 0 | no | All six filming scene definitions are mapped-only, so none are completed under the strict rule. |
+| M39 | 174 | 135 | 39 | 0 | no | 135 filming execution feature rows are completion candidates. Save/session/calculation/source-file-review mapped rows remain blocked. |
+| M40 | 11 | 5 | 6 | 0 | no | Five training session lifecycle rows are completion candidates. Six wait/format/status mapped rows remain blocked. |
+| M41 | 1,625 | 4 | 1,620 | 1 | no | Only four COMSEQ dynamic-call rows are completion candidates. COM_ABLE branch conditions, success returns, source programs, and COMORDER review remain unresolved. |
+
+Next actions:
+- M35: split `turn/end` into clock advance, mission deadline, scheduled event, weekly/monthly hook, world hook, and save boundary source units.
+- M36: promote or block the seven visit place definitions with row-level runtime-consumed definition evidence.
+- M37: promote or block 167 mapped save/session/calculation rows with owner-specific runtime/save verification.
+- M38: re-verify the six scene definitions as source-unit definitions, not mapped rows.
+- M39: decompose two source-file-review rows and verify 37 save/session/calculation mapped rows row-by-row.
+- M40: close six mapped wait/format/status rows with source-unit evidence and responsibilityIntegrity.
+- M41: do not complete COM_ABLE availability until branch/AST/state-reference verification exists.
+
+
 이 문서는 gate가 아니다. 목적은 각 마일스톤에서 "완료했다고 처리한 것"과 "하지 않았거나 다른 마일스톤으로 넘긴 것"을 사람이 바로 보게 만드는 것이다.
 
 완료/차단/책임 재설계 판정은 `RESPONSIBILITY_SEPARATION_RULES.ko.md`를 따른다.

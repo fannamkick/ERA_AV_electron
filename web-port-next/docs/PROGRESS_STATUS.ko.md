@@ -1,5 +1,22 @@
 # 진행 상태
 
+## 2026-05-02 M35-M41 reassessment added
+
+Parallel agent review was incorporated into first-pass source-unit manifests for M35-M41. None of these milestones can keep `completed` under the strict rule.
+
+| milestone | manifest | total | implemented-verified | blocked | scope-redesign-required | completedAllowedNow |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| M35 | `data/coverage/manifests/M35-source-units.json` | 8 | 0 | 7 | 1 | false |
+| M36 | `data/coverage/manifests/M36-source-units.json` | 93 | 86 | 7 | 0 | false |
+| M37 | `data/coverage/manifests/M37-source-units.json` | 461 | 294 | 167 | 0 | false |
+| M38 | `data/coverage/manifests/M38-source-units.json` | 6 | 0 | 6 | 0 | false |
+| M39 | `data/coverage/manifests/M39-source-units.json` | 174 | 135 | 39 | 0 | false |
+| M40 | `data/coverage/manifests/M40-source-units.json` | 11 | 5 | 6 | 0 | false |
+| M41 | `data/coverage/manifests/M41-source-units.json` | 1625 | 4 | 1620 | 1 | false |
+
+Main follow-up: M41 availability cannot be complete without branch-level verification. M35 and M38 mapped-only closures need full re-verification.
+
+
 ## 2026-05-02 M31~M34.5 재판정 추가
 
 M31~M34.5에 대해 병렬 에이전트 비판 검토 결과를 반영해 source-unit manifest 1차 산출물을 만들었다. 새 기준에서는 이 구간도 `completed` 유지가 불가하다.

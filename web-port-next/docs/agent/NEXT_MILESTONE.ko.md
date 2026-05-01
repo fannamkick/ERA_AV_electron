@@ -1,5 +1,17 @@
 # Next Milestone
 
+## 2026-05-02 next order reset
+
+M35-M41 source-unit manifest pass 1 is complete. Since every M28-M41 manifest is currently `completedAllowedNow: false`, the next task is not M42 implementation. The next task is closing M28-M41 blocked/scope-redesign-required units.
+
+Priority:
+1. Rewrite M41 COM_ABLE availability into branch/AST/state-reference verifiable units.
+2. Re-close mapped-only milestones such as M35 and M38 as real source-unit implementation/verification units.
+3. Promote or block remaining mapped rows in M36/M37/M39/M40 with row-level runtime/save/session evidence.
+
+Current implemented-verified counts: M35 0/8, M36 86/93, M37 294/461, M38 0/6, M39 135/174, M40 5/11, M41 4/1625.
+
+
 ## 2026-05-02 다음 처리 순서 보정
 
 M31~M34.5의 source-unit manifest 1차 산출까지 완료했다. 따라서 다음 순서는 M42로 바로 넘어가는 것이 아니라 아래 순서다.

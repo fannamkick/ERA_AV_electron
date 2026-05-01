@@ -1,5 +1,20 @@
 # 세션 인수인계
 
+## 2026-05-02 handoff after M35-M41 manifests
+
+M35-M41 source-unit manifest pass 1 was added.
+
+- M35: `data/coverage/manifests/M35-source-units.json`, total 8, implemented-verified 0, blocked 7, scope-redesign-required 1.
+- M36: `data/coverage/manifests/M36-source-units.json`, total 93, implemented-verified 86, blocked 7.
+- M37: `data/coverage/manifests/M37-source-units.json`, total 461, implemented-verified 294, blocked 167.
+- M38: `data/coverage/manifests/M38-source-units.json`, total 6, implemented-verified 0, blocked 6.
+- M39: `data/coverage/manifests/M39-source-units.json`, total 174, implemented-verified 135, blocked 39.
+- M40: `data/coverage/manifests/M40-source-units.json`, total 11, implemented-verified 5, blocked 6.
+- M41: `data/coverage/manifests/M41-source-units.json`, total 1625, implemented-verified 4, blocked 1620, scope-redesign-required 1.
+
+All M28-M41 milestones fail strict completion now. The next worker must not resume M42 before closing or explicitly redesigning M28-M41 blocked/scope-redesign-required units.
+
+
 ## 2026-05-02 이어서 할 일: M31~M34.5 매니페스트 이후
 
 이번 세션에서 M31~M34.5 source-unit manifest 1차를 추가했다.

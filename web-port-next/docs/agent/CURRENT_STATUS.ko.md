@@ -1,5 +1,20 @@
 # Current Status
 
+## 2026-05-02 M35-M41 source-unit manifest pass 1
+
+- M35-M41 were all reassessed as `completedAllowedNow: false`.
+- New artifacts: `data/coverage/manifests/M35-source-units.json` through `M41-source-units.json`.
+- Current strict counts:
+  - M35: total 8, implemented-verified 0, blocked 7, scope-redesign-required 1.
+  - M36: total 93, implemented-verified 86, blocked 7.
+  - M37: total 461, implemented-verified 294, blocked 167.
+  - M38: total 6, implemented-verified 0, blocked 6.
+  - M39: total 174, implemented-verified 135, blocked 39.
+  - M40: total 11, implemented-verified 5, blocked 6.
+  - M41: total 1625, implemented-verified 4, blocked 1620, scope-redesign-required 1.
+- The old M35-M41 `completed` closures are not completion evidence under the strict rules. Do not resume M42 until M28-M41 blocked/scope-redesign-required units are closed or explicitly redesigned.
+
+
 ## 2026-05-02 M31~M34.5 source-unit manifest 1차
 
 - M31~M34.5도 새 기준으로는 `completed` 유지 불가로 재판정했다. 기존 coverage/gate/smoke 통과 기록은 남기되, `mapped`, `transferredOut`, file-level review, 책임 무결성 누락을 완료 근거로 보지 않는다.
