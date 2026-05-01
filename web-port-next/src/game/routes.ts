@@ -9,6 +9,7 @@ export type UiRoute =
   | 'work'
   | 'shooting'
   | 'roster'
+  | 'wardrobe'
   | 'training'
   | 'result'
   | 'saveLoad';
@@ -29,6 +30,7 @@ export const phaseTwoRoutes = {
   work: 'work',
   shooting: 'shooting',
   roster: 'roster',
+  wardrobe: 'wardrobe',
   training: 'training',
 } as const satisfies Record<string, UiRoute>;
 
@@ -43,6 +45,7 @@ const allRoutes: readonly UiRoute[] = [
   'work',
   'shooting',
   'roster',
+  'wardrobe',
   'training',
   'result',
   'saveLoad',

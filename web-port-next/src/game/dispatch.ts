@@ -34,6 +34,7 @@ import {
   selectTrainingTarget,
 } from '../features/training';
 import { endTurn } from '../features/turnEnd';
+import { toggleWardrobeClothing } from '../features/socialEquipmentCflag';
 import {
   cancelVisit,
   cancelVisitSelection,
@@ -281,6 +282,8 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
       return routeResult(context, phaseTwoRoutes.roster, 'Moving to the roster screen.');
     case 'main/openSaveLoad':
       return enterSaveLoad(context);
+    case 'main/openWardrobe':
+      return routeResult(context, phaseTwoRoutes.wardrobe, 'Moving to the wardrobe screen.');
     case 'main/openVisit':
       return enterVisit(context);
     case 'main/openWork':
@@ -711,6 +714,19 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
         session: cancelTraining(context.session),
         effects: [logEffect('Leaving the training screen.')],
       });
+    case 'wardrobe/toggleClothing': {
+      const wardrobe = toggleWardrobeClothing(context.state, action.characterId, action.flagId);
+      if (!wardrobe.ok) {
+        return failureResult(context, wardrobe.failure);
+      }
+
+      return successResult(context, {
+        state: wardrobe.state,
+        effects: [logEffect(wardrobe.message, 'success')],
+      });
+    }
+    case 'wardrobe/cancel':
+      return routeResult(context, phaseOneRoutes.mainMenu, 'Leaving the wardrobe screen.');
     default: {
       return failureResult(context, {
         code: 'unknown-action',

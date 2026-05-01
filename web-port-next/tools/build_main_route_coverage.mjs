@@ -33,7 +33,7 @@ const mainMenuRouteContracts = {
   103: { actionId: 'main/openWork', routeId: 'work', defaultEnabled: true, ownerMilestone: 'M37' },
   104: { actionId: 'main/openShooting', routeId: 'shooting', defaultEnabled: true, ownerMilestone: 'M39' },
   105: { actionId: 'turn/end', routeId: 'mainMenu', defaultEnabled: true, ownerMilestone: 'M35' },
-  108: { defaultEnabled: false, disabledReason: 'M34 equipment/clothing owner must implement this route.', ownerMilestone: 'M34' },
+  108: { actionId: 'main/openWardrobe', routeId: 'wardrobe', defaultEnabled: true, ownerMilestone: 'M34' },
   109: { actionId: 'main/openVisit', routeId: 'visit', defaultEnabled: true, ownerMilestone: 'M36' },
   111: { actionId: 'main/openRoster', routeId: 'roster', defaultEnabled: true, ownerMilestone: 'M32' },
   112: { defaultEnabled: false, disabledReason: 'M45 ability-up owner must implement this route.', ownerMilestone: 'M45' },

@@ -56,6 +56,7 @@ const enabledRouteCases: readonly MainRouteCase[] = [
   { menuCode: '103', action: { type: 'main/openWork' }, expectedRoute: 'work', cancelAction: { type: 'work/cancel' } },
   { menuCode: '104', action: { type: 'main/openShooting' }, expectedRoute: 'shooting', cancelAction: { type: 'shooting/cancel' } },
   { menuCode: '105', action: { type: 'turn/end' }, expectedRoute: 'mainMenu', mutatesSave: true },
+  { menuCode: '108', action: { type: 'main/openWardrobe' }, expectedRoute: 'wardrobe', cancelAction: { type: 'wardrobe/cancel' } },
   { menuCode: '109', action: { type: 'main/openVisit' }, expectedRoute: 'visit', cancelAction: { type: 'visit/cancel' } },
   { menuCode: '111', action: { type: 'main/openRoster' }, expectedRoute: 'roster', cancelAction: { type: 'route/change', route: 'mainMenu' } },
   { menuCode: '120', action: { type: 'main/openMission' }, expectedRoute: 'mission', cancelAction: { type: 'mission/cancel' } },

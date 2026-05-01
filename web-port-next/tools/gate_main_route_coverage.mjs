@@ -30,6 +30,7 @@ const validRoutes = new Set([
   'work',
   'shooting',
   'roster',
+  'wardrobe',
   'training',
   'result',
   'saveLoad',

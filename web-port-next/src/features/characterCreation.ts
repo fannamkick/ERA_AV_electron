@@ -9,6 +9,7 @@ import {
   createPeopleBaseStatsFromTemplate,
   createUnmappedLegacyCharacterFlags,
 } from './bodyStats';
+import { splitLegacyCharacterFlags } from './socialEquipmentCflag';
 
 export type CharacterCreationFailure = {
   readonly code: string;
@@ -56,6 +57,8 @@ function createCharacterRoles(templateId: CatalogId): readonly CharacterRole[] {
 }
 
 function createCharacterFromTemplate(template: CharacterTemplate, spec: CharacterCreationSpec): CharacterState {
+  const splitFlags = splitLegacyCharacterFlags(template);
+
   return {
     id: spec.characterId ?? characterIdForTemplate(template.id),
     identity: {
@@ -87,13 +90,14 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
         recruitmentStatus: template.id === '0' ? 'notRecruitable' : 'recruited',
         specialTags: [],
       },
-      affection: {},
+      affection: splitFlags.peopleAffection,
       family: {
         relativeCharacterIds: [],
-        legacyRelationIndexes: {},
+        legacyRelationIndexes: splitFlags.peopleFamilyRelations,
       },
-      settings: {},
+      settings: splitFlags.peopleSettings,
       featureProgress: {
+        ...splitFlags.peopleFeatureProgress,
         ...spec.featureProgress,
       },
       legacyFlagsNeedingMapping: {
@@ -110,9 +114,11 @@ function createCharacterBody(template: CharacterTemplate): CharacterBodyState {
 }
 
 function createCharacterEquipment(template: CharacterTemplate): CharacterEquipmentState {
+  const splitFlags = splitLegacyCharacterFlags(template);
+
   return {
     persistentEquipmentItemIds: [],
-    clothing: {},
+    clothing: splitFlags.equipmentClothing,
     piercings: [],
     restrictions: [],
     availabilityFlags: createEquipmentAvailabilityFlagsFromTemplate(template),
@@ -120,12 +126,14 @@ function createCharacterEquipment(template: CharacterTemplate): CharacterEquipme
   };
 }
 
-function createRelationship(affinity: number): RelationshipState {
+function createRelationship(affinity: number, relationIndex: string): RelationshipState {
   return {
     affinity,
     roles: [],
     historyTags: [],
-    legacyRelationIndexesNeedingMapping: {},
+    legacyRelationIndexesNeedingMapping: {
+      [relationIndex]: affinity,
+    },
   };
 }
 
@@ -177,7 +185,7 @@ export function createCharacterBundleFromSpecs(
 
     for (const [targetTemplateId, affinity] of Object.entries(template.initialState.relations)) {
       const targetCharacterId = characterIdForTemplate(targetTemplateId);
-      relationships[`${character.id}->${targetCharacterId}`] = createRelationship(affinity);
+      relationships[`${character.id}->${targetCharacterId}`] = createRelationship(affinity, targetTemplateId);
     }
   }
 

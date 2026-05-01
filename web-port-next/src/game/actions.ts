@@ -15,6 +15,7 @@ export type GameAction =
   | { readonly type: 'main/openRecruit' }
   | { readonly type: 'main/openRoster' }
   | { readonly type: 'main/openSaveLoad' }
+  | { readonly type: 'main/openWardrobe' }
   | { readonly type: 'main/openVisit' }
   | { readonly type: 'main/openWork' }
   | { readonly type: 'main/openShooting' }
@@ -60,4 +61,6 @@ export type GameAction =
   | { readonly type: 'training/selectCommand'; readonly commandId: CatalogId }
   | { readonly type: 'training/execute' }
   | { readonly type: 'training/cancelSelection' }
-  | { readonly type: 'training/cancel' };
+  | { readonly type: 'training/cancel' }
+  | { readonly type: 'wardrobe/toggleClothing'; readonly characterId: string; readonly flagId: string }
+  | { readonly type: 'wardrobe/cancel' };

@@ -123,7 +123,7 @@
 | `body` | `byCharacterId[id].conditionParams` | 지속 감각/욕정/반감/고통 등 현재 상태 파라미터 | `PALAM` |
 | `body` | `byCharacterId[id].trainingResources` | 훈련 결과로 획득/소비되는 구슬/자원 | `JUEL` |
 | `body` | `byCharacterId[id].imprints` | 각인 | `MARK` |
-| `body` | `byCharacterId[id].conditionFlags` | body owner로 판정된 조건/상태 플래그. CFLAG/FLAG/PBAND 전체 의미 분해는 M34에서 닫음 | `CFLAG`, `FLAG` 중 body owner 후보 |
+| `body` | `byCharacterId[id].conditionFlags` | M34 기준 body owner로 판정된 조건/상태 플래그 | `CFLAG`, `FLAG` 중 body owner |
 | `body` | `byCharacterId[id].contamination` | 오염/액체 부착 상태 | `STAIN` |
 | `body` | `byCharacterId[id].milestones` | 신체/성적 이정표 | 신체성 `EXP`, `TALENT`, `CFLAG` |
 | `text` | `displayRules`, `particleRules`, `addressRules` | 표시 이름, 조사, 호칭 렌더링 규칙 | `STR`, 호칭 처리 ERB |
@@ -135,7 +135,7 @@
 | `inventory` | `itemCounts` | 아이템 보유 수량 | `ITEM` |
 | `inventory` | `itemRestrictions` | 아이템별 보유/사용 제한. `NOITEM`은 전역 요구 우회 플래그라 여기 넣지 않음 | `ITEM`, use-site rule |
 | `equipment` | `byCharacterId[id].persistentEquipmentItemIds` | 캐릭터별 지속 장비 | `EQUIP` |
-| `equipment` | `byCharacterId[id].clothing` | 착의, 속옷, 신발, 색, 상태 | `CFLAG:40`~`CFLAG:49`, `CFLAG:170`~`CFLAG:177` 후보 |
+| `equipment` | `byCharacterId[id].clothing` | M34 기준 착의, 속옷, 신발, 색, 상태. wardrobe route가 읽고 갱신하는 지속 의복 상태 | `CFLAG:40`~`CFLAG:49`, `CFLAG:170`~`CFLAG:177`, `CFLAG:600`~`CFLAG:603` |
 | `equipment` | `byCharacterId[id].piercings`, `restrictions` | 피어싱/장비 제한 | `EQUIP`, 관련 `CFLAG` |
 | `shop` | `progress.unlocks`, `progress.permanentRestrictions`, `progress.facilityFlags` | 세이브에 남는 상점 해금/영구 제한/시설 진행만 보관 | 상점 관련 `FLAG`, `CFLAG`, `PBAND` 후보 |
 | `shop` | `progress.unlockedListingIds`, `hiddenListingIds` | listing 해금/숨김 | `Item.csv`, 상점 ERB |
@@ -215,7 +215,7 @@
 | `MARK` | `people` 또는 `body` | save | 정신/관계 각인은 `people`, 신체성 각인은 `body` |
 | `PALAM` | `body` | save | 지속 상태 파라미터는 `body.conditionParams`. 훈련 중 증감 예정치는 `interaction.paramDeltas` |
 | `EX` | `interaction` | session | 현재 훈련 중 절정/분유/사정 횟수 버퍼 |
-| `CFLAG` | `people`, `body`, `feature-state`, `world` | save | 캐릭터 지속 플래그. 슬롯별 의미 확정 필수 |
+| `CFLAG` | `people`, `body`, `equipment`, `social`, `mission`, `work`, `meta`, `run`, `economy`, `filming`, `feature-state` | save | M34 기준 캐릭터 지속 플래그는 raw family가 아니라 index별 의미 owner로 분해한다. 런타임 모델명으로 `CFLAG`를 쓰지 않는다 |
 | `JUEL` | `body` 또는 `people` | save | 캐릭터별 축적 수치. 의미별 확정 필요 |
 | `STAIN` | `body` | save | 캐릭터 오염 상태 |
 | `GOTJUEL` | `interaction` | session | 이번 실행 결과 구슬 버퍼. 적용 후 누적값은 `body.trainingResources` |
@@ -262,7 +262,7 @@
 
 | 항목 | 현재 판단 |
 | --- | --- |
-| `CFLAG` 개별 index | 기본은 `people`, `body`, `feature-state`, `world` 중 하나. 슬롯별 검토 전에는 `missingMapping` |
+| `CFLAG` 개별 index | M34 기준 `splitLegacyCharacterFlags`와 `save-mapping.json`의 index owner를 따른다. 미확정 index는 완료가 아니라 blocker |
 | `TFLAG` 개별 index | 기본은 `featureSession` 또는 `interaction`. 슬롯별 검토 전에는 `missingMapping` |
 | `TEQUIP` 개별 index | 지속 장비가 아니면 `equipment` 금지. 기본은 `feature-session` 또는 `interaction` |
 | `SAVESTR` | 커맨드 라벨/문장 조각은 `feature-session`; 저장 텍스트는 `text`; 함수 임시는 `script` |

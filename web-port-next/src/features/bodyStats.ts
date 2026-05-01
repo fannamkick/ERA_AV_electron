@@ -1,80 +1,9 @@
 import type { CharacterTemplate } from '../catalog/types';
 import type { CharacterBodyState } from '../domains/body/types';
+import { splitLegacyCharacterFlags } from './socialEquipmentCflag';
 
 const bodyBaseStatIds = new Set(['7', '8', '9', '11', '12', '13', '30', '32', '33', '34', '35', '50', '60', '61']);
 const bodyMaxBaseStatIds = new Set(['11', '12']);
-const bodyConditionFlagIds = new Set([
-  '20',
-  '30',
-  '32',
-  '36',
-  '38',
-  '60',
-  '70',
-  '74',
-  '97',
-  '99',
-  '100',
-  '101',
-  '102',
-  '106',
-  '115',
-  '121',
-  '122',
-  '123',
-  '124',
-  '136',
-  '138',
-  '165',
-  '166',
-  '580',
-  '604',
-  '610',
-  '617',
-  '618',
-  '620',
-  '623',
-  '624',
-  '627',
-  '628',
-  '629',
-  '630',
-  '651',
-  '672',
-  '690',
-  '700',
-  '701',
-  '703',
-  '709',
-  '712',
-  '720',
-  '722',
-  '760',
-  '825',
-  '826',
-  '835',
-  '836',
-]);
-
-export const equipmentAvailabilityFlagIds = new Set([
-  '48',
-  '54',
-  '56',
-  '68',
-  '83',
-  '84',
-  '146',
-  '174',
-  '175',
-  '176',
-  '177',
-  '178',
-  '179',
-  '180',
-  '304',
-  '305',
-  '614',
-]);
 
 function pickNumberRecord(
   source: Record<string, number>,
@@ -105,7 +34,7 @@ export function createBodyStateFromTemplate(template: CharacterTemplate): Charac
     conditionParams: {},
     trainingResources: {},
     imprints: {},
-    conditionFlags: pickNumberRecord(template.initialState.characterFlags, bodyConditionFlagIds),
+    conditionFlags: splitLegacyCharacterFlags(template).bodyConditionFlags,
     contamination: {},
     milestones: {},
     legacyBodyFlagsNeedingMapping: {},
@@ -113,19 +42,16 @@ export function createBodyStateFromTemplate(template: CharacterTemplate): Charac
 }
 
 export function createBodyLegacyFlagsFromTemplate(template: CharacterTemplate): Record<string, number> {
-  return pickNumberRecord(template.initialState.characterFlags, bodyConditionFlagIds);
+  return splitLegacyCharacterFlags(template).bodyConditionFlags;
 }
 
 export function createEquipmentAvailabilityFlagsFromTemplate(template: CharacterTemplate): Record<string, number> {
-  return pickNumberRecord(template.initialState.characterFlags, equipmentAvailabilityFlagIds);
+  return splitLegacyCharacterFlags(template).equipmentAvailabilityFlags;
 }
 
 export function createUnmappedLegacyCharacterFlags(template: CharacterTemplate): Record<string, number> {
-  return Object.fromEntries(
-    Object.entries(template.initialState.characterFlags).filter(
-      ([id]) => !bodyConditionFlagIds.has(id) && !equipmentAvailabilityFlagIds.has(id),
-    ),
-  );
+  void template;
+  return {};
 }
 
 export function applyBodyStatDeltas(

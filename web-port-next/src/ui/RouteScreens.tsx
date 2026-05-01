@@ -6,6 +6,7 @@ import { buildRecruitView } from '../features/recruit';
 import { buildRosterView } from '../features/roster';
 import { buildSaveLoadView } from '../features/saveLoad';
 import { buildShootingView } from '../features/shooting';
+import { buildWardrobeView } from '../features/socialEquipmentCflag';
 import { buildTrainingView } from '../features/training';
 import { buildVisitView } from '../features/visit';
 import { buildWorkView } from '../features/work';
@@ -35,6 +36,7 @@ function mainMenuAction(itemId: string): GameAction | undefined {
     'main/openSaveLoad': { type: 'main/openSaveLoad' },
     'main/openShooting': { type: 'main/openShooting' },
     'main/openTraining': { type: 'main/openTraining' },
+    'main/openWardrobe': { type: 'main/openWardrobe' },
     'main/openVisit': { type: 'main/openVisit' },
     'main/openWork': { type: 'main/openWork' },
     'turn/end': { type: 'turn/end' },
@@ -46,6 +48,7 @@ function mainMenuAction(itemId: string): GameAction | undefined {
     saveLoad: { type: 'main/openSaveLoad' },
     shooting: { type: 'main/openShooting' },
     training: { type: 'main/openTraining' },
+    wardrobe: { type: 'main/openWardrobe' },
     visit: { type: 'main/openVisit' },
     work: { type: 'main/openWork' },
   };
@@ -584,6 +587,42 @@ function RosterScreen({ state, onAction }: ScreenProps) {
   );
 }
 
+function WardrobeScreen({ state, onAction }: ScreenProps) {
+  const view = buildWardrobeView(state);
+
+  return (
+    <section className="screen-panel">
+      <ScreenHeading eyebrow="Wardrobe" title="Equipment / Clothing" />
+      <div className="listing-list" aria-label="Wardrobe characters">
+        {view.entries.map((entry) => {
+          const clothingFlagId = Object.keys(entry.clothing).sort((left, right) => Number(left) - Number(right))[0];
+          return (
+            <div className="choice-button" key={entry.characterId}>
+              <span>{entry.label}</span>
+              <small>
+                {entry.characterId} / clothing {entry.clothingFlagCount} / availability {entry.availabilityFlagCount}
+              </small>
+              {clothingFlagId && (
+                <button
+                  type="button"
+                  onClick={() => onAction({ type: 'wardrobe/toggleClothing', characterId: entry.characterId, flagId: clothingFlagId })}
+                >
+                  Toggle {clothingFlagId}
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <ActionRow>
+        <button type="button" onClick={() => onAction({ type: 'wardrobe/cancel' })}>
+          Back
+        </button>
+      </ActionRow>
+    </section>
+  );
+}
+
 function VisitScreen({ state, session, onAction }: ScreenProps) {
   const view = buildVisitView(state, session);
 
@@ -662,6 +701,7 @@ export function RouteScreen(props: RouteScreenProps) {
   if (route === 'mission') return <MissionScreen {...props} />;
   if (route === 'recruit') return <RecruitScreen {...props} />;
   if (route === 'roster') return <RosterScreen {...props} />;
+  if (route === 'wardrobe') return <WardrobeScreen {...props} />;
   if (route === 'shooting') return <ShootingScreen {...props} />;
   if (route === 'training') return <TrainingScreen {...props} />;
   if (route === 'visit') return <VisitScreen {...props} />;

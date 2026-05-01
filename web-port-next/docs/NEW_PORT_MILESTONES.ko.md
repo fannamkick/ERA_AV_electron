@@ -1239,15 +1239,45 @@ npm run test --if-present
 - 완료 결과: 의미가 확인된 CFLAG는 owner와 lifecycle을 갖고, 의미 불명은 blocker로 남는다.
 - 누락 차단: 의미 불명 CFLAG를 mapped 처리하거나 raw `CFLAG` 모델명이 runtime에 남으면 완료하지 않는다.
 
-- [ ] CFLAG 정의 151개와 Chara CFLAG seed 1,465개를 의미별 owner로 분해
-- [ ] 관계값과 방향성 관계를 `social`에 연결
-- [ ] 장비, 의복, 착용 상태, 해금 상태를 `equipment`와 `inventory/shop/world` 경계에 맞게 분리
-- [ ] CFLAG 중 people/body/equipment/social/work/mission/settings/features owner를 구분
-- [ ] 의미 불명 CFLAG는 완료 처리하지 않고 blocker로 남김
-- [ ] 관계/장비/의복 변화가 저장 roundtrip에 남는지 검증
-- [ ] 원본명 `CFLAG`를 앱 모델명으로 직접 사용하지 않도록 검색
-- [ ] M20/M24/M25 coverage의 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] CFLAG 정의 151개와 Chara CFLAG seed 1,465개를 의미별 owner로 분해
+- [x] 관계값과 방향성 관계를 `social`에 연결
+- [x] 장비, 의복, 착용 상태, 해금 상태를 `equipment`와 `inventory/shop/world` 경계에 맞게 분리
+- [x] CFLAG 중 people/body/equipment/social/work/mission/settings/features owner를 구분
+- [x] 의미 불명 CFLAG는 완료 처리하지 않고 blocker로 남김
+- [x] 관계/장비/의복 변화가 저장 roundtrip에 남는지 검증
+- [x] 원본명 `CFLAG`를 앱 모델명으로 직접 사용하지 않도록 검색
+- [x] M20/M24/M25 coverage의 관련 status 갱신
+- [x] `npm run build` 실행
+
+M34 완료 근거:
+- M34 scope는 implementation queue 2,149행과 M29/M31/M33 inbound transfer 83행을 합친 총 2,232행이다.
+- `legacyCharacterFlagDefinitions` 151행은 `definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView`로 실제 소비된다.
+- Chara `CFLAG` seed 1,465행은 `splitLegacyCharacterFlags`에서 `body.conditionFlags`, `equipment.availabilityFlags`, `equipment.clothing`, `people.flags.affection/family/settings/featureProgress`, `social` 진행 근거로 분해된다.
+- Chara `RELATION` seed 532행은 `createCharacterBundleFromSpecs`에서 `social.relationships`로 생성되고 원본 relation index 근거를 보존한다.
+- M29에서 넘어온 cosplay/clothing pack item 60~64, `ITEMSALES` session row, inventory save row는 M34 clothing/equipment owner로 닫았다.
+- M31/M33에서 넘어온 CFLAG/FLAG/PBAND save row는 source evidence, runtime consumer, verification을 가진 mapped row로 닫았다.
+- 메인 메뉴 108은 `main/openWardrobe -> wardrobe` route로 활성화했고, `wardrobe/toggleClothing`과 `wardrobe/cancel` action을 추가했다.
+- raw `CFLAG`는 runtime 모델명으로 쓰지 않고 source evidence 및 문서/coverage 용어로만 남긴다.
+- `data/coverage/social-equipment-cflag-coverage.json`, `data/coverage/audits/M34-gap-audit.json`, `data/coverage/milestones/M34-closure.json`을 생성했다. closure counts는 ownedTotal 2,232, implemented 1,998, mapped 234, blocker/missing/unapproved 0이다.
+
+검증:
+```bash
+npm run coverage:features
+npm run coverage:definitions
+npm run gate:definition-consumption
+npm run coverage:social-equipment-cflag
+npm run gate:social-equipment-cflag
+npm run gate:milestone-scope-closure -- M34
+npm run smoke:social-equipment-cflag
+npm run smoke:main-routes
+npm run typecheck
+npm run build
+npm run test --if-present
+rg "CFLAG" src/game src/domains src/features src/ui
+```
+
+비고:
+- `npm run gate:feature-coverage`는 이번 M34 변경 때문이 아니라 기존 `feature:item-shop:use-effects` row의 runtime metadata 공란 때문에 실패한다. M34 closure gate와 M34 전용 coverage gate에는 unresolved issue가 없다.
 
 ## M35. 턴 종료와 시간 진행 완성
 

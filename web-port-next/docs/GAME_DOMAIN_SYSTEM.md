@@ -185,6 +185,7 @@ type GameSession = {
 | `ShootingPlanView` | 장면 정의, 대상 상태, 장비/시설, 시간대 |
 | `TrainingCommandView` | 커맨드 정의, 대상/조수 상태, 보유 아이템, 임시 장비 |
 | `CharacterProfileView` | 인물 저장 상태, 신체 상태, 관계, 표시 규칙 |
+| `WardrobeView` | `people`, `equipment`, CFLAG에서 분해된 의복/장비 상태 |
 
 이 객체들은 저장하지 않는다. 저장하면 조건 변경과 화면 표시가 어긋난다.
 
@@ -352,7 +353,9 @@ type GameSession = {
 
 현재 훈련 대상, 현재 촬영 대상, 현재 미션 선택 대상은 캐릭터 저장 데이터가 아니다. 그것은 실행 중 역할 바인딩이다.
 
-M33 기준으로 Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`는 생성 시점에 정의 데이터에서 인스턴스 저장 상태로 복사된다. 일반 능력/소질/경험은 `people.characters[id].attributes`가 소유하고, body owner로 판정된 신체형 `BASE/MAXBASE`, 업무/촬영/훈련 결과가 공유하는 `bodyStats`, `PALAM` 결과인 `conditionParams`, `JUEL` 결과인 `trainingResources`, `MARK` 결과인 `imprints`는 `body.byCharacterId[id]`가 소유한다. CFLAG/FLAG/PBAND 조건 플래그의 최종 의미 분해는 M34가 owner이며, M33에서는 M34로 transfer 근거를 남긴다.
+M33 기준으로 Chara seed의 `BASE`, `ABL`, `TALENT`, `EXP`는 생성 시점에 정의 데이터에서 인스턴스 저장 상태로 복사된다. 일반 능력/소질/경험은 `people.characters[id].attributes`가 소유하고, body owner로 판정된 신체형 `BASE/MAXBASE`, 업무/촬영/훈련 결과가 공유하는 `bodyStats`, `PALAM` 결과인 `conditionParams`, `JUEL` 결과인 `trainingResources`, `MARK` 결과인 `imprints`는 `body.byCharacterId[id]`가 소유한다.
+
+M34 기준으로 Chara seed의 `CFLAG`는 raw family 이름을 모델명으로 복사하지 않는다. `splitLegacyCharacterFlags`가 index별 의미에 따라 `body.conditionFlags`, `equipment.availabilityFlags`, `equipment.clothing`, `people.flags.affection/family/settings/featureProgress`, `social` 진행 근거로 분해한다. Chara `RELATION` seed는 `social.relationships[pairKey]`로 생성하고 원본 relation index 근거를 보존한다.
 
 ### 아이템과 상점
 

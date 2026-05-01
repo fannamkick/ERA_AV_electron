@@ -52,6 +52,21 @@ export type RosterView = {
   readonly entries: readonly RosterEntryView[];
 };
 
+export type WardrobeCharacterView = {
+  readonly characterId: string;
+  readonly label: string;
+  readonly clothing: Record<string, boolean | number | string>;
+  readonly availabilityFlags: Record<string, boolean | number | string>;
+  readonly clothingFlagCount: number;
+  readonly availabilityFlagCount: number;
+};
+
+export type WardrobeView = {
+  readonly kind: 'wardrobe';
+  readonly route: 'wardrobe';
+  readonly entries: readonly WardrobeCharacterView[];
+};
+
 export type ShopListingView = {
   readonly listingId: CatalogId;
   readonly itemId: CatalogId;
@@ -280,6 +295,7 @@ export type GameView =
   | MainMenuView
   | ItemShopView
   | RosterView
+  | WardrobeView
   | RecruitView
   | SaveLoadView
   | VisitView
@@ -293,6 +309,7 @@ export type BuiltGameViews = {
   readonly itemShop?: ItemShopView;
   readonly mission?: MissionView;
   readonly roster?: RosterView;
+  readonly wardrobe?: WardrobeView;
   readonly recruit?: RecruitView;
   readonly saveLoad?: SaveLoadView;
   readonly shooting?: ShootingView;

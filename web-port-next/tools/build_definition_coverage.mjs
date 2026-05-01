@@ -278,15 +278,18 @@ function catalogDefinitionRow(row) {
       });
 
     case 'legacyCharacterFlagDefinitions':
-      return blocker({
+      return baseRow({
         ...common,
         definitionRowId: `definition:cflag:${row.id}`,
-        runtimeOwner: 'pending CFLAG owner domain',
-        role: 'blocker',
-        consumerKind: 'blocker',
-        ownerMilestone: 'M21',
-        blockerId: 'blocker:m20:legacy-character-flag-definition',
-        notes: 'CFLAG definitions must be split by meaning in M21 instead of copied as one domain.',
+        runtimeOwner: 'definitions.legacyCharacterFlagDefinitions -> M34 CFLAG owner split',
+        role: 'display',
+        consumerKind: 'view-and-save-init',
+        consumingFeature: 'feature:wardrobe-clothing;feature:game:new;feature:recruit:basic',
+        consumingView: 'src/features/socialEquipmentCflag.ts:buildWardrobeView',
+        saveInitPath: 'src/features/socialEquipmentCflag.ts:splitLegacyCharacterFlags',
+        status: 'used',
+        ownerMilestone: 'M34',
+        notes: 'M34 splits CFLAG definitions by semantic owner instead of copying the raw CFLAG family into the runtime model.',
       });
 
     case 'baseStats':
@@ -453,7 +456,7 @@ function seedClassification(row) {
         role: 'template',
         consumerKind: 'save-init',
         status: 'template',
-        ownerMilestone: 'M25',
+        ownerMilestone: 'M34',
         saveInitPath: 'src/features/characterCreation.ts:createCharacterBundle',
       };
     case 'CSTR':
@@ -467,13 +470,13 @@ function seedClassification(row) {
       };
     case 'CFLAG':
       return {
-        runtimeOwner: 'pending CFLAG owner domain',
-        role: 'blocker',
-        consumerKind: 'blocker',
-        status: 'blocker',
-        ownerMilestone: 'M21',
-        blockerId: 'blocker:m20:chara-cflag-seed',
-        notes: 'Chara CFLAG seed is preserved as legacyFlagsNeedingMapping until M21 splits it by meaning.',
+        runtimeOwner: 'definitions.characters.initialState.characterFlags -> body/equipment/people/social semantic owners',
+        role: 'template',
+        consumerKind: 'save-init',
+        status: 'template',
+        ownerMilestone: 'M34',
+        saveInitPath: 'src/features/socialEquipmentCflag.ts:splitLegacyCharacterFlags',
+        notes: 'M34 splits each CFLAG seed into body condition flags, equipment/clothing flags, social relationship progress, people settings, or feature progress buckets.',
       };
     default:
       return {

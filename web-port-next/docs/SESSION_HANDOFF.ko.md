@@ -1,6 +1,6 @@
 # 세션 인수인계
 
-새 세션은 아래 요약만 읽고 M34 관계/CFLAG/장비/의복 owner 완성부터 진행한다. 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
+새 세션은 아래 요약만 읽고 M35 턴 종료와 시간 진행 완성부터 진행한다. 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
 
 ## 작업 위치
 
@@ -72,8 +72,8 @@
 - M19는 구현 완료 수를 늘리는 단계가 아니다. M28~M49가 `groupKey`와 `ownerMilestone` 기준으로 feature blocker를 줄여야 한다.
 - M20에서 `data/coverage/definitions.json`을 생성했고 M23에서 ERB 기반 정의 160행을 병합했다. 현재 definition row는 8,000개이고, raw 정의 918개와 Chara seed 6,922행, ERB-derived 정의 160행이 모두 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker를 가진다.
 - M20은 정의 데이터 전수 분류와 소비 책임 배정이다. 실제 컨텐츠 효과 구현 완료가 아니다.
-- M20/M23 definition status는 `template` 5,566개, `display-only` 456개, `calculation-only` 35개, `listing` 207개, `used` 1개, `blocker` 1,735개다. 이 중 실제 구현 완료 근거가 있는 row는 현재 `used` 1개뿐이고, `template`/`listing`/`display-only`/`calculation-only`는 M28~M49에서 실제 소비 검증으로 승격해야 한다.
-- M20 blocker 중 특수 item 15개는 M30에서 소비/분류를 닫았다. 남은 큰 묶음은 신체/능력/소질/경험 seed, CFLAG 정의 151개, Chara CFLAG seed 1,465개, 미구현 훈련 command 104개이며 M33/M34/M41~M44에서 의미별 owner와 lifecycle로 분해해야 한다.
+- M20/M23 definition status는 M34 이후 CFLAG 정의와 Chara CFLAG/RELATION seed 일부가 실제 소비 검증으로 승격되었다. 그래도 `template`/`listing`/`display-only`/`calculation-only`는 M28~M49에서 실제 소비 검증으로 계속 승격해야 한다.
+- M20 blocker 중 특수 item 15개는 M30에서, 신체/능력/소질/경험 seed는 M33에서, CFLAG 정의 151개와 Chara CFLAG seed 1,465개 및 RELATION seed 532개는 M34에서 소비/분류를 닫았다. 남은 큰 묶음은 턴/방문/업무/촬영/훈련/미션/이벤트/엔딩/정보 계열이며 M35~M49에서 의미별 owner와 lifecycle로 분해해야 한다.
 - 데이터 완성도는 수집 수량이 아니라 실제 게임 구성 역할 기준으로 판정한다. 현재 feature coverage와 definition coverage는 v1로 생성되었지만, 전체 게임 완료 기준의 source/save/session coverage는 M21~M27과 M51/M52에서 닫는다.
 - 변수, 정의 데이터, 기능 흐름, 저장/세션 판정의 1차 기준은 문서가 아니라 작업 루트의 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`이다. 문서는 파생 해석이므로 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 않는다.
 - M21~M27에서는 source evidence, feature, definition, save mapping, session mapping, blocker/approved exclusion registry를 대조하는 gate를 추가해야 한다. 같은 gate는 M51/M52 최종 판정에서도 다시 실행한다.
@@ -89,8 +89,8 @@
 - M32에서 인물 원형과 identity는 완료했다. implementation queue 274행과 M31 inbound transfer 20행, 총 294행 중 implemented 286, mapped 8로 닫았고 Chara template 109개, identity 문자열, CSTR seed, lifecycle 상태를 정의/save 경계에 연결했다.
 - M33에서 신체/능력/소질/경험은 완료했다. M27 queue 5,283행과 M33 필수 `Palam.csv` 정의 17행, 총 5,300행 중 implemented 4,768, mapped 465, transferredOut 67로 닫았다. Chara `BASE/ABL/TALENT/EXP` seed, `BASE/ABL/TALENT/EXP/MARK/PALAM` 표시 정의, `BASE/MAXBASE/EXP/MARK` save mapping을 people/body owner에 연결했다.
 - M33에서 업무/촬영/훈련 결과 반영은 `src/features/bodyStats.ts` 공통 helper로 통일했다. `bodyStatDeltas`, `paramDeltas`, `resourceDeltas`가 같은 `body.byCharacterId.*` 저장 필드를 갱신한다.
-- M33 queue에 섞여 있던 `CFLAG/FLAG/PBAND` 67행은 M34 owner로 이관했다. M34는 이 transfer와 CFLAG 정의 151개, Chara CFLAG seed 1,465개를 의미별 owner로 닫아야 한다.
-- 다음 작업은 M34이다. 관계값, CFLAG, 장비, 의복, 착용/해금 상태를 `people/body/equipment/social/work/mission/settings/features` owner로 분해하고 raw `CFLAG`를 runtime 모델명으로 남기지 않아야 한다.
+- M34에서 관계/CFLAG/장비/의복 owner는 완료했다. M34 queue 2,149행과 M29/M31/M33 inbound transfer 83행, 총 2,232행 중 implemented 1,998, mapped 234로 닫았다. `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`이 CFLAG seed, RELATION seed, 의복/장비 route의 실제 소비 경로다.
+- 다음 작업은 M35이다. 턴 종료와 시간 진행, day/week/month/year, phase 전환, 턴 전후/month/week hook, 자동 구매/사용, 미션/이벤트 hook, session cleanup, 장기 턴 roundtrip을 닫아야 한다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -167,6 +167,12 @@ npm run gate:body-stat-mapping
 npm run gate:milestone-scope-closure -- M33
 npm run smoke:body-stat
 npm run smoke:character-identity
+npm run coverage:social-equipment-cflag
+npm run gate:social-equipment-cflag
+npm run gate:milestone-scope-closure -- M34
+npm run smoke:social-equipment-cflag
+npm run smoke:main-routes
+npm run gate:definition-consumption
 npm run typecheck
 npm run build
 npm run test --if-present
@@ -210,6 +216,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M31 recruit coverage/gate/smoke 통과: owned row 237개, unresolved issue 0개
 - M32 character identity coverage/gate/smoke 통과: owned row 294개, unresolved issue 0개
 - M33 body/stat coverage/gate/smoke 통과: owned row 5,300개, unresolved issue 0개
+- M34 social/equipment/CFLAG coverage/gate/smoke 통과: owned row 2,232개, unresolved issue 0개
+- `smoke:main-routes` 통과: 메인 메뉴 108 wardrobe route 활성화 확인
 - `analyze:game-system` 통과
 - `tsc --noEmit` 통과
 - `vite build` 통과
@@ -246,7 +254,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 26. M31 영입 listing과 인물 생성 완성은 완료되었고 `npm run coverage:recruit`, `npm run gate:recruit-coverage`, `npm run gate:milestone-scope-closure -- M31`, `npm run smoke:recruit-all`, `npm run smoke:m7`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
 27. M32 인물 원형과 identity 완성은 완료되었고 `npm run coverage:character-identity`, `npm run gate:character-identity`, `npm run gate:milestone-scope-closure -- M32`, `npm run smoke:character-identity`, `npm run smoke:recruit-all`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
 28. M33 신체/능력/소질/경험 완성은 완료되었고 `npm run coverage:body-stat`, `npm run gate:body-stat-mapping`, `npm run gate:milestone-scope-closure -- M33`, `npm run smoke:body-stat`, `npm run smoke:character-identity`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
-29. 다음 작업은 M34 관계/CFLAG/장비/의복 owner 완성이다.
+29. M34 관계/CFLAG/장비/의복 owner 완성은 `npm run coverage:social-equipment-cflag`, `npm run gate:social-equipment-cflag`, `npm run gate:milestone-scope-closure -- M34`, `npm run smoke:social-equipment-cflag`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M34 owned scope 2,232행 중 implemented 1,998, mapped 234, unresolved issue 0개로 닫았다.
+30. 다음 작업은 M35 턴 종료와 시간 진행 완성이다.
 
 ## 읽을 문서
 
