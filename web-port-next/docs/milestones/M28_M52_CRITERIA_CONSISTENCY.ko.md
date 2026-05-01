@@ -13,9 +13,9 @@ Evidence:
 - All M28~M52 source-unit manifests exist.
 - 2 manifests currently have `completedAllowedNow: true`; 24 remain false.
 - Aggregate manifest totals:
-  - total units: 11,106
+  - total units: 11,118
   - implemented-verified: 7,944
-  - blocked: 2,873
+  - blocked: 2,885
   - scope-redesign-required: 163
   - approved-excluded: 126
 
@@ -27,6 +27,8 @@ M28 is now closed under the source-unit manifest rule:
 M29 is now closed under the source-unit manifest rule:
 - 83 purchase/listing/result rows are `implemented-verified`.
 - 123 non-purchase/use/equipment/recruit/event/downstream rows are `approved-excluded` from M29 ownership and remain assigned to receiving owner milestones.
+- All 123 M29 approved exclusions are explicit inbound responsibility in receiver manifests: M30 49, M31 48, M34 12, M35 2, M32 4, M37 2, M47 4, M48 1, M49 1.
+- The newly added receiver rows are `blocked`, so they do not silently complete later milestones.
 - `npm run gate:shop-purchase-coverage` and `npm run gate:milestone-scope-closure -- M29` pass with M29 ownedTotal 83.
 
 ## Registry Enforcement

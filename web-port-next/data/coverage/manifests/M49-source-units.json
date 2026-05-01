@@ -43,9 +43,9 @@
     "original-game/CSV/VariableSize.CSV"
   ],
   "summary": {
-    "totalUnits": 2,
+    "totalUnits": 3,
     "queueRows": 150,
-    "blocked": 1,
+    "blocked": 2,
     "scope-redesign-required": 1,
     "completedAllowedNow": false
   },
@@ -61,6 +61,7 @@
     ]
   },
   "notes": [
+    "M29 inbound view/text/session row must be implemented or explicitly excluded by the info/settings owner before M49 can close.",
     "M49 is view/text/settings closer, not a general dumping ground. Intake rows must preserve source id, original owner candidate, reason for M49 ownership, and exclusion status."
   ],
   "units": [
@@ -228,6 +229,33 @@
         "Save/session rows need save-boundary or non-save/session-boundary evidence.",
         "source-file-review rows must be decomposed before completion."
       ]
+    },
+    {
+      "unitId": "M49:source-unit:0001",
+      "milestone": "M49",
+      "ownerMilestone": "M49",
+      "ownerRole": "info-settings-catchall-owner",
+      "sourceKind": "session-address",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+      "sourceLine": "",
+      "sourceLabel": "TFLAG:15",
+      "sourceEvidenceId": "source:session-map:tflag-15",
+      "legacyReviewId": "session-mapping:session-map:source:tflag-15",
+      "legacyFamily": "",
+      "rowKind": "session-mapping",
+      "legacyId": "",
+      "requiredBehavior": "Outside M29 purchase-listing scope.",
+      "runtimeConsumerId": "",
+      "verificationId": "gate:milestone-scope-closure -- M49",
+      "previousCompletionStatus": "inbound-from-M29-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M29 approved exclusion. Outside M29 purchase-listing scope. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "shop-purchase:session-transfer:itemsales:",
+      "acceptedByOwner": true,
+      "fromMilestone": "M29",
+      "toMilestone": "M49",
+      "inboundFromMilestone": "M29",
+      "outboundUnitId": "M29:source-unit:0098"
     }
   ]
 }

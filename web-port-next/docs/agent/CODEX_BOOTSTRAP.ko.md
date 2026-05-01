@@ -7,7 +7,7 @@
 - M28은 strict closure 완료 상태다.
 - 바로 다음 작업은 M29 closure 정정이다.
 - M29~M41이 strict manifest 기준으로 닫히기 전에는 M42 구현을 재개하지 않는다.
-- M28~M52 aggregate: total 11,106; implemented-verified 7,944; approved-excluded 126; blocked 2,873; scope-redesign-required 163; completedAllowedNow true 2 / false 24.
+- M28~M52 aggregate: total 11,118; implemented-verified 7,944; approved-excluded 126; blocked 2,885; scope-redesign-required 163; completedAllowedNow true 2 / false 24.
 
 ## 절대 규칙
 

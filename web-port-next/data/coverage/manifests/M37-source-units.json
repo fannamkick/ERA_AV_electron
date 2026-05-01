@@ -21,9 +21,9 @@
     "original-game/CSV/VariableSize.CSV"
   ],
   "summary": {
-    "totalUnits": 461,
+    "totalUnits": 463,
     "implemented-verified": 294,
-    "blocked": 167,
+    "blocked": 169,
     "completedAllowedNow": false
   },
   "completionGate": {
@@ -36,6 +36,7 @@
     ]
   },
   "notes": [
+    "M29 inbound CFLAG/FLAG work-related save rows must be implemented or explicitly excluded by the work owner before M37 can close.",
     "Implemented feature rows and 8 runtime-consumed work definitions are completion candidates. Mapped save/session/calculation rows remain blocked."
   ],
   "units": [
@@ -11563,6 +11564,60 @@
       "acceptedByOwner": null,
       "fromMilestone": "",
       "toMilestone": ""
+    },
+    {
+      "unitId": "M37:source-unit:0462",
+      "milestone": "M37",
+      "ownerMilestone": "M37",
+      "ownerRole": "work-owner",
+      "sourceKind": "save-address",
+      "sourcePath": "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+      "sourceLine": "",
+      "sourceLabel": "CFLAG:401",
+      "sourceEvidenceId": "source:save-map:cflag-401",
+      "legacyReviewId": "save-mapping:save-map:source:cflag-401",
+      "legacyFamily": "",
+      "rowKind": "save-mapping",
+      "legacyId": "CFLAG:401",
+      "requiredBehavior": "Save field CFLAG:401 is not mutated by M29 purchase itself; M37 owns its effect or source feature.",
+      "runtimeConsumerId": "",
+      "verificationId": "gate:milestone-scope-closure -- M37",
+      "previousCompletionStatus": "inbound-from-M29-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M29 approved exclusion. Save field CFLAG:401 is not mutated by M29 purchase itself; M37 owns its effect or source feature. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "shop-purchase:save-transfer:save-map:source:cflag-401",
+      "acceptedByOwner": true,
+      "fromMilestone": "M29",
+      "toMilestone": "M37",
+      "inboundFromMilestone": "M29",
+      "outboundUnitId": "M29:source-unit:0064"
+    },
+    {
+      "unitId": "M37:source-unit:0463",
+      "milestone": "M37",
+      "ownerMilestone": "M37",
+      "ownerRole": "work-owner",
+      "sourceKind": "save-address",
+      "sourcePath": "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+      "sourceLine": "",
+      "sourceLabel": "FLAG:41",
+      "sourceEvidenceId": "source:save-map:flag-41",
+      "legacyReviewId": "save-mapping:save-map:source:flag-41",
+      "legacyFamily": "",
+      "rowKind": "save-mapping",
+      "legacyId": "FLAG:41",
+      "requiredBehavior": "Save field FLAG:41 is not mutated by M29 purchase itself; M37 owns its effect or source feature.",
+      "runtimeConsumerId": "",
+      "verificationId": "gate:milestone-scope-closure -- M37",
+      "previousCompletionStatus": "inbound-from-M29-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M29 approved exclusion. Save field FLAG:41 is not mutated by M29 purchase itself; M37 owns its effect or source feature. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "shop-purchase:save-transfer:save-map:source:flag-41",
+      "acceptedByOwner": true,
+      "fromMilestone": "M29",
+      "toMilestone": "M37",
+      "inboundFromMilestone": "M29",
+      "outboundUnitId": "M29:source-unit:0069"
     }
   ]
 }

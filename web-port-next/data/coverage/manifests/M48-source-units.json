@@ -41,9 +41,9 @@
     "original-game/CSV/VariableSize.CSV"
   ],
   "summary": {
-    "totalUnits": 2,
+    "totalUnits": 3,
     "queueRows": 325,
-    "blocked": 1,
+    "blocked": 2,
     "scope-redesign-required": 1,
     "completedAllowedNow": false
   },
@@ -59,6 +59,7 @@
     ]
   },
   "notes": [
+    "M29 inbound ending/meta save row must be implemented or explicitly excluded by the ending/meta owner before M48 can close.",
     "Ending/meta has achievement/ending definitions, feature rows, save-mapping rows, and GameBase file review. Global/meta save must be separated from run save."
   ],
   "units": [
@@ -258,6 +259,33 @@
         "Save/session rows need save-boundary or non-save/session-boundary evidence.",
         "source-file-review rows must be decomposed before completion."
       ]
+    },
+    {
+      "unitId": "M48:source-unit:0001",
+      "milestone": "M48",
+      "ownerMilestone": "M48",
+      "ownerRole": "ending-meta-owner",
+      "sourceKind": "save-address",
+      "sourcePath": "original-game/ERB/イベント関係/ENDING.ERB",
+      "sourceLine": "",
+      "sourceLabel": "FLAG:5",
+      "sourceEvidenceId": "source:save-map:flag-5",
+      "legacyReviewId": "save-mapping:save-map:source:flag-5",
+      "legacyFamily": "",
+      "rowKind": "save-mapping",
+      "legacyId": "FLAG:5",
+      "requiredBehavior": "Save field FLAG:5 is not mutated by M29 purchase itself; M48 owns its effect or source feature.",
+      "runtimeConsumerId": "",
+      "verificationId": "gate:milestone-scope-closure -- M48",
+      "previousCompletionStatus": "inbound-from-M29-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M29 approved exclusion. Save field FLAG:5 is not mutated by M29 purchase itself; M48 owns its effect or source feature. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "shop-purchase:save-transfer:save-map:source:flag-5",
+      "acceptedByOwner": true,
+      "fromMilestone": "M29",
+      "toMilestone": "M48",
+      "inboundFromMilestone": "M29",
+      "outboundUnitId": "M29:source-unit:0070"
     }
   ]
 }

@@ -7,6 +7,10 @@ function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(root, relativePath), 'utf8'));
 }
 
+function fileExists(relativePath) {
+  return fs.existsSync(path.join(root, relativePath));
+}
+
 function fail(message, detail) {
   console.error(`gate:shop-purchase-coverage failed: ${message}`);
   if (detail) {
@@ -107,6 +111,35 @@ const badTransfers = coverage.rows.filter(
       !row.verificationId),
 );
 assert(badTransfers.length === 0, 'transfer rows are incomplete', badTransfers.slice(0, 20));
+
+const transferRows = coverage.rows.filter((row) => row.completionStatus === 'transferred-out');
+const missingInboundTransferRows = [];
+for (const row of transferRows) {
+  const manifestPath = `data/coverage/manifests/${row.toMilestone}-source-units.json`;
+  if (!fileExists(manifestPath)) {
+    missingInboundTransferRows.push({ coverageRowId: row.coverageRowId, toMilestone: row.toMilestone, reason: 'receiver manifest missing' });
+    continue;
+  }
+  const receiverManifestText = JSON.stringify(readJson(manifestPath));
+  if (
+    !receiverManifestText.includes(row.reviewId) &&
+    !receiverManifestText.includes(row.coverageRowId) &&
+    !receiverManifestText.includes(row.sourceEvidenceId)
+  ) {
+    missingInboundTransferRows.push({
+      coverageRowId: row.coverageRowId,
+      reviewId: row.reviewId,
+      sourceEvidenceId: row.sourceEvidenceId,
+      toMilestone: row.toMilestone,
+      reason: 'receiver manifest has no matching inbound unit',
+    });
+  }
+}
+assert(
+  missingInboundTransferRows.length === 0,
+  'M29 transfer rows must be explicit inbound responsibility in receiving manifests',
+  missingInboundTransferRows.slice(0, 20),
+);
 
 const implementedDefinitions = coverage.rows.filter(
   (row) => row.rowKind === 'definition' && row.completionStatus === 'implemented-shop-purchase-listing',

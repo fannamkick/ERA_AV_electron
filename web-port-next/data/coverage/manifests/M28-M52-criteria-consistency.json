@@ -7,9 +7,9 @@
   "implementationComplete": false,
   "allCompletedAllowedNowFalse": false,
   "totals": {
-    "totalUnits": 11106,
+    "totalUnits": 11118,
     "implementedVerified": 7944,
-    "blocked": 2873,
+    "blocked": 2885,
     "scopeRedesignRequired": 163,
     "approvedExcluded": 126,
     "completedAllowedNowTrue": 2,
@@ -27,7 +27,8 @@
   "blockingFindings": [
     "2 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
     "Registry contracts now exist for every M28-M52 manifest.",
-    "M28 and M29 are strictly closed; later implementation milestones must still close their own source units before completion.",
+    "M28 and M29 are strictly closed; M29 outbound exclusions are explicit inbound responsibilities in receiving manifests.",
+    "Later implementation milestones must still close their own source units before completion.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
   ],
@@ -92,9 +93,9 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 294,
+        "totalUnits": 298,
         "implemented-verified": 286,
-        "blocked": 8,
+        "blocked": 12,
         "completedAllowedNow": false
       }
     },
@@ -171,9 +172,9 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 461,
+        "totalUnits": 463,
         "implemented-verified": 294,
-        "blocked": 167,
+        "blocked": 169,
         "completedAllowedNow": false
       }
     },
@@ -300,9 +301,9 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 1,
+        "totalUnits": 5,
         "queueRows": 358,
-        "blocked": 1,
+        "blocked": 5,
         "completedAllowedNow": false
       }
     },
@@ -312,9 +313,9 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 2,
+        "totalUnits": 3,
         "queueRows": 325,
-        "blocked": 1,
+        "blocked": 2,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
       }
@@ -325,9 +326,9 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 2,
+        "totalUnits": 3,
         "queueRows": 150,
-        "blocked": 1,
+        "blocked": 2,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
       }

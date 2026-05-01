@@ -9,7 +9,10 @@ M29 is now complete under the strict source-unit manifest rule.
 - Summary: total 206, implemented-verified 83, approved-excluded 123, blocked 0, scope-redesign-required 0, completedAllowedNow true.
 - M29 ownedTotal is 83 purchase/listing/result rows, not the old mixed 206-row queue total.
 - The 123 non-purchase/use/equipment/recruit/event/downstream rows are excluded from M29 ownership and remain assigned to receiving owner milestones.
+- All 123 excluded rows now have explicit inbound responsibility in receiver manifests: M30 49, M31 48, M34 12, M35 2, M32 4, M37 2, M47 4, M48 1, M49 1.
+- Newly added receiver rows are blocked, not completed: M32 +4, M37 +2, M47 +4, M48 +1, M49 +1.
 - `npm run gate:shop-purchase-coverage` passes with source 206, M29-owned 83, implemented-verified 83, approved-excluded 123.
+- `npm run gate:shop-purchase-coverage` now fails if an M29 transfer row is missing from the receiver manifest.
 - `npm run gate:milestone-scope-closure -- M29` passes with `responsibilityIntegrity`.
 
 ## 2026-05-02 M28 strict closure update
@@ -65,7 +68,7 @@ Next actions:
 
 현재 공통 상태:
 - M28은 2026-05-02 strict closure 재검증 기준으로 통과했다.
-- M29~M41의 개별 coverage/gate/smoke는 과거 통과 기록이 있어도 strict completion evidence로 재정리해야 한다.
+- M30~M41? ?? coverage/gate/smoke? ?? ?? ??? ??? strict completion evidence? ????? ??. M29? strict closure? ?? manifest inbound ???? ????.
 - M29~M41의 closure는 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required 정정이 필요하다.
 - 따라서 이 장부는 "기능 검증 결과가 존재한다"와 "현재 완료 판정은 보강 필요하다"를 분리해서 읽어야 한다.
 - 2026-05-02 기준, `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 책임 재설계 신호로 본다.
@@ -80,7 +83,7 @@ Next actions:
 | M | 기존 closure 상태 | 새 판정 | M42 전 차단 | 핵심 사유 | 다음 조치 |
 | --- | --- | --- | --- | --- | --- |
 | M28 | completed, implemented 24, approved-excluded 3 | completed | 아니오 | strict closure 완료. `responsibilityIntegrity` 있음 | route/action/view 24개는 M28 소유 완료, event-local row 3개는 M47 책임으로 M28에서 approved-excluded |
-| M29 | completed, implemented 43, mapped 40, transferredOut 123 | scope-redesign-required | 예 | 구매형 listing과 비구매/사용/장비/이벤트 item이 한 closure에 섞임 | 구매형 listing/구매 결과만 M29 매니페스트에 남기고 123개 비구매 row는 실제 owner 매니페스트로 이동 |
+| M29 | completed, implemented 83, approved-excluded 123 | completed | 아니오 | strict closure 완료. 수신 manifest inbound도 명시됨 | 구매형 listing/구매 결과 83개만 M29 완료로 세고 123개 비구매 row는 실제 owner manifest에서 blocked inbound로 추적 |
 | M30 | blocked, ownedBlocker 37 | scope-redesign-required 유지 | 예 | 즉시 사용 item과 특수 item 200~214 훈련/의복 효과가 섞임 | M30은 즉시 사용 item 9개 owner로 좁히고 특수 item은 M34/M42/M43/M44에서 닫음 |
 | M31 | completed, implemented 52, mapped 158, transferredOut 27 | scope-redesign-required | 예 | 영입 listing/생성 결과와 identity/lifecycle/event row가 섞임 | listing/가격/조건/생성 결과만 M31 매니페스트에 남기고 identity/CFLAG/hook/event row를 수신 owner로 재분리 |
 | M32 | completed, implemented 286, mapped 8 | blocked | 예 | `source-file-review`와 mapped source contract가 완료를 대신함 | `zname.erb`, `c_club_girlname.erb`, `boyfriendname_calc.erb`를 label/동작 단위로 분해 |
@@ -112,7 +115,7 @@ Next actions:
 | M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | 현재 완료 가능 | 핵심 판정 |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | M28 | 27 | 24 | 0 | 0 | 예 | strict closure 완료. SHOP_MAIN menu row 24개는 route contract로 구현 검증했고, BOYFRIEND session row 3개는 M28 approved-excluded 및 M47 책임으로 기록했다. |
-| M29 | 206 | 43 | 40 | 123 | 아니오 | 구매형 listing/flow 43개만 완료 후보. mapped 40개는 직접 검증 단위로 승격해야 하고, 비구매/사용/장비/영입/이벤트 123개는 M29 scope 밖이다. |
+| M29 | 206 | 83 | 0 | 123 | 예 | 구매형 listing/flow/result 83개는 implemented-verified. 비구매/사용/장비/영입/이벤트 123개는 M29 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. |
 | M30 | 74 | 21 | 16 | 37 | 아니오 | 즉시 사용 item flow/effect 21개만 완료 후보. mapped 16개는 직접 검증 단위로 승격해야 하고, 특수 item 200~214 및 item 22/90/91 계열 37개는 실제 owner에서 닫아야 한다. |
 
 다음 조치:
@@ -147,7 +150,7 @@ Next actions:
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼고 M28에서는 approved-excluded로 닫았다. | strict closure 완료. `responsibilityIntegrity` 포함. |
-| M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영을 구현했다. coverage 기준 implemented 43, mapped 40. | 123개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner로 넘겼다. | transferredOut 123개가 실제 수신 마일스톤에서 닫혔는지 추적 필요. |
+| M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영을 구현했다. strict 기준 implemented-verified 83. | 123개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner로 넘겼고, 전부 수신 manifest에 blocked inbound로 명시했다. | 수신 owner가 각 row를 구현/제외/재설계하기 전까지 해당 milestone은 완료되지 않는다. |
 | M30 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 선택, 대상 지정, 성공/실패/취소, 저장 반영 경로를 구현했다. coverage 기준 implemented 21, mapped 16. | 37개 owned row가 M34/M41/M42/M43/M44 계열로 남아 있으며, 특수 item 200~214의 실제 소비는 M30에서 구현되지 않았다. | M30은 2026-05-02 재판정 기준 `blocked`다. `transferredOut` 37개는 완료 근거가 아니라 `ownedBlocker` 37개로 기록한다. item 213은 `COMF137.ERB`라 기존 M42~M44 range 설계도 재확인해야 한다. |
 | M31 | 영입 listing 48개, 반복 영입 제한, 인물 생성 결과를 구현했다. coverage 기준 implemented 52, mapped 158. | 27개 row는 후속 owner로 넘겼다. mapped 158개는 실제 생성 로직이 아니라 identity/정의/owner 확정 성격이 섞여 있다. | mapped와 transferredOut이 실제 미구현을 숨기지 않는지 재확인 필요. |
 | M32 | Chara template 109개, CSTR seed, retired/deleted lifecycle, 표시 identity를 연결했다. coverage 기준 implemented 286, mapped 8. | identity 외 효과/상태 변화는 다른 owner가 소유한다. | closure에 `responsibilityIntegrity`가 없다. |

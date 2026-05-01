@@ -82,6 +82,8 @@ Strict closure update, 2026-05-02:
 - `data/coverage/manifests/M29-source-units.json`: total 206, implemented-verified 83, approved-excluded 123, blocked 0, scope-redesign-required 0, completedAllowedNow true.
 - `data/coverage/milestones/M29-closure.json`: ownedTotal 83, implemented 83, transferredOut 0, blocker/missing/unapproved 0, with `responsibilityIntegrity`.
 - The 123 non-purchase/use/equipment/recruit/event/downstream rows are not M29 implementation. They are recorded as approved exclusions with receiving owner milestones.
+- All 123 rows are explicit inbound responsibility in receiver manifests. Newly added blocked inbound rows: M32 4, M37 2, M47 4, M48 1, M49 1.
+- `gate:shop-purchase-coverage` now fails if an M29 transfer row is missing from the receiver manifest.
 - Current source of truth supersedes old M29 notes that counted old ownedTotal 206 / transferredOut 123 as completion evidence.
 
 현재 strict 기준:
