@@ -17,6 +17,9 @@ export type ShootingCalculatedResult = {
   readonly sceneId: CatalogId;
   readonly sceneLabel: string;
   readonly characterId: string;
+  readonly assistantCharacterId?: string;
+  readonly sourceFile?: string;
+  readonly sourceLabel?: string;
   readonly revenueMoney: number;
   readonly fanGain: number;
   readonly score: number;
@@ -106,6 +109,60 @@ function sceneViewFromDefinition(state: GameState, scene: FilmingSceneDefinition
   };
 }
 
+function sceneNumericId(sceneId: CatalogId): number {
+  const match = sceneId.match(/(\d+)$/u);
+  return match ? Number(match[1]) : 0;
+}
+
+function buildSceneTemporaryValues(scene: FilmingSceneDefinition): Record<string, number> {
+  return {
+    slot_0: scene.filmingAmount,
+    slot_1: scene.revenueMoney,
+    slot_2: scene.fanGain,
+    slot_5: scene.score,
+    slot_10: scene.bodyStatDeltas.stamina ?? 0,
+    slot_11: scene.bodyStatDeltas.energy ?? 0,
+    slot_22: sceneNumericId(scene.id),
+    slot_30: Object.values(scene.experienceDeltas).reduce((sum, value) => sum + value, 0),
+    slot_51: scene.completesTimeBlock ? 1 : 0,
+    slot_73: scene.defaultAvailable ? 1 : 0,
+  };
+}
+
+function buildSceneFlags(scene: FilmingSceneDefinition): Record<string, boolean | number | string> {
+  const sceneId = sceneNumericId(scene.id);
+  return {
+    flag_32: sceneId,
+    flag_70: scene.filmingAmount,
+    flag_132: scene.revenueMoney,
+    flag_137: scene.fanGain,
+    flag_160: scene.score,
+    flag_180: scene.label,
+    flag_700: scene.source.originalId ?? scene.id,
+  };
+}
+
+function buildFilmingProgressFlags(result: ShootingCalculatedResult): Record<string, boolean | number | string> {
+  return {
+    flag_120: result.revenueMoney,
+    flag_121: result.fanGain,
+    flag_122: result.score,
+    flag_123: result.filmingAmount,
+    flag_124: result.sceneId,
+    flag_125: result.characterId,
+    flag_126: result.sourceLabel ?? result.sceneLabel,
+    flag_560: result.sceneId,
+    flag_641: result.revenueMoney,
+    flag_642: result.fanGain,
+    flag_643: result.score,
+    flag_731: result.sceneId,
+    flag_732: result.sceneLabel,
+    flag_733: result.sourceFile ?? '',
+    flag_734: result.sourceLabel ?? '',
+    ...(result.assistantCharacterId ? { assistantId: result.assistantCharacterId } : {}),
+  };
+}
+
 export function buildShootingView(definitions: GameDefinitions, state: GameState, session: GameSession): ShootingView {
   const visibleCharacterIds =
     session.shooting.visibleCharacterIds.length > 0
@@ -152,6 +209,8 @@ export function createShootingSession(definitions: GameDefinitions, state: GameS
     visibleCharacterIds: computeVisibleShootingCharacterIds(state),
     visibleSceneIds: computeVisibleFilmingSceneIds(definitions, state),
     filmingAmount: 0,
+    sceneTemporaryValues: {},
+    sceneFlags: {},
   };
 }
 
@@ -245,6 +304,8 @@ export function selectShootingScene(
         ...session.shooting,
         selectedSceneId: sceneResult.definition.id,
         filmingAmount: sceneResult.definition.filmingAmount,
+        sceneTemporaryValues: buildSceneTemporaryValues(sceneResult.definition),
+        sceneFlags: buildSceneFlags(sceneResult.definition),
       },
     },
     message: `${sceneResult.definition.label} selected as filming scene.`,
@@ -275,11 +336,18 @@ function validateShootingExecution(
   return undefined;
 }
 
-export function calculateShootingResult(scene: FilmingSceneDefinition, characterId: string): ShootingCalculatedResult {
+export function calculateShootingResult(
+  scene: FilmingSceneDefinition,
+  characterId: string,
+  assistantCharacterId?: string,
+): ShootingCalculatedResult {
   return {
     sceneId: scene.id,
     sceneLabel: scene.label,
     characterId,
+    assistantCharacterId,
+    sourceFile: scene.source.path.split(/[\\/]/u).pop(),
+    sourceLabel: scene.source.originalName ?? scene.source.originalId,
     revenueMoney: scene.revenueMoney,
     fanGain: scene.fanGain,
     score: scene.score,
@@ -308,6 +376,7 @@ export function applyShootingResult(state: GameState, result: ShootingCalculated
       account: {
         currentMoney: state.economy.account.currentMoney + result.revenueMoney,
       },
+      videoSalesTotal: state.economy.videoSalesTotal + result.revenueMoney,
       accountingEntries: [
         ...state.economy.accountingEntries,
         `filming:${result.sceneId}:character:${result.characterId}:revenue:${result.revenueMoney}`,
@@ -339,6 +408,10 @@ export function applyShootingResult(state: GameState, result: ShootingCalculated
     },
     work: {
       ...state.work,
+      filmingProgressFlags: {
+        ...state.work.filmingProgressFlags,
+        ...buildFilmingProgressFlags(result),
+      },
       filmingByCharacterId: {
         ...state.work.filmingByCharacterId,
         [result.characterId]: {
@@ -353,6 +426,7 @@ export function applyShootingResult(state: GameState, result: ShootingCalculated
         [result.characterId]: {
           ...currentCareerFlags,
           'filming.debuted': true,
+          ...(result.assistantCharacterId ? { 'filming.assistantId': result.assistantCharacterId } : {}),
           'filming.latestScore': result.score,
           'filming.bestScore': Math.max((currentCareerFlags['filming.bestScore'] as number | undefined) ?? 0, result.score),
           [`${result.sceneId}.completedCount`]: ((currentCareerFlags[`${result.sceneId}.completedCount`] as number | undefined) ?? 0) + 1,
@@ -405,7 +479,11 @@ export function confirmShootingScene(
     };
   }
 
-  const calculatedResult = calculateShootingResult(sceneResult.definition, selectedCharacterId);
+  const calculatedResult = calculateShootingResult(
+    sceneResult.definition,
+    selectedCharacterId,
+    session.interaction.participants.assistantId,
+  );
   const stateAfterShooting = applyShootingResult(state, calculatedResult);
   const sessionAfterShooting: GameSession = {
     ...session,
@@ -442,6 +520,8 @@ export function cancelShootingSelection(session: GameSession): GameSession {
       selectedCharacterId: undefined,
       selectedSceneId: undefined,
       filmingAmount: 0,
+      sceneTemporaryValues: {},
+      sceneFlags: {},
     },
   };
 }

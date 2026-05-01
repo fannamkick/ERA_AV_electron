@@ -15,6 +15,7 @@ export type WorkState = {
   readonly assignments: Record<string, WorkAssignment>;
   readonly brothelFlags: Record<string, boolean | number | string>;
   readonly filmingByCharacterId: Record<string, FilmingProgress>;
+  readonly filmingProgressFlags: Record<string, boolean | number | string>;
   readonly careerFlagsByCharacterId: Record<string, Record<string, boolean | number | string>>;
   readonly legacyWorkFlagsNeedingMapping: Record<string, boolean | number | string>;
 };
@@ -23,6 +24,7 @@ export const initialWorkState: WorkState = {
   assignments: {},
   brothelFlags: {},
   filmingByCharacterId: {},
+  filmingProgressFlags: {},
   careerFlagsByCharacterId: {},
   legacyWorkFlagsNeedingMapping: {},
 };

@@ -1541,14 +1541,36 @@ npm run test --if-present
 - 완료 결과: 촬영 성공/실패/취소/저장 roundtrip이 전체 장면에 대해 검증된다.
 - 누락 차단: 촬영 session 계산값이 save에 남거나 판매 상태 owner가 불명확하면 완료하지 않는다.
 
-- [ ] 촬영량, 수익, 팬, 점수, 경험, 신체 피로 계산을 구현
-- [ ] 촬영 결과가 `economy`, `people`, `body`, `world`, `featureState` 중 필요한 owner에만 반영되는지 검증
-- [ ] 촬영 이력과 출시/판매 상태를 저장 상태에 연결
-- [ ] 촬영 실패, 조건 미충족, 장면 누락, 대상 누락, 취소를 검증
-- [ ] 촬영 완료 후 턴 종료와 session 폐기를 검증
-- [ ] 촬영 후 저장 roundtrip을 검증
-- [ ] M19/M20/M24/M25 coverage의 촬영 실행 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 촬영량, 수익, 팬, 점수, 경험, 신체 피로 계산을 구현
+- [x] 촬영 결과가 `economy`, `people`, `body`, `work` owner에만 반영되는지 검증
+- [x] 촬영 이력과 출시/판매 상태를 저장 상태에 연결
+- [x] 촬영 실패, 조건 미충족, 장면 누락, 대상 누락, 취소를 검증
+- [x] 촬영 완료 후 턴 종료와 session 폐기를 검증
+- [x] 촬영 후 저장 roundtrip을 검증
+- [x] M19/M24/M25 coverage의 촬영 실행 관련 status 갱신
+- [x] `npm run build` 실행
+
+M39 완료 근거:
+- M39 owned scope는 `unit:M39:filming-execution` 172행과 source-file-review 2행을 합쳐 총 174행이다.
+- feature row 135개는 `main/openShooting`, `shooting/selectTarget`, `shooting/selectScene`, `shooting/confirmScene`, `calculateShootingResult`, `applyShootingResult`, `endTurn` 소비 경로로 닫았다.
+- save mapping row 16개는 `economy.videoSalesTotal`, `work.filmingProgressFlags`, `work.filmingByCharacterId`, `work.careerFlagsByCharacterId` 저장 owner로 소비한다.
+- session/calculation mapping row 21개는 `session.shooting.sceneTemporaryValues`, `session.shooting.sceneFlags`, `session.interaction.participants.assistantId`, `calculateShootingResult` lifecycle로 소비하고, 완료/취소 후 save payload에 남지 않는다.
+- `AV_POINTCALC.ERB`와 `VIDEO.ERH` source-file-review 2행은 촬영 계산 helper와 비디오 판매/출시 저장 owner로 소비 근거를 남겼다.
+- `data/coverage/filming-execution-coverage.json`, `data/coverage/audits/M39-gap-audit.json`, `data/coverage/milestones/M39-closure.json`을 생성했다. closure 기준은 ownedTotal 174, implemented 135, mapped 39, blocker/missing/unapproved 0이다.
+
+검증:
+
+```bash
+npm run coverage:filming-execution
+npm run gate:filming-execution
+npm run gate:milestone-scope-closure -- M39
+npm run smoke:filming-all
+npm run smoke:m13
+npm run verify:m16
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M40. 훈련 메뉴와 세션 완성
 
