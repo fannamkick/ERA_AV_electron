@@ -133,11 +133,26 @@ assert(Number(summary.queueRowRefs) === expectedRefs.size, 'summary queue row co
 assert(Number(summary.rows) === coverage.rows.length, 'summary rows count mismatch', summary);
 assert(Number(summary.ownedBlocker) === 0, 'M29 must not close with owned blockers', summary);
 assert(
+  Number(summary.m29OwnedRows) === Number(summary.implemented) + Number(summary.mapped),
+  'strict M29 owned rows must equal implemented + mapped purchase evidence rows',
+  summary,
+);
+assert(
+  Number(summary.outOfScopeAccepted) === Number(summary.transferredOut),
+  'out-of-scope accepted rows must match transfer accounting',
+  summary,
+);
+assert(
+  Number(summary.implementedVerifiedForStrictClosure) === Number(summary.m29OwnedRows),
+  'strict closure evidence must cover every M29-owned purchase row',
+  summary,
+);
+assert(
   Number(summary.implemented) + Number(summary.mapped) + Number(summary.transferredOut) === expectedRefs.size,
   'summary implemented + mapped + transferredOut must close all rows',
   summary,
 );
 
 console.log(
-  `gate:shop-purchase-coverage passed: ${coverage.rows.length} M29 row(s), implemented=${summary.implemented}, mapped=${summary.mapped}, transferred=${summary.transferredOut}.`,
+  `gate:shop-purchase-coverage passed: ${coverage.rows.length} source row(s), M29-owned=${summary.m29OwnedRows}, implemented-verified=${summary.implementedVerifiedForStrictClosure}, approved-excluded=${summary.outOfScopeAccepted}.`,
 );

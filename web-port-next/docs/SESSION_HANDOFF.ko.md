@@ -1,5 +1,42 @@
 # 세션 인수인계
 
+## Project Goal Reminder
+
+The goal is not to make individual checklists look green. The goal is a complete web port of the original game.
+
+Every milestone is only one owned responsibility slice toward that full-port goal. A milestone is complete only when its owned source units are closed by evidence, approved exclusion, blocked status, or explicit scope redesign. It must not count another owner's work, a transfer, a mapped row, or a scaffold gate as its own completion.
+
+Current execution point:
+- M28 is strictly closed.
+- M29 is strictly closed.
+- M30 is next, but M30 is currently blocked by unresolved item-use/special-item ownership rows.
+- M30 must not count M29-approved exclusions as completed M30 behavior unless M30 implements or formally redesigns those source units.
+
+## 2026-05-02 handoff after M29 strict closure
+
+M29 is closed under the source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M29-source-units.json`
+- Closure: `data/coverage/milestones/M29-closure.json`
+- M29 summary: total 206, implemented-verified 83, approved-excluded 123, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M29 ownedTotal is 83 purchase/listing/result rows, not the old mixed 206-row queue total.
+- The 123 non-purchase/use/equipment/recruit/event/downstream rows are not M29 implementation. They remain in the manifest as approved exclusions with receiving owner milestones.
+- `gate:shop-purchase-coverage` now reports source rows separately from M29-owned rows.
+- `gate:milestone-scope-closure -- M29` passes with `responsibilityIntegrity` and M29 ownedTotal 83.
+
+Verified:
+- `npm run coverage:shop-purchase`
+- `npm run gate:shop-purchase-coverage`
+- `npm run gate:milestone-scope-closure -- M29`
+- `npm run smoke:item-shop`
+- `npm run smoke:phase1`
+- `npm run build`
+- `npm run test --if-present`
+
+Next:
+- Start M30 only as its own responsibility slice.
+- M30 currently has `blocked` / `scope-redesign-required` source units and must not be marked complete until those are closed by implementation evidence, approved exclusion, or explicit scope redesign.
+
 ## 2026-05-02 handoff after M28 strict closure
 
 M28 is closed under the source-unit manifest rule.
@@ -40,7 +77,7 @@ Criteria baseline is complete.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,106; implemented-verified 7,904; blocked 2,913; scope-redesign-required 286; approved-excluded 3.
+- Aggregate totals: total units 11,106; implemented-verified 7,944; blocked 2,873; scope-redesign-required 163; approved-excluded 126.
 - Known criteria gap: none; `coverage-gate-registry.json` includes M28~M52 contracts.
 
 Next worker should not create new ad hoc criteria. Begin closing manifest units with implementation evidence, approved exclusion, blocked status, or explicit ownership redesign.

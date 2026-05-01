@@ -1,5 +1,32 @@
 # 진행 상태
 
+## 2026-05-02 M29 strict closure complete
+
+M29 is now closed under the source-unit manifest rule.
+
+| item | result |
+| --- | --- |
+| Manifest | `data/coverage/manifests/M29-source-units.json` |
+| Closure | `data/coverage/milestones/M29-closure.json` |
+| Source units tracked | 206 |
+| M29-owned purchase units | 83 |
+| Implemented-verified | 83 |
+| Approved-excluded from M29 ownership | 123 |
+| Blocked | 0 |
+| Scope-redesign-required | 0 |
+| `completedAllowedNow` | true |
+
+The 123 non-purchase/use/equipment/recruit/event/downstream rows are not counted as M29 implementation. They remain visible in the manifest with receiving owner milestones.
+
+Verification:
+- `npm run coverage:shop-purchase`
+- `npm run gate:shop-purchase-coverage`
+- `npm run gate:milestone-scope-closure -- M29`
+- `npm run smoke:item-shop`
+- `npm run smoke:phase1`
+- `npm run build`
+- `npm run test --if-present`
+
 ## 2026-05-02 M28-M52 registry gap closed
 
 The criteria baseline and registry enforcement are complete for M28~M52.
@@ -48,13 +75,13 @@ The criteria-side baseline is complete.
 | Consistency report | `data/coverage/manifests/M28-M52-criteria-consistency.json` |
 | Summary doc | `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md` |
 | Manifests present | M28~M52 all present |
-| `completedAllowedNow: true` | 1 |
-| `completedAllowedNow: false` | 25 |
+| `completedAllowedNow: true` | 2 |
+| `completedAllowedNow: false` | 24 |
 | Total units | 11,106 |
-| Implemented-verified | 7,904 |
-| Blocked | 2,913 |
-| Scope-redesign-required | 286 |
-| Approved-excluded | 3 |
+| Implemented-verified | 7,944 |
+| Blocked | 2,873 |
+| Scope-redesign-required | 163 |
+| Approved-excluded | 126 |
 | Known criteria gap | none; M28~M52 registry contracts exist |
 
 Next work is closure/implementation evidence, not more checklist invention.

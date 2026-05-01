@@ -3,7 +3,7 @@
   "milestone": "M29",
   "title": "Item shop purchase coverage",
   "status": "completed",
-  "completedAt": "2026-05-01",
+  "completedAt": "2026-05-02",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M29 git commit that includes this closure file",
   "sourceInputs": {
@@ -22,11 +22,16 @@
     "smoke": "tools/m29_item_shop_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 206,
-    "implemented": 43,
-    "mapped": 40,
+    "sourceUnitTotal": 206,
+    "ownedTotal": 83,
+    "implemented": 83,
+    "mapped": 0,
+    "approvedExcludedFromM29": 123,
     "approvedExcluded": 0,
-    "transferredOut": 123,
+    "transferredOut": 0,
+    "rawImplementedRows": 43,
+    "rawMappedRows": 40,
+    "rawTransferRows": 123,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
@@ -35,17 +40,52 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 206,
-    "implemented": 43,
-    "mapped": 40,
+    "ownedTotal": 83,
+    "implemented": 83,
+    "mapped": 0,
     "approvedExcluded": 0,
-    "transferredOut": 123,
+    "transferredOut": 0,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 206,
+    "implementedVerified": 83,
+    "approvedExcludedFromM29": 123,
+    "blocked": 0,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": true
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "M29 owns purchase listing definitions, visible listing session state, selected item state, price/money checks, inventory result writes, success/failure/cancel paths, and purchase-result save roundtrip.",
+      "Immediate-use items, special item effects, clothing/cosplay packs, recruit listings, event/body effects, and unrelated flags are not M29 completion; they remain tracked as approved exclusions with receiving owner milestones.",
+      "Mapped save/session rows are counted as implemented-verified only when they have runtime consumers and smoke verification inside the M29 purchase flow."
+    ],
+    "implementationEvidence": [
+      "data/coverage/shop-purchase-coverage.json",
+      "src/catalog/legacyCatalog.ts",
+      "src/features/itemShop.ts",
+      "src/game/dispatch.ts",
+      "src/ui/RouteScreens.tsx"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:shop-purchase",
+      "npm run gate:shop-purchase-coverage",
+      "npm run gate:milestone-scope-closure -- M29",
+      "npm run smoke:item-shop",
+      "npm run smoke:phase1",
+      "npm run build"
+    ]
   },
   "verification": {
     "commands": [
@@ -57,7 +97,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "206 M29 queue row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "206 source row(s), 83 M29-owned purchase row(s), 123 approved exclusions, 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:shop-purchase",

@@ -1,5 +1,15 @@
 # Current Status
 
+## 2026-05-02 M29 strict closure complete
+
+- M29 is now closed under the source-unit manifest rule.
+- `data/coverage/manifests/M29-source-units.json`: total 206, implemented-verified 83, approved-excluded 123, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- `data/coverage/milestones/M29-closure.json` now includes `responsibilityIntegrity`.
+- `npm run gate:shop-purchase-coverage` passes with source 206, M29-owned 83, implemented-verified 83, approved-excluded 123.
+- `npm run gate:milestone-scope-closure -- M29` passes with M29 ownedTotal 83.
+- The old mixed 206-row closure is corrected: non-purchase item use, equipment/clothing, recruit, event/world, and downstream owner rows are not counted as M29 implementation.
+- Next closure target: M30, currently blocked until its source units are implemented, approved-excluded, or redesigned.
+
 ## 2026-05-02 M28 strict closure complete
 
 - M28 is now closed under the source-unit manifest rule.
@@ -24,7 +34,7 @@
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,106; implemented-verified 7,904; blocked 2,913; scope-redesign-required 286; approved-excluded 3.
+- Aggregate totals: total units 11,106; implemented-verified 7,944; blocked 2,873; scope-redesign-required 163; approved-excluded 126.
 - Registry enforcement gap is closed: `coverage-gate-registry.json` has contracts for M28~M52.
 - Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
 

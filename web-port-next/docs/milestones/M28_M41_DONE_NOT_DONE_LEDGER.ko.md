@@ -1,5 +1,17 @@
 # M28~M41 완료/미완료 사실 장부
 
+## 2026-05-02 M29 strict closure update
+
+M29 is now complete under the strict source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M29-source-units.json`
+- Closure: `data/coverage/milestones/M29-closure.json`
+- Summary: total 206, implemented-verified 83, approved-excluded 123, blocked 0, scope-redesign-required 0, completedAllowedNow true.
+- M29 ownedTotal is 83 purchase/listing/result rows, not the old mixed 206-row queue total.
+- The 123 non-purchase/use/equipment/recruit/event/downstream rows are excluded from M29 ownership and remain assigned to receiving owner milestones.
+- `npm run gate:shop-purchase-coverage` passes with source 206, M29-owned 83, implemented-verified 83, approved-excluded 123.
+- `npm run gate:milestone-scope-closure -- M29` passes with `responsibilityIntegrity`.
+
 ## 2026-05-02 M28 strict closure update
 
 M28 is now complete under the strict source-unit manifest rule.

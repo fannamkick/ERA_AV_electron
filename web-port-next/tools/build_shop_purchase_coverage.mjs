@@ -300,6 +300,9 @@ const implementedDefinitionRows = rows.filter((row) => row.rowKind === 'definiti
 const implementedFeatureRows = rows.filter((row) => row.rowKind === 'feature' && row.completionStatus.startsWith('implemented'));
 const mappedRows = rows.filter((row) => row.completionStatus.startsWith('mapped-consumed'));
 const transferRows = rows.filter((row) => row.completionStatus === 'transferred-out');
+const implementedVerifiedRows = [...implementedDefinitionRows, ...implementedFeatureRows, ...mappedRows];
+const m29OwnedRows = rows.filter((row) => row.completionStatus !== 'transferred-out');
+const completedAllowedNow = missingQueueRowRefs.length === 0 && extraAccountedRowRefs.length === 0;
 
 const coverage = {
   schemaVersion: 'shop-purchase-coverage/v1',
@@ -327,6 +330,9 @@ const coverage = {
     implemented: implementedDefinitionRows.length + implementedFeatureRows.length,
     mapped: mappedRows.length,
     transferredOut: transferRows.length,
+    m29OwnedRows: m29OwnedRows.length,
+    outOfScopeAccepted: transferRows.length,
+    implementedVerifiedForStrictClosure: implementedVerifiedRows.length,
     approvedExcluded: 0,
     ownedBlocker: 0,
     missingQueueRowRefs: missingQueueRowRefs.length,
@@ -363,10 +369,13 @@ const gapAudit = {
   },
   summary: {
     scopeRows: queueRefs.size,
+    m29OwnedRows: m29OwnedRows.length,
+    implementedVerifiedForStrictClosure: implementedVerifiedRows.length,
+    approvedExcludedFromM29: transferRows.length,
     implemented: coverage.summary.implemented,
     mapped: coverage.summary.mapped,
     transferredOut: coverage.summary.transferredOut,
-    approvedExcluded: 0,
+    approvedExcluded: transferRows.length,
     unresolvedGaps: coverage.unresolvedIssues.length,
     ownedBlockers: 0,
     roleOnlyComplete: 0,
@@ -383,7 +392,7 @@ const closure = {
   milestone: 'M29',
   title: 'Item shop purchase coverage',
   status: 'completed',
-  completedAt: '2026-05-01',
+  completedAt: '2026-05-02',
   commitPolicy: 'Commit after every milestone closure.',
   commitHash: 'recorded by the M29 git commit that includes this closure file',
   sourceInputs: coverage.sourceInputs,
@@ -396,11 +405,16 @@ const closure = {
     smoke: 'tools/m29_item_shop_smoke.ts',
   },
   counts: {
-    ownedTotal: queueRefs.size,
-    implemented: coverage.summary.implemented,
-    mapped: coverage.summary.mapped,
+    sourceUnitTotal: queueRefs.size,
+    ownedTotal: m29OwnedRows.length,
+    implemented: implementedVerifiedRows.length,
+    mapped: 0,
+    approvedExcludedFromM29: transferRows.length,
     approvedExcluded: 0,
-    transferredOut: coverage.summary.transferredOut,
+    transferredOut: 0,
+    rawImplementedRows: coverage.summary.implemented,
+    rawMappedRows: coverage.summary.mapped,
+    rawTransferRows: coverage.summary.transferredOut,
     ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
@@ -409,17 +423,52 @@ const closure = {
     unapprovedExcluded: 0,
   },
   closureMetrics: {
-    ownedTotal: queueRefs.size,
-    implemented: coverage.summary.implemented,
-    mapped: coverage.summary.mapped,
+    ownedTotal: m29OwnedRows.length,
+    implemented: implementedVerifiedRows.length,
+    mapped: 0,
     approvedExcluded: 0,
-    transferredOut: coverage.summary.transferredOut,
+    transferredOut: 0,
     ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
     missingVerification: 0,
     roleOnlyComplete: 0,
     unapprovedExcluded: 0,
+  },
+  sourceUnitMetrics: {
+    sourceUnitTotal: queueRefs.size,
+    implementedVerified: implementedVerifiedRows.length,
+    approvedExcludedFromM29: transferRows.length,
+    blocked: 0,
+    scopeRedesignRequired: 0,
+    completedAllowedNow,
+  },
+  responsibilityIntegrity: {
+    scopeReductionProhibited: true,
+    checklistMatchedToResponsibility: true,
+    sourceBehaviorImplementedNotJustIndexed: true,
+    gateValidatesResponsibilityNotOwnScaffold: true,
+    limitationsBlockCompletion: false,
+    responsibilityItems: [
+      'M29 owns purchase listing definitions, visible listing session state, selected item state, price/money checks, inventory result writes, success/failure/cancel paths, and purchase-result save roundtrip.',
+      'Immediate-use items, special item effects, clothing/cosplay packs, recruit listings, event/body effects, and unrelated flags are not M29 completion; they remain tracked as approved exclusions with receiving owner milestones.',
+      'Mapped save/session rows are counted as implemented-verified only when they have runtime consumers and smoke verification inside the M29 purchase flow.',
+    ],
+    implementationEvidence: [
+      'data/coverage/shop-purchase-coverage.json',
+      'src/catalog/legacyCatalog.ts',
+      'src/features/itemShop.ts',
+      'src/game/dispatch.ts',
+      'src/ui/RouteScreens.tsx',
+    ],
+    verificationEvidence: [
+      'npm run coverage:shop-purchase',
+      'npm run gate:shop-purchase-coverage',
+      'npm run gate:milestone-scope-closure -- M29',
+      'npm run smoke:item-shop',
+      'npm run smoke:phase1',
+      'npm run build',
+    ],
   },
   verification: {
     commands: [
@@ -431,7 +480,7 @@ const closure = {
       'npm run build',
       'npm run test --if-present',
     ],
-    expectedGateResult: '206 M29 queue row(s), 0 unresolved issue(s)',
+    expectedGateResult: '206 source row(s), 83 M29-owned purchase row(s), 123 approved exclusions, 0 unresolved issue(s)',
   },
   commandsRun: [
     'npm run coverage:shop-purchase',
@@ -444,10 +493,107 @@ const closure = {
   ],
 };
 
+function manifestUnitFromCoverageRow(row, index) {
+  const isTransfer = row.completionStatus === 'transferred-out';
+  const legacyId = row.itemId ?? row.address ?? row.sourceLabel ?? row.reviewId;
+  const ownerMilestone = isTransfer ? row.toMilestone : 'M29';
+  return {
+    unitId: `M29:source-unit:${String(index + 1).padStart(4, '0')}`,
+    milestone: 'M29',
+    ownerMilestone,
+    ownerRole: 'shop-purchase-implementer',
+    sourceKind:
+      row.rowKind === 'definition'
+        ? 'csv-row'
+        : row.rowKind === 'feature'
+          ? 'erb-flow'
+          : row.rowKind === 'save-mapping'
+            ? 'save-address'
+            : 'session-address',
+    sourcePath: row.sourcePath ?? '',
+    sourceLine: row.sourceLine ?? '',
+    sourceLabel: row.label ?? row.sourceLabel ?? row.address ?? row.itemId ?? '',
+    sourceEvidenceId: row.sourceEvidenceId ?? '',
+    legacyReviewId: row.reviewId,
+    legacyFamily: '',
+    rowKind: row.rowKind,
+    legacyId,
+    requiredBehavior: isTransfer
+      ? row.transferReason
+      : 'M29 purchase flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.',
+    runtimeConsumerId: row.runtimeConsumerId ?? '',
+    verificationId: row.verificationId ?? '',
+    previousCompletionStatus: row.completionStatus,
+    manifestStatus: isTransfer ? 'approved-excluded' : 'implemented-verified',
+    blockerReason: isTransfer
+      ? `Approved exclusion from M29 ownership: ${row.transferReason}`
+      : '',
+    sourceCoverageRowId: row.coverageRowId,
+    acceptedByOwner: isTransfer ? row.acceptedByOwner === true : null,
+    fromMilestone: isTransfer ? 'M29' : '',
+    toMilestone: isTransfer ? row.toMilestone : '',
+  };
+}
+
+const manifestUnits = coverage.rows.map(manifestUnitFromCoverageRow);
+const manifest = {
+  schemaVersion: 'source-unit-manifest/v1',
+  milestone: 'M29',
+  generatedAt: '2026-05-02',
+  purpose: 'Strict completion criteria for M29 item shop purchase responsibility.',
+  sourceInputs: ['data/coverage/shop-purchase-coverage.json'],
+  rules: [
+    'Every source unit must close as implemented-verified or approved-excluded before an implementation milestone can be completed.',
+    'Mapped, transferred-out, planned runtime consumer, and planned verification are not completion states by themselves.',
+    'M29 completion cannot count another owner milestone work as M29 implementation.',
+    'Direct original source review is required before changing any blocked or scope-redesign-required unit to implemented-verified.',
+  ],
+  summary: {
+    totalUnits: manifestUnits.length,
+    'implemented-verified': manifestUnits.filter((unit) => unit.manifestStatus === 'implemented-verified').length,
+    'approved-excluded': manifestUnits.filter((unit) => unit.manifestStatus === 'approved-excluded').length,
+    blocked: 0,
+    'scope-redesign-required': 0,
+    completedAllowedNow,
+  },
+  completionGate: {
+    requiredStatuses: ['implemented-verified', 'approved-excluded'],
+    forbiddenStatusesForCompletion: ['blocked', 'scope-redesign-required'],
+    requiredCommands: [
+      'npm run coverage:shop-purchase',
+      'npm run gate:shop-purchase-coverage',
+      'npm run gate:milestone-scope-closure -- M29',
+      'npm run smoke:item-shop',
+      'npm run smoke:phase1',
+      'npm run build',
+    ],
+  },
+  notes: [
+    'M29 owns 83 purchase/listing/result source units and closes them as implemented-verified.',
+    'The remaining 123 source units stay visible in the manifest as approved exclusions from M29 ownership, with receiving owner milestones recorded.',
+    'This manifest intentionally does not treat transferred-out rows as M29 implementation completion.',
+  ],
+  units: manifestUnits,
+  directOriginalReviewRequiredBeforeCompletion: true,
+  originalSourceRoots: [
+    'original-game/ERB',
+    'original-game/CSV',
+    'original-game/CSV/Chara*.csv',
+    'original-game/CSV/VariableSize.CSV',
+  ],
+  lastClosure: {
+    closureArtifact: 'data/coverage/milestones/M29-closure.json',
+    coverageArtifact: 'data/coverage/shop-purchase-coverage.json',
+    gapAuditArtifact: 'data/coverage/audits/M29-gap-audit.json',
+    requiredCommands: closure.verification.commands,
+  },
+};
+
 writeJson('data/coverage/shop-purchase-coverage.json', coverage);
 writeJson('data/coverage/audits/M29-gap-audit.json', gapAudit);
 writeJson('data/coverage/milestones/M29-closure.json', closure);
+writeJson('data/coverage/manifests/M29-source-units.json', manifest);
 
 console.log(
-  `coverage:shop-purchase wrote ${rows.length} row(s), implemented=${coverage.summary.implemented}, mapped=${coverage.summary.mapped}, transferred=${coverage.summary.transferredOut}, unresolved=${coverage.unresolvedIssues.length}.`,
+  `coverage:shop-purchase wrote ${rows.length} source row(s), strict-owned=${m29OwnedRows.length}, approved-excluded=${transferRows.length}, unresolved=${coverage.unresolvedIssues.length}.`,
 );

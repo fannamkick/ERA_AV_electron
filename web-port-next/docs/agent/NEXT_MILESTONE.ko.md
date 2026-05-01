@@ -1,5 +1,17 @@
 # Next Milestone
 
+## 2026-05-02 next after M29 closure
+
+M29 is complete under the strict source-unit manifest rule. Continue with M30.
+
+M30 must close only its item-use/special-item responsibility. Rows approved-excluded from M29 are not M30 completion evidence until M30 implements them, excludes them with approval, or redesigns ownership explicitly.
+
+Required M30 flow:
+1. Re-read `data/coverage/manifests/M30-source-units.json`, `data/coverage/item-use-coverage.json`, and `data/coverage/audits/M30-gap-audit.json`.
+2. Resolve each `blocked` / `scope-redesign-required` unit only through real evidence, approved exclusion, or explicit owner redesign.
+3. Regenerate coverage/closure artifacts.
+4. Run `npm run coverage:item-use`, `npm run gate:item-use-coverage`, `npm run gate:milestone-scope-closure -- M30`, `npm run smoke:item-use`, and `npm run build`.
+
 ## 2026-05-02 next after M28 closure
 
 M28 is complete under the strict source-unit manifest rule. Continue with M29.

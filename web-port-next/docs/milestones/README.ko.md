@@ -7,7 +7,7 @@
 - M28은 strict closure 완료 상태다.
 - M29가 다음 closure 대상이다.
 - M29~M41은 strict source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전까지 M42를 재개하지 않는다.
-- M28~M52 aggregate: total 11,106; implemented-verified 7,904; approved-excluded 3; blocked 2,913; scope-redesign-required 286; completedAllowedNow true 1 / false 25.
+- M28~M52 aggregate: total 11,106; implemented-verified 7,944; approved-excluded 126; blocked 2,873; scope-redesign-required 163; completedAllowedNow true 2 / false 24.
 
 완료 판정 권위는 여전히 다음 산출물에 있다.
 
