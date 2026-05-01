@@ -64,5 +64,5 @@
     "npm run test --if-present",
     "npm run gate:milestone-scope-closure -- M34.5"
   ],
-  "commitHash": ""
+  "commitHash": "4b0ae500cdddc749a31abc78e6b1a0e217291b57"
 }
