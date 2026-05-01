@@ -1,6 +1,6 @@
 # 세션 인수인계
 
-새 세션은 아래 요약만 읽고 M41 훈련 가능 조건 전수 구현부터 진행한다. M40 훈련 메뉴와 세션 완성은 완료되었고, 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
+새 세션은 아래 요약만 읽고 M42 훈련 command 효과 0~34 완성부터 진행한다. M40 훈련 메뉴와 세션 완성, M41 훈련 가능 조건 전수 구현은 완료되었고, 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
 
 ## 작업 위치
 
@@ -73,7 +73,7 @@
 - M20에서 `data/coverage/definitions.json`을 생성했고 M23에서 ERB 기반 정의 160행을 병합했다. 현재 definition row는 8,000개이고, raw 정의 918개와 Chara seed 6,922행, ERB-derived 정의 160행이 모두 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker를 가진다.
 - M20은 정의 데이터 전수 분류와 소비 책임 배정이다. 실제 컨텐츠 효과 구현 완료가 아니다.
 - M20/M23 definition status는 M34 이후 CFLAG 정의와 Chara CFLAG/RELATION seed 일부가 실제 소비 검증으로 승격되었다. 그래도 `template`/`listing`/`display-only`/`calculation-only`는 M28~M49에서 실제 소비 검증으로 계속 승격해야 한다.
-- M20 blocker 중 특수 item 15개는 M30에서, 신체/능력/소질/경험 seed는 M33에서, CFLAG 정의 151개와 Chara CFLAG seed 1,465개 및 RELATION seed 532개는 M34에서, 턴/시간 진행 row는 M35에서, 방문/시설 row는 M36에서, 업무/창관/특수 업무 row는 M37에서, 촬영 장면 정의 row는 M38에서, 촬영 실행/판매 row는 M39에서, 훈련 세션 lifecycle row는 M40에서 소비/분류를 닫았다. 남은 큰 묶음은 훈련 가능 조건/효과, 미션/이벤트/엔딩/정보 계열이며 M41~M49에서 의미별 owner와 lifecycle로 분해해야 한다.
+- M20 blocker 중 특수 item 15개는 M30에서, 신체/능력/소질/경험 seed는 M33에서, CFLAG 정의 151개와 Chara CFLAG seed 1,465개 및 RELATION seed 532개는 M34에서, 턴/시간 진행 row는 M35에서, 방문/시설 row는 M36에서, 업무/창관/특수 업무 row는 M37에서, 촬영 장면 정의 row는 M38에서, 촬영 실행/판매 row는 M39에서, 훈련 세션 lifecycle row는 M40에서, 훈련 가능 조건 row는 M41에서 소비/분류를 닫았다. 남은 큰 묶음은 훈련 효과, 미션/이벤트/엔딩/정보 계열이며 M42~M49에서 의미별 owner와 lifecycle로 분해해야 한다.
 - 데이터 완성도는 수집 수량이 아니라 실제 게임 구성 역할 기준으로 판정한다. 현재 feature coverage와 definition coverage는 v1로 생성되었지만, 전체 게임 완료 기준의 source/save/session coverage는 M21~M27과 M51/M52에서 닫는다.
 - 변수, 정의 데이터, 기능 흐름, 저장/세션 판정의 1차 기준은 문서가 아니라 작업 루트의 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`이다. 문서는 파생 해석이므로 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 않는다.
 - M21~M27에서는 source evidence, feature, definition, save mapping, session mapping, blocker/approved exclusion registry를 대조하는 gate를 추가해야 한다. 같은 gate는 M51/M52 최종 판정에서도 다시 실행한다.
@@ -103,7 +103,10 @@
 - M39에서 촬영 실행 결과는 `economy.videoSalesTotal`, `work.filmingProgressFlags`, `work.filmingByCharacterId`, `work.careerFlagsByCharacterId`, `people`, `body` owner에만 반영한다. `session.shooting.sceneTemporaryValues`, `session.shooting.sceneFlags`, `session.interaction.participants.assistantId`는 저장 payload에 남지 않는다.
 - M40에서 훈련 메뉴와 세션 완성을 완료했다. `coverage:training-session`, `gate:training-session`, `smoke:training-session`을 실제 script로 교체했고, M40 owned scope 11행을 implemented 5, mapped 6, unresolved issue 0개로 닫았다.
 - M40에서 원본 `TRAIN_MAIN.ERB`의 `EVENTTRAIN`, `EVENTCOM`, `EVENTCOMEND`, `EVENTEND`, `JUEL_CHECK`, `SHOW_STATUS`, `FIGURE_INDENT`, `FIGURE_INDENT_SLASH`를 runtime consumer와 smoke 검증에 연결했다. 105개 훈련 command 후보 전체 view, 대상/실행자/조수 선택, 조수 해제, command 선택 reset, 누락/불가 실패, 선택 취소, 화면 취소, 실행 후 턴 종료와 session cleanup을 검증한다.
-- 다음 작업은 M41 훈련 가능 조건 전수 구현이다. item 22/90/91과 105개 command별 availability/불가 사유를 원본 기준으로 닫는다.
+- M41에서 훈련 가능 조건 전수 구현을 완료했다. `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`를 실제 script로 교체했고, M41 owned scope 1,625행을 implemented 1,371, mapped 254, unresolved issue 0개로 닫았다.
+- M41에서 원본 `COMABLE.ERB`의 `COM_ABLE*` source program 125개를 추출했고, `Train.csv` active command 105개 전부가 대응 source program을 가진다. `COMSEQ_REGISTER.ERB` dynamic call row와 `COMORDER.ERB` source-file-review row도 coverage/audit/closure에 반영했다.
+- M41 availability는 저장 상태를 바꾸지 않는 view 계산으로 연결했고, 불가 command는 원본 availability rule 기반 사유를 표시한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
+- 다음 작업은 M42 훈련 command 효과 0~34 완성이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -218,6 +221,12 @@ npm run gate:training-session
 npm run gate:milestone-scope-closure -- M40
 npm run smoke:training-session
 npm run smoke:m14
+npm run coverage:training-availability
+npm run gate:training-availability
+npm run gate:milestone-scope-closure -- M41
+npm run smoke:training-availability
+npm run smoke:training-session
+npm run smoke:m14
 npm run verify:m16
 npm run smoke:main-routes
 npm run gate:definition-consumption
@@ -272,6 +281,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M38 filming scene coverage/gate/smoke 통과: owned row 6개, unresolved issue 0개
 - M39 filming execution coverage/gate/smoke 통과: owned row 174개, unresolved issue 0개
 - M40 training session coverage/gate/smoke 통과: owned row 11개, unresolved issue 0개
+- M41 training availability coverage/gate/smoke 통과: owned row 1,625개, unresolved issue 0개. 원본 `COMABLE.ERB` source program 125개와 active command 105개 대응 검증
 - `smoke:main-routes` 통과: 메인 메뉴 108 wardrobe route 활성화 확인
 - `analyze:game-system` 통과
 - `tsc --noEmit` 통과
@@ -318,7 +328,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 35. M38 촬영 정의와 장면 조건 완성은 `npm run coverage:filming-scene`, `npm run gate:filming-scene`, `npm run gate:milestone-scope-closure -- M38`, `npm run smoke:filming-scenes`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M38 owned scope 6행 중 mapped 6, unresolved issue 0개로 닫았다.
 36. M39 촬영 실행/결과/판매 완성은 `npm run coverage:filming-execution`, `npm run gate:filming-execution`, `npm run gate:milestone-scope-closure -- M39`, `npm run smoke:filming-all`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M39 owned scope 174행 중 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
 37. M40 훈련 메뉴와 세션 완성은 `npm run coverage:training-session`, `npm run gate:training-session`, `npm run gate:milestone-scope-closure -- M40`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M40 owned scope 11행 중 implemented 5, mapped 6, unresolved issue 0개로 닫았다.
-38. 다음 작업은 M41 훈련 가능 조건 전수 구현이다. item 22/90/91과 105개 command별 availability/불가 사유를 원본 기준으로 닫는다.
+38. M41 훈련 가능 조건 전수 구현은 `npm run coverage:training-availability`, `npm run gate:training-availability`, `npm run gate:milestone-scope-closure -- M41`, `npm run smoke:training-availability`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run gate:raw-names`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M41 owned scope 1,625행 중 implemented 1,371, mapped 254, unresolved issue 0개로 닫았다.
+39. 다음 작업은 M42 훈련 command 효과 0~34 완성이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
 
 ## 읽을 문서
 

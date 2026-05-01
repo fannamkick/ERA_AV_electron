@@ -1621,14 +1621,39 @@ npm run test --if-present
 - 완료 결과: 각 command가 가능/불가 판정과 불가 사유 검증을 갖는다.
 - 누락 차단: 실행 가능한 command에 조건 row나 불가 사유가 없으면 완료하지 않는다.
 
-- [ ] `Train.csv` 105개 command별 가능 조건을 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
-- [ ] command별 대상, 실행자, 조수 역할 조건을 구현
-- [ ] command별 장비, 상태, 자원, 장소, 이벤트 조건을 구현
-- [ ] 불가 사유를 view 계산 결과로 표시
-- [ ] availability 계산이 저장 상태를 바꾸지 않는지 검증
-- [ ] command별 가능/불가 smoke 또는 table 검증을 추가
-- [ ] M20/M25 coverage의 훈련 가능 조건 status 갱신
-- [ ] `npm run build` 실행
+- [x] `Train.csv` 105개 command별 가능 조건을 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [x] command별 대상, 실행자, 조수 역할 조건을 구현
+- [x] command별 장비, 상태, 자원, 장소, 이벤트 조건을 구현
+- [x] 불가 사유를 view 계산 결과로 표시
+- [x] availability 계산이 저장 상태를 바꾸지 않는지 검증
+- [x] command별 가능/불가 smoke 또는 table 검증을 추가
+- [x] M20/M25 coverage의 훈련 가능 조건 status 갱신
+- [x] `npm run build` 실행
+
+M41 완료 근거:
+- M41 owned scope는 1,625행이다. `unit:M41:training-availability` feature row 1,624행과 `unit:M41:training-availability-original-game-erb-comorder-erb` source-file-review 1행을 원본 `COMABLE.ERB`, `COMSEQ_REGISTER.ERB`, `COMORDER.ERB` 기준으로 닫았다.
+- `COMABLE.ERB`의 `COM_ABLE*` source program 125개를 `data/coverage/training-availability-rules.json`으로 추출했고, `Train.csv` active command 105개 전부가 대응 source program을 가진다.
+- availability는 save/session을 변경하지 않는 view 계산으로 처리한다. 원본 조건의 읽기 대상은 새 runtime owner(`people`, `body`, `social`, `inventory`, `equipment`, `run`, `featureState`, `session`)로 해석하고, 원본 raw 변수명은 runtime 모델명으로 쓰지 않는다.
+- 불가 command는 `Original availability rule COM_ABLE...` 형식의 사유를 반환한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
+- item 22/90/91 계열과 장비/상태/자원/관계/능력/소질/경험 조건을 원본 availability interpreter에 연결했고, 대표 item 부족 및 임시 장비 조건을 smoke로 검증했다.
+- `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`를 placeholder가 아닌 실제 script로 교체했다.
+- `data/coverage/training-availability-coverage.json`, `data/coverage/training-availability-rules.json`, `data/coverage/audits/M41-gap-audit.json`, `data/coverage/milestones/M41-closure.json`을 생성했다. ownedTotal 1,625, implemented 1,371, mapped 254, blocker/missing/unapproved 0.
+
+검증:
+
+```bash
+npm run coverage:training-availability
+npm run gate:training-availability
+npm run gate:milestone-scope-closure -- M41
+npm run smoke:training-availability
+npm run smoke:training-session
+npm run smoke:m14
+npm run verify:m16
+npm run gate:raw-names
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M42. 훈련 command 효과 0~34 완성
 

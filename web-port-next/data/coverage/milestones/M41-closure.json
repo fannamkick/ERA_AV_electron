@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M41",
+  "title": "Training command availability and unavailable reasons",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M41 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "features": "data/coverage/features.json",
+    "sourceManifest": "data/coverage/source-manifest.json",
+    "originalAvailabilitySource": "original-game/ERB/指導関係/COMABLE.ERB",
+    "originalOrderSource": "original-game/ERB/指導関係/COMORDER.ERB"
+  },
+  "outputs": {
+    "trainingAvailabilityCoverage": "data/coverage/training-availability-coverage.json",
+    "trainingAvailabilityRules": "data/coverage/training-availability-rules.json",
+    "gapAudit": "data/coverage/audits/M41-gap-audit.json",
+    "builder": "tools/build_training_availability_coverage.mjs",
+    "coverageGate": "tools/gate_training_availability.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m41_training_availability_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 1625,
+    "implemented": 1371,
+    "mapped": 254,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 1625,
+    "implemented": 1371,
+    "mapped": 254,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:training-availability",
+      "npm run gate:training-availability",
+      "npm run gate:milestone-scope-closure -- M41",
+      "npm run smoke:training-availability",
+      "npm run smoke:training-session",
+      "npm run smoke:m14",
+      "npm run verify:m16",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "1625 M41 owned row(s), 0 unresolved issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:training-availability",
+    "npm run gate:training-availability",
+    "npm run gate:milestone-scope-closure -- M41",
+    "npm run smoke:training-availability",
+    "npm run smoke:training-session",
+    "npm run smoke:m14",
+    "npm run verify:m16",
+    "npm run typecheck",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}

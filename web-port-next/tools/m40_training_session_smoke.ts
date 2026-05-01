@@ -14,6 +14,8 @@ type SmokeContext = {
 };
 
 const defaultCommandId = '0';
+const unavailableCommandId = '53';
+const cameraItemId = '6';
 const stimulusId = '0';
 const pleasureParamId = '0';
 const desireParamId = '5';
@@ -82,14 +84,6 @@ function firstCharacterId(context: SmokeContext): string {
   return characterId;
 }
 
-function firstUnavailableCommandId(context: SmokeContext): string {
-  const command = Object.values(context.catalog.trainingCommands)
-    .sort((left, right) => Number(left.id) - Number(right.id))
-    .find((candidate) => candidate.defaultAvailable !== true);
-  assert(command, 'M40 smoke needs at least one non-default training command for availability failure.');
-  return command.id;
-}
-
 function withStaleTrainingBuffers(context: SmokeContext): SmokeContext {
   return {
     ...context,
@@ -138,6 +132,22 @@ function withStaleTrainingBuffers(context: SmokeContext): SmokeContext {
   };
 }
 
+function withoutCameraItem(context: SmokeContext): SmokeContext {
+  return {
+    ...context,
+    state: {
+      ...context.state,
+      inventory: {
+        ...context.state.inventory,
+        itemCounts: {
+          ...context.state.inventory.itemCounts,
+          [cameraItemId]: 0,
+        },
+      },
+    },
+  };
+}
+
 function main() {
   const initialData = createInitialGameData();
   let context: SmokeContext = {
@@ -148,7 +158,6 @@ function main() {
 
   assert(Object.keys(context.catalog.trainingCommands).length === 105, 'M40 must expose all 105 original training commands.');
   assert(context.catalog.trainingCommands[defaultCommandId]?.defaultAvailable === true, 'M40 default command should be available after selections.');
-  const unavailableCommandId = firstUnavailableCommandId(context);
   assertNoBoundaryErrors('initial state/session', validateStateSessionBoundary(context.state, context.session));
 
   let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
@@ -206,17 +215,17 @@ function main() {
   assert(step.result.status === 'success', 'assistant reselection should succeed.');
   context = step.context;
 
-  trainingView = buildTrainingView(context.catalog, context.state, context.session);
+  const unavailableContext = withoutCameraItem(context);
+  trainingView = buildTrainingView(unavailableContext.catalog, unavailableContext.state, unavailableContext.session);
   const unavailableCommand = trainingView.visibleCommands.find((command) => command.commandId === unavailableCommandId);
-  assert(unavailableCommand?.available === false, 'M41 locked command should remain disabled in M40.');
-  assert(unavailableCommand.disabledReason === 'Training command is not available yet.', 'locked command should explain availability deferral.');
+  assert(unavailableCommand?.available === false, 'M40 should surface unavailable commands without mutating save state.');
+  assert(unavailableCommand.disabledReason?.includes('Original availability rule'), 'unavailable command should cite original availability evidence.');
 
-  const beforeUnavailableCommand = context.state;
-  step = dispatchChecked(context, { type: 'training/selectCommand', commandId: unavailableCommandId });
-  assert(step.result.status === 'failure', 'locked training command selection should fail before M41 unlocks.');
-  assert(step.result.failure?.code === 'training-command-unavailable', 'locked training command should use training-command-unavailable.');
-  assert(step.result.state === beforeUnavailableCommand, 'locked command should preserve save state reference.');
-  context = step.context;
+  const beforeUnavailableCommand = unavailableContext.state;
+  step = dispatchChecked(unavailableContext, { type: 'training/selectCommand', commandId: unavailableCommandId });
+  assert(step.result.status === 'failure', 'unavailable training command selection should fail.');
+  assert(step.result.failure?.code === 'training-command-unavailable', 'unavailable training command should use training-command-unavailable.');
+  assert(step.result.state === beforeUnavailableCommand, 'unavailable command should preserve save state reference.');
 
   context = withStaleTrainingBuffers(context);
   step = dispatchChecked(context, { type: 'training/selectCommand', commandId: defaultCommandId });

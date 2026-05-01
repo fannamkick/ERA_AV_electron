@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "milestone-gap-audit/v1",
+  "generatedBy": "tools/build_training_availability_coverage.mjs",
+  "milestone": "M41",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "features": "data/coverage/features.json",
+    "sourceManifest": "data/coverage/source-manifest.json",
+    "originalAvailabilitySource": "original-game/ERB/指導関係/COMABLE.ERB",
+    "originalOrderSource": "original-game/ERB/指導関係/COMORDER.ERB"
+  },
+  "summary": {
+    "scopeRows": 1625,
+    "implemented": 1371,
+    "mapped": 254,
+    "transferredOut": 0,
+    "approvedExcluded": 0,
+    "unresolvedGaps": 0,
+    "ownedBlockers": 0,
+    "roleOnlyComplete": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "unapprovedExcluded": 0
+  },
+  "issues": []
+}

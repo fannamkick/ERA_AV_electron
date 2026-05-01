@@ -7,6 +7,7 @@ import type { GameSession, GameState } from '../game/state';
 import type { TrainingCommandView, TrainingParticipantView, TrainingView } from '../game/views';
 import { applyBodyStatDeltas, applyConditionParamDeltas, applyTrainingResourceDeltas } from './bodyStats';
 import { isCharacterActive } from './characterLifecycle';
+import { trainingAvailabilityDisabledReason } from './trainingAvailability';
 import { endTurn } from './turnEnd';
 
 export type TrainingFailure = {
@@ -62,10 +63,6 @@ function trainingCommandDisabledReason(
   session: GameSession,
   command: TrainingCommandDefinition,
 ): string | undefined {
-  if (command.defaultAvailable !== true && state.featureState.unlocks[`training:${command.id}`] !== true) {
-    return 'Training command is not available yet.';
-  }
-
   const targetId = session.interaction.participants.targetId;
   if (command.requiresTarget !== false && !targetId) {
     return 'Select a training target first.';
@@ -102,7 +99,7 @@ function trainingCommandDisabledReason(
     }
   }
 
-  return undefined;
+  return trainingAvailabilityDisabledReason(state, session, command);
 }
 
 export function computeVisibleTrainingParticipantIds(state: GameState): readonly string[] {
