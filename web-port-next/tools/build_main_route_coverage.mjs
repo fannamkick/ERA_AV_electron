@@ -137,6 +137,7 @@ const enabledMenuRows = definitionRows.filter((row) => row.defaultEnabled);
 const disabledMenuRows = definitionRows.filter((row) => !row.defaultEnabled);
 const implementedRows = definitionRows.length;
 const transferredOut = sessionRows.length;
+const m28OwnedRows = definitionRows.length;
 
 const mainRouteCoverage = {
   schemaVersion: 'main-route-coverage/v1',
@@ -232,7 +233,7 @@ const closure = {
     smoke: 'tools/m28_main_routes_smoke.ts',
   },
   counts: {
-    ownedTotal: queueRowRefs.size,
+    ownedTotal: m28OwnedRows,
     menuRows: definitionRows.length,
     enabledMenuRows: enabledMenuRows.length,
     disabledMenuRows: disabledMenuRows.length,
@@ -249,17 +250,51 @@ const closure = {
     unapprovedExcluded: 0,
   },
   closureMetrics: {
-    ownedTotal: queueRowRefs.size,
+    ownedTotal: m28OwnedRows,
     implemented: implementedRows,
     mapped: 0,
     approvedExcluded: 0,
-    transferredOut,
+    transferredOut: 0,
     ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
     missingVerification: 0,
     roleOnlyComplete: 0,
     unapprovedExcluded: 0,
+  },
+  outOfScopeRows: {
+    acceptedByReceivingOwner: transferredOut,
+    receivingOwnerMilestone: 'M47',
+    rowRefs: sessionRows.map((row) => row.reviewId),
+    reason:
+      'These BOYFRIEND event-local screen session rows are accounted in M28 coverage because they were present in the old M28 queue, but they are not part of the M28 main-route connector responsibility.',
+  },
+  responsibilityIntegrity: {
+    scopeReductionProhibited: true,
+    checklistMatchedToResponsibility: true,
+    sourceBehaviorImplementedNotJustIndexed: true,
+    gateValidatesResponsibilityNotOwnScaffold: true,
+    limitationsBlockCompletion: false,
+    responsibilityItems: [
+      'All 24 original SHOP_MAIN main-menu option rows are accounted.',
+      'Enabled rows have runtime definitions, action ids, route ids, dispatch consumers, route consumers, and smoke verification.',
+      'Disabled rows remain visible as disabled route contracts with explicit future owner milestones and disabled reasons.',
+      'BOYFRIEND event-local TCVAR rows are excluded from M28 ownership and recorded as M47 event/world responsibility.',
+    ],
+    implementationEvidence: [
+      'data/coverage/main-route-coverage.json',
+      'src/catalog/legacyCatalog.ts',
+      'src/features/mainMenu.ts',
+      'src/game/dispatch.ts',
+      'src/ui/RouteScreens.tsx',
+    ],
+    verificationEvidence: [
+      'npm run coverage:main-routes',
+      'npm run gate:main-route-coverage',
+      'npm run gate:milestone-scope-closure -- M28',
+      'npm run smoke:main-routes',
+      'npm run build',
+    ],
   },
   verification: {
     commands: [

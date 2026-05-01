@@ -1,5 +1,16 @@
 # M28~M41 완료/미완료 사실 장부
 
+## 2026-05-02 M28 strict closure update
+
+M28 is now complete under the strict source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M28-source-units.json`
+- Closure: `data/coverage/milestones/M28-closure.json`
+- Summary: total 27, implemented-verified 24, approved-excluded 3, blocked 0, scope-redesign-required 0, completedAllowedNow true.
+- M28 ownedTotal is 24 route contract rows, not the old mixed 27-row queue total.
+- BOYFRIEND event-local session rows are excluded from M28 ownership and remain M47 responsibility.
+- `npm run gate:milestone-scope-closure -- M28` passes with `responsibilityIntegrity`.
+
 ## 2026-05-02 M35-M41 source-unit manifest pass 1
 
 Artifacts:
@@ -55,7 +66,7 @@ Next actions:
 
 | M | 기존 closure 상태 | 새 판정 | M42 전 차단 | 핵심 사유 | 다음 조치 |
 | --- | --- | --- | --- | --- | --- |
-| M28 | completed, implemented 24, transferredOut 3 | blocked | 예 | `transferredOut > 0`, 원본 단위 매니페스트 없음, `responsibilityIntegrity` 없음 | route/action/view 24개와 event-local row 3개를 매니페스트로 분리. event-local row는 M47 또는 blocked로 닫고 completed total에서 제거 |
+| M28 | completed, implemented 24, approved-excluded 3 | completed | 아니오 | strict closure 완료. `responsibilityIntegrity` 있음 | route/action/view 24개는 M28 소유 완료, event-local row 3개는 M47 책임으로 M28에서 approved-excluded |
 | M29 | completed, implemented 43, mapped 40, transferredOut 123 | scope-redesign-required | 예 | 구매형 listing과 비구매/사용/장비/이벤트 item이 한 closure에 섞임 | 구매형 listing/구매 결과만 M29 매니페스트에 남기고 123개 비구매 row는 실제 owner 매니페스트로 이동 |
 | M30 | blocked, ownedBlocker 37 | scope-redesign-required 유지 | 예 | 즉시 사용 item과 특수 item 200~214 훈련/의복 효과가 섞임 | M30은 즉시 사용 item 9개 owner로 좁히고 특수 item은 M34/M42/M43/M44에서 닫음 |
 | M31 | completed, implemented 52, mapped 158, transferredOut 27 | scope-redesign-required | 예 | 영입 listing/생성 결과와 identity/lifecycle/event row가 섞임 | listing/가격/조건/생성 결과만 M31 매니페스트에 남기고 identity/CFLAG/hook/event row를 수신 owner로 재분리 |
@@ -87,12 +98,12 @@ Next actions:
 
 | M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | 현재 완료 가능 | 핵심 판정 |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
-| M28 | 27 | 13 | 0 | 14 | 아니오 | 실제 enabled route 13개만 완료 후보. disabled route 11개와 BOYFRIEND session row 3개는 실제 owner manifest로 이동해야 한다. |
+| M28 | 27 | 24 | 0 | 0 | 예 | strict closure 완료. SHOP_MAIN menu row 24개는 route contract로 구현 검증했고, BOYFRIEND session row 3개는 M28 approved-excluded 및 M47 책임으로 기록했다. |
 | M29 | 206 | 43 | 40 | 123 | 아니오 | 구매형 listing/flow 43개만 완료 후보. mapped 40개는 직접 검증 단위로 승격해야 하고, 비구매/사용/장비/영입/이벤트 123개는 M29 scope 밖이다. |
 | M30 | 74 | 21 | 16 | 37 | 아니오 | 즉시 사용 item flow/effect 21개만 완료 후보. mapped 16개는 직접 검증 단위로 승격해야 하고, 특수 item 200~214 및 item 22/90/91 계열 37개는 실제 owner에서 닫아야 한다. |
 
 다음 조치:
-- M28: closure의 completed 판정을 철회하거나, M28 scope를 enabled route 13개로 재정의하고 나머지 14개를 destination owner manifest로 이동한다.
+- M28: 완료. closure에 `responsibilityIntegrity`를 추가했고, M28 ownedTotal은 main route contract 24개로 고정했다. BOYFRIEND session row 3개는 M47 책임으로 남긴다.
 - M29: 구매형 listing/flow manifest로 closure를 재작성한다. mapped 40개는 listing/flow의 하위 검증으로 승격하거나 blocked로 둔다.
 - M30: 즉시 사용 item 9개 owner로 scope를 좁히고, 특수 item 200~214 및 item 22/90/91은 M34/M41/M42/M43/M44 manifest에서 닫는다.
 
@@ -122,7 +133,7 @@ Next actions:
 
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
-| M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼다. | closure에 `responsibilityIntegrity`가 없다. |
+| M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼고 M28에서는 approved-excluded로 닫았다. | strict closure 완료. `responsibilityIntegrity` 포함. |
 | M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영을 구현했다. coverage 기준 implemented 43, mapped 40. | 123개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner로 넘겼다. | transferredOut 123개가 실제 수신 마일스톤에서 닫혔는지 추적 필요. |
 | M30 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 선택, 대상 지정, 성공/실패/취소, 저장 반영 경로를 구현했다. coverage 기준 implemented 21, mapped 16. | 37개 owned row가 M34/M41/M42/M43/M44 계열로 남아 있으며, 특수 item 200~214의 실제 소비는 M30에서 구현되지 않았다. | M30은 2026-05-02 재판정 기준 `blocked`다. `transferredOut` 37개는 완료 근거가 아니라 `ownedBlocker` 37개로 기록한다. item 213은 `COMF137.ERB`라 기존 M42~M44 range 설계도 재확인해야 한다. |
 | M31 | 영입 listing 48개, 반복 영입 제한, 인물 생성 결과를 구현했다. coverage 기준 implemented 52, mapped 158. | 27개 row는 후속 owner로 넘겼다. mapped 158개는 실제 생성 로직이 아니라 identity/정의/owner 확정 성격이 섞여 있다. | mapped와 transferredOut이 실제 미구현을 숨기지 않는지 재확인 필요. |
@@ -140,7 +151,7 @@ Next actions:
 
 ## 즉시 보강할 항목
 
-- M28~M41 closure에 `responsibilityIntegrity`를 기계적으로 추가하지 않는다. 먼저 이 장부의 `재확인 필요`를 해소하거나 blocked로 적는다.
+- M29~M41 closure에 `responsibilityIntegrity`를 기계적으로 추가하지 않는다. 먼저 이 장부의 `재확인 필요`를 해소하거나 blocked로 적는다. M28은 strict closure 완료 상태다.
 - M30은 blocked로 재판정했다. 책임 분리 기준상 맞는 방향은 M30을 "즉시 사용 아이템 9개" owner로 공식 재설계하고, 특수 item 200~214는 M34/M42/M43/M44 계열 실제 소비 owner에서 닫는 것이다.
 - M35의 넓은 책임을 save field mapping 7개가 아니라 runtime hook/cleanup별 사실로 풀어 적는다.
 - M38/M41 registry에 smoke 필수 누락을 기록한다.

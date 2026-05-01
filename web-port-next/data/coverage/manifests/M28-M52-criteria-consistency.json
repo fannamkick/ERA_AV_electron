@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "generatedAt": "2026-05-02",
-  "purpose": "Consistency pass for M28-M52 completion criteria manifests. This report verifies criteria coverage, not implementation completion.",
+  "purpose": "Consistency pass for M28-M52 completion criteria manifests. This report verifies criteria coverage and per-manifest closure state, not full implementation completion.",
   "overallStatus": "criteria-baseline-complete",
   "criteriaBaselineComplete": true,
   "implementationComplete": false,
-  "allCompletedAllowedNowFalse": true,
+  "allCompletedAllowedNowFalse": false,
   "totals": {
     "totalUnits": 11106,
-    "implementedVerified": 7893,
+    "implementedVerified": 7904,
     "blocked": 2913,
-    "scopeRedesignRequired": 300,
-    "approvedExcluded": 0,
-    "completedAllowedNowTrue": 0,
-    "completedAllowedNowFalse": 26
+    "scopeRedesignRequired": 286,
+    "approvedExcluded": 3,
+    "completedAllowedNowTrue": 1,
+    "completedAllowedNowFalse": 25
   },
   "checks": {
     "allM28ToM52ManifestsPresent": true,
@@ -25,7 +25,7 @@
     "nextImplementationMustNotStartFromCompletedAssumption": true
   },
   "blockingFindings": [
-    "Every M28-M52 manifest currently has completedAllowedNow=false; criteria exists, implementation/closure is not complete.",
+    "1 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
     "Registry contracts now exist for every M28-M52 manifest.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
@@ -38,9 +38,11 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 27,
-        "implemented-verified": 13,
-        "scope-redesign-required": 14,
-        "completedAllowedNow": false
+        "implemented-verified": 24,
+        "approved-excluded": 3,
+        "blocked": 0,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": true
       }
     },
     {

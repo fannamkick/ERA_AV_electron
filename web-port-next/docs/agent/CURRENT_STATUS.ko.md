@@ -1,5 +1,14 @@
 # Current Status
 
+## 2026-05-02 M28 strict closure complete
+
+- M28 is now closed under the source-unit manifest rule.
+- `data/coverage/manifests/M28-source-units.json`: total 27, implemented-verified 24, approved-excluded 3, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- `data/coverage/milestones/M28-closure.json` now includes `responsibilityIntegrity`.
+- `npm run gate:milestone-scope-closure -- M28` passes with M28 ownedTotal 24.
+- The old mixed 27-row closure is corrected: BOYFRIEND event-local session rows are not counted as M28 implementation and remain M47 responsibility.
+- Next closure target: M29.
+
 ## 2026-05-02 criteria registry gap closed
 
 - M28~M34 registry contracts were added to `tools/build_coverage_gate_registry.mjs`.
@@ -14,8 +23,8 @@
 - Report: `data/coverage/manifests/M28-M52-criteria-consistency.json`.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
-- All 26 manifests currently have `completedAllowedNow: false`.
-- Aggregate totals: total units 11,106; implemented-verified 7,893; blocked 2,913; scope-redesign-required 300.
+- M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
+- Aggregate totals: total units 11,106; implemented-verified 7,904; blocked 2,913; scope-redesign-required 286; approved-excluded 3.
 - Registry enforcement gap is closed: `coverage-gate-registry.json` has contracts for M28~M52.
 - Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
 
@@ -95,12 +104,12 @@
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
 - M30은 재판정 완료. 즉시 사용 아이템 9개는 구현됐지만 transfer 37개가 `ownedBlocker`로 남아 `status: blocked`다. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 현재 실패해야 정상이다.
 - completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
-- M28~M41은 2026-05-02 원본 단위 매니페스트 기준 재판정에서 `completed 유지 가능`이 0개로 판정됐다. 기존 coverage/gate/smoke 통과 기록은 남아 있지만, 모든 M28~M41 closure는 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다.
-- M28~M30 1차 source-unit manifest를 만들었다: `data/coverage/manifests/M28-source-units.json`, `M29-source-units.json`, `M30-source-units.json`. 현재 완료 가능은 모두 아니며, 완료 후보는 M28 13/27, M29 43/206, M30 21/74 단위뿐이다.
+- M28~M41은 2026-05-02 원본 단위 매니페스트 기준 재판정에서 전부 재검토 대상으로 판정됐고, 이후 M28은 strict closure로 완료됐다. M29~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다.
+- M28~M30 source-unit manifest 상태: M28 completedAllowedNow true(24 implemented-verified, 3 approved-excluded), M29 43/206 implemented-verified, M30 21/74 implemented-verified.
 
 ## 현재 미완료 초점
 
-- 다음은 M28~M30 closure를 manifest 기준으로 정정하거나, M31~M34.5 source-unit manifest를 같은 방식으로 만든다.
+- 다음은 M29 closure를 manifest 기준으로 정정한다.
 - 그 다음 command 0~34의 원본 효과 계산을 실제 runtime behavior로 구현해야 한다.
 - 원본 효과/조건/후처리 책임은 라인 존재 확인이나 profile 생성으로 대체할 수 없다.
 - `npm run gate:training-effect -- 0-34`는 M42가 실제 구현되기 전까지 실패해야 한다.

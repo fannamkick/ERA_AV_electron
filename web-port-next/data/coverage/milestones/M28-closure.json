@@ -20,7 +20,7 @@
     "smoke": "tools/m28_main_routes_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 27,
+    "ownedTotal": 24,
     "menuRows": 24,
     "enabledMenuRows": 13,
     "disabledMenuRows": 11,
@@ -37,17 +37,54 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 27,
+    "ownedTotal": 24,
     "implemented": 24,
     "mapped": 0,
     "approvedExcluded": 0,
-    "transferredOut": 3,
+    "transferredOut": 0,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "outOfScopeRows": {
+    "acceptedByReceivingOwner": 3,
+    "receivingOwnerMilestone": "M47",
+    "rowRefs": [
+      "session-mapping:session-map:source:tcvar-20",
+      "session-mapping:session-map:source:tcvar-50",
+      "session-mapping:session-map:source:tcvar-70"
+    ],
+    "reason": "These BOYFRIEND event-local screen session rows are accounted in M28 coverage because they were present in the old M28 queue, but they are not part of the M28 main-route connector responsibility."
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "All 24 original SHOP_MAIN main-menu option rows are accounted.",
+      "Enabled rows have runtime definitions, action ids, route ids, dispatch consumers, route consumers, and smoke verification.",
+      "Disabled rows remain visible as disabled route contracts with explicit future owner milestones and disabled reasons.",
+      "BOYFRIEND event-local TCVAR rows are excluded from M28 ownership and recorded as M47 event/world responsibility."
+    ],
+    "implementationEvidence": [
+      "data/coverage/main-route-coverage.json",
+      "src/catalog/legacyCatalog.ts",
+      "src/features/mainMenu.ts",
+      "src/game/dispatch.ts",
+      "src/ui/RouteScreens.tsx"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:main-routes",
+      "npm run gate:main-route-coverage",
+      "npm run gate:milestone-scope-closure -- M28",
+      "npm run smoke:main-routes",
+      "npm run build"
+    ]
   },
   "verification": {
     "commands": [

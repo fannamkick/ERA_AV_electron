@@ -11,13 +11,18 @@ Criteria baseline status: **complete**
 Evidence:
 - Consistency report: `data/coverage/manifests/M28-M52-criteria-consistency.json`
 - All M28~M52 source-unit manifests exist.
-- All 26 manifests currently have `completedAllowedNow: false`.
+- 1 manifest currently has `completedAllowedNow: true`; 25 remain false.
 - Aggregate manifest totals:
   - total units: 11,106
-  - implemented-verified: 7,893
+  - implemented-verified: 7,904
   - blocked: 2,913
-  - scope-redesign-required: 300
-  - approved-excluded: 0
+  - scope-redesign-required: 286
+  - approved-excluded: 3
+
+M28 is now closed under the source-unit manifest rule:
+- 24 SHOP_MAIN menu rows are `implemented-verified`.
+- 3 BOYFRIEND event-local session rows are `approved-excluded` from M28 and remain owned by M47.
+- `npm run gate:milestone-scope-closure -- M28` passes with `responsibilityIntegrity`.
 
 ## Registry Enforcement
 

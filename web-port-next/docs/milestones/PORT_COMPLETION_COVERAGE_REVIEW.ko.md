@@ -30,7 +30,7 @@
 | 도메인 | 닫는 마일스톤 | 현재 판정 |
 | --- | --- | --- |
 | 실행 계약, 저장/session/view 경계 | M1~M3, M9, M16, M50 | 구조는 있다. 전체 기능 후 roundtrip은 M50 전까지 완성 아님. |
-| 메인 route와 기능 진입 | M5, M28 | M28에 M47 transfer 3개가 있어 완료 선언 재검토 필요. |
+| 메인 route와 기능 진입 | M5, M28 | M28 strict closure 완료. M47 event-local row 3개는 M28 approved-excluded 및 M47 책임으로 분리됨. |
 | 아이템 구매 | M6, M29 | 구매형 listing은 구현됐지만 M29 transferredOut 123개가 있어 "상점 관련 전체" 완료로 읽으면 안 된다. |
 | 아이템 사용/특수 아이템 | M30 | M30은 2026-05-02 재판정 기준 blocked. 즉시 사용 아이템 9개는 구현됐지만 transfer 37개가 ownedBlocker이며, 특수 훈련 item 200~214 효과는 M30 완료로 계산하지 않는다. |
 | 영입과 인물 생성 | M7, M31, M32 | 영입 listing/생성/identity는 구현 근거가 있으나 M31 transferredOut 27개 재확인 필요. |
@@ -51,7 +51,7 @@
 ## 현재 불안정한 부분
 
 - M21~M27은 조사/장부/매핑/감사/계획 성격이다. 이 구간이 완료되어도 게임 기능이 완성되는 것은 아니다.
-- M28~M41은 구현 성격이지만, 일부 closure가 `mapped`와 `transferredOut`을 완료 totals에 포함한다. 이 경우 "책임을 끝냈다"가 아니라 "분류하거나 넘겼다"일 수 있다.
+- M29~M41은 구현 성격이지만, 일부 closure가 `mapped`와 `transferredOut`을 완료 totals에 포함한다. 이 경우 "책임을 끝냈다"가 아니라 "분류하거나 넘겼다"일 수 있다. M28은 strict closure로 보정됐다.
 - M30은 특수 item 효과를 구현한 것이 아니라 37개 owned row를 넘긴 상태였으므로 blocked로 되돌렸다. 책임상 M30은 즉시 사용 아이템 owner로 재설계하는 것이 맞다.
 - M35와 M38은 `implemented`가 0이고 `mapped`만으로 완료 처리되어 있어, runtime 구현 근거를 자연어로 풀어 재확인해야 한다.
 - M39/M41에는 `source-file-review`가 파일 단위 mapped 완료로 남아 있어 원본 라벨/row 수준 분해가 필요하다.
@@ -62,14 +62,14 @@
 
 현재 마일스톤 목록은 큰 방향으로는 전체 게임 포팅을 닫을 수 있는 구조다. 하지만 현재 완료 기록과 일부 마일스톤 책임 문구로는 완벽 구현을 보장하지 못한다.
 
-현재 그대로 M42 이후를 진행하면 놓칠 수 있는 부분이 있다. 2026-05-02 재판정 결과 M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없으므로, M42 전에 전체를 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정해야 한다.
+현재 그대로 M42 이후를 진행하면 놓칠 수 있는 부분이 있다. 2026-05-02 재판정 이후 M28은 strict closure로 보정됐지만, M29~M41은 M42 전에 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정해야 한다.
 
 필요한 정정:
 
 - 모든 마일스톤 제목에 유형을 유지한다.
 - `[구현]` 마일스톤은 완료 전에 원본 단위 매니페스트와 "완료로 처리한 것 / 안 했거나 넘긴 것 / 재확인 필요한 것"을 남긴다.
 - `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 마일스톤 재설계 신호로 본다. 책임을 넘겨야 한다면 마일스톤을 완료하지 않는다.
-- M28~M41은 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 2026-05-02 원본 단위 매니페스트 기준 재판정 표를 따른다. 새 기준으로 `completed` 유지 가능은 0개다.
+- M29~M41은 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 2026-05-02 원본 단위 매니페스트 기준 재판정 표를 따른다. M28은 strict closure 완료 상태다.
 - M42부터는 구현 책임을 다른 곳으로 넘기지 않는다.
 - 의심 신호 판정은 `RESPONSIBILITY_SEPARATION_RULES.ko.md`의 `의심 신호`와 `M28~M41 사전 재판정 기준`을 따른다.
 
@@ -77,9 +77,9 @@
 
 | 우선순위 | 대상 | 해야 할 일 |
 | --- | --- | --- |
-| 1 | M28~M41 전체 | 기존 `completed`를 유지하지 않는다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별 `implemented-verified`/`approved-excluded`/`blocked`/`scope-redesign-required`로 닫는다. |
-| 2 | M28/M29/M31/M33/M37/M38 | 책임 범위가 섞였거나 `transferredOut`가 있으므로 scope 재설계부터 한다. |
+| 1 | M29~M41 전체 | 기존 `completed`를 유지하지 않는다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별 `implemented-verified`/`approved-excluded`/`blocked`/`scope-redesign-required`로 닫는다. |
+| 2 | M29/M31/M33/M37/M38 | 책임 범위가 섞였거나 `transferredOut`가 있으므로 scope 재설계부터 한다. M28은 완료됨. |
 | 3 | M30 | blocked 유지. 즉시 사용 아이템 9개 owner로 공식 재설계하고, 특수 item 200~214는 의복/훈련 effect owner에서 닫는다. |
 | 4 | M32/M34/M35/M39/M41 | mapped-only 또는 source-file-review 완료를 금지하고, 원본 label/read/write/command 단위로 분해한다. |
 | 5 | M34.5/M36/M40 | manifest-needed. 기존 구현 근거를 원본 단위 매니페스트로 재증명하거나 blocked로 되돌린다. |
-| 6 | M42 | M28~M41 보강/정정 전에는 시작하지 않는다. |
+| 6 | M42 | M29~M41 보강/정정 전에는 시작하지 않는다. |
