@@ -1,4 +1,4 @@
-import type { CharacterTemplate } from '../catalog/types';
+import type { CharacterTemplate, GameDefinitions } from '../catalog/types';
 import type { GameState } from '../game/state';
 import type { WardrobeCharacterView, WardrobeView } from '../game/views';
 
@@ -115,17 +115,30 @@ export function splitLegacyCharacterFlags(template: CharacterTemplate): SplitLeg
   return result;
 }
 
-export function buildWardrobeView(state: GameState): WardrobeView {
+function flagLabelsFor(
+  definitions: GameDefinitions | undefined,
+  flags: Record<string, boolean | number | string>,
+): Record<string, string> {
+  return Object.fromEntries(
+    Object.keys(flags).map((flagId) => [flagId, definitions?.legacyCharacterFlagDefinitions[flagId]?.label ?? `legacyFlag:${flagId}`]),
+  );
+}
+
+export function buildWardrobeView(state: GameState, definitions?: GameDefinitions): WardrobeView {
   const characters = Object.values(state.people.characters).sort((left, right) => left.id.localeCompare(right.id));
   const entries: WardrobeCharacterView[] = characters.map((character) => {
     const equipment = state.equipment.byCharacterId[character.id];
+    const clothing = equipment?.clothing ?? {};
+    const availabilityFlags = equipment?.availabilityFlags ?? {};
     return {
       characterId: character.id,
       label: character.identity.displayName,
-      clothing: equipment?.clothing ?? {},
-      availabilityFlags: equipment?.availabilityFlags ?? {},
-      clothingFlagCount: Object.keys(equipment?.clothing ?? {}).length,
-      availabilityFlagCount: Object.keys(equipment?.availabilityFlags ?? {}).length,
+      clothing,
+      availabilityFlags,
+      clothingLabels: flagLabelsFor(definitions, clothing),
+      availabilityFlagLabels: flagLabelsFor(definitions, availabilityFlags),
+      clothingFlagCount: Object.keys(clothing).length,
+      availabilityFlagCount: Object.keys(availabilityFlags).length,
     };
   });
 

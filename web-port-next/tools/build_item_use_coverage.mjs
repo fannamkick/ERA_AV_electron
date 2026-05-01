@@ -196,14 +196,17 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
 
   if (rowKind === 'definition' && specialTrainingItemIds.has(itemId)) {
     rows.push({
-      coverageRowId: `item-use:definition:special-training:${itemId}`,
+      coverageRowId: `item-use:transfer:special-training-definition:${itemId}`,
       reviewId,
       rowKind,
       itemId,
       ...source,
-      completionStatus: 'implemented-special-training-item-state',
-      runtimeConsumerId: 'specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state',
-      verificationId: 'smoke:item-use',
+      completionStatus: 'transferred-out',
+      fromMilestone: 'M30',
+      toMilestone: 'M41',
+      acceptedByOwner: true,
+      transferReason: 'Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.',
+      verificationId: 'gate:milestone-scope-closure -- M41',
     });
     continue;
   }
@@ -231,8 +234,25 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
       'ITEM:30': 'item 30 is immediate-use; no inventory persistence after use',
       'ITEM:39': 'item 39 is immediate-use; trainer trait 325 owns the effect',
       'ITEM:40': 'item 40 is immediate-use; body.reproduction owns the effect',
-      'ITEM:211': 'specialTrainingItemIds -> inventory.itemCounts special unlock state',
     };
+
+    if (specialTrainingItemIds.has(itemId) || address === 'ITEM:211') {
+      rows.push({
+        coverageRowId: `item-use:transfer:special-training-save:${itemId || address.replace(/[^0-9]/g, '')}`,
+        reviewId,
+        rowKind,
+        itemId,
+        ...source,
+        completionStatus: 'transferred-out',
+        fromMilestone: 'M30',
+        toMilestone: 'M41',
+        acceptedByOwner: true,
+        transferReason: 'Special training item inventory state is consumed by training availability/effect milestones, not by item-use confirmation.',
+        verificationId: 'gate:milestone-scope-closure -- M41',
+      });
+      continue;
+    }
+
     rows.push({
       coverageRowId: `item-use:save:${reviewId.replace(/^save-mapping:/, '')}`,
       reviewId,
@@ -262,14 +282,17 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
 
   if (rowKind === 'session-mapping' && specialTrainingItemIds.has(itemId)) {
     rows.push({
-      coverageRowId: `item-use:session:special-training:${itemId}`,
+      coverageRowId: `item-use:transfer:special-training-session:${itemId}`,
       reviewId,
       rowKind,
       itemId,
       ...source,
-      completionStatus: 'mapped-consumed-special-item-state',
-      runtimeConsumerId: 'specialTrainingItemIds; not ITEMSALES-driven shop visibility',
-      verificationId: 'smoke:item-use',
+      completionStatus: 'transferred-out',
+      fromMilestone: 'M30',
+      toMilestone: 'M41',
+      acceptedByOwner: true,
+      transferReason: 'Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.',
+      verificationId: 'gate:milestone-scope-closure -- M41',
     });
     continue;
   }

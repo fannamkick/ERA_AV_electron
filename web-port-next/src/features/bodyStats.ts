@@ -37,7 +37,6 @@ export function createBodyStateFromTemplate(template: CharacterTemplate): Charac
     conditionFlags: splitLegacyCharacterFlags(template).bodyConditionFlags,
     contamination: {},
     milestones: {},
-    legacyBodyFlagsNeedingMapping: {},
   };
 }
 

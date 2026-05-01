@@ -117,7 +117,7 @@ function completionForTransferredRow(row) {
   if (row.rowKind === 'feature') {
     return {
       completionStatus: 'implemented-character-lifecycle-contract',
-      runtimeConsumerId: 'CharacterLifecycleState + characterLifecycle helpers + roster/work/shooting/training active checks',
+      runtimeConsumerId: 'roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks',
       verificationId: 'smoke:character-identity',
     };
   }

@@ -102,7 +102,6 @@ assert(badTransfers.length === 0, 'transfer rows are incomplete', badTransfers.s
 
 const requiredRuntimeConsumers = new Set([
   'definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem',
-  'specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state',
   'shop/selectUseItem; shop/selectUseTarget; shop/confirmUseItem; shop/cancelUseItem',
   'session.shop.visibleUseItemIds',
   'run.runFlags.techniqueItemProgress -> applyTechniqueItemUse',
@@ -112,6 +111,17 @@ const presentRuntimeConsumers = new Set(coverage.rows.map((row) => row.runtimeCo
 for (const consumer of requiredRuntimeConsumers) {
   assert(presentRuntimeConsumers.has(consumer), `required runtime consumer missing: ${consumer}`);
 }
+
+const completedSpecialTrainingRows = coverage.rows.filter(
+  (row) =>
+    expectedSpecialTrainingItemIds.includes(row.itemId) &&
+    row.completionStatus !== 'transferred-out',
+);
+assert(
+  completedSpecialTrainingRows.length === 0,
+  'special training items must transfer to training availability/effect owners until runtime consumers exist',
+  completedSpecialTrainingRows.slice(0, 20),
+);
 
 const summary = coverage.summary ?? {};
 assert(Number(summary.ownedRowRefs) === expectedRefs.size, 'summary owned row count mismatch', summary);

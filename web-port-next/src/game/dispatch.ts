@@ -13,6 +13,7 @@ import {
 } from '../features/itemShop';
 import { acceptSelectedMission, cancelMission, createMissionSession, reportSelectedMission, selectMission } from '../features/mission';
 import { createNewGame } from '../features/newGame';
+import { markCharacterDeleted, markCharacterRetired, setCharacterAssistantEligible } from '../features/characterLifecycle';
 import { createRecruitSession, recruitSelectedCharacter, selectRecruitListing } from '../features/recruit';
 import { cancelSaveLoad, createSaveSnapshot, loadSaveSnapshot, openSaveLoadSession, updateSaveLoadText } from '../features/saveLoad';
 import {
@@ -714,6 +715,39 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
         session: cancelTraining(context.session),
         effects: [logEffect('Leaving the training screen.')],
       });
+    case 'roster/retireCharacter': {
+      const lifecycle = markCharacterRetired(context.state, action.characterId);
+      if (!lifecycle.ok) {
+        return failureResult(context, lifecycle.failure);
+      }
+
+      return successResult(context, {
+        state: lifecycle.state,
+        effects: [logEffect(`Retired ${action.characterId}.`, 'success')],
+      });
+    }
+    case 'roster/deleteCharacter': {
+      const lifecycle = markCharacterDeleted(context.state, action.characterId);
+      if (!lifecycle.ok) {
+        return failureResult(context, lifecycle.failure);
+      }
+
+      return successResult(context, {
+        state: lifecycle.state,
+        effects: [logEffect(`Deleted ${action.characterId}.`, 'success')],
+      });
+    }
+    case 'roster/setAssistantEligible': {
+      const lifecycle = setCharacterAssistantEligible(context.state, action.characterId, action.assistantEligible);
+      if (!lifecycle.ok) {
+        return failureResult(context, lifecycle.failure);
+      }
+
+      return successResult(context, {
+        state: lifecycle.state,
+        effects: [logEffect(`Updated assistant eligibility for ${action.characterId}.`, 'success')],
+      });
+    }
     case 'wardrobe/toggleClothing': {
       const wardrobe = toggleWardrobeClothing(context.state, action.characterId, action.flagId);
       if (!wardrobe.ok) {

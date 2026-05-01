@@ -15,45 +15,11 @@
     "sessionFieldRows": 298,
     "calculationInternalRows": 67,
     "approvedExcludedRows": 0,
-    "ownerBlockers": 0,
-    "sourceRowsByClassification": {
-      "base-cost-calculation-buffer": 2,
-      "climax-counter-buffer": 9,
-      "current-experience-counter-buffer": 6,
-      "ejaculation-threshold-buffer": 1,
-      "filming-scene-temporary-values": 11,
-      "filming-temporary-flags": 8,
-      "interaction-command-selection": 2,
-      "interaction-participant-selection": 5,
-      "interaction-temporary-flags": 126,
-      "jewel-gain-buffer": 2,
-      "message-fragment-buffer": 3,
-      "name-generation-scratch": 2,
-      "negative-parameter-delta-buffer": 4,
-      "positive-parameter-delta-buffer": 17,
-      "screen-temporary-values": 3,
-      "shop-current-selection": 1,
-      "shop-visible-listing-state": 109,
-      "stimulus-source-calculation-buffer": 19,
-      "temporary-equipment-state": 35
-    }
+    "ownerBlockers": 0
   },
   "runtimeSessionCandidateCoverage": {
     "runtimeSessionNumericSlots": 234,
-    "runtimeSessionCandidatesWithMissingMappingDomainBeforeM25": 164,
-    "runtimeSessionCandidatesUnclassifiedAfterM25": 0,
-    "rowsByStatus": {
-      "filming-session": 17,
-      "interaction-session": 6,
-      "recruit-session": 25,
-      "screen-session": 3,
-      "script-scratch": 5,
-      "shop-session": 1,
-      "training-calculation": 47,
-      "training-session": 127,
-      "work-calculation": 1,
-      "work-session": 2
-    }
+    "runtimeSessionCandidatesUnclassifiedAfterM25": 0
   },
   "saveBoundary": {
     "m24SessionStateTransfersRepresented": 31,
@@ -63,7 +29,7 @@
   },
   "ownedTotal": 599,
   "implemented": 0,
-  "mapped": 365,
+  "mapped": 599,
   "candidateMapped": 234,
   "approvedExcluded": 0,
   "transferredOut": 0,
@@ -83,5 +49,27 @@
     "npm run build",
     "rg \"TFLAG|TEQUIP|SOURCE|LOSEBASE|NOWEX|EJAC\" src/game src/domains src/features src/ui"
   ],
-  "commitHash": "self: git commit containing this closure file"
+  "commitHash": "self: git commit containing this closure file",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
+  "outputs": {
+    "sessionMapping": "data/coverage/session-mapping.json",
+    "builder": "tools/build_session_mapping.mjs",
+    "gate": "tools/gate_session_mapping.mjs",
+    "sessionSaveBoundaryGate": "tools/gate_session_save_boundary.mjs"
+  },
+  "closureMetrics": {
+    "ownedTotal": 599,
+    "implemented": 0,
+    "mapped": 599,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  }
 }

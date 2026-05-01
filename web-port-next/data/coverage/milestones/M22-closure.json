@@ -12,17 +12,14 @@
   ],
   "coverageRows": {
     "featureRows": 5344,
-    "definitionRows": 7840,
-    "blockerRows": 63,
+    "definitionRows": 8000,
+    "blockerRows": 59,
     "approvedExclusionRows": 0,
-    "roleOnlyDefinitionRows": 6104,
-    "implementedFeatureDefinitionReads": 12,
-    "implementedFeatureDefinitionReadMatched": 8,
-    "implementedFeatureDefinitionReadDeferredToM23": 4
+    "hardFailures": 0
   },
-  "ownedTotal": 13247,
+  "ownedTotal": 13403,
   "implemented": 0,
-  "mapped": 13247,
+  "mapped": 13399,
   "approvedExcluded": 0,
   "transferredOut": 4,
   "ownedBlocker": 0,
@@ -71,5 +68,28 @@
     "npm run gate:approved-exclusions",
     "npm run build"
   ],
-  "commitHash": "self: git commit containing this closure file"
+  "commitHash": "self: git commit containing this closure file",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
+  "outputs": {
+    "coverageCrosscheck": "data/coverage/coverage-crosscheck.json",
+    "approvedExclusions": "data/coverage/approved-exclusions.json",
+    "builder": "tools/build_coverage_crosscheck.mjs",
+    "gate": "tools/gate_coverage_crosscheck.mjs",
+    "approvedExclusionGate": "tools/gate_approved_exclusions.mjs"
+  },
+  "closureMetrics": {
+    "ownedTotal": 13403,
+    "implemented": 0,
+    "mapped": 13399,
+    "approvedExcluded": 0,
+    "transferredOut": 4,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  }
 }

@@ -22,8 +22,8 @@
   "counts": {
     "ownedTotal": 27,
     "menuRows": 24,
-    "enabledMenuRows": 12,
-    "disabledMenuRows": 12,
+    "enabledMenuRows": 13,
+    "disabledMenuRows": 11,
     "sessionRows": 3,
     "implemented": 24,
     "mapped": 0,

@@ -4,7 +4,7 @@
   "title": "구현 전 누락 감사",
   "status": "completed",
   "completedAt": "2026-05-01",
-  "commitPolicy": "Commit after every milestone closure.",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
   "sourceInputs": {
     "sourceManifest": "data/coverage/source-manifest.json",
     "features": "data/coverage/features.json",
@@ -22,13 +22,23 @@
   },
   "counts": {
     "sourceManifestPrimaryFiles": 496,
-    "sourceFilesWithoutDirectCoverageRows": 14,
-    "implementationReviewRows": 14700,
-    "featureReviewRows": 5333,
-    "definitionReviewRows": 7999,
-    "saveMappingReviewRows": 989,
-    "sessionMappingReviewRows": 365,
-    "unresolvedIssues": 0,
+    "sourceFilesWithoutDirectCoverageRows": 13,
+    "implementationReviewRows": 14546,
+    "featureReviewRows": 0,
+    "definitionReviewRows": 0,
+    "saveMappingReviewRows": 0,
+    "sessionMappingReviewRows": 0,
+    "unresolvedIssues": {
+      "discoveredGap": 0,
+      "missingEvidence": 0,
+      "orphanCoverage": 0,
+      "roleOnly": 0,
+      "unknownOwner": 0,
+      "unapprovedExclusion": 0,
+      "blockerMissingRegistry": 0,
+      "crosscheckHardFailure": 0,
+      "total": 0
+    },
     "approvedExclusionRows": 0
   },
   "ownerReview": {
@@ -73,5 +83,29 @@
       "npm run build"
     ],
     "expectedGateResult": "0 unresolved issue(s)"
-  }
+  },
+  "closureMetrics": {
+    "ownedTotal": 14546,
+    "implemented": 0,
+    "mapped": 14546,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "ownedTotal": 14546,
+  "implemented": 0,
+  "mapped": 14546,
+  "approvedExcluded": 0,
+  "transferredOut": 0,
+  "ownedBlocker": 0,
+  "missingEvidence": 0,
+  "missingConsumer": 0,
+  "missingVerification": 0,
+  "roleOnlyComplete": 0,
+  "unapprovedExcluded": 0
 }

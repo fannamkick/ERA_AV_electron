@@ -15,25 +15,12 @@
     "mappedRows": 989,
     "nonSaveRows": 226,
     "approvedExcludedRows": 0,
-    "ownerBlockers": 0,
-    "sourceRowsByClassification": {
-      "character-template-seed-only": 121,
-      "definition-display-text": 3,
-      "definition-only": 92,
-      "save-field": 989,
-      "variable-size-declaration": 10
-    }
+    "ownerBlockers": 0
   },
   "persistentCandidateCoverage": {
     "runtimePersistentNumericSlots": 1016,
-    "saveFieldRows": 985,
     "sessionStateRows": 31,
-    "persistentCandidatesWithMissingMappingDomainBeforeM24": 724,
-    "persistentCandidatesUnclassifiedAfterM24": 0,
-    "bySourceMappingAction": {
-      "map-save-state": 985,
-      "map-session-state": 31
-    }
+    "persistentCandidatesUnclassifiedAfterM24": 0
   },
   "semanticFlagSplit": {
     "semanticFlagRows": 412,
@@ -53,7 +40,7 @@
   },
   "ownedTotal": 2231,
   "implemented": 0,
-  "mapped": 1974,
+  "mapped": 2200,
   "nonSave": 257,
   "approvedExcluded": 0,
   "transferredOut": 31,
@@ -83,5 +70,27 @@
     "npm run gate:coverage-crosscheck",
     "npm run build"
   ],
-  "commitHash": "self: git commit containing this closure file"
+  "commitHash": "self: git commit containing this closure file",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
+  "outputs": {
+    "saveMapping": "data/coverage/save-mapping.json",
+    "builder": "tools/build_save_mapping.mjs",
+    "gate": "tools/gate_save_mapping.mjs",
+    "stateFamilyIndexGate": "tools/gate_state_family_index_coverage.mjs"
+  },
+  "closureMetrics": {
+    "ownedTotal": 2231,
+    "implemented": 0,
+    "mapped": 2200,
+    "approvedExcluded": 0,
+    "transferredOut": 31,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  }
 }

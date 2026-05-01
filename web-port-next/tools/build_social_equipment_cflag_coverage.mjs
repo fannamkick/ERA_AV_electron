@@ -171,6 +171,7 @@ const definitions = readJson('data/coverage/definitions.json');
 const features = readJson('data/coverage/features.json');
 const saveMapping = readJson('data/coverage/save-mapping.json');
 const sessionMapping = readJson('data/coverage/session-mapping.json');
+const featureRows = features.features ?? features.rows ?? [];
 
 const units = (queue.queueUnits ?? []).filter((unit) => unit.ownerMilestone === 'M34');
 if (units.length === 0) throw new Error('M34 implementation queue unit not found.');
@@ -178,6 +179,9 @@ if (units.length === 0) throw new Error('M34 implementation queue unit not found
 const ownedRefs = new Map();
 for (const unit of units) {
   for (const ref of unit.rowRefs ?? []) addOwnedRef(ownedRefs, ref, 'implementation-queue', undefined);
+}
+for (const row of featureRows.filter((item) => item.ownerMilestone === 'M34')) {
+  addOwnedRef(ownedRefs, row.featureId, 'data/coverage/features.json', undefined);
 }
 
 const inboundTransfers = inboundTransfersForMilestone(
@@ -189,9 +193,12 @@ for (const row of inboundTransfers) {
 }
 
 const definitionsById = new Map((definitions.rows ?? []).map((row) => [row.definitionRowId, row]));
-const featuresById = new Map((features.features ?? features.rows ?? []).map((row) => [row.featureId, row]));
+const featuresById = new Map(featureRows.map((row) => [row.featureId, row]));
 const saveMappingById = new Map((saveMapping.rows ?? []).map((row) => [row.mappingRowId, row]));
 const sessionMappingById = new Map((sessionMapping.rows ?? []).map((row) => [row.mappingRowId, row]));
+for (const row of (definitions.rows ?? []).filter((item) => item.definitionKey === 'legacyCharacterFlagDefinitions')) {
+  addOwnedRef(ownedRefs, `definition:${row.definitionRowId}`, 'data/coverage/definitions.json', undefined);
+}
 
 const rows = [];
 for (const [reviewId, scope] of [...ownedRefs.entries()].sort(([a], [b]) => a.localeCompare(b))) {
@@ -213,7 +220,7 @@ for (const [reviewId, scope] of [...ownedRefs.entries()].sort(([a], [b]) => a.lo
     completion = completionForDefinition(definitionRow);
   } else if (rowKind === 'feature') {
     const featureId = reviewId.replace(/^feature:/, '');
-    const featureRow = featuresById.get(featureId);
+    const featureRow = featuresById.get(reviewId) ?? featuresById.get(featureId);
     source = {
       sourceEvidenceId: featureRow?.sourceEvidenceId ?? '',
       sourcePath: featureRow?.sourceFile ?? '',

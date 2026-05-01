@@ -556,8 +556,8 @@ function SaveLoadScreen({ state, session, onAction }: ScreenProps) {
   );
 }
 
-function RosterScreen({ state, onAction }: ScreenProps) {
-  const view = buildRosterView(state);
+function RosterScreen({ catalog, state, onAction }: ScreenProps) {
+  const view = buildRosterView(state, catalog);
 
   return (
     <section className="screen-panel">
@@ -575,6 +575,30 @@ function RosterScreen({ state, onAction }: ScreenProps) {
             <small>
               {entry.lifecycleSummary} / CSTR slots {entry.profileTextSlotCount}
             </small>
+            <small>
+              CSTR labels {Object.values(entry.profileTextLabels).slice(0, 3).join(', ') || '-'}
+            </small>
+            <ActionRow>
+              <button type="button" disabled={entry.retired || entry.deleted} onClick={() => onAction({ type: 'roster/retireCharacter', characterId: entry.characterId })}>
+                Retire
+              </button>
+              <button type="button" disabled={entry.deleted} onClick={() => onAction({ type: 'roster/deleteCharacter', characterId: entry.characterId })}>
+                Delete
+              </button>
+              <button
+                type="button"
+                disabled={entry.deleted || entry.retired}
+                onClick={() =>
+                  onAction({
+                    type: 'roster/setAssistantEligible',
+                    characterId: entry.characterId,
+                    assistantEligible: !entry.assistantEligible,
+                  })
+                }
+              >
+                Assistant
+              </button>
+            </ActionRow>
           </div>
         ))}
       </div>
@@ -587,8 +611,8 @@ function RosterScreen({ state, onAction }: ScreenProps) {
   );
 }
 
-function WardrobeScreen({ state, onAction }: ScreenProps) {
-  const view = buildWardrobeView(state);
+function WardrobeScreen({ catalog, state, onAction }: ScreenProps) {
+  const view = buildWardrobeView(state, catalog);
 
   return (
     <section className="screen-panel">
@@ -607,7 +631,7 @@ function WardrobeScreen({ state, onAction }: ScreenProps) {
                   type="button"
                   onClick={() => onAction({ type: 'wardrobe/toggleClothing', characterId: entry.characterId, flagId: clothingFlagId })}
                 >
-                  Toggle {clothingFlagId}
+                  Toggle {entry.clothingLabels[clothingFlagId] ?? clothingFlagId}
                 </button>
               )}
             </div>

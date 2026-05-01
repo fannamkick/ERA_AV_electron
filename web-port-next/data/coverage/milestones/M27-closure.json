@@ -4,7 +4,7 @@
   "title": "구현 단위 큐와 blocker 동결",
   "status": "completed",
   "completedAt": "2026-05-01",
-  "commitPolicy": "Commit after every milestone closure.",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
   "sourceInputs": {
     "preImplementationGapAudit": "data/coverage/audits/pre-implementation-gap-audit.json",
     "blockers": "data/coverage/blockers.json",
@@ -18,39 +18,61 @@
     "gate": "tools/gate_implementation_queue.mjs"
   },
   "counts": {
-    "queueUnits": 37,
-    "queuedReviewRows": 14700,
-    "featureReviewRows": 5333,
-    "definitionReviewRows": 7999,
-    "saveMappingReviewRows": 989,
-    "sessionMappingReviewRows": 365,
-    "sourceFileReviewRows": 14,
-    "frozenBlockers": 63,
-    "approvalRequestCandidates": 63,
-    "ownerTransfers": 2
+    "queueUnits": 36,
+    "queuedReviewRows": 14546,
+    "featureReviewRows": 0,
+    "definitionReviewRows": 0,
+    "saveMappingReviewRows": 0,
+    "sessionMappingReviewRows": 0,
+    "sourceFileReviewRows": 13,
+    "frozenBlockers": 0,
+    "approvalRequestCandidates": 0,
+    "ownerTransfers": 1
   },
   "ownerTransferPolicy": {
     "rule": "M27 cannot remain an implementation owner after queue closure.",
     "transfers": [
       {
+        "reviewId": "source-file-review:original-game/erb/組み込み関数/汎用関数/randchoose/#dim.erh",
         "from": "M27",
         "to": "M51",
-        "row": "source-file-review:original-game/csv/variablesize.csv"
-      },
-      {
-        "from": "M27",
-        "to": "M51",
-        "row": "source-file-review:original-game/erb/組み込み関数/汎用関数/randchoose/#dim.erh"
+        "reason": "M27 cannot remain the implementation owner after queue closure; manifest-only foundation review transfers to final gap audit."
       }
     ]
   },
   "verification": {
     "commands": [
+      "npm run audit:pre-implementation",
+      "npm run gate:pre-implementation-audit",
       "npm run coverage:implementation-queue",
       "npm run gate:implementation-queue",
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "37 queue unit(s), 14700 review row(s), 63 frozen blocker(s), 63 approval request candidate(s)"
-  }
+    "expectedGateResult": "36 queue unit(s), 14546 review row(s), 0 frozen blocker(s), 0 approval request candidate(s)"
+  },
+  "closureMetrics": {
+    "ownedTotal": 14546,
+    "implemented": 0,
+    "mapped": 14546,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "ownedTotal": 14546,
+  "implemented": 0,
+  "mapped": 14546,
+  "approvedExcluded": 0,
+  "transferredOut": 0,
+  "ownedBlocker": 0,
+  "missingEvidence": 0,
+  "missingConsumer": 0,
+  "missingVerification": 0,
+  "roleOnlyComplete": 0,
+  "unapprovedExcluded": 0
 }

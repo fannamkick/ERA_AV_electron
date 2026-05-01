@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "retro-closure-audit/v1",
+  "auditId": "M21-M34-retro-closure-audit-2026-05-01",
+  "generatedAt": "2026-05-01",
+  "scope": {
+    "milestones": [
+      "M21",
+      "M22",
+      "M23",
+      "M24",
+      "M25",
+      "M26",
+      "M27",
+      "M28",
+      "M29",
+      "M30",
+      "M31",
+      "M32",
+      "M33",
+      "M34"
+    ],
+    "purpose": "Re-check previous milestones after M34.5 gate hardening and close stale or role-only completion claims before continuing to M35."
+  },
+  "agentFindings": [
+    {
+      "findingId": "retro-runtime-M30-special-training-items",
+      "severity": "high",
+      "milestones": [
+        "M30",
+        "M41"
+      ],
+      "finding": "Special training items 200-214 were counted as M30 item-use runtime consumers even though they are not consumed by the item-use route.",
+      "resolution": "Converted those definition/save/session rows to transferred-out rows targeting M41 training availability/effects until a real training consumer closes them.",
+      "blockingAfterResolution": false
+    },
+    {
+      "findingId": "retro-runtime-M32-lifecycle",
+      "severity": "high",
+      "milestones": [
+        "M32"
+      ],
+      "finding": "Character lifecycle helpers were covered by smoke tests but were not reachable through dispatch actions.",
+      "resolution": "Added roster lifecycle actions and smoke coverage through dispatch for retire, delete, and assistant eligibility updates.",
+      "blockingAfterResolution": false
+    },
+    {
+      "findingId": "retro-runtime-M32-cstr-labels",
+      "severity": "medium",
+      "milestones": [
+        "M32"
+      ],
+      "finding": "Character text definition labels were marked consumed but the roster view did not read characterTextDefinitions.",
+      "resolution": "Roster view now accepts definitions and exposes profile text labels from characterTextDefinitions with explicit fallback labels for undefined source slots.",
+      "blockingAfterResolution": false
+    },
+    {
+      "findingId": "retro-runtime-M34-cflag-definition-consumer",
+      "severity": "high",
+      "milestones": [
+        "M34"
+      ],
+      "finding": "Legacy character flag definitions were marked consumed but the wardrobe view only used save-state flags.",
+      "resolution": "Wardrobe view now accepts definitions, exposes clothing and availability flag labels, and M34 coverage/gate requires the M34 feature row plus legacyCharacterFlagDefinitions rows.",
+      "blockingAfterResolution": false
+    },
+    {
+      "findingId": "retro-artifact-M21-M27-closure-schema",
+      "severity": "high",
+      "milestones": [
+        "M21",
+        "M22",
+        "M23",
+        "M24",
+        "M25",
+        "M26",
+        "M27"
+      ],
+      "finding": "Older closure files did not satisfy the strengthened milestone closure schema and M26/M27 counts were stale after source evidence changes.",
+      "resolution": "Regenerated source, coverage, mapping, audit, and queue artifacts, then backfilled closureMetrics, status, outputs, and current counts for M21-M27.",
+      "blockingAfterResolution": false
+    },
+    {
+      "findingId": "retro-runtime-M16-stub-allowlist",
+      "severity": "medium",
+      "milestones": [
+        "M16",
+        "M33"
+      ],
+      "finding": "A stale body flag mapping placeholder remained allowlisted after M33 ownership closed body stat mapping.",
+      "resolution": "Removed legacyBodyFlagsNeedingMapping from runtime types/features and from the M16 stub allowlist.",
+      "blockingAfterResolution": false
+    }
+  ],
+  "currentClosureGateResult": {
+    "M21": {
+      "ownedTotal": 13403,
+      "implemented": 0,
+      "mapped": 13403,
+      "transferredOut": 0
+    },
+    "M22": {
+      "ownedTotal": 13403,
+      "implemented": 0,
+      "mapped": 13399,
+      "transferredOut": 4
+    },
+    "M23": {
+      "ownedTotal": 160,
+      "implemented": 0,
+      "mapped": 0,
+      "transferredOut": 160
+    },
+    "M24": {
+      "ownedTotal": 2231,
+      "implemented": 0,
+      "mapped": 2200,
+      "transferredOut": 31
+    },
+    "M25": {
+      "ownedTotal": 599,
+      "implemented": 0,
+      "mapped": 599,
+      "transferredOut": 0
+    },
+    "M26": {
+      "ownedTotal": 14546,
+      "implemented": 0,
+      "mapped": 14546,
+      "transferredOut": 0
+    },
+    "M27": {
+      "ownedTotal": 14546,
+      "implemented": 0,
+      "mapped": 14546,
+      "transferredOut": 0
+    },
+    "M28": {
+      "ownedTotal": 27,
+      "implemented": 24,
+      "mapped": 0,
+      "transferredOut": 3
+    },
+    "M29": {
+      "ownedTotal": 206,
+      "implemented": 43,
+      "mapped": 40,
+      "transferredOut": 123
+    },
+    "M30": {
+      "ownedTotal": 74,
+      "implemented": 21,
+      "mapped": 16,
+      "transferredOut": 37
+    },
+    "M31": {
+      "ownedTotal": 237,
+      "implemented": 52,
+      "mapped": 158,
+      "transferredOut": 27
+    },
+    "M32": {
+      "ownedTotal": 294,
+      "implemented": 286,
+      "mapped": 8,
+      "transferredOut": 0
+    },
+    "M33": {
+      "ownedTotal": 5300,
+      "implemented": 4768,
+      "mapped": 465,
+      "transferredOut": 67
+    },
+    "M34": {
+      "ownedTotal": 2232,
+      "implemented": 1998,
+      "mapped": 234,
+      "transferredOut": 0
+    }
+  },
+  "commandsRun": [
+    "npm run coverage:source-manifest",
+    "npm run coverage:features",
+    "npm run coverage:definitions",
+    "npm run coverage:save-mapping",
+    "npm run coverage:session-mapping",
+    "npm run coverage:crosscheck",
+    "npm run audit:pre-implementation",
+    "npm run coverage:implementation-queue",
+    "npm run coverage:main-routes",
+    "npm run coverage:shop-purchase",
+    "npm run coverage:item-use",
+    "npm run coverage:recruit",
+    "npm run coverage:character-identity",
+    "npm run coverage:body-stat",
+    "npm run coverage:social-equipment-cflag",
+    "npm run gate:feature-coverage",
+    "npm run gate:definition-consumption",
+    "npm run gate:source-evidence",
+    "npm run gate:coverage-crosscheck",
+    "npm run gate:save-mapping",
+    "npm run gate:state-family-index-coverage",
+    "npm run gate:session-mapping",
+    "npm run gate:session-save-boundary",
+    "npm run gate:pre-implementation-audit",
+    "npm run gate:implementation-queue",
+    "npm run gate:approved-exclusions",
+    "npm run gate:coverage-hardening",
+    "npm run gate:main-route-coverage",
+    "npm run gate:shop-purchase-coverage",
+    "npm run gate:item-use-coverage",
+    "npm run gate:recruit-coverage",
+    "npm run gate:character-identity",
+    "npm run gate:body-stat-mapping",
+    "npm run gate:social-equipment-cflag",
+    "npm run gate:milestone-scope-closure -- M21",
+    "npm run gate:milestone-scope-closure -- M22",
+    "npm run gate:milestone-scope-closure -- M23",
+    "npm run gate:milestone-scope-closure -- M24",
+    "npm run gate:milestone-scope-closure -- M25",
+    "npm run gate:milestone-scope-closure -- M26",
+    "npm run gate:milestone-scope-closure -- M27",
+    "npm run gate:milestone-scope-closure -- M28",
+    "npm run gate:milestone-scope-closure -- M29",
+    "npm run gate:milestone-scope-closure -- M30",
+    "npm run gate:milestone-scope-closure -- M31",
+    "npm run gate:milestone-scope-closure -- M32",
+    "npm run gate:milestone-scope-closure -- M33",
+    "npm run gate:milestone-scope-closure -- M34",
+    "npm run smoke:main-routes",
+    "npm run smoke:item-shop",
+    "npm run smoke:item-use",
+    "npm run smoke:recruit-all",
+    "npm run smoke:character-identity",
+    "npm run smoke:body-stat",
+    "npm run smoke:social-equipment-cflag",
+    "npm run verify:m16",
+    "npm run test --if-present"
+  ],
+  "result": {
+    "blockingFindingsRemaining": 0,
+    "closureGatesM21ToM34Passed": true,
+    "runtimeSmokeM28ToM34Passed": true,
+    "verifyM16Passed": true,
+    "testIfPresentExitCode": 0,
+    "nextMilestone": "M35"
+  }
+}

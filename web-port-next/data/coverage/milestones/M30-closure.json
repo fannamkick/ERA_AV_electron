@@ -23,11 +23,11 @@
     "smoke": "tools/m30_item_use_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 75,
-    "implemented": 37,
-    "mapped": 32,
+    "ownedTotal": 74,
+    "implemented": 21,
+    "mapped": 16,
     "approvedExcluded": 0,
-    "transferredOut": 6,
+    "transferredOut": 37,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
@@ -36,11 +36,11 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 75,
-    "implemented": 37,
-    "mapped": 32,
+    "ownedTotal": 74,
+    "implemented": 21,
+    "mapped": 16,
     "approvedExcluded": 0,
-    "transferredOut": 6,
+    "transferredOut": 37,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
@@ -58,7 +58,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "75 M30 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "74 M30 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:item-use",

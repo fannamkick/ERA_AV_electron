@@ -31,12 +31,6 @@
   },
   {
     "path": "src/features/characterCreation.ts",
-    "contains": "legacyBodyFlagsNeedingMapping",
-    "reason": "Body source slots are preserved only as explicit M21 mapping blockers.",
-    "milestone": "M21"
-  },
-  {
-    "path": "src/features/characterCreation.ts",
     "contains": "legacyEquipmentIndexesNeedingMapping",
     "reason": "Equipment source slots are preserved only as explicit M21 mapping blockers.",
     "milestone": "M21"
@@ -45,12 +39,6 @@
     "path": "src/features/characterCreation.ts",
     "contains": "legacyRelationIndexesNeedingMapping",
     "reason": "Relationship source slots are preserved only as explicit M21 mapping blockers.",
-    "milestone": "M21"
-  },
-  {
-    "path": "src/domains/body/types.ts",
-    "contains": "legacyBodyFlagsNeedingMapping",
-    "reason": "Body source slots are tracked until save mapping coverage is complete.",
     "milestone": "M21"
   },
   {

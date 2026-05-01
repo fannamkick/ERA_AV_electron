@@ -12,7 +12,6 @@ export type CharacterBodyState = {
   readonly conditionFlags: Record<string, boolean | number | string>;
   readonly contamination: Record<string, readonly string[]>;
   readonly milestones: Record<string, boolean | number | string>;
-  readonly legacyBodyFlagsNeedingMapping: Record<string, boolean | number | string>;
 };
 
 export type BodyState = {

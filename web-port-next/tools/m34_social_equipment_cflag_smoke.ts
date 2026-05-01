@@ -118,10 +118,11 @@ function assertWardrobeRouteAndRoundtrip() {
   context = step.context;
   assert(context.session.ui.route === 'wardrobe', 'main/openWardrobe should route to wardrobe.');
 
-  const view = buildWardrobeView(context.state);
+  const view = buildWardrobeView(context.state, context.catalog);
   const entry = view.entries.find((candidate) => Object.keys(candidate.clothing).length > 0);
   assert(entry, 'M34 smoke needs at least one character with clothing flags.');
   const flagId = Object.keys(entry.clothing).sort((left, right) => Number(left) - Number(right))[0];
+  assert(entry.clothingLabels[flagId], 'wardrobe view should consume legacy CFLAG label definitions.');
   const beforeValue = context.state.equipment.byCharacterId[entry.characterId].clothing[flagId];
 
   step = dispatchChecked(context, { type: 'wardrobe/toggleClothing', characterId: entry.characterId, flagId });

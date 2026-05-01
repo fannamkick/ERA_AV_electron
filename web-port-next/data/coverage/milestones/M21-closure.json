@@ -13,19 +13,17 @@
   "sourceManifest": {
     "totalFiles": 531,
     "primaryFiles": 496,
-    "auxiliaryFiles": 35,
-    "charaCsvFiles": 109,
-    "variableSizeCsvFiles": 1
+    "auxiliaryFiles": 35
   },
   "coverageRows": {
     "featureRows": 5344,
-    "definitionRows": 7840,
-    "blockerRows": 63,
-    "rowsWithSourceEvidence": 13247
+    "definitionRows": 8000,
+    "blockerRows": 59,
+    "rowsWithSourceEvidence": 13403
   },
-  "ownedTotal": 13247,
+  "ownedTotal": 13403,
   "implemented": 0,
-  "mapped": 13247,
+  "mapped": 13403,
   "approvedExcluded": 0,
   "transferredOut": 0,
   "ownedBlocker": 0,
@@ -59,5 +57,29 @@
     "npm run inventory:legacy-mapping",
     "npm run build"
   ],
-  "commitHash": "self: git commit containing this closure file"
+  "commitHash": "self: git commit containing this closure file",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
+  "outputs": {
+    "sourceManifest": "data/coverage/source-manifest.json",
+    "sourceEvidenceSchema": "data/coverage/source-evidence.schema.json",
+    "features": "data/coverage/features.json",
+    "definitions": "data/coverage/definitions.json",
+    "blockers": "data/coverage/blockers.json",
+    "gate": "tools/gate_source_evidence.mjs"
+  },
+  "closureMetrics": {
+    "ownedTotal": 13403,
+    "implemented": 0,
+    "mapped": 13403,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  }
 }

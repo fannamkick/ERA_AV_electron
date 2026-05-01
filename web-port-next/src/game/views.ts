@@ -31,6 +31,7 @@ export type RosterEntryView = {
   readonly lifecycleSummary: string;
   readonly profileTextSlotCount: number;
   readonly profileTextSlots: Record<CatalogId, string>;
+  readonly profileTextLabels: Record<CatalogId, string>;
   readonly peopleBaseStatCount: number;
   readonly bodyBaseStatCount: number;
   readonly bodyResultStatCount: number;
@@ -57,6 +58,8 @@ export type WardrobeCharacterView = {
   readonly label: string;
   readonly clothing: Record<string, boolean | number | string>;
   readonly availabilityFlags: Record<string, boolean | number | string>;
+  readonly clothingLabels: Record<string, string>;
+  readonly availabilityFlagLabels: Record<string, string>;
   readonly clothingFlagCount: number;
   readonly availabilityFlagCount: number;
 };

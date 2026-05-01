@@ -8,10 +8,10 @@
     "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json"
   },
   "summary": {
-    "scopeRows": 75,
-    "implemented": 37,
-    "mapped": 32,
-    "transferredOut": 6,
+    "scopeRows": 74,
+    "implemented": 21,
+    "mapped": 16,
+    "transferredOut": 37,
     "approvedExcluded": 0,
     "unresolvedGaps": 0,
     "ownedBlockers": 0,

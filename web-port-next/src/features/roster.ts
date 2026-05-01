@@ -1,3 +1,4 @@
+import type { GameDefinitions } from '../catalog/types';
 import type { GameState } from '../game/state';
 import type { RosterView } from '../game/views';
 
@@ -14,7 +15,16 @@ function lifecycleSummary(character: GameState['people']['characters'][string]):
   return parts.join(', ') || 'active';
 }
 
-export function buildRosterView(state: GameState): RosterView {
+function profileTextLabelsFor(
+  definitions: GameDefinitions | undefined,
+  profileTextSlots: Record<string, string>,
+): Record<string, string> {
+  return Object.fromEntries(
+    Object.keys(profileTextSlots).map((slotId) => [slotId, definitions?.characterTextDefinitions[slotId]?.label ?? `CSTR:${slotId}`]),
+  );
+}
+
+export function buildRosterView(state: GameState, definitions?: GameDefinitions): RosterView {
   return {
     kind: 'roster',
     route: 'roster',
@@ -33,6 +43,7 @@ export function buildRosterView(state: GameState): RosterView {
           lifecycleSummary: lifecycleSummary(character),
           profileTextSlotCount: Object.keys(character.identity.profileTextSlots).length,
           profileTextSlots: { ...character.identity.profileTextSlots },
+          profileTextLabels: profileTextLabelsFor(definitions, character.identity.profileTextSlots),
           peopleBaseStatCount: Object.keys(character.attributes.baseStats.current).length,
           bodyBaseStatCount: Object.keys(body?.baseStats ?? {}).length,
           bodyResultStatCount: Object.keys(body?.bodyStats ?? {}).length,

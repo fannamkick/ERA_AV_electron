@@ -3,12 +3,10 @@ import {
   canRetireCharacter,
   isCharacterActive,
   isCharacterAssistantEligible,
-  markCharacterDeleted,
-  markCharacterRetired,
-  setCharacterAssistantEligible,
 } from '../src/features/characterLifecycle';
 import { buildRosterView } from '../src/features/roster';
 import { validateSavePayloadBoundary, validateStateSessionBoundary } from '../src/game/boundaries';
+import { dispatchGameAction } from '../src/game/dispatch';
 import { createGameSavePayload, parseGameSavePayload, serializeGameSavePayload } from '../src/game/savePayload';
 import { createInitialGameData, type GameState } from '../src/game/state';
 
@@ -101,33 +99,41 @@ function main() {
     assert(character.flags.lifecycle.deleted === false, `template ${templateId} should start not deleted.`);
   }
 
-  const roster = buildRosterView(state);
+  const roster = buildRosterView(state, definitions);
   assert(roster.entries.length === 109, 'roster should expose all created character identities.');
   const kanade = roster.entries.find((entry) => entry.templateId === '1');
   assert(kanade?.displayName === definitions.characters['1'].displayName, 'roster displayName should come from identity.');
   assert(kanade.callName === normalizeOptional(definitions.characters['1'].callName), 'roster callName should come from identity.');
   assert(kanade.firstPerson === '私', 'roster firstPerson should expose CSTR:9.');
   assert(kanade.profileTextSlots['42'] === 'おちんちん', 'roster should expose copied CSTR profile slots.');
+  assert(kanade.profileTextLabels['9'] === 'CSTR:9', 'roster should keep explicit fallback labels for CSTR slots without definitions.');
+  const yukimi = roster.entries.find((entry) => entry.templateId === '6');
+  assert(yukimi?.profileTextLabels['0'] === definitions.characterTextDefinitions['0'].label, 'roster should expose CSTR label definitions.');
 
-  const retiredResult = markCharacterRetired(state, 'character:1');
-  assert(retiredResult.ok, 'retiring a sellable non-player character should succeed.');
-  state = retiredResult.state;
+  let runtime = { catalog: definitions, state, session: initialData.session };
+  let actionResult = dispatchGameAction(runtime, { type: 'roster/retireCharacter', characterId: 'character:1' });
+  assert(actionResult.status === 'success', 'retiring a sellable non-player character should dispatch successfully.');
+  state = actionResult.state;
+  runtime = { ...runtime, state, session: actionResult.session };
   assert(state.people.characters['character:1'].flags.lifecycle.retired === true, 'retired flag should persist.');
   assert(!isCharacterActive(state.people.characters['character:1']), 'retired character should not be active.');
   assert(!isCharacterAssistantEligible(state.people.characters['character:1']), 'retired character should not remain assistant eligible.');
-  assert(!markCharacterRetired(state, 'character:1').ok, 'retiring twice should fail.');
+  actionResult = dispatchGameAction(runtime, { type: 'roster/retireCharacter', characterId: 'character:1' });
+  assert(actionResult.status === 'failure', 'retiring twice should fail through dispatch.');
 
-  const deletedResult = markCharacterDeleted(state, 'character:2');
-  assert(deletedResult.ok, 'deleting a non-player character should succeed.');
-  state = deletedResult.state;
+  actionResult = dispatchGameAction(runtime, { type: 'roster/deleteCharacter', characterId: 'character:2' });
+  assert(actionResult.status === 'success', 'deleting a non-player character should dispatch successfully.');
+  state = actionResult.state;
+  runtime = { ...runtime, state, session: actionResult.session };
   assert(state.people.characters['character:2'].flags.lifecycle.deleted === true, 'deleted flag should persist.');
   assert(state.people.characters['character:2'].flags.lifecycle.retired === true, 'deleted character should also be retired.');
   assert(!isCharacterActive(state.people.characters['character:2']), 'deleted character should not be active.');
-  assert(!markCharacterDeleted(state, 'character:0').ok, 'player character must not be deletable.');
+  actionResult = dispatchGameAction(runtime, { type: 'roster/deleteCharacter', characterId: 'character:0' });
+  assert(actionResult.status === 'failure', 'player character must not be deletable through dispatch.');
 
-  const assistantResult = setCharacterAssistantEligible(state, 'character:3', false);
-  assert(assistantResult.ok, 'assistant eligibility update should succeed.');
-  state = assistantResult.state;
+  actionResult = dispatchGameAction(runtime, { type: 'roster/setAssistantEligible', characterId: 'character:3', assistantEligible: false });
+  assert(actionResult.status === 'success', 'assistant eligibility update should dispatch successfully.');
+  state = actionResult.state;
   assert(state.people.characters['character:3'].flags.lifecycle.assistantEligible === false, 'assistant eligibility should be stored.');
 
   const savePayload = createGameSavePayload(state, new Date('2026-05-01T00:00:00.000Z'));

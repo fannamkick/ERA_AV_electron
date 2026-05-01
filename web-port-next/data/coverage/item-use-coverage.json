@@ -47,37 +47,35 @@
     "214"
   ],
   "summary": {
-    "ownedRowRefs": 75,
-    "rows": 75,
-    "implemented": 37,
-    "mapped": 32,
-    "transferredOut": 6,
+    "ownedRowRefs": 74,
+    "rows": 74,
+    "implemented": 21,
+    "mapped": 16,
+    "transferredOut": 37,
     "approvedExcluded": 0,
     "ownedBlocker": 0,
     "missingQueueRowRefs": 0,
     "extraAccountedRowRefs": 0,
     "byScopeSource": {
-      "implementation-queue": 26,
+      "implementation-queue": 25,
       "M29-transfer": 49
     },
     "byRowKind": {
       "definition": 27,
-      "feature": 13,
+      "feature": 12,
       "save-mapping": 8,
       "session-mapping": 27
     },
     "byCompletionStatus": {
-      "implemented-item-use-flow": 13,
+      "implemented-item-use-flow": 12,
       "implemented-master-item-use-effect": 4,
-      "implemented-special-training-item-state": 15,
       "implemented-target-item-use-effect": 5,
-      "mapped-consumed-item-use-effect": 8,
-      "mapped-consumed-special-item-state": 15,
+      "mapped-consumed-item-use-effect": 7,
       "mapped-consumed-visible-use-item": 9,
-      "transferred-out": 6
+      "transferred-out": 37
     },
     "transfersByOwner": {
-      "M41": 6
+      "M41": 37
     }
   },
   "rows": [
@@ -283,184 +281,229 @@
       "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:200",
+      "coverageRowId": "item-use:transfer:special-training-definition:200",
       "reviewId": "definition:definition:item-special:200",
       "rowKind": "definition",
       "itemId": "200",
       "sourceEvidenceId": "source:definition:definition-item-special-200",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식로터",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:201",
+      "coverageRowId": "item-use:transfer:special-training-definition:201",
       "reviewId": "definition:definition:item-special:201",
       "rowKind": "definition",
       "itemId": "201",
       "sourceEvidenceId": "source:definition:definition-item-special-201",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식바이브",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:202",
+      "coverageRowId": "item-use:transfer:special-training-definition:202",
       "reviewId": "definition:definition:item-special:202",
       "rowKind": "definition",
       "itemId": "202",
       "sourceEvidenceId": "source:definition:definition-item-special-202",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식E마사지",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:203",
+      "coverageRowId": "item-use:transfer:special-training-definition:203",
       "reviewId": "definition:definition:item-special:203",
       "rowKind": "definition",
       "itemId": "203",
       "sourceEvidenceId": "source:definition:definition-item-special-203",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식애널바이브",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:204",
+      "coverageRowId": "item-use:transfer:special-training-definition:204",
       "reviewId": "definition:definition:item-special:204",
       "rowKind": "definition",
       "itemId": "204",
       "sourceEvidenceId": "source:definition:definition-item-special-204",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식클리캡",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:205",
+      "coverageRowId": "item-use:transfer:special-training-definition:205",
       "reviewId": "definition:definition:item-special:205",
       "rowKind": "definition",
       "itemId": "205",
       "sourceEvidenceId": "source:definition:definition-item-special-205",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식유두캡",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:206",
+      "coverageRowId": "item-use:transfer:special-training-definition:206",
       "reviewId": "definition:definition:item-special:206",
       "rowKind": "definition",
       "itemId": "206",
       "sourceEvidenceId": "source:definition:definition-item-special-206",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "고성능채찍",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:207",
+      "coverageRowId": "item-use:transfer:special-training-definition:207",
       "reviewId": "definition:definition:item-special:207",
       "rowKind": "definition",
       "itemId": "207",
       "sourceEvidenceId": "source:definition:definition-item-special-207",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "고성능바늘",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:208",
+      "coverageRowId": "item-use:transfer:special-training-definition:208",
       "reviewId": "definition:definition:item-special:208",
       "rowKind": "definition",
       "itemId": "208",
       "sourceEvidenceId": "source:definition:definition-item-special-208",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "피로회복용입욕제",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:209",
+      "coverageRowId": "item-use:transfer:special-training-definition:209",
       "reviewId": "definition:definition:item-special:209",
       "rowKind": "definition",
       "itemId": "209",
       "sourceEvidenceId": "source:definition:definition-item-special-209",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "살아있는밧줄",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:210",
+      "coverageRowId": "item-use:transfer:special-training-definition:210",
       "reviewId": "definition:definition:item-special:210",
       "rowKind": "definition",
       "itemId": "210",
       "sourceEvidenceId": "source:definition:definition-item-special-210",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식착유기",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:211",
+      "coverageRowId": "item-use:transfer:special-training-definition:211",
       "reviewId": "definition:definition:item-special:211",
       "rowKind": "definition",
       "itemId": "211",
       "sourceEvidenceId": "source:definition:definition-item-special-211",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "에이프런",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:212",
+      "coverageRowId": "item-use:transfer:special-training-definition:212",
       "reviewId": "definition:definition:item-special:212",
       "rowKind": "definition",
       "itemId": "212",
       "sourceEvidenceId": "source:definition:definition-item-special-212",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식애널비즈",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:213",
+      "coverageRowId": "item-use:transfer:special-training-definition:213",
       "reviewId": "definition:definition:item-special:213",
       "rowKind": "definition",
       "itemId": "213",
       "sourceEvidenceId": "source:definition:definition-item-special-213",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식삼각목마",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:definition:special-training:214",
+      "coverageRowId": "item-use:transfer:special-training-definition:214",
       "reviewId": "definition:definition:item-special:214",
       "rowKind": "definition",
       "itemId": "214",
       "sourceEvidenceId": "source:definition:definition-item-special-214",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "마술식오나홀",
-      "completionStatus": "implemented-special-training-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds -> isSpecialTrainingItemId -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
       "coverageRowId": "item-use:feature:feature:flow:exit:original-game-erb-shop-item-erb:410:662",
@@ -613,18 +656,6 @@
       "verificationId": "smoke:item-use"
     },
     {
-      "coverageRowId": "item-use:feature:feature:item-shop:use-effects",
-      "reviewId": "feature:feature:item-shop:use-effects",
-      "rowKind": "feature",
-      "sourceEvidenceId": "source:feature:feature-item-shop-use-effects",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "label": "USE_ITEM",
-      "completionStatus": "implemented-item-use-flow",
-      "runtimeConsumerId": "shop/selectUseItem; shop/selectUseTarget; shop/confirmUseItem; shop/cancelUseItem",
-      "verificationId": "smoke:item-use"
-    },
-    {
       "coverageRowId": "item-use:save:save-map:source:flag-30",
       "reviewId": "save-mapping:save-map:source:flag-30",
       "rowKind": "save-mapping",
@@ -737,7 +768,7 @@
       "verificationId": "smoke:item-use"
     },
     {
-      "coverageRowId": "item-use:save:save-map:source:item-211",
+      "coverageRowId": "item-use:transfer:special-training-save:211",
       "reviewId": "save-mapping:save-map:source:item-211",
       "rowKind": "save-mapping",
       "itemId": "211",
@@ -748,9 +779,12 @@
       "address": "ITEM:211",
       "fieldPath": "inventory.itemCounts[itemId:211]",
       "sessionFieldPath": "",
-      "completionStatus": "mapped-consumed-item-use-effect",
-      "runtimeConsumerId": "specialTrainingItemIds -> inventory.itemCounts special unlock state",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item inventory state is consumed by training availability/effect milestones, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
       "coverageRowId": "item-use:transfer:session-mapping:22",
@@ -954,7 +988,7 @@
       "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:200",
+      "coverageRowId": "item-use:transfer:special-training-session:200",
       "reviewId": "session-mapping:session-map:source:itemsales-200",
       "rowKind": "session-mapping",
       "itemId": "200",
@@ -965,12 +999,15 @@
       "address": "ITEMSALES:200",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:200]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:201",
+      "coverageRowId": "item-use:transfer:special-training-session:201",
       "reviewId": "session-mapping:session-map:source:itemsales-201",
       "rowKind": "session-mapping",
       "itemId": "201",
@@ -981,12 +1018,15 @@
       "address": "ITEMSALES:201",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:201]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:202",
+      "coverageRowId": "item-use:transfer:special-training-session:202",
       "reviewId": "session-mapping:session-map:source:itemsales-202",
       "rowKind": "session-mapping",
       "itemId": "202",
@@ -997,12 +1037,15 @@
       "address": "ITEMSALES:202",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:202]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:203",
+      "coverageRowId": "item-use:transfer:special-training-session:203",
       "reviewId": "session-mapping:session-map:source:itemsales-203",
       "rowKind": "session-mapping",
       "itemId": "203",
@@ -1013,12 +1056,15 @@
       "address": "ITEMSALES:203",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:203]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:204",
+      "coverageRowId": "item-use:transfer:special-training-session:204",
       "reviewId": "session-mapping:session-map:source:itemsales-204",
       "rowKind": "session-mapping",
       "itemId": "204",
@@ -1029,12 +1075,15 @@
       "address": "ITEMSALES:204",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:204]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:205",
+      "coverageRowId": "item-use:transfer:special-training-session:205",
       "reviewId": "session-mapping:session-map:source:itemsales-205",
       "rowKind": "session-mapping",
       "itemId": "205",
@@ -1045,12 +1094,15 @@
       "address": "ITEMSALES:205",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:205]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:206",
+      "coverageRowId": "item-use:transfer:special-training-session:206",
       "reviewId": "session-mapping:session-map:source:itemsales-206",
       "rowKind": "session-mapping",
       "itemId": "206",
@@ -1061,12 +1113,15 @@
       "address": "ITEMSALES:206",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:206]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:207",
+      "coverageRowId": "item-use:transfer:special-training-session:207",
       "reviewId": "session-mapping:session-map:source:itemsales-207",
       "rowKind": "session-mapping",
       "itemId": "207",
@@ -1077,12 +1132,15 @@
       "address": "ITEMSALES:207",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:207]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:208",
+      "coverageRowId": "item-use:transfer:special-training-session:208",
       "reviewId": "session-mapping:session-map:source:itemsales-208",
       "rowKind": "session-mapping",
       "itemId": "208",
@@ -1093,12 +1151,15 @@
       "address": "ITEMSALES:208",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:208]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:209",
+      "coverageRowId": "item-use:transfer:special-training-session:209",
       "reviewId": "session-mapping:session-map:source:itemsales-209",
       "rowKind": "session-mapping",
       "itemId": "209",
@@ -1109,12 +1170,15 @@
       "address": "ITEMSALES:209",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:209]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:210",
+      "coverageRowId": "item-use:transfer:special-training-session:210",
       "reviewId": "session-mapping:session-map:source:itemsales-210",
       "rowKind": "session-mapping",
       "itemId": "210",
@@ -1125,12 +1189,15 @@
       "address": "ITEMSALES:210",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:210]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:211",
+      "coverageRowId": "item-use:transfer:special-training-session:211",
       "reviewId": "session-mapping:session-map:source:itemsales-211",
       "rowKind": "session-mapping",
       "itemId": "211",
@@ -1141,12 +1208,15 @@
       "address": "ITEMSALES:211",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:211]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:212",
+      "coverageRowId": "item-use:transfer:special-training-session:212",
       "reviewId": "session-mapping:session-map:source:itemsales-212",
       "rowKind": "session-mapping",
       "itemId": "212",
@@ -1157,12 +1227,15 @@
       "address": "ITEMSALES:212",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:212]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:213",
+      "coverageRowId": "item-use:transfer:special-training-session:213",
       "reviewId": "session-mapping:session-map:source:itemsales-213",
       "rowKind": "session-mapping",
       "itemId": "213",
@@ -1173,12 +1246,15 @@
       "address": "ITEMSALES:213",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:213]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     },
     {
-      "coverageRowId": "item-use:session:special-training:214",
+      "coverageRowId": "item-use:transfer:special-training-session:214",
       "reviewId": "session-mapping:session-map:source:itemsales-214",
       "rowKind": "session-mapping",
       "itemId": "214",
@@ -1189,9 +1265,12 @@
       "address": "ITEMSALES:214",
       "fieldPath": "",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:214]",
-      "completionStatus": "mapped-consumed-special-item-state",
-      "runtimeConsumerId": "specialTrainingItemIds; not ITEMSALES-driven shop visibility",
-      "verificationId": "smoke:item-use"
+      "completionStatus": "transferred-out",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "acceptedByOwner": true,
+      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
+      "verificationId": "gate:milestone-scope-closure -- M41"
     }
   ],
   "unresolvedIssues": []

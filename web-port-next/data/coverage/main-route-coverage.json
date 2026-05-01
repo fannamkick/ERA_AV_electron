@@ -18,8 +18,8 @@
   "summary": {
     "queueRowRefs": 27,
     "menuRows": 24,
-    "enabledMenuRows": 12,
-    "disabledMenuRows": 12,
+    "enabledMenuRows": 13,
+    "disabledMenuRows": 11,
     "sessionRows": 3,
     "implementedRows": 24,
     "transferredOut": 3,
@@ -27,8 +27,8 @@
     "missingQueueRowRefs": 0,
     "extraAccountedRowRefs": 0,
     "byCompletionStatus": {
-      "implemented-disabled-route-contract": 12,
-      "implemented-enabled-route": 12,
+      "implemented-disabled-route-contract": 11,
+      "implemented-enabled-route": 13,
       "transferred-out": 3
     },
     "byDestinationOwnerMilestone": {
@@ -247,19 +247,19 @@
       "label": "스타일리스트",
       "actionTarget": "CALL TAILOR_MAIN",
       "actionCondition": "&& E >= 1 && FLAG:37",
-      "actionId": "",
-      "routeId": "",
-      "defaultEnabled": false,
-      "disabledReason": "M34 equipment/clothing owner must implement this route.",
+      "actionId": "main/openWardrobe",
+      "routeId": "wardrobe",
+      "defaultEnabled": true,
+      "disabledReason": "",
       "destinationOwnerMilestone": "M34",
       "runtimeDefinitionId": "mainMenuOption:108",
       "runtimeConsumerId": "definitions.mainMenuOptions -> buildMainMenuView -> dispatchGameAction",
       "viewConsumer": "src/features/mainMenu.ts:buildMainMenuView",
-      "actionConsumer": "",
-      "routeConsumer": "",
+      "actionConsumer": "src/game/dispatch.ts:dispatchGameAction",
+      "routeConsumer": "src/ui/RouteScreens.tsx:RouteScreen",
       "verificationId": "smoke:main-routes",
-      "completionStatus": "implemented-disabled-route-contract",
-      "completionRule": "Menu row is visible as disabled with explicit future owner and disabled reason; future feature owner must enable it."
+      "completionStatus": "implemented-enabled-route",
+      "completionRule": "Menu row is visible, enabled by view condition, dispatches an action, and reaches a concrete route."
     },
     {
       "coverageRowId": "main-route:menu:109",

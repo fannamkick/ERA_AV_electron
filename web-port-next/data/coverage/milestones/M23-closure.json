@@ -47,7 +47,7 @@
   },
   "ownedTotal": 160,
   "implemented": 0,
-  "mapped": 160,
+  "mapped": 0,
   "approvedExcluded": 0,
   "transferredOut": 160,
   "ownedBlocker": 0,
@@ -98,5 +98,27 @@
     "npm run gate:approved-exclusions",
     "npm run build"
   ],
-  "commitHash": "self: git commit containing this closure file"
+  "commitHash": "self: git commit containing this closure file",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure; this file was backfilled after M34.5 closure gate hardening.",
+  "outputs": {
+    "erbDerivedDefinitions": "data/coverage/erb-derived-definitions.json",
+    "definitions": "data/coverage/definitions.json",
+    "builder": "tools/build_erb_definitions.mjs",
+    "gate": "tools/gate_erb_definition_coverage.mjs"
+  },
+  "closureMetrics": {
+    "ownedTotal": 160,
+    "implemented": 0,
+    "mapped": 0,
+    "approvedExcluded": 0,
+    "transferredOut": 160,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  }
 }

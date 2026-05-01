@@ -18,6 +18,8 @@ function assert(condition, message, detail) {
 }
 
 const queue = readJson('data/coverage/implementation-queue.json');
+const features = readJson('data/coverage/features.json');
+const definitions = readJson('data/coverage/definitions.json');
 const coverage = readJson('data/coverage/social-equipment-cflag-coverage.json');
 const gapAudit = readJson('data/coverage/audits/M34-gap-audit.json');
 
@@ -31,6 +33,12 @@ assert(gapAudit.milestone === 'M34', 'M34 gap audit milestone mismatch');
 const expectedRefs = new Set();
 for (const unit of (queue.queueUnits ?? []).filter((item) => item.ownerMilestone === 'M34')) {
   for (const ref of unit.rowRefs ?? []) expectedRefs.add(ref);
+}
+for (const row of (features.features ?? features.rows ?? []).filter((item) => item.ownerMilestone === 'M34')) {
+  expectedRefs.add(row.featureId);
+}
+for (const row of (definitions.rows ?? []).filter((item) => item.definitionKey === 'legacyCharacterFlagDefinitions')) {
+  expectedRefs.add(`definition:${row.definitionRowId}`);
 }
 
 const inboundFiles = [
