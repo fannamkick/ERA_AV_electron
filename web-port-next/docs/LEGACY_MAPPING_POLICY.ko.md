@@ -12,12 +12,12 @@ M17에서는 대량 변환표를 확정하지 않는다. 의미가 분명한 것
 | 정의 데이터 | `data/coverage/definitions.json` | M20 |
 | 저장 상태 주소 | `data/coverage/save-mapping.json` | M21 |
 | 세션/계산 주소 | `data/coverage/session-mapping.json` | M22 |
-| blocker | `data/coverage/blockers.json` | M19~M30 |
-| 사용자 승인 제외 | `data/coverage/approved-exclusions.json` | M19~M30 |
+| blocker | `data/coverage/blockers.json` | M19~M52 |
+| 사용자 승인 제외 | `data/coverage/approved-exclusions.json` | M19~M52 |
 
 ## 상태값
 
-| 상태값 | 의미 | M30 허용 | 사용 가능 범위 |
+| 상태값 | 의미 | M52 허용 | 사용 가능 범위 |
 | --- | --- | --- | --- |
 | `implemented` | 기능 row가 원본 근거, runtime route/action/view/handler, 성공/실패/취소 또는 예외 검증을 모두 가진다 | 허용 | feature coverage |
 | `mapped` | 원본 저장/session 주소가 새 runtime owner와 field path 또는 calculation owner로 확정됐다 | 허용 | save/session mapping |
@@ -140,4 +140,4 @@ rg "adapters/legacy|legacy/" src/game src/domains src/catalog
 - `implemented` feature는 route/action/view/handler/smoke id가 없으면 차단 상태다.
 - `used` definition은 runtime owner와 consuming feature가 없으면 차단 상태다.
 - `mapped` save/session row는 field path 또는 calculation owner와 검증 id가 없으면 차단 상태다.
-- M30에서 미등록 placeholder, stub, TODO, `legacy*NeedingMapping`이 runtime 완료 경로에 남으면 차단한다.
+- M28~M52에서 미등록 placeholder, stub, TODO, `legacy*NeedingMapping`이 runtime 완료 경로에 남으면 차단한다.

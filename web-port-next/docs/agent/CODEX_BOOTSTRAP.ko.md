@@ -2,6 +2,13 @@
 
 이 문서는 세션 시작용 압축 규칙이다. 완료 기준을 대체하지 않는다.
 
+## 현재 작업 기준
+
+- M28은 strict closure 완료 상태다.
+- 바로 다음 작업은 M29 closure 정정이다.
+- M29~M41이 strict manifest 기준으로 닫히기 전에는 M42 구현을 재개하지 않는다.
+- M28~M52 aggregate: total 11,106; implemented-verified 7,904; approved-excluded 3; blocked 2,913; scope-redesign-required 286; completedAllowedNow true 1 / false 25.
+
 ## 절대 규칙
 
 - `.env.local`을 읽거나 출력하지 않는다.

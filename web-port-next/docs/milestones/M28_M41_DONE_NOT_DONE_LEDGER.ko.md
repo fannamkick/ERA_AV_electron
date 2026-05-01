@@ -52,8 +52,9 @@ Next actions:
 - `재확인 필요`: 문서 책임과 산출물 표현이 어긋나거나, 완료 판정이 너무 넓게 보이는 것.
 
 현재 공통 상태:
-- M28~M41의 개별 coverage/gate/smoke는 2026-05-01 재실행 기준으로 통과했다.
-- M28~M41의 closure는 모두 `responsibilityIntegrity`가 없어 현재 `gate:milestone-scope-closure` 재검증은 실패한다.
+- M28은 2026-05-02 strict closure 재검증 기준으로 통과했다.
+- M29~M41의 개별 coverage/gate/smoke는 과거 통과 기록이 있어도 strict completion evidence로 재정리해야 한다.
+- M29~M41의 closure는 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required 정정이 필요하다.
 - 따라서 이 장부는 "기능 검증 결과가 존재한다"와 "현재 완료 판정은 보강 필요하다"를 분리해서 읽어야 한다.
 - 2026-05-02 기준, `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 책임 재설계 신호로 본다.
 
@@ -83,9 +84,9 @@ Next actions:
 | M41 | completed, implemented 1,371, mapped 254 | blocked | 예 | `COMORDER.ERB` source-file-review와 mapped availability row가 완료 근거로 남음 | `COMORDER.ERB`를 command/order 단위로 분해하고 254 mapped row를 재분류 |
 
 재판정 결론:
-- M28~M41 중 새 기준으로 `completed 유지 가능`은 없다.
+- M28은 strict closure 완료 상태다.
 - M42는 아직 시작하면 안 된다.
-- 다음 작업은 M28부터 순서대로 매니페스트 보강/책임 재설계/blocked closure 정정을 수행하거나, M42에 직접 영향을 주는 M40~M41을 먼저 보강하는 별도 순서를 명시적으로 선택하는 것이다.
+- 다음 작업은 M29부터 순서대로 매니페스트 보강/책임 재설계/blocked closure 정정을 수행하거나, M42에 직접 영향을 주는 M40~M41을 먼저 보강하는 별도 순서를 명시적으로 선택하는 것이다.
 
 ## 2026-05-02 M28~M30 source-unit manifest 1차 산출
 

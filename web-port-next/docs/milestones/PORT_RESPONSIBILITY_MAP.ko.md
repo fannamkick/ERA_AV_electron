@@ -8,6 +8,13 @@
 
 gate, coverage, closure, 사실 장부는 이 책임 구조를 검증하는 도구다. 책임 구조를 대체하지 않는다.
 
+## 현재 closure 상태
+
+- M28은 strict source-unit manifest 기준으로 완료됐다.
+- 다음 closure 대상은 M29다.
+- M29~M41이 완료 또는 명시적 blocked/scope-redesign-required closure로 정리되기 전에는 M42를 재개하지 않는다.
+- M28~M52 aggregate는 total 11,106, implemented-verified 7,904, approved-excluded 3, blocked 2,913, scope-redesign-required 286, completedAllowedNow true 1 / false 25다.
+
 ## 스킵 방지 계약
 
 각 마일스톤 호출은 시작 전에 `원본 단위 매니페스트`를 만든 뒤에만 작업한다. 매니페스트는 그 호출이 닫아야 하는 ERB label, CSV row, Chara seed, save/session address, command/effect source, route/action/view 단위를 모두 적은 목록이다.

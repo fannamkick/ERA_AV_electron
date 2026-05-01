@@ -2,6 +2,13 @@
 
 이 폴더는 Codex/서브에이전트가 세션 시작 때 먼저 읽는 얇은 문서다. 목적은 토큰 누수를 줄이는 것이며, 완료 판정 기준을 줄이는 것이 아니다.
 
+## 현재 기준
+
+- M28 strict closure 완료: 24개 main-route contract row는 M28 소유 구현 완료, BOYFRIEND event-local session row 3개는 M28 approved-excluded 및 M47 책임.
+- 다음 작업은 M29 closure다.
+- M29~M41이 strict manifest 기준으로 닫히기 전에는 M42 구현을 재개하지 않는다.
+- 현재 aggregate: total 11,106; implemented-verified 7,904; approved-excluded 3; blocked 2,913; scope-redesign-required 286; completedAllowedNow true 1 / false 25.
+
 ## 읽기 순서
 
 1. `CODEX_BOOTSTRAP.ko.md`

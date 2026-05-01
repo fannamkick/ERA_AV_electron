@@ -10,6 +10,13 @@
 
 상태값, gate, coverage, 문서 장부는 이 구조를 보조할 뿐 책임 구조를 대체하지 않는다. 전체 책임 지도는 `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`에 둔다.
 
+## 현재 closure 기준
+
+- M28은 strict closure 완료 상태다.
+- 다음 호출 대상은 M29 closure다.
+- M29~M41이 source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전에는 M42를 재개하지 않는다.
+- 현재 M28~M52 aggregate: total 11,106; implemented-verified 7,904; approved-excluded 3; blocked 2,913; scope-redesign-required 286; completedAllowedNow true 1 / false 25.
+
 ## 프로젝트 책임
 
 - 목표: 원본 게임의 기능, 정의 데이터, 저장 상태, 세션/계산 상태, 화면 흐름, 이벤트, 엔딩을 web runtime behavior로 이식한다.
