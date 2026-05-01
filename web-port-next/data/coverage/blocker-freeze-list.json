@@ -4904,7 +4904,7 @@
       "status": "frozen-open",
       "originalOwnerMilestone": "M28",
       "frozenOwnerMilestone": "M44",
-      "ownerRole": "training-effect-70-104-and-post-owner",
+      "ownerRole": "training-effect-70-plus-and-post-owner",
       "blockedTarget": "training",
       "sourceEvidenceId": "source:feature:feature-flow-pause-original-game-erb-comf110-erb-293-3214",
       "sourceLocation": "original-game/ERB/指導関係/COMF110.ERB",
@@ -6487,7 +6487,7 @@
     {
       "blockerId": "blocker:m20:training-command-effect",
       "status": "frozen-open",
-      "originalOwnerMilestone": "M28",
+      "originalOwnerMilestone": "M42",
       "frozenOwnerMilestone": "M42",
       "ownerRole": "training-effect-0-34-owner",
       "blockedTarget": "trainingCommands",

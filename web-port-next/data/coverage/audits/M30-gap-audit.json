@@ -13,13 +13,310 @@
     "mapped": 16,
     "transferredOut": 37,
     "approvedExcluded": 0,
-    "unresolvedGaps": 0,
-    "ownedBlockers": 0,
+    "unresolvedGaps": 37,
+    "ownedBlockers": 37,
     "roleOnlyComplete": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "unapprovedExcluded": 0
   },
-  "issues": []
+  "issues": [
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:200",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:200",
+      "fromMilestone": "M30",
+      "toMilestone": "M42/M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:201",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:201",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:202",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:202",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:203",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:203",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:204",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:204",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:205",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:205",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:206",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:206",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:207",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:207",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:208",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:208",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:209",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:209",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:210",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:210",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:211",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:211",
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:212",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:212",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:213",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:213",
+      "fromMilestone": "M30",
+      "toMilestone": "M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:214",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:214",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item:22",
+      "severity": "error",
+      "rowRef": "definition:definition:item:22",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item:90",
+      "severity": "error",
+      "rowRef": "definition:definition:item:90",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item:91",
+      "severity": "error",
+      "rowRef": "definition:definition:item:91",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:save-mapping:save-map:source:item-211",
+      "severity": "error",
+      "rowRef": "save-mapping:save-map:source:item-211",
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-200",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-200",
+      "fromMilestone": "M30",
+      "toMilestone": "M42/M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-201",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-201",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-202",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-202",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-203",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-203",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-204",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-204",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-205",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-205",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-206",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-206",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-207",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-207",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-208",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-208",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-209",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-209",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-210",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-210",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-211",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-211",
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-212",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-212",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-213",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-213",
+      "fromMilestone": "M30",
+      "toMilestone": "M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-214",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-214",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-22",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-22",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-90",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-90",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-91",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-91",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    }
+  ]
 }

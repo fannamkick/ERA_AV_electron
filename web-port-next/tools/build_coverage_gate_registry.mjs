@@ -96,11 +96,11 @@ const milestoneContracts = [
   },
   {
     milestone: 'M44',
-    ownerRole: 'training effect 70-104/postprocess owner',
-    ownedScope: 'training command 70-104, postprocess, event/equipment/resource, and all-command aggregate rows',
-    coverageArtifacts: ['data/coverage/training-effect-70-104.json'],
+    ownerRole: 'training effect 70-plus/postprocess owner',
+    ownedScope: 'training command 70 and above, postprocess, event/equipment/resource, and all-command aggregate rows',
+    coverageArtifacts: ['data/coverage/training-effect-70-plus.json'],
     gapAuditArtifact: 'data/coverage/audits/M44-gap-audit.json',
-    requiredScripts: ['coverage:training-effect-70-104', 'gate:training-effect', 'gate:raw-training-names'],
+    requiredScripts: ['coverage:training-effect-70-plus', 'gate:training-effect', 'gate:raw-training-names'],
     blockingGates: ['gate:training-effect -- all', 'gate:raw-training-names', 'gate:milestone-scope-closure -- M44'],
   },
   {

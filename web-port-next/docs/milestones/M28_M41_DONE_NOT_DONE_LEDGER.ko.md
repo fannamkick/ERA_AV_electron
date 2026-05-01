@@ -17,7 +17,7 @@
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼다. | closure에 `responsibilityIntegrity`가 없다. |
 | M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영을 구현했다. coverage 기준 implemented 43, mapped 40. | 123개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner로 넘겼다. | transferredOut 123개가 실제 수신 마일스톤에서 닫혔는지 추적 필요. |
-| M30 | 사용형 아이템 일부와 특수 아이템 접근 경로를 구현했다. coverage 기준 implemented 21, mapped 16. | 37개 row는 M41 등 후속 책임으로 넘겼다. 특수 item 200~214의 실제 훈련 효과는 M42~M44 책임으로 남았다. | 문서에는 75행으로 적힌 곳이 있으나 실제 closure는 ownedTotal 74다. "특수 아이템 효과 전수 구현"이라고 읽히는 문구는 scope 축소 위험이 있다. |
+| M30 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 선택, 대상 지정, 성공/실패/취소, 저장 반영 경로를 구현했다. coverage 기준 implemented 21, mapped 16. | 37개 owned row가 M34/M41/M42/M43/M44 계열로 남아 있으며, 특수 item 200~214의 실제 소비는 M30에서 구현되지 않았다. | M30은 2026-05-02 재판정 기준 `blocked`다. `transferredOut` 37개는 완료 근거가 아니라 `ownedBlocker` 37개로 기록한다. item 213은 `COMF137.ERB`라 기존 M42~M44 range 설계도 재확인해야 한다. |
 | M31 | 영입 listing 48개, 반복 영입 제한, 인물 생성 결과를 구현했다. coverage 기준 implemented 52, mapped 158. | 27개 row는 후속 owner로 넘겼다. mapped 158개는 실제 생성 로직이 아니라 identity/정의/owner 확정 성격이 섞여 있다. | mapped와 transferredOut이 실제 미구현을 숨기지 않는지 재확인 필요. |
 | M32 | Chara template 109개, CSTR seed, retired/deleted lifecycle, 표시 identity를 연결했다. coverage 기준 implemented 286, mapped 8. | identity 외 효과/상태 변화는 다른 owner가 소유한다. | closure에 `responsibilityIntegrity`가 없다. |
 | M33 | BASE/ABL/TALENT/EXP/MARK/PALAM 계열 seed와 body/stat owner를 대량 연결했다. coverage 기준 implemented 4,768, mapped 465. | 67개 row는 후속 owner로 넘겼다. 표시/계산 전용 row는 실제 행동 효과 구현이 아니다. | 대량 implemented row가 "seed 소비"인지 "행동 효과 구현"인지 구분해서 읽어야 한다. |
@@ -34,7 +34,7 @@
 ## 즉시 보강할 항목
 
 - M28~M41 closure에 `responsibilityIntegrity`를 기계적으로 추가하지 않는다. 먼저 이 장부의 `재확인 필요`를 해소하거나 blocked로 적는다.
-- M30의 ownedTotal 문서 불일치와 특수 item 효과 범위를 정정한다.
+- M30은 blocked로 재판정했다. 다음 단계는 M30 책임을 "즉시 사용 아이템만"으로 공식 재설계할지, 아니면 특수 item 200~214 효과까지 M30에서 구현할지 결정하는 것이다.
 - M35의 넓은 책임을 save field mapping 7개가 아니라 runtime hook/cleanup별 사실로 풀어 적는다.
 - M38/M41 registry에 smoke 필수 누락을 기록한다.
 - M39/M41의 `source-file-review` mapped 완료 row를 분해하거나 미완료로 되돌릴지 결정한다.

@@ -235,7 +235,7 @@
 | M41 | 훈련 가능 조건 구현자 | 105개 command availability, 불가 사유, 대상/자원/장소/상태 조건 | `training-availability-coverage.json`, `gate:training-availability`, `gate:milestone-scope-closure -- M41` | command별 조건 row 누락, 불가 사유 없음, availability가 save 변경 |
 | M42 | 훈련 0~34 효과 구현자 | command 0~34 효과, source 계산, 결과 owner, session 폐기 | `training-effect-0-34.json`, `gate:training-effect -- 0-34`, `gate:milestone-scope-closure -- M42` | source evidence 없음, 중간값 save 잔류, command별 성공/불가/취소 미검증 |
 | M43 | 훈련 35~69 효과 구현자 | command 35~69 효과, source 계산, 결과 owner, session 폐기 | `training-effect-35-69.json`, `gate:training-effect -- 35-69`, `gate:milestone-scope-closure -- M43` | 결과 owner 없음, command 미구현, 중간값 save 잔류, owned blocker |
-| M44 | 훈련 70~104/후처리 구현자 | command 70~104, 훈련 후처리, 이벤트/장비/자원 변화, 105개 총괄 | `training-effect-70-104.json`, `gate:training-effect -- all`, `gate:raw-training-names` | 105개 중 미구현 command, 후처리 미검증, raw COMF/TFLAG/SOURCE/TEQUIP/LOSEBASE |
+| M44 | 훈련 70 이상/후처리 구현자 | command 70 이상 전체, 훈련 후처리, 이벤트/장비/자원 변화, 전체 command 총괄 | `training-effect-70-plus.json`, `gate:training-effect -- all`, `gate:raw-training-names` | 미구현 command, 후처리 미검증, raw COMF/TFLAG/SOURCE/TEQUIP/LOSEBASE |
 | M45 | 공통 유지보수 구현자 | 능력 상승, 휴식, 회복, 자동 아이템 사용, 공통 시스템 feature | `common-system-coverage.json`, `smoke:common-system`, `gate:milestone-scope-closure -- M45` | 기능 내부 임시 로직으로 숨어 있는 common feature, 결과 owner 없음 |
 | M46 | 미션 구현자 | 미션 정의/수락/진행/보고/완료/실패/만료/보상/패널티 | `mission-coverage.json`, `smoke:mission-all`, `gate:milestone-scope-closure -- M46` | 미션 상태와 선택 session 혼합, 기한/실패/보상 미검증, owned blocker |
 | M47 | 세계/이벤트 구현자 | 이벤트 trigger/condition/text/effect, world/story flag, hook | `event-world-coverage.json`, `gate:event-coverage`, `gate:milestone-scope-closure -- M47` | 표시만 있는 이벤트, 상태 변화 없음, 발생 조건 근거 없음, text row 미소비 |
@@ -303,7 +303,7 @@
 | M41 | 훈련 가능 조건 구현자 | 105개 command의 availability와 불가 사유를 전수 구현한다 | command availability table, unavailable reason tests | 각 command가 가능/불가 조건과 표시 사유를 가짐 | command가 실행 가능하지만 조건 row 또는 불가 사유가 없음 |
 | M42 | 훈련 효과 0~34 구현자 | command 0~34의 source 계산, 파라미터 변화, 자원 소모, 결과 반영을 구현한다 | command 0~34 handlers, source calculation tests, coverage updates | command 0~34가 성공/불가/취소/결과 적용/session 폐기를 통과 | 원본 계산 중간값이 save에 들어가거나 source evidence가 없음 |
 | M43 | 훈련 효과 35~69 구현자 | command 35~69의 계산과 결과 반영을 구현한다 | command 35~69 handlers, source calculation tests, coverage updates | command 35~69가 성공/불가/취소/결과 적용/session 폐기를 통과 | command 결과 owner가 불명확하거나 blocker 없이 미구현 command가 남음 |
-| M44 | 훈련 효과 70~104/후처리 구현자 | command 70~104와 훈련 후처리, 이벤트, 장비/자원 변화를 구현한다 | command 70~104 handlers, post-training pipeline, raw-name gate | 105개 command 전체와 후처리가 구현 또는 사용자 승인 제외 상태이고 소유 blocker 0개 | `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남음 |
+| M44 | 훈련 효과 70 이상/후처리 구현자 | command 70 이상 전체와 훈련 후처리, 이벤트, 장비/자원 변화를 구현한다 | command 70-plus handlers, post-training pipeline, raw-name gate | 전체 command와 후처리가 구현 또는 사용자 승인 제외 상태이고 소유 blocker 0개 | `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남음 |
 | M45 | 공통 유지보수 구현자 | 능력 상승, 휴식, 회복, 자동 아이템 사용, 공통 시스템 흐름을 구현한다 | common-system handlers, rest/ability tests, roundtrip tests | 공통 기능이 owner별 결과 반영과 성공/실패/취소를 검증함 | common-system feature가 특정 기능군 내부 임시 로직으로 숨어 있음 |
 | M46 | 미션 구현자 | 미션 정의, 수락, 진행, 보고, 완료, 실패, 만료, 보상을 전수 구현한다 | mission definitions, mission lifecycle handlers, mission roundtrip tests | 미션 전체가 조건/기한/보상/패널티와 턴 종료 연동을 검증함 | 미션 상태와 미션 선택 session이 섞이거나 보상 owner가 불명확함 |
 | M47 | 세계/이벤트 구현자 | 이벤트 조건, 스토리 진행, 장소/세계 플래그, hook 발생을 구현한다 | event/world handlers, event hook table, world roundtrip tests | 이벤트가 발생 조건, 표시, 상태 변화, 저장 반영을 모두 가짐 | 이벤트 표시만 있고 상태 변화나 발생 조건 근거가 없음 |
@@ -329,7 +329,7 @@
 | M41 | `coverage:training-availability`, `gate:training-availability`, command별 availability matrix | COMABLE 전체를 한 row로 닫음, 불가 사유 없는 command를 완료 처리 | 105개 command 각각 가능/불가 조건, 불가 사유, source evidence, non-mutating view 계산 검증 |
 | M42 | `coverage:training-effect-0-34`, `gate:training-effect -- 0-34`, command별 smoke/table | command 효과 일부만 구현, source 계산 중간값 save 저장 | command 0~34 각각 성공/불가/취소/결과 owner/session cleanup/source evidence 검증 |
 | M43 | `coverage:training-effect-35-69`, `gate:training-effect -- 35-69`, command별 smoke/table | 결과 owner 없는 command를 구현 완료 처리 | command 35~69 각각 성공/불가/취소/결과 owner/session cleanup/source evidence 검증 |
-| M44 | `coverage:training-effect-70-104`, `gate:training-effect -- all`, `gate:raw-training-names` | 105개 중 미구현 command를 후처리로 숨김, raw `COMF/TFLAG/SOURCE` runtime 노출 | command 70~104, 후처리, 이벤트/장비/자원 변화, 105개 전체 gap 0 검증 |
+| M44 | `coverage:training-effect-70-plus`, `gate:training-effect -- all`, `gate:raw-training-names` | 미구현 command를 후처리로 숨김, raw `COMF/TFLAG/SOURCE` runtime 노출 | command 70 이상 전체, 후처리, 이벤트/장비/자원 변화, 전체 command gap 0 검증 |
 | M45 | `coverage:common-system`, `gate:common-system`, `smoke:common-system` | common feature를 특정 기능 내부 임시 로직으로 처리 | 능력 상승/휴식/회복/자동 아이템/공통 hook이 owner와 roundtrip 검증 보유 |
 | M46 | `coverage:mission`, `gate:mission-coverage`, `smoke:mission-all` | 미션 상태와 선택 session 혼합, 기한/실패 미구현 | 모든 미션 정의/수락/진행/보고/완료/실패/만료/보상/패널티/턴 hook 검증 |
 | M47 | `coverage:event-world`, `gate:event-coverage`, event hook matrix | 표시만 있는 이벤트, 조건 없는 이벤트, 상태 변화 없는 이벤트 완료 처리 | 이벤트별 trigger/condition/text/effect/save owner/hook/roundtrip 검증 |

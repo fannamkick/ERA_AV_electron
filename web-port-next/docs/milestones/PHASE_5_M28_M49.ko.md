@@ -64,32 +64,35 @@
 - [x] `npm run smoke:phase1` 실행
 - [x] `npm run build` 실행
 
-## M30. [구현/정정필요] 즉시 사용 아이템 구현과 특수 훈련 아이템 미완료 정리
+## M30. [구현/차단] 즉시 사용 아이템 구현과 특수 훈련 아이템 책임 재판정
 
 책임 선언:
-- 역할: 즉시 사용 아이템의 조건과 효과를 구현하고, 특수 훈련 아이템은 실제 소비 owner를 명확히 남긴다.
-- 범위: 즉시 사용 조건, 사용 효과, 실패/취소 경로다. 특수 item 200~214의 훈련 효과는 M30 완료 범위가 아니라 M42~M44 구현 범위다.
+- 역할: 즉시 사용 아이템의 조건과 효과를 구현한다. 기존 M30 accounting에 들어온 특수 훈련 아이템 200~214는 현재 책임 충돌로 차단한다.
+- 범위: 즉시 사용 조건, 사용 효과, 실패/취소 경로다. 특수 item 200~214의 훈련 효과는 원본 COMF 훈련 command에서 `ITEM:200`~`ITEM:214` 조건으로 소비되므로 M30 완료로 계산하지 않는다.
 - 방식: 효과는 inventory/people/body/world/mission/settings/equipment 등 정확한 owner에만 반영한다.
-- 완료 결과: 즉시 사용 item이 실제 효과 또는 사용자 승인 제외를 갖고, 특수 훈련 item의 미구현 효과가 M42~M44에서 닫혀야 할 책임으로 남는다.
-- 누락 차단: no-op handler로 완료 처리하거나 효과 owner가 불명확하면 완료하지 않는다.
+- 완료 결과: 현재 완료 아님. `transferredOut` 37개를 `ownedBlocker`로 기록했으므로 M30 closure/gate는 실패해야 한다.
+- 누락 차단: no-op handler, owner transfer, 효과 owner 불명확, 특수 훈련 item 효과 미구현이 남으면 완료하지 않는다.
 
-- [x] 모든 사용형 아이템의 사용 조건을 구현하거나 사용자 승인 제외로 분류하고, 미구현 조건은 blocker로 남겨 완료 차단
-- [x] 아이템 사용 효과가 `inventory`, `people`, `body`, `world`, `mission`, `settings` 중 정확한 owner에 반영되는지 검증
-- [ ] 특수 item 200~214의 실제 훈련 효과를 M42~M44에서 구현하고, M30 완료 문구와 충돌하지 않게 닫는다
-- [x] 시설 해금형 item과 방문/시설 기능의 소비 관계를 연결
-- [x] 의복/장비형 item과 equipment/clothing owner를 연결
-- [x] 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
-- [x] 아이템 사용 후 저장 roundtrip을 검증
-- [x] M20/M24/M26/M34 coverage의 관련 status 갱신
-- [x] `npm run build` 실행
+- [x] 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 사용 조건과 효과를 구현
+- [x] 즉시 사용 아이템 효과가 `inventory`, `people`, `body`, `run`, `featureState` 등 정확한 owner에 반영되는지 검증
+- [ ] 특수 item 200~214의 실제 소비를 구현하거나 M30 책임에서 제거하는 공식 재설계를 완료
+- [ ] item 22/90/91 및 특수 item 200~214 transfer 37개를 완료 근거가 아닌 blocker로 해소
+- [x] 즉시 사용 아이템의 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
+- [x] 즉시 사용 아이템 사용 후 저장 roundtrip을 검증
+- [x] M30 coverage를 재생성해 `ownedBlocker: 37`, `status: blocked`로 기록
+- [ ] M30 완료 gate 통과
+- [ ] `npm run build` 실행
 
-M30 정정 기록:
+M30 재판정 기록:
 - M30 owned scope는 현재 closure 기준 `unit:M30:item-use`와 M29 inbound transfer를 합쳐 ownedTotal 74행이다.
 - 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop.visibleUseItemIds`, `shop/selectUseItem`, `shop/selectUseTarget`, `shop/confirmUseItem`, `shop/cancelUseItem`으로 실제 소비된다.
-- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 이것은 효과 구현 완료가 아니다. 훈련 command별 효과 적용은 M42~M44에서 구현해야 한다.
-- item 22/90/91은 M30 사용형 아이템이 아니라 훈련 가능 조건을 여는 아이템이므로 M41로 이관했다.
+- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 이것은 효과 구현 완료가 아니다.
+- 원본 대조 결과 특수 item 200~210/212~214 대부분은 `COMFxx.ERB` 훈련 효과 스크립트에서 소비되고, item 211은 `COSPLAY.ERB` 의복 흐름에서 소비된다. 현재 transfer target은 M34/M42/M43/M44 계열로 다시 분해했다.
+- item 213은 `COMF137.ERB`에서 소비된다. 따라서 기존 M42~M44의 "0~104 command" 범위만으로는 전체 훈련 효과 포팅이 닫히지 않는다.
+- item 22/90/91은 M30 사용형 아이템이 아니라 훈련 가능 조건을 여는 아이템이므로 M41로 남겼다.
 - cosplay/clothing pack은 M29에서 M34로 이관되어 M30 소유 범위가 아니다.
-- M30은 기존 "특수 아이템 완성" 완료 선언을 신뢰하지 않는다. M42~M44에서 특수 item 효과 소비가 닫히기 전까지 전체 아이템 특수 효과는 미완료다.
+- 2026-05-02 재판정에서 M30 closure는 `status: blocked`, `ownedBlocker: 37`로 바뀌었다. 기존 "특수 아이템 완성" 완료 선언은 무효다.
+- `npm run gate:item-use-coverage`와 `npm run gate:milestone-scope-closure -- M30`은 이 blocker가 해소될 때까지 실패해야 한다.
 
 검증:
 
@@ -644,22 +647,22 @@ M42 차단 기록:
 - [ ] M20/M24/M25 coverage의 command 35~69 status 갱신
 - [ ] `npm run build` 실행
 
-## M44. [구현] 훈련 command 효과 70~104와 후처리 완성
+## M44. [구현/범위보강필요] 훈련 command 효과 70 이상과 후처리 완성
 
 책임 선언:
-- 역할: 훈련 command 70~104와 훈련 후처리를 완성한다.
+- 역할: 훈련 command 70 이상 전체와 훈련 후처리를 완성한다.
 - 범위: command 효과, 후처리, 이벤트, 장비 변화, 자원 변화, raw-name gate다.
 - 방식: 105개 command 전체 상태를 집계하고 남은 command를 구현 또는 사용자 승인 제외로 닫는다. blocker가 남으면 완료하지 않는다.
 - 완료 결과: 전체 훈련 command coverage에 미구현 row가 남지 않는다.
 - 누락 차단: `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남으면 완료하지 않는다.
 
-- [ ] command 70~104의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] command 70 이상 전체의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
 - [ ] 훈련 후처리, 이벤트, 장비 변화, 자원 변화가 올바른 owner에 반영되는지 검증
 - [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
 - [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
 - [ ] 전체 105개 command coverage에 미구현 row가 남지 않는지 확인
 - [ ] 원본명 `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` 직접 사용 검색 통과
-- [ ] M20/M24/M25 coverage의 command 70~104 및 후처리 status 갱신
+- [ ] M20/M24/M25 coverage의 command 70 이상 및 후처리 status 갱신
 - [ ] `npm run build` 실행
 
 ## M45. [구현] 능력 상승/휴식/공통 유지보수 완성

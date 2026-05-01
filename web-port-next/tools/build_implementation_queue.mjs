@@ -54,7 +54,7 @@ const ownerPlan = {
   M41: { role: 'training-availability-owner', area: 'training-availability' },
   M42: { role: 'training-effect-0-34-owner', area: 'training-effect-0-34' },
   M43: { role: 'training-effect-35-69-owner', area: 'training-effect-35-69' },
-  M44: { role: 'training-effect-70-104-and-post-owner', area: 'training-effect-70-104-post' },
+  M44: { role: 'training-effect-70-plus-and-post-owner', area: 'training-effect-70-plus-post' },
   M45: { role: 'common-maintenance-owner', area: 'common-maintenance' },
   M46: { role: 'mission-owner', area: 'mission' },
   M47: { role: 'world-event-owner', area: 'world-event' },

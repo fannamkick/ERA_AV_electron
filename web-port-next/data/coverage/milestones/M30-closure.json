@@ -1,9 +1,10 @@
 {
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M30",
-  "title": "Item use and special item coverage",
-  "status": "completed",
-  "completedAt": "2026-05-01",
+  "title": "Immediate item use implementation and special training item blocker",
+  "status": "blocked",
+  "blockedAt": "2026-05-02",
+  "blockerReason": "M30 has owned rows transferred to later milestones. Under responsibility integrity rules, these rows block completion until the milestone is redefined or implemented in its owner scope.",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M30 git commit that includes this closure file",
   "sourceInputs": {
@@ -28,7 +29,7 @@
     "mapped": 16,
     "approvedExcluded": 0,
     "transferredOut": 37,
-    "ownedBlocker": 0,
+    "ownedBlocker": 37,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -41,7 +42,7 @@
     "mapped": 16,
     "approvedExcluded": 0,
     "transferredOut": 37,
-    "ownedBlocker": 0,
+    "ownedBlocker": 37,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -58,15 +59,27 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "74 M30 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "37 transferred owned row(s) must block M30 completion"
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": false,
+    "sourceBehaviorImplementedNotJustIndexed": false,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": true,
+    "responsibilityItems": [
+      "Immediate use items 30/31/38/39/40/41/42/43/52 success, failure, target, cancel, and persistence behavior.",
+      "Special training item 200~214 behavior was included in M30 accounting but is not implemented by M30 item-use runtime."
+    ],
+    "implementationEvidence": [
+      "Immediate use item runtime consumers exist through shop/selectUseItem, shop/selectUseTarget, shop/confirmUseItem, and shop/cancelUseItem.",
+      "Special training item rows are transferred instead of implemented, so they are blocker evidence rather than completion evidence."
+    ],
+    "verificationEvidence": [
+      "npm run coverage:item-use regenerates M30 with ownedBlocker > 0 until the transfer issue is resolved."
+    ]
   },
   "commandsRun": [
-    "npm run coverage:item-use",
-    "npm run gate:item-use-coverage",
-    "npm run gate:milestone-scope-closure -- M30",
-    "npm run smoke:item-use",
-    "npm run smoke:item-shop",
-    "npm run build",
-    "npm run test --if-present"
+    "npm run coverage:item-use"
   ]
 }

@@ -133,8 +133,8 @@ const milestonePlan = {
     responsibility: 'Close command 35-69 effects, source calculations, save result owners, and cleanup.',
   },
   M44: {
-    role: 'training-effect-70-104-and-post-owner',
-    responsibility: 'Close command 70-104, training post-processing, raw-name gates, and all-command summary.',
+    role: 'training-effect-70-plus-and-post-owner',
+    responsibility: 'Close command 70 and above, training post-processing, raw-name gates, and all-command summary.',
   },
   M45: {
     role: 'common-maintenance-owner',

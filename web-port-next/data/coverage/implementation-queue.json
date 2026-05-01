@@ -200,8 +200,8 @@
     },
     {
       "milestone": "M44",
-      "role": "training-effect-70-104-and-post-owner",
-      "area": "training-effect-70-104-post",
+      "role": "training-effect-70-plus-and-post-owner",
+      "area": "training-effect-70-plus-post",
       "queueUnitCount": 2,
       "queueRowCount": 1023
     },
@@ -23674,10 +23674,10 @@
       "closureRule": "All rowRefs in this unit must become implemented/used/mapped-consumed, remain blocker-owned by this unit, or receive explicit approved exclusion before the owner milestone can close."
     },
     {
-      "unitId": "unit:M44:training-effect-70-104-post",
+      "unitId": "unit:M44:training-effect-70-plus-post",
       "ownerMilestone": "M44",
-      "ownerRole": "training-effect-70-104-and-post-owner",
-      "implementationArea": "training-effect-70-104-post",
+      "ownerRole": "training-effect-70-plus-and-post-owner",
+      "implementationArea": "training-effect-70-plus-post",
       "status": "queued",
       "rowCount": 1022,
       "rowCountsByKind": {
@@ -25936,10 +25936,10 @@
       "closureRule": "All rowRefs in this unit must become implemented/used/mapped-consumed, remain blocker-owned by this unit, or receive explicit approved exclusion before the owner milestone can close."
     },
     {
-      "unitId": "unit:M44:training-effect-70-104-post-original-game-erb-system-source-sub2-erb",
+      "unitId": "unit:M44:training-effect-70-plus-post-original-game-erb-system-source-sub2-erb",
       "ownerMilestone": "M44",
-      "ownerRole": "training-effect-70-104-and-post-owner",
-      "implementationArea": "training-effect-70-104-post:original-game-erb-system-source-sub2-erb",
+      "ownerRole": "training-effect-70-plus-and-post-owner",
+      "implementationArea": "training-effect-70-plus-post:original-game-erb-system-source-sub2-erb",
       "status": "queued",
       "rowCount": 1,
       "rowCountsByKind": {

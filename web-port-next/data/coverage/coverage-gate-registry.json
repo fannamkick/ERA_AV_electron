@@ -203,14 +203,14 @@
     },
     {
       "milestone": "M44",
-      "ownerRole": "training effect 70-104/postprocess owner",
-      "ownedScope": "training command 70-104, postprocess, event/equipment/resource, and all-command aggregate rows",
+      "ownerRole": "training effect 70-plus/postprocess owner",
+      "ownedScope": "training command 70 and above, postprocess, event/equipment/resource, and all-command aggregate rows",
       "coverageArtifacts": [
-        "data/coverage/training-effect-70-104.json"
+        "data/coverage/training-effect-70-plus.json"
       ],
       "gapAuditArtifact": "data/coverage/audits/M44-gap-audit.json",
       "requiredScripts": [
-        "coverage:training-effect-70-104",
+        "coverage:training-effect-70-plus",
         "gate:training-effect",
         "gate:raw-training-names"
       ],

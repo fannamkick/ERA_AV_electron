@@ -53,7 +53,7 @@
     "mapped": 16,
     "transferredOut": 37,
     "approvedExcluded": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 37,
     "missingQueueRowRefs": 0,
     "extraAccountedRowRefs": 0,
     "byScopeSource": {
@@ -75,7 +75,12 @@
       "transferred-out": 37
     },
     "transfersByOwner": {
-      "M41": 37
+      "M34": 3,
+      "M41": 6,
+      "M42": 16,
+      "M42/M44": 2,
+      "M43": 8,
+      "M44": 2
     }
   },
   "rows": [
@@ -290,10 +295,10 @@
       "label": "마술식로터",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42/M44",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 200 is consumed by COMF10.ERB and COMF90/91/92.ERB effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42/M44"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:201",
@@ -305,10 +310,10 @@
       "label": "마술식바이브",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:202",
@@ -320,10 +325,10 @@
       "label": "마술식E마사지",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:203",
@@ -335,10 +340,10 @@
       "label": "마술식애널바이브",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:204",
@@ -350,10 +355,10 @@
       "label": "마술식클리캡",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:205",
@@ -365,10 +370,10 @@
       "label": "마술식유두캡",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:206",
@@ -380,10 +385,10 @@
       "label": "고성능채찍",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:207",
@@ -395,10 +400,10 @@
       "label": "고성능바늘",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:208",
@@ -410,10 +415,10 @@
       "label": "피로회복용입욕제",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:209",
@@ -425,10 +430,10 @@
       "label": "살아있는밧줄",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:210",
@@ -440,10 +445,10 @@
       "label": "마술식착유기",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:211",
@@ -455,10 +460,10 @@
       "label": "에이프런",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M34",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 211 is consumed by the cosplay/clothing flow in COSPLAY.ERB, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M34"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:212",
@@ -470,10 +475,10 @@
       "label": "마술식애널비즈",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:213",
@@ -485,10 +490,10 @@
       "label": "마술식삼각목마",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M44",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap.",
+      "verificationId": "gate:milestone-scope-closure -- M44"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-definition:214",
@@ -500,10 +505,10 @@
       "label": "마술식오나홀",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training items are not used by the item-use route; they gate training command availability/effects and must be consumed by the training owner.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:feature:feature:flow:exit:original-game-erb-shop-item-erb:410:662",
@@ -781,10 +786,10 @@
       "sessionFieldPath": "",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M34",
       "acceptedByOwner": true,
-      "transferReason": "Special training item inventory state is consumed by training availability/effect milestones, not by item-use confirmation.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 211 is consumed by the cosplay/clothing flow in COSPLAY.ERB, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M34"
     },
     {
       "coverageRowId": "item-use:transfer:session-mapping:22",
@@ -1001,10 +1006,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:200]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42/M44",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 200 is consumed by COMF10.ERB and COMF90/91/92.ERB effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42/M44"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:201",
@@ -1020,10 +1025,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:201]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:202",
@@ -1039,10 +1044,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:202]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:203",
@@ -1058,10 +1063,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:203]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:204",
@@ -1077,10 +1082,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:204]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:205",
@@ -1096,10 +1101,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:205]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:206",
@@ -1115,10 +1120,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:206]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:207",
@@ -1134,10 +1139,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:207]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:208",
@@ -1153,10 +1158,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:208]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:209",
@@ -1172,10 +1177,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:209]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M43",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M43"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:210",
@@ -1191,10 +1196,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:210]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:211",
@@ -1210,10 +1215,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:211]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M34",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 211 is consumed by the cosplay/clothing flow in COSPLAY.ERB, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M34"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:212",
@@ -1229,10 +1234,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:212]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:213",
@@ -1248,10 +1253,10 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:213]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M44",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap.",
+      "verificationId": "gate:milestone-scope-closure -- M44"
     },
     {
       "coverageRowId": "item-use:transfer:special-training-session:214",
@@ -1267,11 +1272,308 @@
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:214]",
       "completionStatus": "transferred-out",
       "fromMilestone": "M30",
-      "toMilestone": "M41",
+      "toMilestone": "M42",
       "acceptedByOwner": true,
-      "transferReason": "Special training item visibility/state is not an ITEMSALES-driven item-use session; training availability owns the runtime consumer.",
-      "verificationId": "gate:milestone-scope-closure -- M41"
+      "transferReason": "Special training item is consumed by COMF training effect scripts, not by item-use confirmation.",
+      "verificationId": "gate:milestone-scope-closure -- M42"
     }
   ],
-  "unresolvedIssues": []
+  "unresolvedIssues": [
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:200",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:200",
+      "fromMilestone": "M30",
+      "toMilestone": "M42/M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:201",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:201",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:202",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:202",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:203",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:203",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:204",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:204",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:205",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:205",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:206",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:206",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:207",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:207",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:208",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:208",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:209",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:209",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:210",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:210",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:211",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:211",
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:212",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:212",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:213",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:213",
+      "fromMilestone": "M30",
+      "toMilestone": "M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item-special:214",
+      "severity": "error",
+      "rowRef": "definition:definition:item-special:214",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item:22",
+      "severity": "error",
+      "rowRef": "definition:definition:item:22",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item:90",
+      "severity": "error",
+      "rowRef": "definition:definition:item:90",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:definition:definition:item:91",
+      "severity": "error",
+      "rowRef": "definition:definition:item:91",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:save-mapping:save-map:source:item-211",
+      "severity": "error",
+      "rowRef": "save-mapping:save-map:source:item-211",
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-200",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-200",
+      "fromMilestone": "M30",
+      "toMilestone": "M42/M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-201",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-201",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-202",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-202",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-203",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-203",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-204",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-204",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-205",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-205",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-206",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-206",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-207",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-207",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-208",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-208",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-209",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-209",
+      "fromMilestone": "M30",
+      "toMilestone": "M43",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-210",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-210",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-211",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-211",
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-212",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-212",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-213",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-213",
+      "fromMilestone": "M30",
+      "toMilestone": "M44",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-214",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-214",
+      "fromMilestone": "M30",
+      "toMilestone": "M42",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-22",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-22",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-90",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-90",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    },
+    {
+      "issueId": "responsibility-transfer:session-mapping:session-map:source:itemsales-91",
+      "severity": "error",
+      "rowRef": "session-mapping:session-map:source:itemsales-91",
+      "fromMilestone": "M30",
+      "toMilestone": "M41",
+      "message": "M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation."
+    }
+  ]
 }

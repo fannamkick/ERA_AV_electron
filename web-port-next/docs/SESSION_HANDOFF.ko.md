@@ -84,7 +84,7 @@
 - M20에서 `data/coverage/definitions.json`을 생성했고 M23에서 ERB 기반 정의 160행을 병합했다. 현재 definition row는 8,000개이고, raw 정의 918개와 Chara seed 6,922행, ERB-derived 정의 160행이 모두 source evidence, 역할, runtime owner 후보, 실제/예정 consumer, status 또는 blocker를 가진다.
 - M20은 정의 데이터 전수 분류와 소비 책임 배정이다. 실제 컨텐츠 효과 구현 완료가 아니다.
 - M20/M23 definition status는 M34 이후 CFLAG 정의와 Chara CFLAG/RELATION seed 일부가 실제 소비 검증으로 승격되었다. 그래도 `template`/`listing`/`display-only`/`calculation-only`는 M28~M49에서 실제 소비 검증으로 계속 승격해야 한다.
-- M20 blocker 중 특수 item 15개는 M30에서, 신체/능력/소질/경험 seed는 M33에서, CFLAG 정의 151개와 Chara CFLAG seed 1,465개 및 RELATION seed 532개는 M34에서, 턴/시간 진행 row는 M35에서, 방문/시설 row는 M36에서, 업무/창관/특수 업무 row는 M37에서, 촬영 장면 정의 row는 M38에서, 촬영 실행/판매 row는 M39에서, 훈련 세션 lifecycle row는 M40에서, 훈련 가능 조건 row는 M41에서 소비/분류를 닫았다. 남은 큰 묶음은 훈련 효과, 미션/이벤트/엔딩/정보 계열이며 M42~M49에서 의미별 owner와 lifecycle로 분해해야 한다.
+- M20 blocker 중 즉시 사용 item은 M30에서 소비 근거가 있지만, 특수 item 15개는 M30 blocked 원인이다. 신체/능력/소질/경험 seed는 M33에서, CFLAG 정의 151개와 Chara CFLAG seed 1,465개 및 RELATION seed 532개는 M34에서, 턴/시간 진행 row는 M35에서, 방문/시설 row는 M36에서, 업무/창관/특수 업무 row는 M37에서, 촬영 장면 정의 row는 M38에서, 촬영 실행/판매 row는 M39에서, 훈련 세션 lifecycle row는 M40에서, 훈련 가능 조건 row는 M41에서 소비/분류를 닫았다. 남은 큰 묶음은 훈련 효과, 미션/이벤트/엔딩/정보 계열이며 M42~M49에서 의미별 owner와 lifecycle로 분해해야 한다.
 - 데이터 완성도는 수집 수량이 아니라 실제 게임 구성 역할 기준으로 판정한다. 현재 feature coverage와 definition coverage는 v1로 생성되었지만, 전체 게임 완료 기준의 source/save/session coverage는 M21~M27과 M51/M52에서 닫는다.
 - 변수, 정의 데이터, 기능 흐름, 저장/세션 판정의 1차 기준은 문서가 아니라 작업 루트의 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`이다. 문서는 파생 해석이므로 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 않는다.
 - M21~M27에서는 source evidence, feature, definition, save mapping, session mapping, blocker/approved exclusion registry를 대조하는 gate를 추가해야 한다. 같은 gate는 M51/M52 최종 판정에서도 다시 실행한다.
@@ -95,7 +95,7 @@
 - M27에서 구현 큐는 queue unit 36개, queued review row 14,546개, frozen blocker 59개, approved exclusion request candidate 59개로 동결했다. M27 owner로 남은 source-file-review 2개는 M51 최종 누락 감사 owner로 이관했다.
 - M28에서 메인 화면 route 연결은 완료했다. `unit:M28:main-route` 27행 중 메인 메뉴 정의 24개는 route/action/view/dispatch/smoke 근거를 갖고, BOYFRIEND event-local screen session row 3개는 M47로 책임 이관했다.
 - M29에서 아이템 상점 구매는 완료했다. `unit:M29:shop-purchase` 206행 중 implemented 43, mapped 40, transferredOut 123으로 닫았고, 실제 `SHOP_ITEM.ERB` 구매형 listing은 30개다.
-- M30은 정정 필요다. 즉시 사용 아이템 flow는 구현했지만 특수 item 200~214의 훈련 효과는 M30에서 구현하지 않았고 M42~M44에 남아 있다.
+- M30은 blocked다. 즉시 사용 아이템 flow는 구현했지만 특수 item 200~214의 훈련 효과는 M30에서 구현하지 않았고, 37개 transfer가 `ownedBlocker`로 남아 있다. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 현재 실패해야 정상이다.
 - M31에서 영입 listing과 인물 생성은 완료했다. owned scope 237행 중 implemented 52, mapped 158, transferredOut 27로 닫았고 `Item.csv` 영입 listing 48개와 `recruit:150` 반복 영입을 생성 결과에 연결했다.
 - M32에서 인물 원형과 identity는 완료했다. implementation queue 274행과 M31 inbound transfer 20행, 총 294행 중 implemented 286, mapped 8로 닫았고 Chara template 109개, identity 문자열, CSTR seed, lifecycle 상태를 정의/save 경계에 연결했다.
 - M33에서 신체/능력/소질/경험은 완료했다. M27 queue 5,283행과 M33 필수 `Palam.csv` 정의 17행, 총 5,300행 중 implemented 4,768, mapped 465, transferredOut 67로 닫았다. Chara `BASE/ABL/TALENT/EXP` seed, `BASE/ABL/TALENT/EXP/MARK/PALAM` 표시 정의, `BASE/MAXBASE/EXP/MARK` save mapping을 people/body owner에 연결했다.
@@ -178,8 +178,6 @@ npm run gate:shop-purchase-coverage
 npm run gate:milestone-scope-closure -- M29
 npm run smoke:item-shop
 npm run coverage:item-use
-npm run gate:item-use-coverage
-npm run gate:milestone-scope-closure -- M30
 npm run smoke:item-use
 npm run coverage:recruit
 npm run gate:recruit-coverage
@@ -280,7 +278,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M21~M27 coverage/gate 통과: source evidence, crosscheck, ERB definition, save/session mapping, pre-implementation audit, implementation queue 산출물 생성
 - M28 main route coverage/gate/smoke 통과: owned row 27개, unresolved issue 0개
 - M29 shop purchase coverage/gate/smoke 통과: owned row 206개, unresolved issue 0개
-- M30 item use coverage/gate/smoke 통과 기록은 즉시 사용 아이템 flow 근거로만 본다. 특수 item 200~214 효과는 미완료다.
+- M30 item use 재판정: owned row 74개, implemented 21, mapped 16, transferredOut 37, ownedBlocker 37. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 실패해야 정상이다.
 - M31 recruit coverage/gate/smoke 통과: owned row 237개, unresolved issue 0개
 - M32 character identity coverage/gate/smoke 통과: owned row 294개, unresolved issue 0개
 - M33 body/stat coverage/gate/smoke 통과: owned row 5,300개, unresolved issue 0개
@@ -326,7 +324,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 22. M27 구현 단위 큐와 blocker 동결은 완료되었고 `npm run coverage:implementation-queue`, `npm run gate:implementation-queue`, `npm run build`, `npm run test --if-present`로 확인되었다.
 23. M28 메인 화면과 route 전수 연결은 완료되었고 `npm run coverage:main-routes`, `npm run gate:main-route-coverage`, `npm run gate:milestone-scope-closure -- M28`, `npm run smoke:main-routes`, `npm run build`로 확인되었다.
 24. M29 아이템 상점과 구매 완성은 완료되었고 `npm run coverage:shop-purchase`, `npm run gate:shop-purchase-coverage`, `npm run gate:milestone-scope-closure -- M29`, `npm run smoke:item-shop`, `npm run smoke:phase1`, `npm run build`로 확인되었다.
-25. M30 아이템 사용은 즉시 사용 아이템 flow 기준으로 근거가 있지만, 특수 item 200~214 효과는 M30에서 구현되지 않았다. M30 완료 선언은 정정 필요다.
+25. M30 아이템 사용은 즉시 사용 아이템 flow 기준으로 근거가 있지만, 2026-05-02 재판정에서 `status: blocked`로 되돌렸다. `npm run coverage:item-use`는 ownedBlocker 37개를 기록하며, `npm run gate:item-use-coverage`와 `npm run gate:milestone-scope-closure -- M30`은 실패해야 정상이다.
 26. M31 영입 listing과 인물 생성 완성은 완료되었고 `npm run coverage:recruit`, `npm run gate:recruit-coverage`, `npm run gate:milestone-scope-closure -- M31`, `npm run smoke:recruit-all`, `npm run smoke:m7`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
 27. M32 인물 원형과 identity 완성은 완료되었고 `npm run coverage:character-identity`, `npm run gate:character-identity`, `npm run gate:milestone-scope-closure -- M32`, `npm run smoke:character-identity`, `npm run smoke:recruit-all`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
 28. M33 신체/능력/소질/경험 완성은 완료되었고 `npm run coverage:body-stat`, `npm run gate:body-stat-mapping`, `npm run gate:milestone-scope-closure -- M33`, `npm run smoke:body-stat`, `npm run smoke:character-identity`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
@@ -357,7 +355,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 
 ## 최신 인수인계: 완료 선언 재정렬 후 M42 blocked
 
-- M28~M41 완료 선언은 현재 완전 포팅 보장 기준으로 신뢰하지 않는다. `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`와 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 M30, M35, M38, M39, M41을 우선 재판정한다.
+- M28~M41 완료 선언은 현재 완전 포팅 보장 기준으로 신뢰하지 않는다. M30은 blocked로 재판정 완료했으므로, `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`와 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 M35, M38, M39, M41을 우선 재판정한다.
 - M42는 완료가 아니다.
 - 이유: 이전 산출물은 원본 `COMF0.ERB`~`COMF34.ERB` 효과 계산을 구현한 것이 아니라 `SOURCE/LOSEBASE/EXP` 라인 인덱싱과 static profile 생성을 완료로 오판했다.
 - 현재 M42 closure는 `status: blocked`이며, `training-effect-0-34.json`은 implemented 0, ownedBlocker 35, missingVerification 35를 기록한다.
