@@ -57,6 +57,15 @@
 | M35 턴 종료와 시간 진행 완성 | M35 queue 4행과 M29/M31 inbound transfer 3행, 총 7행을 mapped 7, unresolved issue 0개로 닫음. day/week/month/year 진행, 시간 counter, 주/월 자동 hook, 미션 기한, 이벤트 hook, session cleanup, save roundtrip을 `smoke:turn-long`으로 검증 |
 | M36 방문/시설 완성 | M36 queue 559행을 implemented 552, mapped 7, unresolved issue 0개로 닫음. 방문 장소 7개와 source file + source label 기준 방문 action 86개를 route/action/view/save owner와 `smoke:visit-all`로 검증 |
 
+## M37 업데이트
+
+- M37 업무/창관/특수 업무 완성 완료.
+- `unit:M37:work` 461행을 `implemented` 286, `mapped` 175, unresolved issue 0개로 닫았다.
+- ERB-derived 업무 listing 8개와 원본 업무 source file + source label 기반 업무 정의 72개를 runtime `definitions.workDefinitions`로 연결했다.
+- `work/select`, `work/selectCharacter`, `work/execute`, `work/cancel`이 성공/실패/대상 누락/취소/session cleanup/턴 종료/save roundtrip을 검증한다.
+- `coverage:work`, `gate:work-coverage`, `smoke:work-all`은 placeholder가 아니라 실제 script다.
+- 다음 작업은 M38 촬영 정의와 장면 조건 완성이다. M38 placeholder script를 실제 `coverage:filming-scene`, `gate:filming-scene`, 촬영 정의/조건 검증으로 교체해야 한다.
+
 ## 미완료
 
 | 항목 | 상태 |
@@ -195,6 +204,11 @@ npm run gate:visit-facility
 npm run gate:milestone-scope-closure -- M36
 npm run smoke:visit-all
 npm run smoke:m10
+npm run coverage:work
+npm run gate:work-coverage
+npm run gate:milestone-scope-closure -- M37
+npm run smoke:work-all
+npm run smoke:m12
 npm run verify:m16
 npm run smoke:main-routes
 npm run gate:definition-consumption
@@ -299,7 +313,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 31. M34.5 전수 이식 gate hardening은 완료되었다. `gate:source-evidence`, `gate:coverage-hardening`, `gate:coverage-crosscheck`, `gate:pre-implementation-audit`, `gate:implementation-queue`, `build`, `test --if-present`가 통과했다.
 32. M35 턴 종료와 시간 진행 완성은 `npm run coverage:turn-pipeline`, `npm run gate:turn-pipeline`, `npm run gate:milestone-scope-closure -- M35`, `npm run smoke:turn-long`, `npm run smoke:m8`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M35 owned scope 7행 중 mapped 7, unresolved issue 0개로 닫았다.
 33. M36 방문/시설 완성은 `npm run coverage:visit-facility`, `npm run gate:visit-facility`, `npm run gate:milestone-scope-closure -- M36`, `npm run smoke:visit-all`, `npm run smoke:m10`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M36 owned scope 559행 중 implemented 552, mapped 7, unresolved issue 0개로 닫았다.
-34. 다음 작업은 M37 업무/창관/특수 업무 완성이다. M37 placeholder script를 실제 `coverage:work`, `gate:work-coverage`, `smoke:work-all` 구현으로 교체하고, 업무 정의/조건/대상/결과/턴 종료/roundtrip을 coverage와 gate로 닫는다.
+34. M37 업무/창관/특수 업무 완성은 `npm run coverage:work`, `npm run gate:work-coverage`, `npm run gate:milestone-scope-closure -- M37`, `npm run smoke:work-all`, `npm run smoke:m12`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M37 owned scope 461행 중 implemented 286, mapped 175, unresolved issue 0개로 닫았다.
+35. 다음 작업은 M38 촬영 정의와 장면 조건 완성이다. M38 placeholder script를 실제 `coverage:filming-scene`, `gate:filming-scene`, 촬영 정의/조건 smoke 또는 table 검증으로 교체하고, 촬영 장면 정의/대상 조건/장면 조건/source evidence/coverage를 닫는다.
 
 ## 주의
 

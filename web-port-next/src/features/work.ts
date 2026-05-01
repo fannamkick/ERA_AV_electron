@@ -16,6 +16,9 @@ export type WorkFailure = {
 export type WorkCalculatedResult = {
   readonly workId: CatalogId;
   readonly characterId: string;
+  readonly workKind: string;
+  readonly sourceFile?: string;
+  readonly sourceLabel?: string;
   readonly rewardMoney: number;
   readonly bodyStatDeltas: Record<string, number>;
   readonly experienceDeltas: Record<CatalogId, number>;
@@ -87,6 +90,10 @@ function characterViewFromState(state: GameState, characterId: string): WorkChar
     available,
     disabledReason: available ? undefined : '은퇴한 인물입니다.',
   };
+}
+
+function workKindFromDefinition(work: WorkDefinition): string {
+  return work.tags.find((tag) => ['arbeit', 'brothel', 'brothel-menu', 'event', 'job', 'special', 'system'].includes(tag)) ?? 'work';
 }
 
 export function buildWorkView(definitions: GameDefinitions, state: GameState, session: GameSession): WorkView {
@@ -242,6 +249,9 @@ export function calculateWorkResult(work: WorkDefinition, characterId: string): 
   return {
     workId: work.id,
     characterId,
+    workKind: workKindFromDefinition(work),
+    sourceFile: work.source.path.split(/[\\/]/u).pop(),
+    sourceLabel: work.source.originalName ?? work.source.originalId,
     rewardMoney: work.rewardMoney,
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
@@ -305,6 +315,9 @@ export function applyWorkResult(state: GameState, result: WorkCalculatedResult):
         [result.characterId]: {
           ...currentCareerFlags,
           [`${result.workId}.completedCount`]: ((currentCareerFlags[`${result.workId}.completedCount`] as number | undefined) ?? 0) + 1,
+          [`${result.workKind}.completedCount`]: ((currentCareerFlags[`${result.workKind}.completedCount`] as number | undefined) ?? 0) + 1,
+          lastWorkSourceFile: result.sourceFile ?? '',
+          lastWorkSourceLabel: result.sourceLabel ?? '',
         },
       },
     },

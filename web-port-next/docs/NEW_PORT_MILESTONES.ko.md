@@ -1463,15 +1463,36 @@ npm run test --if-present
 - 완료 결과: 업무 전체가 성공/실패/취소/저장 roundtrip과 coverage 갱신을 갖는다.
 - 누락 차단: 계산값이 save에 남거나 업무 결과가 책임 owner 밖으로 흩어지면 완료하지 않는다.
 
-- [ ] 업무 정의 전체를 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
-- [ ] 창관, 아르바이트, 일반 업무, 특수 업무를 정의 데이터와 handler owner로 분리
-- [ ] 업무 참여 조건, 대상 조건, 시설 조건, 시간 조건을 view 계산으로 구현
-- [ ] 업무 결과가 돈, 인물, 신체, 경험, 업무 이력, 시간 진행에 반영되는지 검증
-- [ ] 업무 실행 중 선택값과 계산값은 session/calculation에만 둠
-- [ ] 성공, 조건 미충족, 대상 누락, 취소, 턴 종료를 검증
-- [ ] 업무 후 저장 roundtrip을 검증
-- [ ] M19/M20/M24/M25 coverage의 업무 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 업무 정의 전체를 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [x] 창관, 아르바이트, 일반 업무, 특수 업무를 정의 데이터와 handler owner로 분리
+- [x] 업무 참여 조건, 대상 조건, 시설 조건, 시간 조건을 view 계산으로 구현
+- [x] 업무 결과가 돈, 인물, 신체, 경험, 업무 이력, 시간 진행에 반영되는지 검증
+- [x] 업무 실행 중 선택값과 계산값은 session/calculation에만 둠
+- [x] 성공, 조건 미충족, 대상 누락, 취소, 턴 종료를 검증
+- [x] 업무 후 저장 roundtrip을 검증
+- [x] M19/M20/M24/M25 coverage의 업무 관련 status 갱신
+- [x] `npm run build` 실행
+
+M37 완료 근거:
+- M37 owned scope는 `unit:M37:work` 461행이다. definition 8행, feature 286행, save mapping 161행, session/calculation mapping 6행을 모두 `data/coverage/work-coverage.json`에 기록했다.
+- ERB-derived 업무 listing 8개는 `definitions.workDefinitions[work:arbeit:*]`로 연결했다.
+- 원본 업무/창관/특수 업무 source file + source label 72개는 `workSourceGroups`와 `createSourceLabelWorkDefinitions`를 통해 `definitions.workDefinitions`에 연결했다.
+- `work/select`, `work/selectCharacter`, `work/execute`, `work/cancel`이 업무 선택값을 `GameSession.work`에만 두고, 실행 결과만 `economy`, `people.attributes.experiences`, `body.byCharacterId`, `work.assignments`, `work.careerFlagsByCharacterId`, `run.clock` owner에 반영한다.
+- `smoke:work-all`은 M37 source-backed 업무 정의 80개를 모두 실제 dispatch로 실행하고, 실패/대상 누락/취소/session cleanup/save roundtrip을 검증한다.
+- `data/coverage/audits/M37-gap-audit.json`과 `data/coverage/milestones/M37-closure.json`을 생성했다. ownedTotal 461, implemented 286, mapped 175, blocker/missing/unapproved 0.
+
+검증:
+```bash
+npm run coverage:work
+npm run gate:work-coverage
+npm run gate:milestone-scope-closure -- M37
+npm run smoke:work-all
+npm run smoke:m12
+npm run verify:m16
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M38. 촬영 정의와 장면 조건 완성
 

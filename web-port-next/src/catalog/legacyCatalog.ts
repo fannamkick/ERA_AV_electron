@@ -19,6 +19,7 @@ import type {
   TrainingCommandDefinition,
   WorkDefinition,
 } from './types';
+import { workSourceDefinitionId, workSourceGroups } from './workSourceGroups';
 
 type LegacyCatalogArtifact = {
   readonly schemaVersion: string;
@@ -139,6 +140,79 @@ const phaseTwoWorkDefinitions: Record<CatalogId, WorkDefinition> = {
     completesTimeBlock: true,
   },
 };
+
+function workRewardForIndex(index: number, kind: string): number {
+  const base = kind === 'special' ? 420 : kind === 'brothel' || kind === 'brothel-menu' ? 320 : 240;
+  return base + index * 5;
+}
+
+function createErbWorkDefinitions(): Record<CatalogId, WorkDefinition> {
+  const artifact = rawErbDerivedDefinitions as ErbDerivedDefinitionsArtifact;
+  const rows = artifact.rows.filter((row) => row.definitionKey === 'workDefinitions');
+  const result: Record<CatalogId, WorkDefinition> = {};
+
+  for (const [index, row] of rows.entries()) {
+    const id = `work:${row.sourceId}`;
+    result[id] = {
+      id,
+      label: row.displayText ?? row.sourceName,
+      source: {
+        path: row.sourceFile,
+        originalId: row.sourceId,
+        originalName: row.sourceName,
+      },
+      description: `ERB-derived work listing ${row.sourceId}.`,
+      tags: ['work', 'arbeit', 'erb-derived', `source-evidence:${row.sourceEvidenceId}`],
+      defaultAvailable: true,
+      rewardMoney: workRewardForIndex(index, 'arbeit'),
+      bodyStatDeltas: {
+        stamina: -6,
+        energy: -4,
+      },
+      experienceDeltas: {
+        'work.arbeit': 1,
+      },
+      completesTimeBlock: true,
+    };
+  }
+
+  return result;
+}
+
+function createSourceLabelWorkDefinitions(): Record<CatalogId, WorkDefinition> {
+  const result: Record<CatalogId, WorkDefinition> = {};
+  let index = 0;
+
+  for (const group of workSourceGroups) {
+    for (const label of group.labels) {
+      const id = workSourceDefinitionId(group.sourceFile, label);
+      result[id] = {
+        id,
+        label: `${group.sourceFile.replace(/\.ERB$/u, '')} ${label}`,
+        source: {
+          path: group.sourcePath,
+          originalId: label,
+          originalName: label,
+        },
+        description: `Source-label work branch from ${group.sourceFile}.`,
+        tags: ['work', group.kind, 'source-label', group.sourceFile, label],
+        defaultAvailable: true,
+        rewardMoney: workRewardForIndex(index, group.kind),
+        bodyStatDeltas: {
+          stamina: group.kind === 'special' ? -10 : -7,
+          energy: group.kind === 'special' ? -7 : -5,
+        },
+        experienceDeltas: {
+          [`work.${group.kind}`]: 1,
+        },
+        completesTimeBlock: true,
+      };
+      index += 1;
+    }
+  }
+
+  return result;
+}
 
 const phaseTwoFilmingSceneDefinitions: Record<CatalogId, FilmingSceneDefinition> = {
   'filming:debut.basic': {
@@ -303,6 +377,8 @@ export function normalizeLegacyCatalog(artifact: LegacyCatalogArtifact): GameDef
     },
     workDefinitions: {
       ...phaseTwoWorkDefinitions,
+      ...createErbWorkDefinitions(),
+      ...createSourceLabelWorkDefinitions(),
       ...(artifact.catalog.workDefinitions ?? {}),
     },
     filmingSceneDefinitions: {
