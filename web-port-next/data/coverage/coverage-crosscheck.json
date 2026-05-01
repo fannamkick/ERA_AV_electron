@@ -12,23 +12,23 @@
   "summary": {
     "featureRows": 5344,
     "definitionRows": 8000,
-    "blockerRows": 63,
+    "blockerRows": 59,
     "approvedExclusionRows": 0,
     "saveMappingRows": 1215,
     "persistentCandidateRows": 1016,
     "sessionMappingRows": 365,
     "runtimeSessionCandidateRows": 234,
     "featureStatus": {
-      "blocker": 5333,
-      "implemented": 11
+      "blocker": 5331,
+      "implemented": 13
     },
     "definitionStatus": {
-      "blocker": 1735,
+      "blocker": 119,
       "calculation-only": 35,
       "display-only": 456,
       "listing": 207,
-      "template": 5566,
-      "used": 1
+      "template": 7031,
+      "used": 152
     },
     "saveMappingStatus": {
       "mapped": 989,
@@ -54,9 +54,9 @@
       "work-calculation": 1,
       "work-session": 2
     },
-    "roleOnlyDefinitionRows": 6264,
-    "implementedFeatureDefinitionReads": 12,
-    "implementedFeatureDefinitionReadMatched": 12
+    "roleOnlyDefinitionRows": 7729,
+    "implementedFeatureDefinitionReads": 15,
+    "implementedFeatureDefinitionReadMatched": 15
   },
   "assertions": {
     "hardFailures": {

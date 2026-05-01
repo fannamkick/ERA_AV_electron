@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M34.5",
+  "status": "completed",
+  "ownerRole": "coverage gate hardening",
+  "commitPolicy": "M34.5 must be committed separately after verification; commitHash is updated after the commit.",
+  "outputs": {
+    "registry": "data/coverage/coverage-gate-registry.json",
+    "sourceEvidenceGate": "tools/gate_source_evidence.mjs",
+    "coverageHardeningGate": "tools/gate_coverage_hardening.mjs",
+    "futurePlaceholder": "tools/future_milestone_placeholder.mjs",
+    "definitionCoverage": "data/coverage/definitions.json",
+    "socialEquipmentCflagCoverage": "data/coverage/social-equipment-cflag-coverage.json"
+  },
+  "closureMetrics": {
+    "ownedTotal": 188,
+    "implemented": 188,
+    "mapped": 0,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0,
+    "missingRequiredScript": 0,
+    "auxiliaryCompletionEvidence": 0,
+    "undigestedSourceFileReview": 0
+  },
+  "evidenceCorrections": {
+    "auxiliaryCompletionRowsFoundBeforeM34_5": 169,
+    "legacyCharacterFlagDefinitions": 151,
+    "sourceDefinitions": 18,
+    "resolution": "Auxiliary cflag/source labels remain interpretation notes, while completion evidence is anchored to primary original-game/CSV/VariableSize.CSV CFLAGNAME/SOURCENAME families."
+  },
+  "futureGateContracts": {
+    "registeredContracts": 19,
+    "coveredRange": "M34.5 and M35-M52",
+    "finalScriptsRequired": [
+      "audit:final-gap",
+      "gate:final-gap-audit",
+      "gate:final-content-zero-gap",
+      "coverage:view-text",
+      "gate:view-and-text-coverage",
+      "test:roundtrip:all",
+      "report:full-port",
+      "gate:complete-port-verdict",
+      "verify:complete"
+    ]
+  },
+  "commandsRun": [
+    "npm run coverage:definitions",
+    "npm run coverage:social-equipment-cflag",
+    "npm run coverage:gate-registry",
+    "npm run gate:source-evidence",
+    "npm run gate:coverage-hardening",
+    "npm run coverage:crosscheck",
+    "npm run gate:definition-consumption",
+    "npm run gate:coverage-crosscheck",
+    "npm run gate:pre-implementation-audit",
+    "npm run gate:implementation-queue",
+    "npm run build",
+    "npm run test --if-present",
+    "npm run gate:milestone-scope-closure -- M34.5"
+  ],
+  "commitHash": ""
+}

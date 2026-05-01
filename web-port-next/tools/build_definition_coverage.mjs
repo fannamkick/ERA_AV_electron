@@ -78,6 +78,23 @@ function sourceEvidenceForDefinition(partial) {
   };
 }
 
+function variableSizeDefinitionEvidence(partial, family) {
+  const sourceId = partial.sourceId ?? '';
+  return {
+    evidenceId: `source:definition:${slug(partial.definitionRowId)}:variable-size`,
+    sourceTier: 'primary',
+    sourceKind: 'variable-size-row',
+    sourcePath: 'original-game/CSV/VariableSize.CSV',
+    label: family,
+    line: '',
+    csvRow: family,
+    family,
+    index: sourceId,
+    accessDirection: 'definition',
+    sourceRole: 'original',
+  };
+}
+
 function itemRole(id) {
   const value = numericId(id);
 
@@ -251,6 +268,7 @@ function catalogDefinitionRow(row) {
     case 'sourceDefinitions':
       return baseRow({
         ...common,
+        sourceFile: 'original-game/CSV/VariableSize.CSV',
         definitionRowId: `definition:source:${row.id}`,
         runtimeOwner: 'definitions.sourceDefinitions',
         role: 'calculation',
@@ -260,7 +278,14 @@ function catalogDefinitionRow(row) {
         calculationPath: 'M28 training calculation pipeline',
         status: 'calculation-only',
         ownerMilestone: 'M28',
-        notes: 'Source definition is a calculation input, not a save/session field.',
+        sourceEvidence: variableSizeDefinitionEvidence(
+          {
+            definitionRowId: `definition:source:${row.id}`,
+            sourceId: row.id,
+          },
+          'SOURCENAME',
+        ),
+        notes: `Source definition is a calculation input, not a save/session field. Display labels are interpreted from auxiliary ${row.sourcePath}; completion evidence is the primary VariableSize.CSV SOURCENAME family.`,
       });
 
     case 'trainingParams':
@@ -280,6 +305,7 @@ function catalogDefinitionRow(row) {
     case 'legacyCharacterFlagDefinitions':
       return baseRow({
         ...common,
+        sourceFile: 'original-game/CSV/VariableSize.CSV',
         definitionRowId: `definition:cflag:${row.id}`,
         runtimeOwner: 'definitions.legacyCharacterFlagDefinitions -> M34 CFLAG owner split',
         role: 'display',
@@ -289,7 +315,14 @@ function catalogDefinitionRow(row) {
         saveInitPath: 'src/features/socialEquipmentCflag.ts:splitLegacyCharacterFlags',
         status: 'used',
         ownerMilestone: 'M34',
-        notes: 'M34 splits CFLAG definitions by semantic owner instead of copying the raw CFLAG family into the runtime model.',
+        sourceEvidence: variableSizeDefinitionEvidence(
+          {
+            definitionRowId: `definition:cflag:${row.id}`,
+            sourceId: row.id,
+          },
+          'CFLAGNAME',
+        ),
+        notes: `M34 splits CFLAG definitions by semantic owner instead of copying the raw CFLAG family into the runtime model. Display labels are interpreted from auxiliary ${row.sourcePath}; completion evidence is the primary VariableSize.CSV CFLAGNAME family.`,
       });
 
     case 'baseStats':

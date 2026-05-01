@@ -276,7 +276,7 @@
 | M35 | `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long` | M8 최소 턴 smoke를 원본 턴 완료로 재사용, hook 순서 미기록, session cleanup 미검증 | 장기 턴, 월말/주말, 자동 구매/사용, 미션/이벤트 hook, save roundtrip, session cleanup 통과 |
 | M36 | `coverage:visit-facility`, `gate:visit-facility`, `smoke:visit-all` | 장소/행동 1개만 구현하고 전체 방문 완료 처리, 장소 선택 session을 save에 저장 | 모든 장소/행동 row가 구현/승인 제외/근거 있는 transfer이고 비용/조건/취소/roundtrip 통과 |
 | M37 | `coverage:work`, `gate:work-coverage`, `smoke:work-all` | 업무 결과를 기능 내부 임시 필드에 흩뜨림, 계산값을 save에 저장 | 모든 업무/창관/특수 업무 row가 조건/성공/실패/취소/턴 종료/roundtrip 검증 보유 |
-| M38 | `coverage:filming-scenes`, `gate:filming-scene`, scene condition table | 장면 이름만 표시하고 조건/예상 결과를 미구현 | 모든 장면 row가 source evidence, 대상 조건, 장면 조건, 불가 사유, verification 보유 |
+| M38 | `coverage:filming-scene`, `gate:filming-scene`, scene condition table | 장면 이름만 표시하고 조건/예상 결과를 미구현 | 모든 장면 row가 source evidence, 대상 조건, 장면 조건, 불가 사유, verification 보유 |
 | M39 | `coverage:filming-execution`, `gate:filming-execution`, `smoke:filming-all` | 촬영량/수익/판매 계산값을 저장 payload에 남김 | 촬영 성공/실패/취소/턴 종료, 출시/판매 상태, save roundtrip, session cleanup 통과 |
 | M40 | `coverage:training-session`, `gate:training-session`, `smoke:training-session` | 훈련 후보 계산이 저장 상태를 변경, 선택값 save 잔류 | 진입/대상/실행자/조수/command 선택/취소/완료/턴 종료 session lifecycle 검증 |
 | M41 | `coverage:training-availability`, `gate:training-availability`, command별 availability matrix | COMABLE 전체를 한 row로 닫음, 불가 사유 없는 command를 완료 처리 | 105개 command 각각 가능/불가 조건, 불가 사유, source evidence, non-mutating view 계산 검증 |
@@ -1035,7 +1035,7 @@ npm run build
 - [x] source evidence는 있지만 consumer가 없는 항목을 `orphan-coverage`로 기록. M26 결과 0개
 - [x] 역할 판정만 있고 구현 소비가 없는 항목을 implementation review row로 기록하고 owner/closureRule/verificationCommand를 부여
 - [x] 승인 없는 제외 항목을 실패로 처리. M26 결과 승인 제외 0개, 미승인 제외 0개
-- [x] M28~M49 및 M50 owner 배정을 재확인. implementation review 14,700행 모두 owner와 verificationCommand 보유
+- [x] M28~M49 및 M50 owner 배정을 재확인. implementation review 14,546행 모두 owner와 verificationCommand 보유
 - [x] `discovered-gap`, `orphan-coverage`, `role-only`, `unknownOwner` 미해소 항목 0개 확인
 - [x] `npm run audit:pre-implementation` 실행
 - [x] `npm run gate:pre-implementation-audit` 실행
@@ -1050,11 +1050,11 @@ npm run build
 - 완료 결과: 이후 구현자가 어떤 row 묶음을 닫아야 하는지 단위별로 알 수 있다.
 - 누락 차단: 구현 단위가 원본 row 없이 생기거나 blocker owner가 비어 있으면 완료하지 않는다.
 
-- [x] M28~M49 및 M50~M51의 기능군별 구현 큐를 M26 review row 기준으로 생성. queue unit 37개, queued review row 14,700개
+- [x] M28~M49 및 M50~M51의 기능군별 구현 큐를 M26 review row 기준으로 생성. queue unit 36개, queued review row 14,546개
 - [x] 각 구현 단위가 feature, definition, save, session, view evidence template을 함께 갖도록 `implementation-queue.json`에 보강
 - [x] 각 단위가 성공, 실패, 취소, 저장 roundtrip, session cleanup 중 필요한 검증을 갖도록 verification template 보강
-- [x] blocker row 63개의 해소 마일스톤을 M28~M52 중 하나로 동결
-- [x] 사용자 승인 제외가 필요한 항목 63개를 `approved-exclusion-requests.json` 장부로 분리
+- [x] blocker row 59개의 해소 마일스톤을 M28~M52 중 하나로 동결
+- [x] 사용자 승인 제외가 필요한 항목 59개를 `approved-exclusion-requests.json` 장부로 분리
 - [x] 동일 원본 row를 여러 기능군이 소비할 때 주 owner와 참조 owner를 구분하는 `sharedSourceOwnership` 규칙 추가
 - [x] M28 이후 새로 발견한 원본 항목을 즉시 coverage에 추가하는 gap intake 절차 작성
 - [x] M27이 구현 owner로 남은 source-file-review 2개를 M51 최종 누락 감사 owner로 이관
@@ -1335,32 +1335,31 @@ rg "CFLAG" src/game src/domains src/features src/ui
 - 완료 결과: M35는 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`이 실제로 존재하고 실패 조건을 가진 상태에서만 시작된다.
 - 누락 차단: auxiliary 완료 근거 1개, source-file-review 미분해 1개, M35~M52 필수 script 누락 1개, 최종 gate skeleton 누락 1개라도 있으면 완료하지 않는다.
 
-현재 발견된 차단 사항:
-- `npm run gate:source-evidence`는 `definition:cflag:0`에서 실패한다. 원인은 `Ho版資料（作成中途）/cflag.csv` auxiliary evidence가 `used` 완료 근거로 쓰였기 때문이다.
-- auxiliary evidence 완료성 row는 169개다. `legacyCharacterFlagDefinitions` 151개, `sourceDefinitions` 18개다.
-- M35~M49 전용 coverage/gate/smoke script는 M28~M34 수준으로 아직 준비되어 있지 않다.
-- M51/M52에서 문서가 요구하는 `gate:final-content-zero-gap`, `gate:view-and-text-coverage`, `verify:complete`, long-play, failure matrix는 아직 실제 script가 아니다.
+처리 결과:
+- `definition:cflag:*` 151개와 `definition:source:*` 18개는 auxiliary `Ho版資料（作成中途）` 파일을 해석 보조로만 남기고, 완료 근거는 primary `original-game/CSV/VariableSize.CSV`의 `CFLAGNAME`/`SOURCENAME` family로 고정했다.
+- `gate:source-evidence`는 feature, definition, blocker, save/session mapping, approved exclusion, 마일스톤별 coverage row까지 검사한다.
+- M35~M52의 전용 script 이름과 필수 gate는 `coverage-gate-registry.json`에 등록했다. 아직 실제 구현이 없는 script는 실행 시 실패하는 placeholder라서 빈 통과가 불가능하다.
 
-- [ ] `gate:source-evidence`의 완료성 상태 차단 목록을 확장한다. `implemented`, `used`, `template`, `listing`, `display-only`, `calculation-only`, `mapped`, `non-save`, `session-field`, `calculation-internal`, `script-scratch`, `approved-excluded`는 auxiliary evidence만으로 완료될 수 없다.
-- [ ] `gate:source-evidence`가 `features.json`, `definitions.json`, `blockers.json`, `save-mapping.json`, `session-mapping.json`, `approved-exclusions.json`, `implementation-queue.json`, 마일스톤별 `*-coverage.json`을 모두 검사하게 한다.
-- [ ] auxiliary source row 169개를 primary source evidence에 연결하거나 완료성 상태에서 빼고 blocker/owner review로 되돌린다.
-- [ ] `source-file-review` row는 파일명 단위 계약만으로 완료 처리하지 못하게 한다. 완료하려면 라벨, CSV 행, family/index, read/write 방향 중 하나 이상의 primary row로 분해해야 한다.
-- [ ] `coverage-gate-registry.json`을 만든다. M35~M52 각 마일스톤의 coverage file, gate command, smoke command, closure file, gap audit file, 필수 row field를 기록한다.
-- [ ] `gate:coverage-hardening`을 만든다. registry에 등록된 모든 script가 `package.json`에 있고, 각 gate가 존재하며, 완료성 row의 `sourceEvidenceId`, `runtimeConsumerId`, `verificationId` 누락을 실패시켜야 한다.
-- [ ] M35~M49 전용 coverage/gate/smoke skeleton을 추가한다. skeleton은 아직 구현 row가 없으면 성공하지 말고, 해당 owner row가 미구현임을 실패 또는 blocker로 드러내야 한다.
-- [ ] `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap` skeleton을 추가한다.
-- [ ] `coverage:view-text`, `gate:view-and-text-coverage` skeleton을 추가한다.
-- [ ] `test:roundtrip:all`, `report:full-port`, `gate:complete-port-verdict`, `verify:complete` skeleton을 추가한다.
-- [ ] `gate:milestone-scope-closure`가 registry를 읽어 해당 Mxx의 coverage/gate/smoke/audit/closure 연결을 검사하게 강화한다.
-- [ ] `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`의 다음 작업을 M35가 아니라 M34.5로 갱신한다.
-- [ ] M34.5 closure를 `data/coverage/milestones/M34.5-closure.json`에 남긴다. `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `missingRequiredScript`, `auxiliaryCompletionEvidence`, `undigestedSourceFileReview`가 모두 0이어야 한다.
-- [ ] `npm run gate:source-evidence` 실행
-- [ ] `npm run gate:coverage-hardening` 실행
-- [ ] `npm run gate:coverage-crosscheck` 실행
-- [ ] `npm run gate:pre-implementation-audit` 실행
-- [ ] `npm run gate:implementation-queue` 실행
-- [ ] `npm run build` 실행
-- [ ] `npm run test --if-present` 실행
+- [x] `gate:source-evidence`의 완료성 상태 차단 목록을 확장한다. `implemented`, `used`, `template`, `listing`, `display-only`, `calculation-only`, `mapped`, `non-save`, `session-field`, `calculation-internal`, `script-scratch`, `approved-excluded`는 auxiliary evidence만으로 완료될 수 없다.
+- [x] `gate:source-evidence`가 `features.json`, `definitions.json`, `blockers.json`, `save-mapping.json`, `session-mapping.json`, `approved-exclusions.json`, `implementation-queue.json`, 마일스톤별 `*-coverage.json`을 모두 검사하게 한다.
+- [x] auxiliary source row 169개를 primary source evidence에 연결하거나 완료성 상태에서 빼고 blocker/owner review로 되돌린다.
+- [x] `source-file-review` row는 파일명 단위 계약만으로 완료 처리하지 못하게 한다. 완료하려면 라벨, CSV 행, family/index, read/write 방향 중 하나 이상의 primary row로 분해해야 한다.
+- [x] `coverage-gate-registry.json`을 만든다. M35~M52 각 마일스톤의 coverage file, gate command, smoke command, closure file, gap audit file, 필수 row field를 기록한다.
+- [x] `gate:coverage-hardening`을 만든다. registry에 등록된 모든 script가 `package.json`에 있고, 각 gate가 존재하며, 완료성 row의 `sourceEvidenceId`, `runtimeConsumerId`, `verificationId` 누락을 실패시켜야 한다.
+- [x] M35~M49 전용 coverage/gate/smoke skeleton을 추가한다. skeleton은 아직 구현 row가 없으면 성공하지 말고, 해당 owner row가 미구현임을 실패 또는 blocker로 드러내야 한다.
+- [x] `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap` skeleton을 추가한다.
+- [x] `coverage:view-text`, `gate:view-and-text-coverage` skeleton을 추가한다.
+- [x] `test:roundtrip:all`, `report:full-port`, `gate:complete-port-verdict`, `verify:complete` skeleton을 추가한다.
+- [x] `gate:milestone-scope-closure`가 registry를 읽어 해당 Mxx의 coverage/gate/smoke/audit/closure 연결을 검사하게 강화한다.
+- [x] `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`의 다음 작업을 M35가 아니라 M34.5로 갱신한다.
+- [x] M34.5 closure를 `data/coverage/milestones/M34.5-closure.json`에 남긴다. `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `missingRequiredScript`, `auxiliaryCompletionEvidence`, `undigestedSourceFileReview`가 모두 0이어야 한다.
+- [x] `npm run gate:source-evidence` 실행
+- [x] `npm run gate:coverage-hardening` 실행
+- [x] `npm run gate:coverage-crosscheck` 실행
+- [x] `npm run gate:pre-implementation-audit` 실행
+- [x] `npm run gate:implementation-queue` 실행
+- [x] `npm run build` 실행
+- [x] `npm run test --if-present` 실행
 
 검증:
 

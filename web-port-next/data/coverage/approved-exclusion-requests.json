@@ -6,7 +6,7 @@
     "approvedExclusions": "data/coverage/approved-exclusions.json"
   },
   "summary": {
-    "requestRows": 63,
+    "requestRows": 59,
     "approvedRows": 0,
     "requestedRows": 0
   },
@@ -564,18 +564,6 @@
       "existingApprovedExclusionId": ""
     },
     {
-      "requestId": "approval-request:blocker:m19:item-shop",
-      "status": "not-requested",
-      "rowKind": "blocker",
-      "rowId": "blocker:m19:item-shop",
-      "ownerMilestone": "M30",
-      "sourceEvidenceId": "source:feature:feature-item-shop-use-effects",
-      "sourceLocation": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "approvalRequired": true,
-      "approvalRule": "Only the user can approve exclusion. Until approval exists, implementation remains required.",
-      "existingApprovedExclusionId": ""
-    },
-    {
       "requestId": "approval-request:blocker:m19:unreferenced-global:ability-up",
       "status": "not-requested",
       "rowKind": "blocker",
@@ -708,30 +696,6 @@
       "existingApprovedExclusionId": ""
     },
     {
-      "requestId": "approval-request:blocker:m19:wardrobe-clothing",
-      "status": "not-requested",
-      "rowKind": "blocker",
-      "rowId": "blocker:m19:wardrobe-clothing",
-      "ownerMilestone": "M34",
-      "sourceEvidenceId": "source:feature:feature-wardrobe-clothing",
-      "sourceLocation": "original-game/ERB/システム関係/SHOP_MAIN.ERB",
-      "approvalRequired": true,
-      "approvalRule": "Only the user can approve exclusion. Until approval exists, implementation remains required.",
-      "existingApprovedExclusionId": ""
-    },
-    {
-      "requestId": "approval-request:blocker:m20:chara-cflag-seed",
-      "status": "not-requested",
-      "rowKind": "blocker",
-      "rowId": "blocker:m20:chara-cflag-seed",
-      "ownerMilestone": "M34",
-      "sourceEvidenceId": "source:definition:definition-character-seed-0-cflag-16-21",
-      "sourceLocation": "original-game/CSV/Chara0.csv",
-      "approvalRequired": true,
-      "approvalRule": "Only the user can approve exclusion. Until approval exists, implementation remains required.",
-      "existingApprovedExclusionId": ""
-    },
-    {
       "requestId": "approval-request:blocker:m20:item-special",
       "status": "not-requested",
       "rowKind": "blocker",
@@ -739,18 +703,6 @@
       "ownerMilestone": "M30",
       "sourceEvidenceId": "source:definition:definition-item-special-200",
       "sourceLocation": "original-game/CSV/Item.csv",
-      "approvalRequired": true,
-      "approvalRule": "Only the user can approve exclusion. Until approval exists, implementation remains required.",
-      "existingApprovedExclusionId": ""
-    },
-    {
-      "requestId": "approval-request:blocker:m20:legacy-character-flag-definition",
-      "status": "not-requested",
-      "rowKind": "blocker",
-      "rowId": "blocker:m20:legacy-character-flag-definition",
-      "ownerMilestone": "M34",
-      "sourceEvidenceId": "source:definition:definition-cflag-0",
-      "sourceLocation": "Ho版資料（作成中途）/cflag.csv",
       "approvalRequired": true,
       "approvalRule": "Only the user can approve exclusion. Until approval exists, implementation remains required.",
       "existingApprovedExclusionId": ""

@@ -1,6 +1,6 @@
 # 세션 인수인계
 
-새 세션은 아래 요약만 읽고 M34.5 전수 이식 gate hardening부터 진행한다. M35 턴 종료와 시간 진행 완성은 M34.5가 끝나기 전에는 시작하지 않는다. 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
+새 세션은 아래 요약만 읽고 M35 턴 종료와 시간 진행 완성부터 진행한다. M34.5 전수 이식 gate hardening은 완료되었고, 완전 이식 여부는 M21~M52 전수 게이트로만 닫는다.
 
 ## 작업 위치
 
@@ -80,8 +80,8 @@
 - 누락 전수 감사 마일스톤은 세 종류로 둔다: M26 구현 전 `pre-implementation-gap-audit.json`, M28~M49 기능군 종료 `Mxx-gap-audit.json`, M51 최종 `final-gap-audit.json`. 감사에서 `discovered-gap`, `orphan-coverage`, `role-only`가 남으면 다음 단계로 넘어가지 않는다.
 - M24에서 `map-save-state` 1,215행은 save-field 989개와 non-save 226개로 닫혔다. ERB persistent 후보 1,016개는 save-field 985개와 M25 session-state 이관 31개로 판정되었고 M24 후 미판정은 0개다.
 - M25에서 `map-session-state` 365행은 session-field 298개와 calculation-internal 67개로 닫혔다. runtime session 후보 234개는 화면/훈련/촬영/업무/script scratch 계열로 분류되었고 M25 후 미판정은 0개다.
-- M26에서 구현 전 누락 감사는 implementation review 14,700행, source-file-review 14행, 미해소 issue 0개로 닫혔다. save/session mapping row가 기능 완료 범위에 남거나 orphan/role-only로 남으면 해당 기능을 완료 처리하지 않는다.
-- M27에서 구현 큐는 queue unit 37개, queued review row 14,700개, frozen blocker 63개, approved exclusion request candidate 63개로 동결했다. M27 owner로 남은 source-file-review 2개는 M51 최종 누락 감사 owner로 이관했다.
+- M26에서 구현 전 누락 감사는 implementation review 14,546행, source-file-review 13행, 미해소 issue 0개로 닫혔다. save/session mapping row가 기능 완료 범위에 남거나 orphan/role-only로 남으면 해당 기능을 완료 처리하지 않는다.
+- M27에서 구현 큐는 queue unit 36개, queued review row 14,546개, frozen blocker 59개, approved exclusion request candidate 59개로 동결했다. M27 owner로 남은 source-file-review 2개는 M51 최종 누락 감사 owner로 이관했다.
 - M28에서 메인 화면 route 연결은 완료했다. `unit:M28:main-route` 27행 중 메인 메뉴 정의 24개는 route/action/view/dispatch/smoke 근거를 갖고, BOYFRIEND event-local screen session row 3개는 M47로 책임 이관했다.
 - M29에서 아이템 상점 구매는 완료했다. `unit:M29:shop-purchase` 206행 중 implemented 43, mapped 40, transferredOut 123으로 닫았고, 실제 `SHOP_ITEM.ERB` 구매형 listing은 30개다.
 - M30에서 아이템 사용과 특수 아이템은 완료했다. `unit:M30:item-use` 26행과 M29 inbound transfer 49행, 총 75행 중 implemented 37, mapped 32, transferredOut 6으로 닫았다.
@@ -90,8 +90,8 @@
 - M33에서 신체/능력/소질/경험은 완료했다. M27 queue 5,283행과 M33 필수 `Palam.csv` 정의 17행, 총 5,300행 중 implemented 4,768, mapped 465, transferredOut 67로 닫았다. Chara `BASE/ABL/TALENT/EXP` seed, `BASE/ABL/TALENT/EXP/MARK/PALAM` 표시 정의, `BASE/MAXBASE/EXP/MARK` save mapping을 people/body owner에 연결했다.
 - M33에서 업무/촬영/훈련 결과 반영은 `src/features/bodyStats.ts` 공통 helper로 통일했다. `bodyStatDeltas`, `paramDeltas`, `resourceDeltas`가 같은 `body.byCharacterId.*` 저장 필드를 갱신한다.
 - M34에서 관계/CFLAG/장비/의복 owner는 완료했다. M34 queue 2,149행과 M29/M31/M33 inbound transfer 83행, 총 2,232행 중 implemented 1,998, mapped 234로 닫았다. `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`이 CFLAG seed, RELATION seed, 의복/장비 route의 실제 소비 경로다.
-- M34 이후 전수 검토에서 M35 진입 전 hardening 필요가 확인되었다. `npm run gate:source-evidence`는 현재 auxiliary evidence 완료 근거 때문에 실패한다. 확인된 auxiliary 완료성 row는 169개이며, `legacyCharacterFlagDefinitions` 151개와 `sourceDefinitions` 18개다.
-- 다음 작업은 M34.5이다. `gate:source-evidence`를 복구하고, source-file-review 쉬운 완료를 차단하고, M35~M52 전용 coverage/gate/smoke/final verify script를 실제로 등록한 뒤에만 M35로 넘어간다.
+- M34.5에서 M35 진입 전 hardening을 완료했다. `gate:source-evidence`는 auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결한 뒤 통과한다.
+- 다음 작업은 M35이다. M35 placeholder script를 실제 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long` 구현으로 교체하고, 턴/시간/hook/roundtrip/session cleanup을 coverage와 gate로 닫는다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -172,6 +172,10 @@ npm run coverage:social-equipment-cflag
 npm run gate:social-equipment-cflag
 npm run gate:milestone-scope-closure -- M34
 npm run smoke:social-equipment-cflag
+npm run coverage:gate-registry
+npm run gate:source-evidence
+npm run gate:coverage-hardening
+npm run gate:milestone-scope-closure -- M34.5
 npm run smoke:main-routes
 npm run gate:definition-consumption
 npm run typecheck
@@ -208,7 +212,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M18 반복 구현 규칙 검색 통과: 기준 문서, 구현 전/후 template, blocker template 참조 확인
 - `coverage:features` 통과: feature row 5,344개, blocker group 59개 생성
 - `gate:feature-coverage` 통과: dynamic 66 / persistence 134 / exit 3,536 / pause 931 / engine entry 9 / unreferenced global 652 count 일치
-- `coverage:definitions` 통과: M20 1차 definition row 7,840개, blocker group 63개 생성. M23 ERB-derived 정의 병합 후 현재 기준 row는 8,000개
+- `coverage:definitions` 통과: 현재 definition row 8,000개, blocker group 59개 생성. auxiliary source/cflag row 169개는 primary `VariableSize.CSV` evidence로 재연결됨
 - `gate:definition-consumption` 통과: raw definition 918개와 Chara seed 6,922행 count 일치
 - M21~M27 coverage/gate 통과: source evidence, crosscheck, ERB definition, save/session mapping, pre-implementation audit, implementation queue 산출물 생성
 - M28 main route coverage/gate/smoke 통과: owned row 27개, unresolved issue 0개
@@ -218,7 +222,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M32 character identity coverage/gate/smoke 통과: owned row 294개, unresolved issue 0개
 - M33 body/stat coverage/gate/smoke 통과: owned row 5,300개, unresolved issue 0개
 - M34 social/equipment/CFLAG coverage/gate/smoke 통과: owned row 2,232개, unresolved issue 0개
-- M34 이후 재검토에서 `npm run gate:source-evidence` 현재 실패 확인. auxiliary evidence 완료성 row 169개와 M35~M52 gate 실체화 부재 때문에 다음 작업은 M34.5 hardening이다.
+- M34.5에서 `npm run gate:source-evidence` 실패 원인이던 auxiliary evidence 완료성 row 169개를 primary source evidence로 재연결했고, M35~M52 gate registry와 final verify skeleton을 추가했다.
 - `smoke:main-routes` 통과: 메인 메뉴 108 wardrobe route 활성화 확인
 - `analyze:game-system` 통과
 - `tsc --noEmit` 통과
@@ -257,8 +261,9 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 27. M32 인물 원형과 identity 완성은 완료되었고 `npm run coverage:character-identity`, `npm run gate:character-identity`, `npm run gate:milestone-scope-closure -- M32`, `npm run smoke:character-identity`, `npm run smoke:recruit-all`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
 28. M33 신체/능력/소질/경험 완성은 완료되었고 `npm run coverage:body-stat`, `npm run gate:body-stat-mapping`, `npm run gate:milestone-scope-closure -- M33`, `npm run smoke:body-stat`, `npm run smoke:character-identity`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다.
 29. M34 관계/CFLAG/장비/의복 owner 완성은 `npm run coverage:social-equipment-cflag`, `npm run gate:social-equipment-cflag`, `npm run gate:milestone-scope-closure -- M34`, `npm run smoke:social-equipment-cflag`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M34 owned scope 2,232행 중 implemented 1,998, mapped 234, unresolved issue 0개로 닫았다.
-30. M34 이후 전수 검토에서 `npm run gate:source-evidence` 현재 실패가 확인되었다. auxiliary evidence 완료성 row 169개와 M35~M52 gate 실체화 부재 때문에 M35로 바로 진행하지 않는다.
-31. 다음 작업은 M34.5 전수 이식 gate hardening이다. `gate:source-evidence`, `gate:coverage-hardening`, M35~M52 전용 script registry, final audit/verify skeleton을 먼저 만들고 통과시킨 뒤 M35로 넘어간다.
+30. M34 이후 전수 검토에서 M35 진입 전 hardening 필요가 확인되었다.
+31. M34.5 전수 이식 gate hardening은 완료되었다. `gate:source-evidence`, `gate:coverage-hardening`, `gate:coverage-crosscheck`, `gate:pre-implementation-audit`, `gate:implementation-queue`, `build`, `test --if-present`가 통과했다.
+32. 다음 작업은 M35 턴 종료와 시간 진행 완성이다. M35 placeholder script를 실제 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long` 구현으로 교체한 뒤 진행한다.
 
 ## 읽을 문서
 
