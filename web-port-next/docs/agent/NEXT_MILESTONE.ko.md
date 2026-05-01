@@ -1,13 +1,23 @@
 # Next Milestone
 
+## 2026-05-02 next work after registry gap closure
+
+Criteria-side baseline and registry enforcement are now complete for M28~M52.
+
+Next work is closure, not criteria invention:
+1. Pick an owning milestone or phase slice.
+2. For every owned manifest unit, change only through evidence-backed status: `implemented-verified`, `approved-excluded`, `blocked`, or `scope-redesign-required`.
+3. Run that milestone's registry contract, closure gate, smoke, and any required build/test checks.
+4. Do not move responsibility to another milestone unless the manifest records the transfer reason and the receiving milestone owns a matching unit.
+
 ## 2026-05-02 next work after criteria baseline
 
-Criteria-side baseline is complete with one known gap: registry contracts are missing for M28~M34.
+Criteria-side baseline is complete and registry contracts now cover M28~M52.
 
 Next work is not more criteria discovery. Choose one of these tracks:
 
-1. Add M28~M34 registry contracts for uniform gate enforcement.
-2. Start closing manifest `blocked` / `scope-redesign-required` units, beginning with the highest-risk owners such as M41 and M42.
+1. Start closing manifest `blocked` / `scope-redesign-required` units, beginning with the highest-risk owners such as M41 and M42.
+2. Keep `tools/build_coverage_gate_registry.mjs` and `coverage-gate-registry.json` synchronized whenever a contract changes.
 
 Do not mark any milestone complete until its manifest reaches `completedAllowedNow: true` or all remaining non-implemented units are explicitly approved-excluded.
 

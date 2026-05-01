@@ -6,7 +6,7 @@ This is the final criteria-side consistency pass. It verifies that completion cr
 
 ## Result
 
-Criteria baseline status: **complete, with registry gap**
+Criteria baseline status: **complete**
 
 Evidence:
 - Consistency report: `data/coverage/manifests/M28-M52-criteria-consistency.json`
@@ -19,20 +19,15 @@ Evidence:
   - scope-redesign-required: 300
   - approved-excluded: 0
 
-## Registry Gap
+## Registry Enforcement
 
-`coverage-gate-registry.json` currently has contracts for `M34.5` through `M52`.
+`coverage-gate-registry.json` now has contracts for every M28~M52 manifest.
 
-Registry contracts are missing for:
-- M28
-- M29
-- M30
-- M31
-- M32
-- M33
-- M34
+The registry is generated from `tools/build_coverage_gate_registry.mjs`. M28~M34 were added to the generated contract set, then `npm run coverage:gate-registry` regenerated the registry with 26 milestone contracts.
 
-This does not invalidate the M28~M34 manifests, but it means registry-enforced closure is not yet uniform across M28~M52. The next consistency hardening task should add registry contracts for M28~M34 or explicitly document why those manifests are enforced elsewhere.
+Validation:
+- `npm run gate:coverage-hardening` passed with 26 contract(s), 20 coverage file(s), and 9 final script(s).
+- `data/coverage/manifests/M28-M52-criteria-consistency.json` reports no missing registry contracts.
 
 ## Completion Rule
 
@@ -50,5 +45,5 @@ No milestone may be marked complete from checklist text, mapped status, source-f
 The next work is no longer criteria discovery. It is closure/implementation work:
 
 1. Resolve or redesign M28~M52 `blocked` and `scope-redesign-required` units.
-2. Add registry contracts for M28~M34 if full registry enforcement is required before implementation resumes.
-3. Only after owned units are closed should M42+ implementation proceed.
+2. Keep registry contracts current by changing `tools/build_coverage_gate_registry.mjs`, then regenerating `coverage-gate-registry.json`.
+3. Only after owned units are closed should implementation/verdict milestones advance.

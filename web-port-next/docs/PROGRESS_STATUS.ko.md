@@ -1,5 +1,20 @@
 # 진행 상태
 
+## 2026-05-02 M28-M52 registry gap closed
+
+The criteria baseline and registry enforcement are complete for M28~M52.
+
+| item | result |
+| --- | --- |
+| Registry generator | `tools/build_coverage_gate_registry.mjs` |
+| Registry output | `data/coverage/coverage-gate-registry.json` |
+| Contract count | 26 |
+| Missing registry contracts | 0 |
+| Hardening gate | `npm run gate:coverage-hardening` passed |
+| Consistency report | `data/coverage/manifests/M28-M52-criteria-consistency.json` |
+
+Next work is closing manifest units through real implementation evidence, approved exclusion, or explicit scope redesign. Do not create new ad hoc checklist criteria for M28~M52.
+
 ## 2026-05-02 M28-M52 criteria consistency complete
 
 The criteria-side baseline is complete.
@@ -15,7 +30,7 @@ The criteria-side baseline is complete.
 | Implemented-verified | 7,893 |
 | Blocked | 2,913 |
 | Scope-redesign-required | 300 |
-| Known criteria gap | Registry contracts missing for M28~M34 |
+| Known criteria gap | none; M28~M52 registry contracts exist |
 
 Next work is closure/implementation evidence, not more checklist invention.
 

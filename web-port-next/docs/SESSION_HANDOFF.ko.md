@@ -1,5 +1,16 @@
 # 세션 인수인계
 
+## 2026-05-02 handoff after M28-M52 registry gap closure
+
+Criteria baseline and registry enforcement are complete.
+
+- M28~M34 registry contracts were added.
+- `npm run coverage:gate-registry` regenerated `data/coverage/coverage-gate-registry.json` with 26 milestone contracts.
+- `npm run gate:coverage-hardening` passed with 26 contract(s), 20 coverage file(s), and 9 final script(s).
+- `data/coverage/manifests/M28-M52-criteria-consistency.json` reports no missing registry contracts.
+
+Next worker should not create new ad hoc criteria for M28~M52. Start closure work from the manifests and change unit status only through implementation evidence, approved exclusion, `blocked`, or `scope-redesign-required`.
+
 ## 2026-05-02 handoff after M28-M52 criteria consistency
 
 Criteria baseline is complete.
@@ -9,9 +20,9 @@ Criteria baseline is complete.
 - All M28~M52 source-unit manifests exist.
 - All 26 manifests currently have `completedAllowedNow: false`.
 - Aggregate totals: total units 11,106; implemented-verified 7,893; blocked 2,913; scope-redesign-required 300.
-- Known criteria gap: `coverage-gate-registry.json` does not yet include M28~M34 contracts.
+- Known criteria gap: none; `coverage-gate-registry.json` includes M28~M52 contracts.
 
-Next worker should not create new ad hoc criteria. Either add M28~M34 registry contracts for uniform enforcement, or begin closing manifest units with implementation evidence and explicit ownership redesign.
+Next worker should not create new ad hoc criteria. Begin closing manifest units with implementation evidence, approved exclusion, blocked status, or explicit ownership redesign.
 
 ## 2026-05-02 handoff after M50-M52 criteria manifests
 

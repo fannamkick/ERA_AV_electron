@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedAt": "2026-05-02",
   "purpose": "Consistency pass for M28-M52 completion criteria manifests. This report verifies criteria coverage, not implementation completion.",
-  "overallStatus": "criteria-baseline-complete-with-registry-gap",
+  "overallStatus": "criteria-baseline-complete",
   "criteriaBaselineComplete": true,
   "implementationComplete": false,
   "allCompletedAllowedNowFalse": true,
@@ -18,23 +18,15 @@
   "checks": {
     "allM28ToM52ManifestsPresent": true,
     "missingManifests": [],
-    "registryCoversM34_5ToM52": true,
-    "missingRegistryContracts": [
-      "M28",
-      "M29",
-      "M30",
-      "M31",
-      "M32",
-      "M33",
-      "M34"
-    ],
+    "registryCoversM28ToM52": true,
+    "missingRegistryContracts": [],
     "registryWithoutManifest": [],
-    "statusDocsNeedLatestCriteriaNotice": true,
+    "statusDocsNeedLatestCriteriaNotice": false,
     "nextImplementationMustNotStartFromCompletedAssumption": true
   },
   "blockingFindings": [
     "Every M28-M52 manifest currently has completedAllowedNow=false; criteria exists, implementation/closure is not complete.",
-    "Registry contracts exist for M34.5-M52, but M28-M34 manifests are not represented in coverage-gate-registry.json.",
+    "Registry contracts now exist for every M28-M52 manifest.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
   ],
@@ -43,7 +35,7 @@
       "milestone": "M28",
       "manifestPath": "data/coverage/manifests/M28-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 27,
         "implemented-verified": 13,
@@ -55,7 +47,7 @@
       "milestone": "M29",
       "manifestPath": "data/coverage/manifests/M29-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 206,
         "implemented-verified": 43,
@@ -68,7 +60,7 @@
       "milestone": "M30",
       "manifestPath": "data/coverage/manifests/M30-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 74,
         "scope-redesign-required": 37,
@@ -81,7 +73,7 @@
       "milestone": "M31",
       "manifestPath": "data/coverage/manifests/M31-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 237,
         "implemented-verified": 52,
@@ -94,7 +86,7 @@
       "milestone": "M32",
       "manifestPath": "data/coverage/manifests/M32-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 294,
         "implemented-verified": 286,
@@ -106,7 +98,7 @@
       "milestone": "M33",
       "manifestPath": "data/coverage/manifests/M33-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 5300,
         "blocked": 465,
@@ -119,7 +111,7 @@
       "milestone": "M34",
       "manifestPath": "data/coverage/manifests/M34-source-units.json",
       "manifestExists": true,
-      "registryContractExists": false,
+      "registryContractExists": true,
       "summary": {
         "totalUnits": 2235,
         "blocked": 237,

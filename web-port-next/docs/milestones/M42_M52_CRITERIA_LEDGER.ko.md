@@ -2,6 +2,22 @@
 
 This ledger records the remaining completion-criteria work after the M28~M41 source-unit manifest pass.
 
+## 2026-05-02 M28-M52 registry enforcement update
+
+Artifacts:
+- `tools/build_coverage_gate_registry.mjs`
+- `data/coverage/coverage-gate-registry.json`
+- `data/coverage/manifests/M28-M52-criteria-consistency.json`
+
+Result:
+- M28~M34 registry contracts were added.
+- Registry contracts now cover every M28~M52 manifest.
+- `npm run coverage:gate-registry` wrote 26 milestone contracts.
+- `npm run gate:coverage-hardening` passed with 26 contract(s), 20 coverage file(s), and 9 final script(s).
+- The M28~M52 criteria baseline has no remaining registry gap.
+
+Next work is not new criteria discovery. Close manifest units through implementation evidence, approved exclusion, or explicit scope redesign.
+
 ## 2026-05-02 M42-M44 source-unit manifest pass 1
 
 Artifacts:
@@ -88,6 +104,6 @@ Result:
 - All M28~M52 source-unit manifests exist.
 - All 26 manifests currently have `completedAllowedNow: false`.
 - Aggregate totals: total units 11,106; implemented-verified 7,893; blocked 2,913; scope-redesign-required 300; approved-excluded 0.
-- Registry contracts exist for M34.5~M52, but not for M28~M34.
+- Registry contracts exist for M28~M52.
 
-Criteria-side baseline is now complete with a known registry gap. Future work should close manifest units through evidence or add M28~M34 registry contracts before claiming uniform gate enforcement.
+Criteria-side baseline is now complete with uniform registry enforcement. Future work should close manifest units through evidence, approved exclusion, blocked status, or explicit scope redesign.
