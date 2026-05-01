@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M36",
+  "title": "Visit places, facilities, and visit actions",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M36 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json",
+    "features": "data/coverage/features.json"
+  },
+  "outputs": {
+    "visitFacilityCoverage": "data/coverage/visit-facility-coverage.json",
+    "gapAudit": "data/coverage/audits/M36-gap-audit.json",
+    "builder": "tools/build_visit_facility_coverage.mjs",
+    "coverageGate": "tools/gate_visit_facility.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m36_visit_all_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 559,
+    "implemented": 552,
+    "mapped": 7,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 559,
+    "implemented": 552,
+    "mapped": 7,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:visit-facility",
+      "npm run gate:visit-facility",
+      "npm run gate:milestone-scope-closure -- M36",
+      "npm run smoke:visit-all",
+      "npm run smoke:m10",
+      "npm run verify:m16",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "559 M36 owned row(s), 0 unresolved issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:visit-facility",
+    "npm run gate:visit-facility",
+    "npm run gate:milestone-scope-closure -- M36",
+    "npm run smoke:visit-all",
+    "npm run smoke:m10",
+    "npm run verify:m16",
+    "npm run typecheck",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}

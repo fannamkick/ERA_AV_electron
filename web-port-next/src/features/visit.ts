@@ -14,10 +14,14 @@ export type VisitActionDefinition = {
   readonly placeId: string;
   readonly label: string;
   readonly cost: number;
-  readonly unlockKey: string;
+  readonly unlockKey?: string;
   readonly visitProgressKey: string;
   readonly accountingId: string;
   readonly source: string;
+  readonly sourceFile: string;
+  readonly sourceLabel: string;
+  readonly resultOwner: 'featureState.visits' | 'world.unlocks' | 'world.eventFlags';
+  readonly repeatable?: boolean;
 };
 
 export type VisitFailure = {
@@ -37,26 +41,200 @@ export type VisitUpdateResult =
       readonly failure: VisitFailure;
     };
 
+type VisitSourceGroup = {
+  readonly placeId: string;
+  readonly labels: readonly string[];
+};
+
 export const visitPlaceDefinitions: readonly VisitPlaceDefinition[] = [
-  {
-    id: 'organizationOffice',
-    label: '조직 사무소',
-    source: 'HOUMON.ERB/HOUMON -> KIRYU_GUMI',
-  },
+  { id: 'organizationOffice', label: 'Kiryu organization office', source: 'HOUMON.ERB visit-place:10' },
+  { id: 'secretLaboratory', label: 'Secret laboratory', source: 'HOUMON.ERB visit-place:11' },
+  { id: 'rachelWorkshop', label: 'Rachel workshop', source: 'HOUMON.ERB visit-place:12' },
+  { id: 'ikumiLaboratory', label: 'Ikumi laboratory', source: 'HOUMON.ERB visit-place:13' },
+  { id: 'sakuraHideout', label: 'RB hideout', source: 'HOUMON.ERB visit-place:14' },
+  { id: 'miyakoHouse', label: 'Tomoyoshi house', source: 'HOUMON.ERB visit-place:15' },
+  { id: 'akashaHeadquarters', label: 'Akasha headquarters', source: 'HOUMON.ERB visit-place:16' },
 ];
 
-export const visitActionDefinitions: readonly VisitActionDefinition[] = [
-  {
-    id: 'organizationOffice.basicRoomPermit',
-    placeId: 'organizationOffice',
-    label: '기본 방 사용 허가',
-    cost: 300,
-    unlockKey: 'facility.basicRoom',
-    visitProgressKey: 'organizationOffice.basicRoomPermit',
-    accountingId: 'visit:organizationOffice:basicRoomPermit',
-    source: 'KIRYU_GUMI facility purchase branch',
+const visitSourceGroups: Record<string, VisitSourceGroup> = {
+  'AYANO_ORDER.ERB': {
+    placeId: 'akashaHeadquarters',
+    labels: ['AYANO_ORDER'],
   },
-];
+  'AYANO_ORDER_DETAIL.ERB': {
+    placeId: 'akashaHeadquarters',
+    labels: ['SECURITY_UP', 'SECURITY_DOWN', 'ADD_FUMIKA'],
+  },
+  'ELLEN_MISSION.ERB': {
+    placeId: 'akashaHeadquarters',
+    labels: ['ELLEN_MISSION'],
+  },
+  'ELLEN_MISSION_DETAIL.ERB': {
+    placeId: 'akashaHeadquarters',
+    labels: ['MISSION_START', 'KOISORA_ADD', 'ELLEN_EXTRAACTRESS'],
+  },
+  'EUNICE_LABO.ERB': {
+    placeId: 'secretLaboratory',
+    labels: ['EUNICE_LABO'],
+  },
+  'EUNICE_LABO_DETAIL.ERB': {
+    placeId: 'secretLaboratory',
+    labels: [
+      'BREAK_PRIDE_HIGH',
+      'BREAK_PRIDE_LOW',
+      'BREAK_PRIDE_NEUTRAL',
+      'BREAK_XTC_POSITIVE',
+      'BREAK_XTC_NEGATIVE',
+      'BREAK_XTC_NEUTRAL',
+      'BREAK_SM_SADIST',
+      'BREAK_SM_MASOCHIST',
+      'BREAK_SM_NEUTRAL',
+      'CHANGE_WORK',
+      'CHANGE_VIRGINITY',
+      'CHANGE_FALLEN',
+    ],
+  },
+  'HOUMON.ERB': {
+    placeId: 'organizationOffice',
+    labels: ['HOUMON'],
+  },
+  'IKUMI_LABO.ERB': {
+    placeId: 'ikumiLaboratory',
+    labels: ['IKUMI_LABO'],
+  },
+  'IKUMI_LABO_CALC.ERB': {
+    placeId: 'ikumiLaboratory',
+    labels: ['ADD_IKUMI_ANDROID'],
+  },
+  'IKUMI_LABO_DETAIL.ERB': {
+    placeId: 'ikumiLaboratory',
+    labels: ['KILL_PREGNANCY', 'ABLCHANGE', 'ABLCHANGE_DATAIL', 'SUCCUBUS_CHANGE', 'ADD_ANDROID', 'BOOST_ITEM40'],
+  },
+  'KANON_ORDER.ERB': {
+    placeId: 'akashaHeadquarters',
+    labels: ['KANON_ORDER'],
+  },
+  'KANON_ORDER_DETAIL.ERB': {
+    placeId: 'akashaHeadquarters',
+    labels: ['BOYFRIEND_LOST', 'TATTO', 'BODYGUARD', 'ADD_IDOL', 'ADD_VA', 'ADD_SHISETU'],
+  },
+  'KIRYU_GUMI.ERB': {
+    placeId: 'organizationOffice',
+    labels: ['KIRYU_GUMI', 'BOUGHT_ROOM', 'BOUGHT_LYCEE', 'BOUGHT_DOG'],
+  },
+  'MIYAKO_LABO.ERB': {
+    placeId: 'miyakoHouse',
+    labels: ['MIYAKO_LABO_OP', 'MIYAKO_LABO', 'MIYAKO_LABO_VIDEOSELL', 'MIYAKO_VIDEOSALE_PRINT'],
+  },
+  'MIYAKO_LABO2.ERB': {
+    placeId: 'miyakoHouse',
+    labels: ['MIYAKO_LABO_SYMPHOGEAR'],
+  },
+  'RACHEL_LABO.ERB': {
+    placeId: 'rachelWorkshop',
+    labels: ['RACHEL_LABO'],
+  },
+  'RACHEL_LABO_DETAIL.ERB': {
+    placeId: 'rachelWorkshop',
+    labels: ['BASEHP_UP', 'BASESP_UP', 'ADD_LOVE', 'ADD_LEWD', 'ANTIAGING', 'ADD_SUCCUBUS', 'ADD_REENA', 'ADD_TENTACLE'],
+  },
+  'SAKURA_AZITO.ERB': {
+    placeId: 'sakuraHideout',
+    labels: ['SAKURA_AZITO'],
+  },
+  'SAKURA_AZITO_DETAIL.ERB': {
+    placeId: 'sakuraHideout',
+    labels: [
+      'CHASTITY_UP',
+      'CHASTITY_DOWN',
+      'CHASTITY_NEUTRAL',
+      'SHAME_UP',
+      'SHAME_DOWN',
+      'SHAME_NEUTRAL',
+      'PERSONALITY_GENTLE',
+      'PERSONALITY_BRAZEN',
+      'PERSONALITY_QUIET',
+      'PERSONALITY_LIVELY',
+      'PERSONALITY_NEUTRAL',
+      'PERSONALITY_GAL',
+      'GAL_NEUTRAL',
+      'KICKINGHORSE',
+    ],
+  },
+  'SHOP_LABO.ERB': {
+    placeId: 'secretLaboratory',
+    labels: [
+      'SECRET_LABO',
+      'MODIFY_BUSTUP',
+      'MODIFY_BUSTDOWN',
+      'MODIFY_BONYU',
+      'MODIFY_FUTANARI',
+      'MODIFY_FUTANARI_ERASE',
+      'MODIFY_ANIMAL',
+      'MODIFY_ANIMAL_ERASE',
+      'MODIFY_REMOVEHAIR',
+      'MODIFY_DEIMMATURITY',
+      'MODIFY_AMNESIA',
+      'MODIFY_BONYU_ERASE',
+      'MODIFY_OMORASHI_ERASE',
+      'SHOJO_SAISEI',
+      'TRANS_SEX',
+      'BRAIN_WASHING',
+    ],
+  },
+};
+
+function visitActionId(sourceFile: string, sourceLabel: string): string {
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_ROOM') {
+    return 'organizationOffice.basicRoomPermit';
+  }
+
+  return `visit.${sourceFile.replace(/\.ERB$/u, '').toLowerCase()}.${sourceLabel.toLowerCase()}`;
+}
+
+function visitActionCost(sourceFile: string, sourceLabel: string): number {
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_ROOM') return 300;
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_LYCEE') return 500;
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_DOG') return 200;
+  if (sourceFile === 'SHOP_LABO.ERB') return 100;
+  return 0;
+}
+
+function visitActionUnlockKey(sourceFile: string, sourceLabel: string): string | undefined {
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_ROOM') return 'facility.basicRoom';
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_LYCEE') return 'facility.lycee';
+  if (sourceFile === 'KIRYU_GUMI.ERB' && sourceLabel === 'BOUGHT_DOG') return 'facility.dog';
+  if (sourceLabel === 'SECRET_LABO') return 'facility.secretLaboratory';
+  if (sourceLabel === 'ADD_SHISETU') return 'facility.kanonOrder';
+  return undefined;
+}
+
+function visitActionResultOwner(sourceFile: string, sourceLabel: string): VisitActionDefinition['resultOwner'] {
+  if (visitActionUnlockKey(sourceFile, sourceLabel)) return 'world.unlocks';
+  if (sourceFile.endsWith('_DETAIL.ERB') || sourceFile === 'IKUMI_LABO_CALC.ERB') return 'featureState.visits';
+  return 'world.eventFlags';
+}
+
+function createVisitActionDefinition(sourceFile: string, sourceLabel: string, group: VisitSourceGroup): VisitActionDefinition {
+  const id = visitActionId(sourceFile, sourceLabel);
+  return {
+    id,
+    placeId: group.placeId,
+    label: sourceLabel.replace(/_/gu, ' '),
+    cost: visitActionCost(sourceFile, sourceLabel),
+    unlockKey: visitActionUnlockKey(sourceFile, sourceLabel),
+    visitProgressKey: id,
+    accountingId: `visit:${id}`,
+    source: `original-game/ERB/visit/${sourceFile}:${sourceLabel}`,
+    sourceFile,
+    sourceLabel,
+    resultOwner: visitActionResultOwner(sourceFile, sourceLabel),
+  };
+}
+
+export const visitActionDefinitions: readonly VisitActionDefinition[] = Object.entries(visitSourceGroups).flatMap(
+  ([sourceFile, group]) => group.labels.map((sourceLabel) => createVisitActionDefinition(sourceFile, sourceLabel, group)),
+);
 
 function findPlace(placeId: string): VisitPlaceDefinition | undefined {
   return visitPlaceDefinitions.find((place) => place.id === placeId);
@@ -66,13 +244,17 @@ function findAction(actionId: string): VisitActionDefinition | undefined {
   return visitActionDefinitions.find((action) => action.id === actionId);
 }
 
+function actionCompleted(state: GameState, action: VisitActionDefinition): boolean {
+  return state.featureState.visits[action.visitProgressKey] !== undefined || Boolean(action.unlockKey && state.world.unlocks[action.unlockKey]);
+}
+
 function actionDisabledReason(state: GameState, action: VisitActionDefinition): string | undefined {
-  if (state.world.unlocks[action.unlockKey]) {
-    return '이미 해금된 시설입니다.';
+  if (!action.repeatable && actionCompleted(state, action)) {
+    return 'already completed';
   }
 
   if (state.economy.account.currentMoney < action.cost) {
-    return '돈 부족';
+    return 'not enough money';
   }
 
   return undefined;
@@ -82,18 +264,15 @@ export function computeVisibleVisitPlaceIds(_state: GameState): readonly string[
   return visitPlaceDefinitions.map((place) => place.id);
 }
 
-function computeVisibleVisitActionIds(state: GameState, placeId: string | undefined): readonly string[] {
+function computeVisibleVisitActionIds(_state: GameState, placeId: string | undefined): readonly string[] {
   if (!placeId || !findPlace(placeId)) {
     return [];
   }
 
-  return visitActionDefinitions
-    .filter((action) => action.placeId === placeId)
-    .filter((action) => !state.world.unlocks[action.unlockKey] || state.featureState.visits[action.visitProgressKey] !== undefined)
-    .map((action) => action.id);
+  return visitActionDefinitions.filter((action) => action.placeId === placeId).map((action) => action.id);
 }
 
-function placeViewFromDefinition(state: GameState, place: VisitPlaceDefinition): VisitPlaceView {
+function placeViewFromDefinition(_state: GameState, place: VisitPlaceDefinition): VisitPlaceView {
   return {
     placeId: place.id,
     label: place.label,
@@ -111,7 +290,7 @@ function actionViewFromDefinition(state: GameState, action: VisitActionDefinitio
     label: action.label,
     cost: action.cost,
     source: action.source,
-    completed: state.world.unlocks[action.unlockKey] === true,
+    completed: actionCompleted(state, action),
     available: disabledReason === undefined,
     disabledReason,
   };
@@ -170,7 +349,7 @@ export function selectVisitPlace(state: GameState, session: GameSession, placeId
       ok: false,
       failure: {
         code: 'visit-place-not-found',
-        message: `방문 장소를 찾을 수 없습니다: ${placeId}`,
+        message: `Visit place not found: ${placeId}`,
       },
     };
   }
@@ -180,7 +359,7 @@ export function selectVisitPlace(state: GameState, session: GameSession, placeId
       ok: false,
       failure: {
         code: 'visit-place-not-in-session',
-        message: `현재 방문 화면의 표시 목록에 없는 장소입니다: ${placeId}`,
+        message: `Visit place is not visible in the current session: ${placeId}`,
       },
     };
   }
@@ -197,7 +376,7 @@ export function selectVisitPlace(state: GameState, session: GameSession, placeId
         visibleActionIds: computeVisibleVisitActionIds(state, place.id),
       },
     },
-    message: `${place.label}을 선택했습니다.`,
+    message: `Visit place selected: ${place.label}`,
   };
 }
 
@@ -208,7 +387,7 @@ export function selectVisitAction(state: GameState, session: GameSession, action
       ok: false,
       failure: {
         code: 'visit-action-not-found',
-        message: `방문 행동을 찾을 수 없습니다: ${actionId}`,
+        message: `Visit action not found: ${actionId}`,
       },
     };
   }
@@ -218,7 +397,7 @@ export function selectVisitAction(state: GameState, session: GameSession, action
       ok: false,
       failure: {
         code: 'visit-action-not-in-session',
-        message: `현재 방문 장소의 표시 목록에 없는 행동입니다: ${actionId}`,
+        message: `Visit action is not visible in the current session: ${actionId}`,
       },
     };
   }
@@ -228,7 +407,7 @@ export function selectVisitAction(state: GameState, session: GameSession, action
       ok: false,
       failure: {
         code: 'visit-place-selection-required',
-        message: '방문 장소를 먼저 선택해야 합니다.',
+        message: 'Select a visit place before selecting an action.',
       },
     };
   }
@@ -243,7 +422,7 @@ export function selectVisitAction(state: GameState, session: GameSession, action
         selectedActionId: action.id,
       },
     },
-    message: `${action.label} 행동을 선택했습니다.`,
+    message: `Visit action selected: ${action.label}`,
   };
 }
 
@@ -254,7 +433,7 @@ export function confirmVisitAction(state: GameState, session: GameSession): Visi
       ok: false,
       failure: {
         code: 'visit-action-selection-required',
-        message: '실행할 방문 행동을 먼저 선택해야 합니다.',
+        message: 'Select a visit action before confirming.',
       },
     };
   }
@@ -265,17 +444,17 @@ export function confirmVisitAction(state: GameState, session: GameSession): Visi
       ok: false,
       failure: {
         code: 'visit-action-not-found',
-        message: `방문 행동을 찾을 수 없습니다: ${selectedActionId}`,
+        message: `Visit action not found: ${selectedActionId}`,
       },
     };
   }
 
-  if (state.world.unlocks[action.unlockKey]) {
+  if (!action.repeatable && actionCompleted(state, action)) {
     return {
       ok: false,
       failure: {
         code: 'visit-action-already-complete',
-        message: `이미 처리한 방문 행동입니다: ${action.label}`,
+        message: `Visit action is already complete: ${action.label}`,
       },
     };
   }
@@ -285,12 +464,24 @@ export function confirmVisitAction(state: GameState, session: GameSession): Visi
       ok: false,
       failure: {
         code: 'not-enough-money',
-        message: `돈이 부족합니다. 필요 금액: ${action.cost}Pt`,
+        message: `Not enough money. Required: ${action.cost}Pt`,
       },
     };
   }
 
   const nextVisits = (state.featureState.visits[action.visitProgressKey] as number | undefined) ?? 0;
+  const nextEventFlags = {
+    ...state.world.eventFlags,
+    [`visit:${action.id}:lastTurn`]: state.run.clock.turn,
+    [`visit:${action.id}:source`]: action.sourceLabel,
+  };
+  const nextUnlocks = action.unlockKey
+    ? {
+        ...state.world.unlocks,
+        [action.unlockKey]: true,
+      }
+    : state.world.unlocks;
+
   const nextState: GameState = {
     ...state,
     economy: {
@@ -298,14 +489,15 @@ export function confirmVisitAction(state: GameState, session: GameSession): Visi
       account: {
         currentMoney: state.economy.account.currentMoney - action.cost,
       },
-      accountingEntries: [...state.economy.accountingEntries, `${action.accountingId}:total:${action.cost}`],
+      accountingEntries:
+        action.cost > 0
+          ? [...state.economy.accountingEntries, `${action.accountingId}:total:${action.cost}`]
+          : state.economy.accountingEntries,
     },
     world: {
       ...state.world,
-      unlocks: {
-        ...state.world.unlocks,
-        [action.unlockKey]: true,
-      },
+      unlocks: nextUnlocks,
+      eventFlags: nextEventFlags,
     },
     featureState: {
       ...state.featureState,
@@ -327,7 +519,7 @@ export function confirmVisitAction(state: GameState, session: GameSession): Visi
         visibleActionIds: computeVisibleVisitActionIds(nextState, action.placeId),
       },
     },
-    message: `${action.label}을 처리했습니다.`,
+    message: `Visit action completed: ${action.label}`,
   };
 }
 
@@ -344,7 +536,7 @@ export function cancelVisitSelection(state: GameState, session: GameSession): Vi
         visibleActionIds: [],
       },
     },
-    message: '방문 장소 선택을 취소했습니다.',
+    message: 'Visit selection canceled.',
   };
 }
 

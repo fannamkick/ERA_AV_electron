@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "milestone-gap-audit/v1",
+  "generatedBy": "tools/build_visit_facility_coverage.mjs",
+  "milestone": "M36",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json",
+    "features": "data/coverage/features.json"
+  },
+  "summary": {
+    "scopeRows": 559,
+    "implemented": 552,
+    "mapped": 7,
+    "transferredOut": 0,
+    "approvedExcluded": 0,
+    "unresolvedGaps": 0,
+    "ownedBlockers": 0,
+    "roleOnlyComplete": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "unapprovedExcluded": 0
+  },
+  "issues": []
+}

@@ -1424,15 +1424,35 @@ npm run test --if-present
 - 완료 결과: 방문/시설 feature 전체가 구현 또는 사용자 승인 제외 상태이고 소유 blocker 0개가 된다.
 - 누락 차단: 장소 선택값과 시설 진행 상태가 섞이거나 행동 결과 owner가 불명확하면 완료하지 않는다.
 
-- [ ] 방문 장소 전체를 장소 정의 또는 사용자 승인 제외로 분류하고, 미판정 blocker가 있으면 완료하지 않음
-- [ ] 장소별 행동 전체를 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
-- [ ] 장소 해금 조건과 현재 선택 session을 분리
-- [ ] 비용 부족, 조건 미충족, 중복 실행, 취소를 검증
-- [ ] 시설 해금과 세계 진행 상태를 `world` 또는 `featureState`에 연결
-- [ ] 방문 행동 결과가 인물, 신체, 돈, 시간 진행에 반영되는 경우 owner를 명시
-- [ ] 방문 후 저장 roundtrip을 검증
-- [ ] M19/M21/M24/M25 coverage의 방문 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 방문 장소 전체를 장소 정의 또는 사용자 승인 제외로 분류하고, 미판정 blocker가 있으면 완료하지 않음
+- [x] 장소별 행동 전체를 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [x] 장소 해금 조건과 현재 선택 session을 분리
+- [x] 비용 부족, 조건 미충족, 중복 실행, 취소를 검증
+- [x] 시설 해금과 세계 진행 상태를 `world` 또는 `featureState`에 연결
+- [x] 방문 행동 결과가 인물, 신체, 돈, 시간 진행에 반영되는 경우 owner를 명시
+- [x] 방문 후 저장 roundtrip을 검증
+- [x] M19/M21/M24/M25 coverage의 방문 관련 status 갱신
+- [x] `npm run build` 실행
+
+M36 완료 근거:
+- M36 owned scope는 `unit:M36:visit-facility` 559행이다. visit place definition 7행은 `visitPlaceDefinitions -> createVisitSession/buildVisitView`로 소비하고, visit feature 552행은 source file + source label 기준 86개 `visitActionDefinitions` action으로 소비한다.
+- 7개 방문 장소는 `organizationOffice`, `secretLaboratory`, `rachelWorkshop`, `ikumiLaboratory`, `sakuraHideout`, `miyakoHouse`, `akashaHeadquarters`로 runtime view에 노출된다.
+- 방문 선택값은 `GameSession.visit`에만 남고, 완료 결과는 `featureState.visits`, `world.eventFlags`, `world.unlocks`, `economy.account/accountingEntries` owner에만 반영된다.
+- `organizationOffice.basicRoomPermit`은 M10 최소 루프와 호환되게 유지했고, 나머지 원본 방문 라벨은 source label별 action으로 닫았다.
+- `data/coverage/visit-facility-coverage.json`, `data/coverage/audits/M36-gap-audit.json`, `data/coverage/milestones/M36-closure.json`을 생성했다. ownedTotal 559, implemented 552, mapped 7, blocker/missing/unapproved 0.
+
+검증:
+```bash
+npm run coverage:visit-facility
+npm run gate:visit-facility
+npm run gate:milestone-scope-closure -- M36
+npm run smoke:visit-all
+npm run smoke:m10
+npm run verify:m16
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M37. 업무/창관/특수 업무 완성
 
