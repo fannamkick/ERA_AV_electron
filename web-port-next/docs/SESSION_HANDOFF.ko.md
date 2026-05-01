@@ -2,6 +2,8 @@
 
 새 세션은 아래 요약만 읽고 M28~M41 원본 단위 매니페스트 보강/closure 정정부터 진행한다. 2026-05-02 재판정 결과, M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없다. 그 뒤 M42 훈련 command 효과 0~34 구현을 재개한다. 완전 이식 여부는 모든 구현 책임과 M50~M52 최종 검증으로만 닫는다.
 
+M28~M30 1차 source-unit manifest는 작성됐다. 새 세션은 `data/coverage/manifests/M28-source-units.json`, `M29-source-units.json`, `M30-source-units.json`과 `docs/milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`를 같이 본다.
+
 ## 에이전트 시작 문서
 
 토큰 누수를 막기 위해 Codex/서브에이전트는 먼저 아래 문서를 읽는다.
@@ -122,6 +124,7 @@
 - M41에서 원본 `COMABLE.ERB`의 `COM_ABLE*` source program 125개를 추출했고, `Train.csv` active command 105개 전부가 대응 source program을 가진다. `COMSEQ_REGISTER.ERB` dynamic call row와 `COMORDER.ERB` source-file-review row도 coverage/audit/closure에 반영했다.
 - M41 availability는 저장 상태를 바꾸지 않는 view 계산으로 연결했고, 불가 command는 원본 availability rule 기반 사유를 표시한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
 - 다음 작업은 M28~M41 원본 단위 매니페스트 보강/closure 정정이다. 그 뒤 M42 훈련 command 효과 0~34를 원본 기준으로 닫는다.
+- M28~M30 manifest 기준 현재 완료 후보는 M28 13/27, M29 43/206, M30 21/74다. 나머지는 blocked 또는 scope-redesign-required다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.

@@ -93,6 +93,7 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 - availability는 저장 상태를 바꾸지 않는 view 계산으로 연결했고, 불가 command는 원본 availability rule 기반 사유를 표시한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
 - `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`는 placeholder가 아니라 실제 script다.
 - 다음 작업은 M28~M41 원본 단위 매니페스트 보강/closure 정정이다. 2026-05-02 재판정 결과, M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없다. 그 뒤 M42 훈련 command 효과 0~34를 원본 기준으로 닫는다.
+- M28~M30 1차 manifest는 생성됐다: M28은 13/27, M29는 43/206, M30은 21/74만 현재 `implemented-verified` 완료 후보이며 나머지는 blocked 또는 scope-redesign-required다.
 
 ## 미완료
 

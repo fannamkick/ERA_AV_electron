@@ -45,6 +45,26 @@
 - M42는 아직 시작하면 안 된다.
 - 다음 작업은 M28부터 순서대로 매니페스트 보강/책임 재설계/blocked closure 정정을 수행하거나, M42에 직접 영향을 주는 M40~M41을 먼저 보강하는 별도 순서를 명시적으로 선택하는 것이다.
 
+## 2026-05-02 M28~M30 source-unit manifest 1차 산출
+
+산출물:
+- `data/coverage/manifests/M28-source-units.json`
+- `data/coverage/manifests/M29-source-units.json`
+- `data/coverage/manifests/M30-source-units.json`
+
+이 산출물은 완료 선언이 아니라 완료용 기준이다. 기존 coverage row를 원본 단위 후보로 옮기되, `mapped`, `transferred-out`, disabled route contract, 예정 verification은 완료 상태로 세지 않았다.
+
+| M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | 현재 완료 가능 | 핵심 판정 |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| M28 | 27 | 13 | 0 | 14 | 아니오 | 실제 enabled route 13개만 완료 후보. disabled route 11개와 BOYFRIEND session row 3개는 실제 owner manifest로 이동해야 한다. |
+| M29 | 206 | 43 | 40 | 123 | 아니오 | 구매형 listing/flow 43개만 완료 후보. mapped 40개는 직접 검증 단위로 승격해야 하고, 비구매/사용/장비/영입/이벤트 123개는 M29 scope 밖이다. |
+| M30 | 74 | 21 | 16 | 37 | 아니오 | 즉시 사용 item flow/effect 21개만 완료 후보. mapped 16개는 직접 검증 단위로 승격해야 하고, 특수 item 200~214 및 item 22/90/91 계열 37개는 실제 owner에서 닫아야 한다. |
+
+다음 조치:
+- M28: closure의 completed 판정을 철회하거나, M28 scope를 enabled route 13개로 재정의하고 나머지 14개를 destination owner manifest로 이동한다.
+- M29: 구매형 listing/flow manifest로 closure를 재작성한다. mapped 40개는 listing/flow의 하위 검증으로 승격하거나 blocked로 둔다.
+- M30: 즉시 사용 item 9개 owner로 scope를 좁히고, 특수 item 200~214 및 item 22/90/91은 M34/M41/M42/M43/M44 manifest에서 닫는다.
+
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼다. | closure에 `responsibilityIntegrity`가 없다. |
