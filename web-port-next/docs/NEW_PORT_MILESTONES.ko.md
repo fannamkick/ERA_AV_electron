@@ -62,6 +62,7 @@
 - [ ] `SESSION_HANDOFF.ko.md`를 갱신한다. 새 세션이 이 문서만 읽고 바로 다음 마일스톤을 시작할 수 있도록 현재 상태, 완료된 마일스톤, 마지막 검증, 바로 다음 작업을 갱신한다.
 - [ ] 새 소유권, 데이터 경계, import 경계, mapping 정책, 구현 단위 규칙이 생겼으면 해당 기준 문서도 갱신한다. 예: `GAME_DOMAIN_SYSTEM.md`, `DOMAIN_INVENTORY.ko.md`, `MODULE_SYSTEM.ko.md`, `LEGACY_MAPPING_POLICY.ko.md`, `IMPLEMENTATION_UNIT_RULES.ko.md`, `README.md`.
 - [ ] coverage 산출물과 audit 산출물을 갱신한다. 해당 마일스톤이 요구하는 `*-coverage.json`, `Mxx-gap-audit.json`, `Mxx-closure.json`이 실제 결과와 맞아야 한다.
+- [ ] 완료 선언 전에 "완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 사람이 읽을 수 있는 사실 장부로 남긴다. 산출물 count만으로 완료를 선언하지 않는다.
 - [ ] `Mxx-closure.json`에는 `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash` 근거를 남긴다.
 - [ ] `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded` 중 하나라도 0이 아니면 완료하지 않는다.
 - [ ] 다른 마일스톤으로 넘긴 row는 transfer 근거를 남긴다. `fromMilestone`, `toMilestone`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`가 없으면 이관 완료가 아니다.
@@ -84,6 +85,7 @@
 - [ ] 이전에 완료로 기록된 마일스톤도 재검증 또는 재개 시 이 규칙을 적용한다. 기존 closure에 `responsibilityIntegrity`가 없으면 보강 전에는 재완료 판정하지 않는다.
 - [ ] 알려진 한계가 책임 범위 안에 있으면 그 마일스톤은 `completed`가 아니라 `blocked` 또는 미완료다.
 - [ ] 체크박스는 산출물이 생겼다는 뜻으로 체크하지 않는다. 해당 책임이 원본 근거, runtime 구현, 검증에서 모두 닫혔을 때만 체크한다.
+- [ ] `implemented`, `mapped`, `transferredOut` 숫자는 각각 무엇을 뜻하는지 자연어로 풀어 적는다. 특히 `mapped`와 `transferredOut`은 하지 않은 일을 숨기는 데 쓰지 않는다.
 - [ ] 의심되면 완료하지 않는다. blocker로 남기고 gap audit에 기록한다.
 
 ## Phase별 마일스톤 문서

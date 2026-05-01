@@ -24,6 +24,8 @@
 
 `Mxx-closure.json`이 `completed`이면 `responsibilityIntegrity`가 있어야 한다. 마일스톤 책임 동사가 runtime behavior와 검증으로 닫히지 않았거나, 알려진 한계가 책임 범위 안에 있으면 완료가 아니라 blocked다.
 
+완료를 주장할 때는 gate 결과보다 먼저 "완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 자연어로 적는다. `implemented`, `mapped`, `transferredOut` 숫자만으로 완료를 선언하지 않는다.
+
 ## I/O 누수 방지
 
 - 긴 문서 전체 읽기 금지. `rg` 또는 section 조회로 현재 마일스톤과 관련 줄만 읽는다.

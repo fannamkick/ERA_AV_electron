@@ -18,9 +18,11 @@
 - `PHASE_4_M21_M27.ko.md`: 전수표 보강과 누락 감사
 - `PHASE_5_M28_M49.ko.md`: 기능군별 전수 구현
 - `PHASE_6_M50_M52.ko.md`: 최종 저장/검증
+- `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`: M28~M41에서 완료로 처리한 것과 하지 않았거나 넘긴 것의 사실 장부
 
 ## 공통 금지
 
 - phase 문서는 scope 축소 근거가 아니다.
 - `implemented`, `mapped`, `approved-excluded`는 원본 row와 full artifact 대조 없이 부여하지 않는다.
 - blocker가 남은 마일스톤은 다음 phase로 넘어가지 않는다.
+- 완료 선언은 반드시 완료/미완료/이관 사실 장부를 동반한다.
