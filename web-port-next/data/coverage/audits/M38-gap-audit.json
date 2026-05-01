@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "milestone-gap-audit/v1",
+  "generatedBy": "tools/build_filming_scene_coverage.mjs",
+  "milestone": "M38",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json"
+  },
+  "summary": {
+    "scopeRows": 6,
+    "implemented": 0,
+    "mapped": 6,
+    "transferredOut": 0,
+    "approvedExcluded": 0,
+    "unresolvedGaps": 0,
+    "ownedBlockers": 0,
+    "roleOnlyComplete": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "unapprovedExcluded": 0
+  },
+  "issues": []
+}

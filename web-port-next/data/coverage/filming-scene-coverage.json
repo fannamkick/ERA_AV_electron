@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "filming-scene-coverage/v1",
+  "generatedBy": "tools/build_filming_scene_coverage.mjs",
+  "milestone": "M38",
+  "ownerRole": "filming-scene-definition-owner",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "definitions": "data/coverage/definitions.json"
+  },
+  "scopeContract": {
+    "ownedUnitIds": [
+      "unit:M38:filming-definition"
+    ],
+    "rule": "Every M38 queue row must be mapped-consumed exactly once by the filming scene definition runtime.",
+    "runtimeBoundary": "Filming scene definitions live in definitions.filmingSceneDefinitions. Target and scene selections remain in GameSession.shooting, and M38 does not own filming execution result persistence."
+  },
+  "summary": {
+    "ownedRowRefs": 6,
+    "rows": 6,
+    "implemented": 0,
+    "mapped": 6,
+    "transferredOut": 0,
+    "approvedExcluded": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0,
+    "byRowKind": {
+      "definition": 6
+    },
+    "byScopeSource": {
+      "implementation-queue": 6
+    },
+    "byCompletionStatus": {
+      "mapped-consumed-filming-scene-definition": 6
+    },
+    "bySourcePath": {
+      "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE01_INTERVIEW.ERB": 1,
+      "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE02_MUSTERBATION.ERB": 1,
+      "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE03_FELLATIO.ERB": 1,
+      "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE04_AV_HARDSEX.ERB": 1,
+      "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE05_AV_HARDANALSEX.ERB": 1,
+      "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE10_AV_SM.ERB": 1
+    }
+  },
+  "rows": [
+    {
+      "coverageRowId": "filming-scene:definition:definition-erbdef-filmingscenedefinitions-1",
+      "reviewId": "definition:definition:erbdef:filmingSceneDefinitions:1",
+      "rowKind": "definition",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:erb-definition:erbdef-filmingscenedefinitions-1",
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE01_INTERVIEW.ERB",
+      "sourceId": "filming-scene:1",
+      "sourceName": "인터뷰",
+      "definitionKey": "filmingSceneDefinitions",
+      "completionStatus": "mapped-consumed-filming-scene-definition",
+      "runtimeConsumerId": "definitions.filmingSceneDefinitions[filming-scene:1] -> computeVisibleFilmingSceneIds/buildShootingView/selectShootingScene",
+      "verificationId": "smoke:filming-scenes"
+    },
+    {
+      "coverageRowId": "filming-scene:definition:definition-erbdef-filmingscenedefinitions-10",
+      "reviewId": "definition:definition:erbdef:filmingSceneDefinitions:10",
+      "rowKind": "definition",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:erb-definition:erbdef-filmingscenedefinitions-10",
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE10_AV_SM.ERB",
+      "sourceId": "filming-scene:10",
+      "sourceName": "SM",
+      "definitionKey": "filmingSceneDefinitions",
+      "completionStatus": "mapped-consumed-filming-scene-definition",
+      "runtimeConsumerId": "definitions.filmingSceneDefinitions[filming-scene:10] -> computeVisibleFilmingSceneIds/buildShootingView/selectShootingScene",
+      "verificationId": "smoke:filming-scenes"
+    },
+    {
+      "coverageRowId": "filming-scene:definition:definition-erbdef-filmingscenedefinitions-2",
+      "reviewId": "definition:definition:erbdef:filmingSceneDefinitions:2",
+      "rowKind": "definition",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:erb-definition:erbdef-filmingscenedefinitions-2",
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE02_MUSTERBATION.ERB",
+      "sourceId": "filming-scene:2",
+      "sourceName": "자위",
+      "definitionKey": "filmingSceneDefinitions",
+      "completionStatus": "mapped-consumed-filming-scene-definition",
+      "runtimeConsumerId": "definitions.filmingSceneDefinitions[filming-scene:2] -> computeVisibleFilmingSceneIds/buildShootingView/selectShootingScene",
+      "verificationId": "smoke:filming-scenes"
+    },
+    {
+      "coverageRowId": "filming-scene:definition:definition-erbdef-filmingscenedefinitions-3",
+      "reviewId": "definition:definition:erbdef:filmingSceneDefinitions:3",
+      "rowKind": "definition",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:erb-definition:erbdef-filmingscenedefinitions-3",
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE03_FELLATIO.ERB",
+      "sourceId": "filming-scene:3",
+      "sourceName": "펠라치오",
+      "definitionKey": "filmingSceneDefinitions",
+      "completionStatus": "mapped-consumed-filming-scene-definition",
+      "runtimeConsumerId": "definitions.filmingSceneDefinitions[filming-scene:3] -> computeVisibleFilmingSceneIds/buildShootingView/selectShootingScene",
+      "verificationId": "smoke:filming-scenes"
+    },
+    {
+      "coverageRowId": "filming-scene:definition:definition-erbdef-filmingscenedefinitions-4",
+      "reviewId": "definition:definition:erbdef:filmingSceneDefinitions:4",
+      "rowKind": "definition",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:erb-definition:erbdef-filmingscenedefinitions-4",
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE04_AV_HARDSEX.ERB",
+      "sourceId": "filming-scene:4",
+      "sourceName": "하드 섹스",
+      "definitionKey": "filmingSceneDefinitions",
+      "completionStatus": "mapped-consumed-filming-scene-definition",
+      "runtimeConsumerId": "definitions.filmingSceneDefinitions[filming-scene:4] -> computeVisibleFilmingSceneIds/buildShootingView/selectShootingScene",
+      "verificationId": "smoke:filming-scenes"
+    },
+    {
+      "coverageRowId": "filming-scene:definition:definition-erbdef-filmingscenedefinitions-5",
+      "reviewId": "definition:definition:erbdef:filmingSceneDefinitions:5",
+      "rowKind": "definition",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:erb-definition:erbdef-filmingscenedefinitions-5",
+      "sourcePath": "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE05_AV_HARDANALSEX.ERB",
+      "sourceId": "filming-scene:5",
+      "sourceName": "하드 애널섹스",
+      "definitionKey": "filmingSceneDefinitions",
+      "completionStatus": "mapped-consumed-filming-scene-definition",
+      "runtimeConsumerId": "definitions.filmingSceneDefinitions[filming-scene:5] -> computeVisibleFilmingSceneIds/buildShootingView/selectShootingScene",
+      "verificationId": "smoke:filming-scenes"
+    }
+  ],
+  "unresolvedIssues": []
+}

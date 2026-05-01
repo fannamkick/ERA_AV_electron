@@ -1503,14 +1503,34 @@ npm run test --if-present
 - 완료 결과: 촬영 장면 전체가 선택 가능/불가 사유와 원본 근거를 갖는다.
 - 누락 차단: 장면이 표시되지만 원본 근거나 조건 계산이 없으면 완료하지 않는다.
 
-- [ ] 촬영 장면 전체를 장면 정의 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
-- [ ] 촬영 대상 후보 조건과 장면 후보 조건을 view 계산으로 구현
-- [ ] 장면별 표시 이름, 설명, 요구 상태, 예상 결과를 정의 데이터로 연결
-- [ ] 장면 선택, 대상 선택, 조건 실패, 취소를 검증
-- [ ] 촬영 중간 계산값은 session/calculation에만 둠
-- [ ] 장면 정의가 CSV/ERB 근거를 갖는지 확인
-- [ ] M20/M23/M25 coverage의 촬영 정의 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 촬영 장면 전체를 장면 정의 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [x] 촬영 대상 후보 조건과 장면 후보 조건을 view 계산으로 구현
+- [x] 장면별 표시 이름, 설명, 요구 상태, 예상 결과를 정의 데이터로 연결
+- [x] 장면 선택, 대상 선택, 조건 실패, 취소를 검증
+- [x] 촬영 중간 계산값은 session/calculation에만 둠
+- [x] 장면 정의가 CSV/ERB 근거를 갖는지 확인
+- [x] M20/M23/M25 coverage의 촬영 정의 관련 status 갱신
+- [x] `npm run build` 실행
+
+M38 완료 근거:
+- M38 owned scope는 `unit:M38:filming-definition` 6행이다. 모두 `filmingSceneDefinitions` ERB-derived definition row이며 `data/coverage/filming-scene-coverage.json`에 기록했다.
+- 촬영 장면 6개 `filming-scene:1`, `2`, `3`, `4`, `5`, `10`을 runtime `definitions.filmingSceneDefinitions`에 연결했다.
+- `buildShootingView`, `computeVisibleFilmingSceneIds`, `selectShootingTarget`, `selectShootingScene`, `cancelShootingSelection`이 장면 표시, 대상 조건, 장면 선택, session 계산 버퍼를 소비한다.
+- M38은 촬영 실행/결과/판매 저장 owner가 아니다. 촬영 결과, 출시/판매 상태, 실행 후 저장 반영은 M39가 소유한다.
+- `data/coverage/audits/M38-gap-audit.json`과 `data/coverage/milestones/M38-closure.json`을 생성했다. ownedTotal 6, mapped 6, blocker/missing/unapproved 0.
+
+검증:
+```bash
+npm run coverage:filming-scene
+npm run gate:filming-scene
+npm run gate:milestone-scope-closure -- M38
+npm run smoke:filming-scenes
+npm run smoke:m13
+npm run verify:m16
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M39. 촬영 실행/결과/판매 완성
 

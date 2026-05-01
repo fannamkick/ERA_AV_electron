@@ -214,6 +214,42 @@ function createSourceLabelWorkDefinitions(): Record<CatalogId, WorkDefinition> {
   return result;
 }
 
+function createErbFilmingSceneDefinitions(): Record<CatalogId, FilmingSceneDefinition> {
+  const artifact = rawErbDerivedDefinitions as ErbDerivedDefinitionsArtifact;
+  const rows = artifact.rows.filter((row) => row.definitionKey === 'filmingSceneDefinitions');
+  const result: Record<CatalogId, FilmingSceneDefinition> = {};
+
+  for (const [index, row] of rows.entries()) {
+    const id = row.sourceId;
+    result[id] = {
+      id,
+      label: row.displayText ?? row.sourceName,
+      source: {
+        path: row.sourceFile,
+        originalId: row.sourceId,
+        originalName: row.sourceName,
+      },
+      description: `ERB-derived filming scene ${row.sourceId}.`,
+      tags: ['filming', 'scene-definition', 'erb-derived', `source-evidence:${row.sourceEvidenceId}`],
+      defaultAvailable: true,
+      revenueMoney: 280 + index * 40,
+      fanGain: 4 + index,
+      score: 8 + index * 2,
+      filmingAmount: 1 + Math.floor(index / 2),
+      bodyStatDeltas: {
+        stamina: -8 - index,
+        energy: -5 - index,
+      },
+      experienceDeltas: {
+        'filming.scene': 1,
+      },
+      completesTimeBlock: true,
+    };
+  }
+
+  return result;
+}
+
 const phaseTwoFilmingSceneDefinitions: Record<CatalogId, FilmingSceneDefinition> = {
   'filming:debut.basic': {
     id: 'filming:debut.basic',
@@ -383,6 +419,7 @@ export function normalizeLegacyCatalog(artifact: LegacyCatalogArtifact): GameDef
     },
     filmingSceneDefinitions: {
       ...phaseTwoFilmingSceneDefinitions,
+      ...createErbFilmingSceneDefinitions(),
       ...(artifact.catalog.filmingSceneDefinitions ?? {}),
     },
     mainMenuOptions: {
