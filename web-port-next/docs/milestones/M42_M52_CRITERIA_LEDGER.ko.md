@@ -55,3 +55,25 @@ M45-M49 completion rules:
 Remaining criteria calls:
 - Call 3: M50-M52 criteria manifests for save/load, final audit, and complete-port verdict.
 - Call 4: full M28-M52 consistency pass across manifests, registry, phase docs, status docs, and handoff.
+
+## 2026-05-02 M50-M52 criteria manifest pass 1
+
+Artifacts:
+- `data/coverage/manifests/M50-source-units.json`
+- `data/coverage/manifests/M51-source-units.json`
+- `data/coverage/manifests/M52-source-units.json`
+
+| M | criteria units | queued source rows | `blocked` | `scope-redesign-required` | completable now | strict finding |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| M50 | 9 | 193 | 9 | 0 | no | Full save/load has 193 queued persistence rows plus schema, payload-boundary, migration, failure, and mapping reconciliation criteria. No full-roundtrip report exists yet. |
+| M51 | 8 | 1 | 7 | 1 | no | Final audit has seven zero-gap criteria plus one file-level `RANDCHOOSE/#DIM.ERH` review that must be decomposed or reassigned. |
+| M52 | 10 | 0 | 10 | 0 | no | Complete-port verdict has no queue rows, so ten explicit verdict criteria were added to prevent narrative sign-off. |
+
+M50-M52 completion rules:
+- Phase 6 verifies completion; it must not implement or hide missing feature work.
+- Missing feature/schema/audit/report work must be routed back to the owning milestone.
+- M52 cannot complete unless every M28-M51 manifest is closed or explicitly approved-excluded.
+- `verify:complete` must generate a current full-port report and run all required gates/smokes/long-play/failure-matrix/build/tests in one recorded flow.
+
+Remaining criteria call:
+- Call 4: full M28-M52 consistency pass across manifests, registry, phase docs, status docs, and handoff.

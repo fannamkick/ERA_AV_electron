@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M51",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria manifest for final gap audit. This freezes what must be zero before M52 can be attempted.",
+  "sourceInputs": [
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/implementation-queue.json",
+    "data/coverage/audits/final-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M51",
+    "ownerRole": "final auditor",
+    "ownedScope": "final source gap, orphan, role-only, blocker, approved exclusion, and source conflict rows",
+    "coverageArtifacts": [
+      "data/coverage/audits/final-gap-audit.json"
+    ],
+    "requiredScripts": [
+      "audit:final-gap",
+      "gate:final-gap-audit",
+      "gate:final-content-zero-gap",
+      "gate:coverage-crosscheck"
+    ],
+    "blockingGates": [
+      "gate:final-gap-audit",
+      "gate:final-content-zero-gap",
+      "gate:milestone-scope-closure -- M51"
+    ]
+  },
+  "rules": [
+    "Phase 6 verifies completion; it must not implement or hide missing feature work.",
+    "No final milestone can complete while any prior manifest has blocked or scope-redesign-required units unless those are explicitly approved-excluded.",
+    "Reports and gates are completion evidence only when generated from current artifacts.",
+    "A missing queue row is not evidence of completion."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "summary": {
+    "totalUnits": 8,
+    "queueRows": 1,
+    "scope-redesign-required": 1,
+    "blocked": 7,
+    "completedAllowedNow": false,
+    "queuedImplementationRows": 1
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "declared coverage/report artifact exists",
+      "all blocking gates pass",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "responsibilityIntegrity present in closure",
+      "latest full build/test or verify command recorded"
+    ]
+  },
+  "notes": [
+    "M51 may discover gaps but must route them back to owners; it must not pass unresolved rows forward to M52."
+  ],
+  "units": [
+    {
+      "unitId": "M51:criteria-unit:0001",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final-gap-audit-owner",
+      "sourceKind": "source-file-review-breakdown",
+      "criteriaId": "queued-final-source-review",
+      "sourceRowCount": 1,
+      "rowCountsByKind": {
+        "source-file-review": 1
+      },
+      "sourceStatusCounts": {
+        "manifest-primary-file-without-direct-row": 1
+      },
+      "sourcePaths": [
+        "original-game/ERB/組み込み関数/汎用関数/RANDCHOOSE/#DIM.ERH"
+      ],
+      "sampleRowRefs": [
+        "source-file-review:original-game/erb/組み込み関数/汎用関数/randchoose/#dim.erh"
+      ],
+      "requiredBehavior": "File-level source review must be decomposed, approved-excluded, or assigned before final audit completion.",
+      "runtimeConsumerId": "final gap audit source accounting",
+      "verificationId": "audit:final-gap; gate:final-gap-audit",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "scope-redesign-required",
+      "blockerReason": "File-level RANDCHOOSE/#DIM.ERH review is not a concrete completion unit."
+    },
+    {
+      "unitId": "M51:criteria-unit:0002",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "final-source-gap-zero",
+      "sourceRowCount": 0,
+      "requiredBehavior": "No original CSV/ERB feature, definition, save address, session/calculation address is missing from coverage.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M51:criteria-unit:0003",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "orphan-zero",
+      "sourceRowCount": 0,
+      "requiredBehavior": "No coverage row is orphaned from runtime consumer evidence.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M51:criteria-unit:0004",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "role-only-zero",
+      "sourceRowCount": 0,
+      "requiredBehavior": "No row is completed by role ownership only.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M51:criteria-unit:0005",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "approved-exclusion-valid",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Every approved-excluded row has explicit user-approved rationale and bounded scope.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M51:criteria-unit:0006",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "blocker-zero",
+      "sourceRowCount": 0,
+      "requiredBehavior": "No blocker remains in any M28-M50 manifest or audit.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M51:criteria-unit:0007",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "evidence-conflict-zero",
+      "sourceRowCount": 0,
+      "requiredBehavior": "No source evidence conflicts with runtime consumer evidence.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M51:criteria-unit:0008",
+      "milestone": "M51",
+      "ownerMilestone": "M51",
+      "ownerRole": "final auditor",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "crosscheck-current",
+      "sourceRowCount": 0,
+      "requiredBehavior": "coverage-crosscheck and source-evidence gates are run on current artifacts.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "audit:final-gap; gate:final-gap-audit; gate:final-content-zero-gap; gate:coverage-crosscheck",
+      "blockingGates": [
+        "gate:final-gap-audit",
+        "gate:final-content-zero-gap",
+        "gate:milestone-scope-closure -- M51"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Final audit artifact does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/audits/final-gap-audit.json"
+      ]
+    }
+  ]
+}

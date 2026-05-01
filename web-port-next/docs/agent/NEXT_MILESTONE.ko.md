@@ -1,5 +1,14 @@
 # Next Milestone
 
+## 2026-05-02 criteria pass progress 3
+
+Criteria call 3 is complete: M50-M52 now have strict verification/verdict manifests.
+
+Next criteria work:
+1. Full M28-M52 consistency pass.
+
+Do not treat Phase 6 as implementation. M50-M52 can only verify and route gaps back to owners.
+
 ## 2026-05-02 criteria pass progress 2
 
 Criteria call 2 is complete: M45-M49 now have strict skeleton manifests tied to implementation-queue responsibility rows.

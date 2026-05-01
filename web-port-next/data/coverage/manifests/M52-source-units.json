@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M52",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria manifest for the final complete-port verdict. This prevents M52 from becoming a narrative sign-off.",
+  "sourceInputs": [
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/implementation-queue.json",
+    "data/coverage/full-port-report.json"
+  ],
+  "registryContract": {
+    "milestone": "M52",
+    "ownerRole": "complete port verdict owner",
+    "ownedScope": "complete coverage, UI/action flow, save/load, ending, smoke, long-play, failure matrix, and final report",
+    "coverageArtifacts": [
+      "data/coverage/full-port-report.json"
+    ],
+    "requiredScripts": [
+      "report:full-port",
+      "gate:complete-port-verdict",
+      "verify:complete"
+    ],
+    "blockingGates": [
+      "verify:complete",
+      "gate:complete-port-verdict",
+      "gate:milestone-scope-closure -- M52"
+    ]
+  },
+  "rules": [
+    "Phase 6 verifies completion; it must not implement or hide missing feature work.",
+    "No final milestone can complete while any prior manifest has blocked or scope-redesign-required units unless those are explicitly approved-excluded.",
+    "Reports and gates are completion evidence only when generated from current artifacts.",
+    "A missing queue row is not evidence of completion."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "summary": {
+    "totalUnits": 10,
+    "queueRows": 0,
+    "blocked": 10,
+    "completedAllowedNow": false,
+    "queuedImplementationRows": 0
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "declared coverage/report artifact exists",
+      "all blocking gates pass",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "responsibilityIntegrity present in closure",
+      "latest full build/test or verify command recorded"
+    ]
+  },
+  "notes": [
+    "M52 is only a verdict. Any missing item found here must be returned to its owner milestone."
+  ],
+  "units": [
+    {
+      "unitId": "M52:criteria-unit:0001",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "feature-coverage-zero-gap",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Feature coverage has zero unimplemented, unresolved, role-only, or unapproved rows.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0002",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "definition-coverage-zero-gap",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Definition coverage has zero unconsumed, unmapped, or unapproved definition rows.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0003",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "save-session-zero-gap",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Save/session mappings are all mapped, non-save/session-only, calculation-only, approved-excluded, and verified by gates.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0004",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "ui-action-flow",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Full UI/action smoke covers new game, main, shop, item use, recruit, visit, work, filming, training, turn end, mission, event, ending, settings, save/load.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0005",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "long-play",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Long-play verification covers multi-day/week/month hooks, automatic processing, save/load repeats, and event interactions.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0006",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "failure-matrix",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Failure matrix covers insufficient money/resources, unavailable conditions, empty lists, cancel paths, invalid selections, corrupt save, migration failure.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0007",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "raw-name-boundary",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Raw legacy names such as CFLAG/TFLAG/SOURCE/TEQUIP/ITEMSALES/BOUGHT/COMF do not leak into runtime implementation boundaries except evidence/adapters.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0008",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "complete-report",
+      "sourceRowCount": 0,
+      "requiredBehavior": "full-port-report.json records zero missing features, definitions, mappings, blockers, and unapproved exclusions.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0009",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "verify-complete",
+      "sourceRowCount": 0,
+      "requiredBehavior": "verify:complete runs report, gates, full smoke, long-play, failure matrix, save/load, build, and tests in one command.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    },
+    {
+      "unitId": "M52:criteria-unit:0010",
+      "milestone": "M52",
+      "ownerMilestone": "M52",
+      "ownerRole": "complete port verdict owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "prior-manifest-closure",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Every M28-M51 manifest is completedAllowedNow true or has explicit approved-excluded units only.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "report:full-port; gate:complete-port-verdict; verify:complete",
+      "blockingGates": [
+        "verify:complete",
+        "gate:complete-port-verdict",
+        "gate:milestone-scope-closure -- M52"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "Complete-port verdict evidence does not exist yet.",
+      "requiredEvidence": [
+        "data/coverage/full-port-report.json",
+        "verify:complete log"
+      ]
+    }
+  ]
+}

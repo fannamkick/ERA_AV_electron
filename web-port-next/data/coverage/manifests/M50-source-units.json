@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M50",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria manifest for full save/load verification. This is a verification contract, not an implementation patch.",
+  "sourceInputs": [
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/implementation-queue.json",
+    "data/coverage/full-roundtrip-report.json",
+    "data/coverage/audits/M50-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M50",
+    "ownerRole": "full save/load owner",
+    "ownedScope": "full save schema, migration, corrupted/future/old save, and feature roundtrip rows",
+    "coverageArtifacts": [
+      "data/coverage/full-roundtrip-report.json"
+    ],
+    "gapAuditArtifact": "data/coverage/audits/M50-gap-audit.json",
+    "requiredScripts": [
+      "test:roundtrip:all",
+      "gate:save-payload"
+    ],
+    "blockingGates": [
+      "test:roundtrip:all",
+      "gate:save-payload",
+      "gate:milestone-scope-closure -- M50"
+    ]
+  },
+  "rules": [
+    "Phase 6 verifies completion; it must not implement or hide missing feature work.",
+    "No final milestone can complete while any prior manifest has blocked or scope-redesign-required units unless those are explicitly approved-excluded.",
+    "Reports and gates are completion evidence only when generated from current artifacts.",
+    "A missing queue row is not evidence of completion."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "summary": {
+    "totalUnits": 9,
+    "queueRows": 193,
+    "blocked": 9,
+    "completedAllowedNow": false,
+    "queuedImplementationRows": 193
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "declared coverage/report artifact exists",
+      "all blocking gates pass",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "responsibilityIntegrity present in closure",
+      "latest full build/test or verify command recorded"
+    ]
+  },
+  "notes": [
+    "M50 must return missing feature/schema work to the owning milestone; it cannot fix or hide gaps inside final verification."
+  ],
+  "units": [
+    {
+      "unitId": "M50:criteria-unit:0001",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "save-roundtrip-owner",
+      "sourceKind": "queued-save-roundtrip-scope",
+      "criteriaId": "queued-save-roundtrip-rows",
+      "sourceRowCount": 193,
+      "rowCountsByKind": {
+        "feature": 5,
+        "save-mapping": 188
+      },
+      "sourceStatusCounts": {
+        "blocker": 5,
+        "mapped": 188
+      },
+      "sampleRowRefs": [
+        "feature:feature:flow:persistence:original-game-erb-autosave-erb:30:384",
+        "feature:feature:flow:persistence:original-game-erb-autosave-erb:32:385",
+        "feature:feature:flow:persistence:original-game-erb-autosave-erb:35:386",
+        "feature:feature:unreferenced-global:original-game-erb-autosave-erb:1:26",
+        "feature:feature:unreferenced-global:original-game-erb-info-erb:1105:27",
+        "save-mapping:save-map:source:abl-50",
+        "save-mapping:save-map:source:abl-52",
+        "save-mapping:save-map:source:abl-79",
+        "save-mapping:save-map:source:cflag-14",
+        "save-mapping:save-map:source:cflag-140",
+        "save-mapping:save-map:source:cflag-141",
+        "save-mapping:save-map:source:cflag-613",
+        "save-mapping:save-map:source:cflag-634",
+        "save-mapping:save-map:source:cflag-635",
+        "save-mapping:save-map:source:cflag-680",
+        "save-mapping:save-map:source:cflag-681",
+        "save-mapping:save-map:source:cflag-682",
+        "save-mapping:save-map:source:cflag-683",
+        "save-mapping:save-map:source:cflag-691",
+        "save-mapping:save-map:source:cflag-692",
+        "save-mapping:save-map:source:cflag-694",
+        "save-mapping:save-map:source:cstr-10",
+        "save-mapping:save-map:source:cstr-11",
+        "save-mapping:save-map:source:cstr-12",
+        "save-mapping:save-map:source:cstr-13",
+        "save-mapping:save-map:source:cstr-14",
+        "save-mapping:save-map:source:cstr-15",
+        "save-mapping:save-map:source:cstr-16",
+        "save-mapping:save-map:source:cstr-17",
+        "save-mapping:save-map:source:cstr-18",
+        "save-mapping:save-map:source:cstr-19",
+        "save-mapping:save-map:source:cstr-20",
+        "save-mapping:save-map:source:cstr-21",
+        "save-mapping:save-map:source:cstr-22",
+        "save-mapping:save-map:source:cstr-23",
+        "save-mapping:save-map:source:cstr-24",
+        "save-mapping:save-map:source:cstr-25",
+        "save-mapping:save-map:source:cstr-26",
+        "save-mapping:save-map:source:cstr-27",
+        "save-mapping:save-map:source:cstr-28",
+        "save-mapping:save-map:source:cstr-29",
+        "save-mapping:save-map:source:cstr-30",
+        "save-mapping:save-map:source:cstr-31",
+        "save-mapping:save-map:source:cstr-32",
+        "save-mapping:save-map:source:cstr-33",
+        "save-mapping:save-map:source:cstr-34",
+        "save-mapping:save-map:source:cstr-35",
+        "save-mapping:save-map:source:cstr-36",
+        "save-mapping:save-map:source:cstr-37",
+        "save-mapping:save-map:source:cstr-38",
+        "save-mapping:save-map:source:cstr-39",
+        "save-mapping:save-map:source:cstr-40",
+        "save-mapping:save-map:source:cstr-41",
+        "save-mapping:save-map:source:cstr-42",
+        "save-mapping:save-map:source:cstr-47",
+        "save-mapping:save-map:source:cstr-48",
+        "save-mapping:save-map:source:cstr-5",
+        "save-mapping:save-map:source:cstr-50",
+        "save-mapping:save-map:source:cstr-51",
+        "save-mapping:save-map:source:cstr-6",
+        "save-mapping:save-map:source:cstr-60",
+        "save-mapping:save-map:source:cstr-7",
+        "save-mapping:save-map:source:cstr-70",
+        "save-mapping:save-map:source:cstr-71",
+        "save-mapping:save-map:source:cstr-72",
+        "save-mapping:save-map:source:cstr-73",
+        "save-mapping:save-map:source:cstr-74",
+        "save-mapping:save-map:source:cstr-75",
+        "save-mapping:save-map:source:cstr-76",
+        "save-mapping:save-map:source:cstr-77",
+        "save-mapping:save-map:source:cstr-78",
+        "save-mapping:save-map:source:cstr-79",
+        "save-mapping:save-map:source:cstr-8",
+        "save-mapping:save-map:source:cstr-81",
+        "save-mapping:save-map:source:cstr-82",
+        "save-mapping:save-map:source:cstr-83",
+        "save-mapping:save-map:source:cstr-84",
+        "save-mapping:save-map:source:cstr-85",
+        "save-mapping:save-map:source:cstr-9",
+        "save-mapping:save-map:source:cstr-90"
+      ],
+      "rowRefCount": 193,
+      "requiredBehavior": "All queued save/persistence rows must be reconciled with full save/load behavior.",
+      "runtimeConsumerId": "save serializer/deserializer/migration/load error handling",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "full-roundtrip-report.json and M50 gap audit do not exist yet."
+    },
+    {
+      "unitId": "M50:criteria-unit:0002",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "schema-current",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Current save payload schema is explicitly versioned and contains only durable state.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0003",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "payload-boundary",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Definitions, views, session buffers, and calculation intermediates are absent from save payload.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0004",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "feature-roundtrips",
+      "sourceRowCount": 0,
+      "requiredBehavior": "New game, shop, item use, recruit, visit, work, filming, training, mission, event, ending, and settings roundtrips pass.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0005",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "global-meta-separation",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Run save and global/meta save are separate and verified.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0006",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "corrupt-future-old",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Corrupted save, future schema, old schema, and migration paths are verified.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0007",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "failure-ui",
+      "sourceRowCount": 0,
+      "requiredBehavior": "Save/load failure effects are routed to UI/action result without corrupting state.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0008",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "mapping-reconciliation",
+      "sourceRowCount": 0,
+      "requiredBehavior": "M24 save mapping and M25 session mapping agree with payload inclusion/exclusion.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    },
+    {
+      "unitId": "M50:criteria-unit:0009",
+      "milestone": "M50",
+      "ownerMilestone": "M50",
+      "ownerRole": "full save/load owner",
+      "sourceKind": "verification-criteria",
+      "criteriaId": "prior-manifest-gate",
+      "sourceRowCount": 0,
+      "requiredBehavior": "M50 does not pass while prior owner manifests still have unresolved blocked/scope-redesign-required save-affecting rows.",
+      "runtimeConsumerId": "verification/report artifact must provide this",
+      "verificationId": "test:roundtrip:all; gate:save-payload",
+      "blockingGates": [
+        "test:roundtrip:all",
+        "gate:save-payload",
+        "gate:milestone-scope-closure -- M50"
+      ],
+      "manifestStatus": "blocked",
+      "blockerReason": "M50 verification criterion has no current generated evidence artifact.",
+      "requiredEvidence": [
+        "data/coverage/full-roundtrip-report.json",
+        "data/coverage/audits/M50-gap-audit.json"
+      ]
+    }
+  ]
+}

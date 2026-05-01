@@ -1,5 +1,15 @@
 # 세션 인수인계
 
+## 2026-05-02 handoff after M50-M52 criteria manifests
+
+Criteria call 3 is complete.
+
+- M50: `data/coverage/manifests/M50-source-units.json`, criteria units 9, queue rows 193, blocked 9.
+- M51: `data/coverage/manifests/M51-source-units.json`, criteria units 8, queue rows 1, blocked 7, scope-redesign-required 1.
+- M52: `data/coverage/manifests/M52-source-units.json`, criteria units 10, queue rows 0, blocked 10.
+
+Only criteria call 4 remains: full M28-M52 consistency pass across manifests, registry, phase docs, status docs, and handoff. M52 is still blocked and cannot be used as narrative sign-off.
+
 ## 2026-05-02 handoff after M45-M49 criteria skeletons
 
 Criteria call 2 is complete.

@@ -1,5 +1,15 @@
 # Current Status
 
+## 2026-05-02 M50-M52 criteria manifest pass 1
+
+- M50-M52 criteria manifests were added.
+- New artifacts: `data/coverage/manifests/M50-source-units.json`, `M51-source-units.json`, `M52-source-units.json`.
+- Current strict counts:
+  - M50: criteria units 9, queue rows 193, blocked 9.
+  - M51: criteria units 8, queue rows 1, blocked 7, scope-redesign-required 1.
+  - M52: criteria units 10, queue rows 0, blocked 10.
+- These are verification/verdict manifests only. M52 has explicit blocked verdict criteria so a missing queue row cannot be misread as completion.
+
 ## 2026-05-02 M45-M49 criteria skeleton pass 1
 
 - M45-M49 criteria skeleton manifests were added from `implementation-queue` and `coverage-gate-registry`.

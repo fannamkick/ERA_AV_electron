@@ -1,5 +1,17 @@
 # 진행 상태
 
+## 2026-05-02 M50-M52 criteria manifests added
+
+First-pass criteria manifests were added for M50-M52.
+
+| milestone | manifest | criteria units | queued source rows | blocked | scope-redesign-required | completedAllowedNow |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| M50 | `data/coverage/manifests/M50-source-units.json` | 9 | 193 | 9 | 0 | false |
+| M51 | `data/coverage/manifests/M51-source-units.json` | 8 | 1 | 7 | 1 | false |
+| M52 | `data/coverage/manifests/M52-source-units.json` | 10 | 0 | 10 | 0 | false |
+
+This closes criteria call 3 only. The only remaining criteria task is the full M28-M52 consistency pass.
+
 ## 2026-05-02 M45-M49 criteria skeleton added
 
 First-pass criteria skeleton manifests were added for M45-M49.
