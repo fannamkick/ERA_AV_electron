@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M49",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria skeleton for M49. This does not implement the milestone; it prevents queued coverage rows from being skipped or completed by checklist text only.",
+  "sourceInputs": [
+    "data/coverage/implementation-queue.json",
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/view-text-coverage.json",
+    "data/coverage/remaining-feature-audit.json",
+    "data/coverage/audits/M49-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M49",
+    "ownerRole": "view/text/settings closer",
+    "ownedScope": "info/help/settings/debug, PRINT/HTML/message/help/status text, and remaining feature rows",
+    "coverageArtifacts": [
+      "data/coverage/view-text-coverage.json",
+      "data/coverage/remaining-feature-audit.json"
+    ],
+    "gapAuditArtifact": "data/coverage/audits/M49-gap-audit.json",
+    "requiredScripts": [
+      "coverage:view-text",
+      "gate:view-and-text-coverage",
+      "audit:remaining-features"
+    ],
+    "blockingGates": [
+      "gate:view-and-text-coverage",
+      "gate:milestone-scope-closure -- M49"
+    ]
+  },
+  "rules": [
+    "No coverage artifact means no completed implementation claim.",
+    "Queued row counts are responsibility counts, not completed counts.",
+    "source-file-review is never completed until decomposed into concrete source units or explicitly excluded.",
+    "M49 is not a catch-all escape hatch; intake rows must record original owner candidate and reason for M49 ownership."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "originalSourceRoots": [
+    "original-game/CSV",
+    "original-game/ERB",
+    "original-game/CSV/Chara*.csv",
+    "original-game/CSV/VariableSize.CSV"
+  ],
+  "summary": {
+    "totalUnits": 2,
+    "queueRows": 150,
+    "blocked": 1,
+    "scope-redesign-required": 1,
+    "completedAllowedNow": false
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "coverage artifacts exist",
+      "gap audit exists",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "all registry blocking gates pass",
+      "responsibilityIntegrity present in closure"
+    ]
+  },
+  "notes": [
+    "M49 is view/text/settings closer, not a general dumping ground. Intake rows must preserve source id, original owner candidate, reason for M49 ownership, and exclusion status."
+  ],
+  "units": [
+    {
+      "unitId": "M49:criteria-unit:0001",
+      "milestone": "M49",
+      "ownerMilestone": "M49",
+      "ownerRole": "info-settings-catchall-owner",
+      "implementationArea": "info-settings-catchall",
+      "sourceKind": "queued-owner-scope",
+      "rowKinds": [
+        "definition",
+        "feature"
+      ],
+      "rowCountsByKind": {
+        "definition": 26,
+        "feature": 123
+      },
+      "sourceStatusCounts": {
+        "blocker": 123,
+        "display-only": 26
+      },
+      "sourceRowCount": 149,
+      "sourcePaths": [
+        "original-game/ERB/TIPS関係/TESTMODE.ERB",
+        "original-game/ERB/TIPS関係/TIPS.ERB",
+        "original-game/ERB/TIPS関係/TIPS_BEAUTY.ERB",
+        "original-game/ERB/TIPS関係/TIPS_CHARACLEAR.ERB",
+        "original-game/ERB/TIPS関係/TIPS_TALENT.ERB",
+        "original-game/ERB/システム関係/ACTRESS_INFO.ERB",
+        "original-game/ERB/システム関係/INFO.ERB",
+        "original-game/ERB/システム関係/INFORMATION_MASTER.ERB",
+        "original-game/ERB/システム関係/SHOP_ACTRESS_INFO.ERB",
+        "original-game/ERB/システム関係/衣服/INFO_CASUALWEAR.ERB"
+      ],
+      "sampleRowRefs": [
+        "definition:definition:erbdef:helpTextDefinitions:tips-achievement-original-game-erb-tips-tips-erb-84",
+        "definition:definition:erbdef:helpTextDefinitions:tips-assi-original-game-erb-tips-tips-characlear-erb-73",
+        "definition:definition:erbdef:helpTextDefinitions:tips-beauty-original-game-erb-tips-tips-beauty-erb-4",
+        "definition:definition:erbdef:helpTextDefinitions:tips-beauty-recover-original-game-erb-tips-tips-beauty-erb-73",
+        "definition:definition:erbdef:helpTextDefinitions:tips-beautypoint-original-game-erb-tips-tips-beauty-erb-38",
+        "definition:definition:erbdef:helpTextDefinitions:tips-beautysense-original-game-erb-tips-tips-beauty-erb-90",
+        "definition:definition:erbdef:helpTextDefinitions:tips-characlear-original-game-erb-tips-tips-characlear-erb-4",
+        "definition:definition:erbdef:helpTextDefinitions:tips-downbeauty-original-game-erb-tips-tips-beauty-erb-51",
+        "definition:definition:erbdef:helpTextDefinitions:tips-extrachara-original-game-erb-tips-tips-erb-297",
+        "definition:definition:erbdef:helpTextDefinitions:tips-hint-original-game-erb-tips-tips-erb-178",
+        "definition:definition:erbdef:helpTextDefinitions:tips-lewdness-original-game-erb-tips-tips-characlear-erb-110",
+        "definition:definition:erbdef:helpTextDefinitions:tips-love-original-game-erb-tips-tips-characlear-erb-90",
+        "definition:definition:erbdef:helpTextDefinitions:tips-main-original-game-erb-tips-tips-erb-4",
+        "definition:definition:erbdef:helpTextDefinitions:tips-maxbeauty-original-game-erb-tips-tips-beauty-erb-104",
+        "definition:definition:erbdef:helpTextDefinitions:tips-mission-original-game-erb-tips-tips-erb-50",
+        "definition:definition:erbdef:helpTextDefinitions:tips-overlap-original-game-erb-tips-tips-characlear-erb-176",
+        "definition:definition:erbdef:helpTextDefinitions:tips-peerless-original-game-erb-tips-tips-characlear-erb-144",
+        "definition:definition:erbdef:helpTextDefinitions:tips-pregnancy-original-game-erb-tips-tips-erb-361",
+        "definition:definition:erbdef:helpTextDefinitions:tips-retire-original-game-erb-tips-tips-characlear-erb-47",
+        "definition:definition:erbdef:helpTextDefinitions:tips-sexfriend-original-game-erb-tips-tips-characlear-erb-160",
+        "definition:definition:erbdef:helpTextDefinitions:tips-talent-cvab-end-original-game-erb-tips-tips-talent-erb-60",
+        "definition:definition:erbdef:helpTextDefinitions:tips-talent-cvab-original-game-erb-tips-tips-talent-erb-35",
+        "definition:definition:erbdef:helpTextDefinitions:tips-talent-original-game-erb-tips-tips-talent-erb-4",
+        "definition:definition:erbdef:helpTextDefinitions:tips-talent-others-original-game-erb-tips-tips-talent-erb-98",
+        "definition:definition:erbdef:helpTextDefinitions:tips-talent-sm-original-game-erb-tips-tips-talent-erb-80",
+        "definition:definition:erbdef:helpTextDefinitions:tips-truelove-original-game-erb-tips-tips-characlear-erb-128",
+        "feature:feature:flow:exit:original-game-erb-actress-info-erb:2560:380",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:100:1207",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:103:1208",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:106:1209",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:112:1210",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:115:1211",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:118:1212",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:121:1213",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:124:1214",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:127:1215",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:130:1216",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:133:1217",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:136:1218",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:139:1219",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:13:1178",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:142:1220",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:145:1221",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:151:1222",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:157:1223",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:160:1224",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:163:1225",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:166:1226",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:169:1227",
+        "feature:feature:flow:exit:original-game-erb-info-casualwear-erb:16:1179"
+      ],
+      "rowRefCount": 149,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "Feature rows require route/action/view/handler success evidence before the owner milestone can close.",
+        "definitionConsumption": "Definition rows require runtime consumption through feature/view/calculation/save-init, or a blocker/approved exclusion.",
+        "saveRoundtrip": "Save roundtrip required only if this unit mutates save state.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "info/help/settings/debug, PRINT/HTML/message/help/status text, and remaining feature rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:view-text; gate:view-and-text-coverage; audit:remaining-features",
+      "blockingGates": [
+        "gate:view-and-text-coverage",
+        "gate:milestone-scope-closure -- M49"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "blocked",
+      "blockerReason": "Coverage artifact and runtime verification do not exist yet for this queued owner unit.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    },
+    {
+      "unitId": "M49:criteria-unit:0002",
+      "milestone": "M49",
+      "ownerMilestone": "M49",
+      "ownerRole": "info-settings-catchall-owner",
+      "implementationArea": "info-settings-catchall:original-game-erb-lifelist-erb",
+      "sourceKind": "source-file-review-breakdown",
+      "rowKinds": [
+        "source-file-review"
+      ],
+      "rowCountsByKind": {
+        "source-file-review": 1
+      },
+      "sourceStatusCounts": {
+        "manifest-primary-file-without-direct-row": 1
+      },
+      "sourceRowCount": 1,
+      "sourcePaths": [
+        "original-game/ERB/システム関係/未使用/LIFELIST.ERB"
+      ],
+      "sampleRowRefs": [
+        "source-file-review:original-game/erb/システム関係/未使用/lifelist.erb"
+      ],
+      "rowRefCount": 1,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "No feature rows in this unit.",
+        "definitionConsumption": "No definition rows in this unit.",
+        "saveRoundtrip": "Save roundtrip required only if this unit mutates save state.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "info/help/settings/debug, PRINT/HTML/message/help/status text, and remaining feature rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:view-text; gate:view-and-text-coverage; audit:remaining-features",
+      "blockingGates": [
+        "gate:view-and-text-coverage",
+        "gate:milestone-scope-closure -- M49"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "scope-redesign-required",
+      "blockerReason": "File-level source review is not a completion unit. Decompose into source rows, approve exclusion, or assign explicit owner before completion.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    }
+  ]
+}

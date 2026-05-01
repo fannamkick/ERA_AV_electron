@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M48",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria skeleton for M48. This does not implement the milestone; it prevents queued coverage rows from being skipped or completed by checklist text only.",
+  "sourceInputs": [
+    "data/coverage/implementation-queue.json",
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/ending-meta-coverage.json",
+    "data/coverage/audits/M48-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M48",
+    "ownerRole": "ending/meta owner",
+    "ownedScope": "ending condition/result, inheritance, global/meta save, clear bonus, and global unlock rows",
+    "coverageArtifacts": [
+      "data/coverage/ending-meta-coverage.json"
+    ],
+    "gapAuditArtifact": "data/coverage/audits/M48-gap-audit.json",
+    "requiredScripts": [
+      "coverage:ending-meta",
+      "gate:ending-meta",
+      "smoke:ending-flow"
+    ],
+    "blockingGates": [
+      "gate:ending-meta",
+      "gate:milestone-scope-closure -- M48"
+    ]
+  },
+  "rules": [
+    "No coverage artifact means no completed implementation claim.",
+    "Queued row counts are responsibility counts, not completed counts.",
+    "source-file-review is never completed until decomposed into concrete source units or explicitly excluded.",
+    "M49 is not a catch-all escape hatch; intake rows must record original owner candidate and reason for M49 ownership."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "originalSourceRoots": [
+    "original-game/CSV",
+    "original-game/ERB",
+    "original-game/CSV/Chara*.csv",
+    "original-game/CSV/VariableSize.CSV"
+  ],
+  "summary": {
+    "totalUnits": 2,
+    "queueRows": 325,
+    "blocked": 1,
+    "scope-redesign-required": 1,
+    "completedAllowedNow": false
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "coverage artifacts exist",
+      "gap audit exists",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "all registry blocking gates pass",
+      "responsibilityIntegrity present in closure"
+    ]
+  },
+  "notes": [
+    "Ending/meta has achievement/ending definitions, feature rows, save-mapping rows, and GameBase file review. Global/meta save must be separated from run save."
+  ],
+  "units": [
+    {
+      "unitId": "M48:criteria-unit:0001",
+      "milestone": "M48",
+      "ownerMilestone": "M48",
+      "ownerRole": "ending-meta-owner",
+      "implementationArea": "ending-meta",
+      "sourceKind": "queued-owner-scope",
+      "rowKinds": [
+        "definition",
+        "feature",
+        "save-mapping"
+      ],
+      "rowCountsByKind": {
+        "definition": 23,
+        "feature": 220,
+        "save-mapping": 81
+      },
+      "sourceStatusCounts": {
+        "blocker": 220,
+        "display-only": 21,
+        "listing": 2,
+        "mapped": 81
+      },
+      "sourceRowCount": 324,
+      "sourcePaths": [
+        "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+        "original-game/ERB/イベント関係/ENDING.ERB",
+        "original-game/ERB/イベント関係/EVENT_K.ERB",
+        "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+        "original-game/ERB/イベント関係/NTR関係/BOYFRIEND.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS_BOYFRIEND.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS_CALL.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS_CHARA.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS_FUTANARI.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS_HENTAI.ERB",
+        "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+        "original-game/ERB/システム関係/SYSTEM_GAMESTART.ERB",
+        "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_0_PLAYBOY.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_10_GOLDRUSH.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_11_YAOH.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_12_CHURCH.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_13_3RDGIRLFRIEND.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_14_BIG3.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_15_HAERETICUS.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_16_MIYAMA.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_17_FALLENANGELS.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_18_HUTANARI.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_19_ONLYONE_KANADE.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_1_LOLICOM.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_20_STRAWBERRY.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_2_OLDERSISTER.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_30_ACTRESS_LIST_COMPLETE.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_3_IMOPARA.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_4_TOLOVERU.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_5_VIRGINMANIA.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_6_NTR.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_7_BLACKIMPACT.ERB",
+        "original-game/ERB/実績関係/ACHIEVEMENT_8_BLACKKANADE.ERB"
+      ],
+      "sampleRowRefs": [
+        "definition:definition:erbdef:achievementDefinitions:0",
+        "definition:definition:erbdef:achievementDefinitions:1",
+        "definition:definition:erbdef:achievementDefinitions:10",
+        "definition:definition:erbdef:achievementDefinitions:11",
+        "definition:definition:erbdef:achievementDefinitions:12",
+        "definition:definition:erbdef:achievementDefinitions:13",
+        "definition:definition:erbdef:achievementDefinitions:14",
+        "definition:definition:erbdef:achievementDefinitions:15",
+        "definition:definition:erbdef:achievementDefinitions:16",
+        "definition:definition:erbdef:achievementDefinitions:17",
+        "definition:definition:erbdef:achievementDefinitions:18",
+        "definition:definition:erbdef:achievementDefinitions:19",
+        "definition:definition:erbdef:achievementDefinitions:2",
+        "definition:definition:erbdef:achievementDefinitions:20",
+        "definition:definition:erbdef:achievementDefinitions:3",
+        "definition:definition:erbdef:achievementDefinitions:30",
+        "definition:definition:erbdef:achievementDefinitions:4",
+        "definition:definition:erbdef:achievementDefinitions:5",
+        "definition:definition:erbdef:achievementDefinitions:6",
+        "definition:definition:erbdef:achievementDefinitions:7",
+        "definition:definition:erbdef:achievementDefinitions:8",
+        "definition:definition:erbdef:endingDefinitions:ending-check-2-original-game-erb-ending-erb-47",
+        "definition:definition:erbdef:endingDefinitions:ending-check-original-game-erb-ending-erb-7",
+        "feature:feature:dynamic-call:original-game-erb-achievement-erb:107:48",
+        "feature:feature:dynamic-call:original-game-erb-achievement-erb:25:44",
+        "feature:feature:dynamic-call:original-game-erb-achievement-erb:28:45",
+        "feature:feature:dynamic-call:original-game-erb-achievement-erb:53:46",
+        "feature:feature:dynamic-call:original-game-erb-achievement-erb:79:47",
+        "feature:feature:dynamic-call:original-game-erb-clearbonus-chara-erb:5:12",
+        "feature:feature:dynamic-call:original-game-erb-event-k-erb:88:5",
+        "feature:feature:ending-check",
+        "feature:feature:flow:exit:original-game-erb-achievement-0-playboy-erb:14:1635",
+        "feature:feature:flow:exit:original-game-erb-achievement-1-lolicom-erb:21:1651",
+        "feature:feature:flow:exit:original-game-erb-achievement-10-goldrush-erb:14:1636",
+        "feature:feature:flow:exit:original-game-erb-achievement-10-goldrush-erb:37:1638",
+        "feature:feature:flow:exit:original-game-erb-achievement-11-yaoh-erb:14:1639",
+        "feature:feature:flow:exit:original-game-erb-achievement-12-church-erb:22:1640",
+        "feature:feature:flow:exit:original-game-erb-achievement-13-3rdgirlfriend-erb:22:1641",
+        "feature:feature:flow:exit:original-game-erb-achievement-14-big3-erb:22:1643",
+        "feature:feature:flow:exit:original-game-erb-achievement-15-haereticus-erb:22:1645",
+        "feature:feature:flow:exit:original-game-erb-achievement-16-miyama-erb:22:1646",
+        "feature:feature:flow:exit:original-game-erb-achievement-17-fallenangels-erb:22:1647",
+        "feature:feature:flow:exit:original-game-erb-achievement-18-hutanari-erb:22:1648",
+        "feature:feature:flow:exit:original-game-erb-achievement-19-onlyone-kanade-erb:25:1649",
+        "feature:feature:flow:exit:original-game-erb-achievement-2-oldersister-erb:22:1653",
+        "feature:feature:flow:exit:original-game-erb-achievement-20-strawberry-erb:23:1652",
+        "feature:feature:flow:exit:original-game-erb-achievement-3-imopara-erb:22:1656",
+        "feature:feature:flow:exit:original-game-erb-achievement-30-actress-list-complete-erb:29:1655",
+        "feature:feature:flow:exit:original-game-erb-achievement-4-toloveru-erb:22:1657",
+        "feature:feature:flow:exit:original-game-erb-achievement-5-virginmania-erb:150:1669"
+      ],
+      "rowRefCount": 324,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "Feature rows require route/action/view/handler success evidence before the owner milestone can close.",
+        "definitionConsumption": "Definition rows require runtime consumption through feature/view/calculation/save-init, or a blocker/approved exclusion.",
+        "saveRoundtrip": "Save mapping rows require domain write/read use and save roundtrip verification when mutated.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "ending condition/result, inheritance, global/meta save, clear bonus, and global unlock rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:ending-meta; gate:ending-meta; smoke:ending-flow",
+      "blockingGates": [
+        "gate:ending-meta",
+        "gate:milestone-scope-closure -- M48"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "blocked",
+      "blockerReason": "Coverage artifact and runtime verification do not exist yet for this queued owner unit.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    },
+    {
+      "unitId": "M48:criteria-unit:0002",
+      "milestone": "M48",
+      "ownerMilestone": "M48",
+      "ownerRole": "ending-meta-owner",
+      "implementationArea": "ending-meta:original-game-csv-gamebase-csv",
+      "sourceKind": "source-file-review-breakdown",
+      "rowKinds": [
+        "source-file-review"
+      ],
+      "rowCountsByKind": {
+        "source-file-review": 1
+      },
+      "sourceStatusCounts": {
+        "manifest-primary-file-without-direct-row": 1
+      },
+      "sourceRowCount": 1,
+      "sourcePaths": [
+        "original-game/CSV/GameBase.csv"
+      ],
+      "sampleRowRefs": [
+        "source-file-review:original-game/csv/gamebase.csv"
+      ],
+      "rowRefCount": 1,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "No feature rows in this unit.",
+        "definitionConsumption": "No definition rows in this unit.",
+        "saveRoundtrip": "Save roundtrip required only if this unit mutates save state.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "ending condition/result, inheritance, global/meta save, clear bonus, and global unlock rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:ending-meta; gate:ending-meta; smoke:ending-flow",
+      "blockingGates": [
+        "gate:ending-meta",
+        "gate:milestone-scope-closure -- M48"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "scope-redesign-required",
+      "blockerReason": "File-level source review is not a completion unit. Decompose into source rows, approve exclusion, or assign explicit owner before completion.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    }
+  ]
+}

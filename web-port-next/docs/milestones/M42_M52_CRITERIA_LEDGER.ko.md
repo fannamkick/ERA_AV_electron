@@ -26,3 +26,32 @@ Next criteria calls:
 - Call 2: M45-M49 criteria manifests for common system, mission, event/world, ending/meta, and view/text/settings.
 - Call 3: M50-M52 criteria manifests for save/load, final audit, and complete-port verdict.
 - Call 4: full M28-M52 consistency pass across manifests, registry, phase docs, status docs, and handoff.
+
+## 2026-05-02 M45-M49 criteria skeleton pass 1
+
+Artifacts:
+- `data/coverage/manifests/M45-source-units.json`
+- `data/coverage/manifests/M46-source-units.json`
+- `data/coverage/manifests/M47-source-units.json`
+- `data/coverage/manifests/M48-source-units.json`
+- `data/coverage/manifests/M49-source-units.json`
+
+| M | criteria units | queued source rows | `blocked` | `scope-redesign-required` | completable now | strict finding |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| M45 | 2 | 1,122 | 1 | 1 | no | Common maintenance has 1,121 feature rows and one `SYSTEM_OTHERS.ERB` file-level review. No common-system coverage exists yet. |
+| M46 | 1 | 432 | 1 | 0 | no | Mission lifecycle has definition, feature, and save-mapping rows, but no mission coverage/smoke/save evidence artifact exists yet. |
+| M47 | 1 | 358 | 1 | 0 | no | Event/world has definitions, feature triggers/effects, and save-mapping rows. Prior event transfers must be accounted here, not silently completed. |
+| M48 | 2 | 325 | 1 | 1 | no | Ending/meta has definition, feature, save-mapping rows and one `GameBase.csv` file review. Global/meta save must be separated from run save. |
+| M49 | 2 | 150 | 1 | 1 | no | View/text/settings has 149 info/settings/help rows and one file-level LIFELIST review. M49 intake must not become a catch-all escape hatch. |
+
+M45-M49 completion rules:
+- A queued owner unit is not completed until its declared coverage artifact and gap audit exist.
+- Definitions/listings/display-only rows need runtime consumption evidence.
+- Feature rows need route/action/handler/calculation/view evidence as applicable.
+- Save/session rows need save-boundary or explicit non-save/session-boundary evidence.
+- File-level source reviews must be decomposed or explicitly approved/excluded before completion.
+- M49 intake rows must record source id, original owner candidate, reason for M49 ownership, and exclusion status.
+
+Remaining criteria calls:
+- Call 3: M50-M52 criteria manifests for save/load, final audit, and complete-port verdict.
+- Call 4: full M28-M52 consistency pass across manifests, registry, phase docs, status docs, and handoff.

@@ -1,5 +1,15 @@
 # Next Milestone
 
+## 2026-05-02 criteria pass progress 2
+
+Criteria call 2 is complete: M45-M49 now have strict skeleton manifests tied to implementation-queue responsibility rows.
+
+Next criteria work:
+1. M50-M52 criteria manifests.
+2. Full M28-M52 consistency pass.
+
+Do not treat M45-M49 as implemented. The manifests only freeze responsibility and completion requirements before future implementation.
+
 ## 2026-05-02 criteria pass progress
 
 Criteria call 1 is complete: M42-M44 now have strict source-unit manifests.

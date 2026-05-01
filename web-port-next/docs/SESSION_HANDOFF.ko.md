@@ -1,5 +1,17 @@
 # 세션 인수인계
 
+## 2026-05-02 handoff after M45-M49 criteria skeletons
+
+Criteria call 2 is complete.
+
+- M45: `data/coverage/manifests/M45-source-units.json`, criteria units 2, queue rows 1122, blocked 1, scope-redesign-required 1.
+- M46: `data/coverage/manifests/M46-source-units.json`, criteria units 1, queue rows 432, blocked 1.
+- M47: `data/coverage/manifests/M47-source-units.json`, criteria units 1, queue rows 358, blocked 1.
+- M48: `data/coverage/manifests/M48-source-units.json`, criteria units 2, queue rows 325, blocked 1, scope-redesign-required 1.
+- M49: `data/coverage/manifests/M49-source-units.json`, criteria units 2, queue rows 150, blocked 1, scope-redesign-required 1.
+
+Next criteria calls are M50-M52, then a full M28-M52 consistency pass. Do not start implementation from these skeletons as if M45-M49 were complete.
+
 ## 2026-05-02 handoff after M42-M44 criteria manifests
 
 Criteria call 1 is complete.

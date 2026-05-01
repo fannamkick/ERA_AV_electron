@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M45",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria skeleton for M45. This does not implement the milestone; it prevents queued coverage rows from being skipped or completed by checklist text only.",
+  "sourceInputs": [
+    "data/coverage/implementation-queue.json",
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/common-system-coverage.json",
+    "data/coverage/audits/M45-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M45",
+    "ownerRole": "common system owner",
+    "ownedScope": "ability up, rest, recovery, automatic item use, and common maintenance rows",
+    "coverageArtifacts": [
+      "data/coverage/common-system-coverage.json"
+    ],
+    "gapAuditArtifact": "data/coverage/audits/M45-gap-audit.json",
+    "requiredScripts": [
+      "coverage:common-system",
+      "gate:common-system",
+      "smoke:common-system"
+    ],
+    "blockingGates": [
+      "gate:common-system",
+      "gate:milestone-scope-closure -- M45"
+    ]
+  },
+  "rules": [
+    "No coverage artifact means no completed implementation claim.",
+    "Queued row counts are responsibility counts, not completed counts.",
+    "source-file-review is never completed until decomposed into concrete source units or explicitly excluded.",
+    "M49 is not a catch-all escape hatch; intake rows must record original owner candidate and reason for M49 ownership."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "originalSourceRoots": [
+    "original-game/CSV",
+    "original-game/ERB",
+    "original-game/CSV/Chara*.csv",
+    "original-game/CSV/VariableSize.CSV"
+  ],
+  "summary": {
+    "totalUnits": 2,
+    "queueRows": 1122,
+    "blocked": 1,
+    "scope-redesign-required": 1,
+    "completedAllowedNow": false
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "coverage artifacts exist",
+      "gap audit exists",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "all registry blocking gates pass",
+      "responsibilityIntegrity present in closure"
+    ]
+  },
+  "notes": [
+    "Common maintenance has 1121 feature rows plus one file-level SYSTEM_OTHERS review unit. All are criteria-only until common-system coverage exists."
+  ],
+  "units": [
+    {
+      "unitId": "M45:criteria-unit:0001",
+      "milestone": "M45",
+      "ownerMilestone": "M45",
+      "ownerRole": "common-maintenance-owner",
+      "implementationArea": "common-maintenance",
+      "sourceKind": "queued-owner-scope",
+      "rowKinds": [
+        "feature"
+      ],
+      "rowCountsByKind": {
+        "feature": 1121
+      },
+      "sourceStatusCounts": {
+        "blocker": 1121
+      },
+      "sourceRowCount": 1121,
+      "sourcePaths": [
+        "original-game/ERB/システム関係/ACTRESS_LIST.ERB",
+        "original-game/ERB/システム関係/CHEAT.ERB",
+        "original-game/ERB/システム関係/GENITALFORM.ERB",
+        "original-game/ERB/システム関係/GENITAL_SLANG.ERB",
+        "original-game/ERB/システム関係/LABELNAME.ERB",
+        "original-game/ERB/システム関係/LIFELIST_NEW.ERB",
+        "original-game/ERB/システム関係/LYCEE.ERB",
+        "original-game/ERB/システム関係/OTHER_CALC.ERB",
+        "original-game/ERB/システム関係/PASSOUT.ERB",
+        "original-game/ERB/システム関係/PLEASE.ERB",
+        "original-game/ERB/システム関係/PRINT_OTHERS.ERB",
+        "original-game/ERB/システム関係/SEIIN.ERB",
+        "original-game/ERB/システム関係/SELL_MILK.ERB",
+        "original-game/ERB/システム関係/SHOP_CHARABUY.ERB",
+        "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+        "original-game/ERB/システム関係/SHOP_SLAVE2.ERB",
+        "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+        "original-game/ERB/システム関係/SYSTEM_BIRTHDAY.ERB",
+        "original-game/ERB/システム関係/SYSTEM_CHARASORT.ERB",
+        "original-game/ERB/システム関係/SYSTEM_CONFIG.ERB",
+        "original-game/ERB/システム関係/SYSTEM_DEBUG.ERB",
+        "original-game/ERB/システム関係/SYSTEM_GAMESTART.ERB",
+        "original-game/ERB/システム関係/SYSTEM_IWS.ERB",
+        "original-game/ERB/システム関係/SYSTEM_NEWGAME.ERB",
+        "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+        "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+        "original-game/ERB/システム関係/ビデオ周り/SELL_VIDEO.ERB",
+        "original-game/ERB/システム関係/ビデオ周り/SPECIAL_TITLE.ERB",
+        "original-game/ERB/システム関係/未使用/JOBNAME.ERB",
+        "original-game/ERB/システム関係/未使用/LIFELIST_PRINT.ERB",
+        "original-game/ERB/システム関係/未使用/SHOP_SLAVE1.ERB",
+        "original-game/ERB/システム関係/衣服/COSPLAY.ERB",
+        "original-game/ERB/システム関係/衣服/FUNC_CLOTH.ERB",
+        "original-game/ERB/システム関係/衣服/FUNC_HAIRSTYLE.ERB",
+        "original-game/ERB/システム関係/衣服/FUNC_SHOES.ERB",
+        "original-game/ERB/システム関係/衣服/FUNC_UNDERWEAR.ERB",
+        "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+        "original-game/ERB/システム関係/衣服/SHOP_TAILOR_UNDER.ERB",
+        "original-game/ERB/システム関係/面接/INTERVIEW.ERB",
+        "original-game/ERB/システム関係/面接/NAME.ERB",
+        "original-game/ERB/組み込み関数/FUNCTIONS.ERB",
+        "original-game/ERB/組み込み関数/汎用関数/RANDCHOOSE/RANDCHOOSE.ERB",
+        "original-game/ERB/能力上昇関係/ABL.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP0.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP1.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP10.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP11.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP12.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP13.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP14.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP15.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP16.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP17.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP2.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP20.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP21.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP22.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP23.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP3.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP30.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP31.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP32.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP33.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP37.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP38.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP39.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP40.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP41.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP70.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP71.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP72.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP73.ERB",
+        "original-game/ERB/能力上昇関係/ABLUP99.ERB",
+        "original-game/ERB/能力上昇関係/ABL_AUTO.ERB"
+      ],
+      "sampleRowRefs": [
+        "feature:feature:ability-up",
+        "feature:feature:dynamic-call:original-game-erb-abl-erb:110:53",
+        "feature:feature:dynamic-call:original-game-erb-print-others-erb:37:13",
+        "feature:feature:dynamic-call:original-game-erb-shop-main-erb:1019:14",
+        "feature:feature:flow:exit:original-game-erb-abl-auto-erb:804:3692",
+        "feature:feature:flow:exit:original-game-erb-abl-erb:119:3689",
+        "feature:feature:flow:exit:original-game-erb-abl-erb:126:3690",
+        "feature:feature:flow:exit:original-game-erb-abl-erb:129:3691",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:146:3700",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:148:3701",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:22:3693",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:25:3694",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:58:3696",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:69:3697",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:77:3698",
+        "feature:feature:flow:exit:original-game-erb-ablup0-erb:79:3699",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:154:3709",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:156:3710",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:17:3702",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:20:3703",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:53:3705",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:64:3706",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:72:3707",
+        "feature:feature:flow:exit:original-game-erb-ablup1-erb:74:3708",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:129:3715",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:146:3716",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:154:3717",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:156:3718",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:158:3719",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:17:3711",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:20:3712",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:23:3713",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:382:3720",
+        "feature:feature:flow:exit:original-game-erb-ablup10-erb:384:3721",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:16:3722",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:19:3723",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:226:3729",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:228:3730",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:59:3725",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:70:3726",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:79:3727",
+        "feature:feature:flow:exit:original-game-erb-ablup11-erb:81:3728",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:15:3731",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:178:3738",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:180:3739",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:20:3732",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:52:3734",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:63:3735",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:71:3736",
+        "feature:feature:flow:exit:original-game-erb-ablup12-erb:74:3737"
+      ],
+      "rowRefCount": 1121,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "Feature rows require route/action/view/handler success evidence before the owner milestone can close.",
+        "definitionConsumption": "No definition rows in this unit.",
+        "saveRoundtrip": "Save roundtrip required only if this unit mutates save state.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "ability up, rest, recovery, automatic item use, and common maintenance rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:common-system; gate:common-system; smoke:common-system",
+      "blockingGates": [
+        "gate:common-system",
+        "gate:milestone-scope-closure -- M45"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "blocked",
+      "blockerReason": "Coverage artifact and runtime verification do not exist yet for this queued owner unit.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    },
+    {
+      "unitId": "M45:criteria-unit:0002",
+      "milestone": "M45",
+      "ownerMilestone": "M45",
+      "ownerRole": "common-maintenance-owner",
+      "implementationArea": "common-maintenance:original-game-erb-system-others-erb",
+      "sourceKind": "source-file-review-breakdown",
+      "rowKinds": [
+        "source-file-review"
+      ],
+      "rowCountsByKind": {
+        "source-file-review": 1
+      },
+      "sourceStatusCounts": {
+        "manifest-primary-file-without-direct-row": 1
+      },
+      "sourceRowCount": 1,
+      "sourcePaths": [
+        "original-game/ERB/システム関係/SYSTEM_OTHERS.ERB"
+      ],
+      "sampleRowRefs": [
+        "source-file-review:original-game/erb/システム関係/system_others.erb"
+      ],
+      "rowRefCount": 1,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "No feature rows in this unit.",
+        "definitionConsumption": "No definition rows in this unit.",
+        "saveRoundtrip": "Save roundtrip required only if this unit mutates save state.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "ability up, rest, recovery, automatic item use, and common maintenance rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:common-system; gate:common-system; smoke:common-system",
+      "blockingGates": [
+        "gate:common-system",
+        "gate:milestone-scope-closure -- M45"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "scope-redesign-required",
+      "blockerReason": "File-level source review is not a completion unit. Decompose into source rows, approve exclusion, or assign explicit owner before completion.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    }
+  ]
+}

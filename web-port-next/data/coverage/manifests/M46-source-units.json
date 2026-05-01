@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M46",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria skeleton for M46. This does not implement the milestone; it prevents queued coverage rows from being skipped or completed by checklist text only.",
+  "sourceInputs": [
+    "data/coverage/implementation-queue.json",
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/mission-coverage.json",
+    "data/coverage/audits/M46-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M46",
+    "ownerRole": "mission lifecycle owner",
+    "ownedScope": "mission definition, accept/progress/report/complete/fail/expire/reward/penalty rows",
+    "coverageArtifacts": [
+      "data/coverage/mission-coverage.json"
+    ],
+    "gapAuditArtifact": "data/coverage/audits/M46-gap-audit.json",
+    "requiredScripts": [
+      "coverage:mission",
+      "gate:mission-coverage",
+      "smoke:mission-all"
+    ],
+    "blockingGates": [
+      "gate:mission-coverage",
+      "gate:milestone-scope-closure -- M46"
+    ]
+  },
+  "rules": [
+    "No coverage artifact means no completed implementation claim.",
+    "Queued row counts are responsibility counts, not completed counts.",
+    "source-file-review is never completed until decomposed into concrete source units or explicitly excluded.",
+    "M49 is not a catch-all escape hatch; intake rows must record original owner candidate and reason for M49 ownership."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "originalSourceRoots": [
+    "original-game/CSV",
+    "original-game/ERB",
+    "original-game/CSV/Chara*.csv",
+    "original-game/CSV/VariableSize.CSV"
+  ],
+  "summary": {
+    "totalUnits": 1,
+    "queueRows": 432,
+    "blocked": 1,
+    "completedAllowedNow": false
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "coverage artifacts exist",
+      "gap audit exists",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "all registry blocking gates pass",
+      "responsibilityIntegrity present in closure"
+    ]
+  },
+  "notes": [
+    "Mission lifecycle has definition, feature, and save-mapping rows. All are blocked until mission coverage, smoke, and save roundtrip evidence exist."
+  ],
+  "units": [
+    {
+      "unitId": "M46:criteria-unit:0001",
+      "milestone": "M46",
+      "ownerMilestone": "M46",
+      "ownerRole": "mission-owner",
+      "implementationArea": "mission",
+      "sourceKind": "queued-owner-scope",
+      "rowKinds": [
+        "definition",
+        "feature",
+        "save-mapping"
+      ],
+      "rowCountsByKind": {
+        "definition": 21,
+        "feature": 331,
+        "save-mapping": 80
+      },
+      "sourceStatusCounts": {
+        "blocker": 331,
+        "listing": 21,
+        "mapped": 80
+      },
+      "sourceRowCount": 432,
+      "sourcePaths": [
+        "original-game/CSV/Chara0.csv",
+        "original-game/CSV/Chara06_神田ひより.csv",
+        "original-game/CSV/Chara09_レイチェル・パラディスス.csv",
+        "original-game/CSV/Chara18_恋歌・ロックウェル.csv",
+        "original-game/CSV/Chara190_涼本鈴華.csv",
+        "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+        "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+        "original-game/ERB/イベント関係/ENDING.ERB",
+        "original-game/ERB/イベント関係/EVENT_NEXTMONTH.ERB",
+        "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+        "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+        "original-game/ERB/イベント関係/NTR関係/BADBOY_RAPE.ERB",
+        "original-game/ERB/イベント関係/NTR関係/NTR_STAFF.ERB",
+        "original-game/ERB/イベント関係/SUCCUBUS_STATUS.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS.ERB",
+        "original-game/ERB/クリアボーナス関係/CLEARBONUS_CHARA.ERB",
+        "original-game/ERB/システム関係/PROF.ERB",
+        "original-game/ERB/システム関係/SHOP_CHARABUY.ERB",
+        "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+        "original-game/ERB/システム関係/SYSTEM_GAMESTART.ERB",
+        "original-game/ERB/システム関係/初体験/LOSTANALVIRGIN_DETAIL.ERB",
+        "original-game/ERB/システム関係/衣服/COSPLAY.ERB",
+        "original-game/ERB/ミッション関係/MISSION.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_10_MIKU.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_11_NOEL.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_12_HIKARU.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_13_TOMOKO.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_14_YUUKI.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_15_MEIKO.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_16_ANN.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_17_KURSTINA.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_18_NICOLE.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_19_NARU.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_1_AYESHA.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_20_NEWGENERATION.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_2_ASUKA.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_30_LIESELOTTE.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_3_ANZU.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_4_MIYA.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_5_TOHKO.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_6_HARUMI.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_7_SHION.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_8_MICHIRU.ERB",
+        "original-game/ERB/ミッション関係/キャラ/MISSION_9_RIKKA.ERB",
+        "original-game/ERB/訪問関係/AYANO_ORDER.ERB",
+        "original-game/ERB/訪問関係/AYANO_ORDER_DETAIL.ERB",
+        "original-game/ERB/訪問関係/ELLEN_MISSION.ERB",
+        "original-game/ERB/訪問関係/ELLEN_MISSION_DETAIL.ERB",
+        "original-game/ERB/訪問関係/KANON_ORDER.ERB",
+        "original-game/ERB/訪問関係/KANON_ORDER_DETAIL.ERB"
+      ],
+      "sampleRowRefs": [
+        "definition:definition:erbdef:missionDefinitions:1",
+        "definition:definition:erbdef:missionDefinitions:10",
+        "definition:definition:erbdef:missionDefinitions:11",
+        "definition:definition:erbdef:missionDefinitions:12",
+        "definition:definition:erbdef:missionDefinitions:13",
+        "definition:definition:erbdef:missionDefinitions:14",
+        "definition:definition:erbdef:missionDefinitions:15",
+        "definition:definition:erbdef:missionDefinitions:16",
+        "definition:definition:erbdef:missionDefinitions:17",
+        "definition:definition:erbdef:missionDefinitions:18",
+        "definition:definition:erbdef:missionDefinitions:19",
+        "definition:definition:erbdef:missionDefinitions:2",
+        "definition:definition:erbdef:missionDefinitions:20",
+        "definition:definition:erbdef:missionDefinitions:3",
+        "definition:definition:erbdef:missionDefinitions:30",
+        "definition:definition:erbdef:missionDefinitions:4",
+        "definition:definition:erbdef:missionDefinitions:5",
+        "definition:definition:erbdef:missionDefinitions:6",
+        "definition:definition:erbdef:missionDefinitions:7",
+        "definition:definition:erbdef:missionDefinitions:8",
+        "definition:definition:erbdef:missionDefinitions:9",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:104:31",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:105:32",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:165:33",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:186:34",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:189:35",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:193:36",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:234:37",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:246:38",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:249:39",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:295:40",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:300:41",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:312:42",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:345:43",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:43:29",
+        "feature:feature:dynamic-call:original-game-erb-mission-erb:53:30",
+        "feature:feature:flow:exit:original-game-erb-mission-1-ayesha-erb:102:1413",
+        "feature:feature:flow:exit:original-game-erb-mission-1-ayesha-erb:103:1414",
+        "feature:feature:flow:exit:original-game-erb-mission-1-ayesha-erb:128:1415",
+        "feature:feature:flow:exit:original-game-erb-mission-1-ayesha-erb:21:1410",
+        "feature:feature:flow:exit:original-game-erb-mission-10-miku-erb:100:1345",
+        "feature:feature:flow:exit:original-game-erb-mission-10-miku-erb:101:1346",
+        "feature:feature:flow:exit:original-game-erb-mission-10-miku-erb:126:1347",
+        "feature:feature:flow:exit:original-game-erb-mission-10-miku-erb:17:1342",
+        "feature:feature:flow:exit:original-game-erb-mission-11-noel-erb:115:1351",
+        "feature:feature:flow:exit:original-game-erb-mission-11-noel-erb:116:1352",
+        "feature:feature:flow:exit:original-game-erb-mission-11-noel-erb:141:1353",
+        "feature:feature:flow:exit:original-game-erb-mission-11-noel-erb:17:1348",
+        "feature:feature:flow:exit:original-game-erb-mission-12-hikaru-erb:129:1357",
+        "feature:feature:flow:exit:original-game-erb-mission-12-hikaru-erb:130:1358"
+      ],
+      "rowRefCount": 432,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "Feature rows require route/action/view/handler success evidence before the owner milestone can close.",
+        "definitionConsumption": "Definition rows require runtime consumption through feature/view/calculation/save-init, or a blocker/approved exclusion.",
+        "saveRoundtrip": "Save mapping rows require domain write/read use and save roundtrip verification when mutated.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "mission definition, accept/progress/report/complete/fail/expire/reward/penalty rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:mission; gate:mission-coverage; smoke:mission-all",
+      "blockingGates": [
+        "gate:mission-coverage",
+        "gate:milestone-scope-closure -- M46"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "blocked",
+      "blockerReason": "Coverage artifact and runtime verification do not exist yet for this queued owner unit.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    }
+  ]
+}

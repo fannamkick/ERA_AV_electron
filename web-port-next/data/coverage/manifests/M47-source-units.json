@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M47",
+  "generatedAt": "2026-05-02",
+  "purpose": "Criteria skeleton for M47. This does not implement the milestone; it prevents queued coverage rows from being skipped or completed by checklist text only.",
+  "sourceInputs": [
+    "data/coverage/implementation-queue.json",
+    "data/coverage/coverage-gate-registry.json",
+    "data/coverage/event-world-coverage.json",
+    "data/coverage/audits/M47-gap-audit.json"
+  ],
+  "registryContract": {
+    "milestone": "M47",
+    "ownerRole": "event/world owner",
+    "ownedScope": "event trigger, condition, text, effect, world/story flag, and hook rows",
+    "coverageArtifacts": [
+      "data/coverage/event-world-coverage.json"
+    ],
+    "gapAuditArtifact": "data/coverage/audits/M47-gap-audit.json",
+    "requiredScripts": [
+      "coverage:event-world",
+      "gate:event-coverage"
+    ],
+    "blockingGates": [
+      "gate:event-coverage",
+      "gate:milestone-scope-closure -- M47"
+    ]
+  },
+  "rules": [
+    "No coverage artifact means no completed implementation claim.",
+    "Queued row counts are responsibility counts, not completed counts.",
+    "source-file-review is never completed until decomposed into concrete source units or explicitly excluded.",
+    "M49 is not a catch-all escape hatch; intake rows must record original owner candidate and reason for M49 ownership."
+  ],
+  "directOriginalReviewRequiredBeforeCompletion": true,
+  "originalSourceRoots": [
+    "original-game/CSV",
+    "original-game/ERB",
+    "original-game/CSV/Chara*.csv",
+    "original-game/CSV/VariableSize.CSV"
+  ],
+  "summary": {
+    "totalUnits": 1,
+    "queueRows": 358,
+    "blocked": 1,
+    "completedAllowedNow": false
+  },
+  "completionGate": {
+    "completedAllowedNow": false,
+    "requiredBeforeCompleted": [
+      "coverage artifacts exist",
+      "gap audit exists",
+      "blocked == 0",
+      "scope-redesign-required == 0",
+      "all registry blocking gates pass",
+      "responsibilityIntegrity present in closure"
+    ]
+  },
+  "notes": [
+    "Event/world has definitions, feature triggers/effects, and save-mapping rows. It also receives prior transferred event-local responsibilities, so no event row may be treated as implicitly done."
+  ],
+  "units": [
+    {
+      "unitId": "M47:criteria-unit:0001",
+      "milestone": "M47",
+      "ownerMilestone": "M47",
+      "ownerRole": "world-event-owner",
+      "implementationArea": "world-event",
+      "sourceKind": "queued-owner-scope",
+      "rowKinds": [
+        "definition",
+        "feature",
+        "save-mapping"
+      ],
+      "rowCountsByKind": {
+        "definition": 45,
+        "feature": 286,
+        "save-mapping": 27
+      },
+      "sourceStatusCounts": {
+        "blocker": 286,
+        "listing": 45,
+        "mapped": 27
+      },
+      "sourceRowCount": 358,
+      "sourcePaths": [
+        "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+        "original-game/ERB/イベント関係/ADD_CATASTROPH.ERB",
+        "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+        "original-game/ERB/イベント関係/EVENT_ADDICT.ERB",
+        "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+        "original-game/ERB/イベント関係/EVENT_K.ERB",
+        "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+        "original-game/ERB/イベント関係/EVENT_MAEKOJO.ERB",
+        "original-game/ERB/イベント関係/EVENT_MORNING.ERB",
+        "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "original-game/ERB/イベント関係/EVENT_NEXTMONTH.ERB",
+        "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+        "original-game/ERB/イベント関係/EVENT_SELL_AFTER.ERB",
+        "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+        "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+        "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "original-game/ERB/イベント関係/GETTALENT_GAL.ERB",
+        "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+        "original-game/ERB/イベント関係/NTR関係/BADBOY_RAPE.ERB",
+        "original-game/ERB/イベント関係/NTR関係/BOYFRIEND.ERB",
+        "original-game/ERB/イベント関係/NTR関係/BOYFRIENDNAME_CALC2.ERB",
+        "original-game/ERB/イベント関係/NTR関係/BOYFRIEND_LOOKSCHANGE.ERB",
+        "original-game/ERB/イベント関係/NTR関係/COMPA.ERB",
+        "original-game/ERB/イベント関係/NTR関係/MOLESTER.ERB",
+        "original-game/ERB/イベント関係/OPENING.ERB",
+        "original-game/ERB/イベント関係/職業素質系/C_CLUB.ERB",
+        "original-game/ERB/イベント関係/職業素質系/IDOL.ERB",
+        "original-game/ERB/イベント関係/職業素質系/IDOL_PRODUCE.ERB",
+        "original-game/ERB/イベント関係/職業素質系/MODEL_EVENT.ERB",
+        "original-game/ERB/イベント関係/職業素質系/SCOUT.ERB",
+        "original-game/ERB/イベント関係/誕生日関係/SHOP_BIRTHDAY.ERB",
+        "original-game/ERB/システム関係/ACTRESS_INFO.ERB",
+        "original-game/ERB/システム関係/GENITALFORM.ERB",
+        "original-game/ERB/システム関係/GENITAL_SLANG.ERB",
+        "original-game/ERB/システム関係/LYCEE.ERB",
+        "original-game/ERB/システム関係/OTHER_CALC.ERB",
+        "original-game/ERB/システム関係/PASSOUT.ERB",
+        "original-game/ERB/システム関係/SEIIN.ERB",
+        "original-game/ERB/システム関係/SHOP_ITEM.ERB",
+        "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+        "original-game/ERB/システム関係/SYSTEM_BIRTHDAY.ERB",
+        "original-game/ERB/システム関係/SYSTEM_GAMESTART.ERB",
+        "original-game/ERB/指導関係/COMF24.ERB",
+        "original-game/ERB/指導関係/COMF25.ERB",
+        "original-game/ERB/指導関係/COMF4.ERB",
+        "original-game/ERB/指導関係/COMF48.ERB",
+        "original-game/ERB/指導関係/COMF5.ERB",
+        "original-game/ERB/指導関係/TRAIN_MAIN.ERB",
+        "original-game/ERB/訪問関係/EUNICE_LABO.ERB",
+        "original-game/ERB/訪問関係/IKUMI_LABO_DETAIL.ERB",
+        "original-game/ERB/訪問関係/MIYAKO_LABO.ERB",
+        "original-game/ERB/訪問関係/RACHEL_LABO_DETAIL.ERB",
+        "original-game/ERB/訪問関係/SAKURA_AZITO.ERB",
+        "original-game/ERB/ＡＶ撮影関係/SHOP_AV.ERB"
+      ],
+      "sampleRowRefs": [
+        "definition:definition:erbdef:eventDefinitions:event-add-c-girl-original-game-erb-c-club-erb-96",
+        "definition:definition:erbdef:eventDefinitions:event-bgguidance-original-game-erb-blackgirl-erb-448",
+        "definition:definition:erbdef:eventDefinitions:event-bgsex-original-game-erb-blackgirl-erb-153",
+        "definition:definition:erbdef:eventDefinitions:event-bgtatto-original-game-erb-blackgirl-erb-46",
+        "definition:definition:erbdef:eventDefinitions:event-birthday-original-game-erb-shop-birthday-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-boyfriend-original-game-erb-ntr-boyfriend-erb-34",
+        "definition:definition:erbdef:eventDefinitions:event-boyfriend2-original-game-erb-ntr-boyfriend-erb-93",
+        "definition:definition:erbdef:eventDefinitions:event-c-clubafter-original-game-erb-c-club-erb-141",
+        "definition:definition:erbdef:eventDefinitions:event-c-clubhall-original-game-erb-c-club-erb-41",
+        "definition:definition:erbdef:eventDefinitions:event-highschool-original-game-erb-event-nextday-erb-449",
+        "definition:definition:erbdef:eventDefinitions:event-himan-original-game-erb-event-nextday-erb-361",
+        "definition:definition:erbdef:eventDefinitions:event-idolconcert-original-game-erb-idol-erb-61",
+        "definition:definition:erbdef:eventDefinitions:event-idolgravure-original-game-erb-idol-erb-42",
+        "definition:definition:erbdef:eventDefinitions:event-juniorhighschool-original-game-erb-event-nextday-erb-381",
+        "definition:definition:erbdef:eventDefinitions:event-junyu-original-game-erb-comf5-erb-135",
+        "definition:definition:erbdef:eventDefinitions:event-lesplay-new-original-game-erb-event-lesplay-new-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-lookschange-detail-original-game-erb-ntr-boyfriend-lookschange-erb-34",
+        "definition:definition:erbdef:eventDefinitions:event-lookschange-original-game-erb-ntr-boyfriend-lookschange-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-molester-original-game-erb-ntr-molester-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-morasi-original-game-erb-event-nextday-erb-282",
+        "definition:definition:erbdef:eventDefinitions:event-morning-decide-original-game-erb-event-morning-erb-19",
+        "definition:definition:erbdef:eventDefinitions:event-morning-fellatio-original-game-erb-event-morning-erb-87",
+        "definition:definition:erbdef:eventDefinitions:event-morning-normal-original-game-erb-event-morning-erb-31",
+        "definition:definition:erbdef:eventDefinitions:event-morning-pickup-original-game-erb-event-morning-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-newday-original-game-erb-event-nextday-erb-135",
+        "definition:definition:erbdef:eventDefinitions:event-nextday-original-game-erb-event-nextday-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-nextmonth-original-game-erb-event-nextmonth-erb-10",
+        "definition:definition:erbdef:eventDefinitions:event-noroi-original-game-erb-event-nextday-erb-514",
+        "definition:definition:erbdef:eventDefinitions:event-scout-original-game-erb-scout-erb-5",
+        "definition:definition:erbdef:eventDefinitions:event-seitsu-asikoki-original-game-erb-comf48-erb-106",
+        "definition:definition:erbdef:eventDefinitions:event-seitsu-original-game-erb-comf4-erb-100",
+        "definition:definition:erbdef:eventDefinitions:event-seitsu-revarape-original-game-erb-comf25-erb-327",
+        "definition:definition:erbdef:eventDefinitions:event-seitsu-revrape-original-game-erb-comf24-erb-406",
+        "definition:definition:erbdef:eventDefinitions:event-sell-after-original-game-erb-event-sell-after-erb-4",
+        "definition:definition:erbdef:eventDefinitions:event-yaseru-original-game-erb-event-nextday-erb-371",
+        "definition:definition:erbdef:eventDefinitions:event-youji-original-game-erb-event-nextday-erb-291",
+        "definition:definition:erbdef:eventDefinitions:eventbuy-original-game-erb-shop-item-erb-51",
+        "definition:definition:erbdef:eventDefinitions:eventcom-original-game-erb-train-main-erb-182",
+        "definition:definition:erbdef:eventDefinitions:eventcomend-original-game-erb-train-main-erb-193",
+        "definition:definition:erbdef:eventDefinitions:eventend-original-game-erb-train-main-erb-220",
+        "definition:definition:erbdef:eventDefinitions:eventfirst-original-game-erb-system-gamestart-erb-10",
+        "definition:definition:erbdef:eventDefinitions:eventshop-original-game-erb-event-k-erb-16",
+        "definition:definition:erbdef:eventDefinitions:eventshop-original-game-erb-shop-main-erb-13",
+        "definition:definition:erbdef:eventDefinitions:eventtrain-original-game-erb-train-main-erb-11",
+        "definition:definition:erbdef:eventDefinitions:eventturnend-original-game-erb-event-turnend-erb-6",
+        "feature:feature:dynamic-call:original-game-erb-event-k-erb:103:7",
+        "feature:feature:dynamic-call:original-game-erb-event-k-erb:34:1",
+        "feature:feature:dynamic-call:original-game-erb-event-k-erb:51:2",
+        "feature:feature:dynamic-call:original-game-erb-event-k-erb:66:3",
+        "feature:feature:dynamic-call:original-game-erb-event-k-erb:78:4"
+      ],
+      "rowRefCount": 358,
+      "requiredEvidenceTemplate": {
+        "sourceEvidence": "Every referenced row keeps primary source evidence or is converted into approved exclusion with user approval.",
+        "featureRuntime": "Feature rows require route/action/view/handler success evidence before the owner milestone can close.",
+        "definitionConsumption": "Definition rows require runtime consumption through feature/view/calculation/save-init, or a blocker/approved exclusion.",
+        "saveRoundtrip": "Save mapping rows require domain write/read use and save roundtrip verification when mutated.",
+        "sessionLifecycle": "No session/calculation rows in this unit.",
+        "viewEvidence": "If user-visible state is involved, the owner milestone must add view evidence or an explicit not-visible reason.",
+        "pathCoverage": "Success path is required. Failure/cancel/roundtrip are required when the row kind or feature flow can produce them."
+      },
+      "requiredBehavior": "event trigger, condition, text, effect, world/story flag, and hook rows",
+      "runtimeConsumerId": "must be supplied by milestone coverage artifact before completion",
+      "verificationId": "coverage:event-world; gate:event-coverage",
+      "blockingGates": [
+        "gate:event-coverage",
+        "gate:milestone-scope-closure -- M47"
+      ],
+      "previousCompletionStatus": "queued",
+      "manifestStatus": "blocked",
+      "blockerReason": "Coverage artifact and runtime verification do not exist yet for this queued owner unit.",
+      "completionCriteria": [
+        "Create the declared coverage artifact(s).",
+        "Every queued row must become implemented-verified, approved-excluded, blocked, or scope-redesign-required.",
+        "Definitions/listings/display-only rows need runtime consumption evidence, not document-only status.",
+        "Feature rows need route/action/handler/calculation/view evidence as applicable.",
+        "Save/session rows need save-boundary or non-save/session-boundary evidence.",
+        "source-file-review rows must be decomposed before completion."
+      ]
+    }
+  ]
+}

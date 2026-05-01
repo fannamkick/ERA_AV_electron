@@ -1,5 +1,17 @@
 # Current Status
 
+## 2026-05-02 M45-M49 criteria skeleton pass 1
+
+- M45-M49 criteria skeleton manifests were added from `implementation-queue` and `coverage-gate-registry`.
+- New artifacts: `data/coverage/manifests/M45-source-units.json` through `M49-source-units.json`.
+- Current strict counts:
+  - M45: criteria units 2, queue rows 1122, blocked 1, scope-redesign-required 1.
+  - M46: criteria units 1, queue rows 432, blocked 1.
+  - M47: criteria units 1, queue rows 358, blocked 1.
+  - M48: criteria units 2, queue rows 325, blocked 1, scope-redesign-required 1.
+  - M49: criteria units 2, queue rows 150, blocked 1, scope-redesign-required 1.
+- These are criteria manifests only. No M45-M49 implementation coverage exists yet, so none can be marked complete.
+
 ## 2026-05-02 M42-M44 criteria manifest pass 1
 
 - M42-M44 criteria manifests were added.

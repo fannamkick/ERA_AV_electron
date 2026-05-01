@@ -1,5 +1,19 @@
 # 진행 상태
 
+## 2026-05-02 M45-M49 criteria skeleton added
+
+First-pass criteria skeleton manifests were added for M45-M49.
+
+| milestone | manifest | criteria units | queued source rows | blocked | scope-redesign-required | completedAllowedNow |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| M45 | `data/coverage/manifests/M45-source-units.json` | 2 | 1122 | 1 | 1 | false |
+| M46 | `data/coverage/manifests/M46-source-units.json` | 1 | 432 | 1 | 0 | false |
+| M47 | `data/coverage/manifests/M47-source-units.json` | 1 | 358 | 1 | 0 | false |
+| M48 | `data/coverage/manifests/M48-source-units.json` | 2 | 325 | 1 | 1 | false |
+| M49 | `data/coverage/manifests/M49-source-units.json` | 2 | 150 | 1 | 1 | false |
+
+This closes criteria call 2 only. Common system, mission, event/world, ending/meta, and view/text/settings are still not implemented.
+
 ## 2026-05-02 M42-M44 criteria pass added
 
 First-pass source-unit criteria manifests were added for M42-M44.
