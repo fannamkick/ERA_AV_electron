@@ -1,5 +1,17 @@
 # 세션 인수인계
 
+## 2026-05-02 이어서 할 일: M31~M34.5 매니페스트 이후
+
+이번 세션에서 M31~M34.5 source-unit manifest 1차를 추가했다.
+
+- M31: `data/coverage/manifests/M31-source-units.json`, total 237, implemented-verified 52, blocked 158, scope-redesign-required 27.
+- M32: `data/coverage/manifests/M32-source-units.json`, total 294, implemented-verified 286, blocked 8.
+- M33: `data/coverage/manifests/M33-source-units.json`, total 5300, implemented-verified 4768, blocked 465, scope-redesign-required 67.
+- M34: `data/coverage/manifests/M34-source-units.json`, total 2235, implemented-verified 1998, blocked 237. item 211 누락 3개를 blocked unit으로 추가했다.
+- M34.5: `data/coverage/manifests/M34.5-source-units.json`, total 189, implemented-verified 188, blocked 1. `responsibilityIntegrity` 누락을 blocked unit으로 추가했다.
+
+새 기준에서 M31~M34.5는 모두 `completedAllowedNow: false`다. 다음 작업자는 M35~M41 manifest를 만들기 전에, M31~M34.5의 blocked/scope-redesign-required를 완료로 착각하지 말아야 한다. M42는 아직 재개하지 않는다.
+
 새 세션은 아래 요약만 읽고 M28~M41 원본 단위 매니페스트 보강/closure 정정부터 진행한다. 2026-05-02 재판정 결과, M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없다. 그 뒤 M42 훈련 command 효과 0~34 구현을 재개한다. 완전 이식 여부는 모든 구현 책임과 M50~M52 최종 검증으로만 닫는다.
 
 M28~M30 1차 source-unit manifest는 작성됐다. 새 세션은 `data/coverage/manifests/M28-source-units.json`, `M29-source-units.json`, `M30-source-units.json`과 `docs/milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`를 같이 본다.

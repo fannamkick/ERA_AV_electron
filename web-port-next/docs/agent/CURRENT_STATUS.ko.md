@@ -1,5 +1,17 @@
 # Current Status
 
+## 2026-05-02 M31~M34.5 source-unit manifest 1차
+
+- M31~M34.5도 새 기준으로는 `completed` 유지 불가로 재판정했다. 기존 coverage/gate/smoke 통과 기록은 남기되, `mapped`, `transferredOut`, file-level review, 책임 무결성 누락을 완료 근거로 보지 않는다.
+- 생성 산출물: `data/coverage/manifests/M31-source-units.json`, `M32-source-units.json`, `M33-source-units.json`, `M34-source-units.json`, `M34.5-source-units.json`.
+- 현재 판정:
+  - M31: total 237, implemented-verified 52, blocked 158, scope-redesign-required 27, completedAllowedNow false.
+  - M32: total 294, implemented-verified 286, blocked 8, completedAllowedNow false.
+  - M33: total 5300, implemented-verified 4768, blocked 465, scope-redesign-required 67, completedAllowedNow false.
+  - M34: total 2235, implemented-verified 1998, blocked 237, completedAllowedNow false. item 211 관련 누락 3개를 blocked unit으로 추가했다.
+  - M34.5: total 189, implemented-verified 188, blocked 1, completedAllowedNow false. `responsibilityIntegrity` 누락을 blocker로 추가했다.
+- 다음 즉시 작업은 M31~M34.5의 blocked/scope-redesign-required를 실제 구현 검증 또는 명시적 재설계 범위로 닫고, 이어서 M35~M41에도 같은 source-unit manifest를 만드는 것이다.
+
 기준 날짜: 2026-05-02
 
 ## 현재 위치

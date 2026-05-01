@@ -65,6 +65,30 @@
 - M29: 구매형 listing/flow manifest로 closure를 재작성한다. mapped 40개는 listing/flow의 하위 검증으로 승격하거나 blocked로 둔다.
 - M30: 즉시 사용 item 9개 owner로 scope를 좁히고, 특수 item 200~214 및 item 22/90/91은 M34/M41/M42/M43/M44 manifest에서 닫는다.
 
+## 2026-05-02 M31~M34.5 source-unit manifest 1차 산출
+
+산출물:
+- `data/coverage/manifests/M31-source-units.json`
+- `data/coverage/manifests/M32-source-units.json`
+- `data/coverage/manifests/M33-source-units.json`
+- `data/coverage/manifests/M34-source-units.json`
+- `data/coverage/manifests/M34.5-source-units.json`
+
+| M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | 현재 완료 가능 | 핵심 판정 |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| M31 | 237 | 52 | 158 | 27 | 아니오 | 영입 listing/flow 52개만 완료 후보. session buffer/visible listing/source contract/template seed 158개는 직접 검증 단위로 승격해야 하고, lifecycle/CFLAG/event/time 27개는 실제 owner로 이동해야 한다. |
+| M32 | 294 | 286 | 8 | 0 | 아니오 | Chara identity/lifecycle 286개는 완료 후보. CSTR label 5개와 `ZNAME.ERB`/`C_CLUB_GIRLNAME.ERB`/`BOYFRIENDNAME_CALC.ERB` source-file-review 3개는 blocked다. |
+| M33 | 5,300 | 4,768 | 465 | 67 | 아니오 | Chara `BASE/ABL/TALENT/EXP` seed 4,768개는 완료 후보. 표시 정의/save field 465개는 직접 검증으로 승격해야 하고, CFLAG/FLAG/PBAND 67개는 M34 scope로 이동해야 한다. |
+| M34 | 2,235 | 1,998 | 237 | 0 | 아니오 | CFLAG/RELATION seed와 wardrobe route 1,998개는 완료 후보. mapped 234개와 M30에서 넘어온 item 211 definition/save/session 3개가 blocked다. |
+| M34.5 | 189 | 188 | 1 | 0 | 아니오 | evidence correction 169개와 registry contract 19개는 hardening 완료 후보. 새 기준상 M34.5 closure의 `responsibilityIntegrity`가 없어 1개 blocked다. |
+
+다음 조치:
+- M31: listing/가격/조건/생성 결과만 M31 완료 단위로 남기고 template seed, source-file-review, 후속 lifecycle/event row를 분리한다.
+- M32: source-file-review 3개를 label/동작 단위로 분해하고, event random-name logic은 M47로 이동한다.
+- M33: seed owner와 표시/save-field owner를 직접 검증 단위로 승격하고, CFLAG/FLAG/PBAND는 M34 manifest에서 닫는다.
+- M34: item 211 누락 3개와 mapped 234개를 구현/검증하거나 blocked로 유지한다.
+- M34.5: hardening closure에 `responsibilityIntegrity`를 추가하거나 새 기준으로 blocked를 유지한다.
+
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼다. | closure에 `responsibilityIntegrity`가 없다. |

@@ -1,5 +1,15 @@
 # Next Milestone
 
+## 2026-05-02 다음 처리 순서 보정
+
+M31~M34.5의 source-unit manifest 1차 산출까지 완료했다. 따라서 다음 순서는 M42로 바로 넘어가는 것이 아니라 아래 순서다.
+
+1. M31~M34.5의 blocked/scope-redesign-required unit을 실제 구현 검증 또는 명시적 scope 재설계로 닫는다.
+2. M35~M41도 같은 방식으로 source-unit manifest를 만든다.
+3. M28~M41 전체에서 `completedAllowedNow: true` 또는 정당한 blocked/scope-redesign-required closure가 확정된 뒤 M42 command effect 구현을 재개한다.
+
+현재 M31~M34.5 판정: M31 52/237, M32 286/294, M33 4768/5300, M34 1998/2235, M34.5 188/189만 `implemented-verified`다. 나머지는 완료로 계산하지 않는다.
+
 ## M28~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
 
 현재 즉시 목표는 M28~M41 완료 선언을 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다. 2026-05-02 재판정 결과, M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없다. 그 다음에야 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.

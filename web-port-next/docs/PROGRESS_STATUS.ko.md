@@ -1,5 +1,25 @@
 # 진행 상태
 
+## 2026-05-02 M31~M34.5 재판정 추가
+
+M31~M34.5에 대해 병렬 에이전트 비판 검토 결과를 반영해 source-unit manifest 1차 산출물을 만들었다. 새 기준에서는 이 구간도 `completed` 유지가 불가하다.
+
+| milestone | manifest | total | implemented-verified | blocked | scope-redesign-required | completedAllowedNow |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| M31 | `data/coverage/manifests/M31-source-units.json` | 237 | 52 | 158 | 27 | false |
+| M32 | `data/coverage/manifests/M32-source-units.json` | 294 | 286 | 8 | 0 | false |
+| M33 | `data/coverage/manifests/M33-source-units.json` | 5300 | 4768 | 465 | 67 | false |
+| M34 | `data/coverage/manifests/M34-source-units.json` | 2235 | 1998 | 237 | 0 | false |
+| M34.5 | `data/coverage/manifests/M34.5-source-units.json` | 189 | 188 | 1 | 0 | false |
+
+구체적 후속 처리:
+
+- M31: recruit listing/price/condition/generation 범위만 자기 책임으로 닫고, character template seed/source-file-review/lifecycle/event row는 각 owner로 분해한다.
+- M32: source-file-review 3개를 단위로 분해하고, cabaret/NTR random-name logic은 M47 이벤트/텍스트 owner로 넘긴다.
+- M33: seed/display/save-field evidence를 직접 runtime/save/roundtrip 근거로 승격하거나 blocked로 남긴다. CFLAG/FLAG/PBAND 67개는 M34 책임으로 재배정한다.
+- M34: item 211 관련 누락 3개와 mapped 234개를 구현 검증 또는 blocked로 닫는다.
+- M34.5: closure에 `responsibilityIntegrity`를 추가하지 않으면 hardening 완료로 보지 않는다.
+
 기준 날짜: 2026-05-02
 
 ## 에이전트 시작점
