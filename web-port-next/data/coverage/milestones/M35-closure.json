@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "milestone-closure/v1",
+  "milestone": "M35",
+  "title": "Turn end, time progression, and automatic hook pipeline",
+  "status": "completed",
+  "completedAt": "2026-05-01",
+  "commitPolicy": "Commit after every milestone closure.",
+  "commitHash": "recorded by the M35 git commit that includes this closure file",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "saveMapping": "data/coverage/save-mapping.json",
+    "inboundTransfers": [
+      "data/coverage/shop-purchase-coverage.json",
+      "data/coverage/shop-purchase-coverage.json",
+      "data/coverage/recruit-coverage.json"
+    ]
+  },
+  "outputs": {
+    "turnPipelineCoverage": "data/coverage/turn-pipeline-coverage.json",
+    "gapAudit": "data/coverage/audits/M35-gap-audit.json",
+    "builder": "tools/build_turn_pipeline_coverage.mjs",
+    "coverageGate": "tools/gate_turn_pipeline.mjs",
+    "closureGate": "tools/gate_milestone_scope_closure.mjs",
+    "smoke": "tools/m35_turn_long_smoke.ts"
+  },
+  "counts": {
+    "ownedTotal": 7,
+    "implemented": 0,
+    "mapped": 7,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 7,
+    "implemented": 0,
+    "mapped": 7,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "verification": {
+    "commands": [
+      "npm run coverage:turn-pipeline",
+      "npm run gate:turn-pipeline",
+      "npm run gate:milestone-scope-closure -- M35",
+      "npm run smoke:turn-long",
+      "npm run smoke:m8",
+      "npm run verify:m16",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ],
+    "expectedGateResult": "7 M35 owned row(s), 0 unresolved issue(s)"
+  },
+  "commandsRun": [
+    "npm run coverage:turn-pipeline",
+    "npm run gate:turn-pipeline",
+    "npm run gate:milestone-scope-closure -- M35",
+    "npm run smoke:turn-long",
+    "npm run smoke:m8",
+    "npm run verify:m16",
+    "npm run typecheck",
+    "npm run build",
+    "npm run test --if-present"
+  ]
+}

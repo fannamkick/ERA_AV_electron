@@ -2,13 +2,17 @@ export type GameClock = {
   readonly day: number;
   readonly month: number;
   readonly week: number;
+  readonly year: number;
   readonly turn: number;
+  readonly currentTimeSlot: number;
+  readonly dayCounters: Record<string, number>;
+  readonly timeCounters: Record<string, number>;
   readonly phase: 'setup' | 'freeAction' | 'training' | 'event' | 'endOfDay';
 };
 
 export type ScheduledEvent = {
   readonly id: string;
-  readonly trigger: 'immediate' | 'endOfDay' | 'nextDay';
+  readonly trigger: 'immediate' | 'endOfDay' | 'nextDay' | 'weekStart' | 'monthStart';
   readonly reason: string;
 };
 
@@ -22,6 +26,7 @@ export type RunState = {
   readonly scheduledEvents: readonly ScheduledEvent[];
   readonly actorMemory: ActorMemoryState;
   readonly runFlags: Record<string, boolean | number | string>;
+  readonly progressFlags: Record<string, boolean | number | string>;
   readonly rngSeed?: string;
 };
 
@@ -30,10 +35,15 @@ export const initialRunState: RunState = {
     day: 1,
     month: 1,
     week: 1,
+    year: 1,
     turn: 0,
+    currentTimeSlot: 0,
+    dayCounters: {},
+    timeCounters: {},
     phase: 'setup',
   },
   scheduledEvents: [],
   actorMemory: {},
   runFlags: {},
+  progressFlags: {},
 };

@@ -180,7 +180,11 @@ function main() {
           day: 21,
           month: 1,
           week: 4,
+          year: 1,
           turn: 3,
+          currentTimeSlot: 0,
+          dayCounters: {},
+          timeCounters: {},
           phase: 'endOfDay',
         },
       },
@@ -193,6 +197,7 @@ function main() {
   assert(context.state.run.clock.day === 28, 'week rollover should advance day by 7.');
   assert(context.state.run.clock.week === 1, 'week 4 should roll over to week 1.');
   assert(context.state.run.clock.month === 2, 'week 4 should advance the month.');
+  assert(context.state.run.clock.year === 1, 'month 2 should keep year at 1.');
   assert(context.state.run.clock.turn === 4, 'week rollover should increment turn.');
   assert(context.state.run.clock.phase === 'freeAction', 'week rollover should return phase to freeAction.');
 

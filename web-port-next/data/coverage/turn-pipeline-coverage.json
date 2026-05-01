@@ -1,0 +1,196 @@
+{
+  "schemaVersion": "turn-pipeline-coverage/v1",
+  "generatedBy": "tools/build_turn_pipeline_coverage.mjs",
+  "milestone": "M35",
+  "ownerRole": "turn-time-owner",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "saveMapping": "data/coverage/save-mapping.json",
+    "inboundTransfers": [
+      "data/coverage/shop-purchase-coverage.json",
+      "data/coverage/shop-purchase-coverage.json",
+      "data/coverage/recruit-coverage.json"
+    ]
+  },
+  "scopeContract": {
+    "ownedUnitIds": [
+      "unit:M35:turn-time"
+    ],
+    "rule": "Every M35 queue row and inbound transfer must be mapped-consumed by the turn pipeline exactly once.",
+    "hookOrder": [
+      "scheduled-events",
+      "mission-deadline",
+      "clock-advance",
+      "weekly-automatic-processing",
+      "monthly-automatic-processing",
+      "world-event-hook",
+      "session-cleanup"
+    ],
+    "saveBoundary": "Turn completion may mutate run clock/progress, mission deadlines, economy monthly entries, and world event flags; it must clear session choices and keep session/view data out of save payload."
+  },
+  "summary": {
+    "ownedRowRefs": 7,
+    "rows": 7,
+    "implemented": 0,
+    "mapped": 7,
+    "transferredOut": 0,
+    "approvedExcluded": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0,
+    "inboundTransfers": 3,
+    "byRowKind": {
+      "save-mapping": 7
+    },
+    "byScopeSource": {
+      "data/coverage/recruit-coverage.json": 1,
+      "data/coverage/shop-purchase-coverage.json": 2,
+      "implementation-queue": 4
+    },
+    "byCompletionStatus": {
+      "mapped-consumed-turn-save-field": 7
+    },
+    "byAddress": {
+      "CFLAG:34": 1,
+      "DAY:0": 1,
+      "DAY:3": 1,
+      "DAY:4": 1,
+      "FLAG:61": 1,
+      "TIME": 1,
+      "TIME:0": 1
+    }
+  },
+  "rows": [
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-cflag-34",
+      "reviewId": "save-mapping:save-map:source:cflag-34",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/shop-purchase-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-34",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "sourceLabel": "",
+      "family": "CFLAG",
+      "address": "CFLAG:34",
+      "fieldPath": "run.progressFlags.flag_34",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.progressFlags.flag_34 <- monthly automatic turn hook",
+      "verificationId": "smoke:turn-long",
+      "inboundTransfer": true,
+      "fromMilestone": "M29",
+      "toMilestone": "M35",
+      "transferReason": "Save field CFLAG:34 is not mutated by M29 purchase itself; M35 owns its effect or source feature.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-day-0",
+      "reviewId": "save-mapping:save-map:source:day-0",
+      "rowKind": "save-mapping",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:save-map:day-0",
+      "sourcePath": "",
+      "sourceLabel": "",
+      "family": "DAY",
+      "address": "DAY:0",
+      "fieldPath": "run.clock.dayCounters.counter_0",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.clock.dayCounters.counter_0 <- advanceTurnClock day progression and save roundtrip",
+      "verificationId": "smoke:turn-long"
+    },
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-day-3",
+      "reviewId": "save-mapping:save-map:source:day-3",
+      "rowKind": "save-mapping",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:save-map:day-3",
+      "sourcePath": "",
+      "sourceLabel": "",
+      "family": "DAY",
+      "address": "DAY:3",
+      "fieldPath": "run.clock.dayCounters.counter_3",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.clock.dayCounters.counter_3 <- advanceTurnClock month rollover counter",
+      "verificationId": "smoke:turn-long"
+    },
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-day-4",
+      "reviewId": "save-mapping:save-map:source:day-4",
+      "rowKind": "save-mapping",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:save-map:day-4",
+      "sourcePath": "",
+      "sourceLabel": "",
+      "family": "DAY",
+      "address": "DAY:4",
+      "fieldPath": "run.clock.dayCounters.counter_4",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.clock.dayCounters.counter_4 <- advanceTurnClock turn counter",
+      "verificationId": "smoke:turn-long"
+    },
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-flag-61",
+      "reviewId": "save-mapping:save-map:source:flag-61",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/shop-purchase-coverage.json",
+      "sourceEvidenceId": "source:save-map:flag-61",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "sourceLabel": "",
+      "family": "FLAG",
+      "address": "FLAG:61",
+      "fieldPath": "run.progressFlags.flag_61",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.progressFlags.flag_61 <- weekly automatic turn hook",
+      "verificationId": "smoke:turn-long",
+      "inboundTransfer": true,
+      "fromMilestone": "M29",
+      "toMilestone": "M35",
+      "transferReason": "Save field FLAG:61 is not mutated by M29 purchase itself; M35 owns its effect or source feature.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-time",
+      "reviewId": "save-mapping:save-map:source:time",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/recruit-coverage.json",
+      "sourceEvidenceId": "source:save-map:time",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "sourceLabel": "",
+      "family": "TIME",
+      "address": "TIME",
+      "fieldPath": "run.clock.currentTimeSlot",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.clock.currentTimeSlot <- advanceTurnClock time reset and save roundtrip",
+      "verificationId": "smoke:turn-long",
+      "inboundTransfer": true,
+      "fromMilestone": "M31",
+      "toMilestone": "M35",
+      "transferReason": "Save field TIME is semantic owner work for M35, while M31 only creates recruit container records.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "turn-pipeline:save-mapping:save-map-source-time-0",
+      "reviewId": "save-mapping:save-map:source:time-0",
+      "rowKind": "save-mapping",
+      "scopeSource": "implementation-queue",
+      "sourceEvidenceId": "source:save-map:time-0",
+      "sourcePath": "",
+      "sourceLabel": "",
+      "family": "TIME",
+      "address": "TIME:0",
+      "fieldPath": "run.clock.timeCounters.counter_0",
+      "runtimeOwner": "run",
+      "completionStatus": "mapped-consumed-turn-save-field",
+      "runtimeConsumerId": "run.clock.timeCounters.counter_0 <- advanceTurnClock time counter reset",
+      "verificationId": "smoke:turn-long"
+    }
+  ],
+  "unresolvedIssues": []
+}

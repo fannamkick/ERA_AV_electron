@@ -27,7 +27,7 @@
 | M5 메인 화면 view | `mainMenu` route, 메인 메뉴 view 계산, enabled/disabled 사유, effect 로그, unknown route 경로 구현 |
 | M6 아이템 구매 1차 | 상점 진입, 판매 listing 계산, 선택/수량 변경, 구매 성공/실패/취소, 돈/인벤토리 반영 구현 |
 | M7 고용/영입 1차 | 영입 listing view, 후보 선택, 돈 부족 실패, 영입 성공, 중복 실패, 취소, `people/body/social/equipment` 생성 경계 구현 |
-| M8 턴 종료/시간 진행 | `turn/end` action, 주차/월 롤오버, phase 복귀, 예약 이벤트 소비, session 임시 상태 폐기, 미션/월말 hook stub 경계 구현 |
+| M8 턴 종료/시간 진행 | `turn/end` action, 주차/월 롤오버, phase 복귀, 예약 이벤트 소비, session 임시 상태 폐기 경계 구현. 미션/월말 hook은 M35에서 실제 처리로 승격 |
 | M9 저장/로드 | 저장 payload schema v1, 직렬화/역직렬화, 손상 JSON/future schema/runtime 오염 payload 실패, 저장 roundtrip, `saveLoad` session 폐기 구현 |
 | M10 방문/시설 1차 | 방문 장소/행동 view, 조직 사무소 기본 방 사용 허가, 돈 부족/중복/취소 실패 경로, `world.unlocks`와 `featureState.visits` 저장 경계, `visit` session 폐기 구현 |
 | M11 미션 1차 | 미션 정의 1개, 미션 목록/선택 view, 수락/보고 action, 조건 미충족 실패, 방문 해금 조건 연동, 보상 지급, `mission` 저장 상태와 `mission-session` 경계 구현 |
@@ -54,6 +54,7 @@
 | M32 인물 원형과 identity 완성 | implementation queue 274행과 M31 inbound transfer 20행, 총 294행을 implemented 286, mapped 8, unresolved issue 0개로 닫음. Chara template 109개, identity, CSTR seed, lifecycle 상태를 정의/save 경계에 연결 |
 | M33 신체/능력/소질/경험 완성 | M27 queue 5,283행과 M33 필수 `Palam.csv` 정의 17행, 총 5,300행을 implemented 4,768, mapped 465, transferredOut 67, unresolved issue 0개로 닫음. Chara `BASE/ABL/TALENT/EXP` seed와 `BASE/ABL/TALENT/EXP/MARK/PALAM` 표시 정의를 people/body owner로 연결 |
 | M34 관계/CFLAG/장비/의복 owner 완성 | M34 queue 2,149행과 M29/M31/M33 inbound transfer 83행, 총 2,232행을 implemented 1,998, mapped 234, unresolved issue 0개로 닫음. CFLAG 정의 151개, Chara CFLAG seed 1,465개, RELATION seed 532개, 의복 pack/장비 save/session row를 의미별 owner와 wardrobe route에 연결 |
+| M35 턴 종료와 시간 진행 완성 | M35 queue 4행과 M29/M31 inbound transfer 3행, 총 7행을 mapped 7, unresolved issue 0개로 닫음. day/week/month/year 진행, 시간 counter, 주/월 자동 hook, 미션 기한, 이벤트 hook, session cleanup, save roundtrip을 `smoke:turn-long`으로 검증 |
 
 ## 미완료
 
@@ -68,8 +69,8 @@
 | 자동 테스트 | M16 기준 범용 검증 묶음은 `npm run verify:m16`. Phase 1 dispatch smoke, M7 영입 smoke, M8 턴 종료 smoke, M9 저장/로드 smoke, M10 방문 smoke, M11 미션 smoke, M12 업무 smoke, M13 촬영 smoke, M14 훈련 smoke, 저장 roundtrip, boundary gate, raw-name gate, stub gate, build를 포함 |
 | 확정 변환표 | M17에서 상태값/증거/차단 정책은 확정됨. M24에서 저장 mapping 장부를 만들었고 M25에서 세션/계산 mapping 장부를 만들었다 |
 | 기능 전수 구현 | M19에서 기능 row 5,344개를 만들었고 11개만 현재 구현 완료 근거를 가진다. 나머지 5,333개는 M28~M49에서 구현 또는 사용자 승인 제외로 닫아야 할 blocker다 |
-| 정의 전수 구현 | 아직 완료 아님. M20/M23 기준 definition row 8,000개를 만들고 역할/소비 책임을 배정했다. M30~M34에서 아이템 사용, 영입 listing, 인물 identity, 신체/능력/소질/경험, CFLAG/장비/관계 일부는 실제 소비 검증으로 닫았지만, 턴/방문/업무/촬영/훈련/미션/이벤트/엔딩/정보 계열은 M35~M49에서 계속 닫아야 한다. `template`/`listing`/`display-only`/`calculation-only`는 실제 consumer와 verification이 붙기 전까지 최종 구현 완료가 아니다 |
-| M34.5 전수 이식 gate hardening | 완료. auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결했고, `gate:source-evidence`가 마일스톤별 coverage row까지 검사한다. M35~M52 전용 script registry와 최종 verify skeleton도 생성했다 | M35 진행 가능. 단 M35~M52 placeholder script는 실행 시 실패하므로 각 마일스톤에서 실제 coverage/gate/smoke 구현으로 교체해야 한다 |
+| 정의 전수 구현 | 아직 완료 아님. M20/M23 기준 definition row 8,000개를 만들고 역할/소비 책임을 배정했다. M30~M35에서 아이템 사용, 영입 listing, 인물 identity, 신체/능력/소질/경험, CFLAG/장비/관계 일부, 턴/시간 진행은 실제 소비 검증으로 닫았지만, 방문/업무/촬영/훈련/미션/이벤트/엔딩/정보 계열은 M36~M49에서 계속 닫아야 한다. `template`/`listing`/`display-only`/`calculation-only`는 실제 consumer와 verification이 붙기 전까지 최종 구현 완료가 아니다 |
+| M34.5 전수 이식 gate hardening | 완료. auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결했고, `gate:source-evidence`가 마일스톤별 coverage row까지 검사한다. M35~M52 전용 script registry와 최종 verify skeleton도 생성했다 | M35는 실제 script로 교체 완료. M36~M52 placeholder script는 실행 시 실패하므로 각 마일스톤에서 실제 coverage/gate/smoke 구현으로 교체해야 한다 |
 
 ## 데이터 완성도 판단
 
@@ -101,7 +102,8 @@
 | 인물 원형과 identity 완성 | M32에서 Chara template 109개, 이름/호칭/별명/표시명, CSTR identity seed, 삭제/은퇴/조수 가능/영입 상태를 정의와 save 경계에 연결했다 | M33에서 신체/능력/소질/경험 계열을 이어서 닫았다 |
 | 관계/CFLAG/장비/의복 owner 완성 | M34에서 `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`을 추가해 CFLAG seed와 의복/장비 route를 실제 소비 경로에 연결했다. raw `CFLAG`는 runtime 모델명으로 남기지 않는다 | M34.5에서 auxiliary evidence 완료 근거와 최종 gate 부재를 해소했다 |
 | source evidence hard gate | `npm run gate:source-evidence` 통과. `legacyCharacterFlagDefinitions` 151개와 `sourceDefinitions` 18개는 auxiliary 해석 보조를 유지하되 primary `VariableSize.CSV` evidence를 완료 근거로 사용한다 | 완료성 row가 auxiliary evidence만 가지면 gate가 실패한다 |
-| M35~M52 gate 실체화 | `coverage-gate-registry.json`과 `gate:coverage-hardening`을 추가했고, M35~M52 필수 script와 최종 audit/verify skeleton을 package script로 등록했다 | 아직 구현되지 않은 M35~M52 script는 placeholder라 실행 시 실패한다. 각 마일스톤에서 실제 구현으로 교체해야 완료 가능 |
+| M35~M52 gate 실체화 | `coverage-gate-registry.json`과 `gate:coverage-hardening`을 추가했고, M35~M52 필수 script와 최종 audit/verify skeleton을 package script로 등록했다 | M35 script는 실제 구현으로 교체 완료. 아직 구현되지 않은 M36~M52 script는 placeholder라 실행 시 실패한다. 각 마일스톤에서 실제 구현으로 교체해야 완료 가능 |
+| 턴/시간 진행 완성 | M35에서 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`을 실제 script로 교체했다. `run.clock`의 day/week/month/year/currentTimeSlot/counter와 `run.progressFlags.flag_34/flag_61`을 turn pipeline에서 소비하고, weekly/monthly hook, mission deadline, world event hook, monthly maintenance, session cleanup을 검증한다 | M36부터는 방문/시설 기능군을 같은 방식으로 owner row, coverage, gate, smoke, closure로 닫아야 함 |
 | 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M22/M26/M28~M49에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
 | feature coverage | row 5,344개 생성. `implemented` 11개, `blocker` 5,333개. dynamic/persistence/exit/pause/unreferenced global count가 원본 분석과 일치함 | M28~M49에서 blocker row를 줄이며 M52에서 미구현 feature 0개 |
 
@@ -182,6 +184,12 @@ npm run coverage:gate-registry
 npm run gate:source-evidence
 npm run gate:coverage-hardening
 npm run gate:milestone-scope-closure -- M34.5
+npm run coverage:turn-pipeline
+npm run gate:turn-pipeline
+npm run gate:milestone-scope-closure -- M35
+npm run smoke:turn-long
+npm run smoke:m8
+npm run verify:m16
 npm run smoke:main-routes
 npm run gate:definition-consumption
 npm run typecheck
@@ -223,7 +231,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - `gate:boundaries` 통과
 - M16 boundary gate에서 runtime diagnostics error 0개, action result boundary, save payload boundary, session/definitions/views 오염 payload 실패 검증 통과
 - `gate:raw-names` 통과
-- `gate:stubs` 통과, 문서화된 보류 marker 33개와 미등록 marker 0개
+- `gate:stubs` 통과, 문서화된 보류 marker 28개와 미등록 marker 0개
 - `verify:m16` 통과
 - `inventory:legacy-mapping` 통과, 원본 주소 수집 진단 0건
 - core adapter import 경계 검색 통과: `src/game`, `src/domains`, `src/catalog`에서 `adapters/legacy|legacy/` 매칭 0개
@@ -241,6 +249,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M33 body/stat coverage/gate/smoke 통과, owned row 5,300개와 unresolved issue 0개
 - M34 social/equipment/CFLAG coverage/gate/smoke 통과, owned row 2,232개와 unresolved issue 0개
 - M34.5에서 `npm run gate:source-evidence` 실패 원인이던 auxiliary evidence 완료성 row 169개를 primary source evidence로 재연결했고, M35~M52 gate registry와 final verify skeleton을 추가했다.
+- M35 turn pipeline coverage/gate/smoke 통과, owned row 7개와 unresolved issue 0개
 - `smoke:main-routes` 통과, 메인 메뉴 108 wardrobe route 활성화 확인
 - `analyze:game-system` 통과
 - `tsc --noEmit` 통과
@@ -281,7 +290,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 29. M34 관계/CFLAG/장비/의복 owner 완성은 `npm run coverage:social-equipment-cflag`, `npm run gate:social-equipment-cflag`, `npm run gate:milestone-scope-closure -- M34`, `npm run smoke:social-equipment-cflag`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M34 owned scope 2,232행 중 implemented 1,998, mapped 234, unresolved issue 0개로 닫았다.
 30. M34 이후 전수 검토에서 M35 진입 전 hardening 필요가 확인되었다.
 31. M34.5 전수 이식 gate hardening은 완료되었다. `gate:source-evidence`, `gate:coverage-hardening`, `gate:coverage-crosscheck`, `gate:pre-implementation-audit`, `gate:implementation-queue`, `build`, `test --if-present`가 통과했다.
-32. 다음 작업은 M35 턴 종료와 시간 진행 완성이다. M35 placeholder script를 실제 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long` 구현으로 교체한 뒤 진행한다.
+32. M35 턴 종료와 시간 진행 완성은 `npm run coverage:turn-pipeline`, `npm run gate:turn-pipeline`, `npm run gate:milestone-scope-closure -- M35`, `npm run smoke:turn-long`, `npm run smoke:m8`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M35 owned scope 7행 중 mapped 7, unresolved issue 0개로 닫았다.
+33. 다음 작업은 M36 방문/시설 완성이다. M36 placeholder script를 실제 `coverage:visit-facility`, `gate:visit-facility`, `smoke:visit-all` 구현으로 교체하고, 방문 장소/행동/시설 해금/비용/실패/취소/roundtrip을 coverage와 gate로 닫는다.
 
 ## 주의
 

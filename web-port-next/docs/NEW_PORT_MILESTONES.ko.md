@@ -1382,17 +1382,38 @@ npm run test --if-present
 - 완료 결과: 턴 종료 후 시간, 이벤트, 비용/보상, session 폐기, 저장 roundtrip이 검증된다.
 - 누락 차단: hook 순서가 불명확하거나 턴 종료 중 임시 선택값이 저장되면 완료하지 않는다.
 
-- [ ] M34.5가 완료되지 않았으면 M35를 시작하지 않음
-- [ ] `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`이 실제 script로 존재하고 실패 조건을 가짐
-- [ ] 원본 턴 종료 흐름의 day/week/month/year 진행 규칙을 구현
-- [ ] 전반/후반 또는 phase 전환 규칙을 저장 상태와 session 폐기로 분리
-- [ ] 턴 종료 전 hook, 턴 종료 후 hook, 월말 hook, 새 주 hook을 정의
-- [ ] 자동 구매, 자동 아이템 사용, 업무 결과, 미션 기한, 이벤트 발생 순서를 연결
-- [ ] 월말 비용, 판매, 보상, 패널티가 `economy/run/world` owner에 반영되는지 검증
-- [ ] 턴 종료 중 session 선택값이 남지 않는지 검증
-- [ ] 턴 종료 후 저장 roundtrip을 검증
-- [ ] M19/M24/M25 coverage의 turn-end 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] M34.5가 완료되지 않았으면 M35를 시작하지 않음
+- [x] `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`이 실제 script로 존재하고 실패 조건을 가짐
+- [x] 원본 턴 종료 흐름의 day/week/month/year 진행 규칙을 구현
+- [x] 전반/후반 또는 phase 전환 규칙을 저장 상태와 session 폐기로 분리
+- [x] 턴 종료 전 hook, 턴 종료 후 hook, 월말 hook, 새 주 hook을 정의
+- [x] 자동 구매, 자동 아이템 사용, 업무 결과, 미션 기한, 이벤트 발생 순서를 연결
+- [x] 월말 비용, 판매, 보상, 패널티가 `economy/run/world` owner에 반영되는지 검증
+- [x] 턴 종료 중 session 선택값이 남지 않는지 검증
+- [x] 턴 종료 후 저장 roundtrip을 검증
+- [x] M19/M24/M25 coverage의 turn-end 관련 status 갱신
+- [x] `npm run build` 실행
+
+M35 완료 근거:
+- M35 owned scope는 implementation queue 4행과 M29/M31 inbound transfer 3행을 합친 7행이다.
+- `DAY:0`, `DAY:3`, `DAY:4`, `TIME`, `TIME:0`은 `run.clock.dayCounters`, `run.clock.currentTimeSlot`, `run.clock.timeCounters`로 소비한다.
+- M29/M31에서 이관된 `CFLAG:34`, `FLAG:61` save row는 원본명 runtime 모델이 아니라 `run.progressFlags.flag_34`, `run.progressFlags.flag_61`로 소비한다.
+- `turnEndBeforeHooks`와 `turnEndAfterHooks`는 scheduled event, mission deadline, clock advance, weekly/monthly automatic hook, world event hook, session cleanup 순서를 가진다.
+- `smoke:turn-long`은 장기 턴, 월/년 rollover, 미션 기한 실패, weekly/monthly scheduled event, 월말 비용, session cleanup, save roundtrip을 검증한다.
+- `data/coverage/turn-pipeline-coverage.json`, `data/coverage/audits/M35-gap-audit.json`, `data/coverage/milestones/M35-closure.json`을 생성했다. ownedTotal 7, mapped 7, blocker/missing/unapproved 0.
+
+검증:
+```bash
+npm run coverage:turn-pipeline
+npm run gate:turn-pipeline
+npm run gate:milestone-scope-closure -- M35
+npm run smoke:turn-long
+npm run smoke:m8
+npm run verify:m16
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M36. 방문/시설 완성
 
