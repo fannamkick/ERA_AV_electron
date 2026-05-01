@@ -5,7 +5,7 @@
   "status": "completed",
   "completedAt": "2026-05-01",
   "commitPolicy": "Commit after every milestone closure.",
-  "commitHash": "recorded by the M36 git commit that includes this closure file",
+  "commitHash": "404794c",
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
     "definitions": "data/coverage/definitions.json",
