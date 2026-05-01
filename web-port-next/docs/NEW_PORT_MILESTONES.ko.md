@@ -93,7 +93,9 @@
 - M17~M18: 원본 대조 정책과 반복 구현 규칙 고정
 - M19~M20: 원본 기능, 정의 데이터 1차 전수표 작성
 - M21~M27: 원본 근거, 저장 상태, 세션/계산 상태 전수표 보강과 구현 전 누락 감사
-- M28~M49: 전수표를 기준으로 기능군별 구현 완료
+- M28~M34: 전수표를 기준으로 기능군별 구현 완료
+- M34.5: M35 이후 누락 방지 gate hardening. M35로 넘어가기 전에 반드시 통과해야 하는 차단 마일스톤
+- M35~M49: hardening된 전수표와 gate를 기준으로 기능군별 구현 완료
 - M50~M52: 전체 저장/로드, 최종 누락 감사, 완전 이식 판정
 - M1~M18 완료는 완전 이식 완료가 아님
 
@@ -140,6 +142,22 @@
 - [ ] 각 마일스톤은 `data/coverage/milestones/Mxx-closure.json`을 남긴다. 이 파일에는 `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash`를 기록한다.
 - [ ] `Mxx-closure.json`에서 `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded` 중 하나라도 0이 아니면 해당 마일스톤은 완료하지 않는다.
 
+## M35 진입 전 hardening 차단 규칙
+
+이 절은 M35~M52의 세부 체크리스트보다 우선한다. M34까지의 완료는 유지하지만, 아래 항목이 닫히기 전에는 M35를 시작하지 않는다. 문서상 계획만 있고 실제 `package.json` script, `tools/*` gate, coverage 산출물, 실패 조건이 없으면 완료가 아니다.
+
+- [ ] `npm run gate:source-evidence`가 통과해야 한다. 현재처럼 auxiliary evidence만으로 `used`, `template`, `listing`, `display-only`, `calculation-only`, `mapped`, `non-save`, `session-field`, `calculation-internal`, `script-scratch`, `approved-excluded` 완료성 상태를 부여하면 실패해야 한다.
+- [ ] `Ho版資料（作成中途）/source.csv`, `Ho版資料（作成中途）/cflag.csv` 같은 보조 자료는 해석 보조로만 쓴다. primary 원본 근거 없이 완료 처리하지 않는다.
+- [ ] `gate:source-evidence`는 `features.json`, `definitions.json`, `blockers.json`뿐 아니라 `save-mapping.json`, `session-mapping.json`, `approved-exclusions.json`, `implementation-queue.json`, 마일스톤별 `*-coverage.json`의 source evidence도 검사해야 한다.
+- [ ] `source-file-review`는 완료 상태가 아니다. primary 파일을 실제 라벨, CSV 행, family/index, read/write row로 분해하거나 사용자 승인 제외 근거가 있을 때만 닫는다.
+- [ ] M35~M49 각 마일스톤은 시작 전에 전용 `coverage:*`, `gate:*`, `smoke:*` 또는 동등한 검증 script가 `package.json`에 등록되어 있어야 한다.
+- [ ] 전용 gate는 해당 마일스톤 coverage row마다 `sourceEvidenceId`, `runtimeConsumerId`, `verificationId`, `ownerMilestone`, `status`를 검사해야 한다.
+- [ ] 전용 gate는 placeholder, no-op handler, 표시만 되는 화면, role-only row, consumer 없는 used row, verification 없는 mapped row를 실패시켜야 한다.
+- [ ] `gate:milestone-scope-closure`는 closure 숫자만 보지 않는다. 해당 마일스톤의 coverage 파일, gap audit, commandsRun, 전용 gate/smoke 결과, transfer/approval 근거를 함께 검증하도록 강화되어야 한다.
+- [ ] M51/M52에 필요한 `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap`, `coverage:view-text`, `gate:view-and-text-coverage`, `report:full-port`, `gate:complete-port-verdict`, `verify:complete`가 실제 script로 존재해야 한다.
+- [ ] `verify:complete`는 전체 coverage 재생성, 모든 gate, 전체 smoke, long-play, failure matrix, 전체 roundtrip, typecheck, build, test를 한 번에 실행해야 한다.
+- [ ] 위 항목 중 하나라도 빠지면 다음 작업은 M35가 아니라 M34.5 hardening이다.
+
 ## M21~M52 책임 차단 매트릭스
 
 이 표는 M21 이후 체크리스트의 해석 기준이다. 각 마일스톤은 자기 행의 `소유 범위`를 닫아야 하며, `완료 차단`이 하나라도 남으면 체크할 수 없다.
@@ -160,6 +178,7 @@
 | M32 | 인물 identity 관리자 | Chara template, 이름/호칭/별명/표시명, 인스턴스 identity 상태 | `character-identity-coverage.json`, `gate:character-identity`, `gate:milestone-scope-closure -- M32` | 정의 문자열과 save 상태 혼합, template 109개 중 미소비 row, 표시 검증 없음 |
 | M33 | 신체/능력/소질 관리자 | BASE/ABL/TALENT/EXP/MARK/PALAM 및 body/people 수치와 표시 정의 | `body-stat-coverage.json`, `gate:body-stat-mapping`, `gate:milestone-scope-closure -- M33` | 표시 정의와 저장 수치 혼합, 결과 필드 중복, 값 범위/roundtrip 미검증 |
 | M34 | 관계/CFLAG/장비 관리자 | CFLAG index, 관계, 장비/의복/착용/해금 owner | `cflag-owner-coverage.json`, `gate:cflag-owner`, `gate:milestone-scope-closure -- M34` | 의미 불명 CFLAG mapped 처리, raw `CFLAG` runtime 노출, 관계/장비 roundtrip 누락 |
+| M34.5 | 전수 gate hardening 관리자 | source evidence, source-file-review, M35~M52 전용 gate, 최종 verify script | `gate:source-evidence`, `gate:coverage-hardening`, `coverage-gate-registry.json`, `gate:milestone-scope-closure -- M34.5` | auxiliary 완료 근거, source-file-review 쉬운 완료, M35~M52 전용 gate 부재, 최종 verify script 부재 |
 | M35 | 턴/시간 관리자 | day/week/month/year, phase, hook 순서, 자동 구매/사용, 미션/이벤트 hook | `turn-pipeline-coverage.json`, `smoke:turn-long`, `gate:milestone-scope-closure -- M35` | hook 순서 충돌, session 잔류, 장기 턴 진행/월말 미검증 |
 | M36 | 방문/시설 구현자 | 방문 장소, 시설, 장소별 행동, 해금/비용/결과 | `visit-facility-coverage.json`, `smoke:visit-all`, `gate:milestone-scope-closure -- M36` | 장소/행동 미소유 row, 선택 session과 save 혼합, 결과 owner 없음 |
 | M37 | 업무/창관 구현자 | 업무/창관/아르바이트/특수 업무의 조건, 계산, 결과, 턴 연결 | `work-coverage.json`, `smoke:work-all`, `gate:milestone-scope-closure -- M37` | 계산값 save 잔류, 결과 owner 분산, 조건 미충족/취소 미검증 |
@@ -227,6 +246,7 @@
 | M32 | 인물 identity 관리자 | Chara template 전체와 이름/호칭/별명/표시 identity를 정의/저장 경계에 맞춘다 | character identity model, template-to-instance conversion, identity view tests | 109개 원형이 인스턴스 생성과 표시, 저장 roundtrip을 통과 | 정의 문자열과 플레이 중 상태가 같은 save 필드에 섞임 |
 | M33 | 신체/능력/소질 관리자 | BASE, ABL, TALENT, EXP, MARK, PALAM 계열을 body/people 정의와 저장 수치로 분해한다 | body/ability state model, seed mapping, stat display tests | 초기값, 표시명, 레벨/증감 계산이 owner별로 분리되고 저장 roundtrip이 통과 | 표시 정의와 저장 수치가 섞이거나 업무/촬영/훈련 결과가 서로 다른 중복 필드를 씀 |
 | M34 | 관계/CFLAG/장비 owner 관리자 | CFLAG, 관계, 장비, 의복 상태를 의미별 owner로 분해한다 | CFLAG owner table, social/equipment model, raw-name search | CFLAG seed와 정의가 people/body/equipment/social/work/mission/settings/features 등으로 분해됨 | 의미 불명 CFLAG가 mapped로 처리되거나 `CFLAG` raw name이 runtime model에 남음 |
+| M34.5 | gate hardening 관리자 | M35 이후 누락 방지 gate를 실제 script와 실패 조건으로 고정한다 | source evidence hard gate, final gate skeleton, per-milestone script registry | M35~M52가 문서 요구가 아니라 실제 gate로 완료 차단됨 | gate가 문서에만 있거나 auxiliary 완료 근거/source-file-review 쉬운 완료가 남음 |
 | M35 | 턴 종료/시간 관리자 | 원본 턴 종료, 시간 진행, 월말/주말 hook, 자동 처리 순서를 구현한다 | turn pipeline, hook order table, turn roundtrip tests | 시간 진행과 hook 결과가 save owner에 반영되고 session이 폐기됨 | hook 순서가 원본과 충돌하거나 턴 종료 중 임시 선택값이 저장됨 |
 | M36 | 방문/시설 구현자 | 방문 장소, 장소별 행동, 시설 해금과 결과 반영을 전수 구현한다 | visit/facility definitions, visit handlers, visit smoke/roundtrip tests | 장소/행동 전체가 구현 또는 사용자 승인 제외를 갖고 소유 blocker 0개 | 장소 선택 session과 시설 진행 save가 섞이거나 방문 행동 결과 owner가 불명확함 |
 | M37 | 업무/창관 구현자 | 업무, 창관, 아르바이트, 특수 업무의 조건과 결과를 전수 구현한다 | work definitions, work handlers, work result tests | 업무 전체가 조건, 성공/실패/취소, 저장 반영, 턴 종료를 검증함 | 업무 계산값이 session이 아닌 save에 남거나 결과가 economy/people/body/work/run 밖으로 흩어짐 |
@@ -245,6 +265,32 @@
 | M50 | 전체 저장/로드 관리자 | 모든 기능군 후 저장/로드, schema, migration, corrupted/future/old save 처리를 완성한다 | save schema, migration tests, full roundtrip suite | M24/M25 mapping row 전체가 저장 payload 또는 비저장 판정과 일치함 | session/definitions/views/calculation buffer가 save payload에 들어감 |
 | M51 | 최종 감사자 | 원본 누락, orphan coverage, role-only 완료, 승인 없는 제외를 최종 감사한다 | `final-gap-audit.json`, unresolved blocker list, final evidence report | final audit에서 gap, orphan, role-only, unapproved exclusion이 0개 | blocker가 남아 있거나 source evidence와 consumer evidence가 충돌함 |
 | M52 | 완전 이식 판정자 | 전체 게임이 원본 컨텐츠를 구현, 승인 제외, blocker 0 상태로 닫았는지 판정한다 | final coverage summary, full smoke flow, final verification log | feature/definition/save/session coverage가 모두 완료 상태이고 전체 smoke/build/test가 통과 | 미구현 기능, 미분류 정의, 미정 주소, 미해소 blocker, 승인 없는 제외가 1개라도 남음 |
+
+## M34.5~M52 gate 상세 의무
+
+이 표는 각 마일스톤에서 "무엇을 만들고, 무엇을 하면 안 되고, 어떤 기준으로 넘어가는지"를 강제한다. `package.json` script가 없거나 `tools/*` 구현이 없으면 해당 항목은 존재하지 않는 것으로 본다. 빈 closure JSON, 수동 체크박스, 문서 설명만으로는 다음 마일스톤으로 넘어가지 않는다.
+
+| M | 시작 전 반드시 존재해야 하는 것 | 하면 안 되는 것 | 넘어갈 수 있는 검사 |
+| --- | --- | --- | --- |
+| M34.5 | `gate:source-evidence`, `gate:coverage-hardening`, `coverage-gate-registry.json`, `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap`, `verify:complete` skeleton | auxiliary evidence를 완료 근거로 유지, source-file-review를 파일명만으로 완료, 문서상 gate만 추가 | `npm run gate:source-evidence`, `npm run gate:coverage-hardening`, `npm run gate:coverage-crosscheck`, `npm run build` |
+| M35 | `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long` | M8 최소 턴 smoke를 원본 턴 완료로 재사용, hook 순서 미기록, session cleanup 미검증 | 장기 턴, 월말/주말, 자동 구매/사용, 미션/이벤트 hook, save roundtrip, session cleanup 통과 |
+| M36 | `coverage:visit-facility`, `gate:visit-facility`, `smoke:visit-all` | 장소/행동 1개만 구현하고 전체 방문 완료 처리, 장소 선택 session을 save에 저장 | 모든 장소/행동 row가 구현/승인 제외/근거 있는 transfer이고 비용/조건/취소/roundtrip 통과 |
+| M37 | `coverage:work`, `gate:work-coverage`, `smoke:work-all` | 업무 결과를 기능 내부 임시 필드에 흩뜨림, 계산값을 save에 저장 | 모든 업무/창관/특수 업무 row가 조건/성공/실패/취소/턴 종료/roundtrip 검증 보유 |
+| M38 | `coverage:filming-scenes`, `gate:filming-scene`, scene condition table | 장면 이름만 표시하고 조건/예상 결과를 미구현 | 모든 장면 row가 source evidence, 대상 조건, 장면 조건, 불가 사유, verification 보유 |
+| M39 | `coverage:filming-execution`, `gate:filming-execution`, `smoke:filming-all` | 촬영량/수익/판매 계산값을 저장 payload에 남김 | 촬영 성공/실패/취소/턴 종료, 출시/판매 상태, save roundtrip, session cleanup 통과 |
+| M40 | `coverage:training-session`, `gate:training-session`, `smoke:training-session` | 훈련 후보 계산이 저장 상태를 변경, 선택값 save 잔류 | 진입/대상/실행자/조수/command 선택/취소/완료/턴 종료 session lifecycle 검증 |
+| M41 | `coverage:training-availability`, `gate:training-availability`, command별 availability matrix | COMABLE 전체를 한 row로 닫음, 불가 사유 없는 command를 완료 처리 | 105개 command 각각 가능/불가 조건, 불가 사유, source evidence, non-mutating view 계산 검증 |
+| M42 | `coverage:training-effect-0-34`, `gate:training-effect -- 0-34`, command별 smoke/table | command 효과 일부만 구현, source 계산 중간값 save 저장 | command 0~34 각각 성공/불가/취소/결과 owner/session cleanup/source evidence 검증 |
+| M43 | `coverage:training-effect-35-69`, `gate:training-effect -- 35-69`, command별 smoke/table | 결과 owner 없는 command를 구현 완료 처리 | command 35~69 각각 성공/불가/취소/결과 owner/session cleanup/source evidence 검증 |
+| M44 | `coverage:training-effect-70-104`, `gate:training-effect -- all`, `gate:raw-training-names` | 105개 중 미구현 command를 후처리로 숨김, raw `COMF/TFLAG/SOURCE` runtime 노출 | command 70~104, 후처리, 이벤트/장비/자원 변화, 105개 전체 gap 0 검증 |
+| M45 | `coverage:common-system`, `gate:common-system`, `smoke:common-system` | common feature를 특정 기능 내부 임시 로직으로 처리 | 능력 상승/휴식/회복/자동 아이템/공통 hook이 owner와 roundtrip 검증 보유 |
+| M46 | `coverage:mission`, `gate:mission-coverage`, `smoke:mission-all` | 미션 상태와 선택 session 혼합, 기한/실패 미구현 | 모든 미션 정의/수락/진행/보고/완료/실패/만료/보상/패널티/턴 hook 검증 |
+| M47 | `coverage:event-world`, `gate:event-coverage`, event hook matrix | 표시만 있는 이벤트, 조건 없는 이벤트, 상태 변화 없는 이벤트 완료 처리 | 이벤트별 trigger/condition/text/effect/save owner/hook/roundtrip 검증 |
+| M48 | `coverage:ending-meta`, `gate:ending-meta`, `smoke:ending-flow` | 회차 save와 global/meta save 혼합, 엔딩 승인 없는 제외 | 엔딩 조건/결과/계승/global/meta/업적/전역 해금 roundtrip 검증 |
+| M49 | `coverage:view-text`, `gate:view-and-text-coverage`, `remaining-feature-audit` | 남은 기능 catch-all 처리, text 수집만 하고 화면 소비 없음 | PRINT/HTML/message/help/status text가 route/view consumer와 verification을 갖고 남은 feature gap 0 |
+| M50 | `test:roundtrip:all`, `gate:save-payload`, `full-roundtrip-report.json` | M16 최소 roundtrip을 전체 저장/로드 완료로 재사용 | 모든 주요 기능 후 save/load, corrupted/future/old schema, migration, session/definition/view payload 유입 0 |
+| M51 | `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap` | 새 누락을 M52로 넘김, blocker를 최종 보고서에 숨김 | source manifest 미분해 0, orphan 0, role-only complete 0, auxiliary completion 0, unresolved blocker 0 |
+| M52 | `report:full-port`, `gate:complete-port-verdict`, `verify:complete` | 일부 기능 미구현 상태에서 완전 이식 선언 | `verify:complete` 전체 통과, `full-port-report.json`에 미구현/미분류/미정/미승인/미해소 0 |
 
 ## M0. 기준 동결
 
@@ -1277,7 +1323,56 @@ rg "CFLAG" src/game src/domains src/features src/ui
 ```
 
 비고:
-- `npm run gate:feature-coverage`는 이번 M34 변경 때문이 아니라 기존 `feature:item-shop:use-effects` row의 runtime metadata 공란 때문에 실패한다. M34 closure gate와 M34 전용 coverage gate에는 unresolved issue가 없다.
+- M34 closure gate와 M34 전용 coverage gate에는 unresolved issue가 없다.
+- 단, M34 이후 전수 검토에서 `npm run gate:source-evidence` 현재 실패가 확인되었다. auxiliary evidence 완료 근거와 M35~M52 gate 부재는 M34.5가 소유하는 차단 사항이며, M35로 넘어가기 전에 반드시 해소해야 한다.
+
+## M34.5. 전수 이식 gate hardening
+
+책임 선언:
+- 역할: M35 이후 기능군 구현이 누락을 숫자나 문서로 숨기지 못하게 gate를 실제 script와 실패 조건으로 고정한다.
+- 범위: source evidence, auxiliary evidence 차단, source-file-review 폐쇄 규칙, M35~M52 전용 coverage/gate/smoke script registry, 최종 audit/verify skeleton이다.
+- 방식: 지금 발견된 gate 구멍을 먼저 실패 상태로 드러내고, 각 마일스톤이 자기 전용 gate 없이는 완료될 수 없게 만든다.
+- 완료 결과: M35는 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`이 실제로 존재하고 실패 조건을 가진 상태에서만 시작된다.
+- 누락 차단: auxiliary 완료 근거 1개, source-file-review 미분해 1개, M35~M52 필수 script 누락 1개, 최종 gate skeleton 누락 1개라도 있으면 완료하지 않는다.
+
+현재 발견된 차단 사항:
+- `npm run gate:source-evidence`는 `definition:cflag:0`에서 실패한다. 원인은 `Ho版資料（作成中途）/cflag.csv` auxiliary evidence가 `used` 완료 근거로 쓰였기 때문이다.
+- auxiliary evidence 완료성 row는 169개다. `legacyCharacterFlagDefinitions` 151개, `sourceDefinitions` 18개다.
+- M35~M49 전용 coverage/gate/smoke script는 M28~M34 수준으로 아직 준비되어 있지 않다.
+- M51/M52에서 문서가 요구하는 `gate:final-content-zero-gap`, `gate:view-and-text-coverage`, `verify:complete`, long-play, failure matrix는 아직 실제 script가 아니다.
+
+- [ ] `gate:source-evidence`의 완료성 상태 차단 목록을 확장한다. `implemented`, `used`, `template`, `listing`, `display-only`, `calculation-only`, `mapped`, `non-save`, `session-field`, `calculation-internal`, `script-scratch`, `approved-excluded`는 auxiliary evidence만으로 완료될 수 없다.
+- [ ] `gate:source-evidence`가 `features.json`, `definitions.json`, `blockers.json`, `save-mapping.json`, `session-mapping.json`, `approved-exclusions.json`, `implementation-queue.json`, 마일스톤별 `*-coverage.json`을 모두 검사하게 한다.
+- [ ] auxiliary source row 169개를 primary source evidence에 연결하거나 완료성 상태에서 빼고 blocker/owner review로 되돌린다.
+- [ ] `source-file-review` row는 파일명 단위 계약만으로 완료 처리하지 못하게 한다. 완료하려면 라벨, CSV 행, family/index, read/write 방향 중 하나 이상의 primary row로 분해해야 한다.
+- [ ] `coverage-gate-registry.json`을 만든다. M35~M52 각 마일스톤의 coverage file, gate command, smoke command, closure file, gap audit file, 필수 row field를 기록한다.
+- [ ] `gate:coverage-hardening`을 만든다. registry에 등록된 모든 script가 `package.json`에 있고, 각 gate가 존재하며, 완료성 row의 `sourceEvidenceId`, `runtimeConsumerId`, `verificationId` 누락을 실패시켜야 한다.
+- [ ] M35~M49 전용 coverage/gate/smoke skeleton을 추가한다. skeleton은 아직 구현 row가 없으면 성공하지 말고, 해당 owner row가 미구현임을 실패 또는 blocker로 드러내야 한다.
+- [ ] `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap` skeleton을 추가한다.
+- [ ] `coverage:view-text`, `gate:view-and-text-coverage` skeleton을 추가한다.
+- [ ] `test:roundtrip:all`, `report:full-port`, `gate:complete-port-verdict`, `verify:complete` skeleton을 추가한다.
+- [ ] `gate:milestone-scope-closure`가 registry를 읽어 해당 Mxx의 coverage/gate/smoke/audit/closure 연결을 검사하게 강화한다.
+- [ ] `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`의 다음 작업을 M35가 아니라 M34.5로 갱신한다.
+- [ ] M34.5 closure를 `data/coverage/milestones/M34.5-closure.json`에 남긴다. `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `missingRequiredScript`, `auxiliaryCompletionEvidence`, `undigestedSourceFileReview`가 모두 0이어야 한다.
+- [ ] `npm run gate:source-evidence` 실행
+- [ ] `npm run gate:coverage-hardening` 실행
+- [ ] `npm run gate:coverage-crosscheck` 실행
+- [ ] `npm run gate:pre-implementation-audit` 실행
+- [ ] `npm run gate:implementation-queue` 실행
+- [ ] `npm run build` 실행
+- [ ] `npm run test --if-present` 실행
+
+검증:
+
+```bash
+npm run gate:source-evidence
+npm run gate:coverage-hardening
+npm run gate:coverage-crosscheck
+npm run gate:pre-implementation-audit
+npm run gate:implementation-queue
+npm run build
+npm run test --if-present
+```
 
 ## M35. 턴 종료와 시간 진행 완성
 
@@ -1288,6 +1383,8 @@ rg "CFLAG" src/game src/domains src/features src/ui
 - 완료 결과: 턴 종료 후 시간, 이벤트, 비용/보상, session 폐기, 저장 roundtrip이 검증된다.
 - 누락 차단: hook 순서가 불명확하거나 턴 종료 중 임시 선택값이 저장되면 완료하지 않는다.
 
+- [ ] M34.5가 완료되지 않았으면 M35를 시작하지 않음
+- [ ] `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`이 실제 script로 존재하고 실패 조건을 가짐
 - [ ] 원본 턴 종료 흐름의 day/week/month/year 진행 규칙을 구현
 - [ ] 전반/후반 또는 phase 전환 규칙을 저장 상태와 session 폐기로 분리
 - [ ] 턴 종료 전 hook, 턴 종료 후 hook, 월말 hook, 새 주 hook을 정의

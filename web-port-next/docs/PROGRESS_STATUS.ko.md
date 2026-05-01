@@ -69,6 +69,7 @@
 | 확정 변환표 | M17에서 상태값/증거/차단 정책은 확정됨. M24에서 저장 mapping 장부를 만들었고 M25에서 세션/계산 mapping 장부를 만들었다 |
 | 기능 전수 구현 | M19에서 기능 row 5,344개를 만들었고 11개만 현재 구현 완료 근거를 가진다. 나머지 5,333개는 M28~M49에서 구현 또는 사용자 승인 제외로 닫아야 할 blocker다 |
 | 정의 전수 구현 | 아직 완료 아님. M20/M23 기준 definition row 8,000개를 만들고 역할/소비 책임을 배정했다. M30~M34에서 아이템 사용, 영입 listing, 인물 identity, 신체/능력/소질/경험, CFLAG/장비/관계 일부는 실제 소비 검증으로 닫았지만, 턴/방문/업무/촬영/훈련/미션/이벤트/엔딩/정보 계열은 M35~M49에서 계속 닫아야 한다. `template`/`listing`/`display-only`/`calculation-only`는 실제 consumer와 verification이 붙기 전까지 최종 구현 완료가 아니다 |
+| M34.5 전수 이식 gate hardening | M35 진입 전 필수. 현재 검토 결과 `gate:source-evidence`가 auxiliary evidence 완료 근거 169개 때문에 실패하며, M35~M49 전용 gate와 M51/M52 최종 gate script가 아직 실제로 존재하지 않는다 | `gate:source-evidence` 통과, auxiliary 완료 근거 0개, source-file-review 쉬운 완료 차단, M35~M52 전용 script registry와 최종 verify skeleton 생성 후에만 M35 진행 |
 
 ## 데이터 완성도 판단
 
@@ -77,7 +78,7 @@
 원본 기준:
 
 - 변수, 정의 데이터, 기능 흐름, 저장/세션 판정의 1차 기준은 작업 루트의 `original-game/CSV`, `original-game/ERB`, `original-game/CSV/Chara*.csv`, `original-game/CSV/VariableSize.CSV`이다.
-- `source.csv`, `cflag.csv`처럼 원본 CSV 폴더 밖에 있는 보조 정의는 수집 스크립트가 찾은 작업 루트의 보조 CSV를 기준으로 삼는다.
+- `source.csv`, `cflag.csv`처럼 원본 CSV 폴더 밖에 있는 보조 정의는 해석 보조로만 삼는다. primary 원본 근거 없이 `used`, `template`, `listing`, `display-only`, `calculation-only`, `mapped`, `non-save`, `session-field`, `calculation-internal`, `script-scratch`, `approved-excluded` 완료성 상태를 부여하지 않는다.
 - `docs/*` 문서는 원본을 읽기 쉽게 정리한 파생 해석이다. 문서만 보고 `implemented`, `used`, `mapped`를 부여하지 않는다.
 - M21~M27에서는 source evidence, feature, definition, save mapping, session mapping을 서로 대조하는 gate를 추가한다. 같은 gate는 M51/M52 최종 판정에서도 다시 실행한다.
 - 누락 전수 감사는 구현 전, 기능군 중간, 최종 직전 세 번 필요하다. 산출물은 `data/coverage/audits/pre-implementation-gap-audit.json`, `data/coverage/audits/Mxx-gap-audit.json`, `data/coverage/audits/final-gap-audit.json`이며, 미등록 원본 컨텐츠/role-only 완료/orphan coverage가 있으면 다음 단계로 넘어가지 않는다.
@@ -98,7 +99,9 @@
 | 아이템 사용과 특수 아이템 완성 | M30에서 owned scope 75행을 닫았다. 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop` 사용 선택 흐름으로 소비하고, 특수 item 200~214는 특수 장비/훈련 해금 상태로 분류했다 | item 22/90/91은 M41, cosplay/clothing pack은 M34로 이관. M30 소유 blocker 0개 |
 | 영입 listing과 인물 생성 완성 | M31에서 `Item.csv` 영입 listing 48개를 캐릭터 원형과 생성 결과로 연결했다. `recruit:150`은 `FLAG:90 < 5` 반복 영입 흐름에 맞춰 5회 생성으로 닫았다 | 은퇴/매각 및 일부 lifecycle/identity row는 M32/M34/M35/M47로 이관. M31 소유 blocker 0개 |
 | 인물 원형과 identity 완성 | M32에서 Chara template 109개, 이름/호칭/별명/표시명, CSTR identity seed, 삭제/은퇴/조수 가능/영입 상태를 정의와 save 경계에 연결했다 | M33에서 신체/능력/소질/경험 계열을 이어서 닫았다 |
-| 관계/CFLAG/장비/의복 owner 완성 | M34에서 `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`을 추가해 CFLAG seed와 의복/장비 route를 실제 소비 경로에 연결했다. raw `CFLAG`는 runtime 모델명으로 남기지 않는다 | 다음은 M35 턴 종료와 시간 진행 완성. day/week/month/year, hook 순서, 자동 처리, session cleanup, long turn roundtrip을 닫아야 함 |
+| 관계/CFLAG/장비/의복 owner 완성 | M34에서 `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`을 추가해 CFLAG seed와 의복/장비 route를 실제 소비 경로에 연결했다. raw `CFLAG`는 runtime 모델명으로 남기지 않는다 | M34 이후 검토에서 auxiliary evidence 완료 근거와 최종 gate 부재가 발견되었으므로, 다음은 M35가 아니라 M34.5 hardening |
+| source evidence hard gate | 현재 `npm run gate:source-evidence`는 실패한다. auxiliary 완료성 row 169개가 남아 있다: `legacyCharacterFlagDefinitions` 151개, `sourceDefinitions` 18개 | M34.5에서 primary evidence 재연결 또는 blocker/owner review 회귀로 auxiliary 완료 근거 0개를 만들어야 함 |
+| M35~M52 gate 실체화 | M28~M34는 전용 coverage/gate/smoke가 있지만 M35~M49 및 M51/M52의 일부 gate는 아직 문서 요구 수준이다 | M34.5에서 `coverage-gate-registry.json`과 `gate:coverage-hardening`, 최종 audit/verify skeleton을 만든 뒤 각 마일스톤 전용 gate로 완료를 차단해야 함 |
 | 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M22/M26/M28~M49에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
 | feature coverage | row 5,344개 생성. `implemented` 11개, `blocker` 5,333개. dynamic/persistence/exit/pause/unreferenced global count가 원본 분석과 일치함 | M28~M49에서 blocker row를 줄이며 M52에서 미구현 feature 0개 |
 
@@ -233,6 +236,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M32 character identity coverage/gate/smoke 통과, owned row 294개와 unresolved issue 0개
 - M33 body/stat coverage/gate/smoke 통과, owned row 5,300개와 unresolved issue 0개
 - M34 social/equipment/CFLAG coverage/gate/smoke 통과, owned row 2,232개와 unresolved issue 0개
+- M34 이후 재검토에서 `npm run gate:source-evidence` 현재 실패 확인. auxiliary evidence 완료성 row 169개와 M35~M52 gate 실체화 부재 때문에 M34.5 hardening이 다음 작업이다.
 - `smoke:main-routes` 통과, 메인 메뉴 108 wardrobe route 활성화 확인
 - `analyze:game-system` 통과
 - `tsc --noEmit` 통과
@@ -271,7 +275,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 27. M32 인물 원형과 identity 완성은 `npm run coverage:character-identity`, `npm run gate:character-identity`, `npm run gate:milestone-scope-closure -- M32`, `npm run smoke:character-identity`, `npm run smoke:recruit-all`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M32 owned scope 294행 중 implemented 286, mapped 8, unresolved issue 0개로 닫았다.
 28. M33 신체/능력/소질/경험 완성은 `npm run coverage:body-stat`, `npm run gate:body-stat-mapping`, `npm run gate:milestone-scope-closure -- M33`, `npm run smoke:body-stat`, `npm run smoke:character-identity`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M33 owned scope 5,300행 중 implemented 4,768, mapped 465, transferredOut 67, unresolved issue 0개로 닫았다.
 29. M34 관계/CFLAG/장비/의복 owner 완성은 `npm run coverage:social-equipment-cflag`, `npm run gate:social-equipment-cflag`, `npm run gate:milestone-scope-closure -- M34`, `npm run smoke:social-equipment-cflag`, `npm run smoke:main-routes`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M34 owned scope 2,232행 중 implemented 1,998, mapped 234, unresolved issue 0개로 닫았다.
-30. 다음 작업은 M35 턴 종료와 시간 진행 완성이다. day/week/month/year 진행, phase 전환, 턴 전후/month/week hook, 자동 구매/사용, 미션/이벤트 hook, session cleanup, 장기 턴 roundtrip을 닫아야 한다.
+30. M34 이후 전수 검토에서 M35 진입 전 hardening 필요가 확인되었다. `npm run gate:source-evidence`는 현재 auxiliary evidence 완료 근거 때문에 실패한다.
+31. 다음 작업은 M34.5 전수 이식 gate hardening이다. `gate:source-evidence`를 복구하고, M35~M52 전용 coverage/gate/smoke/final verify script를 실제로 등록한 뒤에만 M35로 넘어간다.
 
 ## 주의
 
