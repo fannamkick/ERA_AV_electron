@@ -7,7 +7,8 @@
 - 원본 파일과 source evidence
 - coverage/gap/closure JSON
 - 전용 gate/smoke/build
-- `docs/NEW_PORT_MILESTONES.ko.md`의 해당 마일스톤 상세 체크리스트
+- 해당 `docs/milestones/PHASE_*.ko.md`의 마일스톤 상세 체크리스트
+- `docs/NEW_PORT_MILESTONES.ko.md`의 공통 완료 기준과 책임 축소 금지 규칙
 
 ## Phase 문서
 

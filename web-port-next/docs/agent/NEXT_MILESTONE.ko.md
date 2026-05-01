@@ -26,7 +26,8 @@
 
 ## 반드시 직접 확인할 자료
 
-- `../NEW_PORT_MILESTONES.ko.md`의 M42 section과 책임 축소 절대 금지 절
+- `../milestones/PHASE_5_M28_M49.ko.md`의 M42 section
+- `../NEW_PORT_MILESTONES.ko.md`의 책임 축소 절대 금지 절과 공통 완료 기준
 - `../../data/coverage/coverage-gate-registry.json`의 M42 contract
 - `original-game/ERB/*/COMF0.ERB` through `COMF34.ERB`
 - `../../data/coverage/training-effect-0-34.json`

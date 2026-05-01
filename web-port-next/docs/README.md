@@ -27,7 +27,7 @@
 ## 운영 규칙
 
 - Codex/서브에이전트는 세션 시작 시 `agent/CODEX_BOOTSTRAP.ko.md`, `agent/CURRENT_STATUS.ko.md`, `agent/NEXT_MILESTONE.ko.md`를 먼저 읽는다.
-- 현재 마일스톤의 전체 위치가 필요하면 `milestones/README.ko.md`와 해당 phase 문서만 먼저 읽고, `NEW_PORT_MILESTONES.ko.md`는 현재 마일스톤 section만 좁게 조회한다.
+- 현재 마일스톤의 상세 체크리스트는 `milestones/README.ko.md`에서 해당 phase 문서를 찾아 그 section만 좁게 조회한다. `NEW_PORT_MILESTONES.ko.md`는 공통 규칙과 phase 경계만 본다.
 - `agent/*` 문서는 dashboard와 탐색 시작점이다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON이 소유한다.
 - 긴 문서와 대형 JSON은 전체 출력하지 않는다. 필요한 section, row, blocking metric, source block만 좁게 조회한다.
 - query/검색 결과만으로 완료 상태를 부여하지 않는다. milestone 완료 전에는 원본 row, runtime consumer, verification, closure/gap audit을 직접 확인한다.

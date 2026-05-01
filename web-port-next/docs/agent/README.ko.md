@@ -7,8 +7,8 @@
 1. `CODEX_BOOTSTRAP.ko.md`
 2. `CURRENT_STATUS.ko.md`
 3. `NEXT_MILESTONE.ko.md`
-4. 현재 마일스톤의 전후 맥락이 필요하면 `../milestones/README.ko.md`와 해당 phase 문서
-5. 필요한 경우에만 `../NEW_PORT_MILESTONES.ko.md`의 현재 마일스톤 section
+4. 현재 마일스톤의 상세 체크리스트가 필요하면 `../milestones/README.ko.md`와 해당 phase 문서의 현재 마일스톤 section
+5. 필요한 경우에만 `../NEW_PORT_MILESTONES.ko.md`의 공통 완료 기준, 책임 축소 금지, phase 경계
 6. 구현 판단이 필요하면 원본 파일, coverage row, gate, runtime code를 직접 확인
 
 ## 권위 경계
