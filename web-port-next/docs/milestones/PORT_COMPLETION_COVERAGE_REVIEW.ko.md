@@ -62,14 +62,14 @@
 
 현재 마일스톤 목록은 큰 방향으로는 전체 게임 포팅을 닫을 수 있는 구조다. 하지만 현재 완료 기록과 일부 마일스톤 책임 문구로는 완벽 구현을 보장하지 못한다.
 
-현재 그대로 M42 이후를 진행하면 놓칠 수 있는 부분이 있다. 특히 M30, M35, M38, M39, M41은 먼저 완료 선언을 정정하거나 blocked로 돌려야 한다.
+현재 그대로 M42 이후를 진행하면 놓칠 수 있는 부분이 있다. 2026-05-02 재판정 결과 M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없으므로, M42 전에 전체를 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정해야 한다.
 
 필요한 정정:
 
 - 모든 마일스톤 제목에 유형을 유지한다.
-- `[구현]` 마일스톤은 완료 전에 "완료로 처리한 것 / 안 했거나 넘긴 것 / 재확인 필요한 것"을 남긴다.
+- `[구현]` 마일스톤은 완료 전에 원본 단위 매니페스트와 "완료로 처리한 것 / 안 했거나 넘긴 것 / 재확인 필요한 것"을 남긴다.
 - `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 마일스톤 재설계 신호로 본다. 책임을 넘겨야 한다면 마일스톤을 완료하지 않는다.
-- M28~M41은 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 완료 선언을 재정렬한다.
+- M28~M41은 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 2026-05-02 원본 단위 매니페스트 기준 재판정 표를 따른다. 새 기준으로 `completed` 유지 가능은 0개다.
 - M42부터는 구현 책임을 다른 곳으로 넘기지 않는다.
 - 의심 신호 판정은 `RESPONSIBILITY_SEPARATION_RULES.ko.md`의 `의심 신호`와 `M28~M41 사전 재판정 기준`을 따른다.
 
@@ -77,9 +77,9 @@
 
 | 우선순위 | 대상 | 해야 할 일 |
 | --- | --- | --- |
-| 1 | M30 | blocked로 재판정 완료. 내 판단은 M30을 즉시 사용 아이템 9개 owner로 공식 재설계하고, 특수 item 200~214는 의복/훈련 effect owner에서 닫는 것이다. |
-| 2 | M35 | 턴/시간/hook 책임을 실제 runtime hook별 완료/미완료로 풀어 적고, mapped 7개만으로 완료하지 않는다. |
-| 3 | M38 | 촬영 정의와 조건이 runtime에서 실제 소비되는지 확인하고, mapped-only 완료를 재판정한다. |
-| 4 | M39 | source-file-review 2개를 라벨/row 수준으로 분해하거나 미완료로 되돌린다. |
-| 5 | M41 | source-file-review 1개와 smoke 필수 누락을 정정하고, command 효과가 M42~M44에 남았음을 명시한다. |
-| 6 | M28~M41 전체 | `responsibilityIntegrity`를 기계적으로 채우지 말고, 위 재확인 후 completed/blocked를 다시 판정한다. |
+| 1 | M28~M41 전체 | 기존 `completed`를 유지하지 않는다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별 `implemented-verified`/`approved-excluded`/`blocked`/`scope-redesign-required`로 닫는다. |
+| 2 | M28/M29/M31/M33/M37/M38 | 책임 범위가 섞였거나 `transferredOut`가 있으므로 scope 재설계부터 한다. |
+| 3 | M30 | blocked 유지. 즉시 사용 아이템 9개 owner로 공식 재설계하고, 특수 item 200~214는 의복/훈련 effect owner에서 닫는다. |
+| 4 | M32/M34/M35/M39/M41 | mapped-only 또는 source-file-review 완료를 금지하고, 원본 label/read/write/command 단위로 분해한다. |
+| 5 | M34.5/M36/M40 | manifest-needed. 기존 구현 근거를 원본 단위 매니페스트로 재증명하거나 blocked로 되돌린다. |
+| 6 | M42 | M28~M41 보강/정정 전에는 시작하지 않는다. |

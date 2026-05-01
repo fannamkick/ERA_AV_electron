@@ -17,11 +17,12 @@
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
 - M30은 재판정 완료. 즉시 사용 아이템 9개는 구현됐지만 transfer 37개가 `ownedBlocker`로 남아 `status: blocked`다. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 현재 실패해야 정상이다.
 - completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
-- M28~M41은 개별 coverage/gate/smoke 통과 기록이 있지만, 일부 `[구현]` 마일스톤이 `mapped`/`transferredOut`을 완료 totals에 포함한다. `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`와 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 나머지 완료 선언을 재정렬해야 한다.
+- M28~M41은 2026-05-02 원본 단위 매니페스트 기준 재판정에서 `completed 유지 가능`이 0개로 판정됐다. 기존 coverage/gate/smoke 통과 기록은 남아 있지만, 모든 M28~M41 closure는 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다.
 
 ## 현재 미완료 초점
 
-- command 0~34의 원본 효과 계산을 실제 runtime behavior로 구현해야 한다.
+- M28~M41의 원본 단위 매니페스트 보강/closure 정정을 먼저 해야 한다.
+- 그 다음 command 0~34의 원본 효과 계산을 실제 runtime behavior로 구현해야 한다.
 - 원본 효과/조건/후처리 책임은 라인 존재 확인이나 profile 생성으로 대체할 수 없다.
 - `npm run gate:training-effect -- 0-34`는 M42가 실제 구현되기 전까지 실패해야 한다.
 - command 35~69는 M43, command 70 이상 전체와 후처리는 M44가 소유한다. M30 재판정 중 `COMF137.ERB` 소비가 확인되어 M44의 기존 70~104 범위 표현은 보강 대상이다. M28~M41 정정과 M42가 닫히기 전에는 M43로 넘어가지 않는다.

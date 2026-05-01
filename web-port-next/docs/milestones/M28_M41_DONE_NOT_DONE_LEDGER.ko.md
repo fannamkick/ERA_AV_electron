@@ -15,6 +15,36 @@
 - 따라서 이 장부는 "기능 검증 결과가 존재한다"와 "현재 완료 판정은 보강 필요하다"를 분리해서 읽어야 한다.
 - 2026-05-02 기준, `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 책임 재설계 신호로 본다.
 
+## 2026-05-02 원본 단위 매니페스트 기준 재판정
+
+재판정 기준:
+- `PORT_RESPONSIBILITY_MAP.ko.md`의 `스킵 방지 계약`에 따라 원본 단위 매니페스트가 없으면 완료 유지가 불가능하다.
+- `[구현]` 마일스톤의 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification은 완료 근거가 아니다.
+- 아래 판정은 "기존 구현이 모두 무효"라는 뜻이 아니라, "새 완료 기준으로 completed를 유지할 수 없음"을 뜻한다.
+
+| M | 기존 closure 상태 | 새 판정 | M42 전 차단 | 핵심 사유 | 다음 조치 |
+| --- | --- | --- | --- | --- | --- |
+| M28 | completed, implemented 24, transferredOut 3 | blocked | 예 | `transferredOut > 0`, 원본 단위 매니페스트 없음, `responsibilityIntegrity` 없음 | route/action/view 24개와 event-local row 3개를 매니페스트로 분리. event-local row는 M47 또는 blocked로 닫고 completed total에서 제거 |
+| M29 | completed, implemented 43, mapped 40, transferredOut 123 | scope-redesign-required | 예 | 구매형 listing과 비구매/사용/장비/이벤트 item이 한 closure에 섞임 | 구매형 listing/구매 결과만 M29 매니페스트에 남기고 123개 비구매 row는 실제 owner 매니페스트로 이동 |
+| M30 | blocked, ownedBlocker 37 | scope-redesign-required 유지 | 예 | 즉시 사용 item과 특수 item 200~214 훈련/의복 효과가 섞임 | M30은 즉시 사용 item 9개 owner로 좁히고 특수 item은 M34/M42/M43/M44에서 닫음 |
+| M31 | completed, implemented 52, mapped 158, transferredOut 27 | scope-redesign-required | 예 | 영입 listing/생성 결과와 identity/lifecycle/event row가 섞임 | listing/가격/조건/생성 결과만 M31 매니페스트에 남기고 identity/CFLAG/hook/event row를 수신 owner로 재분리 |
+| M32 | completed, implemented 286, mapped 8 | blocked | 예 | `source-file-review`와 mapped source contract가 완료를 대신함 | `zname.erb`, `c_club_girlname.erb`, `boyfriendname_calc.erb`를 label/동작 단위로 분해 |
+| M33 | completed, implemented 4,768, mapped 465, transferredOut 67 | scope-redesign-required | 예 | seed/stat owner와 CFLAG/FLAG/PBAND 후속 owner가 섞임 | seed ingestion, 표시 정의, save field, 행동 결과 변화, CFLAG/FLAG/PBAND를 매니페스트에서 분리 |
+| M34 | completed, implemented 1,998, mapped 234 | blocked | 예 | CFLAG/장비/의복 mapped row가 완료 근거로 남음 | CFLAG/관계/장비/의복 단위를 `implemented-verified` 또는 blocked로 재분류 |
+| M34.5 | completed, implemented 188 | manifest-needed | 예 | gate hardening 자체의 원본 단위 매니페스트와 `responsibilityIntegrity` 없음 | 188개 hardening 단위가 어떤 gate/registry/evidence correction을 닫는지 매니페스트 작성 |
+| M35 | completed, implemented 0, mapped 7 | blocked | 예 | `[구현]`인데 mapped-only 완료. turn hook/cleanup이 save field mapping으로만 표현됨 | `EVENT_TURNEND`, `EVENT_NEXTDAY`, `EVENT_AFTERTRAIN` 등 hook/order/effect 단위 매니페스트 작성 |
+| M36 | completed, implemented 552, mapped 7 | manifest-needed | 예 | 방문 장소 definition mapped 7개와 원본 단위 매니페스트 없음 | 방문 장소 7개와 visit action 86개를 매니페스트로 재작성하고 mapped definition을 재증명 |
+| M37 | completed, implemented 286, mapped 175 | scope-redesign-required | 예 | 업무 실행, 업무 정의, save-field owner, session/calculation owner가 섞임 | M37이 닫을 업무 실행 단위와 다른 owner 단위를 매니페스트에서 분리 |
+| M38 | completed, implemented 0, mapped 6 | scope-redesign-required | 예 | 촬영 장면 정의만 mapped이고 대상/장면 조건/불가 사유/예상 결과 책임이 분리되지 않음 | 장면 정의와 조건/불가 사유/예상 결과 단위를 분리한 매니페스트 작성 |
+| M39 | completed, implemented 135, mapped 39 | blocked | 예 | `AV_POINTCALC.ERB`, `VIDEO.ERH` source-file-review 2개가 파일 단위 mapped로 남음 | 파일 단위 row를 label/read/write/계산 단위로 분해 |
+| M40 | completed, implemented 5, mapped 6 | manifest-needed | 예 | training session mapped 6개와 원본 단위 매니페스트 없음 | `EVENTTRAIN`, `EVENTCOM`, `EVENTCOMEND`, `EVENTEND`, `JUEL_CHECK`, 표시 helper 단위를 재증명 |
+| M41 | completed, implemented 1,371, mapped 254 | blocked | 예 | `COMORDER.ERB` source-file-review와 mapped availability row가 완료 근거로 남음 | `COMORDER.ERB`를 command/order 단위로 분해하고 254 mapped row를 재분류 |
+
+재판정 결론:
+- M28~M41 중 새 기준으로 `completed 유지 가능`은 없다.
+- M42는 아직 시작하면 안 된다.
+- 다음 작업은 M28부터 순서대로 매니페스트 보강/책임 재설계/blocked closure 정정을 수행하거나, M42에 직접 영향을 주는 M40~M41을 먼저 보강하는 별도 순서를 명시적으로 선택하는 것이다.
+
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼다. | closure에 `responsibilityIntegrity`가 없다. |

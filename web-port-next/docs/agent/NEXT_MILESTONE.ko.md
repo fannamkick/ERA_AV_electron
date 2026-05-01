@@ -2,7 +2,7 @@
 
 ## M28~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
 
-현재 즉시 목표는 M28~M41 완료 선언이 전체 포팅 완성 불변식과 충돌하지 않게 정렬하는 것이다. 그 다음 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.
+현재 즉시 목표는 M28~M41 완료 선언을 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다. 2026-05-02 재판정 결과, M28~M41 중 새 기준으로 `completed`를 유지할 수 있는 마일스톤은 없다. 그 다음에야 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.
 
 ## 먼저 해야 하는 것
 
@@ -10,10 +10,9 @@
 - `../milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 phase 문서의 페이즈/마일스톤 책임 확인
 - 시작 전에 원본 단위 매니페스트를 만들고 종료 전에 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
 - `../milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`의 completed/blocked/scope-redesign-required 기준 확인
-- `../milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 재확인 필요 항목 정리
-- M35/M38/M39/M41의 `responsibilityIntegrity` 재판정 결과를 closure 또는 ledger에 기록하지 않으면 M42 구현을 시작하지 않는다.
-- M30은 blocked로 재판정 완료. 다음은 M35, M38, M39, M41을 completed/blocked 중 하나로 재판정
-- `[구현]` 마일스톤의 `transferredOut`을 완료로 세지 않도록 문서와 closure 정리
+- `../milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 2026-05-02 재판정 표를 기준으로 M28~M41을 순서대로 보강한다.
+- M28~M41의 `원본 단위 매니페스트`와 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required closure 정정이 끝나기 전에는 M42 구현을 시작하지 않는다.
+- `[구현]` 마일스톤의 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification을 완료로 세지 않도록 coverage와 closure를 정리한다.
 
 ## 완료해야 하는 것
 
