@@ -13,6 +13,8 @@
 
 위 문서는 dashboard와 탐색 시작점이다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON이 소유한다. query/검색 결과만으로 `implemented`, `used`, `mapped`, `approved-excluded`를 부여하지 않는다.
 
+완료/차단/책임 재설계 판정은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`를 따른다. `[구현]` 마일스톤의 `transferredOut`, file-level `source-file-review`, owner-only `mapped`, implemented 0/mapped-only closure는 completed 금지 신호다.
+
 ## 작업 위치
 
 - 루트: `e:\ERA\AV간편개조\erAV_Ho_0.022(간편개조) - 복사본`

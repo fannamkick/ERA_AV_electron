@@ -2,6 +2,8 @@
 
 목표: 모든 마일스톤이 자기 유형과 책임을 끝냈을 때 실제 전체 게임 포팅이 완성되는지 검토한다.
 
+책임/역할 분리의 세부 판정 기준은 `RESPONSIBILITY_SEPARATION_RULES.ko.md`를 따른다. 이 문서와 충돌하면 `RESPONSIBILITY_SEPARATION_RULES.ko.md`가 우선한다.
+
 ## 유형 정의
 
 - `[기획]`: 구현 전 범위와 제외선을 고정한다. 이 자체로 게임 기능이 완성되지는 않는다.
@@ -20,6 +22,8 @@
 3. `[검증]`/`[감사]`/`[판정]` 마일스톤이 미구현, 미분류, 미정 주소, 승인 없는 제외, 미해소 blocker가 0인지 확인한다.
 4. 어떤 마일스톤도 `mapped` 또는 `transferredOut`을 기능 구현 완료처럼 쓰지 않는다.
 5. `[구현]` 마일스톤에서 실행 중 transfer가 생기면 완료가 아니라 blocked 또는 책임 재설계 상태로 남긴다.
+6. runtime owner가 다른 책임이 한 마일스톤에 섞여 있으면 완료가 아니라 `scope-redesign-required`다.
+7. `source-file-review`, `mapped`, `implemented` 숫자는 원본 behavior 구현 여부보다 우선하지 않는다.
 
 ## 전체 도메인 커버리지 검토
 
@@ -48,7 +52,7 @@
 
 - M21~M27은 조사/장부/매핑/감사/계획 성격이다. 이 구간이 완료되어도 게임 기능이 완성되는 것은 아니다.
 - M28~M41은 구현 성격이지만, 일부 closure가 `mapped`와 `transferredOut`을 완료 totals에 포함한다. 이 경우 "책임을 끝냈다"가 아니라 "분류하거나 넘겼다"일 수 있다.
-- M30은 특수 item 효과를 구현한 것이 아니라 37개 owned row를 M41로 넘긴 상태였으므로 blocked로 되돌렸다.
+- M30은 특수 item 효과를 구현한 것이 아니라 37개 owned row를 넘긴 상태였으므로 blocked로 되돌렸다. 책임상 M30은 즉시 사용 아이템 owner로 재설계하는 것이 맞다.
 - M35와 M38은 `implemented`가 0이고 `mapped`만으로 완료 처리되어 있어, runtime 구현 근거를 자연어로 풀어 재확인해야 한다.
 - M39/M41에는 `source-file-review`가 파일 단위 mapped 완료로 남아 있어 원본 라벨/row 수준 분해가 필요하다.
 - M42는 blocked다. command 0~34 효과 계산이 구현되지 않았으므로 M43 이후로 넘어가면 안 된다.
@@ -67,12 +71,13 @@
 - `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 마일스톤 재설계 신호로 본다. 책임을 넘겨야 한다면 마일스톤을 완료하지 않는다.
 - M28~M41은 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 완료 선언을 재정렬한다.
 - M42부터는 구현 책임을 다른 곳으로 넘기지 않는다.
+- 의심 신호 판정은 `RESPONSIBILITY_SEPARATION_RULES.ko.md`의 `의심 신호`와 `M28~M41 사전 재판정 기준`을 따른다.
 
 ## 즉시 수정 대상
 
 | 우선순위 | 대상 | 해야 할 일 |
 | --- | --- | --- |
-| 1 | M30 | blocked로 재판정 완료. 남은 결정은 M30 책임을 즉시 사용 아이템만으로 공식 재설계할지, 특수 item 200~214 효과까지 M30에서 구현할지다. |
+| 1 | M30 | blocked로 재판정 완료. 내 판단은 M30을 즉시 사용 아이템 9개 owner로 공식 재설계하고, 특수 item 200~214는 의복/훈련 effect owner에서 닫는 것이다. |
 | 2 | M35 | 턴/시간/hook 책임을 실제 runtime hook별 완료/미완료로 풀어 적고, mapped 7개만으로 완료하지 않는다. |
 | 3 | M38 | 촬영 정의와 조건이 runtime에서 실제 소비되는지 확인하고, mapped-only 완료를 재판정한다. |
 | 4 | M39 | source-file-review 2개를 라벨/row 수준으로 분해하거나 미완료로 되돌린다. |

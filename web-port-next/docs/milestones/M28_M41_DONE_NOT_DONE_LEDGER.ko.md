@@ -2,6 +2,8 @@
 
 이 문서는 gate가 아니다. 목적은 각 마일스톤에서 "완료했다고 처리한 것"과 "하지 않았거나 다른 마일스톤으로 넘긴 것"을 사람이 바로 보게 만드는 것이다.
 
+완료/차단/책임 재설계 판정은 `RESPONSIBILITY_SEPARATION_RULES.ko.md`를 따른다.
+
 작성 기준:
 - `완료로 처리한 것`: runtime consumer와 coverage/gate/smoke 근거가 있는 것.
 - `안 했거나 넘긴 것`: `transferredOut`, `mapped` 중 실제 기능 구현이 아닌 분류/owner 확정, 명시적으로 다음 마일스톤 소유로 남긴 것.
@@ -34,7 +36,7 @@
 ## 즉시 보강할 항목
 
 - M28~M41 closure에 `responsibilityIntegrity`를 기계적으로 추가하지 않는다. 먼저 이 장부의 `재확인 필요`를 해소하거나 blocked로 적는다.
-- M30은 blocked로 재판정했다. 다음 단계는 M30 책임을 "즉시 사용 아이템만"으로 공식 재설계할지, 아니면 특수 item 200~214 효과까지 M30에서 구현할지 결정하는 것이다.
+- M30은 blocked로 재판정했다. 책임 분리 기준상 맞는 방향은 M30을 "즉시 사용 아이템 9개" owner로 공식 재설계하고, 특수 item 200~214는 M34/M42/M43/M44 계열 실제 소비 owner에서 닫는 것이다.
 - M35의 넓은 책임을 save field mapping 7개가 아니라 runtime hook/cleanup별 사실로 풀어 적는다.
 - M38/M41 registry에 smoke 필수 누락을 기록한다.
 - M39/M41의 `source-file-review` mapped 완료 row를 분해하거나 미완료로 되돌릴지 결정한다.

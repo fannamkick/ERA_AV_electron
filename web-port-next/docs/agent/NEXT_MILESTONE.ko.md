@@ -7,6 +7,7 @@
 ## 먼저 해야 하는 것
 
 - `../milestones/PORT_COMPLETION_COVERAGE_REVIEW.ko.md`의 즉시 수정 대상 확인
+- `../milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`의 completed/blocked/scope-redesign-required 기준 확인
 - `../milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 재확인 필요 항목 정리
 - M30은 blocked로 재판정 완료. 다음은 M35, M38, M39, M41을 completed/blocked 중 하나로 재판정
 - `[구현]` 마일스톤의 `transferredOut`을 완료로 세지 않도록 문서와 closure 정리

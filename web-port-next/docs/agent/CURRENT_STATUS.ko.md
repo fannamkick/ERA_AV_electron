@@ -16,6 +16,7 @@
 - M42는 원본 `COMF0.ERB`~`COMF34.ERB`의 `SOURCE/LOSEBASE/EXP` 라인을 인덱싱하고 static profile을 만들었지만, 원본 branch/expression/effect behavior를 구현하지 않았으므로 완료가 아니다.
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
 - M30은 재판정 완료. 즉시 사용 아이템 9개는 구현됐지만 transfer 37개가 `ownedBlocker`로 남아 `status: blocked`다. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 현재 실패해야 정상이다.
+- completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
 - M28~M41은 개별 coverage/gate/smoke 통과 기록이 있지만, 일부 `[구현]` 마일스톤이 `mapped`/`transferredOut`을 완료 totals에 포함한다. `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`와 `M28_M41_DONE_NOT_DONE_LEDGER.ko.md` 기준으로 나머지 완료 선언을 재정렬해야 한다.
 
 ## 현재 미완료 초점
@@ -31,6 +32,7 @@
 - 세션 인수인계: `../SESSION_HANDOFF.ko.md`
 - 실행 순서와 체크박스: `../NEW_PORT_MILESTONES.ko.md`
 - M30 blocked 판정: `../../data/coverage/milestones/M30-closure.json`
+- 책임 분리 판정 기준: `../milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`
 - M42 blocked 판정: `../../data/coverage/milestones/M42-closure.json`
 - M42 gap audit: `../../data/coverage/audits/M42-gap-audit.json`
 

@@ -2,12 +2,14 @@
 
 ## 공통 완료 기준
 
+- [ ] `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md` 기준으로 completed/blocked/scope-redesign-required를 먼저 판정함
 - [ ] `npm run build` 통과
 - [ ] 저장 상태, 세션 상태, view 계산 객체 경계가 섞이지 않음
 - [ ] UI와 flow가 공통 action/result 계약을 사용함
 - [ ] 새 소유권이 생기면 기준 문서 갱신
 - [ ] 원본 변수명을 앱 모델명으로 직접 복사하지 않음
 - [ ] 미정 항목을 기능 완료로 처리하지 않음
+- [ ] `[구현]` 마일스톤의 `transferredOut`, file-level `source-file-review`, owner-only `mapped`를 완료 근거로 쓰지 않음
 - [ ] 보류 항목은 원본 위치, 보류 사유, 해소 마일스톤을 가진 blocker로 남김
 - [ ] 구현 제외는 사용자 승인 없이는 완료 처리하지 않음
 - [ ] `.env.local` 접근 없음
@@ -41,8 +43,9 @@
 - [ ] `[구현]` 마일스톤은 부여받은 원본 기능/데이터/상태 변화를 runtime behavior로 끝낸다.
 - [ ] `[구현]` 마일스톤의 `transferredOut`은 완료가 아니다. 발견되면 해당 마일스톤을 blocked로 두거나, 실행 전에 마일스톤 책임을 재설계한다.
 - [ ] `[조사]`, `[정책]`, `[계획]`, `[검증]`, `[감사]`, `[판정]` 마일스톤은 구현 완료를 대신하지 않는다.
+- [ ] runtime owner가 다른 책임이 한 마일스톤에 섞여 있으면 완료가 아니라 `scope-redesign-required`다.
 - [ ] 모든 `[구현]` 마일스톤이 완료되고 M50~M52 최종 검증이 통과하면, 원본 게임 기능이 실제 플레이 가능한 web port behavior로 닫혀야 한다.
-- [ ] 이 불변식을 검토한 기준 문서는 `docs/milestones/PORT_COMPLETION_COVERAGE_REVIEW.ko.md`다.
+- [ ] 이 불변식의 상세 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`와 `docs/milestones/PORT_COMPLETION_COVERAGE_REVIEW.ko.md`다.
 
 ## blocker 기록 형식
 
@@ -175,8 +178,8 @@
 
 - [ ] 모든 coverage row는 `ownerMilestone`, `ownerRole`, `sourceEvidenceId`, `runtimeConsumerId`, `verificationId`, `status`를 가진다.
 - [ ] `ownerMilestone`은 해당 row를 끝까지 닫을 책임자다. owner가 비어 있거나 `remaining`, `later`, `unknown`이면 완료 상태가 아니다.
-- [ ] 구현 마일스톤의 완료 조건은 `ownedTotal = implemented + approvedExcluded + transferredOut`이고, `ownedBlocker = 0`, `roleOnlyComplete = 0`, `missingEvidence = 0`, `missingConsumer = 0`, `missingVerification = 0`, `unapprovedExcluded = 0`이어야 한다.
-- [ ] `transferredOut`은 이번 마일스톤이 소유하지 않는다고 입증된 row에만 허용한다. 반드시 `fromMilestone`, `toMilestone`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`를 기록한다.
+- [ ] 구현 마일스톤의 완료 조건은 `ownedTotal = implemented + mappedWithRuntimeConsumer + approvedExcluded`이고, `transferredOut = 0`, `ownedBlocker = 0`, `roleOnlyComplete = 0`, `missingEvidence = 0`, `missingConsumer = 0`, `missingVerification = 0`, `unapprovedExcluded = 0`이어야 한다.
+- [ ] `transferredOut`은 책임 재설계 또는 blocked 판정의 근거다. 반드시 `fromMilestone`, `toMilestone`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`를 기록하되 완료 total에는 넣지 않는다.
 - [ ] 사용자 승인 제외는 `approvalId`, `approvedBy`, `approvalScope`, `sourceEvidenceId`, `replacementBehavior`가 없으면 완료 상태가 아니다.
 - [ ] `template`, `listing`, `display-only`, `calculation-only`, `role-only`는 구현 완료가 아니라 역할 분류다. 실제 `runtimeConsumerId`와 `verificationId`가 없으면 완료로 세지 않는다.
 - [ ] source evidence는 실제 원본 파일/라벨/CSV 행/family/index에 닿아야 한다. 파생 문서만 근거인 row는 완료 상태가 아니다.
@@ -201,6 +204,7 @@
 - [ ] 전용 gate는 해당 마일스톤 coverage row마다 `sourceEvidenceId`, `runtimeConsumerId`, `verificationId`, `ownerMilestone`, `status`를 검사해야 한다.
 - [ ] 전용 gate는 placeholder, no-op handler, 표시만 되는 화면, role-only row, consumer 없는 used row, verification 없는 mapped row를 실패시켜야 한다.
 - [ ] `gate:milestone-scope-closure`는 closure 숫자만 보지 않는다. 해당 마일스톤의 coverage 파일, gap audit, commandsRun, 전용 gate/smoke 결과, transfer/approval 근거를 함께 검증하도록 강화되어야 한다.
+- [ ] `RESPONSIBILITY_SEPARATION_RULES.ko.md`의 의심 신호가 하나라도 남으면 closure status는 `completed`가 아니라 `blocked` 또는 `scope-redesign-required`다.
 - [ ] M51/M52에 필요한 `audit:final-gap`, `gate:final-gap-audit`, `gate:final-content-zero-gap`, `coverage:view-text`, `gate:view-and-text-coverage`, `report:full-port`, `gate:complete-port-verdict`, `verify:complete`가 실제 script로 존재해야 한다.
 - [ ] `verify:complete`는 전체 coverage 재생성, 모든 gate, 전체 smoke, long-play, failure matrix, 전체 roundtrip, typecheck, build, test를 한 번에 실행해야 한다.
 - [ ] 위 항목 중 하나라도 빠지면 다음 작업은 M35가 아니라 M34.5 hardening이다.
