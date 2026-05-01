@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "milestone-gap-audit/v1",
+  "generatedBy": "tools/build_training_session_coverage.mjs",
+  "milestone": "M40",
+  "sourceInputs": {
+    "implementationQueue": "data/coverage/implementation-queue.json",
+    "features": "data/coverage/features.json",
+    "originalSource": "original-game/ERB/指導関係/TRAIN_MAIN.ERB"
+  },
+  "summary": {
+    "scopeRows": 11,
+    "implemented": 5,
+    "mapped": 6,
+    "transferredOut": 0,
+    "approvedExcluded": 0,
+    "unresolvedGaps": 0,
+    "ownedBlockers": 0,
+    "roleOnlyComplete": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "unapprovedExcluded": 0
+  },
+  "issues": []
+}

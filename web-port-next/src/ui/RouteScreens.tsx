@@ -458,8 +458,12 @@ function TrainingScreen({ catalog, state, session, onAction }: ScreenProps) {
             items={[
               { label: '대상', value: view.selectedTarget?.label ?? '-' },
               { label: '실행자', value: view.selectedExecutor?.label ?? '-' },
+              { label: '조수', value: view.selectedAssistant?.label ?? '-' },
+              { label: '일자', value: `M${view.statusSummary.month} W${view.statusSummary.week} D${view.statusSummary.day}` },
+              { label: '시간', value: view.statusSummary.timeSlotLabel },
               { label: '자극', value: view.bufferSummary.stimulusTotal || '-' },
               { label: 'Param Up', value: view.bufferSummary.paramUpTotal || '-' },
+              { label: '소모', value: view.bufferSummary.formattedBodyCostTotal },
             ]}
           />
           <div className="listing-list compact-list" aria-label="훈련 실행자">
@@ -473,6 +477,20 @@ function TrainingScreen({ catalog, state, session, onAction }: ScreenProps) {
                 selected={participant.characterId === view.selectedExecutorId}
                 title={participant.disabledReason}
                 onClick={() => onAction({ type: 'training/selectExecutor', characterId: participant.characterId })}
+              />
+            ))}
+          </div>
+          <div className="listing-list compact-list" aria-label="훈련 조수">
+            {view.participants.map((participant) => (
+              <ChoiceButton
+                detail={!participant.available ? participant.disabledReason : undefined}
+                disabled={!participant.available}
+                key={`assistant:${participant.characterId}`}
+                label={participant.label}
+                meta="조수"
+                selected={participant.characterId === view.selectedAssistantId}
+                title={participant.disabledReason}
+                onClick={() => onAction({ type: 'training/selectAssistant', characterId: participant.characterId })}
               />
             ))}
           </div>
@@ -496,10 +514,13 @@ function TrainingScreen({ catalog, state, session, onAction }: ScreenProps) {
             </button>
             <button
               type="button"
-              disabled={!view.selectedTarget && !view.selectedExecutor && !view.selectedCommand}
+              disabled={!view.selectedTarget && !view.selectedExecutor && !view.selectedAssistant && !view.selectedCommand}
               onClick={() => onAction({ type: 'training/cancelSelection' })}
             >
               선택 해제
+            </button>
+            <button type="button" disabled={!view.selectedAssistant} onClick={() => onAction({ type: 'training/selectAssistant' })}>
+              조수 해제
             </button>
             <button type="button" onClick={() => onAction({ type: 'training/cancel' })}>
               돌아가기

@@ -291,6 +291,14 @@ export type TrainingView = {
     readonly stimulusTotal: number;
     readonly paramUpTotal: number;
     readonly bodyCostTotal: number;
+    readonly formattedBodyCostTotal: string;
+  };
+  readonly statusSummary: {
+    readonly day: number;
+    readonly month: number;
+    readonly week: number;
+    readonly turn: number;
+    readonly timeSlotLabel: string;
   };
 };
 

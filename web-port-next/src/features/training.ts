@@ -109,9 +109,8 @@ export function computeVisibleTrainingParticipantIds(state: GameState): readonly
   return Object.keys(state.people.characters).sort();
 }
 
-export function computeVisibleTrainingCommandIds(definitions: GameDefinitions, state: GameState): readonly CatalogId[] {
+export function computeVisibleTrainingCommandIds(definitions: GameDefinitions): readonly CatalogId[] {
   return Object.values(definitions.trainingCommands)
-    .filter((command) => command.defaultAvailable === true || state.featureState.unlocks[`training:${command.id}`] === true)
     .map((command) => command.id)
     .sort((left, right) => Number(left) - Number(right));
 }
@@ -150,6 +149,10 @@ function commandViewFromDefinition(
   };
 }
 
+export function formatTrainingNumber(value: number): string {
+  return String(value).padStart(8, ' ');
+}
+
 function bufferSummary(session: GameSession): TrainingView['bufferSummary'] {
   const stimulusTotal = Object.values(session.interaction.sources).reduce((total, value) => total + value, 0);
   const paramUpTotal = Object.values(session.interaction.paramDeltas).reduce((total, value) => total + value.up, 0);
@@ -159,6 +162,17 @@ function bufferSummary(session: GameSession): TrainingView['bufferSummary'] {
     stimulusTotal,
     paramUpTotal,
     bodyCostTotal,
+    formattedBodyCostTotal: `${formatTrainingNumber(bodyCostTotal)}/${formatTrainingNumber(paramUpTotal)}`,
+  };
+}
+
+function trainingStatusSummary(state: GameState): TrainingView['statusSummary'] {
+  return {
+    day: state.run.clock.day,
+    month: state.run.clock.month,
+    week: state.run.clock.week,
+    turn: state.run.clock.turn,
+    timeSlotLabel: state.run.clock.currentTimeSlot === 0 ? '전반' : '후반',
   };
 }
 
@@ -167,7 +181,7 @@ export function buildTrainingView(definitions: GameDefinitions, state: GameState
   const participants = participantIds
     .map((characterId) => participantViewFromState(state, characterId))
     .filter((participant): participant is TrainingParticipantView => Boolean(participant));
-  const visibleCommandIds = computeVisibleTrainingCommandIds(definitions, state);
+  const visibleCommandIds = computeVisibleTrainingCommandIds(definitions);
   const visibleCommands = visibleCommandIds
     .map((commandId) => getTrainingCommandDefinition(definitions, commandId))
     .filter((result): result is { readonly ok: true; readonly definition: TrainingCommandDefinition } => result.ok)
@@ -204,6 +218,7 @@ export function buildTrainingView(definitions: GameDefinitions, state: GameState
     selectedCommandId: session.interaction.commandFlow.selectedCommandId,
     selectedCommand,
     bufferSummary: bufferSummary(session),
+    statusSummary: trainingStatusSummary(state),
   };
 }
 
@@ -215,6 +230,7 @@ function clearTrainingCommandBuffers(interaction: InteractionSessionState): Inte
   return {
     ...interaction,
     commandFlow: {},
+    temporaryFlags: {},
     sources: {},
     paramDeltas: {},
     baseLoss: {},
@@ -367,19 +383,20 @@ function baseLossFromBodyDeltas(deltas: Record<string, number>): Record<string, 
 }
 
 function sessionWithTrainingPreview(session: GameSession, result: TrainingCalculatedResult): GameSession {
+  const interaction = clearTrainingCommandBuffers(session.interaction);
+
   return {
     ...session,
     interaction: {
-      ...session.interaction,
+      ...interaction,
       commandFlow: {
-        ...session.interaction.commandFlow,
         selectedCommandId: result.commandId,
       },
       sources: result.stimulusDeltas,
       paramDeltas: result.paramDeltas,
       baseLoss: baseLossFromBodyDeltas(result.bodyStatDeltas),
       resultBuffers: {
-        ...session.interaction.resultBuffers,
+        ...interaction.resultBuffers,
         nowEx: result.experienceDeltas,
         gotJuel: result.resourceDeltas,
       },

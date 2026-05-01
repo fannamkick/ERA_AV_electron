@@ -225,9 +225,7 @@ function enterShooting(context: GameActionContext): GameActionResult {
 }
 
 function enterTraining(context: GameActionContext): GameActionResult {
-  const visibleCommandIds = Object.values(context.catalog.trainingCommands).filter(
-    (command) => command.defaultAvailable === true || context.state.featureState.unlocks[`training:${command.id}`] === true,
-  );
+  const visibleCommandIds = Object.values(context.catalog.trainingCommands);
 
   if (visibleCommandIds.length === 0) {
     return failureResult(context, {

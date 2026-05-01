@@ -73,7 +73,12 @@
 - 촬영 실행 결과는 `economy.videoSalesTotal`, `work.filmingProgressFlags`, `work.filmingByCharacterId`, `work.careerFlagsByCharacterId`, `people`, `body` owner에만 반영된다.
 - `session.shooting.sceneTemporaryValues`, `session.shooting.sceneFlags`, `session.interaction.participants.assistantId`는 촬영 실행 중 session/calculation 값으로만 소비되고 저장 payload에 남지 않는다.
 - `coverage:filming-execution`, `gate:filming-execution`, `smoke:filming-all`은 placeholder가 아니라 실제 script다.
-- 다음 작업은 M40 훈련 메뉴와 세션 완성이다. M40 placeholder script를 실제 `coverage:training-session`, `gate:training-session`, `smoke:training-session` 구현으로 교체해야 한다.
+- M40 훈련 메뉴와 세션 완성 완료.
+- M40 owned scope 11행을 `implemented` 5, `mapped` 6, unresolved issue 0개로 닫았다.
+- 원본 `TRAIN_MAIN.ERB`의 `EVENTTRAIN`, `EVENTCOM`, `EVENTCOMEND`, `EVENTEND`, `JUEL_CHECK`, `SHOW_STATUS`, `FIGURE_INDENT`, `FIGURE_INDENT_SLASH`를 runtime consumer와 smoke 검증에 연결했다.
+- 105개 훈련 command 후보 전체 view, 대상/실행자/조수 선택, 조수 해제, command 선택 reset, 누락/불가 실패, 선택 취소, 화면 취소, 실행 후 턴 종료와 session cleanup을 `smoke:training-session`으로 검증했다.
+- `coverage:training-session`, `gate:training-session`, `smoke:training-session`은 placeholder가 아니라 실제 script다.
+- 다음 작업은 M41 훈련 가능 조건 전수 구현이다. item 22/90/91과 105개 command별 availability/불가 사유를 원본 기준으로 닫아야 한다.
 
 ## 미완료
 
@@ -83,12 +88,12 @@
 | 미션 완성 | M11 최소 미션 1개는 완료. 미션 전체 정의/기한/성공/실패/보상/이벤트 연동은 M46에서 완성 |
 | 업무 완성 | M12 최소 업무 1개는 완료. 업무/창관/특수 업무 전체와 각 업무 후처리는 M37에서 완성 |
 | 촬영 완성 | M38에서 촬영 장면 정의와 조건을 완료했고 M39에서 촬영 실행/결과/판매/후처리를 완료. 이후 이벤트/세계 hook과 최종 저장/로드 재검증은 M47/M50/M52에서 다시 확인 |
-| 훈련 완성 | M14 최소 command 1개는 완료. 훈련 세션은 M40, 가능 조건은 M41, command 효과 0~34는 M42, 35~69는 M43, 70~104와 후처리는 M44에서 완성 |
+| 훈련 완성 | M14 최소 command 1개와 M40 훈련 세션 lifecycle은 완료. 가능 조건은 M41, command 효과 0~34는 M42, 35~69는 M43, 70~104와 후처리는 M44에서 완성 |
 | 자동 테스트 | M16 기준 범용 검증 묶음은 `npm run verify:m16`. Phase 1 dispatch smoke, M7 영입 smoke, M8 턴 종료 smoke, M9 저장/로드 smoke, M10 방문 smoke, M11 미션 smoke, M12 업무 smoke, M13 촬영 smoke, M14 훈련 smoke, 저장 roundtrip, boundary gate, raw-name gate, stub gate, build를 포함 |
 | 확정 변환표 | M17에서 상태값/증거/차단 정책은 확정됨. M24에서 저장 mapping 장부를 만들었고 M25에서 세션/계산 mapping 장부를 만들었다 |
 | 기능 전수 구현 | M19에서 기능 row 5,344개를 만들었고 11개만 현재 구현 완료 근거를 가진다. 나머지 5,333개는 M28~M49에서 구현 또는 사용자 승인 제외로 닫아야 할 blocker다 |
-| 정의 전수 구현 | 아직 완료 아님. M20/M23 기준 definition row 8,000개를 만들고 역할/소비 책임을 배정했다. M30~M39에서 아이템 사용, 영입 listing, 인물 identity, 신체/능력/소질/경험, CFLAG/장비/관계 일부, 턴/시간 진행, 방문/시설, 업무/창관/특수 업무, 촬영 장면 정의와 촬영 실행/판매는 실제 소비 검증으로 닫았지만, 훈련/미션/이벤트/엔딩/정보 계열은 M40~M49에서 계속 닫아야 한다. `template`/`listing`/`display-only`/`calculation-only`는 실제 consumer와 verification이 붙기 전까지 최종 구현 완료가 아니다 |
-| M34.5 전수 이식 gate hardening | 완료. auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결했고, `gate:source-evidence`가 마일스톤별 coverage row까지 검사한다. M35~M52 전용 script registry와 최종 verify skeleton도 생성했다 | M35~M39은 실제 script로 교체 완료. M40~M52 placeholder script는 실행 시 실패하므로 각 마일스톤에서 실제 coverage/gate/smoke 구현으로 교체해야 한다 |
+| 정의 전수 구현 | 아직 완료 아님. M20/M23 기준 definition row 8,000개를 만들고 역할/소비 책임을 배정했다. M30~M40에서 아이템 사용, 영입 listing, 인물 identity, 신체/능력/소질/경험, CFLAG/장비/관계 일부, 턴/시간 진행, 방문/시설, 업무/창관/특수 업무, 촬영 장면 정의와 촬영 실행/판매, 훈련 세션 lifecycle은 실제 소비 검증으로 닫았지만, 훈련 가능 조건/효과, 미션/이벤트/엔딩/정보 계열은 M41~M49에서 계속 닫아야 한다. `template`/`listing`/`display-only`/`calculation-only`는 실제 consumer와 verification이 붙기 전까지 최종 구현 완료가 아니다 |
+| M34.5 전수 이식 gate hardening | 완료. auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결했고, `gate:source-evidence`가 마일스톤별 coverage row까지 검사한다. M35~M52 전용 script registry와 최종 verify skeleton도 생성했다 | M35~M40은 실제 script로 교체 완료. M41~M52 placeholder script는 실행 시 실패하므로 각 마일스톤에서 실제 coverage/gate/smoke 구현으로 교체해야 한다 |
 
 ## 데이터 완성도 판단
 
@@ -120,7 +125,7 @@
 | 인물 원형과 identity 완성 | M32에서 Chara template 109개, 이름/호칭/별명/표시명, CSTR identity seed, 삭제/은퇴/조수 가능/영입 상태를 정의와 save 경계에 연결했다 | M33에서 신체/능력/소질/경험 계열을 이어서 닫았다 |
 | 관계/CFLAG/장비/의복 owner 완성 | M34에서 `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`을 추가해 CFLAG seed와 의복/장비 route를 실제 소비 경로에 연결했다. raw `CFLAG`는 runtime 모델명으로 남기지 않는다 | M34.5에서 auxiliary evidence 완료 근거와 최종 gate 부재를 해소했다 |
 | source evidence hard gate | `npm run gate:source-evidence` 통과. `legacyCharacterFlagDefinitions` 151개와 `sourceDefinitions` 18개는 auxiliary 해석 보조를 유지하되 primary `VariableSize.CSV` evidence를 완료 근거로 사용한다 | 완료성 row가 auxiliary evidence만 가지면 gate가 실패한다 |
-| M34.5 전수 이식 gate hardening | 완료. auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결했고, `gate:source-evidence`가 마일스톤별 coverage row까지 검사한다. M35~M52 전용 script registry와 최종 verify skeleton도 생성했다 | M35~M39은 실제 script로 교체 완료. M40~M52 placeholder script는 실행 시 실패하므로 각 마일스톤에서 실제 coverage/gate/smoke 구현으로 교체해야 한다 |
+| M34.5 전수 이식 gate hardening | 완료. auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결했고, `gate:source-evidence`가 마일스톤별 coverage row까지 검사한다. M35~M52 전용 script registry와 최종 verify skeleton도 생성했다 | M35~M40은 실제 script로 교체 완료. M41~M52 placeholder script는 실행 시 실패하므로 각 마일스톤에서 실제 coverage/gate/smoke 구현으로 교체해야 한다 |
 | 턴/시간 진행 완성 | M35에서 `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`을 실제 script로 교체했다. `run.clock`의 day/week/month/year/currentTimeSlot/counter와 `run.progressFlags.flag_34/flag_61`을 turn pipeline에서 소비하고, weekly/monthly hook, mission deadline, world event hook, monthly maintenance, session cleanup을 검증한다 | 완료 |
 | 방문/시설 완성 | M36에서 `coverage:visit-facility`, `gate:visit-facility`, `smoke:visit-all`을 실제 script로 교체했다. 방문 장소 7개, 방문 source-label action 86개, M36 feature row 552개, visitPlaces definition 7개를 소비하고, 비용 부족/중복/취소/session cleanup/save roundtrip을 검증한다 | M37부터는 업무/창관/특수 업무 기능군을 같은 방식으로 owner row, coverage, gate, smoke, closure로 닫아야 함 |
 | 기능 소비 관계 | 구매, 영입, 턴 종료, 저장/로드, 방문, 미션, 업무, 촬영, 훈련 1차 루프는 smoke로 연결됨. M20의 예정 consumer 문자열만으로 실제 소비 완료를 주장하지 않음 | M22/M26/M28~M49에서 모든 feature가 읽는 definition/save/session/view 역할을 실제 handler/view/calculation/smoke와 교차 검증해야 함 |
@@ -223,6 +228,16 @@ npm run gate:filming-scene
 npm run gate:milestone-scope-closure -- M38
 npm run smoke:filming-scenes
 npm run smoke:m13
+npm run coverage:filming-execution
+npm run gate:filming-execution
+npm run gate:milestone-scope-closure -- M39
+npm run smoke:filming-all
+npm run smoke:m13
+npm run coverage:training-session
+npm run gate:training-session
+npm run gate:milestone-scope-closure -- M40
+npm run smoke:training-session
+npm run smoke:m14
 npm run verify:m16
 npm run smoke:main-routes
 npm run gate:definition-consumption
@@ -285,6 +300,10 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M34.5에서 `npm run gate:source-evidence` 실패 원인이던 auxiliary evidence 완료성 row 169개를 primary source evidence로 재연결했고, M35~M52 gate registry와 final verify skeleton을 추가했다.
 - M35 turn pipeline coverage/gate/smoke 통과, owned row 7개와 unresolved issue 0개
 - M36 visit facility coverage/gate/smoke 통과, owned row 559개와 unresolved issue 0개
+- M37 work coverage/gate/smoke 통과, owned row 461개와 unresolved issue 0개
+- M38 filming scene coverage/gate/smoke 통과, owned row 6개와 unresolved issue 0개
+- M39 filming execution coverage/gate/smoke 통과, owned row 174개와 unresolved issue 0개
+- M40 training session coverage/gate/smoke 통과, owned row 11개와 unresolved issue 0개
 - `smoke:main-routes` 통과, 메인 메뉴 108 wardrobe route 활성화 확인
 - `analyze:game-system` 통과
 - `tsc --noEmit` 통과
@@ -330,7 +349,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 34. M37 업무/창관/특수 업무 완성은 `npm run coverage:work`, `npm run gate:work-coverage`, `npm run gate:milestone-scope-closure -- M37`, `npm run smoke:work-all`, `npm run smoke:m12`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M37 owned scope 461행 중 implemented 286, mapped 175, unresolved issue 0개로 닫았다.
 35. M38 촬영 정의와 장면 조건 완성은 `npm run coverage:filming-scene`, `npm run gate:filming-scene`, `npm run gate:milestone-scope-closure -- M38`, `npm run smoke:filming-scenes`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M38 owned scope 6행 중 mapped 6, unresolved issue 0개로 닫았다.
 36. M39 촬영 실행/결과/판매 완성은 `npm run coverage:filming-execution`, `npm run gate:filming-execution`, `npm run gate:milestone-scope-closure -- M39`, `npm run smoke:filming-all`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M39 owned scope 174행 중 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
-37. 다음 작업은 M40 훈련 메뉴와 세션 완성이다. M40 placeholder script를 실제 `coverage:training-session`, `gate:training-session`, `smoke:training-session` 구현으로 교체하고, 훈련 대상/실행자/조수/command 선택 session lifecycle을 coverage와 gate로 닫는다.
+37. M40 훈련 메뉴와 세션 완성은 `npm run coverage:training-session`, `npm run gate:training-session`, `npm run gate:milestone-scope-closure -- M40`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M40 owned scope 11행 중 implemented 5, mapped 6, unresolved issue 0개로 닫았다.
+38. 다음 작업은 M41 훈련 가능 조건 전수 구현이다. item 22/90/91과 105개 command별 availability/불가 사유를 원본 기준으로 닫는다.
 
 ## 주의
 

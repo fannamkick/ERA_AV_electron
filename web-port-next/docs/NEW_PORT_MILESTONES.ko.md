@@ -1581,14 +1581,36 @@ npm run test --if-present
 - 완료 결과: 훈련 진입, 선택, 취소, 완료, 턴 종료에서 session lifecycle이 검증된다.
 - 누락 차단: 훈련 선택값이 save에 남거나 command 후보 계산이 상태를 바꾸면 완료하지 않는다.
 
-- [ ] 훈련 대상, 실행자, 조수, command 선택 상태를 session owner에 연결
-- [ ] 훈련 command 후보 view를 전체 command 기준으로 계산
-- [ ] 대상/실행자/조수 누락, 불가 조건, 취소를 검증
-- [ ] 훈련 장비/임시 모드/선택값은 session에만 둠
-- [ ] 훈련 화면 진입과 복귀가 저장 상태를 직접 바꾸지 않도록 검증
-- [ ] 훈련 session이 완료/취소/턴 종료 시 폐기되는지 검증
-- [ ] M19/M20/M25 coverage의 훈련 메뉴 관련 status 갱신
-- [ ] `npm run build` 실행
+- [x] 훈련 대상, 실행자, 조수, command 선택 상태를 session owner에 연결
+- [x] 훈련 command 후보 view를 전체 command 기준으로 계산
+- [x] 대상/실행자/조수 누락, 불가 조건, 취소를 검증
+- [x] 훈련 장비/임시 모드/선택값은 session에만 둠
+- [x] 훈련 화면 진입과 복귀가 저장 상태를 직접 바꾸지 않도록 검증
+- [x] 훈련 session이 완료/취소/턴 종료 시 폐기되는지 검증
+- [x] M19/M20/M25 coverage의 훈련 메뉴 관련 status 갱신
+- [x] `npm run build` 실행
+
+M40 완료 근거:
+- M40 owned scope는 `unit:M40:training-session` 11행이며 전부 `original-game/ERB/指導関係/TRAIN_MAIN.ERB`의 `EVENTTRAIN`, `EVENTCOM`, `EVENTCOMEND`, `EVENTEND`, `JUEL_CHECK`, `SHOW_STATUS`, `FIGURE_INDENT`, `FIGURE_INDENT_SLASH` 근거다.
+- `coverage:training-session`, `gate:training-session`, `smoke:training-session`을 placeholder가 아닌 실제 script로 교체했다.
+- 105개 훈련 command 후보 전체를 view에 노출하고, M41 소유 가능 조건은 disabled reason으로 남긴다. M40은 command 효과 전체가 아니라 세션 진입/선택/취소/완료 lifecycle만 닫는다.
+- 대상/실행자/조수 선택, 조수 해제, command 선택 시 TFLAG/SOURCE/PALAM/result preview reset, 선택 취소, 화면 취소, 실행 후 턴 종료와 interaction session 폐기를 검증했다.
+- `SHOW_STATUS`는 훈련 view의 대상/실행자/조수/일자/시간대 요약으로 소비하고, `FIGURE_INDENT`/`FIGURE_INDENT_SLASH`는 8칸 폭 숫자 포맷으로 소비한다.
+- `data/coverage/training-session-coverage.json`, `data/coverage/audits/M40-gap-audit.json`, `data/coverage/milestones/M40-closure.json`을 생성했다. ownedTotal 11, implemented 5, mapped 6, blocker/missing/unapproved 0.
+
+검증:
+
+```bash
+npm run coverage:training-session
+npm run gate:training-session
+npm run gate:milestone-scope-closure -- M40
+npm run smoke:training-session
+npm run smoke:m14
+npm run verify:m16
+npm run typecheck
+npm run build
+npm run test --if-present
+```
 
 ## M41. 훈련 가능 조건 전수 구현
 
