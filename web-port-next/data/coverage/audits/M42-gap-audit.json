@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "milestone-gap-audit/v1",
+  "generatedBy": "tools/build_training_effect_0_34_coverage.mjs",
+  "milestone": "M42",
+  "summary": {
+    "unresolvedGaps": 0,
+    "ownedRows": 35,
+    "implemented": 35
+  },
+  "gaps": []
+}

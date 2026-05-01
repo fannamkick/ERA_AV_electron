@@ -1570,19 +1570,19 @@
     },
     {
       "blockerId": "blocker:m20:training-command-effect",
-      "ownerMilestone": "M28",
+      "ownerMilestone": "M43",
       "sourceLocation": "original-game/CSV/Train.csv",
-      "sourceEvidenceId": "source:definition:definition-training-command-1",
+      "sourceEvidenceId": "source:definition:definition-training-command-35",
       "sourceEvidence": {
-        "evidenceId": "source:definition:definition-training-command-1",
+        "evidenceId": "source:definition:definition-training-command-35",
         "sourceTier": "primary",
         "sourceKind": "csv-row",
         "sourcePath": "original-game/CSV/Train.csv",
         "label": "",
         "line": "",
-        "csvRow": "1",
+        "csvRow": "35",
         "family": "",
-        "index": "1",
+        "index": "35",
         "accessDirection": "definition",
         "sourceRole": "original"
       },
@@ -1590,7 +1590,7 @@
       "status": "blocker",
       "reason": "blocker",
       "requiredDecision": "Resolve the definition owner/consumer with M18 templates, or record an approved exclusion with user approval.",
-      "temporaryRuntimeBehavior": "Train.csv command requires command-specific availability/effect/session cleanup in M28.",
+      "temporaryRuntimeBehavior": "Train.csv command still requires command-specific effect/session cleanup in its assigned training-effect milestone.",
       "completionBlocked": true,
       "unblocksWhen": "Definition row gains runtime owner, consumer, status, and verification evidence, or approved-excluded with user approval.",
       "verificationToClose": "npm run gate:definition-consumption"

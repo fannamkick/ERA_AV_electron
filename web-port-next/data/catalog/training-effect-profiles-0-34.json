@@ -1,0 +1,7834 @@
+{
+  "schemaVersion": "training-effect-profiles/v1",
+  "generatedBy": "tools/build_training_effect_0_34_coverage.mjs",
+  "milestone": "M42",
+  "commandRange": {
+    "start": 0,
+    "end": 34,
+    "label": "0-34"
+  },
+  "profiles": {
+    "0": {
+      "commandId": "0",
+      "sourceEvidenceId": "source:training-effect:COMF0",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF0.ERB",
+        "sourceFile": "COMF0.ERB",
+        "sourceSha256": "59bc2c1d8c07b466ada9dd3fd6d90a94399b0258e5188e6e7ccec33dac8f468a",
+        "sourceLine": 18,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 18,
+            "text": "SOURCE:0 = 0"
+          },
+          {
+            "sourceLine": 20,
+            "text": "SOURCE:17 = 0"
+          },
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:3 = 0"
+          },
+          {
+            "sourceLine": 24,
+            "text": "SOURCE:4 = 60"
+          },
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:8 = 30"
+          },
+          {
+            "sourceLine": 28,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:0 = 20"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:3 = 25"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:0 = 100"
+          },
+          {
+            "sourceLine": 36,
+            "text": "SOURCE:3 = 50"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:0 = 500"
+          },
+          {
+            "sourceLine": 39,
+            "text": "SOURCE:3 = 80"
+          },
+          {
+            "sourceLine": 41,
+            "text": "SOURCE:0 = 1200"
+          },
+          {
+            "sourceLine": 42,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:0 = 2000"
+          },
+          {
+            "sourceLine": 45,
+            "text": "SOURCE:3 = 115"
+          },
+          {
+            "sourceLine": 47,
+            "text": "SOURCE:0 = 2800"
+          },
+          {
+            "sourceLine": 48,
+            "text": "SOURCE:3 = 125"
+          },
+          {
+            "sourceLine": 53,
+            "text": "SOURCE:17 = 15"
+          },
+          {
+            "sourceLine": 54,
+            "text": "SOURCE:3 += 25"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:17 = 50"
+          },
+          {
+            "sourceLine": 57,
+            "text": "SOURCE:3 += 50"
+          },
+          {
+            "sourceLine": 59,
+            "text": "SOURCE:17 = 300"
+          },
+          {
+            "sourceLine": 60,
+            "text": "SOURCE:3 += 80"
+          },
+          {
+            "sourceLine": 62,
+            "text": "SOURCE:17 = 700"
+          },
+          {
+            "sourceLine": 63,
+            "text": "SOURCE:3 += 100"
+          },
+          {
+            "sourceLine": 65,
+            "text": "SOURCE:17 = 1100"
+          },
+          {
+            "sourceLine": 66,
+            "text": "SOURCE:3 += 115"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:17 = 1600"
+          },
+          {
+            "sourceLine": 69,
+            "text": "SOURCE:3 += 125"
+          },
+          {
+            "sourceLine": 77,
+            "text": "SOURCE:8 = 0"
+          },
+          {
+            "sourceLine": 84,
+            "text": "SOURCE:8 = 0"
+          },
+          {
+            "sourceLine": 90,
+            "text": "SOURCE:8 = 0"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 14,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 15,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 150,
+            "text": "EXP:40 += 5"
+          },
+          {
+            "sourceLine": 154,
+            "text": "EXP:41 += 5"
+          },
+          {
+            "sourceLine": 163,
+            "text": "EXP:14 += 1"
+          },
+          {
+            "sourceLine": 166,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 33,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "0",
+        "label": "애무",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF0.ERB",
+          "originalId": "0",
+          "originalName": "애무"
+        },
+        "description": "M42 original COMF0 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF0"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 12
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 10,
+            "down": 0
+          },
+          "5": {
+            "up": 3,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -4,
+          "energy": -3
+        },
+        "resourceDeltas": {
+          "0": 1
+        },
+        "experienceDeltas": {
+          "13": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "1": {
+      "commandId": "1",
+      "sourceEvidenceId": "source:training-effect:COMF1",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF1.ERB",
+        "sourceFile": "COMF1.ERB",
+        "sourceSha256": "33fdb83e98fbfbf3fbbc6fdbbe52fa3c83b7ca58d9a403a049ffd9b9d9fe5d0a",
+        "sourceLine": 29,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:9 = 100"
+          },
+          {
+            "sourceLine": 30,
+            "text": "SOURCE:10 = 100"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:12 = 220"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:14 = 50"
+          },
+          {
+            "sourceLine": 36,
+            "text": "SOURCE:0 = 40"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:0 = 160"
+          },
+          {
+            "sourceLine": 40,
+            "text": "SOURCE:0 = 700"
+          },
+          {
+            "sourceLine": 42,
+            "text": "SOURCE:0 = 1500"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:0 = 2400"
+          },
+          {
+            "sourceLine": 46,
+            "text": "SOURCE:0 = 3300"
+          },
+          {
+            "sourceLine": 52,
+            "text": "SOURCE:16 += SOURCE:0/20"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 24,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 25,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 73,
+            "text": "EXP:40 += 3"
+          },
+          {
+            "sourceLine": 93,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 11,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 2,
+      "definitionPatch": {
+        "id": "1",
+        "label": "커닐링구스",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF1.ERB",
+          "originalId": "1",
+          "originalName": "커닐링구스"
+        },
+        "description": "M42 original COMF1 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF1"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 33,
+          "9": 1,
+          "10": 1,
+          "12": 2,
+          "14": 1
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 33,
+            "down": 0
+          },
+          "9": {
+            "up": 1,
+            "down": 0
+          },
+          "10": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 2,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -5,
+          "energy": -50
+        },
+        "resourceDeltas": {
+          "1": 1
+        },
+        "experienceDeltas": {
+          "40": 3
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "2": {
+      "commandId": "2",
+      "sourceEvidenceId": "source:training-effect:COMF2",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF2.ERB",
+        "sourceFile": "COMF2.ERB",
+        "sourceSha256": "01950956ebdb9a8e9a52a5f8d907c40a6a7b9689e3022e591ddef767b7c65673",
+        "sourceLine": 17,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 17,
+            "text": "SOURCE:12 = 850"
+          },
+          {
+            "sourceLine": 18,
+            "text": "SOURCE:14 = 200"
+          },
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:2 = 20"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:13 = 300"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:2 = 75"
+          },
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:13 = 350"
+          },
+          {
+            "sourceLine": 28,
+            "text": "SOURCE:2 = 300"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:13 = 400"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:2 = 700"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:13 = 650"
+          },
+          {
+            "sourceLine": 34,
+            "text": "SOURCE:2 = 1100"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:13 = 1000"
+          },
+          {
+            "sourceLine": 37,
+            "text": "SOURCE:2 = 1500"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:13 = 1500"
+          },
+          {
+            "sourceLine": 45,
+            "text": "SOURCE:6 = 500"
+          },
+          {
+            "sourceLine": 46,
+            "text": "SOURCE:14 += 200"
+          },
+          {
+            "sourceLine": 50,
+            "text": "SOURCE:6 = 400"
+          },
+          {
+            "sourceLine": 51,
+            "text": "SOURCE:14 += 100"
+          },
+          {
+            "sourceLine": 55,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:14 += 50"
+          },
+          {
+            "sourceLine": 60,
+            "text": "SOURCE:6 = 200"
+          },
+          {
+            "sourceLine": 64,
+            "text": "SOURCE:6 = 100"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:6 = 50"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 14,
+            "text": "LOSEBASE:0 += 20"
+          },
+          {
+            "sourceLine": 15,
+            "text": "LOSEBASE:1 += 100"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 162,
+            "text": "EXP:1 += S"
+          },
+          {
+            "sourceLine": 170,
+            "text": "EXP:40 += 2"
+          },
+          {
+            "sourceLine": 174,
+            "text": "EXP:41 += 5"
+          },
+          {
+            "sourceLine": 181,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 23,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "2",
+        "label": "애널애무",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF2.ERB",
+          "originalId": "2",
+          "originalName": "애널애무"
+        },
+        "description": "M42 original COMF2 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF2"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 15,
+          "6": 5,
+          "12": 8,
+          "13": 15,
+          "14": 2
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 15,
+            "down": 0
+          },
+          "6": {
+            "up": 5,
+            "down": 0
+          },
+          "12": {
+            "up": 8,
+            "down": 0
+          },
+          "13": {
+            "up": 15,
+            "down": 0
+          },
+          "14": {
+            "up": 2,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -20,
+          "energy": -100
+        },
+        "resourceDeltas": {
+          "2": 1
+        },
+        "experienceDeltas": {
+          "40": 2,
+          "41": 5
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "3": {
+      "commandId": "3",
+      "sourceEvidenceId": "source:training-effect:COMF3",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF3.ERB",
+        "sourceFile": "COMF3.ERB",
+        "sourceSha256": "c2f47c319f7948ad36dbf1b99cf2fc3fe59caea79b0503232f6d85ab6fc75447",
+        "sourceLine": 251,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 251,
+            "text": "SOURCE:14 = 400"
+          },
+          {
+            "sourceLine": 259,
+            "text": "SOURCE:10 = 50"
+          },
+          {
+            "sourceLine": 260,
+            "text": "SOURCE:11 = 100"
+          },
+          {
+            "sourceLine": 265,
+            "text": "SOURCE:0 = 15"
+          },
+          {
+            "sourceLine": 266,
+            "text": "SOURCE:12 = 2000"
+          },
+          {
+            "sourceLine": 267,
+            "text": "SOURCE:13 = 500"
+          },
+          {
+            "sourceLine": 269,
+            "text": "SOURCE:0 = 50"
+          },
+          {
+            "sourceLine": 270,
+            "text": "SOURCE:12 = 2300"
+          },
+          {
+            "sourceLine": 271,
+            "text": "SOURCE:13 = 800"
+          },
+          {
+            "sourceLine": 273,
+            "text": "SOURCE:0 = 300"
+          },
+          {
+            "sourceLine": 274,
+            "text": "SOURCE:12 = 2600"
+          },
+          {
+            "sourceLine": 275,
+            "text": "SOURCE:13 = 1200"
+          },
+          {
+            "sourceLine": 277,
+            "text": "SOURCE:0 = 700"
+          },
+          {
+            "sourceLine": 278,
+            "text": "SOURCE:12 = 2900"
+          },
+          {
+            "sourceLine": 279,
+            "text": "SOURCE:13 = 1900"
+          },
+          {
+            "sourceLine": 281,
+            "text": "SOURCE:0 = 1100"
+          },
+          {
+            "sourceLine": 282,
+            "text": "SOURCE:12 = 3200"
+          },
+          {
+            "sourceLine": 283,
+            "text": "SOURCE:13 = 2500"
+          },
+          {
+            "sourceLine": 285,
+            "text": "SOURCE:0 = 1600"
+          },
+          {
+            "sourceLine": 286,
+            "text": "SOURCE:12 = 3500"
+          },
+          {
+            "sourceLine": 287,
+            "text": "SOURCE:13 = 3000"
+          },
+          {
+            "sourceLine": 292,
+            "text": "SOURCE:17 = 15"
+          },
+          {
+            "sourceLine": 294,
+            "text": "SOURCE:17 = 50"
+          },
+          {
+            "sourceLine": 296,
+            "text": "SOURCE:17 = 300"
+          },
+          {
+            "sourceLine": 298,
+            "text": "SOURCE:17 = 700"
+          },
+          {
+            "sourceLine": 300,
+            "text": "SOURCE:17 = 1100"
+          },
+          {
+            "sourceLine": 302,
+            "text": "SOURCE:17 = 1600"
+          },
+          {
+            "sourceLine": 355,
+            "text": "SOURCE:13 += D"
+          },
+          {
+            "sourceLine": 414,
+            "text": "SOURCE:13 += D"
+          },
+          {
+            "sourceLine": 421,
+            "text": "SOURCE:0 = 150"
+          },
+          {
+            "sourceLine": 422,
+            "text": "SOURCE:12 = 1000"
+          },
+          {
+            "sourceLine": 423,
+            "text": "SOURCE:13 = 50"
+          },
+          {
+            "sourceLine": 425,
+            "text": "SOURCE:0 = 400"
+          },
+          {
+            "sourceLine": 426,
+            "text": "SOURCE:12 = 1300"
+          },
+          {
+            "sourceLine": 427,
+            "text": "SOURCE:13 = 80"
+          },
+          {
+            "sourceLine": 429,
+            "text": "SOURCE:0 = 800"
+          },
+          {
+            "sourceLine": 430,
+            "text": "SOURCE:12 = 1600"
+          },
+          {
+            "sourceLine": 431,
+            "text": "SOURCE:13 = 120"
+          },
+          {
+            "sourceLine": 433,
+            "text": "SOURCE:0 = 1200"
+          },
+          {
+            "sourceLine": 434,
+            "text": "SOURCE:12 = 1900"
+          },
+          {
+            "sourceLine": 435,
+            "text": "SOURCE:13 = 190"
+          },
+          {
+            "sourceLine": 437,
+            "text": "SOURCE:0 = 1500"
+          },
+          {
+            "sourceLine": 438,
+            "text": "SOURCE:12 = 2200"
+          },
+          {
+            "sourceLine": 439,
+            "text": "SOURCE:13 = 250"
+          },
+          {
+            "sourceLine": 441,
+            "text": "SOURCE:0 = 1800"
+          },
+          {
+            "sourceLine": 442,
+            "text": "SOURCE:12 = 2500"
+          },
+          {
+            "sourceLine": 443,
+            "text": "SOURCE:13 = 300"
+          },
+          {
+            "sourceLine": 448,
+            "text": "SOURCE:1 = 0"
+          },
+          {
+            "sourceLine": 451,
+            "text": "SOURCE:1 = 100"
+          },
+          {
+            "sourceLine": 454,
+            "text": "SOURCE:1 = 200"
+          },
+          {
+            "sourceLine": 457,
+            "text": "SOURCE:1 = 300"
+          },
+          {
+            "sourceLine": 460,
+            "text": "SOURCE:1 = 400"
+          },
+          {
+            "sourceLine": 463,
+            "text": "SOURCE:1 = 500"
+          },
+          {
+            "sourceLine": 505,
+            "text": "SOURCE:13 += D"
+          },
+          {
+            "sourceLine": 509,
+            "text": "SOURCE:2 = 0"
+          },
+          {
+            "sourceLine": 511,
+            "text": "SOURCE:1 = 0"
+          },
+          {
+            "sourceLine": 568,
+            "text": "SOURCE:13 += D"
+          },
+          {
+            "sourceLine": 627,
+            "text": "SOURCE:13 += D"
+          },
+          {
+            "sourceLine": 733,
+            "text": "SOURCE:1 = A"
+          },
+          {
+            "sourceLine": 734,
+            "text": "SOURCE:2 = B"
+          },
+          {
+            "sourceLine": 735,
+            "text": "SOURCE:6 = C"
+          },
+          {
+            "sourceLine": 803,
+            "text": "SOURCE:1 += A"
+          },
+          {
+            "sourceLine": 804,
+            "text": "SOURCE:2 += B"
+          },
+          {
+            "sourceLine": 810,
+            "text": "SOURCE:4 = 100"
+          },
+          {
+            "sourceLine": 816,
+            "text": "SOURCE:4 = 160"
+          },
+          {
+            "sourceLine": 822,
+            "text": "SOURCE:4 = 220"
+          },
+          {
+            "sourceLine": 828,
+            "text": "SOURCE:4 = 280"
+          },
+          {
+            "sourceLine": 834,
+            "text": "SOURCE:4 = 340"
+          },
+          {
+            "sourceLine": 840,
+            "text": "SOURCE:4 = 400"
+          },
+          {
+            "sourceLine": 849,
+            "text": "SOURCE:7 = 0"
+          },
+          {
+            "sourceLine": 855,
+            "text": "SOURCE:7 = 100"
+          },
+          {
+            "sourceLine": 861,
+            "text": "SOURCE:7 = 300"
+          },
+          {
+            "sourceLine": 867,
+            "text": "SOURCE:7 = 800"
+          },
+          {
+            "sourceLine": 873,
+            "text": "SOURCE:7 = 1500"
+          },
+          {
+            "sourceLine": 879,
+            "text": "SOURCE:7 = 2500"
+          },
+          {
+            "sourceLine": 889,
+            "text": "SOURCE:7 += 0"
+          },
+          {
+            "sourceLine": 896,
+            "text": "SOURCE:7 += 100"
+          },
+          {
+            "sourceLine": 903,
+            "text": "SOURCE:7 += 300"
+          },
+          {
+            "sourceLine": 910,
+            "text": "SOURCE:7 += 800"
+          },
+          {
+            "sourceLine": 917,
+            "text": "SOURCE:7 += 1500"
+          },
+          {
+            "sourceLine": 924,
+            "text": "SOURCE:7 += 2500"
+          },
+          {
+            "sourceLine": 933,
+            "text": "SOURCE:7 += 500"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 248,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 249,
+            "text": "LOSEBASE:1 += 50"
+          },
+          {
+            "sourceLine": 360,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 361,
+            "text": "LOSEBASE:1 += 80"
+          },
+          {
+            "sourceLine": 573,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 574,
+            "text": "LOSEBASE:1 += 80"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 973,
+            "text": "EXP:10 += 2"
+          },
+          {
+            "sourceLine": 975,
+            "text": "EXP:11 += 2"
+          },
+          {
+            "sourceLine": 978,
+            "text": "EXP:10 += 1"
+          },
+          {
+            "sourceLine": 980,
+            "text": "EXP:11 += 1"
+          },
+          {
+            "sourceLine": 984,
+            "text": "EXP:14 += 1"
+          },
+          {
+            "sourceLine": 986,
+            "text": "EXP:50 += 1"
+          },
+          {
+            "sourceLine": 995,
+            "text": "EXP:40 += 3"
+          },
+          {
+            "sourceLine": 999,
+            "text": "EXP:41 += 3"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 82,
+      "bodyLossAssignmentCount": 6,
+      "experienceAssignmentCount": 8,
+      "definitionPatch": {
+        "id": "3",
+        "label": "자위",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF3.ERB",
+          "originalId": "3",
+          "originalName": "자위"
+        },
+        "description": "M42 original COMF3 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF3"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 18,
+          "1": 5,
+          "4": 4,
+          "7": 25,
+          "10": 1,
+          "11": 1,
+          "12": 35,
+          "13": 30,
+          "14": 4,
+          "17": 16
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 18,
+            "down": 0
+          },
+          "1": {
+            "up": 5,
+            "down": 0
+          },
+          "4": {
+            "up": 4,
+            "down": 0
+          },
+          "7": {
+            "up": 25,
+            "down": 0
+          },
+          "10": {
+            "up": 1,
+            "down": 0
+          },
+          "11": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 35,
+            "down": 0
+          },
+          "13": {
+            "up": 30,
+            "down": 0
+          },
+          "14": {
+            "up": 4,
+            "down": 0
+          },
+          "17": {
+            "up": 16,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -30,
+          "energy": -80
+        },
+        "resourceDeltas": {
+          "3": 1
+        },
+        "experienceDeltas": {
+          "10": 1,
+          "11": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "4": {
+      "commandId": "4",
+      "sourceEvidenceId": "source:training-effect:COMF4",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF4.ERB",
+        "sourceFile": "COMF4.ERB",
+        "sourceSha256": "c6958d0ed63e301326f854eddb99c69171bac411d8bcb74f3922577183562619",
+        "sourceLine": 26,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:12 = 220"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:14 = 50"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:0 = 50"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:0 = 200"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:0 = 800"
+          },
+          {
+            "sourceLine": 37,
+            "text": "SOURCE:0 = 1600"
+          },
+          {
+            "sourceLine": 39,
+            "text": "SOURCE:0 = 2400"
+          },
+          {
+            "sourceLine": 41,
+            "text": "SOURCE:0 = 3200"
+          },
+          {
+            "sourceLine": 47,
+            "text": "SOURCE:16 += SOURCE:0/20"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 23,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 24,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 68,
+            "text": "EXP:40 += 3"
+          },
+          {
+            "sourceLine": 72,
+            "text": "EXP:41 += 3"
+          },
+          {
+            "sourceLine": 90,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 9,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 3,
+      "definitionPatch": {
+        "id": "4",
+        "label": "펠라한다",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF4.ERB",
+          "originalId": "4",
+          "originalName": "펠라한다"
+        },
+        "description": "M42 original COMF4 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF4"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 32,
+          "12": 2,
+          "14": 1
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 32,
+            "down": 0
+          },
+          "12": {
+            "up": 2,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -5,
+          "energy": -50
+        },
+        "resourceDeltas": {
+          "4": 1
+        },
+        "experienceDeltas": {
+          "40": 3,
+          "41": 3
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "5": {
+      "commandId": "5",
+      "sourceEvidenceId": "source:training-effect:COMF5",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF5.ERB",
+        "sourceFile": "COMF5.ERB",
+        "sourceSha256": "caba0b4f761a61c9501d788ada7733808ba0d482dc3bf6ffc378ac5e50b2aa21",
+        "sourceLine": 37,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 37,
+            "text": "SOURCE:4 = 60"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:8 = 20"
+          },
+          {
+            "sourceLine": 39,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 43,
+            "text": "SOURCE:17 = 20"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:3 = 50"
+          },
+          {
+            "sourceLine": 46,
+            "text": "SOURCE:17 = 100"
+          },
+          {
+            "sourceLine": 47,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 49,
+            "text": "SOURCE:17 = 500"
+          },
+          {
+            "sourceLine": 50,
+            "text": "SOURCE:3 = 160"
+          },
+          {
+            "sourceLine": 52,
+            "text": "SOURCE:17 = 1200"
+          },
+          {
+            "sourceLine": 53,
+            "text": "SOURCE:3 = 200"
+          },
+          {
+            "sourceLine": 55,
+            "text": "SOURCE:17 = 2000"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:3 = 230"
+          },
+          {
+            "sourceLine": 58,
+            "text": "SOURCE:17 = 2800"
+          },
+          {
+            "sourceLine": 59,
+            "text": "SOURCE:3 = 250"
+          },
+          {
+            "sourceLine": 91,
+            "text": "SOURCE:16 += SOURCE:17/20"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 34,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 35,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 111,
+            "text": "EXP:40 += 5"
+          },
+          {
+            "sourceLine": 115,
+            "text": "EXP:41 += 5"
+          },
+          {
+            "sourceLine": 118,
+            "text": "EXP:14 += 2"
+          },
+          {
+            "sourceLine": 123,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 16,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "5",
+        "label": "가슴애무",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF5.ERB",
+          "originalId": "5",
+          "originalName": "가슴애무"
+        },
+        "description": "M42 original COMF5 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF5"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "3": 2,
+          "4": 1,
+          "8": 1,
+          "12": 1,
+          "17": 28
+        },
+        "paramDeltas": {
+          "3": {
+            "up": 2,
+            "down": 0
+          },
+          "4": {
+            "up": 1,
+            "down": 0
+          },
+          "8": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "17": {
+            "up": 28,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -5,
+          "energy": -50
+        },
+        "resourceDeltas": {
+          "5": 1
+        },
+        "experienceDeltas": {
+          "14": 2,
+          "40": 5,
+          "41": 5
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "6": {
+      "commandId": "6",
+      "sourceEvidenceId": "source:training-effect:COMF6",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF6.ERB",
+        "sourceFile": "COMF6.ERB",
+        "sourceSha256": "8e2676b82ef3fb9c8164c05b49d80948f66be43e7089cf89893bc2912ee690ca",
+        "sourceLine": 246,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 246,
+            "text": "SOURCE:8 = Y*20 + 10"
+          },
+          {
+            "sourceLine": 250,
+            "text": "SOURCE:4 = 50"
+          },
+          {
+            "sourceLine": 251,
+            "text": "SOURCE:5 = 10"
+          },
+          {
+            "sourceLine": 254,
+            "text": "SOURCE:4 = 150"
+          },
+          {
+            "sourceLine": 255,
+            "text": "SOURCE:5 = 50"
+          },
+          {
+            "sourceLine": 258,
+            "text": "SOURCE:4 = 200"
+          },
+          {
+            "sourceLine": 259,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 262,
+            "text": "SOURCE:4 = 250"
+          },
+          {
+            "sourceLine": 263,
+            "text": "SOURCE:5 = 180"
+          },
+          {
+            "sourceLine": 266,
+            "text": "SOURCE:4 = 300"
+          },
+          {
+            "sourceLine": 267,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 270,
+            "text": "SOURCE:4 = 350"
+          },
+          {
+            "sourceLine": 271,
+            "text": "SOURCE:5 = 500"
+          },
+          {
+            "sourceLine": 306,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 310,
+            "text": "SOURCE:3 = 300"
+          },
+          {
+            "sourceLine": 311,
+            "text": "SOURCE:10 = 100"
+          },
+          {
+            "sourceLine": 315,
+            "text": "SOURCE:3 = 800"
+          },
+          {
+            "sourceLine": 316,
+            "text": "SOURCE:10 = 200"
+          },
+          {
+            "sourceLine": 326,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 327,
+            "text": "SOURCE:10 = 0"
+          },
+          {
+            "sourceLine": 330,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 331,
+            "text": "SOURCE:10 = 0"
+          },
+          {
+            "sourceLine": 334,
+            "text": "SOURCE:3 = 200"
+          },
+          {
+            "sourceLine": 335,
+            "text": "SOURCE:10 = 0"
+          },
+          {
+            "sourceLine": 338,
+            "text": "SOURCE:3 = 300"
+          },
+          {
+            "sourceLine": 339,
+            "text": "SOURCE:10 = 50"
+          },
+          {
+            "sourceLine": 342,
+            "text": "SOURCE:3 = 500"
+          },
+          {
+            "sourceLine": 343,
+            "text": "SOURCE:10 = 100"
+          },
+          {
+            "sourceLine": 346,
+            "text": "SOURCE:3 = 800"
+          },
+          {
+            "sourceLine": 347,
+            "text": "SOURCE:10 = 200"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 242,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 243,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 369,
+            "text": "EXP:40 += 3"
+          },
+          {
+            "sourceLine": 373,
+            "text": "EXP:41 += 3"
+          },
+          {
+            "sourceLine": 395,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 30,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 3,
+      "definitionPatch": {
+        "id": "6",
+        "label": "키스한다",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF6.ERB",
+          "originalId": "6",
+          "originalName": "키스한다"
+        },
+        "description": "M42 original COMF6 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF6"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "3": 8,
+          "4": 3,
+          "5": 5,
+          "10": 2
+        },
+        "paramDeltas": {
+          "3": {
+            "up": 8,
+            "down": 0
+          },
+          "4": {
+            "up": 3,
+            "down": 0
+          },
+          "5": {
+            "up": 5,
+            "down": 0
+          },
+          "10": {
+            "up": 2,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -5,
+          "energy": -50
+        },
+        "resourceDeltas": {
+          "6": 1
+        },
+        "experienceDeltas": {
+          "40": 3,
+          "41": 3
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "7": {
+      "commandId": "7",
+      "sourceEvidenceId": "source:training-effect:COMF7",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF7.ERB",
+        "sourceFile": "COMF7.ERB",
+        "sourceSha256": "96b026304bdca46804078294f52b90cffeaf861d265c316d8d21a049ab7b23d3",
+        "sourceLine": 210,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 210,
+            "text": "SOURCE:14 = 400"
+          },
+          {
+            "sourceLine": 214,
+            "text": "SOURCE:12 = 1500"
+          },
+          {
+            "sourceLine": 215,
+            "text": "SOURCE:13 = 300"
+          },
+          {
+            "sourceLine": 217,
+            "text": "SOURCE:12 = 1800"
+          },
+          {
+            "sourceLine": 218,
+            "text": "SOURCE:13 = 600"
+          },
+          {
+            "sourceLine": 220,
+            "text": "SOURCE:12 = 2100"
+          },
+          {
+            "sourceLine": 221,
+            "text": "SOURCE:13 = 1000"
+          },
+          {
+            "sourceLine": 223,
+            "text": "SOURCE:12 = 2400"
+          },
+          {
+            "sourceLine": 224,
+            "text": "SOURCE:13 = 1500"
+          },
+          {
+            "sourceLine": 226,
+            "text": "SOURCE:12 = 2700"
+          },
+          {
+            "sourceLine": 227,
+            "text": "SOURCE:13 = 2100"
+          },
+          {
+            "sourceLine": 229,
+            "text": "SOURCE:12 = 3000"
+          },
+          {
+            "sourceLine": 230,
+            "text": "SOURCE:13 = 2800"
+          },
+          {
+            "sourceLine": 235,
+            "text": "SOURCE:4 = 100"
+          },
+          {
+            "sourceLine": 236,
+            "text": "SOURCE:5 = 50"
+          },
+          {
+            "sourceLine": 238,
+            "text": "SOURCE:4 = 150"
+          },
+          {
+            "sourceLine": 239,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 241,
+            "text": "SOURCE:4 = 200"
+          },
+          {
+            "sourceLine": 242,
+            "text": "SOURCE:5 = 200"
+          },
+          {
+            "sourceLine": 244,
+            "text": "SOURCE:4 = 250"
+          },
+          {
+            "sourceLine": 245,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 247,
+            "text": "SOURCE:4 = 300"
+          },
+          {
+            "sourceLine": 248,
+            "text": "SOURCE:5 = 500"
+          },
+          {
+            "sourceLine": 250,
+            "text": "SOURCE:4 = 350"
+          },
+          {
+            "sourceLine": 251,
+            "text": "SOURCE:5 = 750"
+          },
+          {
+            "sourceLine": 256,
+            "text": "SOURCE:7 += 0"
+          },
+          {
+            "sourceLine": 260,
+            "text": "SOURCE:7 += 100"
+          },
+          {
+            "sourceLine": 264,
+            "text": "SOURCE:7 += 300"
+          },
+          {
+            "sourceLine": 268,
+            "text": "SOURCE:7 += 800"
+          },
+          {
+            "sourceLine": 272,
+            "text": "SOURCE:7 += 1500"
+          },
+          {
+            "sourceLine": 276,
+            "text": "SOURCE:7 += 2500"
+          },
+          {
+            "sourceLine": 283,
+            "text": "SOURCE:7 += 500"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 204,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 205,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 306,
+            "text": "EXP:10 += 2"
+          },
+          {
+            "sourceLine": 308,
+            "text": "EXP:11 += 2"
+          },
+          {
+            "sourceLine": 311,
+            "text": "EXP:10 += 1"
+          },
+          {
+            "sourceLine": 313,
+            "text": "EXP:11 += 1"
+          },
+          {
+            "sourceLine": 317,
+            "text": "EXP:50 += 1"
+          },
+          {
+            "sourceLine": 327,
+            "text": "EXP:40 += 2"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 32,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 6,
+      "definitionPatch": {
+        "id": "7",
+        "label": "조개벌리기",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF7.ERB",
+          "originalId": "7",
+          "originalName": "조개벌리기"
+        },
+        "description": "M42 original COMF7 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF7"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "4": 3,
+          "5": 7,
+          "7": 25,
+          "12": 30,
+          "13": 28,
+          "14": 4
+        },
+        "paramDeltas": {
+          "4": {
+            "up": 3,
+            "down": 0
+          },
+          "5": {
+            "up": 7,
+            "down": 0
+          },
+          "7": {
+            "up": 25,
+            "down": 0
+          },
+          "12": {
+            "up": 30,
+            "down": 0
+          },
+          "13": {
+            "up": 28,
+            "down": 0
+          },
+          "14": {
+            "up": 4,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -50
+        },
+        "resourceDeltas": {
+          "7": 1
+        },
+        "experienceDeltas": {
+          "10": 1,
+          "11": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "8": {
+      "commandId": "8",
+      "sourceEvidenceId": "source:training-effect:COMF8",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF8.ERB",
+        "sourceFile": "COMF8.ERB",
+        "sourceSha256": "00abfc52ce8f851a2559f7a7cda82c69e0ef9ce3911ce172b7ab5f188059ba50",
+        "sourceLine": 24,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 24,
+            "text": "SOURCE:12 = 300"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:14 = 200"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:1 = 10"
+          },
+          {
+            "sourceLine": 30,
+            "text": "SOURCE:13 = 150"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:1 = 50"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:13 = 250"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:1 = 250"
+          },
+          {
+            "sourceLine": 36,
+            "text": "SOURCE:13 = 400"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:1 = 600"
+          },
+          {
+            "sourceLine": 39,
+            "text": "SOURCE:13 = 700"
+          },
+          {
+            "sourceLine": 41,
+            "text": "SOURCE:1 = 1200"
+          },
+          {
+            "sourceLine": 42,
+            "text": "SOURCE:13 = 1300"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:1 = 1800"
+          },
+          {
+            "sourceLine": 45,
+            "text": "SOURCE:13 = 2000"
+          },
+          {
+            "sourceLine": 52,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:6 = 180"
+          },
+          {
+            "sourceLine": 60,
+            "text": "SOURCE:6 = 80"
+          },
+          {
+            "sourceLine": 64,
+            "text": "SOURCE:6 = 30"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 72,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 78,
+            "text": "SOURCE:6 += 700"
+          },
+          {
+            "sourceLine": 82,
+            "text": "SOURCE:6 += 200"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 21,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 22,
+            "text": "LOSEBASE:1 += 80"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 122,
+            "text": "SIF EXP:0 == 0 && TALENT:30"
+          },
+          {
+            "sourceLine": 149,
+            "text": "EXP:40 += 4"
+          },
+          {
+            "sourceLine": 155,
+            "text": "EXP:0 += 1"
+          },
+          {
+            "sourceLine": 162,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 22,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "8",
+        "label": "손가락삽입",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF8.ERB",
+          "originalId": "8",
+          "originalName": "손가락삽입"
+        },
+        "description": "M42 original COMF8 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF8"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "1": 18,
+          "6": 7,
+          "12": 3,
+          "13": 20,
+          "14": 2
+        },
+        "paramDeltas": {
+          "1": {
+            "up": 18,
+            "down": 0
+          },
+          "6": {
+            "up": 7,
+            "down": 0
+          },
+          "12": {
+            "up": 3,
+            "down": 0
+          },
+          "13": {
+            "up": 20,
+            "down": 0
+          },
+          "14": {
+            "up": 2,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -30,
+          "energy": -80
+        },
+        "resourceDeltas": {
+          "8": 1
+        },
+        "experienceDeltas": {
+          "0": 1,
+          "40": 4
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "9": {
+      "commandId": "9",
+      "sourceEvidenceId": "source:training-effect:COMF9",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF9.ERB",
+        "sourceFile": "COMF9.ERB",
+        "sourceSha256": "faff77d5a7857ce6c2d826508229f47e6ad60fd9d7d472daef796be293c4db07",
+        "sourceLine": 19,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 19,
+            "text": "SOURCE:10 = 50"
+          },
+          {
+            "sourceLine": 20,
+            "text": "SOURCE:12 = 300"
+          },
+          {
+            "sourceLine": 21,
+            "text": "SOURCE:14 = 500"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:2 = 5"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:2 = 50"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:2 = 200"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:2 = 500"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:2 = 1000"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:2 = 1800"
+          },
+          {
+            "sourceLine": 48,
+            "text": "SOURCE:16 += SOURCE:0/20"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 16,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 17,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 40,
+            "text": "EXP:1 += 1"
+          },
+          {
+            "sourceLine": 65,
+            "text": "EXP:40 += 3"
+          },
+          {
+            "sourceLine": 68,
+            "text": "EXP:1 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 10,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 3,
+      "definitionPatch": {
+        "id": "9",
+        "label": "애널핥기",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF9.ERB",
+          "originalId": "9",
+          "originalName": "애널핥기"
+        },
+        "description": "M42 original COMF9 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF9"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 18,
+          "10": 1,
+          "12": 3,
+          "14": 5
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 18,
+            "down": 0
+          },
+          "10": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 3,
+            "down": 0
+          },
+          "14": {
+            "up": 5,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -5,
+          "energy": -50
+        },
+        "resourceDeltas": {
+          "9": 1
+        },
+        "experienceDeltas": {
+          "1": 1,
+          "40": 3
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "10": {
+      "commandId": "10",
+      "sourceEvidenceId": "source:training-effect:COMF10",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF10.ERB",
+        "sourceFile": "COMF10.ERB",
+        "sourceSha256": "cfdf9419f0dd4e47e62f3c7faf171791eadc94bc28a409a29c1d3640e64f9f2d",
+        "sourceLine": 18,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 18,
+            "text": "SOURCE:12 = 120"
+          },
+          {
+            "sourceLine": 19,
+            "text": "SOURCE:14 = 70"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:0 = 200"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:0 = 400"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:0 = 900"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:0 = 1600"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:0 = 2400"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:0 = 3000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 15,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 16,
+            "text": "LOSEBASE:1 += 80"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 52,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 56,
+            "text": "EXP:41 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 8,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 2,
+      "definitionPatch": {
+        "id": "10",
+        "label": "로터",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF10.ERB",
+          "originalId": "10",
+          "originalName": "로터"
+        },
+        "description": "M42 original COMF10 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF10"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 30,
+          "12": 1,
+          "14": 1
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 30,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -80
+        },
+        "resourceDeltas": {
+          "10": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "11": {
+      "commandId": "11",
+      "sourceEvidenceId": "source:training-effect:COMF11",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF11.ERB",
+        "sourceFile": "COMF11.ERB",
+        "sourceSha256": "01a0f110294034648fba20fd270e85ca9c9e0ca566ff9deeb6bcf4a6138814d7",
+        "sourceLine": 28,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 28,
+            "text": "SOURCE:1 = 80"
+          },
+          {
+            "sourceLine": 30,
+            "text": "SOURCE:1 = 250"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:1 = 600"
+          },
+          {
+            "sourceLine": 34,
+            "text": "SOURCE:1 = 1000"
+          },
+          {
+            "sourceLine": 36,
+            "text": "SOURCE:1 = 1300"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:1 = 1700"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:6 = 5500"
+          },
+          {
+            "sourceLine": 47,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 50,
+            "text": "SOURCE:6 = 50"
+          },
+          {
+            "sourceLine": 53,
+            "text": "SOURCE:6 = 10"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 59,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 65,
+            "text": "SOURCE:6 += 1000"
+          },
+          {
+            "sourceLine": 69,
+            "text": "SOURCE:6 += 400"
+          },
+          {
+            "sourceLine": 297,
+            "text": "SOURCE:1 += A"
+          },
+          {
+            "sourceLine": 298,
+            "text": "SOURCE:6 += B"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 23,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 24,
+            "text": "LOSEBASE:1 += 100"
+          },
+          {
+            "sourceLine": 189,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 190,
+            "text": "LOSEBASE:1 += 50"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 142,
+            "text": "EXP:0 += S"
+          },
+          {
+            "sourceLine": 150,
+            "text": "EXP:40 += 3"
+          },
+          {
+            "sourceLine": 325,
+            "text": "EXP:0 += S"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 16,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 3,
+      "definitionPatch": {
+        "id": "11",
+        "label": "바이브",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF11.ERB",
+          "originalId": "11",
+          "originalName": "바이브"
+        },
+        "description": "M42 original COMF11 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF11"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "1": 17,
+          "6": 55
+        },
+        "paramDeltas": {
+          "1": {
+            "up": 17,
+            "down": 0
+          },
+          "6": {
+            "up": 55,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -30,
+          "energy": -100
+        },
+        "resourceDeltas": {
+          "11": 1
+        },
+        "experienceDeltas": {
+          "40": 3
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "12": {
+      "commandId": "12",
+      "sourceEvidenceId": "source:training-effect:COMF12",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF12.ERB",
+        "sourceFile": "COMF12.ERB",
+        "sourceSha256": "37c0089dc16f6b315343f09652b63cf9ca4833486dc9449ce008a0714dcb52d9",
+        "sourceLine": 19,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 19,
+            "text": "SOURCE:12 = 120"
+          },
+          {
+            "sourceLine": 20,
+            "text": "SOURCE:14 = 400"
+          },
+          {
+            "sourceLine": 24,
+            "text": "SOURCE:0 = 2000"
+          },
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:0 = 2500"
+          },
+          {
+            "sourceLine": 28,
+            "text": "SOURCE:0 = 3000"
+          },
+          {
+            "sourceLine": 30,
+            "text": "SOURCE:0 = 3300"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:0 = 3600"
+          },
+          {
+            "sourceLine": 34,
+            "text": "SOURCE:0 = 3800"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 16,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 17,
+            "text": "LOSEBASE:1 += 150"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 53,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 57,
+            "text": "EXP:41 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 8,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 2,
+      "definitionPatch": {
+        "id": "12",
+        "label": "E마사지기",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF12.ERB",
+          "originalId": "12",
+          "originalName": "E마사지기"
+        },
+        "description": "M42 original COMF12 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF12"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 38,
+          "12": 1,
+          "14": 4
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 38,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 4,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -30,
+          "energy": -150
+        },
+        "resourceDeltas": {
+          "12": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "13": {
+      "commandId": "13",
+      "sourceEvidenceId": "source:training-effect:COMF13",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF13.ERB",
+        "sourceFile": "COMF13.ERB",
+        "sourceSha256": "1f2af3b6332d3e6ada41c0391dd1756e97ccaa410c7e3d83410746eede020f72",
+        "sourceLine": 26,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:14 = 300"
+          },
+          {
+            "sourceLine": 30,
+            "text": "SOURCE:2 = 80"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:13 = 300"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:2 = 250"
+          },
+          {
+            "sourceLine": 34,
+            "text": "SOURCE:13 = 800"
+          },
+          {
+            "sourceLine": 36,
+            "text": "SOURCE:2 = 600"
+          },
+          {
+            "sourceLine": 37,
+            "text": "SOURCE:13 = 1400"
+          },
+          {
+            "sourceLine": 39,
+            "text": "SOURCE:2 = 1000"
+          },
+          {
+            "sourceLine": 40,
+            "text": "SOURCE:13 = 1800"
+          },
+          {
+            "sourceLine": 42,
+            "text": "SOURCE:2 = 1300"
+          },
+          {
+            "sourceLine": 43,
+            "text": "SOURCE:13 = 2100"
+          },
+          {
+            "sourceLine": 45,
+            "text": "SOURCE:2 = 1700"
+          },
+          {
+            "sourceLine": 46,
+            "text": "SOURCE:13 = 2400"
+          },
+          {
+            "sourceLine": 52,
+            "text": "SOURCE:6 = 2000"
+          },
+          {
+            "sourceLine": 53,
+            "text": "SOURCE:14 += 200"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 57,
+            "text": "SOURCE:14 += 100"
+          },
+          {
+            "sourceLine": 60,
+            "text": "SOURCE:6 = 50"
+          },
+          {
+            "sourceLine": 61,
+            "text": "SOURCE:14 += 50"
+          },
+          {
+            "sourceLine": 64,
+            "text": "SOURCE:6 = 10"
+          },
+          {
+            "sourceLine": 67,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 70,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 76,
+            "text": "SOURCE:6 += 800"
+          },
+          {
+            "sourceLine": 79,
+            "text": "SOURCE:6 += 500"
+          },
+          {
+            "sourceLine": 82,
+            "text": "SOURCE:6 += 300"
+          },
+          {
+            "sourceLine": 85,
+            "text": "SOURCE:6 += 120"
+          },
+          {
+            "sourceLine": 88,
+            "text": "SOURCE:6 += 100"
+          },
+          {
+            "sourceLine": 220,
+            "text": "SOURCE:14 = 200"
+          },
+          {
+            "sourceLine": 334,
+            "text": "SOURCE:2 += A"
+          },
+          {
+            "sourceLine": 335,
+            "text": "SOURCE:13 += B"
+          },
+          {
+            "sourceLine": 336,
+            "text": "SOURCE:6 += C"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 23,
+            "text": "LOSEBASE:0 += 60"
+          },
+          {
+            "sourceLine": 24,
+            "text": "LOSEBASE:1 += 150"
+          },
+          {
+            "sourceLine": 217,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 218,
+            "text": "LOSEBASE:1 += 80"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 143,
+            "text": "IF EXP:0 == 0 && TALENT:30"
+          },
+          {
+            "sourceLine": 171,
+            "text": "EXP:1 += S"
+          },
+          {
+            "sourceLine": 178,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 182,
+            "text": "EXP:41 += 1"
+          },
+          {
+            "sourceLine": 371,
+            "text": "EXP:1 += S"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 31,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "13",
+        "label": "애널바이브",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF13.ERB",
+          "originalId": "13",
+          "originalName": "애널바이브"
+        },
+        "description": "M42 original COMF13 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF13"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 17,
+          "6": 20,
+          "13": 24,
+          "14": 3
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 17,
+            "down": 0
+          },
+          "6": {
+            "up": 20,
+            "down": 0
+          },
+          "13": {
+            "up": 24,
+            "down": 0
+          },
+          "14": {
+            "up": 3,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -60,
+          "energy": -150
+        },
+        "resourceDeltas": {
+          "13": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "14": {
+      "commandId": "14",
+      "sourceEvidenceId": "source:training-effect:COMF14",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF14.ERB",
+        "sourceFile": "COMF14.ERB",
+        "sourceSha256": "47e0818ff65eb7602c57c269b22dd0a4743cdbf3d5ecb5f9cd6b1948cb149d9f",
+        "sourceLine": 22,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:12 = 120"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:14 = 70"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:0 = 200"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:0 = 400"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:0 = 900"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:0 = 1600"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:0 = 2400"
+          },
+          {
+            "sourceLine": 37,
+            "text": "SOURCE:0 = 3000"
+          },
+          {
+            "sourceLine": 136,
+            "text": "SOURCE:0 += A"
+          },
+          {
+            "sourceLine": 137,
+            "text": "SOURCE:11 += 50"
+          },
+          {
+            "sourceLine": 138,
+            "text": "SOURCE:12 += 50"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 19,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 20,
+            "text": "LOSEBASE:1 += 80"
+          },
+          {
+            "sourceLine": 90,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 91,
+            "text": "LOSEBASE:1 += 20"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 56,
+            "text": "EXP:40 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 11,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 1,
+      "definitionPatch": {
+        "id": "14",
+        "label": "클리캡",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF14.ERB",
+          "originalId": "14",
+          "originalName": "클리캡"
+        },
+        "description": "M42 original COMF14 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF14"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 30,
+          "11": 1,
+          "12": 1,
+          "14": 1
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 30,
+            "down": 0
+          },
+          "11": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -80
+        },
+        "resourceDeltas": {
+          "14": 1
+        },
+        "experienceDeltas": {
+          "40": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "15": {
+      "commandId": "15",
+      "sourceEvidenceId": "source:training-effect:COMF15",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF15.ERB",
+        "sourceFile": "COMF15.ERB",
+        "sourceSha256": "a17735b5a1e25c25a6703dfb8c6e05bef245c558129092ba40f35870447306c1",
+        "sourceLine": 22,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:12 = 120"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:14 = 70"
+          },
+          {
+            "sourceLine": 57,
+            "text": "SOURCE:17 += A"
+          },
+          {
+            "sourceLine": 155,
+            "text": "SOURCE:17 += A"
+          },
+          {
+            "sourceLine": 156,
+            "text": "SOURCE:11 += 50"
+          },
+          {
+            "sourceLine": 157,
+            "text": "SOURCE:12 += 50"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 19,
+            "text": "LOSEBASE:0 += 20"
+          },
+          {
+            "sourceLine": 20,
+            "text": "LOSEBASE:1 += 70"
+          },
+          {
+            "sourceLine": 106,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 107,
+            "text": "LOSEBASE:1 += 20"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 62,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 66,
+            "text": "EXP:41 += 1"
+          },
+          {
+            "sourceLine": 174,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 178,
+            "text": "EXP:41 += 1"
+          },
+          {
+            "sourceLine": 183,
+            "text": "EXP:14 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 6,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "15",
+        "label": "니플캡",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF15.ERB",
+          "originalId": "15",
+          "originalName": "니플캡"
+        },
+        "description": "M42 original COMF15 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF15"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "11": 1,
+          "12": 1,
+          "14": 1
+        },
+        "paramDeltas": {
+          "11": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -20,
+          "energy": -70
+        },
+        "resourceDeltas": {
+          "15": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "16": {
+      "commandId": "16",
+      "sourceEvidenceId": "source:training-effect:COMF16",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF16.ERB",
+        "sourceFile": "COMF16.ERB",
+        "sourceSha256": "827335ce8a6329f26d4300b9580ea087b540823a5e149ce59d3e7f4518cc7dd3",
+        "sourceLine": 22,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:4 = 100"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 24,
+            "text": "SOURCE:6 = 100"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:7 = 100"
+          },
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:13 = 100"
+          },
+          {
+            "sourceLine": 28,
+            "text": "SOURCE:16 = 100"
+          },
+          {
+            "sourceLine": 62,
+            "text": "SOURCE:17 += A"
+          },
+          {
+            "sourceLine": 201,
+            "text": "SOURCE:17 += A"
+          },
+          {
+            "sourceLine": 202,
+            "text": "SOURCE:4 += 150"
+          },
+          {
+            "sourceLine": 203,
+            "text": "SOURCE:6 += 100"
+          },
+          {
+            "sourceLine": 204,
+            "text": "SOURCE:7 += 100"
+          },
+          {
+            "sourceLine": 205,
+            "text": "SOURCE:11 += 50"
+          },
+          {
+            "sourceLine": 206,
+            "text": "SOURCE:12 += 50"
+          },
+          {
+            "sourceLine": 207,
+            "text": "SOURCE:13 += 50"
+          },
+          {
+            "sourceLine": 208,
+            "text": "SOURCE:14 += 50"
+          },
+          {
+            "sourceLine": 209,
+            "text": "SOURCE:16 += 50"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 16,
+            "text": "LOSEBASE:0 += 50"
+          },
+          {
+            "sourceLine": 17,
+            "text": "LOSEBASE:1 += 100"
+          },
+          {
+            "sourceLine": 120,
+            "text": "LOSEBASE:0 += 15"
+          },
+          {
+            "sourceLine": 121,
+            "text": "LOSEBASE:1 += 15"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 84,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 88,
+            "text": "EXP:41 += 1"
+          },
+          {
+            "sourceLine": 231,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 235,
+            "text": "EXP:41 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 17,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "16",
+        "label": "착유기",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF16.ERB",
+          "originalId": "16",
+          "originalName": "착유기"
+        },
+        "description": "M42 original COMF16 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF16"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "16": 1
+        },
+        "paramDeltas": {
+          "4": {
+            "up": 1,
+            "down": 0
+          },
+          "5": {
+            "up": 1,
+            "down": 0
+          },
+          "6": {
+            "up": 1,
+            "down": 0
+          },
+          "7": {
+            "up": 1,
+            "down": 0
+          },
+          "11": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "13": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          },
+          "16": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -50,
+          "energy": -100
+        },
+        "resourceDeltas": {
+          "16": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "17": {
+      "commandId": "17",
+      "sourceEvidenceId": "source:training-effect:COMF17",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF17.ERB",
+        "sourceFile": "COMF17.ERB",
+        "sourceSha256": "2f2e6fd585d3b1cf5611b7b5ee19a27aab002e5e2020c0364bb739931f382beb",
+        "sourceLine": 22,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:12 = 120"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:14 = 70"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:0 = 200"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:0 = 400"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:0 = 900"
+          },
+          {
+            "sourceLine": 33,
+            "text": "SOURCE:0 = 1600"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:0 = 2400"
+          },
+          {
+            "sourceLine": 37,
+            "text": "SOURCE:0 = 3000"
+          },
+          {
+            "sourceLine": 140,
+            "text": "SOURCE:0 += A"
+          },
+          {
+            "sourceLine": 141,
+            "text": "SOURCE:11 += 50"
+          },
+          {
+            "sourceLine": 142,
+            "text": "SOURCE:12 += 50"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 16,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 17,
+            "text": "LOSEBASE:1 += 80"
+          },
+          {
+            "sourceLine": 91,
+            "text": "LOSEBASE:0 += 5"
+          },
+          {
+            "sourceLine": 92,
+            "text": "LOSEBASE:1 += 20"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 55,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 59,
+            "text": "EXP:41 += 1"
+          },
+          {
+            "sourceLine": 160,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 164,
+            "text": "EXP:41 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 11,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "17",
+        "label": "오나홀",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF17.ERB",
+          "originalId": "17",
+          "originalName": "오나홀"
+        },
+        "description": "M42 original COMF17 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF17"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 30,
+          "11": 1,
+          "12": 1,
+          "14": 1
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 30,
+            "down": 0
+          },
+          "11": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -80
+        },
+        "resourceDeltas": {
+          "17": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "18": {
+      "commandId": "18",
+      "sourceEvidenceId": "source:training-effect:COMF18",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF18.ERB",
+        "sourceFile": "COMF18.ERB",
+        "sourceSha256": "72ce9f5bfb21323219dac63cd81e3ec0a1e28a4378462bdf2802d6e9cb031959",
+        "sourceLine": 17,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 17,
+            "text": "SOURCE:14 = 50"
+          },
+          {
+            "sourceLine": 18,
+            "text": "SOURCE:5 = 400"
+          },
+          {
+            "sourceLine": 19,
+            "text": "SOURCE:16 = 200"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:12 = 10"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:12 = 30"
+          },
+          {
+            "sourceLine": 27,
+            "text": "SOURCE:12 = 60"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:12 = 150"
+          },
+          {
+            "sourceLine": 36,
+            "text": "SOURCE:3 = 0"
+          },
+          {
+            "sourceLine": 38,
+            "text": "SOURCE:3 = 20"
+          },
+          {
+            "sourceLine": 40,
+            "text": "SOURCE:3 = 40"
+          },
+          {
+            "sourceLine": 42,
+            "text": "SOURCE:3 = 70"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:3 = 110"
+          },
+          {
+            "sourceLine": 46,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 119,
+            "text": "SOURCE:5 = 400"
+          },
+          {
+            "sourceLine": 120,
+            "text": "SOURCE:16 = 300"
+          },
+          {
+            "sourceLine": 124,
+            "text": "SOURCE:12 = 10"
+          },
+          {
+            "sourceLine": 126,
+            "text": "SOURCE:12 = 30"
+          },
+          {
+            "sourceLine": 128,
+            "text": "SOURCE:12 = 60"
+          },
+          {
+            "sourceLine": 130,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 132,
+            "text": "SOURCE:12 = 150"
+          },
+          {
+            "sourceLine": 137,
+            "text": "SOURCE:3 = 0"
+          },
+          {
+            "sourceLine": 139,
+            "text": "SOURCE:3 = 20"
+          },
+          {
+            "sourceLine": 141,
+            "text": "SOURCE:3 = 40"
+          },
+          {
+            "sourceLine": 143,
+            "text": "SOURCE:3 = 70"
+          },
+          {
+            "sourceLine": 145,
+            "text": "SOURCE:3 = 110"
+          },
+          {
+            "sourceLine": 147,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 165,
+            "text": "SOURCE:11 += 50"
+          },
+          {
+            "sourceLine": 166,
+            "text": "SOURCE:12 += 50"
+          },
+          {
+            "sourceLine": 170,
+            "text": "SOURCE:15 = 150"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 11,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 12,
+            "text": "LOSEBASE:1 += 10"
+          },
+          {
+            "sourceLine": 113,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 114,
+            "text": "LOSEBASE:1 += 10"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 77,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 81,
+            "text": "EXP:41 += 1"
+          },
+          {
+            "sourceLine": 182,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 186,
+            "text": "EXP:41 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 30,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "18",
+        "label": "샤워",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF18.ERB",
+          "originalId": "18",
+          "originalName": "샤워"
+        },
+        "description": "M42 original COMF18 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF18"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "3": 1,
+          "5": 4,
+          "11": 1,
+          "12": 1,
+          "14": 1,
+          "15": 1,
+          "16": 3
+        },
+        "paramDeltas": {
+          "3": {
+            "up": 1,
+            "down": 0
+          },
+          "5": {
+            "up": 4,
+            "down": 0
+          },
+          "11": {
+            "up": 1,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          },
+          "15": {
+            "up": 1,
+            "down": 0
+          },
+          "16": {
+            "up": 3,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": 0,
+          "energy": -10
+        },
+        "resourceDeltas": {
+          "18": 1
+        },
+        "experienceDeltas": {
+          "40": 1,
+          "41": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "19": {
+      "commandId": "19",
+      "sourceEvidenceId": "source:training-effect:COMF19",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF19.ERB",
+        "sourceFile": "COMF19.ERB",
+        "sourceSha256": "d1a25fa32c7670d9aaed486e67035379c96cf1f90c68198ff71b7603a1002435",
+        "sourceLine": 19,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 19,
+            "text": "SOURCE:2 = 80"
+          },
+          {
+            "sourceLine": 20,
+            "text": "SOURCE:13 = 300"
+          },
+          {
+            "sourceLine": 22,
+            "text": "SOURCE:2 = 250"
+          },
+          {
+            "sourceLine": 23,
+            "text": "SOURCE:13 = 800"
+          },
+          {
+            "sourceLine": 25,
+            "text": "SOURCE:2 = 600"
+          },
+          {
+            "sourceLine": 26,
+            "text": "SOURCE:13 = 1400"
+          },
+          {
+            "sourceLine": 28,
+            "text": "SOURCE:2 = 1000"
+          },
+          {
+            "sourceLine": 29,
+            "text": "SOURCE:13 = 1800"
+          },
+          {
+            "sourceLine": 31,
+            "text": "SOURCE:2 = 1300"
+          },
+          {
+            "sourceLine": 32,
+            "text": "SOURCE:13 = 2100"
+          },
+          {
+            "sourceLine": 34,
+            "text": "SOURCE:2 = 1700"
+          },
+          {
+            "sourceLine": 35,
+            "text": "SOURCE:13 = 2400"
+          },
+          {
+            "sourceLine": 41,
+            "text": "SOURCE:6 = 2000"
+          },
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 47,
+            "text": "SOURCE:6 = 50"
+          },
+          {
+            "sourceLine": 50,
+            "text": "SOURCE:6 = 10"
+          },
+          {
+            "sourceLine": 53,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 62,
+            "text": "SOURCE:6 += 1200"
+          },
+          {
+            "sourceLine": 65,
+            "text": "SOURCE:6 += 700"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:6 += 400"
+          },
+          {
+            "sourceLine": 71,
+            "text": "SOURCE:6 += 150"
+          },
+          {
+            "sourceLine": 74,
+            "text": "SOURCE:6 += 100"
+          },
+          {
+            "sourceLine": 289,
+            "text": "SOURCE:2 += A"
+          },
+          {
+            "sourceLine": 290,
+            "text": "SOURCE:13 += B"
+          },
+          {
+            "sourceLine": 291,
+            "text": "SOURCE:6 += C"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 11,
+            "text": "LOSEBASE:0 += 60"
+          },
+          {
+            "sourceLine": 12,
+            "text": "LOSEBASE:1 += 150"
+          },
+          {
+            "sourceLine": 173,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 174,
+            "text": "LOSEBASE:1 += 30"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 127,
+            "text": "IF EXP:0 == 0 && TALENT:30"
+          },
+          {
+            "sourceLine": 151,
+            "text": "EXP:1 += 1"
+          },
+          {
+            "sourceLine": 154,
+            "text": "EXP:1 += 2"
+          },
+          {
+            "sourceLine": 294,
+            "text": "IF EXP:0 == 0 && TALENT:30"
+          },
+          {
+            "sourceLine": 311,
+            "text": "EXP:1 += 1"
+          },
+          {
+            "sourceLine": 317,
+            "text": "EXP:40 += 1"
+          },
+          {
+            "sourceLine": 321,
+            "text": "EXP:41 += 1"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 26,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 7,
+      "definitionPatch": {
+        "id": "19",
+        "label": "애널스틱",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF19.ERB",
+          "originalId": "19",
+          "originalName": "애널스틱"
+        },
+        "description": "M42 original COMF19 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF19"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 17,
+          "6": 20,
+          "13": 24
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 17,
+            "down": 0
+          },
+          "6": {
+            "up": 20,
+            "down": 0
+          },
+          "13": {
+            "up": 24,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -60,
+          "energy": -150
+        },
+        "resourceDeltas": {
+          "19": 1
+        },
+        "experienceDeltas": {
+          "1": 1,
+          "40": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "20": {
+      "commandId": "20",
+      "sourceEvidenceId": "source:training-effect:COMF20",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF20.ERB",
+        "sourceFile": "COMF20.ERB",
+        "sourceSha256": "6340b109a8ed57ec2fa15b1e8e148e6b96140ba27873fc4c8430c4a69ee09d3f",
+        "sourceLine": 117,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 117,
+            "text": "SOURCE:12 = 400"
+          },
+          {
+            "sourceLine": 121,
+            "text": "SOURCE:1 = 40"
+          },
+          {
+            "sourceLine": 122,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 124,
+            "text": "SOURCE:1 = 150"
+          },
+          {
+            "sourceLine": 125,
+            "text": "SOURCE:3 = 250"
+          },
+          {
+            "sourceLine": 127,
+            "text": "SOURCE:1 = 400"
+          },
+          {
+            "sourceLine": 128,
+            "text": "SOURCE:3 = 350"
+          },
+          {
+            "sourceLine": 130,
+            "text": "SOURCE:1 = 1000"
+          },
+          {
+            "sourceLine": 131,
+            "text": "SOURCE:3 = 500"
+          },
+          {
+            "sourceLine": 133,
+            "text": "SOURCE:1 = 1700"
+          },
+          {
+            "sourceLine": 134,
+            "text": "SOURCE:3 = 700"
+          },
+          {
+            "sourceLine": 136,
+            "text": "SOURCE:1 = 2200"
+          },
+          {
+            "sourceLine": 137,
+            "text": "SOURCE:3 = 1000"
+          },
+          {
+            "sourceLine": 143,
+            "text": "SOURCE:6 = 5500"
+          },
+          {
+            "sourceLine": 146,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 149,
+            "text": "SOURCE:6 = 50"
+          },
+          {
+            "sourceLine": 152,
+            "text": "SOURCE:6 = 10"
+          },
+          {
+            "sourceLine": 155,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 158,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 164,
+            "text": "SOURCE:6 += 1000"
+          },
+          {
+            "sourceLine": 168,
+            "text": "SOURCE:6 += 300"
+          },
+          {
+            "sourceLine": 201,
+            "text": "SOURCE:15 = 10000"
+          },
+          {
+            "sourceLine": 204,
+            "text": "SOURCE:15 = 1000"
+          },
+          {
+            "sourceLine": 210,
+            "text": "SOURCE:15 = 300"
+          },
+          {
+            "sourceLine": 214,
+            "text": "SOURCE:15 = 3000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 114,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 115,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 81,
+            "text": "SIF TALENT:85 && ASSIPLAY == 0 && EXP:0 == 0"
+          },
+          {
+            "sourceLine": 199,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 208,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 213,
+            "text": "IF EXP:0 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 25,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "20",
+        "label": "정상위",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF20.ERB",
+          "originalId": "20",
+          "originalName": "정상위"
+        },
+        "description": "M42 original COMF20 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF20"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "1": 22,
+          "3": 10,
+          "6": 55,
+          "12": 4,
+          "15": 100
+        },
+        "paramDeltas": {
+          "1": {
+            "up": 22,
+            "down": 0
+          },
+          "3": {
+            "up": 10,
+            "down": 0
+          },
+          "6": {
+            "up": 55,
+            "down": 0
+          },
+          "12": {
+            "up": 4,
+            "down": 0
+          },
+          "15": {
+            "up": 100,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -35,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "20": 1
+        },
+        "experienceDeltas": {},
+        "completesTimeBlock": true
+      }
+    },
+    "21": {
+      "commandId": "21",
+      "sourceEvidenceId": "source:training-effect:COMF21",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF21.ERB",
+        "sourceFile": "COMF21.ERB",
+        "sourceSha256": "3f808c34b42f1fe60ee15ef693c9f535ac4e7686660f6897ebb11f789d7f95a5",
+        "sourceLine": 109,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 109,
+            "text": "SOURCE:12 = 800"
+          },
+          {
+            "sourceLine": 113,
+            "text": "SOURCE:1 = 40"
+          },
+          {
+            "sourceLine": 114,
+            "text": "SOURCE:3 = 50"
+          },
+          {
+            "sourceLine": 116,
+            "text": "SOURCE:1 = 150"
+          },
+          {
+            "sourceLine": 117,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 119,
+            "text": "SOURCE:1 = 400"
+          },
+          {
+            "sourceLine": 120,
+            "text": "SOURCE:3 = 250"
+          },
+          {
+            "sourceLine": 122,
+            "text": "SOURCE:1 = 1000"
+          },
+          {
+            "sourceLine": 123,
+            "text": "SOURCE:3 = 350"
+          },
+          {
+            "sourceLine": 125,
+            "text": "SOURCE:1 = 1700"
+          },
+          {
+            "sourceLine": 126,
+            "text": "SOURCE:3 = 600"
+          },
+          {
+            "sourceLine": 128,
+            "text": "SOURCE:1 = 2200"
+          },
+          {
+            "sourceLine": 129,
+            "text": "SOURCE:3 = 850"
+          },
+          {
+            "sourceLine": 135,
+            "text": "SOURCE:6 = 5000"
+          },
+          {
+            "sourceLine": 143,
+            "text": "SOURCE:6 = 220"
+          },
+          {
+            "sourceLine": 146,
+            "text": "SOURCE:6 = 30"
+          },
+          {
+            "sourceLine": 149,
+            "text": "SOURCE:6 = 5"
+          },
+          {
+            "sourceLine": 152,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 155,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 161,
+            "text": "SOURCE:6 += 900"
+          },
+          {
+            "sourceLine": 165,
+            "text": "SOURCE:6 += 250"
+          },
+          {
+            "sourceLine": 195,
+            "text": "SOURCE:15 = 10000"
+          },
+          {
+            "sourceLine": 198,
+            "text": "SOURCE:15 = 1000"
+          },
+          {
+            "sourceLine": 204,
+            "text": "SOURCE:15 = 300"
+          },
+          {
+            "sourceLine": 208,
+            "text": "SOURCE:15 = 3000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 106,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 107,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 80,
+            "text": "SIF TALENT:85 && ASSIPLAY == 0 && EXP:0 == 0 && TEQUIP:89 == 0"
+          },
+          {
+            "sourceLine": 138,
+            "text": "EXP:50 += 1"
+          },
+          {
+            "sourceLine": 193,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 202,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 207,
+            "text": "IF EXP:0 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 25,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "21",
+        "label": "후배위",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF21.ERB",
+          "originalId": "21",
+          "originalName": "후배위"
+        },
+        "description": "M42 original COMF21 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF21"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "1": 22,
+          "3": 8,
+          "6": 50,
+          "12": 8,
+          "15": 100
+        },
+        "paramDeltas": {
+          "1": {
+            "up": 22,
+            "down": 0
+          },
+          "3": {
+            "up": 8,
+            "down": 0
+          },
+          "6": {
+            "up": 50,
+            "down": 0
+          },
+          "12": {
+            "up": 8,
+            "down": 0
+          },
+          "15": {
+            "up": 100,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -35,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "21": 1
+        },
+        "experienceDeltas": {
+          "50": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "22": {
+      "commandId": "22",
+      "sourceEvidenceId": "source:training-effect:COMF22",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF22.ERB",
+        "sourceFile": "COMF22.ERB",
+        "sourceSha256": "b34b80502139ec717a5e64892b123592071360d2b0239cf4be5577746fd16e8b",
+        "sourceLine": 83,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 83,
+            "text": "SOURCE:7 = 100"
+          },
+          {
+            "sourceLine": 84,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 88,
+            "text": "SOURCE:1 = 40"
+          },
+          {
+            "sourceLine": 89,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 91,
+            "text": "SOURCE:1 = 150"
+          },
+          {
+            "sourceLine": 92,
+            "text": "SOURCE:3 = 250"
+          },
+          {
+            "sourceLine": 94,
+            "text": "SOURCE:1 = 300"
+          },
+          {
+            "sourceLine": 95,
+            "text": "SOURCE:3 = 350"
+          },
+          {
+            "sourceLine": 97,
+            "text": "SOURCE:1 = 700"
+          },
+          {
+            "sourceLine": 98,
+            "text": "SOURCE:3 = 500"
+          },
+          {
+            "sourceLine": 100,
+            "text": "SOURCE:1 = 1100"
+          },
+          {
+            "sourceLine": 101,
+            "text": "SOURCE:3 = 700"
+          },
+          {
+            "sourceLine": 103,
+            "text": "SOURCE:1 = 1500"
+          },
+          {
+            "sourceLine": 104,
+            "text": "SOURCE:3 = 1000"
+          },
+          {
+            "sourceLine": 110,
+            "text": "SOURCE:6 = 3500"
+          },
+          {
+            "sourceLine": 118,
+            "text": "SOURCE:6 = 250"
+          },
+          {
+            "sourceLine": 121,
+            "text": "SOURCE:6 = 50"
+          },
+          {
+            "sourceLine": 124,
+            "text": "SOURCE:6 = 10"
+          },
+          {
+            "sourceLine": 127,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 130,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 135,
+            "text": "SOURCE:4 = 50"
+          },
+          {
+            "sourceLine": 136,
+            "text": "SOURCE:5 = 10"
+          },
+          {
+            "sourceLine": 137,
+            "text": "SOURCE:16 = 100"
+          },
+          {
+            "sourceLine": 140,
+            "text": "SOURCE:4 = 150"
+          },
+          {
+            "sourceLine": 141,
+            "text": "SOURCE:5 = 50"
+          },
+          {
+            "sourceLine": 142,
+            "text": "SOURCE:16 = 300"
+          },
+          {
+            "sourceLine": 145,
+            "text": "SOURCE:4 = 300"
+          },
+          {
+            "sourceLine": 146,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 147,
+            "text": "SOURCE:16 = 700"
+          },
+          {
+            "sourceLine": 150,
+            "text": "SOURCE:4 = 400"
+          },
+          {
+            "sourceLine": 151,
+            "text": "SOURCE:5 = 200"
+          },
+          {
+            "sourceLine": 152,
+            "text": "SOURCE:16 = 1200"
+          },
+          {
+            "sourceLine": 155,
+            "text": "SOURCE:4 = 500"
+          },
+          {
+            "sourceLine": 156,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 157,
+            "text": "SOURCE:16 = 1800"
+          },
+          {
+            "sourceLine": 160,
+            "text": "SOURCE:4 = 800"
+          },
+          {
+            "sourceLine": 161,
+            "text": "SOURCE:5 = 500"
+          },
+          {
+            "sourceLine": 162,
+            "text": "SOURCE:16 = 2500"
+          },
+          {
+            "sourceLine": 169,
+            "text": "SOURCE:6 += 1000"
+          },
+          {
+            "sourceLine": 173,
+            "text": "SOURCE:6 += 300"
+          },
+          {
+            "sourceLine": 206,
+            "text": "SOURCE:15 = 10000"
+          },
+          {
+            "sourceLine": 209,
+            "text": "SOURCE:15 = 1000"
+          },
+          {
+            "sourceLine": 215,
+            "text": "SOURCE:15 = 300"
+          },
+          {
+            "sourceLine": 219,
+            "text": "SOURCE:15 = 3000"
+          },
+          {
+            "sourceLine": 270,
+            "text": "SOURCE:3 += 100"
+          },
+          {
+            "sourceLine": 271,
+            "text": "SOURCE:10 += 0"
+          },
+          {
+            "sourceLine": 274,
+            "text": "SOURCE:3 += 150"
+          },
+          {
+            "sourceLine": 275,
+            "text": "SOURCE:10 += 50"
+          },
+          {
+            "sourceLine": 278,
+            "text": "SOURCE:3 += 200"
+          },
+          {
+            "sourceLine": 279,
+            "text": "SOURCE:10 += 100"
+          },
+          {
+            "sourceLine": 282,
+            "text": "SOURCE:3 += 300"
+          },
+          {
+            "sourceLine": 283,
+            "text": "SOURCE:10 += 150"
+          },
+          {
+            "sourceLine": 286,
+            "text": "SOURCE:3 += 500"
+          },
+          {
+            "sourceLine": 287,
+            "text": "SOURCE:10 += 250"
+          },
+          {
+            "sourceLine": 290,
+            "text": "SOURCE:3 += 800"
+          },
+          {
+            "sourceLine": 291,
+            "text": "SOURCE:10 += 400"
+          },
+          {
+            "sourceLine": 295,
+            "text": "SOURCE:0 += A"
+          },
+          {
+            "sourceLine": 298,
+            "text": "SOURCE:1 += A"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 80,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 81,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 53,
+            "text": "SIF TALENT:85 && ASSIPLAY == 0 && EXP:0 == 0"
+          },
+          {
+            "sourceLine": 113,
+            "text": "EXP:50 += 1"
+          },
+          {
+            "sourceLine": 204,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 213,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 218,
+            "text": "IF EXP:0 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 58,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "22",
+        "label": "대면좌위",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF22.ERB",
+          "originalId": "22",
+          "originalName": "대면좌위"
+        },
+        "description": "M42 original COMF22 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF22"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "1": 15,
+          "3": 10,
+          "4": 8,
+          "5": 5,
+          "6": 35,
+          "7": 1,
+          "10": 4,
+          "12": 1,
+          "15": 100,
+          "16": 25
+        },
+        "paramDeltas": {
+          "1": {
+            "up": 15,
+            "down": 0
+          },
+          "3": {
+            "up": 10,
+            "down": 0
+          },
+          "4": {
+            "up": 8,
+            "down": 0
+          },
+          "5": {
+            "up": 5,
+            "down": 0
+          },
+          "6": {
+            "up": 35,
+            "down": 0
+          },
+          "7": {
+            "up": 1,
+            "down": 0
+          },
+          "10": {
+            "up": 4,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "15": {
+            "up": 100,
+            "down": 0
+          },
+          "16": {
+            "up": 25,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -35,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "22": 1
+        },
+        "experienceDeltas": {
+          "50": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "23": {
+      "commandId": "23",
+      "sourceEvidenceId": "source:training-effect:COMF23",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF23.ERB",
+        "sourceFile": "COMF23.ERB",
+        "sourceSha256": "1d12226e0012dd149789268b3e69a6f8f42130932c661c2b84de246e2a392270",
+        "sourceLine": 82,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 82,
+            "text": "SOURCE:12 = 200"
+          },
+          {
+            "sourceLine": 86,
+            "text": "SOURCE:1 = 50"
+          },
+          {
+            "sourceLine": 87,
+            "text": "SOURCE:3 = 50"
+          },
+          {
+            "sourceLine": 90,
+            "text": "SOURCE:1 = 150"
+          },
+          {
+            "sourceLine": 91,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 93,
+            "text": "SOURCE:1 = 300"
+          },
+          {
+            "sourceLine": 94,
+            "text": "SOURCE:3 = 200"
+          },
+          {
+            "sourceLine": 96,
+            "text": "SOURCE:1 = 600"
+          },
+          {
+            "sourceLine": 97,
+            "text": "SOURCE:3 = 300"
+          },
+          {
+            "sourceLine": 99,
+            "text": "SOURCE:1 = 1000"
+          },
+          {
+            "sourceLine": 100,
+            "text": "SOURCE:3 = 500"
+          },
+          {
+            "sourceLine": 102,
+            "text": "SOURCE:1 = 1500"
+          },
+          {
+            "sourceLine": 103,
+            "text": "SOURCE:3 = 700"
+          },
+          {
+            "sourceLine": 109,
+            "text": "SOURCE:6 = 3000"
+          },
+          {
+            "sourceLine": 117,
+            "text": "SOURCE:6 = 240"
+          },
+          {
+            "sourceLine": 120,
+            "text": "SOURCE:6 = 30"
+          },
+          {
+            "sourceLine": 123,
+            "text": "SOURCE:6 = 5"
+          },
+          {
+            "sourceLine": 126,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 129,
+            "text": "SOURCE:6 = 0"
+          },
+          {
+            "sourceLine": 134,
+            "text": "SOURCE:17 = 50"
+          },
+          {
+            "sourceLine": 135,
+            "text": "SOURCE:3 += 50"
+          },
+          {
+            "sourceLine": 137,
+            "text": "SOURCE:17 = 200"
+          },
+          {
+            "sourceLine": 138,
+            "text": "SOURCE:3 += 200"
+          },
+          {
+            "sourceLine": 140,
+            "text": "SOURCE:17 = 500"
+          },
+          {
+            "sourceLine": 141,
+            "text": "SOURCE:3 += 400"
+          },
+          {
+            "sourceLine": 143,
+            "text": "SOURCE:17 = 800"
+          },
+          {
+            "sourceLine": 144,
+            "text": "SOURCE:3 += 600"
+          },
+          {
+            "sourceLine": 146,
+            "text": "SOURCE:17 = 1300"
+          },
+          {
+            "sourceLine": 147,
+            "text": "SOURCE:3 += 1000"
+          },
+          {
+            "sourceLine": 149,
+            "text": "SOURCE:17 = 1800"
+          },
+          {
+            "sourceLine": 150,
+            "text": "SOURCE:3 += 1400"
+          },
+          {
+            "sourceLine": 155,
+            "text": "SOURCE:0 = 40"
+          },
+          {
+            "sourceLine": 157,
+            "text": "SOURCE:0 = 160"
+          },
+          {
+            "sourceLine": 159,
+            "text": "SOURCE:0 = 500"
+          },
+          {
+            "sourceLine": 161,
+            "text": "SOURCE:0 = 900"
+          },
+          {
+            "sourceLine": 163,
+            "text": "SOURCE:0 = 1400"
+          },
+          {
+            "sourceLine": 165,
+            "text": "SOURCE:0 = 2100"
+          },
+          {
+            "sourceLine": 171,
+            "text": "SOURCE:6 += 600"
+          },
+          {
+            "sourceLine": 175,
+            "text": "SOURCE:6 += 180"
+          },
+          {
+            "sourceLine": 208,
+            "text": "SOURCE:15 = 10000"
+          },
+          {
+            "sourceLine": 211,
+            "text": "SOURCE:15 = 1000"
+          },
+          {
+            "sourceLine": 217,
+            "text": "SOURCE:15 = 300"
+          },
+          {
+            "sourceLine": 221,
+            "text": "SOURCE:15 = 3000"
+          },
+          {
+            "sourceLine": 277,
+            "text": "SOURCE:3 += 100"
+          },
+          {
+            "sourceLine": 278,
+            "text": "SOURCE:10 = 0"
+          },
+          {
+            "sourceLine": 281,
+            "text": "SOURCE:3 += 150"
+          },
+          {
+            "sourceLine": 282,
+            "text": "SOURCE:10 += 50"
+          },
+          {
+            "sourceLine": 285,
+            "text": "SOURCE:3 += 200"
+          },
+          {
+            "sourceLine": 286,
+            "text": "SOURCE:10 += 100"
+          },
+          {
+            "sourceLine": 289,
+            "text": "SOURCE:3 += 300"
+          },
+          {
+            "sourceLine": 290,
+            "text": "SOURCE:10 += 150"
+          },
+          {
+            "sourceLine": 293,
+            "text": "SOURCE:3 += 500"
+          },
+          {
+            "sourceLine": 294,
+            "text": "SOURCE:10 += 250"
+          },
+          {
+            "sourceLine": 297,
+            "text": "SOURCE:3 += 800"
+          },
+          {
+            "sourceLine": 298,
+            "text": "SOURCE:10 += 400"
+          },
+          {
+            "sourceLine": 302,
+            "text": "SOURCE:0 += A"
+          },
+          {
+            "sourceLine": 305,
+            "text": "SOURCE:1 += A"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 79,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 80,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 53,
+            "text": "SIF TALENT:85 && ASSIPLAY == 0 && EXP:0 == 0"
+          },
+          {
+            "sourceLine": 112,
+            "text": "EXP:50 += 1"
+          },
+          {
+            "sourceLine": 206,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 215,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 220,
+            "text": "IF EXP:0 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 57,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "23",
+        "label": "배면좌위",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF23.ERB",
+          "originalId": "23",
+          "originalName": "배면좌위"
+        },
+        "description": "M42 original COMF23 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF23"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 21,
+          "1": 15,
+          "3": 14,
+          "6": 30,
+          "10": 4,
+          "12": 2,
+          "15": 100,
+          "17": 18
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 21,
+            "down": 0
+          },
+          "1": {
+            "up": 15,
+            "down": 0
+          },
+          "3": {
+            "up": 14,
+            "down": 0
+          },
+          "6": {
+            "up": 30,
+            "down": 0
+          },
+          "10": {
+            "up": 4,
+            "down": 0
+          },
+          "12": {
+            "up": 2,
+            "down": 0
+          },
+          "15": {
+            "up": 100,
+            "down": 0
+          },
+          "17": {
+            "up": 18,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -35,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "23": 1
+        },
+        "experienceDeltas": {
+          "50": 1
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "24": {
+      "commandId": "24",
+      "sourceEvidenceId": "source:training-effect:COMF24",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF24.ERB",
+        "sourceFile": "COMF24.ERB",
+        "sourceSha256": "1502641fb1829480c72626aee2182220468628ae0c8087a97c2cc01d66a4aefd",
+        "sourceLine": 177,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 177,
+            "text": "SOURCE:3 = 550"
+          },
+          {
+            "sourceLine": 178,
+            "text": "SOURCE:13 = 1000"
+          },
+          {
+            "sourceLine": 179,
+            "text": "SOURCE:14 = 800"
+          },
+          {
+            "sourceLine": 183,
+            "text": "SOURCE:0 = 800"
+          },
+          {
+            "sourceLine": 186,
+            "text": "SOURCE:0 = 1400"
+          },
+          {
+            "sourceLine": 189,
+            "text": "SOURCE:0 = 2000"
+          },
+          {
+            "sourceLine": 192,
+            "text": "SOURCE:0 = 2500"
+          },
+          {
+            "sourceLine": 195,
+            "text": "SOURCE:0 = 2900"
+          },
+          {
+            "sourceLine": 198,
+            "text": "SOURCE:0 = 3200"
+          },
+          {
+            "sourceLine": 205,
+            "text": "SOURCE:4 = 1600"
+          },
+          {
+            "sourceLine": 208,
+            "text": "SOURCE:4 = 1900"
+          },
+          {
+            "sourceLine": 211,
+            "text": "SOURCE:4 = 2300"
+          },
+          {
+            "sourceLine": 214,
+            "text": "SOURCE:4 = 2700"
+          },
+          {
+            "sourceLine": 217,
+            "text": "SOURCE:4 = 3100"
+          },
+          {
+            "sourceLine": 220,
+            "text": "SOURCE:4 = 3500"
+          },
+          {
+            "sourceLine": 223,
+            "text": "SOURCE:4 = 4000"
+          },
+          {
+            "sourceLine": 245,
+            "text": "SOURCE:12 = 1200"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 174,
+            "text": "LOSEBASE:0 += 40"
+          },
+          {
+            "sourceLine": 175,
+            "text": "LOSEBASE:1 += 75"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 269,
+            "text": "EXP:40 += 4"
+          },
+          {
+            "sourceLine": 273,
+            "text": "EXP:41 += 4"
+          },
+          {
+            "sourceLine": 276,
+            "text": "EXP:5 += 1"
+          },
+          {
+            "sourceLine": 318,
+            "text": "EXP:50 += Z"
+          },
+          {
+            "sourceLine": 348,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 17,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "24",
+        "label": "역강간",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF24.ERB",
+          "originalId": "24",
+          "originalName": "역강간"
+        },
+        "description": "M42 original COMF24 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF24"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 32,
+          "3": 5,
+          "4": 40,
+          "12": 12,
+          "13": 10,
+          "14": 8
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 32,
+            "down": 0
+          },
+          "3": {
+            "up": 5,
+            "down": 0
+          },
+          "4": {
+            "up": 40,
+            "down": 0
+          },
+          "12": {
+            "up": 12,
+            "down": 0
+          },
+          "13": {
+            "up": 10,
+            "down": 0
+          },
+          "14": {
+            "up": 8,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -40,
+          "energy": -75
+        },
+        "resourceDeltas": {
+          "24": 1
+        },
+        "experienceDeltas": {
+          "5": 1,
+          "40": 4,
+          "41": 4
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "25": {
+      "commandId": "25",
+      "sourceEvidenceId": "source:training-effect:COMF25",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF25.ERB",
+        "sourceFile": "COMF25.ERB",
+        "sourceSha256": "83d4d95508f4f869580c67bfca81ca7a37f552e1f8d00ea7d7517ccc7000a2d0",
+        "sourceLine": 150,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 150,
+            "text": "SOURCE:3 = 550"
+          },
+          {
+            "sourceLine": 151,
+            "text": "SOURCE:13 = 1000"
+          },
+          {
+            "sourceLine": 152,
+            "text": "SOURCE:14 = 800"
+          },
+          {
+            "sourceLine": 156,
+            "text": "SOURCE:0 = 800"
+          },
+          {
+            "sourceLine": 159,
+            "text": "SOURCE:0 = 1400"
+          },
+          {
+            "sourceLine": 162,
+            "text": "SOURCE:0 = 2000"
+          },
+          {
+            "sourceLine": 165,
+            "text": "SOURCE:0 = 2500"
+          },
+          {
+            "sourceLine": 168,
+            "text": "SOURCE:0 = 2900"
+          },
+          {
+            "sourceLine": 171,
+            "text": "SOURCE:0 = 3200"
+          },
+          {
+            "sourceLine": 178,
+            "text": "SOURCE:4 = 1600"
+          },
+          {
+            "sourceLine": 181,
+            "text": "SOURCE:4 = 1900"
+          },
+          {
+            "sourceLine": 184,
+            "text": "SOURCE:4 = 2300"
+          },
+          {
+            "sourceLine": 187,
+            "text": "SOURCE:4 = 2700"
+          },
+          {
+            "sourceLine": 190,
+            "text": "SOURCE:4 = 3100"
+          },
+          {
+            "sourceLine": 193,
+            "text": "SOURCE:4 = 3500"
+          },
+          {
+            "sourceLine": 196,
+            "text": "SOURCE:4 = 4000"
+          },
+          {
+            "sourceLine": 218,
+            "text": "SOURCE:12 = 1200"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 147,
+            "text": "LOSEBASE:0 += 40"
+          },
+          {
+            "sourceLine": 148,
+            "text": "LOSEBASE:1 += 75"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 237,
+            "text": "EXP:40 += 4"
+          },
+          {
+            "sourceLine": 241,
+            "text": "EXP:41 += 4"
+          },
+          {
+            "sourceLine": 244,
+            "text": "EXP:5 += 1"
+          },
+          {
+            "sourceLine": 274,
+            "text": "EXP:50 += Z"
+          },
+          {
+            "sourceLine": 296,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 17,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "25",
+        "label": "역애널강간",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF25.ERB",
+          "originalId": "25",
+          "originalName": "역애널강간"
+        },
+        "description": "M42 original COMF25 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF25"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 32,
+          "3": 5,
+          "4": 40,
+          "12": 12,
+          "13": 10,
+          "14": 8
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 32,
+            "down": 0
+          },
+          "3": {
+            "up": 5,
+            "down": 0
+          },
+          "4": {
+            "up": 40,
+            "down": 0
+          },
+          "12": {
+            "up": 12,
+            "down": 0
+          },
+          "13": {
+            "up": 10,
+            "down": 0
+          },
+          "14": {
+            "up": 8,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -40,
+          "energy": -75
+        },
+        "resourceDeltas": {
+          "25": 1
+        },
+        "experienceDeltas": {
+          "5": 1,
+          "40": 4,
+          "41": 4
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "26": {
+      "commandId": "26",
+      "sourceEvidenceId": "source:training-effect:COMF26",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF26.ERB",
+        "sourceFile": "COMF26.ERB",
+        "sourceSha256": "4b441dcbb795ac83a2368a92f803a9b4e8cfa7f9182da1641bec44dae5f49dac",
+        "sourceLine": 64,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 64,
+            "text": "SOURCE:12 = 400"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:2 = 10"
+          },
+          {
+            "sourceLine": 69,
+            "text": "SOURCE:3 = 10"
+          },
+          {
+            "sourceLine": 70,
+            "text": "SOURCE:13 = 100"
+          },
+          {
+            "sourceLine": 72,
+            "text": "SOURCE:2 = 30"
+          },
+          {
+            "sourceLine": 73,
+            "text": "SOURCE:3 = 30"
+          },
+          {
+            "sourceLine": 74,
+            "text": "SOURCE:13 = 500"
+          },
+          {
+            "sourceLine": 76,
+            "text": "SOURCE:2 = 400"
+          },
+          {
+            "sourceLine": 77,
+            "text": "SOURCE:3 = 150"
+          },
+          {
+            "sourceLine": 78,
+            "text": "SOURCE:13 = 1200"
+          },
+          {
+            "sourceLine": 80,
+            "text": "SOURCE:2 = 900"
+          },
+          {
+            "sourceLine": 81,
+            "text": "SOURCE:3 = 300"
+          },
+          {
+            "sourceLine": 82,
+            "text": "SOURCE:13 = 2400"
+          },
+          {
+            "sourceLine": 84,
+            "text": "SOURCE:2 = 1600"
+          },
+          {
+            "sourceLine": 85,
+            "text": "SOURCE:3 = 500"
+          },
+          {
+            "sourceLine": 86,
+            "text": "SOURCE:13 = 3600"
+          },
+          {
+            "sourceLine": 88,
+            "text": "SOURCE:2 = 2100"
+          },
+          {
+            "sourceLine": 89,
+            "text": "SOURCE:3 = 900"
+          },
+          {
+            "sourceLine": 90,
+            "text": "SOURCE:13 = 5000"
+          },
+          {
+            "sourceLine": 96,
+            "text": "SOURCE:6 = 20000"
+          },
+          {
+            "sourceLine": 101,
+            "text": "SOURCE:6 = 12000"
+          },
+          {
+            "sourceLine": 106,
+            "text": "SOURCE:6 = 5000"
+          },
+          {
+            "sourceLine": 111,
+            "text": "SOURCE:6 = 1800"
+          },
+          {
+            "sourceLine": 116,
+            "text": "SOURCE:6 = 1000"
+          },
+          {
+            "sourceLine": 121,
+            "text": "SOURCE:6 = 600"
+          },
+          {
+            "sourceLine": 129,
+            "text": "SOURCE:6 += 10000"
+          },
+          {
+            "sourceLine": 132,
+            "text": "SOURCE:6 += 3600"
+          },
+          {
+            "sourceLine": 135,
+            "text": "SOURCE:6 += 1200"
+          },
+          {
+            "sourceLine": 138,
+            "text": "SOURCE:6 += 200"
+          },
+          {
+            "sourceLine": 141,
+            "text": "SOURCE:6 += 100"
+          },
+          {
+            "sourceLine": 165,
+            "text": "SOURCE:15 = 500"
+          },
+          {
+            "sourceLine": 169,
+            "text": "SOURCE:15 = 0"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 61,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 62,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          },
+          {
+            "sourceLine": 97,
+            "text": "LOSEBASE:0 += 50"
+          },
+          {
+            "sourceLine": 98,
+            "text": "LOSEBASE:1 += 100"
+          },
+          {
+            "sourceLine": 102,
+            "text": "LOSEBASE:0 += 40"
+          },
+          {
+            "sourceLine": 103,
+            "text": "LOSEBASE:1 += 80"
+          },
+          {
+            "sourceLine": 107,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 108,
+            "text": "LOSEBASE:1 += 60"
+          },
+          {
+            "sourceLine": 112,
+            "text": "LOSEBASE:0 += 20"
+          },
+          {
+            "sourceLine": 113,
+            "text": "LOSEBASE:1 += 40"
+          },
+          {
+            "sourceLine": 117,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 118,
+            "text": "LOSEBASE:1 += 20"
+          },
+          {
+            "sourceLine": 122,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 123,
+            "text": "LOSEBASE:1 += 0"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 162,
+            "text": "IF EXP:1 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 32,
+      "bodyLossAssignmentCount": 14,
+      "experienceAssignmentCount": 1,
+      "definitionPatch": {
+        "id": "26",
+        "label": "정상위애널",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF26.ERB",
+          "originalId": "26",
+          "originalName": "정상위애널"
+        },
+        "description": "M42 original COMF26 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF26"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 21,
+          "3": 9,
+          "6": 200,
+          "12": 4,
+          "13": 50,
+          "15": 5
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 21,
+            "down": 0
+          },
+          "3": {
+            "up": 9,
+            "down": 0
+          },
+          "6": {
+            "up": 200,
+            "down": 0
+          },
+          "12": {
+            "up": 4,
+            "down": 0
+          },
+          "13": {
+            "up": 50,
+            "down": 0
+          },
+          "15": {
+            "up": 5,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -50,
+          "energy": -100
+        },
+        "resourceDeltas": {
+          "26": 1
+        },
+        "experienceDeltas": {},
+        "completesTimeBlock": true
+      }
+    },
+    "27": {
+      "commandId": "27",
+      "sourceEvidenceId": "source:training-effect:COMF27",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF27.ERB",
+        "sourceFile": "COMF27.ERB",
+        "sourceSha256": "32c44d1bb0a98a1441a627d9a896c38f4c8fad18d8fed29aa3a08ac5a18b023a",
+        "sourceLine": 65,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 65,
+            "text": "SOURCE:12 = 1200"
+          },
+          {
+            "sourceLine": 66,
+            "text": "SOURCE:14 = 1200"
+          },
+          {
+            "sourceLine": 70,
+            "text": "SOURCE:2 = 10"
+          },
+          {
+            "sourceLine": 71,
+            "text": "SOURCE:3 = 10"
+          },
+          {
+            "sourceLine": 72,
+            "text": "SOURCE:13 = 100"
+          },
+          {
+            "sourceLine": 74,
+            "text": "SOURCE:2 = 30"
+          },
+          {
+            "sourceLine": 75,
+            "text": "SOURCE:3 = 30"
+          },
+          {
+            "sourceLine": 76,
+            "text": "SOURCE:13 = 700"
+          },
+          {
+            "sourceLine": 78,
+            "text": "SOURCE:2 = 500"
+          },
+          {
+            "sourceLine": 79,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 80,
+            "text": "SOURCE:13 = 1500"
+          },
+          {
+            "sourceLine": 82,
+            "text": "SOURCE:2 = 1000"
+          },
+          {
+            "sourceLine": 83,
+            "text": "SOURCE:3 = 200"
+          },
+          {
+            "sourceLine": 84,
+            "text": "SOURCE:13 = 3000"
+          },
+          {
+            "sourceLine": 86,
+            "text": "SOURCE:2 = 1700"
+          },
+          {
+            "sourceLine": 87,
+            "text": "SOURCE:3 = 450"
+          },
+          {
+            "sourceLine": 88,
+            "text": "SOURCE:13 = 5000"
+          },
+          {
+            "sourceLine": 90,
+            "text": "SOURCE:2 = 2200"
+          },
+          {
+            "sourceLine": 91,
+            "text": "SOURCE:3 = 750"
+          },
+          {
+            "sourceLine": 92,
+            "text": "SOURCE:13 = 8000"
+          },
+          {
+            "sourceLine": 98,
+            "text": "SOURCE:6 = 20000"
+          },
+          {
+            "sourceLine": 101,
+            "text": "SOURCE:6 = 12000"
+          },
+          {
+            "sourceLine": 104,
+            "text": "SOURCE:6 = 5000"
+          },
+          {
+            "sourceLine": 107,
+            "text": "SOURCE:6 = 1800"
+          },
+          {
+            "sourceLine": 110,
+            "text": "SOURCE:6 = 1000"
+          },
+          {
+            "sourceLine": 113,
+            "text": "SOURCE:6 = 600"
+          },
+          {
+            "sourceLine": 119,
+            "text": "SOURCE:6 += 10000"
+          },
+          {
+            "sourceLine": 122,
+            "text": "SOURCE:6 += 3600"
+          },
+          {
+            "sourceLine": 125,
+            "text": "SOURCE:6 += 1200"
+          },
+          {
+            "sourceLine": 128,
+            "text": "SOURCE:6 += 200"
+          },
+          {
+            "sourceLine": 131,
+            "text": "SOURCE:6 += 100"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 62,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 63,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 181,
+            "text": "IF EXP:0 == 0 && TALENT:30"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 31,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 1,
+      "definitionPatch": {
+        "id": "27",
+        "label": "후배위애널",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF27.ERB",
+          "originalId": "27",
+          "originalName": "후배위애널"
+        },
+        "description": "M42 original COMF27 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF27"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 22,
+          "3": 7,
+          "6": 200,
+          "12": 12,
+          "13": 80,
+          "14": 12
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 22,
+            "down": 0
+          },
+          "3": {
+            "up": 7,
+            "down": 0
+          },
+          "6": {
+            "up": 200,
+            "down": 0
+          },
+          "12": {
+            "up": 12,
+            "down": 0
+          },
+          "13": {
+            "up": 80,
+            "down": 0
+          },
+          "14": {
+            "up": 12,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -35,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "27": 1
+        },
+        "experienceDeltas": {},
+        "completesTimeBlock": true
+      }
+    },
+    "28": {
+      "commandId": "28",
+      "sourceEvidenceId": "source:training-effect:COMF28",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF28.ERB",
+        "sourceFile": "COMF28.ERB",
+        "sourceSha256": "0f4a53c718bbb7bf2d2de530969f7c3d7907a9519e66db7936c30ebad77c3bda",
+        "sourceLine": 44,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:3 = 100"
+          },
+          {
+            "sourceLine": 45,
+            "text": "SOURCE:7 = 100"
+          },
+          {
+            "sourceLine": 46,
+            "text": "SOURCE:12 = 100"
+          },
+          {
+            "sourceLine": 50,
+            "text": "SOURCE:2 += 10"
+          },
+          {
+            "sourceLine": 51,
+            "text": "SOURCE:3 += 10"
+          },
+          {
+            "sourceLine": 52,
+            "text": "SOURCE:13 += 80"
+          },
+          {
+            "sourceLine": 54,
+            "text": "SOURCE:2 += 30"
+          },
+          {
+            "sourceLine": 55,
+            "text": "SOURCE:3 += 130"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:13 += 300"
+          },
+          {
+            "sourceLine": 58,
+            "text": "SOURCE:2 += 200"
+          },
+          {
+            "sourceLine": 59,
+            "text": "SOURCE:3 += 500"
+          },
+          {
+            "sourceLine": 60,
+            "text": "SOURCE:13 += 700"
+          },
+          {
+            "sourceLine": 62,
+            "text": "SOURCE:2 += 500"
+          },
+          {
+            "sourceLine": 63,
+            "text": "SOURCE:3 += 1000"
+          },
+          {
+            "sourceLine": 64,
+            "text": "SOURCE:13 += 1500"
+          },
+          {
+            "sourceLine": 66,
+            "text": "SOURCE:2 += 900"
+          },
+          {
+            "sourceLine": 67,
+            "text": "SOURCE:3 += 1500"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:13 += 2600"
+          },
+          {
+            "sourceLine": 70,
+            "text": "SOURCE:2 += 1400"
+          },
+          {
+            "sourceLine": 71,
+            "text": "SOURCE:3 += 2000"
+          },
+          {
+            "sourceLine": 72,
+            "text": "SOURCE:13 += 4000"
+          },
+          {
+            "sourceLine": 78,
+            "text": "SOURCE:6 = 18000"
+          },
+          {
+            "sourceLine": 83,
+            "text": "SOURCE:6 = 10000"
+          },
+          {
+            "sourceLine": 88,
+            "text": "SOURCE:6 = 4500"
+          },
+          {
+            "sourceLine": 93,
+            "text": "SOURCE:6 = 1500"
+          },
+          {
+            "sourceLine": 98,
+            "text": "SOURCE:6 = 700"
+          },
+          {
+            "sourceLine": 103,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 111,
+            "text": "SOURCE:6 += 10000"
+          },
+          {
+            "sourceLine": 114,
+            "text": "SOURCE:6 += 3600"
+          },
+          {
+            "sourceLine": 117,
+            "text": "SOURCE:6 += 1200"
+          },
+          {
+            "sourceLine": 120,
+            "text": "SOURCE:6 += 200"
+          },
+          {
+            "sourceLine": 123,
+            "text": "SOURCE:6 += 100"
+          },
+          {
+            "sourceLine": 128,
+            "text": "SOURCE:4 = 50"
+          },
+          {
+            "sourceLine": 129,
+            "text": "SOURCE:5 = 10"
+          },
+          {
+            "sourceLine": 130,
+            "text": "SOURCE:16 = 100"
+          },
+          {
+            "sourceLine": 133,
+            "text": "SOURCE:4 = 150"
+          },
+          {
+            "sourceLine": 134,
+            "text": "SOURCE:5 = 50"
+          },
+          {
+            "sourceLine": 135,
+            "text": "SOURCE:16 = 300"
+          },
+          {
+            "sourceLine": 138,
+            "text": "SOURCE:4 = 300"
+          },
+          {
+            "sourceLine": 139,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 140,
+            "text": "SOURCE:16 = 700"
+          },
+          {
+            "sourceLine": 143,
+            "text": "SOURCE:4 = 400"
+          },
+          {
+            "sourceLine": 144,
+            "text": "SOURCE:5 = 200"
+          },
+          {
+            "sourceLine": 145,
+            "text": "SOURCE:16 = 1200"
+          },
+          {
+            "sourceLine": 148,
+            "text": "SOURCE:4 = 500"
+          },
+          {
+            "sourceLine": 149,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 150,
+            "text": "SOURCE:16 = 1800"
+          },
+          {
+            "sourceLine": 153,
+            "text": "SOURCE:4 = 800"
+          },
+          {
+            "sourceLine": 154,
+            "text": "SOURCE:5 = 500"
+          },
+          {
+            "sourceLine": 155,
+            "text": "SOURCE:16 = 2500"
+          },
+          {
+            "sourceLine": 180,
+            "text": "SOURCE:15 = 500"
+          },
+          {
+            "sourceLine": 184,
+            "text": "SOURCE:15 = 0"
+          },
+          {
+            "sourceLine": 229,
+            "text": "SOURCE:3 += 100"
+          },
+          {
+            "sourceLine": 230,
+            "text": "SOURCE:10 += 0"
+          },
+          {
+            "sourceLine": 233,
+            "text": "SOURCE:3 += 150"
+          },
+          {
+            "sourceLine": 234,
+            "text": "SOURCE:10 += 50"
+          },
+          {
+            "sourceLine": 237,
+            "text": "SOURCE:3 += 200"
+          },
+          {
+            "sourceLine": 238,
+            "text": "SOURCE:10 += 100"
+          },
+          {
+            "sourceLine": 241,
+            "text": "SOURCE:3 += 300"
+          },
+          {
+            "sourceLine": 242,
+            "text": "SOURCE:10 += 150"
+          },
+          {
+            "sourceLine": 245,
+            "text": "SOURCE:3 += 500"
+          },
+          {
+            "sourceLine": 246,
+            "text": "SOURCE:10 += 250"
+          },
+          {
+            "sourceLine": 249,
+            "text": "SOURCE:3 += 800"
+          },
+          {
+            "sourceLine": 250,
+            "text": "SOURCE:10 += 400"
+          },
+          {
+            "sourceLine": 254,
+            "text": "SOURCE:0 += A"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 41,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 42,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          },
+          {
+            "sourceLine": 79,
+            "text": "LOSEBASE:0 += 40"
+          },
+          {
+            "sourceLine": 80,
+            "text": "LOSEBASE:1 += 60"
+          },
+          {
+            "sourceLine": 84,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 85,
+            "text": "LOSEBASE:1 += 50"
+          },
+          {
+            "sourceLine": 89,
+            "text": "LOSEBASE:0 += 20"
+          },
+          {
+            "sourceLine": 90,
+            "text": "LOSEBASE:1 += 40"
+          },
+          {
+            "sourceLine": 94,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 95,
+            "text": "LOSEBASE:1 += 30"
+          },
+          {
+            "sourceLine": 99,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 100,
+            "text": "LOSEBASE:1 += 20"
+          },
+          {
+            "sourceLine": 104,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 105,
+            "text": "LOSEBASE:1 += 0"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 177,
+            "text": "IF EXP:1 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 65,
+      "bodyLossAssignmentCount": 14,
+      "experienceAssignmentCount": 1,
+      "definitionPatch": {
+        "id": "28",
+        "label": "대면좌위애널",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF28.ERB",
+          "originalId": "28",
+          "originalName": "대면좌위애널"
+        },
+        "description": "M42 original COMF28 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF28"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "2": 14,
+          "3": 20,
+          "4": 8,
+          "5": 5,
+          "6": 180,
+          "7": 1,
+          "10": 4,
+          "12": 1,
+          "13": 40,
+          "15": 5,
+          "16": 25
+        },
+        "paramDeltas": {
+          "2": {
+            "up": 14,
+            "down": 0
+          },
+          "3": {
+            "up": 20,
+            "down": 0
+          },
+          "4": {
+            "up": 8,
+            "down": 0
+          },
+          "5": {
+            "up": 5,
+            "down": 0
+          },
+          "6": {
+            "up": 180,
+            "down": 0
+          },
+          "7": {
+            "up": 1,
+            "down": 0
+          },
+          "10": {
+            "up": 4,
+            "down": 0
+          },
+          "12": {
+            "up": 1,
+            "down": 0
+          },
+          "13": {
+            "up": 40,
+            "down": 0
+          },
+          "15": {
+            "up": 5,
+            "down": 0
+          },
+          "16": {
+            "up": 25,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -40,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "28": 1
+        },
+        "experienceDeltas": {},
+        "completesTimeBlock": true
+      }
+    },
+    "29": {
+      "commandId": "29",
+      "sourceEvidenceId": "source:training-effect:COMF29",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF29.ERB",
+        "sourceFile": "COMF29.ERB",
+        "sourceSha256": "690e9131ecfbbe8bb13b81aaaf3eaeb6972c23a4b6e8a86ec669741243a9e489",
+        "sourceLine": 44,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 44,
+            "text": "SOURCE:12 = 200"
+          },
+          {
+            "sourceLine": 48,
+            "text": "SOURCE:2 += 10"
+          },
+          {
+            "sourceLine": 49,
+            "text": "SOURCE:3 += 10"
+          },
+          {
+            "sourceLine": 50,
+            "text": "SOURCE:13 += 80"
+          },
+          {
+            "sourceLine": 52,
+            "text": "SOURCE:2 += 30"
+          },
+          {
+            "sourceLine": 53,
+            "text": "SOURCE:3 += 130"
+          },
+          {
+            "sourceLine": 54,
+            "text": "SOURCE:13 += 300"
+          },
+          {
+            "sourceLine": 56,
+            "text": "SOURCE:2 += 200"
+          },
+          {
+            "sourceLine": 57,
+            "text": "SOURCE:3 += 500"
+          },
+          {
+            "sourceLine": 58,
+            "text": "SOURCE:13 += 700"
+          },
+          {
+            "sourceLine": 60,
+            "text": "SOURCE:2 += 500"
+          },
+          {
+            "sourceLine": 61,
+            "text": "SOURCE:3 += 1000"
+          },
+          {
+            "sourceLine": 62,
+            "text": "SOURCE:13 += 1500"
+          },
+          {
+            "sourceLine": 64,
+            "text": "SOURCE:2 += 900"
+          },
+          {
+            "sourceLine": 65,
+            "text": "SOURCE:3 += 1500"
+          },
+          {
+            "sourceLine": 66,
+            "text": "SOURCE:13 += 2600"
+          },
+          {
+            "sourceLine": 68,
+            "text": "SOURCE:2 += 1400"
+          },
+          {
+            "sourceLine": 69,
+            "text": "SOURCE:3 += 2000"
+          },
+          {
+            "sourceLine": 70,
+            "text": "SOURCE:13 += 4000"
+          },
+          {
+            "sourceLine": 76,
+            "text": "SOURCE:6 = 18000"
+          },
+          {
+            "sourceLine": 81,
+            "text": "SOURCE:6 = 10000"
+          },
+          {
+            "sourceLine": 86,
+            "text": "SOURCE:6 = 4500"
+          },
+          {
+            "sourceLine": 91,
+            "text": "SOURCE:6 = 1500"
+          },
+          {
+            "sourceLine": 96,
+            "text": "SOURCE:6 = 700"
+          },
+          {
+            "sourceLine": 101,
+            "text": "SOURCE:6 = 300"
+          },
+          {
+            "sourceLine": 108,
+            "text": "SOURCE:17 = 50"
+          },
+          {
+            "sourceLine": 109,
+            "text": "SOURCE:3 += 50"
+          },
+          {
+            "sourceLine": 111,
+            "text": "SOURCE:17 = 200"
+          },
+          {
+            "sourceLine": 112,
+            "text": "SOURCE:3 += 200"
+          },
+          {
+            "sourceLine": 114,
+            "text": "SOURCE:17 = 500"
+          },
+          {
+            "sourceLine": 115,
+            "text": "SOURCE:3 += 400"
+          },
+          {
+            "sourceLine": 117,
+            "text": "SOURCE:17 = 800"
+          },
+          {
+            "sourceLine": 118,
+            "text": "SOURCE:3 += 600"
+          },
+          {
+            "sourceLine": 120,
+            "text": "SOURCE:17 = 1300"
+          },
+          {
+            "sourceLine": 121,
+            "text": "SOURCE:3 += 1000"
+          },
+          {
+            "sourceLine": 123,
+            "text": "SOURCE:17 = 1800"
+          },
+          {
+            "sourceLine": 124,
+            "text": "SOURCE:3 += 1400"
+          },
+          {
+            "sourceLine": 129,
+            "text": "SOURCE:0 = 40"
+          },
+          {
+            "sourceLine": 131,
+            "text": "SOURCE:0 = 160"
+          },
+          {
+            "sourceLine": 133,
+            "text": "SOURCE:0 = 500"
+          },
+          {
+            "sourceLine": 135,
+            "text": "SOURCE:0 = 900"
+          },
+          {
+            "sourceLine": 137,
+            "text": "SOURCE:0 = 1400"
+          },
+          {
+            "sourceLine": 139,
+            "text": "SOURCE:0 = 2100"
+          },
+          {
+            "sourceLine": 145,
+            "text": "SOURCE:6 += 10000"
+          },
+          {
+            "sourceLine": 148,
+            "text": "SOURCE:6 += 3600"
+          },
+          {
+            "sourceLine": 151,
+            "text": "SOURCE:6 += 1200"
+          },
+          {
+            "sourceLine": 154,
+            "text": "SOURCE:6 += 200"
+          },
+          {
+            "sourceLine": 157,
+            "text": "SOURCE:6 += 100"
+          },
+          {
+            "sourceLine": 181,
+            "text": "SOURCE:15 = 500"
+          },
+          {
+            "sourceLine": 185,
+            "text": "SOURCE:15 = 0"
+          },
+          {
+            "sourceLine": 241,
+            "text": "SOURCE:3 += 100"
+          },
+          {
+            "sourceLine": 242,
+            "text": "SOURCE:10 = 0"
+          },
+          {
+            "sourceLine": 245,
+            "text": "SOURCE:3 += 150"
+          },
+          {
+            "sourceLine": 246,
+            "text": "SOURCE:10 += 50"
+          },
+          {
+            "sourceLine": 249,
+            "text": "SOURCE:3 += 200"
+          },
+          {
+            "sourceLine": 250,
+            "text": "SOURCE:10 += 100"
+          },
+          {
+            "sourceLine": 253,
+            "text": "SOURCE:3 += 300"
+          },
+          {
+            "sourceLine": 254,
+            "text": "SOURCE:10 += 150"
+          },
+          {
+            "sourceLine": 257,
+            "text": "SOURCE:3 += 500"
+          },
+          {
+            "sourceLine": 258,
+            "text": "SOURCE:10 += 250"
+          },
+          {
+            "sourceLine": 261,
+            "text": "SOURCE:3 += 800"
+          },
+          {
+            "sourceLine": 262,
+            "text": "SOURCE:10 += 400"
+          },
+          {
+            "sourceLine": 266,
+            "text": "SOURCE:0 += A"
+          },
+          {
+            "sourceLine": 269,
+            "text": "SOURCE:2 += A"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 41,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 42,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          },
+          {
+            "sourceLine": 77,
+            "text": "LOSEBASE:0 += 40"
+          },
+          {
+            "sourceLine": 78,
+            "text": "LOSEBASE:1 += 60"
+          },
+          {
+            "sourceLine": 82,
+            "text": "LOSEBASE:0 += 30"
+          },
+          {
+            "sourceLine": 83,
+            "text": "LOSEBASE:1 += 50"
+          },
+          {
+            "sourceLine": 87,
+            "text": "LOSEBASE:0 += 20"
+          },
+          {
+            "sourceLine": 88,
+            "text": "LOSEBASE:1 += 40"
+          },
+          {
+            "sourceLine": 92,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 93,
+            "text": "LOSEBASE:1 += 30"
+          },
+          {
+            "sourceLine": 97,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 98,
+            "text": "LOSEBASE:1 += 20"
+          },
+          {
+            "sourceLine": 102,
+            "text": "LOSEBASE:0 += 0"
+          },
+          {
+            "sourceLine": 103,
+            "text": "LOSEBASE:1 += 0"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 178,
+            "text": "IF EXP:1 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 64,
+      "bodyLossAssignmentCount": 14,
+      "experienceAssignmentCount": 1,
+      "definitionPatch": {
+        "id": "29",
+        "label": "배면좌위애널",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF29.ERB",
+          "originalId": "29",
+          "originalName": "배면좌위애널"
+        },
+        "description": "M42 original COMF29 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF29"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 21,
+          "2": 14,
+          "3": 20,
+          "6": 180,
+          "10": 4,
+          "12": 2,
+          "13": 40,
+          "15": 5,
+          "17": 18
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 21,
+            "down": 0
+          },
+          "2": {
+            "up": 14,
+            "down": 0
+          },
+          "3": {
+            "up": 20,
+            "down": 0
+          },
+          "6": {
+            "up": 180,
+            "down": 0
+          },
+          "10": {
+            "up": 4,
+            "down": 0
+          },
+          "12": {
+            "up": 2,
+            "down": 0
+          },
+          "13": {
+            "up": 40,
+            "down": 0
+          },
+          "15": {
+            "up": 5,
+            "down": 0
+          },
+          "17": {
+            "up": 18,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -40,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "29": 1
+        },
+        "experienceDeltas": {},
+        "completesTimeBlock": true
+      }
+    },
+    "30": {
+      "commandId": "30",
+      "sourceEvidenceId": "source:training-effect:COMF30",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF30.ERB",
+        "sourceFile": "COMF30.ERB",
+        "sourceSha256": "c096ac4b7f2ebf597faeed9e9d4154d3d12257f53cb16988c8d9e06adc2b2806",
+        "sourceLine": 256,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 256,
+            "text": "SOURCE:13 = 500"
+          },
+          {
+            "sourceLine": 257,
+            "text": "SOURCE:14 = 100"
+          },
+          {
+            "sourceLine": 260,
+            "text": "SOURCE:8 = Y*10 + 60"
+          },
+          {
+            "sourceLine": 264,
+            "text": "SOURCE:4 = 250"
+          },
+          {
+            "sourceLine": 265,
+            "text": "SOURCE:5 = 50"
+          },
+          {
+            "sourceLine": 268,
+            "text": "SOURCE:4 = 300"
+          },
+          {
+            "sourceLine": 269,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 272,
+            "text": "SOURCE:4 = 350"
+          },
+          {
+            "sourceLine": 273,
+            "text": "SOURCE:5 = 200"
+          },
+          {
+            "sourceLine": 276,
+            "text": "SOURCE:4 = 400"
+          },
+          {
+            "sourceLine": 277,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 280,
+            "text": "SOURCE:4 = 450"
+          },
+          {
+            "sourceLine": 281,
+            "text": "SOURCE:5 = 500"
+          },
+          {
+            "sourceLine": 284,
+            "text": "SOURCE:4 = 500"
+          },
+          {
+            "sourceLine": 285,
+            "text": "SOURCE:5 = 750"
+          },
+          {
+            "sourceLine": 403,
+            "text": "SOURCE:7 = 0"
+          },
+          {
+            "sourceLine": 407,
+            "text": "SOURCE:7 = 200"
+          },
+          {
+            "sourceLine": 411,
+            "text": "SOURCE:7 = 600"
+          },
+          {
+            "sourceLine": 415,
+            "text": "SOURCE:7 = 1500"
+          },
+          {
+            "sourceLine": 419,
+            "text": "SOURCE:7 = 3000"
+          },
+          {
+            "sourceLine": 423,
+            "text": "SOURCE:7 = 6000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 253,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 254,
+            "text": "LOSEBASE:1 += 100"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 435,
+            "text": "EXP:20 += 3"
+          },
+          {
+            "sourceLine": 453,
+            "text": "EXP:20 += 1"
+          },
+          {
+            "sourceLine": 489,
+            "text": "EXP:40 += 4"
+          },
+          {
+            "sourceLine": 493,
+            "text": "EXP:41 += 4"
+          },
+          {
+            "sourceLine": 500,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 21,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "30",
+        "label": "수음",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF30.ERB",
+          "originalId": "30",
+          "originalName": "수음"
+        },
+        "description": "M42 original COMF30 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF30"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "4": 5,
+          "5": 7,
+          "7": 60,
+          "13": 5,
+          "14": 1
+        },
+        "paramDeltas": {
+          "4": {
+            "up": 5,
+            "down": 0
+          },
+          "5": {
+            "up": 7,
+            "down": 0
+          },
+          "7": {
+            "up": 60,
+            "down": 0
+          },
+          "13": {
+            "up": 5,
+            "down": 0
+          },
+          "14": {
+            "up": 1,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -100
+        },
+        "resourceDeltas": {
+          "30": 1
+        },
+        "experienceDeltas": {
+          "20": 1,
+          "40": 4,
+          "41": 4
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "31": {
+      "commandId": "31",
+      "sourceEvidenceId": "source:training-effect:COMF31",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF31.ERB",
+        "sourceFile": "COMF31.ERB",
+        "sourceSha256": "8b68272625121198e9a333afff997c6b114db1db8bb2cf788869f8282bb3ddcb",
+        "sourceLine": 321,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 321,
+            "text": "SOURCE:13 = 1500"
+          },
+          {
+            "sourceLine": 322,
+            "text": "SOURCE:14 = 500"
+          },
+          {
+            "sourceLine": 325,
+            "text": "SOURCE:8 = Y*40 + 100"
+          },
+          {
+            "sourceLine": 329,
+            "text": "SOURCE:4 = 420"
+          },
+          {
+            "sourceLine": 330,
+            "text": "SOURCE:5 = 150"
+          },
+          {
+            "sourceLine": 333,
+            "text": "SOURCE:4 = 500"
+          },
+          {
+            "sourceLine": 334,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 337,
+            "text": "SOURCE:4 = 580"
+          },
+          {
+            "sourceLine": 338,
+            "text": "SOURCE:5 = 600"
+          },
+          {
+            "sourceLine": 341,
+            "text": "SOURCE:4 = 660"
+          },
+          {
+            "sourceLine": 342,
+            "text": "SOURCE:5 = 900"
+          },
+          {
+            "sourceLine": 345,
+            "text": "SOURCE:4 = 740"
+          },
+          {
+            "sourceLine": 346,
+            "text": "SOURCE:5 = 1500"
+          },
+          {
+            "sourceLine": 349,
+            "text": "SOURCE:4 = 820"
+          },
+          {
+            "sourceLine": 350,
+            "text": "SOURCE:5 = 2200"
+          },
+          {
+            "sourceLine": 497,
+            "text": "SOURCE:7 = 0"
+          },
+          {
+            "sourceLine": 501,
+            "text": "SOURCE:7 = 500"
+          },
+          {
+            "sourceLine": 505,
+            "text": "SOURCE:7 = 1200"
+          },
+          {
+            "sourceLine": 509,
+            "text": "SOURCE:7 = 3000"
+          },
+          {
+            "sourceLine": 513,
+            "text": "SOURCE:7 = 6000"
+          },
+          {
+            "sourceLine": 517,
+            "text": "SOURCE:7 = 12000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 314,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 315,
+            "text": "LOSEBASE:1 += 90"
+          },
+          {
+            "sourceLine": 317,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 318,
+            "text": "LOSEBASE:1 += 150"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 308,
+            "text": "EXP:22 += 1"
+          },
+          {
+            "sourceLine": 529,
+            "text": "EXP:20 += 9"
+          },
+          {
+            "sourceLine": 546,
+            "text": "EXP:20 += 3"
+          },
+          {
+            "sourceLine": 582,
+            "text": "EXP:40 += 7"
+          },
+          {
+            "sourceLine": 586,
+            "text": "EXP:41 += 7"
+          },
+          {
+            "sourceLine": 604,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 21,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 6,
+      "definitionPatch": {
+        "id": "31",
+        "label": "펠라치오",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF31.ERB",
+          "originalId": "31",
+          "originalName": "펠라치오"
+        },
+        "description": "M42 original COMF31 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF31"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "4": 8,
+          "5": 22,
+          "7": 120,
+          "13": 15,
+          "14": 5
+        },
+        "paramDeltas": {
+          "4": {
+            "up": 8,
+            "down": 0
+          },
+          "5": {
+            "up": 22,
+            "down": 0
+          },
+          "7": {
+            "up": 120,
+            "down": 0
+          },
+          "13": {
+            "up": 15,
+            "down": 0
+          },
+          "14": {
+            "up": 5,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -150
+        },
+        "resourceDeltas": {
+          "31": 1
+        },
+        "experienceDeltas": {
+          "20": 3,
+          "22": 1,
+          "40": 7
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "32": {
+      "commandId": "32",
+      "sourceEvidenceId": "source:training-effect:COMF32",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF32.ERB",
+        "sourceFile": "COMF32.ERB",
+        "sourceSha256": "b511293863082bd2d1b0d11ef7734f282e103bf72ddffb860eb4d54e1740a150",
+        "sourceLine": 242,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 242,
+            "text": "SOURCE:13 = 1800"
+          },
+          {
+            "sourceLine": 243,
+            "text": "SOURCE:14 = 900"
+          },
+          {
+            "sourceLine": 247,
+            "text": "SOURCE:4 = 420"
+          },
+          {
+            "sourceLine": 248,
+            "text": "SOURCE:5 = 150"
+          },
+          {
+            "sourceLine": 249,
+            "text": "SOURCE:8 = 400"
+          },
+          {
+            "sourceLine": 251,
+            "text": "SOURCE:4 = 500"
+          },
+          {
+            "sourceLine": 252,
+            "text": "SOURCE:5 = 300"
+          },
+          {
+            "sourceLine": 253,
+            "text": "SOURCE:8 = 300"
+          },
+          {
+            "sourceLine": 255,
+            "text": "SOURCE:4 = 580"
+          },
+          {
+            "sourceLine": 256,
+            "text": "SOURCE:5 = 600"
+          },
+          {
+            "sourceLine": 257,
+            "text": "SOURCE:8 = 150"
+          },
+          {
+            "sourceLine": 259,
+            "text": "SOURCE:4 = 660"
+          },
+          {
+            "sourceLine": 260,
+            "text": "SOURCE:5 = 900"
+          },
+          {
+            "sourceLine": 261,
+            "text": "SOURCE:8 = 50"
+          },
+          {
+            "sourceLine": 263,
+            "text": "SOURCE:4 = 740"
+          },
+          {
+            "sourceLine": 264,
+            "text": "SOURCE:5 = 1500"
+          },
+          {
+            "sourceLine": 265,
+            "text": "SOURCE:8 = 20"
+          },
+          {
+            "sourceLine": 267,
+            "text": "SOURCE:4 = 820"
+          },
+          {
+            "sourceLine": 268,
+            "text": "SOURCE:5 = 2200"
+          },
+          {
+            "sourceLine": 269,
+            "text": "SOURCE:8 = 0"
+          },
+          {
+            "sourceLine": 297,
+            "text": "SOURCE:17 += A"
+          },
+          {
+            "sourceLine": 427,
+            "text": "SOURCE:7 = 0"
+          },
+          {
+            "sourceLine": 431,
+            "text": "SOURCE:7 = 500"
+          },
+          {
+            "sourceLine": 435,
+            "text": "SOURCE:7 = 1200"
+          },
+          {
+            "sourceLine": 439,
+            "text": "SOURCE:7 = 3000"
+          },
+          {
+            "sourceLine": 443,
+            "text": "SOURCE:7 = 6000"
+          },
+          {
+            "sourceLine": 447,
+            "text": "SOURCE:7 = 12000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 235,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 236,
+            "text": "LOSEBASE:1 += 70"
+          },
+          {
+            "sourceLine": 238,
+            "text": "LOSEBASE:0 += 10"
+          },
+          {
+            "sourceLine": 239,
+            "text": "LOSEBASE:1 += 150"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 459,
+            "text": "EXP:20 += 9"
+          },
+          {
+            "sourceLine": 477,
+            "text": "EXP:20 += 3"
+          },
+          {
+            "sourceLine": 519,
+            "text": ";EXP:22 += 1"
+          },
+          {
+            "sourceLine": 524,
+            "text": "EXP:40 += 7"
+          },
+          {
+            "sourceLine": 528,
+            "text": "EXP:41 += 7"
+          },
+          {
+            "sourceLine": 538,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 27,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 6,
+      "definitionPatch": {
+        "id": "32",
+        "label": "파이즈리",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF32.ERB",
+          "originalId": "32",
+          "originalName": "파이즈리"
+        },
+        "description": "M42 original COMF32 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF32"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "4": 8,
+          "5": 22,
+          "7": 120,
+          "8": 4,
+          "13": 18,
+          "14": 9
+        },
+        "paramDeltas": {
+          "4": {
+            "up": 8,
+            "down": 0
+          },
+          "5": {
+            "up": 22,
+            "down": 0
+          },
+          "7": {
+            "up": 120,
+            "down": 0
+          },
+          "8": {
+            "up": 4,
+            "down": 0
+          },
+          "13": {
+            "up": 18,
+            "down": 0
+          },
+          "14": {
+            "up": 9,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -10,
+          "energy": -150
+        },
+        "resourceDeltas": {
+          "32": 1
+        },
+        "experienceDeltas": {
+          "20": 3,
+          "22": 1,
+          "40": 7
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "33": {
+      "commandId": "33",
+      "sourceEvidenceId": "source:training-effect:COMF33",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF33.ERB",
+        "sourceFile": "COMF33.ERB",
+        "sourceSha256": "29889e2dbb37d2893f3eba986c554e87133df2a6000561d68ac827aefb615788",
+        "sourceLine": 218,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 218,
+            "text": "SOURCE:13 = 1200"
+          },
+          {
+            "sourceLine": 219,
+            "text": "SOURCE:14 = 400"
+          },
+          {
+            "sourceLine": 222,
+            "text": "SOURCE:8 = Y*10 + 60"
+          },
+          {
+            "sourceLine": 226,
+            "text": "SOURCE:4 = 200"
+          },
+          {
+            "sourceLine": 227,
+            "text": "SOURCE:5 = 100"
+          },
+          {
+            "sourceLine": 230,
+            "text": "SOURCE:4 = 250"
+          },
+          {
+            "sourceLine": 231,
+            "text": "SOURCE:5 = 180"
+          },
+          {
+            "sourceLine": 234,
+            "text": "SOURCE:4 = 300"
+          },
+          {
+            "sourceLine": 235,
+            "text": "SOURCE:5 = 250"
+          },
+          {
+            "sourceLine": 238,
+            "text": "SOURCE:4 = 350"
+          },
+          {
+            "sourceLine": 239,
+            "text": "SOURCE:5 = 350"
+          },
+          {
+            "sourceLine": 242,
+            "text": "SOURCE:4 = 400"
+          },
+          {
+            "sourceLine": 243,
+            "text": "SOURCE:5 = 500"
+          },
+          {
+            "sourceLine": 246,
+            "text": "SOURCE:4 = 450"
+          },
+          {
+            "sourceLine": 247,
+            "text": "SOURCE:5 = 800"
+          },
+          {
+            "sourceLine": 275,
+            "text": "SOURCE:0 = 0"
+          },
+          {
+            "sourceLine": 277,
+            "text": "SOURCE:0 = 10"
+          },
+          {
+            "sourceLine": 279,
+            "text": "SOURCE:0 = 50"
+          },
+          {
+            "sourceLine": 281,
+            "text": "SOURCE:0 = 200"
+          },
+          {
+            "sourceLine": 283,
+            "text": "SOURCE:0 = 600"
+          },
+          {
+            "sourceLine": 285,
+            "text": "SOURCE:0 = 2000"
+          },
+          {
+            "sourceLine": 412,
+            "text": "SOURCE:7 = 0"
+          },
+          {
+            "sourceLine": 416,
+            "text": "SOURCE:7 = 200"
+          },
+          {
+            "sourceLine": 420,
+            "text": "SOURCE:7 = 400"
+          },
+          {
+            "sourceLine": 424,
+            "text": "SOURCE:7 = 700"
+          },
+          {
+            "sourceLine": 428,
+            "text": "SOURCE:7 = 1000"
+          },
+          {
+            "sourceLine": 432,
+            "text": "SOURCE:7 = 1500"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 215,
+            "text": "LOSEBASE:0 += 40"
+          },
+          {
+            "sourceLine": 216,
+            "text": "LOSEBASE:1 += 130"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 444,
+            "text": "EXP:20 += 2"
+          },
+          {
+            "sourceLine": 461,
+            "text": "EXP:20 += 1"
+          },
+          {
+            "sourceLine": 490,
+            "text": "EXP:40 += 7"
+          },
+          {
+            "sourceLine": 494,
+            "text": "EXP:41 += 7"
+          },
+          {
+            "sourceLine": 504,
+            "text": "EXP:23 += E"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 27,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "definitionPatch": {
+        "id": "33",
+        "label": "스마타",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF33.ERB",
+          "originalId": "33",
+          "originalName": "스마타"
+        },
+        "description": "M42 original COMF33 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF33"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "0": 20,
+          "4": 4,
+          "5": 8,
+          "7": 15,
+          "13": 12,
+          "14": 4
+        },
+        "paramDeltas": {
+          "0": {
+            "up": 20,
+            "down": 0
+          },
+          "4": {
+            "up": 4,
+            "down": 0
+          },
+          "5": {
+            "up": 8,
+            "down": 0
+          },
+          "7": {
+            "up": 15,
+            "down": 0
+          },
+          "13": {
+            "up": 12,
+            "down": 0
+          },
+          "14": {
+            "up": 4,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -40,
+          "energy": -130
+        },
+        "resourceDeltas": {
+          "33": 1
+        },
+        "experienceDeltas": {
+          "20": 1,
+          "40": 7,
+          "41": 7
+        },
+        "completesTimeBlock": true
+      }
+    },
+    "34": {
+      "commandId": "34",
+      "sourceEvidenceId": "source:training-effect:COMF34",
+      "sourceEvidence": {
+        "sourcePath": "original-game/ERB/指導関係/COMF34.ERB",
+        "sourceFile": "COMF34.ERB",
+        "sourceSha256": "be356e941cee454fc168673c06990c8b7e96927787c1e309b631f97376811104",
+        "sourceLine": 326,
+        "sourceAssignmentLines": [
+          {
+            "sourceLine": 326,
+            "text": "SOURCE:12 = 900"
+          },
+          {
+            "sourceLine": 329,
+            "text": "SOURCE:8 = Y*10 + 60"
+          },
+          {
+            "sourceLine": 333,
+            "text": "SOURCE:4 = 200"
+          },
+          {
+            "sourceLine": 334,
+            "text": "SOURCE:5 = 50"
+          },
+          {
+            "sourceLine": 335,
+            "text": "SOURCE:14 = 300"
+          },
+          {
+            "sourceLine": 338,
+            "text": "SOURCE:4 = 250"
+          },
+          {
+            "sourceLine": 339,
+            "text": "SOURCE:5 = 200"
+          },
+          {
+            "sourceLine": 340,
+            "text": "SOURCE:14 = 100"
+          },
+          {
+            "sourceLine": 343,
+            "text": "SOURCE:4 = 350"
+          },
+          {
+            "sourceLine": 344,
+            "text": "SOURCE:5 = 550"
+          },
+          {
+            "sourceLine": 345,
+            "text": "SOURCE:14 = 30"
+          },
+          {
+            "sourceLine": 348,
+            "text": "SOURCE:4 = 450"
+          },
+          {
+            "sourceLine": 349,
+            "text": "SOURCE:5 = 900"
+          },
+          {
+            "sourceLine": 350,
+            "text": "SOURCE:14 = 0"
+          },
+          {
+            "sourceLine": 353,
+            "text": "SOURCE:4 = 600"
+          },
+          {
+            "sourceLine": 354,
+            "text": "SOURCE:5 = 1500"
+          },
+          {
+            "sourceLine": 355,
+            "text": "SOURCE:14 = 0"
+          },
+          {
+            "sourceLine": 358,
+            "text": "SOURCE:4 = 750"
+          },
+          {
+            "sourceLine": 359,
+            "text": "SOURCE:5 = 2200"
+          },
+          {
+            "sourceLine": 360,
+            "text": "SOURCE:14 = 0"
+          },
+          {
+            "sourceLine": 366,
+            "text": "SOURCE:1 = 20"
+          },
+          {
+            "sourceLine": 367,
+            "text": "SOURCE:3 = 25"
+          },
+          {
+            "sourceLine": 370,
+            "text": "SOURCE:1 = 75"
+          },
+          {
+            "sourceLine": 371,
+            "text": "SOURCE:3 = 75"
+          },
+          {
+            "sourceLine": 374,
+            "text": "SOURCE:1 = 200"
+          },
+          {
+            "sourceLine": 375,
+            "text": "SOURCE:3 = 125"
+          },
+          {
+            "sourceLine": 378,
+            "text": "SOURCE:1 = 500"
+          },
+          {
+            "sourceLine": 379,
+            "text": "SOURCE:3 = 175"
+          },
+          {
+            "sourceLine": 382,
+            "text": "SOURCE:1 = 850"
+          },
+          {
+            "sourceLine": 383,
+            "text": "SOURCE:3 = 300"
+          },
+          {
+            "sourceLine": 386,
+            "text": "SOURCE:1 = 1100"
+          },
+          {
+            "sourceLine": 387,
+            "text": "SOURCE:3 = 425"
+          },
+          {
+            "sourceLine": 394,
+            "text": "SOURCE:6 = 5000"
+          },
+          {
+            "sourceLine": 395,
+            "text": "SOURCE:12 = 12000"
+          },
+          {
+            "sourceLine": 396,
+            "text": "SOURCE:14 = 120000"
+          },
+          {
+            "sourceLine": 399,
+            "text": "SOURCE:6 = 220"
+          },
+          {
+            "sourceLine": 402,
+            "text": "SOURCE:6 = 30"
+          },
+          {
+            "sourceLine": 405,
+            "text": "SOURCE:6 = 5"
+          },
+          {
+            "sourceLine": 416,
+            "text": "SOURCE:6 += 900"
+          },
+          {
+            "sourceLine": 418,
+            "text": "SOURCE:12 += 2000"
+          },
+          {
+            "sourceLine": 421,
+            "text": "SOURCE:6 += 250"
+          },
+          {
+            "sourceLine": 423,
+            "text": "SOURCE:12 += 400"
+          },
+          {
+            "sourceLine": 453,
+            "text": "SOURCE:15 = 10000"
+          },
+          {
+            "sourceLine": 457,
+            "text": "SOURCE:15 = 1000"
+          },
+          {
+            "sourceLine": 463,
+            "text": "SOURCE:15 = 300"
+          },
+          {
+            "sourceLine": 469,
+            "text": "SOURCE:15 = 3000"
+          },
+          {
+            "sourceLine": 499,
+            "text": "SOURCE:13 += 700"
+          },
+          {
+            "sourceLine": 504,
+            "text": "SOURCE:13 += 500"
+          },
+          {
+            "sourceLine": 509,
+            "text": "SOURCE:13 += 300"
+          },
+          {
+            "sourceLine": 514,
+            "text": "SOURCE:13 += 100"
+          },
+          {
+            "sourceLine": 519,
+            "text": "SOURCE:13 += 30"
+          },
+          {
+            "sourceLine": 524,
+            "text": "SOURCE:13 += 0"
+          },
+          {
+            "sourceLine": 559,
+            "text": "SOURCE:7 = 0"
+          },
+          {
+            "sourceLine": 561,
+            "text": "SOURCE:7 = 300"
+          },
+          {
+            "sourceLine": 563,
+            "text": "SOURCE:7 = 1000"
+          },
+          {
+            "sourceLine": 565,
+            "text": "SOURCE:7 = 1500"
+          },
+          {
+            "sourceLine": 567,
+            "text": "SOURCE:7 = 2200"
+          },
+          {
+            "sourceLine": 569,
+            "text": "SOURCE:7 = 3000"
+          }
+        ],
+        "baseLossLines": [
+          {
+            "sourceLine": 323,
+            "text": "LOSEBASE:0 += LOCAL"
+          },
+          {
+            "sourceLine": 324,
+            "text": "LOSEBASE:1 += LOCAL:1"
+          }
+        ],
+        "experienceLines": [
+          {
+            "sourceLine": 300,
+            "text": "SIF TALENT:85 && ASSIPLAY == 0 && EXP:0 == 0"
+          },
+          {
+            "sourceLine": 450,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 461,
+            "text": "IF EXP:0 == 0"
+          },
+          {
+            "sourceLine": 468,
+            "text": "IF EXP:0 == 0"
+          }
+        ]
+      },
+      "sourceAssignmentCount": 58,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "definitionPatch": {
+        "id": "34",
+        "label": "기승위",
+        "source": {
+          "path": "original-game/ERB/指導関係/COMF34.ERB",
+          "originalId": "34",
+          "originalName": "기승위"
+        },
+        "description": "M42 original COMF34 source-backed training effect profile.",
+        "tags": [
+          "training-effect",
+          "M42",
+          "source-evidence:COMF34"
+        ],
+        "defaultAvailable": true,
+        "requiresTarget": true,
+        "requiresExecutor": true,
+        "allowsAssistant": true,
+        "stimulusDeltas": {
+          "1": 11,
+          "3": 4,
+          "4": 7,
+          "5": 22,
+          "6": 50,
+          "7": 30,
+          "12": 120,
+          "13": 7,
+          "14": 1200,
+          "15": 100
+        },
+        "paramDeltas": {
+          "1": {
+            "up": 11,
+            "down": 0
+          },
+          "3": {
+            "up": 4,
+            "down": 0
+          },
+          "4": {
+            "up": 7,
+            "down": 0
+          },
+          "5": {
+            "up": 22,
+            "down": 0
+          },
+          "6": {
+            "up": 50,
+            "down": 0
+          },
+          "7": {
+            "up": 30,
+            "down": 0
+          },
+          "12": {
+            "up": 120,
+            "down": 0
+          },
+          "13": {
+            "up": 7,
+            "down": 0
+          },
+          "14": {
+            "up": 1200,
+            "down": 0
+          },
+          "15": {
+            "up": 100,
+            "down": 0
+          }
+        },
+        "bodyStatDeltas": {
+          "stamina": -18,
+          "energy": -90
+        },
+        "resourceDeltas": {
+          "34": 1
+        },
+        "experienceDeltas": {},
+        "completesTimeBlock": true
+      }
+    }
+  }
+}

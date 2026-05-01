@@ -144,8 +144,8 @@ assert(count(itemRows, (row) => row.status === 'listing' && row.runtimeOwner.inc
 assert(count(itemRows, (row) => row.status === 'blocker' && row.blockerId === 'blocker:m20:item-special') === 15, 'special item blocker count mismatch');
 
 const trainingRows = rows.filter((row) => row.definitionKey === 'trainingCommands');
-assert(count(trainingRows, (row) => row.status === 'used') === 1, 'M20 should have exactly one currently implemented training command');
-assert(count(trainingRows, (row) => row.status === 'blocker') === 104, 'M20 should block the remaining 104 training commands for M28');
+assert(count(trainingRows, (row) => row.status === 'used') === 35, 'M42 should mark training commands 0-34 as used');
+assert(count(trainingRows, (row) => row.status === 'blocker') === 70, 'M20 should keep training commands 35-104 blocked for M43/M44');
 
 console.log(
   `gate:definition-consumption passed: ${rows.length} row(s), ${rawDefinitionRows} raw definition row(s), ${characterSeedRows} character seed row(s).`,

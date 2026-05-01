@@ -1,4 +1,5 @@
 import rawLegacyCatalog from '../../data/catalog/legacy-catalog.json';
+import trainingEffectProfilesArtifact from '../../data/catalog/training-effect-profiles-0-34.json';
 import { itemShopPurchaseItemIdSet } from './shopItemIds';
 import {
   characterTemplateIdForRecruitListingItemId,
@@ -48,6 +49,15 @@ type ErbDerivedDefinitionsArtifact = {
     readonly actionTarget?: string;
     readonly actionCondition?: string;
   }[];
+};
+
+type TrainingEffectProfilesArtifact = {
+  readonly profiles: Record<
+    CatalogId,
+    {
+      readonly definitionPatch: TrainingCommandDefinition;
+    }
+  >;
 };
 
 function classifyItemCsvId(itemId: CatalogId): ItemCategory {
@@ -312,6 +322,19 @@ const phaseTwoTrainingCommandDefinitions: Record<CatalogId, TrainingCommandDefin
   },
 };
 
+function createTrainingEffectCommandDefinitions(): Record<CatalogId, TrainingCommandDefinition> {
+  const artifact = trainingEffectProfilesArtifact as TrainingEffectProfilesArtifact;
+  return Object.fromEntries(
+    Object.entries(artifact.profiles).map(([commandId, profile]) => [
+      commandId,
+      {
+        ...profile.definitionPatch,
+        tags: [...profile.definitionPatch.tags, 'runtime-consumer:calculateTrainingResult'],
+      },
+    ]),
+  );
+}
+
 const mainMenuRouteContracts: Record<
   string,
   Pick<MainMenuOptionDefinition, 'actionId' | 'routeId' | 'defaultEnabled' | 'disabledReason' | 'ownerMilestone'>
@@ -406,6 +429,7 @@ export function normalizeLegacyCatalog(artifact: LegacyCatalogArtifact): GameDef
     trainingCommands: {
       ...artifact.catalog.trainingCommands,
       ...phaseTwoTrainingCommandDefinitions,
+      ...createTrainingEffectCommandDefinitions(),
     },
     missionDefinitions: {
       ...phaseTwoMissionDefinitions,

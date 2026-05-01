@@ -1673,14 +1673,21 @@ npm run test --if-present
 - 완료 결과: command 0~34가 source evidence와 consumer evidence를 갖고 검증된다.
 - 누락 차단: source evidence 없거나 계산 중간값이 save에 들어가면 완료하지 않는다.
 
-- [ ] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
-- [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
-- [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
-- [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
-- [ ] command 0~34의 source evidence와 consumer evidence를 연결
-- [ ] 관련 blocker 0개 확인. 해소 불가 항목은 사용자 승인 제외 근거가 있을 때만 완료 처리
-- [ ] M20/M24/M25 coverage의 command 0~34 status 갱신
-- [ ] `npm run build` 실행
+- [x] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [x] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
+- [x] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
+- [x] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
+- [x] command 0~34의 source evidence와 consumer evidence를 연결
+- [x] 관련 blocker 0개 확인. 해소 불가 항목은 사용자 승인 제외 근거가 있을 때만 완료 처리
+- [x] M20/M24/M25 coverage의 command 0~34 status 갱신
+- [x] `npm run build` 실행
+
+M42 완료 기록:
+- coverage: `data/coverage/training-effect-0-34.json`
+- runtime profiles: `data/catalog/training-effect-profiles-0-34.json`
+- gap audit: `data/coverage/audits/M42-gap-audit.json`
+- closure: `data/coverage/milestones/M42-closure.json`
+- verification: `npm run coverage:training-effect-0-34`, `npm run gate:training-effect -- 0-34`, `npm run smoke:training-effect-0-34`, `npm run build`, `npm run gate:milestone-scope-closure -- M42`
 
 ## M43. 훈련 command 효과 35~69 완성
 

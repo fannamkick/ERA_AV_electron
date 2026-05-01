@@ -1,0 +1,1623 @@
+{
+  "schemaVersion": "training-effect-coverage/v1",
+  "generatedBy": "tools/build_training_effect_0_34_coverage.mjs",
+  "milestone": "M42",
+  "commandRange": {
+    "start": 0,
+    "end": 34,
+    "label": "0-34"
+  },
+  "summary": {
+    "commandRange": "0-34",
+    "ownedTotal": 35,
+    "implemented": 35,
+    "mapped": 0,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "rows": [
+    {
+      "coverageRowId": "training-effect-0-34:command:0",
+      "reviewId": "definition:training-command:0",
+      "rowKind": "training-command-effect",
+      "commandId": "0",
+      "sourceEvidenceId": "source:training-effect:COMF0",
+      "sourcePath": "original-game/ERB/指導関係/COMF0.ERB",
+      "sourceFile": "COMF0.ERB",
+      "sourceLine": 18,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 33,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "0"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "5"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "0"
+      ],
+      "experienceDeltaKeys": [
+        "13"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:1",
+      "reviewId": "definition:training-command:1",
+      "rowKind": "training-command-effect",
+      "commandId": "1",
+      "sourceEvidenceId": "source:training-effect:COMF1",
+      "sourcePath": "original-game/ERB/指導関係/COMF1.ERB",
+      "sourceFile": "COMF1.ERB",
+      "sourceLine": 29,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 11,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 2,
+      "sourcePreviewKeys": [
+        "0",
+        "9",
+        "10",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "9",
+        "10",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "1"
+      ],
+      "experienceDeltaKeys": [
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:2",
+      "reviewId": "definition:training-command:2",
+      "rowKind": "training-command-effect",
+      "commandId": "2",
+      "sourceEvidenceId": "source:training-effect:COMF2",
+      "sourcePath": "original-game/ERB/指導関係/COMF2.ERB",
+      "sourceFile": "COMF2.ERB",
+      "sourceLine": 17,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 23,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "2",
+        "6",
+        "12",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "6",
+        "12",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "2"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:3",
+      "reviewId": "definition:training-command:3",
+      "rowKind": "training-command-effect",
+      "commandId": "3",
+      "sourceEvidenceId": "source:training-effect:COMF3",
+      "sourcePath": "original-game/ERB/指導関係/COMF3.ERB",
+      "sourceFile": "COMF3.ERB",
+      "sourceLine": 251,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 82,
+      "bodyLossAssignmentCount": 6,
+      "experienceAssignmentCount": 8,
+      "sourcePreviewKeys": [
+        "0",
+        "1",
+        "4",
+        "7",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "17"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "1",
+        "4",
+        "7",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "17"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "3"
+      ],
+      "experienceDeltaKeys": [
+        "10",
+        "11"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:4",
+      "reviewId": "definition:training-command:4",
+      "rowKind": "training-command-effect",
+      "commandId": "4",
+      "sourceEvidenceId": "source:training-effect:COMF4",
+      "sourcePath": "original-game/ERB/指導関係/COMF4.ERB",
+      "sourceFile": "COMF4.ERB",
+      "sourceLine": 26,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 9,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 3,
+      "sourcePreviewKeys": [
+        "0",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "4"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:5",
+      "reviewId": "definition:training-command:5",
+      "rowKind": "training-command-effect",
+      "commandId": "5",
+      "sourceEvidenceId": "source:training-effect:COMF5",
+      "sourcePath": "original-game/ERB/指導関係/COMF5.ERB",
+      "sourceFile": "COMF5.ERB",
+      "sourceLine": 37,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 16,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "3",
+        "4",
+        "8",
+        "12",
+        "17"
+      ],
+      "paramDeltaKeys": [
+        "3",
+        "4",
+        "8",
+        "12",
+        "17"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "5"
+      ],
+      "experienceDeltaKeys": [
+        "14",
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:6",
+      "reviewId": "definition:training-command:6",
+      "rowKind": "training-command-effect",
+      "commandId": "6",
+      "sourceEvidenceId": "source:training-effect:COMF6",
+      "sourcePath": "original-game/ERB/指導関係/COMF6.ERB",
+      "sourceFile": "COMF6.ERB",
+      "sourceLine": 246,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 30,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 3,
+      "sourcePreviewKeys": [
+        "3",
+        "4",
+        "5",
+        "10"
+      ],
+      "paramDeltaKeys": [
+        "3",
+        "4",
+        "5",
+        "10"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "6"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:7",
+      "reviewId": "definition:training-command:7",
+      "rowKind": "training-command-effect",
+      "commandId": "7",
+      "sourceEvidenceId": "source:training-effect:COMF7",
+      "sourcePath": "original-game/ERB/指導関係/COMF7.ERB",
+      "sourceFile": "COMF7.ERB",
+      "sourceLine": 210,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 32,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 6,
+      "sourcePreviewKeys": [
+        "4",
+        "5",
+        "7",
+        "12",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "4",
+        "5",
+        "7",
+        "12",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "7"
+      ],
+      "experienceDeltaKeys": [
+        "10",
+        "11"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:8",
+      "reviewId": "definition:training-command:8",
+      "rowKind": "training-command-effect",
+      "commandId": "8",
+      "sourceEvidenceId": "source:training-effect:COMF8",
+      "sourcePath": "original-game/ERB/指導関係/COMF8.ERB",
+      "sourceFile": "COMF8.ERB",
+      "sourceLine": 24,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 22,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "1",
+        "6",
+        "12",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "1",
+        "6",
+        "12",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "8"
+      ],
+      "experienceDeltaKeys": [
+        "0",
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:9",
+      "reviewId": "definition:training-command:9",
+      "rowKind": "training-command-effect",
+      "commandId": "9",
+      "sourceEvidenceId": "source:training-effect:COMF9",
+      "sourcePath": "original-game/ERB/指導関係/COMF9.ERB",
+      "sourceFile": "COMF9.ERB",
+      "sourceLine": 19,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 10,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 3,
+      "sourcePreviewKeys": [
+        "2",
+        "10",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "10",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "9"
+      ],
+      "experienceDeltaKeys": [
+        "1",
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:10",
+      "reviewId": "definition:training-command:10",
+      "rowKind": "training-command-effect",
+      "commandId": "10",
+      "sourceEvidenceId": "source:training-effect:COMF10",
+      "sourcePath": "original-game/ERB/指導関係/COMF10.ERB",
+      "sourceFile": "COMF10.ERB",
+      "sourceLine": 18,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 8,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 2,
+      "sourcePreviewKeys": [
+        "0",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "10"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:11",
+      "reviewId": "definition:training-command:11",
+      "rowKind": "training-command-effect",
+      "commandId": "11",
+      "sourceEvidenceId": "source:training-effect:COMF11",
+      "sourcePath": "original-game/ERB/指導関係/COMF11.ERB",
+      "sourceFile": "COMF11.ERB",
+      "sourceLine": 28,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 16,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 3,
+      "sourcePreviewKeys": [
+        "1",
+        "6"
+      ],
+      "paramDeltaKeys": [
+        "1",
+        "6"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "11"
+      ],
+      "experienceDeltaKeys": [
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:12",
+      "reviewId": "definition:training-command:12",
+      "rowKind": "training-command-effect",
+      "commandId": "12",
+      "sourceEvidenceId": "source:training-effect:COMF12",
+      "sourcePath": "original-game/ERB/指導関係/COMF12.ERB",
+      "sourceFile": "COMF12.ERB",
+      "sourceLine": 19,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 8,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 2,
+      "sourcePreviewKeys": [
+        "0",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "12"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:13",
+      "reviewId": "definition:training-command:13",
+      "rowKind": "training-command-effect",
+      "commandId": "13",
+      "sourceEvidenceId": "source:training-effect:COMF13",
+      "sourcePath": "original-game/ERB/指導関係/COMF13.ERB",
+      "sourceFile": "COMF13.ERB",
+      "sourceLine": 26,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 31,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "2",
+        "6",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "6",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "13"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:14",
+      "reviewId": "definition:training-command:14",
+      "rowKind": "training-command-effect",
+      "commandId": "14",
+      "sourceEvidenceId": "source:training-effect:COMF14",
+      "sourcePath": "original-game/ERB/指導関係/COMF14.ERB",
+      "sourceFile": "COMF14.ERB",
+      "sourceLine": 22,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 11,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 1,
+      "sourcePreviewKeys": [
+        "0",
+        "11",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "11",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "14"
+      ],
+      "experienceDeltaKeys": [
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:15",
+      "reviewId": "definition:training-command:15",
+      "rowKind": "training-command-effect",
+      "commandId": "15",
+      "sourceEvidenceId": "source:training-effect:COMF15",
+      "sourcePath": "original-game/ERB/指導関係/COMF15.ERB",
+      "sourceFile": "COMF15.ERB",
+      "sourceLine": 22,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 6,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "11",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "11",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "15"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:16",
+      "reviewId": "definition:training-command:16",
+      "rowKind": "training-command-effect",
+      "commandId": "16",
+      "sourceEvidenceId": "source:training-effect:COMF16",
+      "sourcePath": "original-game/ERB/指導関係/COMF16.ERB",
+      "sourceFile": "COMF16.ERB",
+      "sourceLine": 22,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 17,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "4",
+        "5",
+        "6",
+        "7",
+        "11",
+        "12",
+        "13",
+        "14",
+        "16"
+      ],
+      "paramDeltaKeys": [
+        "4",
+        "5",
+        "6",
+        "7",
+        "11",
+        "12",
+        "13",
+        "14",
+        "16"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "16"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:17",
+      "reviewId": "definition:training-command:17",
+      "rowKind": "training-command-effect",
+      "commandId": "17",
+      "sourceEvidenceId": "source:training-effect:COMF17",
+      "sourcePath": "original-game/ERB/指導関係/COMF17.ERB",
+      "sourceFile": "COMF17.ERB",
+      "sourceLine": 22,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 11,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "0",
+        "11",
+        "12",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "11",
+        "12",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "17"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:18",
+      "reviewId": "definition:training-command:18",
+      "rowKind": "training-command-effect",
+      "commandId": "18",
+      "sourceEvidenceId": "source:training-effect:COMF18",
+      "sourcePath": "original-game/ERB/指導関係/COMF18.ERB",
+      "sourceFile": "COMF18.ERB",
+      "sourceLine": 17,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 30,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "3",
+        "5",
+        "11",
+        "12",
+        "14",
+        "15",
+        "16"
+      ],
+      "paramDeltaKeys": [
+        "3",
+        "5",
+        "11",
+        "12",
+        "14",
+        "15",
+        "16"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "18"
+      ],
+      "experienceDeltaKeys": [
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:19",
+      "reviewId": "definition:training-command:19",
+      "rowKind": "training-command-effect",
+      "commandId": "19",
+      "sourceEvidenceId": "source:training-effect:COMF19",
+      "sourcePath": "original-game/ERB/指導関係/COMF19.ERB",
+      "sourceFile": "COMF19.ERB",
+      "sourceLine": 19,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 26,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 7,
+      "sourcePreviewKeys": [
+        "2",
+        "6",
+        "13"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "6",
+        "13"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "19"
+      ],
+      "experienceDeltaKeys": [
+        "1",
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:20",
+      "reviewId": "definition:training-command:20",
+      "rowKind": "training-command-effect",
+      "commandId": "20",
+      "sourceEvidenceId": "source:training-effect:COMF20",
+      "sourcePath": "original-game/ERB/指導関係/COMF20.ERB",
+      "sourceFile": "COMF20.ERB",
+      "sourceLine": 117,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 25,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "1",
+        "3",
+        "6",
+        "12",
+        "15"
+      ],
+      "paramDeltaKeys": [
+        "1",
+        "3",
+        "6",
+        "12",
+        "15"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "20"
+      ],
+      "experienceDeltaKeys": []
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:21",
+      "reviewId": "definition:training-command:21",
+      "rowKind": "training-command-effect",
+      "commandId": "21",
+      "sourceEvidenceId": "source:training-effect:COMF21",
+      "sourcePath": "original-game/ERB/指導関係/COMF21.ERB",
+      "sourceFile": "COMF21.ERB",
+      "sourceLine": 109,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 25,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "1",
+        "3",
+        "6",
+        "12",
+        "15"
+      ],
+      "paramDeltaKeys": [
+        "1",
+        "3",
+        "6",
+        "12",
+        "15"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "21"
+      ],
+      "experienceDeltaKeys": [
+        "50"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:22",
+      "reviewId": "definition:training-command:22",
+      "rowKind": "training-command-effect",
+      "commandId": "22",
+      "sourceEvidenceId": "source:training-effect:COMF22",
+      "sourcePath": "original-game/ERB/指導関係/COMF22.ERB",
+      "sourceFile": "COMF22.ERB",
+      "sourceLine": 83,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 58,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "10",
+        "12",
+        "15",
+        "16"
+      ],
+      "paramDeltaKeys": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "10",
+        "12",
+        "15",
+        "16"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "22"
+      ],
+      "experienceDeltaKeys": [
+        "50"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:23",
+      "reviewId": "definition:training-command:23",
+      "rowKind": "training-command-effect",
+      "commandId": "23",
+      "sourceEvidenceId": "source:training-effect:COMF23",
+      "sourcePath": "original-game/ERB/指導関係/COMF23.ERB",
+      "sourceFile": "COMF23.ERB",
+      "sourceLine": 82,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 57,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "0",
+        "1",
+        "3",
+        "6",
+        "10",
+        "12",
+        "15",
+        "17"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "1",
+        "3",
+        "6",
+        "10",
+        "12",
+        "15",
+        "17"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "23"
+      ],
+      "experienceDeltaKeys": [
+        "50"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:24",
+      "reviewId": "definition:training-command:24",
+      "rowKind": "training-command-effect",
+      "commandId": "24",
+      "sourceEvidenceId": "source:training-effect:COMF24",
+      "sourcePath": "original-game/ERB/指導関係/COMF24.ERB",
+      "sourceFile": "COMF24.ERB",
+      "sourceLine": 177,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 17,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "0",
+        "3",
+        "4",
+        "12",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "3",
+        "4",
+        "12",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "24"
+      ],
+      "experienceDeltaKeys": [
+        "5",
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:25",
+      "reviewId": "definition:training-command:25",
+      "rowKind": "training-command-effect",
+      "commandId": "25",
+      "sourceEvidenceId": "source:training-effect:COMF25",
+      "sourcePath": "original-game/ERB/指導関係/COMF25.ERB",
+      "sourceFile": "COMF25.ERB",
+      "sourceLine": 150,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 17,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "0",
+        "3",
+        "4",
+        "12",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "3",
+        "4",
+        "12",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "25"
+      ],
+      "experienceDeltaKeys": [
+        "5",
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:26",
+      "reviewId": "definition:training-command:26",
+      "rowKind": "training-command-effect",
+      "commandId": "26",
+      "sourceEvidenceId": "source:training-effect:COMF26",
+      "sourcePath": "original-game/ERB/指導関係/COMF26.ERB",
+      "sourceFile": "COMF26.ERB",
+      "sourceLine": 64,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 32,
+      "bodyLossAssignmentCount": 14,
+      "experienceAssignmentCount": 1,
+      "sourcePreviewKeys": [
+        "2",
+        "3",
+        "6",
+        "12",
+        "13",
+        "15"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "3",
+        "6",
+        "12",
+        "13",
+        "15"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "26"
+      ],
+      "experienceDeltaKeys": []
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:27",
+      "reviewId": "definition:training-command:27",
+      "rowKind": "training-command-effect",
+      "commandId": "27",
+      "sourceEvidenceId": "source:training-effect:COMF27",
+      "sourcePath": "original-game/ERB/指導関係/COMF27.ERB",
+      "sourceFile": "COMF27.ERB",
+      "sourceLine": 65,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 31,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 1,
+      "sourcePreviewKeys": [
+        "2",
+        "3",
+        "6",
+        "12",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "3",
+        "6",
+        "12",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "27"
+      ],
+      "experienceDeltaKeys": []
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:28",
+      "reviewId": "definition:training-command:28",
+      "rowKind": "training-command-effect",
+      "commandId": "28",
+      "sourceEvidenceId": "source:training-effect:COMF28",
+      "sourcePath": "original-game/ERB/指導関係/COMF28.ERB",
+      "sourceFile": "COMF28.ERB",
+      "sourceLine": 44,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 65,
+      "bodyLossAssignmentCount": 14,
+      "experienceAssignmentCount": 1,
+      "sourcePreviewKeys": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "10",
+        "12",
+        "13",
+        "15",
+        "16"
+      ],
+      "paramDeltaKeys": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "10",
+        "12",
+        "13",
+        "15",
+        "16"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "28"
+      ],
+      "experienceDeltaKeys": []
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:29",
+      "reviewId": "definition:training-command:29",
+      "rowKind": "training-command-effect",
+      "commandId": "29",
+      "sourceEvidenceId": "source:training-effect:COMF29",
+      "sourcePath": "original-game/ERB/指導関係/COMF29.ERB",
+      "sourceFile": "COMF29.ERB",
+      "sourceLine": 44,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 64,
+      "bodyLossAssignmentCount": 14,
+      "experienceAssignmentCount": 1,
+      "sourcePreviewKeys": [
+        "0",
+        "2",
+        "3",
+        "6",
+        "10",
+        "12",
+        "13",
+        "15",
+        "17"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "2",
+        "3",
+        "6",
+        "10",
+        "12",
+        "13",
+        "15",
+        "17"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "29"
+      ],
+      "experienceDeltaKeys": []
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:30",
+      "reviewId": "definition:training-command:30",
+      "rowKind": "training-command-effect",
+      "commandId": "30",
+      "sourceEvidenceId": "source:training-effect:COMF30",
+      "sourcePath": "original-game/ERB/指導関係/COMF30.ERB",
+      "sourceFile": "COMF30.ERB",
+      "sourceLine": 256,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 21,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "4",
+        "5",
+        "7",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "4",
+        "5",
+        "7",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "30"
+      ],
+      "experienceDeltaKeys": [
+        "20",
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:31",
+      "reviewId": "definition:training-command:31",
+      "rowKind": "training-command-effect",
+      "commandId": "31",
+      "sourceEvidenceId": "source:training-effect:COMF31",
+      "sourcePath": "original-game/ERB/指導関係/COMF31.ERB",
+      "sourceFile": "COMF31.ERB",
+      "sourceLine": 321,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 21,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 6,
+      "sourcePreviewKeys": [
+        "4",
+        "5",
+        "7",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "4",
+        "5",
+        "7",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "31"
+      ],
+      "experienceDeltaKeys": [
+        "20",
+        "22",
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:32",
+      "reviewId": "definition:training-command:32",
+      "rowKind": "training-command-effect",
+      "commandId": "32",
+      "sourceEvidenceId": "source:training-effect:COMF32",
+      "sourcePath": "original-game/ERB/指導関係/COMF32.ERB",
+      "sourceFile": "COMF32.ERB",
+      "sourceLine": 242,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 27,
+      "bodyLossAssignmentCount": 4,
+      "experienceAssignmentCount": 6,
+      "sourcePreviewKeys": [
+        "4",
+        "5",
+        "7",
+        "8",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "4",
+        "5",
+        "7",
+        "8",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "32"
+      ],
+      "experienceDeltaKeys": [
+        "20",
+        "22",
+        "40"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:33",
+      "reviewId": "definition:training-command:33",
+      "rowKind": "training-command-effect",
+      "commandId": "33",
+      "sourceEvidenceId": "source:training-effect:COMF33",
+      "sourcePath": "original-game/ERB/指導関係/COMF33.ERB",
+      "sourceFile": "COMF33.ERB",
+      "sourceLine": 218,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 27,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 5,
+      "sourcePreviewKeys": [
+        "0",
+        "4",
+        "5",
+        "7",
+        "13",
+        "14"
+      ],
+      "paramDeltaKeys": [
+        "0",
+        "4",
+        "5",
+        "7",
+        "13",
+        "14"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "33"
+      ],
+      "experienceDeltaKeys": [
+        "20",
+        "40",
+        "41"
+      ]
+    },
+    {
+      "coverageRowId": "training-effect-0-34:command:34",
+      "reviewId": "definition:training-command:34",
+      "rowKind": "training-command-effect",
+      "commandId": "34",
+      "sourceEvidenceId": "source:training-effect:COMF34",
+      "sourcePath": "original-game/ERB/指導関係/COMF34.ERB",
+      "sourceFile": "COMF34.ERB",
+      "sourceLine": 326,
+      "completionStatus": "implemented-training-effect-profile",
+      "resultOwner": "body",
+      "runtimeRoute": "training",
+      "runtimeAction": "training/selectCommand -> training/execute",
+      "handlerOwner": "calculateTrainingResult/applyTrainingResult",
+      "runtimeConsumerId": "training effect profile -> definitions.trainingCommands -> calculateTrainingResult -> session preview buffers -> applyTrainingResult body/people owners",
+      "verificationId": "smoke:training-effect-0-34",
+      "sourceAssignmentCount": 58,
+      "bodyLossAssignmentCount": 2,
+      "experienceAssignmentCount": 4,
+      "sourcePreviewKeys": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "12",
+        "13",
+        "14",
+        "15"
+      ],
+      "paramDeltaKeys": [
+        "1",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "12",
+        "13",
+        "14",
+        "15"
+      ],
+      "bodyStatDeltaKeys": [
+        "stamina",
+        "energy"
+      ],
+      "resourceDeltaKeys": [
+        "34"
+      ],
+      "experienceDeltaKeys": []
+    }
+  ],
+  "unresolvedIssues": []
+}
