@@ -18,12 +18,15 @@
 - `PHASE_4_M21_M27.ko.md`: 전수표 보강과 누락 감사
 - `PHASE_5_M28_M49.ko.md`: 기능군별 전수 구현
 - `PHASE_6_M50_M52.ko.md`: 최종 저장/검증
+- `PORT_RESPONSIBILITY_MAP.ko.md`: 프로젝트/페이즈/마일스톤 3층 책임 지도
 - `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`: M28~M41에서 완료로 처리한 것과 하지 않았거나 넘긴 것의 사실 장부
 - `PORT_COMPLETION_COVERAGE_REVIEW.ko.md`: 마일스톤 유형 구분이 전체 게임 포팅 완성으로 이어지는지 검토한 문서
 
 ## 공통 금지
 
 - phase 문서는 scope 축소 근거가 아니다.
+- phase 문서의 `페이즈 책임`, `호출 책임`, `스킵 방지 규칙`은 마일스톤 체크리스트보다 우선한다.
+- 각 마일스톤은 시작 전에 원본 단위 매니페스트를 만들고, 완료 전에 매니페스트의 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
 - `implemented`, `mapped`, `approved-excluded`는 원본 row와 full artifact 대조 없이 부여하지 않는다.
 - blocker가 남은 마일스톤은 다음 phase로 넘어가지 않는다.
 - 완료 선언은 반드시 완료/미완료/이관 사실 장부를 동반한다.

@@ -1,6 +1,6 @@
 # 마일스톤 책임/역할 분리 판정 기준
 
-목적: 각 마일스톤이 자기 책임 안에서 끝났는지 판정한다. 기준은 "무엇을 세었는가"가 아니라 "원본 동작을 어느 runtime owner가 실제로 구현하고 검증했는가"다.
+목적: 각 마일스톤이 자기 책임 안에서 끝났는지 판정한다. 기준은 "무엇을 세었는가"가 아니라 "원본 단위 매니페스트의 모든 단위를 어느 runtime owner가 실제로 구현하고 검증했는가"다.
 
 ## 기본 판정
 
@@ -11,12 +11,15 @@
 ## 절대 규칙
 
 - `[구현]` 마일스톤의 `transferredOut > 0`은 완료가 아니다. transfer는 accounting 기록일 수 있지만 completion evidence가 아니다.
+- `[구현]` 마일스톤에서 `transferredOut > 0`이면 builder/gate는 같은 단위를 `blocked` 또는 `scope-redesign-required`로 반영해야 한다. 그렇지 않은 coverage/closure 산출물은 무효다.
 - `[구현]` 마일스톤에서 transfer가 필요해 보이면 먼저 책임 범위를 재설계한다. 재설계 전에는 `blocked`다.
 - `mapped`는 runtime consumer와 verification이 있을 때만 완료에 가까운 근거다. 단순 owner 확정, source label 연결, field path 기록, 표시 정의 연결은 구현 완료가 아니다.
+- 예정 `runtimeConsumerId` 또는 예정 `verificationId`는 완료 근거가 아니다. 실제 route/action/handler/view/calculation/save consumer와 실행된 검증이 있어야 한다.
 - `source-file-review`는 구현 완료 상태가 아니다. 파일 단위 row는 원본 라벨, CSV 행, read/write row, command/effect row로 분해해야 한다.
 - `implemented`라도 원본 효과가 아니라 seed ingestion, 표시명 연결, index/profile 생성이면 행동 구현 완료로 세지 않는다.
 - gate가 자체 산출물 존재만 검사하면 완료 gate가 아니다. source behavior와 runtime consumer를 같이 검사해야 한다.
 - 체크박스는 coverage/gap/closure와 runtime 검증이 일치한 뒤에만 체크한다.
+- 완료 판정에는 원본 단위 매니페스트가 필요하다. 매니페스트 경로와 단위별 상태(`implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required`)를 남기지 않은 마일스톤은 완료가 아니라 미기록 상태다.
 
 ## Runtime Owner 분리 기준
 
@@ -41,6 +44,7 @@
 - 원본 family 이름이 runtime 모델명으로 남아 있다: `CFLAG`, `TFLAG`, `SOURCE`, `TEQUIP`, `ITEMSALES`, `BOUGHT`, `COMF`, `LOSEBASE`.
 - 원본 command/file 범위가 숫자 구간으로 잘렸는데 실제 `Train.csv`/`COMF*.ERB`에 그 밖의 활성 command가 있다.
 - 문서 제목은 "완성"인데 closure/gap audit에는 미구현, transfer, missing verification, role-only가 있다.
+- 완료 기록에 원본 단위 매니페스트가 없거나, 매니페스트 단위가 coverage/closure/gap audit과 맞지 않는다.
 
 ## M28~M41 사전 재판정 기준
 

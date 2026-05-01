@@ -8,7 +8,7 @@
 2. 페이즈: 전체 포팅을 작업 단계로 나눈다.
 3. 마일스톤: 각 호출에서 끝낼 책임 단위다.
 
-상태값, gate, coverage, 문서 장부는 이 구조를 보조할 뿐 책임 구조를 대체하지 않는다.
+상태값, gate, coverage, 문서 장부는 이 구조를 보조할 뿐 책임 구조를 대체하지 않는다. 전체 책임 지도는 `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`에 둔다.
 
 ## 프로젝트 책임
 
@@ -116,8 +116,8 @@ M30에 대한 현재 판단:
 - [ ] `SESSION_HANDOFF.ko.md`를 갱신한다. 새 세션이 이 문서만 읽고 바로 다음 마일스톤을 시작할 수 있도록 현재 상태, 완료된 마일스톤, 마지막 검증, 바로 다음 작업을 갱신한다.
 - [ ] 새 소유권, 데이터 경계, import 경계, mapping 정책, 구현 단위 규칙이 생겼으면 해당 기준 문서도 갱신한다. 예: `GAME_DOMAIN_SYSTEM.md`, `DOMAIN_INVENTORY.ko.md`, `MODULE_SYSTEM.ko.md`, `LEGACY_MAPPING_POLICY.ko.md`, `IMPLEMENTATION_UNIT_RULES.ko.md`, `README.md`.
 - [ ] coverage 산출물과 audit 산출물을 갱신한다. 해당 마일스톤이 요구하는 `*-coverage.json`, `Mxx-gap-audit.json`, `Mxx-closure.json`이 실제 결과와 맞아야 한다.
-- [ ] 완료 선언 전에 "완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 사람이 읽을 수 있는 사실 장부로 남긴다. 산출물 count만으로 완료를 선언하지 않는다.
-- [ ] `Mxx-closure.json`에는 `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash` 근거를 남긴다.
+- [ ] 완료 선언 전에 `원본 단위 매니페스트`를 만들고, "완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 단위별 사실 장부로 남긴다. 산출물 count만으로 완료를 선언하지 않는다.
+- [ ] `Mxx-closure.json`에는 원본 단위 매니페스트 경로, 단위별 상태 요약, `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash` 근거를 남긴다.
 - [ ] `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded` 중 하나라도 0이 아니면 완료하지 않는다.
 - [ ] 다른 마일스톤으로 넘긴 row는 완료 근거가 아니다. 실행 중 transfer가 필요해지면 현재 마일스톤을 완료하지 말고, 책임 재설계 또는 blocked 판정으로 남긴다.
 - [ ] 사용자 승인 제외는 승인 근거 없이 기록하지 않는다. `approvalId`, `approvedBy`, `approvalScope`, `sourceEvidenceId`, `replacementBehavior`가 없으면 완료 근거가 아니다.
@@ -139,7 +139,7 @@ M30에 대한 현재 판단:
 - [ ] 이전에 완료로 기록된 마일스톤도 재검증 또는 재개 시 이 규칙을 적용한다. 기존 closure에 `responsibilityIntegrity`가 없으면 보강 전에는 재완료 판정하지 않는다.
 - [ ] 알려진 한계가 책임 범위 안에 있으면 그 마일스톤은 `completed`가 아니라 `blocked` 또는 미완료다.
 - [ ] 체크박스는 산출물이 생겼다는 뜻으로 체크하지 않는다. 해당 책임이 원본 근거, runtime 구현, 검증에서 모두 닫혔을 때만 체크한다.
-- [ ] `implemented`, `mapped`, `transferredOut` 숫자는 각각 무엇을 뜻하는지 자연어로 풀어 적는다. 특히 `mapped`와 `transferredOut`은 하지 않은 일을 숨기는 데 쓰지 않는다.
+- [ ] `implemented`, `mapped`, `transferredOut` 숫자는 원본 단위 매니페스트의 어떤 단위를 뜻하는지 자연어로 풀어 적는다. 특히 `mapped`와 `transferredOut`은 하지 않은 일을 숨기는 데 쓰지 않는다.
 - [ ] 의심되면 완료하지 않는다. blocker로 남기고 gap audit에 기록한다.
 
 ## Phase별 마일스톤 문서
@@ -219,7 +219,7 @@ M30에 대한 현재 판단:
 
 - [ ] 모든 coverage row는 `ownerMilestone`, `ownerRole`, `sourceEvidenceId`, `runtimeConsumerId`, `verificationId`, `status`를 가진다.
 - [ ] `ownerMilestone`은 해당 row를 끝까지 닫을 책임자다. owner가 비어 있거나 `remaining`, `later`, `unknown`이면 완료 상태가 아니다.
-- [ ] 구현 마일스톤의 완료 조건은 `ownedTotal = implemented + mappedWithRuntimeConsumer + approvedExcluded`이고, `transferredOut = 0`, `ownedBlocker = 0`, `roleOnlyComplete = 0`, `missingEvidence = 0`, `missingConsumer = 0`, `missingVerification = 0`, `unapprovedExcluded = 0`이어야 한다.
+- [ ] 구현 마일스톤의 완료 조건은 원본 단위 매니페스트의 모든 단위가 `implemented-verified` 또는 사용자 승인 근거가 있는 `approved-excluded`로 닫히는 것이다. `transferredOut = 0`, `ownedBlocker = 0`, `roleOnlyComplete = 0`, `missingEvidence = 0`, `missingConsumer = 0`, `missingVerification = 0`, `unapprovedExcluded = 0`이어야 한다.
 - [ ] `transferredOut`은 책임 재설계 또는 blocked 판정의 근거다. 반드시 `fromMilestone`, `toMilestone`, `transferReason`, `sourceEvidenceId`, `acceptedByOwner`를 기록하되 완료 total에는 넣지 않는다.
 - [ ] 사용자 승인 제외는 `approvalId`, `approvedBy`, `approvalScope`, `sourceEvidenceId`, `replacementBehavior`가 없으면 완료 상태가 아니다.
 - [ ] `template`, `listing`, `display-only`, `calculation-only`, `role-only`는 구현 완료가 아니라 역할 분류다. 실제 `runtimeConsumerId`와 `verificationId`가 없으면 완료로 세지 않는다.
@@ -230,7 +230,7 @@ M30에 대한 현재 판단:
 - [ ] M21~M27은 장부와 gate를 만드는 책임자다. schema만 적고 실제 산출물과 실패 gate가 없으면 완료가 아니다.
 - [ ] M28~M49는 기능군 owner다. 자기 기능군의 owned row를 남김없이 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개를 증명해야 한다.
 - [ ] M50~M52는 마지막 정리 책임자이지 미구현 기능을 숨기는 책임자가 아니다. M51에서 새 누락이 나오면 M52로 가지 않고 해당 owner 마일스톤으로 되돌린다.
-- [ ] 각 마일스톤은 `data/coverage/milestones/Mxx-closure.json`을 남긴다. 이 파일에는 `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash`를 기록한다.
+- [ ] 각 마일스톤은 `data/coverage/milestones/Mxx-closure.json`을 남긴다. 이 파일에는 원본 단위 매니페스트 경로, 단위별 상태 요약, `ownedTotal`, `implemented`, `mapped`, `approvedExcluded`, `transferredOut`, `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded`, `commandsRun`, `commitHash`를 기록한다.
 - [ ] `Mxx-closure.json`에서 `ownedBlocker`, `missingEvidence`, `missingConsumer`, `missingVerification`, `roleOnlyComplete`, `unapprovedExcluded` 중 하나라도 0이 아니면 해당 마일스톤은 완료하지 않는다.
 
 ## M35 진입 전 hardening 차단 규칙
@@ -394,5 +394,6 @@ M30에 대한 현재 판단:
 - M21~M27: `docs/milestones/PHASE_4_M21_M27.ko.md`
 - M28~M49: `docs/milestones/PHASE_5_M28_M49.ko.md`
 - M50~M52: `docs/milestones/PHASE_6_M50_M52.ko.md`
+- 전체 책임 지도: `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`
 
 에이전트는 현재 마일스톤의 phase 문서에서 해당 section만 읽는다. 긴 본문 전체 읽기는 금지한다.

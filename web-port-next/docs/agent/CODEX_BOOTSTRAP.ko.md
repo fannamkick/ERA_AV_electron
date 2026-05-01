@@ -12,6 +12,8 @@
 - 원본 변수명(`CFLAG`, `TFLAG`, `SOURCE`, `TEQUIP`, `COMF`, `LOSEBASE` 등)을 앱 모델명으로 복사하지 않는다.
 - `blocker`, `needsDecision`, `missingMapping`, `needs-review`, `role-only`, 승인 없는 `approved-excluded`는 완료가 아니다.
 - 마일스톤 책임을 라인 색인, static profile, 자체 scaffold gate로 축소하지 않는다.
+- 책임 범위는 `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 해당 phase 문서의 `페이즈 책임`을 우선한다.
+- 각 마일스톤은 시작 전에 원본 단위 매니페스트를 만들고, 종료 전에 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
 - 완료 판정 전에는 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md` 기준으로 completed/blocked/scope-redesign-required를 먼저 판단한다.
 
 ## 완료 권위
@@ -26,9 +28,11 @@
 
 `Mxx-closure.json`이 `completed`이면 `responsibilityIntegrity`가 있어야 한다. 마일스톤 책임 동사가 runtime behavior와 검증으로 닫히지 않았거나, 알려진 한계가 책임 범위 안에 있으면 완료가 아니라 blocked다.
 
-완료를 주장할 때는 gate 결과보다 먼저 "완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 자연어로 적는다. `implemented`, `mapped`, `transferredOut` 숫자만으로 완료를 선언하지 않는다.
+완료를 주장할 때는 gate 결과보다 먼저 "원본 단위 매니페스트에서 완료로 처리한 것", "안 했거나 넘긴 것", "재확인 필요한 것"을 자연어로 적는다. `implemented`, `mapped`, `transferredOut` 숫자만으로 완료를 선언하지 않는다.
 
 `transferredOut > 0`, file-level `source-file-review`, owner-only `mapped`, implemented 0/mapped-only closure, 원본 숫자 범위 밖 command 발견은 모두 의심 신호다. 이 경우 completed를 금지하고 responsibility separation 기준으로 재판정한다.
+
+closure 작성/완료 판정 시 query 결과만 사용하지 않는다. 해당 coverage rows, gap audit, closure, source evidence 원본 row/block을 직접 대조한다. 요약 조회는 탐색용이며 완료 근거가 아니다.
 
 ## I/O 누수 방지
 

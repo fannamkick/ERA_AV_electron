@@ -13,7 +13,9 @@
 
 위 문서는 dashboard와 탐색 시작점이다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON이 소유한다. query/검색 결과만으로 `implemented`, `used`, `mapped`, `approved-excluded`를 부여하지 않는다.
 
-완료/차단/책임 재설계 판정은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`를 따른다. `[구현]` 마일스톤의 `transferredOut`, file-level `source-file-review`, owner-only `mapped`, implemented 0/mapped-only closure는 completed 금지 신호다.
+전체 책임 구조는 `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 각 phase 문서의 `페이즈 책임`을 따른다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별로 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫아야 한다. 완료/차단/책임 재설계 판정은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`를 따른다. `[구현]` 마일스톤의 `transferredOut`, file-level `source-file-review`, owner-only `mapped`, implemented 0/mapped-only closure는 completed 금지 신호다.
+
+이전 완료 기록에 있는 `mapped`/`transferredOut` count는 새 기준의 최종 완료 근거가 아니다. 재개 또는 최종 감사 시 원본 단위 매니페스트와 실제 runtime consumer/verification으로 다시 판정한다.
 
 ## 작업 위치
 

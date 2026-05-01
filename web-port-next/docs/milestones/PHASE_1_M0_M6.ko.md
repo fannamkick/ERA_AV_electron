@@ -4,6 +4,30 @@
 
 완료 판정은 이 문서만으로 하지 않는다. 원본 파일, coverage/gap/closure JSON, 전용 gate/smoke/build가 최종 권위다.
 
+## 페이즈 책임
+
+Phase 1은 전체 게임 포팅이 아니라 최소 web runtime과 첫 세로 루프를 만든다. 이후 phase가 기능을 얹을 수 있도록 실행 계약, 데이터 경계, 정의 데이터 연결, 새 게임, 메인 화면, 구매 1차 루프만 책임진다.
+
+| M | 호출 책임 | 이 마일스톤이 끝내지 않는 것 |
+| --- | --- | --- |
+| M0 | M1~M6 포함/제외와 blocker 가능 지점을 동결한다. | Phase 1 밖 기능 설계/구현 |
+| M1 | route/action/result/effect 공통 실행 계약을 만든다. | 기능별 상세 로직 전수 구현 |
+| M2 | save state, session state, view 계산 객체의 타입 경계를 만든다. | 원본 save/session 주소 전수 매핑 |
+| M3 | 원본 CSV 정의 데이터를 runtime definitions로 연결한다. | 모든 정의 데이터의 실제 소비 완료 |
+| M4 | 새 게임 생성과 초기 save state를 만든다. | 전체 캐릭터/이벤트/엔딩 초기화 |
+| M5 | 최소 메인 화면 view와 route 진입을 만든다. | 원본 메인 메뉴 전수 구현 |
+| M6 | 구매형 아이템 1차 루프를 성공/실패/취소까지 만든다. | 상점 전체, 아이템 사용, 특수 효과 |
+
+## 스킵 방지 규칙
+
+각 마일스톤은 시작 전에 `원본 단위 매니페스트`를 만든다. 매니페스트에는 해당 호출이 닫아야 하는 원본 파일/라벨/CSV row/상태 주소/route/action/view/검증 단위를 적는다.
+
+- 매니페스트에 없는 단위는 완료했다고 말할 수 없다.
+- 매니페스트의 모든 단위는 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- `[구현]` 마일스톤은 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification만으로 완료할 수 없다.
+- 다른 owner 책임이 발견되면 먼저 매니페스트와 책임 범위를 다시 나누고, 기존 체크박스는 완료 근거로 쓰지 않는다.
+- closure/gap/progress에는 매니페스트 경로, 단위별 상태, blocked/scope-redesign-required 목록, 실행한 gate/smoke/build를 남긴다.
+
 ## 상세 마일스톤
 
 ## M0. [기획] 기준 동결

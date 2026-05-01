@@ -4,6 +4,46 @@
 
 완료 판정은 이 문서만으로 하지 않는다. 원본 파일, coverage/gap/closure JSON, 전용 gate/smoke/build가 최종 권위다.
 
+## 페이즈 책임
+
+Phase 5는 기능군별 runtime behavior를 실제 구현한다. 각 마일스톤은 자기 기능군의 원본 동작을 source evidence, runtime consumer, verification으로 끝내야 하며, 다른 owner 책임을 완료로 가져오지 않는다.
+
+| M | 호출 책임 | 이 마일스톤이 끝내지 않는 것 |
+| --- | --- | --- |
+| M28 | 원본 메인 화면 route/action/view를 전수 연결한다. | 이벤트/세계 진행 결과 |
+| M29 | 구매형 상점 listing과 구매 결과를 전수 구현한다. | 즉시 사용/장비/이벤트 item 효과 |
+| M30 | 즉시 사용 아이템 9개의 사용 flow와 효과를 구현한다. | 특수 item 200~214 의복/훈련 효과 |
+| M31 | 영입 listing 전체와 인물 생성 결과를 구현한다. | 인물 identity 세부 표시와 후속 이벤트 |
+| M32 | 인물 원형과 identity/lifecycle을 구현한다. | 행동 결과로 변하는 능력/상태 |
+| M33 | 신체/능력/소질/경험 seed와 표시/저장 owner를 구현한다. | 훈련/업무/촬영 효과 계산 전체 |
+| M34 | 관계/CFLAG/장비/의복 owner를 구현한다. | 이벤트/훈련/미션 효과 전체 |
+| M34.5 | M35 이후 완료 차단 gate를 실제 script로 강화한다. | 기능군 구현 |
+| M35 | 턴 종료, 시간 진행, hook 순서, session cleanup을 구현한다. | hook이 호출하는 각 기능군 내부 효과 |
+| M36 | 방문 장소, 시설, 장소별 행동, 해금/비용/결과를 구현한다. | 세계 이벤트 전체 |
+| M37 | 업무/창관/특수 업무 조건과 결과를 구현한다. | 이벤트/미션 전체 |
+| M38 | 촬영 장면 정의, 대상 조건, 장면 조건을 구현한다. | 촬영 실행/판매 결과 |
+| M39 | 촬영 실행, 수익, 팬, 점수, 출시/판매 상태를 구현한다. | 세계 이벤트/엔딩 영향 전체 |
+| M40 | 훈련 대상/실행자/조수/command 선택 session lifecycle을 구현한다. | availability와 command 효과 |
+| M41 | 훈련 command availability와 불가 사유를 구현한다. | command 효과 계산 |
+| M42 | `Train.csv` command 0~34에 연결된 `COMF*.ERB` 효과 source, 특수 item 소비, 결과 반영을 구현한다. | command 35 이상과 전체 후처리 |
+| M43 | `Train.csv` command 35~69에 연결된 `COMF*.ERB` 효과 source, 특수 item 소비, 결과 반영을 구현한다. | command 70 이상과 전체 후처리 |
+| M44 | command 70 이상과 번호 범위 밖에서 소비되는 훈련 효과 source 전체, 공통 후처리를 구현한다. | 훈련 외 이벤트/엔딩 전체 |
+| M45 | 능력 상승, 휴식, 회복, 자동 아이템, 공통 유지보수를 구현한다. | 미션/이벤트/엔딩 |
+| M46 | 미션 전체 lifecycle을 구현한다. | 세계 이벤트 전체와 엔딩 판정 |
+| M47 | 세계/이벤트/스토리 trigger, condition, effect, hook을 구현한다. | 엔딩/meta 저장 전체 |
+| M48 | 엔딩, 계승, global/meta 상태를 구현한다. | 정보/도움말/설정 UI 전체 |
+| M49 | 정보/도움말/설정/view/text와 명시적으로 M49 intake된 잔여 기능만 닫는다. | 전체 저장/로드와 최종 판정, owner 불명 기능의 은폐 |
+
+## 스킵 방지 규칙
+
+각 마일스톤은 시작 전에 `원본 단위 매니페스트`를 만든다. 매니페스트에는 해당 호출이 닫아야 하는 원본 파일/라벨/CSV row/상태 주소/route/action/view/검증 단위를 적는다.
+
+- 매니페스트에 없는 단위는 완료했다고 말할 수 없다.
+- 매니페스트의 모든 단위는 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- `[구현]` 마일스톤은 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification만으로 완료할 수 없다.
+- 다른 owner 책임이 발견되면 먼저 매니페스트와 책임 범위를 다시 나누고, 기존 체크박스는 완료 근거로 쓰지 않는다.
+- closure/gap/progress에는 매니페스트 경로, 단위별 상태, blocked/scope-redesign-required 목록, 실행한 gate/smoke/build를 남긴다.
+
 ## 상세 마일스톤
 
 ## M28. [구현] 메인 화면과 route 전수 연결
@@ -605,13 +645,15 @@ npm run test --if-present
 ## M42. [구현] 훈련 command 효과 0~34 완성
 
 책임 선언:
-- 역할: 훈련 command 0~34의 효과 계산과 결과 반영을 완성한다.
-- 범위: source 계산, 파라미터 증감, 체력/기력 감소, 결과 owner, 성공/불가/취소/session 폐기다.
-- 방식: 원본 계산 중간값은 calculation/session에서 처리하고 최종 결과만 save owner에 반영한다.
-- 완료 결과: command 0~34가 source evidence와 consumer evidence를 갖고 검증된다.
-- 누락 차단: source evidence 없거나 계산 중간값이 save에 들어가면 완료하지 않는다.
+- 역할: `Train.csv` command 0~34에 연결된 훈련 효과 source를 원본 단위 매니페스트로 닫는다.
+- 범위: command row, 연결된 `COMF*.ERB` label/file, 특수 item 소비 조건, `SOURCE/LOSEBASE/EXP/PALAM/ABL/TALENT/TEQUIP/TFLAG` 계산, 결과 owner, 성공/불가/취소/session 폐기다.
+- 방식: command 번호만 세지 않는다. 각 command가 실제로 호출하는 효과 source와 그 source가 읽고 쓰는 원본 단위를 매니페스트에 넣고, 단위별 `implemented-verified` 또는 차단 상태로 닫는다.
+- 완료 결과: command 0~34와 연결 효과 source 전체가 source evidence, runtime consumer, verification을 갖는다.
+- 누락 차단: static profile, line index, 예정 `runtimeConsumerId`/`verificationId`, source evidence만으로 완료하지 않는다.
 
+- [ ] command 0~34 원본 단위 매니페스트를 작성하고 각 command row와 연결 `COMF*.ERB` source를 적음
 - [ ] command 0~34의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] 특수 item 소비 조건이 있으면 item owner와 effect owner를 매니페스트에서 분리하고 완료/차단 상태를 기록
 - [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
 - [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
 - [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
@@ -632,13 +674,15 @@ M42 차단 기록:
 ## M43. [구현] 훈련 command 효과 35~69 완성
 
 책임 선언:
-- 역할: 훈련 command 35~69의 효과 계산과 결과 반영을 완성한다.
-- 범위: source 계산, 파라미터 증감, 체력/기력 감소, 결과 owner, 성공/불가/취소/session 폐기다.
-- 방식: 각 command를 독립 단위로 구현하고 coverage를 command별로 닫는다. blocker는 완료 차단 상태로 남긴다.
-- 완료 결과: command 35~69가 구현 또는 사용자 승인 제외 상태이고 소유 blocker 0개가 된다.
-- 누락 차단: 결과 owner가 불명확하거나 미구현 command가 blocker 없이 남으면 완료하지 않는다.
+- 역할: `Train.csv` command 35~69에 연결된 훈련 효과 source를 원본 단위 매니페스트로 닫는다.
+- 범위: command row, 연결된 `COMF*.ERB` label/file, 특수 item 소비 조건, `SOURCE/LOSEBASE/EXP/PALAM/ABL/TALENT/TEQUIP/TFLAG` 계산, 결과 owner, 성공/불가/취소/session 폐기다.
+- 방식: 각 command와 연결 source를 독립 단위로 구현하고 coverage를 command/source별로 닫는다. blocker는 완료 차단 상태로 남긴다.
+- 완료 결과: command 35~69와 연결 효과 source 전체가 source evidence, runtime consumer, verification을 갖는다.
+- 누락 차단: 결과 owner가 불명확하거나 미구현 source가 blocker 없이 남으면 완료하지 않는다.
 
+- [ ] command 35~69 원본 단위 매니페스트를 작성하고 각 command row와 연결 `COMF*.ERB` source를 적음
 - [ ] command 35~69의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] 특수 item 소비 조건이 있으면 item owner와 effect owner를 매니페스트에서 분리하고 완료/차단 상태를 기록
 - [ ] command별 결과 owner를 `people`, `body`, `social`, `inventory`, `economy`, `run` 중 하나로 확정
 - [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
 - [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
@@ -650,17 +694,19 @@ M42 차단 기록:
 ## M44. [구현/범위보강필요] 훈련 command 효과 70 이상과 후처리 완성
 
 책임 선언:
-- 역할: 훈련 command 70 이상 전체와 훈련 후처리를 완성한다.
-- 범위: command 효과, 후처리, 이벤트, 장비 변화, 자원 변화, raw-name gate다.
-- 방식: 105개 command 전체 상태를 집계하고 남은 command를 구현 또는 사용자 승인 제외로 닫는다. blocker가 남으면 완료하지 않는다.
-- 완료 결과: 전체 훈련 command coverage에 미구현 row가 남지 않는다.
-- 누락 차단: `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남으면 완료하지 않는다.
+- 역할: command 70 이상, 번호 범위 밖 `COMF*.ERB` 효과 source, 훈련 공통 후처리를 완성한다.
+- 범위: `Train.csv` active command 70 이상, `COMF137.ERB`처럼 command 번호 범위 밖에서 item/후처리로 소비되는 효과 source, 훈련 후처리, 이벤트 hook 호출, 장비 변화, 자원 변화, raw-name gate다.
+- 방식: 105개 command 숫자 집계만 쓰지 않는다. 모든 `COMF*.ERB` 효과 source를 매니페스트에 넣고, command owner/특수 item owner/후처리 owner를 단위별로 닫는다.
+- 완료 결과: 전체 훈련 효과 source coverage에 미구현 row가 남지 않는다.
+- 누락 차단: `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` raw name이 runtime에 남거나, 번호 범위 밖 효과 source가 매니페스트 밖에 있으면 완료하지 않는다.
 
+- [ ] command 70 이상과 번호 범위 밖 훈련 효과 source의 원본 단위 매니페스트를 작성
 - [ ] command 70 이상 전체의 source 계산, 파라미터 증감, 체력/기력 감소를 구현
+- [ ] `COMF137.ERB`처럼 특수 item/후처리에서 소비되는 훈련 효과 source를 구현 또는 차단 상태로 닫음
 - [ ] 훈련 후처리, 이벤트, 장비 변화, 자원 변화가 올바른 owner에 반영되는지 검증
 - [ ] command별 성공, 불가, 취소, 결과 적용, session 폐기를 검증
 - [ ] 원본 계산 중간값을 저장 payload에 넣지 않도록 검증
-- [ ] 전체 105개 command coverage에 미구현 row가 남지 않는지 확인
+- [ ] 전체 command/effect source coverage에 미구현 row가 남지 않는지 확인
 - [ ] 원본명 `COMF`, `TFLAG`, `SOURCE`, `TEQUIP`, `LOSEBASE` 직접 사용 검색 통과
 - [ ] M20/M24/M25 coverage의 command 70 이상 및 후처리 status 갱신
 - [ ] `npm run build` 실행
@@ -740,13 +786,15 @@ M42 차단 기록:
 ## M49. [구현/정리] 정보/도움말/설정/남은 기능 닫기
 
 책임 선언:
-- 역할: 정보/도움말/설정/디버그/남은 기능을 최종 정리한다.
-- 범위: 정보, 도움말, 업적, 설정, 디버그 메뉴, PRINT/HTML/message/help/status text, M28~M49 기능군 gap audit이다.
-- 방식: 구현하지 않는 기능은 숨기지 않고 사용자 승인 제외로 닫는다. blocker는 완료 차단 상태이며 M49 catch-all로 숨기지 않는다.
-- 완료 결과: 기능군별 미구현 feature, 미소비 definition, 미정 mapping이 남지 않는다.
-- 누락 차단: 남은 기능을 설명 없이 제외하거나 디버그 기능의 범위가 불명확하면 완료하지 않는다.
+- 역할: 정보/도움말/설정/디버그와 명시적으로 M49 intake된 잔여 기능만 닫는다.
+- 범위: 정보, 도움말, 업적, 설정, 디버그 메뉴, PRINT/HTML/message/help/status text, 그리고 `M49-intake`에 원본 단위와 원래 owner가 기록된 잔여 기능이다.
+- 방식: M49를 catch-all로 쓰지 않는다. 잔여 기능은 source id, 원래 owner 후보, M49로 온 이유, 승인 제외 여부가 있어야 M49 범위에 들어온다.
+- 완료 결과: M49 intake 단위와 정보/도움말/설정/text 단위가 모두 구현/검증, 승인 제외, 차단 중 하나로 닫힌다.
+- 누락 차단: owner 불명 기능, 설명 없는 제외, 디버그 범위 불명, intake 없는 잔여 기능을 M49 완료에 포함하지 않는다.
 
 - [ ] 정보, 도움말, 업적, 설정, 디버그 메뉴를 구현 또는 사용자 승인 제외로 분류
+- [ ] `M49-intake` 표를 만들고 source id, 원래 owner 후보, M49로 온 이유, 승인 제외 여부를 기록
+- [ ] intake 없는 잔여 기능은 해당 owner 마일스톤으로 되돌리거나 `scope-redesign-required`로 차단
 - [ ] PRINT/HTML/message/help/status text를 view/text coverage로 분류하고 실제 소비 화면을 연결
 - [ ] 설정 상태를 `settings`와 `meta` owner로 분리
 - [ ] 정보 화면이 정의 데이터와 저장 상태를 읽기 전용으로 표시하는지 검증

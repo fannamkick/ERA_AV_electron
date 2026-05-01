@@ -4,6 +4,27 @@
 
 완료 판정은 이 문서만으로 하지 않는다. 원본 파일, coverage/gap/closure JSON, 전용 gate/smoke/build가 최종 권위다.
 
+## 페이즈 책임
+
+Phase 3은 원본을 어떻게 읽고, 무엇을 구현 대상으로 셀지 정한다. 이 phase의 산출물은 이후 구현의 기준이며, runtime 기능 구현 완료가 아니다.
+
+| M | 호출 책임 | 이 마일스톤이 끝내지 않는 것 |
+| --- | --- | --- |
+| M17 | 원본 근거 대조 정책을 고정한다. | 원본 주소 대량 구현 |
+| M18 | 반복 구현 단위 규칙을 고정한다. | 기능 구현량 증가 |
+| M19 | 원본 기능 coverage 전수표를 만든다. | feature row runtime 구현 |
+| M20 | 정의 데이터와 Chara seed의 소비 책임을 분류한다. | definition row runtime 소비 완료 |
+
+## 스킵 방지 규칙
+
+각 마일스톤은 시작 전에 `원본 단위 매니페스트`를 만든다. 매니페스트에는 해당 호출이 닫아야 하는 원본 파일/라벨/CSV row/상태 주소/route/action/view/검증 단위를 적는다.
+
+- 매니페스트에 없는 단위는 완료했다고 말할 수 없다.
+- 매니페스트의 모든 단위는 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- 조사/매핑/감사 마일스톤도 미분류 단위를 숨길 수 없다. runtime 구현 대신 원본 단위의 owner/status를 끝까지 분류한다.
+- 다른 owner 책임이 발견되면 먼저 매니페스트와 책임 범위를 다시 나누고, 기존 체크박스는 완료 근거로 쓰지 않는다.
+- closure/gap/progress에는 매니페스트 경로, 단위별 상태, blocked/scope-redesign-required 목록, 실행한 gate/smoke/build를 남긴다.
+
 ## 상세 마일스톤
 
 ## M17. [정책] 원본 근거 대조 정책

@@ -4,6 +4,33 @@
 
 완료 판정은 이 문서만으로 하지 않는다. 원본 파일, coverage/gap/closure JSON, 전용 gate/smoke/build가 최종 권위다.
 
+## 페이즈 책임
+
+Phase 2는 핵심 게임 루프를 1차로 넓히고, 저장/로드와 검증 체계를 만든다. 각 기능군의 최소 작동 경로를 확보하는 단계이며, 기능군 전수 구현은 Phase 5가 책임진다.
+
+| M | 호출 책임 | 이 마일스톤이 끝내지 않는 것 |
+| --- | --- | --- |
+| M7 | 영입 1차 루프와 인물 생성 경계를 만든다. | 영입 listing 전체 |
+| M8 | 턴 종료/시간 진행 1차 실행 계약을 만든다. | 원본 월말/주말/자동 hook 전수 구현 |
+| M9 | 저장/로드 1차 roundtrip과 payload 오염 차단을 만든다. | 전체 기능 후 저장/로드와 migration |
+| M10 | 방문/시설 1차 루프를 만든다. | 방문 장소/행동 전체 |
+| M11 | 미션 1차 루프를 만든다. | 미션 전체 lifecycle |
+| M12 | 업무 1차 루프를 만든다. | 업무/창관/특수 업무 전체 |
+| M13 | 촬영 1차 루프를 만든다. | 촬영 장면/실행/판매 전체 |
+| M14 | 훈련 1차 command 루프를 만든다. | 훈련 command 전체와 후처리 |
+| M15 | 화면 렌더링 구조와 진단 패널을 정리한다. | 전체 UI/UX 완성 |
+| M16 | 반복 검증 체계를 만든다. | 최종 완전 검증 |
+
+## 스킵 방지 규칙
+
+각 마일스톤은 시작 전에 `원본 단위 매니페스트`를 만든다. 매니페스트에는 해당 호출이 닫아야 하는 원본 파일/라벨/CSV row/상태 주소/route/action/view/검증 단위를 적는다.
+
+- 매니페스트에 없는 단위는 완료했다고 말할 수 없다.
+- 매니페스트의 모든 단위는 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- `[구현]` 마일스톤은 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification만으로 완료할 수 없다.
+- 다른 owner 책임이 발견되면 먼저 매니페스트와 책임 범위를 다시 나누고, 기존 체크박스는 완료 근거로 쓰지 않는다.
+- closure/gap/progress에는 매니페스트 경로, 단위별 상태, blocked/scope-redesign-required 목록, 실행한 gate/smoke/build를 남긴다.
+
 ## 상세 마일스톤
 
 ## M7. [구현] 고용/영입 1차

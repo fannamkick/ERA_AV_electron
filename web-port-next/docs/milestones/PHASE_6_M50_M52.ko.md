@@ -4,16 +4,36 @@
 
 완료 판정은 이 문서만으로 하지 않는다. 원본 파일, coverage/gap/closure JSON, 전용 gate/smoke/build가 최종 권위다.
 
+## 페이즈 책임
+
+Phase 6은 전체 포팅이 실제로 닫혔는지 검증한다. 남은 구현을 숨기거나 승인 없이 제외하는 단계가 아니라, 미완료를 발견하면 해당 owner 마일스톤으로 되돌리는 단계다.
+
+| M | 호출 책임 | 이 마일스톤이 끝내지 않는 것 |
+| --- | --- | --- |
+| M50 | 전체 기능 후 저장/로드, schema, migration, 오염 payload 차단을 검증한다. 남은 구현은 해당 owner로 되돌린다. | 미구현 기능 보정 |
+| M51 | 최종 누락, orphan, role-only, 미승인 제외, blocker를 감사한다. | gap을 숨기거나 M52로 넘김 |
+| M52 | 완전 포팅 여부를 최종 판정한다. | 일부 기능 미구현 상태의 완성 선언 |
+
+## 스킵 방지 규칙
+
+각 마일스톤은 시작 전에 `원본 단위 매니페스트`를 만든다. 매니페스트에는 해당 호출이 닫아야 하는 원본 파일/라벨/CSV row/상태 주소/route/action/view/검증 단위를 적는다.
+
+- 매니페스트에 없는 단위는 완료했다고 말할 수 없다.
+- 매니페스트의 모든 단위는 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- Phase 6은 남은 구현을 대신 처리하지 않는다. 미구현 단위가 있으면 해당 owner 마일스톤으로 되돌린다.
+- 다른 owner 책임이 발견되면 먼저 매니페스트와 책임 범위를 다시 나누고, 기존 체크박스는 완료 근거로 쓰지 않는다.
+- closure/gap/progress에는 매니페스트 경로, 단위별 상태, blocked/scope-redesign-required 목록, 실행한 gate/smoke/build를 남긴다.
+
 ## 상세 마일스톤
 
-## M50. [구현/검증] 전체 저장/로드/마이그레이션 완성
+## M50. [검증] 전체 저장/로드/마이그레이션 검증
 
 책임 선언:
-- 역할: 전체 기능군 후 저장/로드와 schema/migration 처리를 완성한다.
+- 역할: 전체 기능군 후 저장/로드와 schema/migration 처리가 실제로 닫혔는지 검증한다.
 - 범위: 모든 주요 기능 후 roundtrip, 전역 meta save, corrupted/future/old schema, migration, 실패 effect다.
-- 방식: save payload에 definitions/views/session/calculation buffer가 들어가지 않도록 검증한다.
+- 방식: save payload에 definitions/views/session/calculation buffer가 들어가지 않도록 검증한다. schema/migration 구현이 남아 있으면 M50에서 보정하지 않고 해당 owner 마일스톤으로 되돌린다.
 - 완료 결과: M24/M25 mapping row 전체가 저장 payload 또는 비저장 판정과 일치한다.
-- 누락 차단: session/definitions/views/calculation buffer가 save payload에 들어가면 완료하지 않는다.
+- 누락 차단: session/definitions/views/calculation buffer가 save payload에 들어가거나, M50에서 새 기능 구현이 필요하면 완료하지 않는다.
 
 - [ ] 저장 payload schema 확정
 - [ ] 저장 파일에 정의 데이터, view 계산 객체, session 계산 버퍼가 들어가지 않도록 검증
@@ -22,7 +42,7 @@
 - [ ] corrupted save 처리 검증
 - [ ] unknown future schema 처리 검증
 - [ ] old schema migration 검증
-- [ ] schema version 변경 시 마이그레이션 경로 구현
+- [ ] schema version 변경 시 마이그레이션 경로가 이미 구현되어 있는지 검증. 미구현이면 해당 owner로 되돌림
 - [ ] 저장/로드 실패 effect와 UI route 처리 검증
 - [ ] M24/M25 mapping row 전체가 저장 payload 또는 비저장 판정과 일치하는지 확인
 - [ ] `npm run build` 실행

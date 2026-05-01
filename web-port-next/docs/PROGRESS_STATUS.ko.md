@@ -6,7 +6,9 @@
 
 Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOOTSTRAP.ko.md`, `docs/agent/CURRENT_STATUS.ko.md`, `docs/agent/NEXT_MILESTONE.ko.md`를 먼저 읽는다. 이 문서들은 dashboard이며 완료 판정 권위가 아니다. 완료 판정은 원본 파일, coverage 원장, gate/smoke/build, gap audit, closure JSON으로만 한다.
 
-completed/blocked/scope-redesign-required의 공통 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 둔다. `[구현]` 마일스톤의 `transferredOut`, file-level `source-file-review`, owner-only `mapped`는 완료 근거가 아니라 재판정 신호다.
+전체 책임 구조는 `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 각 phase 문서의 `페이즈 책임`에 둔다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별로 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫아야 한다. completed/blocked/scope-redesign-required의 공통 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 둔다. `[구현]` 마일스톤의 `transferredOut`, file-level `source-file-review`, owner-only `mapped`는 완료 근거가 아니라 재판정 신호다.
+
+현재 완료 표에 남아 있는 과거 `mapped`/`transferredOut` 기반 완료 기록은 새 기준의 최종 완료 근거가 아니다. 해당 마일스톤을 재개하거나 최종 감사할 때 원본 단위 매니페스트 기준으로 다시 판정한다.
 
 ## 완료
 

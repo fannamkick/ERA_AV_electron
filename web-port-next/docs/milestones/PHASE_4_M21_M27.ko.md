@@ -4,6 +4,30 @@
 
 완료 판정은 이 문서만으로 하지 않는다. 원본 파일, coverage/gap/closure JSON, 전용 gate/smoke/build가 최종 권위다.
 
+## 페이즈 책임
+
+Phase 4는 Phase 3의 coverage를 실제 구현 queue로 바꾼다. 원본 근거, save/session mapping, gap audit, blocker 동결을 끝내는 단계이며 runtime 기능 구현 완료가 아니다.
+
+| M | 호출 책임 | 이 마일스톤이 끝내지 않는 것 |
+| --- | --- | --- |
+| M21 | source evidence 장부를 확정한다. | 원본 동작 구현 |
+| M22 | feature/definition/save/session/blocker 교차 대조 gate를 만든다. | 기능군 구현 |
+| M23 | ERB 기반 정의 후보를 보강한다. | ERB-only 컨텐츠 구현 |
+| M24 | 원본 persistent 후보를 save owner로 매핑한다. | save owner의 기능 구현 |
+| M25 | 원본 session/calculation 후보를 lifecycle owner로 매핑한다. | session/calculation 사용 기능 구현 |
+| M26 | 구현 전 누락과 owner 불명을 감사한다. | 누락 기능 구현 |
+| M27 | M28~M49 구현 큐와 blocker 해소 책임을 동결한다. | 큐 항목 구현 |
+
+## 스킵 방지 규칙
+
+각 마일스톤은 시작 전에 `원본 단위 매니페스트`를 만든다. 매니페스트에는 해당 호출이 닫아야 하는 원본 파일/라벨/CSV row/상태 주소/route/action/view/검증 단위를 적는다.
+
+- 매니페스트에 없는 단위는 완료했다고 말할 수 없다.
+- 매니페스트의 모든 단위는 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- 조사/매핑/감사 마일스톤도 미분류 단위를 숨길 수 없다. runtime 구현 대신 원본 단위의 owner/status를 끝까지 분류한다.
+- 다른 owner 책임이 발견되면 먼저 매니페스트와 책임 범위를 다시 나누고, 기존 체크박스는 완료 근거로 쓰지 않는다.
+- closure/gap/progress에는 매니페스트 경로, 단위별 상태, blocked/scope-redesign-required 목록, 실행한 gate/smoke/build를 남긴다.
+
 ## 상세 마일스톤
 
 ## M21. [조사/장부] 원본 근거 장부 확정
