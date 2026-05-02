@@ -120,35 +120,35 @@ Strict closure update, 2026-05-02:
 - [x] `npm run smoke:phase1` 실행
 - [x] `npm run build` 실행
 
-## M30. [구현/차단] 즉시 사용 아이템 구현과 특수 훈련 아이템 책임 재판정
+## M30. [구현] 즉시 사용 아이템 구현과 특수 아이템 책임 제외 명시
 
 책임 선언:
-- 역할: 즉시 사용 아이템의 조건과 효과를 구현한다. 기존 M30 accounting에 들어온 특수 훈련 아이템 200~214는 현재 책임 충돌로 차단한다.
-- 범위: 즉시 사용 조건, 사용 효과, 실패/취소 경로다. 특수 item 200~214의 훈련 효과는 원본 COMF 훈련 command에서 `ITEM:200`~`ITEM:214` 조건으로 소비되므로 M30 완료로 계산하지 않는다.
+- 역할: 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 조건과 효과를 구현한다.
+- 범위: 즉시 사용 조건, 사용 효과, 실패/취소 경로다. 특수 item 200~214의 훈련 효과와 item 22/90/91/211 계열은 M30 완료로 계산하지 않고 수신 owner manifest에서 blocked inbound로 추적한다.
 - 방식: 효과는 inventory/people/body/world/mission/settings/equipment 등 정확한 owner에만 반영한다.
-- 완료 결과: 현재 완료 아님. `transferredOut` 37개를 `ownedBlocker`로 기록했으므로 M30 closure/gate는 실패해야 한다.
-- 누락 차단: no-op handler, owner transfer, 효과 owner 불명확, 특수 훈련 item 효과 미구현이 남으면 완료하지 않는다.
+- 완료 결과: strict closure 완료. source 74개 중 M30-owned 37개는 implemented-verified, 나머지 37개는 M30 approved-excluded이며 M34/M41/M42/M43/M44 수신 manifest에 blocked inbound로 명시했다.
+- 누락 차단: no-op handler, 효과 owner 불명확, receiver manifest 누락이 있으면 완료하지 않는다.
 
 - [x] 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 사용 조건과 효과를 구현
 - [x] 즉시 사용 아이템 효과가 `inventory`, `people`, `body`, `run`, `featureState` 등 정확한 owner에 반영되는지 검증
-- [ ] 특수 item 200~214의 실제 소비를 구현하거나 M30 책임에서 제거하는 공식 재설계를 완료
-- [ ] item 22/90/91 및 특수 item 200~214 transfer 37개를 완료 근거가 아닌 blocker로 해소
+- [x] 특수 item 200~214 및 item 22/90/91/211 계열 37개를 M30 책임에서 approved-excluded로 분리
+- [x] M30 approved-excluded 37개를 M34/M41/M42/M43/M44 수신 manifest에 blocked inbound로 명시
 - [x] 즉시 사용 아이템의 사용 실패, 중복 사용, 조건 미충족, 취소 경로를 검증
 - [x] 즉시 사용 아이템 사용 후 저장 roundtrip을 검증
-- [x] M30 coverage를 재생성해 `ownedBlocker: 37`, `status: blocked`로 기록
-- [ ] M30 완료 gate 통과
-- [ ] `npm run build` 실행
+- [x] M30 coverage를 재생성해 source 74, M30-owned 37, implemented-verified 37, approved-excluded 37로 기록
+- [x] M30 완료 gate 통과
+- [x] `npm run build` 실행
 
 M30 재판정 기록:
-- M30 owned scope는 현재 closure 기준 `unit:M30:item-use`와 M29 inbound transfer를 합쳐 ownedTotal 74행이다.
+- M30 source queue는 74행이지만 strict owned scope는 즉시 사용 item flow/effect 37행이다.
 - 즉시 사용 아이템 30/31/38/39/40/41/42/43/52는 `session.shop.visibleUseItemIds`, `shop/selectUseItem`, `shop/selectUseTarget`, `shop/confirmUseItem`, `shop/cancelUseItem`으로 실제 소비된다.
-- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 이것은 효과 구현 완료가 아니다.
+- 특수 item 200~214는 구매 listing이나 `ITEMSALES`가 아니라 `specialTrainingItemIds`와 `inventory.itemCounts` 기반 특수 장비/해금 상태로 분류했다. 이것은 M30 효과 구현 완료가 아니다.
 - 원본 대조 결과 특수 item 200~210/212~214 대부분은 `COMFxx.ERB` 훈련 효과 스크립트에서 소비되고, item 211은 `COSPLAY.ERB` 의복 흐름에서 소비된다. 현재 transfer target은 M34/M42/M43/M44 계열로 다시 분해했다.
 - item 213은 `COMF137.ERB`에서 소비된다. 따라서 기존 M42~M44의 "0~104 command" 범위만으로는 전체 훈련 효과 포팅이 닫히지 않는다.
 - item 22/90/91은 M30 사용형 아이템이 아니라 훈련 가능 조건을 여는 아이템이므로 M41로 남겼다.
 - cosplay/clothing pack은 M29에서 M34로 이관되어 M30 소유 범위가 아니다.
-- 2026-05-02 재판정에서 M30 closure는 `status: blocked`, `ownedBlocker: 37`로 바뀌었다. 기존 "특수 아이템 완성" 완료 선언은 무효다.
-- `npm run gate:item-use-coverage`와 `npm run gate:milestone-scope-closure -- M30`은 이 blocker가 해소될 때까지 실패해야 한다.
+- 2026-05-02 strict closure에서 M30 closure는 `status: completed`, `implemented: 37`, `approvedExcludedFromM30: 37`, `completedAllowedNow: true`로 닫았다.
+- `npm run gate:item-use-coverage`는 M30 approved-excluded 37개가 receiver manifest에 없으면 실패한다.
 
 검증:
 
@@ -299,7 +299,7 @@ npm run test --if-present
 - [x] `npm run build` 실행
 
 M34 완료 근거:
-- M34 scope는 implementation queue 2,149행과 M29/M31/M33 inbound transfer 83행을 합친 총 2,232행이다.
+- M34 strict manifest scope는 M30 inbound 3개까지 반영되어 총 2,238행이다. 기존 M34 implementation queue와 M29/M31/M33 inbound 구현 근거는 재검증 대상이다.
 - `legacyCharacterFlagDefinitions` 151행은 `definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView`로 실제 소비된다.
 - Chara `CFLAG` seed 1,465행은 `splitLegacyCharacterFlags`에서 `body.conditionFlags`, `equipment.availabilityFlags`, `equipment.clothing`, `people.flags.affection/family/settings/featureProgress`, `social` 진행 근거로 분해된다.
 - Chara `RELATION` seed 532행은 `createCharacterBundleFromSpecs`에서 `social.relationships`로 생성되고 원본 relation index 근거를 보존한다.
@@ -307,7 +307,7 @@ M34 완료 근거:
 - M31/M33에서 넘어온 CFLAG/FLAG/PBAND save row는 source evidence, runtime consumer, verification을 가진 mapped row로 닫았다.
 - 메인 메뉴 108은 `main/openWardrobe -> wardrobe` route로 활성화했고, `wardrobe/toggleClothing`과 `wardrobe/cancel` action을 추가했다.
 - raw `CFLAG`는 runtime 모델명으로 쓰지 않고 source evidence 및 문서/coverage 용어로만 남긴다.
-- `data/coverage/social-equipment-cflag-coverage.json`, `data/coverage/audits/M34-gap-audit.json`, `data/coverage/milestones/M34-closure.json`을 생성했다. closure counts는 ownedTotal 2,232, implemented 1,998, mapped 234, blocker/missing/unapproved 0이다.
+- `data/coverage/social-equipment-cflag-coverage.json`, `data/coverage/audits/M34-gap-audit.json`, `data/coverage/milestones/M34-closure.json` 생성 이력은 있다. strict manifest 기준 현재 M34는 total 2,238, implemented 1,998, blocked 240이다.
 
 검증:
 ```bash
@@ -634,13 +634,13 @@ npm run test --if-present
 - [x] `npm run build` 실행
 
 M41 완료 근거:
-- M41 owned scope는 1,625행이다. `unit:M41:training-availability` feature row 1,624행과 `unit:M41:training-availability-original-game-erb-comorder-erb` source-file-review 1행을 원본 `COMABLE.ERB`, `COMSEQ_REGISTER.ERB`, `COMORDER.ERB` 기준으로 닫았다.
+- M41 strict manifest scope는 M30 inbound 6개까지 반영되어 1,631행이다. 기존 `unit:M41:training-availability` feature row와 `unit:M41:training-availability-original-game-erb-comorder-erb` source-file-review는 strict 기준 재검증 대상이다.
 - `COMABLE.ERB`의 `COM_ABLE*` source program 125개를 `data/coverage/training-availability-rules.json`으로 추출했고, `Train.csv` active command 105개 전부가 대응 source program을 가진다.
 - availability는 save/session을 변경하지 않는 view 계산으로 처리한다. 원본 조건의 읽기 대상은 새 runtime owner(`people`, `body`, `social`, `inventory`, `equipment`, `run`, `featureState`, `session`)로 해석하고, 원본 raw 변수명은 runtime 모델명으로 쓰지 않는다.
 - 불가 command는 `Original availability rule COM_ABLE...` 형식의 사유를 반환한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
 - item 22/90/91 계열과 장비/상태/자원/관계/능력/소질/경험 조건을 원본 availability interpreter에 연결했고, 대표 item 부족 및 임시 장비 조건을 smoke로 검증했다.
 - `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`를 placeholder가 아닌 실제 script로 교체했다.
-- `data/coverage/training-availability-coverage.json`, `data/coverage/training-availability-rules.json`, `data/coverage/audits/M41-gap-audit.json`, `data/coverage/milestones/M41-closure.json`을 생성했다. ownedTotal 1,625, implemented 1,371, mapped 254, blocker/missing/unapproved 0.
+- `data/coverage/training-availability-coverage.json`, `data/coverage/training-availability-rules.json`, `data/coverage/audits/M41-gap-audit.json`, `data/coverage/milestones/M41-closure.json` 생성 이력은 있다. strict manifest 기준 현재 M41은 total 1,631, implemented-verified 4, blocked 1,626, scope-redesign-required 1이다.
 
 검증:
 

@@ -1,5 +1,16 @@
 # Current Status
 
+## 2026-05-02 M30 strict closure complete
+
+- M30 is now closed under the source-unit manifest rule.
+- `data/coverage/manifests/M30-source-units.json`: total 74, implemented-verified 37, approved-excluded 37, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- `data/coverage/milestones/M30-closure.json` now includes `responsibilityIntegrity`.
+- `npm run gate:item-use-coverage` passes with source 74, M30-owned 37, implemented-verified 37, approved-excluded 37.
+- `npm run gate:milestone-scope-closure -- M30` passes with M30 ownedTotal 37.
+- The old mixed 74-row blocked closure is corrected: special training, clothing/cosplay, and training availability rows are not counted as M30 implementation.
+- All 37 M30 approved exclusions have explicit blocked inbound responsibility in receiving manifests: M34 3, M41 6, M42 18, M43 8, M44 2.
+- Next closure target: M31.
+
 ## 2026-05-02 M29 strict closure complete
 
 - M29 is now closed under the source-unit manifest rule.
@@ -8,7 +19,7 @@
 - `npm run gate:shop-purchase-coverage` passes with source 206, M29-owned 83, implemented-verified 83, approved-excluded 123.
 - `npm run gate:milestone-scope-closure -- M29` passes with M29 ownedTotal 83.
 - The old mixed 206-row closure is corrected: non-purchase item use, equipment/clothing, recruit, event/world, and downstream owner rows are not counted as M29 implementation.
-- Next closure target: M30, currently blocked until its source units are implemented, approved-excluded, or redesigned.
+- Next closure target: M31.
 
 ## 2026-05-02 M28 strict closure complete
 
@@ -34,7 +45,7 @@
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,118; implemented-verified 7,944; blocked 2,885; scope-redesign-required 163; approved-excluded 126.
+- Aggregate totals: total units 11,155; implemented-verified 7,960; blocked 2,906; scope-redesign-required 126; approved-excluded 163.
 - Registry enforcement gap is closed: `coverage-gate-registry.json` has contracts for M28~M52.
 - Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
 
@@ -102,7 +113,7 @@
 ## 현재 위치
 
 - 마지막 완료 마일스톤: M41. 훈련 가능 조건 필수 구현
-- 현재 마일스톤: M29 closure 정정
+- 현재 마일스톤: M31 closure 정정
 - M42 상태: blocked. 이전 M42 커밋은 원본 효과 계산을 구현한 완료 커밋으로 신뢰하지 않는다.
 - 최종 완전 이식 판정: 아직 아님. M52에서만 판정한다.
 
@@ -112,25 +123,25 @@
 - M41은 105개 훈련 command availability와 불가 사유를 원본 `COMABLE.ERB`, `COMSEQ_REGISTER.ERB`, `COMORDER.ERB` 근거로 닫았다.
 - M42는 원본 `COMF0.ERB`~`COMF34.ERB`의 `SOURCE/LOSEBASE/EXP` 라인을 인덱싱하고 static profile을 만들었지만, 원본 branch/expression/effect behavior를 구현하지 않았으므로 완료가 아니다.
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
-- M30은 재판정 완료. 즉시 사용 아이템 9개는 구현됐지만 transfer 37개가 `ownedBlocker`로 남아 `status: blocked`다. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 현재 실패해야 정상이다.
+- M30은 strict closure 완료. 즉시 사용 아이템 9개 flow/effect 37개는 implemented-verified이고, M30 approved-excluded 37개는 수신 manifest에 blocked inbound로 명시했다.
 - completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
-- M29~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M28은 2026-05-02 strict closure로 완료됐다.
-- M28~M30 source-unit manifest 상태: M28 completedAllowedNow true(24 implemented-verified, 3 approved-excluded), M29 43/206 implemented-verified, M30 21/74 implemented-verified.
+- M31~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M28~M30은 2026-05-02 strict closure로 완료됐다.
+- M28~M30 source-unit manifest 상태: M28, M29, M30 모두 completedAllowedNow true.
 
 ## 현재 미완료 초점
 
-- 다음은 M29 closure를 manifest 기준으로 정정한다.
+- 다음은 M31 closure를 manifest 기준으로 정정한다.
 - 그 다음 command 0~34의 원본 효과 계산을 실제 runtime behavior로 구현해야 한다.
 - 원본 효과/조건/후처리 책임은 라인 존재 확인이나 profile 생성으로 대체할 수 없다.
 - `npm run gate:training-effect -- 0-34`는 M42가 실제 구현되기 전까지 실패해야 한다.
-- command 35~69는 M43, command 70 이상 전체와 후처리는 M44가 소유한다. M30 재판정 중 `COMF137.ERB` 소비가 확인되어 M44의 기존 70~104 범위 표현은 보강 대상이다. M29~M41 정정과 M42가 닫히기 전에는 M43로 넘어가지 않는다.
+- command 35~69는 M43, command 70 이상 전체와 후처리는 M44가 소유한다. M30 재판정 중 `COMF137.ERB` 소비가 확인되어 M44의 기존 70~104 범위 표현은 보강 대상이다. M31~M41 정정과 M42가 닫히기 전에는 M43로 넘어가지 않는다.
 
 ## 권위 자료
 
 - 상세 진행: `../PROGRESS_STATUS.ko.md`
 - 세션 인수인계: `../SESSION_HANDOFF.ko.md`
 - 실행 순서와 체크박스: `../NEW_PORT_MILESTONES.ko.md`
-- M30 blocked 판정: `../../data/coverage/milestones/M30-closure.json`
+- M30 strict closure: `../../data/coverage/milestones/M30-closure.json`
 - 책임 분리 판정 기준: `../milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`
 - M42 blocked 판정: `../../data/coverage/milestones/M42-closure.json`
 - M42 gap audit: `../../data/coverage/audits/M42-gap-audit.json`

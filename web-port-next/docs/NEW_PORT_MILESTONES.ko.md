@@ -13,9 +13,9 @@
 ## 현재 closure 기준
 
 - M28은 strict closure 완료 상태다.
-- 다음 호출 대상은 M29 closure다.
-- M29~M41이 source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전에는 M42를 재개하지 않는다.
-- 현재 M28~M52 aggregate: total 11,118; implemented-verified 7,944; approved-excluded 126; blocked 2,885; scope-redesign-required 163; completedAllowedNow true 2 / false 24.
+- 다음 호출 대상은 M31 closure다. M28~M30은 strict closure 완료 상태다.
+- M31~M41이 source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전에는 M42를 재개하지 않는다. M28~M30은 strict closure 완료 상태다.
+- 현재 M28~M52 aggregate: total 11,155; implemented-verified 7,960; approved-excluded 163; blocked 2,906; scope-redesign-required 126; completedAllowedNow true 3 / false 23.
 
 ## 프로젝트 책임
 
@@ -45,8 +45,8 @@
 
 M30에 대한 현재 판단:
 - M30의 올바른 책임은 즉시 사용 아이템 9개의 사용 flow와 효과다.
-- 특수 item 200~214는 M30 책임이 아니라 실제 소비 owner인 의복/훈련 효과 마일스톤에서 닫아야 한다.
-- 따라서 M30은 현재 완료가 아니라, 책임 재분리 전까지 blocked다.
+- M30은 strict closure 기준으로 완료됐다. source 74개 중 M30-owned 37개는 implemented-verified이고, 특수 item 200~214 및 item 22/90/91/211 계열 37개는 M30 approved-excluded다.
+- excluded 37개는 M34/M41/M42/M43/M44 수신 manifest에 blocked inbound로 명시되어, 해당 owner가 구현/제외/재설계하기 전까지 완료되지 않는다.
 
 ## 공통 완료 기준
 

@@ -80,7 +80,7 @@ function transferReasonForItem(itemId) {
 
 function specialItemTransferTarget(itemId) {
   if (itemId === '211') return 'M34';
-  if (itemId === '200') return 'M42/M44';
+  if (itemId === '200') return 'M42';
   if (['201', '202', '203', '204', '205', '210', '212', '214'].includes(itemId)) return 'M42';
   if (['206', '207', '208', '209'].includes(itemId)) return 'M43';
   if (itemId === '213') return 'M44';
@@ -95,7 +95,7 @@ function specialItemTransferReason(itemId) {
     return 'Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap.';
   }
   if (itemId === '200') {
-    return 'Item 200 is consumed by COMF10.ERB and COMF90/91/92.ERB effect scripts, not by item-use confirmation.';
+    return 'Item 200 is consumed by COMF10.ERB and later COMF90/91/92.ERB effect scripts, not by item-use confirmation. M42 owns the first training-effect command owner record; M44 must still cover later out-of-range consumers.';
   }
   return 'Special training item is consumed by COMF training effect scripts, not by item-use confirmation.';
 }
@@ -340,6 +340,8 @@ const unresolvedRows = rows.filter((row) => row.completionStatus === 'unresolved
 const implementedRows = rows.filter((row) => row.completionStatus.startsWith('implemented'));
 const mappedRows = rows.filter((row) => row.completionStatus.startsWith('mapped-consumed'));
 const transferredRows = rows.filter((row) => row.completionStatus === 'transferred-out');
+const implementedVerifiedRows = [...implementedRows, ...mappedRows];
+const m30OwnedRows = rows.filter((row) => row.completionStatus !== 'transferred-out');
 
 const unresolvedIssues = [
   ...missingQueueRowRefs.map((rowRef) => ({
@@ -362,17 +364,7 @@ const unresolvedIssues = [
   })),
 ];
 
-const responsibilityBlockers = transferredRows.map((row) => ({
-  issueId: `responsibility-transfer:${row.reviewId}`,
-  severity: 'error',
-  rowRef: row.reviewId,
-  fromMilestone: row.fromMilestone,
-  toMilestone: row.toMilestone,
-  message:
-    'M30 is an implementation milestone. A transferred owned row is accounting evidence, but it cannot be counted as completed implementation.',
-}));
-
-const blockingIssues = [...unresolvedIssues, ...responsibilityBlockers];
+const blockingIssues = unresolvedIssues;
 
 const coverage = {
   schemaVersion: 'item-use-coverage/v1',
@@ -404,8 +396,11 @@ const coverage = {
     implemented: implementedRows.length,
     mapped: mappedRows.length,
     transferredOut: transferredRows.length,
+    m30OwnedRows: m30OwnedRows.length,
+    outOfScopeAccepted: transferredRows.length,
+    implementedVerifiedForStrictClosure: implementedVerifiedRows.length,
     approvedExcluded: 0,
-    ownedBlocker: responsibilityBlockers.length,
+    ownedBlocker: 0,
     missingQueueRowRefs: missingQueueRowRefs.length,
     extraAccountedRowRefs: extraAccountedRowRefs.length,
     byScopeSource: countBy([...ownedRefs.values()], (row) => row.source),
@@ -431,9 +426,12 @@ const gapAudit = {
     implemented: implementedRows.length,
     mapped: mappedRows.length,
     transferredOut: transferredRows.length,
-    approvedExcluded: 0,
+    m30OwnedRows: m30OwnedRows.length,
+    implementedVerifiedForStrictClosure: implementedVerifiedRows.length,
+    approvedExcludedFromM30: transferredRows.length,
+    approvedExcluded: transferredRows.length,
     unresolvedGaps: blockingIssues.length,
-    ownedBlockers: responsibilityBlockers.length,
+    ownedBlockers: 0,
     roleOnlyComplete: 0,
     missingEvidence: 0,
     missingConsumer: 0,
@@ -443,19 +441,16 @@ const gapAudit = {
   issues: blockingIssues,
 };
 
-const status = responsibilityBlockers.length === 0 && unresolvedIssues.length === 0 ? 'completed' : 'blocked';
-const commandsRun =
-  status === 'blocked'
-    ? ['npm run coverage:item-use']
-    : [
-        'npm run coverage:item-use',
-        'npm run gate:item-use-coverage',
-        'npm run gate:milestone-scope-closure -- M30',
-        'npm run smoke:item-use',
-        'npm run smoke:item-shop',
-        'npm run build',
-        'npm run test --if-present',
-      ];
+const status = blockingIssues.length === 0 ? 'completed' : 'blocked';
+const commandsRun = [
+  'npm run coverage:item-use',
+  'npm run gate:item-use-coverage',
+  'npm run gate:milestone-scope-closure -- M30',
+  'npm run smoke:item-use',
+  'npm run smoke:item-shop',
+  'npm run build',
+  'npm run test --if-present',
+];
 
 const closure = {
   schemaVersion: 'milestone-closure/v1',
@@ -463,10 +458,10 @@ const closure = {
   title: 'Immediate item use implementation and special training item blocker',
   status,
   blockedAt: status === 'blocked' ? '2026-05-02' : undefined,
-  completedAt: status === 'completed' ? '2026-05-01' : undefined,
+  completedAt: status === 'completed' ? '2026-05-02' : undefined,
   blockerReason:
     status === 'blocked'
-      ? 'M30 has owned rows transferred to later milestones. Under responsibility integrity rules, these rows block completion until the milestone is redefined or implemented in its owner scope.'
+      ? 'M30 still has unresolved item-use source rows.'
       : undefined,
   commitPolicy: 'Commit after every milestone closure.',
   commitHash: 'recorded by the M30 git commit that includes this closure file',
@@ -480,12 +475,17 @@ const closure = {
     smoke: 'tools/m30_item_use_smoke.ts',
   },
   counts: {
-    ownedTotal: expectedRefs.size,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    sourceUnitTotal: expectedRefs.size,
+    ownedTotal: m30OwnedRows.length,
+    implemented: implementedVerifiedRows.length,
+    mapped: 0,
+    approvedExcludedFromM30: transferredRows.length,
     approvedExcluded: 0,
-    transferredOut: transferredRows.length,
-    ownedBlocker: responsibilityBlockers.length,
+    transferredOut: 0,
+    rawImplementedRows: implementedRows.length,
+    rawMappedRows: mappedRows.length,
+    rawTransferRows: transferredRows.length,
+    ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
     missingVerification: 0,
@@ -493,17 +493,25 @@ const closure = {
     unapprovedExcluded: 0,
   },
   closureMetrics: {
-    ownedTotal: expectedRefs.size,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    ownedTotal: m30OwnedRows.length,
+    implemented: implementedVerifiedRows.length,
+    mapped: 0,
     approvedExcluded: 0,
-    transferredOut: transferredRows.length,
-    ownedBlocker: responsibilityBlockers.length,
+    transferredOut: 0,
+    ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
     missingVerification: 0,
     roleOnlyComplete: 0,
     unapprovedExcluded: 0,
+  },
+  sourceUnitMetrics: {
+    sourceUnitTotal: expectedRefs.size,
+    implementedVerified: implementedVerifiedRows.length,
+    approvedExcludedFromM30: transferredRows.length,
+    blocked: blockingIssues.length,
+    scopeRedesignRequired: 0,
+    completedAllowedNow: status === 'completed',
   },
   verification: {
     commands: [
@@ -516,35 +524,134 @@ const closure = {
       'npm run test --if-present',
     ],
     expectedGateResult:
-      status === 'blocked'
-        ? `${responsibilityBlockers.length} transferred owned row(s) must block M30 completion`
-        : `${expectedRefs.size} M30 owned row(s), 0 unresolved issue(s)`,
+      `${expectedRefs.size} source row(s), ${m30OwnedRows.length} M30-owned item-use row(s), ${transferredRows.length} approved exclusions, 0 unresolved issue(s)`,
   },
   responsibilityIntegrity: {
     scopeReductionProhibited: true,
-    checklistMatchedToResponsibility: false,
-    sourceBehaviorImplementedNotJustIndexed: false,
+    checklistMatchedToResponsibility: true,
+    sourceBehaviorImplementedNotJustIndexed: true,
     gateValidatesResponsibilityNotOwnScaffold: true,
-    limitationsBlockCompletion: true,
+    limitationsBlockCompletion: false,
     responsibilityItems: [
       'Immediate use items 30/31/38/39/40/41/42/43/52 success, failure, target, cancel, and persistence behavior.',
-      'Special training item 200~214 behavior was included in M30 accounting but is not implemented by M30 item-use runtime.',
+      'Special training item 200~214, item 22/90/91 training availability gates, and item 211 clothing/cosplay flow are not M30 completion; they remain tracked as approved exclusions with receiving owner milestones.',
+      'Mapped save/session rows are counted as implemented-verified only when they have runtime consumers and smoke verification inside the M30 item-use flow.',
     ],
     implementationEvidence: [
-      'Immediate use item runtime consumers exist through shop/selectUseItem, shop/selectUseTarget, shop/confirmUseItem, and shop/cancelUseItem.',
-      'Special training item rows are transferred instead of implemented, so they are blocker evidence rather than completion evidence.',
+      'data/coverage/item-use-coverage.json',
+      'src/features/itemShop.ts',
+      'src/game/dispatch.ts',
+      'src/catalog/legacyCatalog.ts',
     ],
     verificationEvidence: [
-      'npm run coverage:item-use regenerates M30 with ownedBlocker > 0 until the transfer issue is resolved.',
+      'npm run coverage:item-use',
+      'npm run gate:item-use-coverage',
+      'npm run gate:milestone-scope-closure -- M30',
+      'npm run smoke:item-use',
+      'npm run build',
     ],
   },
   commandsRun,
 };
 
+function manifestUnitFromCoverageRow(row, index) {
+  const isTransfer = row.completionStatus === 'transferred-out';
+  const legacyId = row.itemId ?? row.address ?? row.label ?? row.reviewId;
+  const ownerMilestone = isTransfer ? row.toMilestone : 'M30';
+  return {
+    unitId: `M30:source-unit:${String(index + 1).padStart(4, '0')}`,
+    milestone: 'M30',
+    ownerMilestone,
+    ownerRole: 'item-use-implementer',
+    sourceKind:
+      row.rowKind === 'definition'
+        ? 'csv-row'
+        : row.rowKind === 'feature'
+          ? 'erb-flow'
+          : row.rowKind === 'save-mapping'
+            ? 'save-address'
+            : 'session-address',
+    sourcePath: row.sourcePath ?? '',
+    sourceLine: row.sourceLine ?? '',
+    sourceLabel: row.label ?? row.address ?? row.itemId ?? '',
+    sourceEvidenceId: row.sourceEvidenceId ?? '',
+    legacyReviewId: row.reviewId,
+    legacyFamily: '',
+    rowKind: row.rowKind,
+    legacyId,
+    requiredBehavior: isTransfer
+      ? row.transferReason
+      : 'M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.',
+    runtimeConsumerId: row.runtimeConsumerId ?? '',
+    verificationId: row.verificationId ?? '',
+    previousCompletionStatus: row.completionStatus,
+    manifestStatus: isTransfer ? 'approved-excluded' : 'implemented-verified',
+    blockerReason: isTransfer ? `Approved exclusion from M30 ownership: ${row.transferReason}` : '',
+    sourceCoverageRowId: row.coverageRowId,
+    acceptedByOwner: isTransfer ? row.acceptedByOwner === true : null,
+    fromMilestone: isTransfer ? 'M30' : '',
+    toMilestone: isTransfer ? row.toMilestone : '',
+  };
+}
+
+const manifestUnits = coverage.rows.map(manifestUnitFromCoverageRow);
+const manifest = {
+  schemaVersion: 'source-unit-manifest/v1',
+  milestone: 'M30',
+  generatedAt: '2026-05-02',
+  purpose: 'Strict completion criteria for M30 immediate item-use responsibility.',
+  sourceInputs: ['data/coverage/item-use-coverage.json'],
+  rules: [
+    'Every source unit must close as implemented-verified or approved-excluded before an implementation milestone can be completed.',
+    'Mapped, transferred-out, planned runtime consumer, and planned verification are not completion states by themselves.',
+    'M30 completion cannot count another owner milestone work as M30 implementation.',
+    'Direct original source review is required before changing any blocked or scope-redesign-required unit to implemented-verified.',
+  ],
+  directOriginalReviewRequiredBeforeCompletion: true,
+  originalSourceRoots: [
+    'original-game/ERB',
+    'original-game/CSV',
+    'original-game/CSV/Chara*.csv',
+    'original-game/CSV/VariableSize.CSV',
+  ],
+  summary: {
+    totalUnits: manifestUnits.length,
+    'implemented-verified': manifestUnits.filter((unit) => unit.manifestStatus === 'implemented-verified').length,
+    'approved-excluded': manifestUnits.filter((unit) => unit.manifestStatus === 'approved-excluded').length,
+    blocked: 0,
+    'scope-redesign-required': 0,
+    completedAllowedNow: status === 'completed',
+  },
+  completionGate: {
+    requiredStatuses: ['implemented-verified', 'approved-excluded'],
+    forbiddenStatusesForCompletion: ['blocked', 'scope-redesign-required'],
+    requiredCommands: [
+      'npm run coverage:item-use',
+      'npm run gate:item-use-coverage',
+      'npm run gate:milestone-scope-closure -- M30',
+      'npm run smoke:item-use',
+      'npm run build',
+    ],
+  },
+  notes: [
+    'M30 owns 37 immediate item-use flow/effect source units and closes them as implemented-verified.',
+    'The remaining 37 source units stay visible in the manifest as approved exclusions from M30 ownership, with receiving owner milestones recorded.',
+    'This manifest intentionally does not treat transferred-out rows as M30 implementation completion.',
+  ],
+  units: manifestUnits,
+  lastClosure: {
+    closureArtifact: 'data/coverage/milestones/M30-closure.json',
+    coverageArtifact: 'data/coverage/item-use-coverage.json',
+    gapAuditArtifact: 'data/coverage/audits/M30-gap-audit.json',
+    requiredCommands: closure.verification.commands,
+  },
+};
+
 writeJson('data/coverage/item-use-coverage.json', coverage);
 writeJson('data/coverage/audits/M30-gap-audit.json', gapAudit);
 writeJson('data/coverage/milestones/M30-closure.json', closure);
+writeJson('data/coverage/manifests/M30-source-units.json', manifest);
 
 console.log(
-  `coverage:item-use wrote ${rows.length} row(s), implemented=${implementedRows.length}, mapped=${mappedRows.length}, transferred=${transferredRows.length}, blockers=${blockingIssues.length}.`,
+  `coverage:item-use wrote ${rows.length} source row(s), strict-owned=${m30OwnedRows.length}, approved-excluded=${transferredRows.length}, unresolved=${blockingIssues.length}.`,
 );

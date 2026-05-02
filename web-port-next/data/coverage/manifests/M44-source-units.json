@@ -21,9 +21,9 @@
     "original-game/ERB/**/COMF*.ERB"
   ],
   "summary": {
-    "totalUnits": 61,
+    "totalUnits": 63,
     "scope-redesign-required": 23,
-    "blocked": 38,
+    "blocked": 40,
     "completedAllowedNow": false,
     "activeTrainCommands": 38,
     "numericComfSources": 47,
@@ -43,6 +43,7 @@
     ]
   },
   "notes": [
+    "M30 inbound special training item source units for command 70-plus effects must be implemented or explicitly excluded by the M44 training-effect owner before M44 can close.",
     "No M44 coverage artifact exists yet. Active Train.csv rows, inactive/out-of-range COMF files, and named COMF helper files are all explicit units."
   ],
   "units": [
@@ -2420,6 +2421,58 @@
           "FLAG"
         ]
       }
+    },
+    {
+      "unitId": "M44:source-unit:0062",
+      "milestone": "M44",
+      "ownerMilestone": "M44",
+      "ownerRole": "training-effect-70-plus-owner",
+      "sourceKind": "csv-row",
+      "sourcePath": "original-game/CSV/Item.csv",
+      "sourceLine": "",
+      "sourceLabel": "마술식삼각목마",
+      "sourceEvidenceId": "source:definition:definition-item-special-213",
+      "legacyReviewId": "definition:definition:item-special:213",
+      "legacyFamily": "",
+      "rowKind": "definition",
+      "legacyId": "213",
+      "requiredBehavior": "Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap.",
+      "runtimeConsumerId": "",
+      "verificationId": "gate:milestone-scope-closure -- M44",
+      "previousCompletionStatus": "inbound-from-M30-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M30 approved exclusion. Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "item-use:transfer:special-training-definition:213",
+      "acceptedByOwner": true,
+      "fromMilestone": "M30",
+      "toMilestone": "M44",
+      "inboundFromMilestone": "M30"
+    },
+    {
+      "unitId": "M44:source-unit:0063",
+      "milestone": "M44",
+      "ownerMilestone": "M44",
+      "ownerRole": "training-effect-70-plus-owner",
+      "sourceKind": "session-address",
+      "sourcePath": "original-game/CSV/Item.csv",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "sourceEvidenceId": "source:session-map:itemsales-213",
+      "legacyReviewId": "session-mapping:session-map:source:itemsales-213",
+      "legacyFamily": "",
+      "rowKind": "session-mapping",
+      "legacyId": "213",
+      "requiredBehavior": "Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap.",
+      "runtimeConsumerId": "",
+      "verificationId": "gate:milestone-scope-closure -- M44",
+      "previousCompletionStatus": "inbound-from-M30-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M30 approved exclusion. Item 213 is consumed by COMF137.ERB; M44 must cover command ids above 104 or this remains a final port gap. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "item-use:transfer:special-training-session:213",
+      "acceptedByOwner": true,
+      "fromMilestone": "M30",
+      "toMilestone": "M44",
+      "inboundFromMilestone": "M30"
     }
   ]
 }

@@ -7,6 +7,10 @@ function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(root, relativePath), 'utf8'));
 }
 
+function fileExists(relativePath) {
+  return fs.existsSync(path.join(root, relativePath));
+}
+
 function fail(message, detail) {
   console.error(`gate:item-use-coverage failed: ${message}`);
   if (detail) {
@@ -100,6 +104,35 @@ const badTransfers = coverage.rows.filter(
 );
 assert(badTransfers.length === 0, 'transfer rows are incomplete', badTransfers.slice(0, 20));
 
+const transferRows = coverage.rows.filter((row) => row.completionStatus === 'transferred-out');
+const missingInboundTransferRows = [];
+for (const row of transferRows) {
+  const manifestPath = `data/coverage/manifests/${row.toMilestone}-source-units.json`;
+  if (!fileExists(manifestPath)) {
+    missingInboundTransferRows.push({ coverageRowId: row.coverageRowId, toMilestone: row.toMilestone, reason: 'receiver manifest missing' });
+    continue;
+  }
+  const receiverManifestText = JSON.stringify(readJson(manifestPath));
+  if (
+    !receiverManifestText.includes(row.reviewId) &&
+    !receiverManifestText.includes(row.coverageRowId) &&
+    !receiverManifestText.includes(row.sourceEvidenceId)
+  ) {
+    missingInboundTransferRows.push({
+      coverageRowId: row.coverageRowId,
+      reviewId: row.reviewId,
+      sourceEvidenceId: row.sourceEvidenceId,
+      toMilestone: row.toMilestone,
+      reason: 'receiver manifest has no matching inbound unit',
+    });
+  }
+}
+assert(
+  missingInboundTransferRows.length === 0,
+  'M30 transfer rows must be explicit inbound responsibility in receiving manifests',
+  missingInboundTransferRows.slice(0, 20),
+);
+
 const requiredRuntimeConsumers = new Set([
   'definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem',
   'shop/selectUseItem; shop/selectUseTarget; shop/confirmUseItem; shop/cancelUseItem',
@@ -128,11 +161,26 @@ assert(Number(summary.ownedRowRefs) === expectedRefs.size, 'summary owned row co
 assert(Number(summary.rows) === coverage.rows.length, 'summary rows count mismatch', summary);
 assert(Number(summary.ownedBlocker) === 0, 'M30 must not close with owned blockers', summary);
 assert(
+  Number(summary.m30OwnedRows) === Number(summary.implemented) + Number(summary.mapped),
+  'strict M30 owned rows must equal implemented + mapped item-use evidence rows',
+  summary,
+);
+assert(
+  Number(summary.outOfScopeAccepted) === Number(summary.transferredOut),
+  'out-of-scope accepted rows must match transfer accounting',
+  summary,
+);
+assert(
+  Number(summary.implementedVerifiedForStrictClosure) === Number(summary.m30OwnedRows),
+  'strict closure evidence must cover every M30-owned item-use row',
+  summary,
+);
+assert(
   Number(summary.implemented) + Number(summary.mapped) + Number(summary.transferredOut) === expectedRefs.size,
   'summary implemented + mapped + transferredOut must close all rows',
   summary,
 );
 
 console.log(
-  `gate:item-use-coverage passed: ${coverage.rows.length} M30 row(s), implemented=${summary.implemented}, mapped=${summary.mapped}, transferred=${summary.transferredOut}.`,
+  `gate:item-use-coverage passed: ${coverage.rows.length} source row(s), M30-owned=${summary.m30OwnedRows}, implemented-verified=${summary.implementedVerifiedForStrictClosure}, approved-excluded=${summary.outOfScopeAccepted}.`,
 );

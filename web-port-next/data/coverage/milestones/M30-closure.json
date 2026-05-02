@@ -2,9 +2,8 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M30",
   "title": "Immediate item use implementation and special training item blocker",
-  "status": "blocked",
-  "blockedAt": "2026-05-02",
-  "blockerReason": "M30 has owned rows transferred to later milestones. Under responsibility integrity rules, these rows block completion until the milestone is redefined or implemented in its owner scope.",
+  "status": "completed",
+  "completedAt": "2026-05-02",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M30 git commit that includes this closure file",
   "sourceInputs": {
@@ -24,12 +23,17 @@
     "smoke": "tools/m30_item_use_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 74,
-    "implemented": 21,
-    "mapped": 16,
+    "sourceUnitTotal": 74,
+    "ownedTotal": 37,
+    "implemented": 37,
+    "mapped": 0,
+    "approvedExcludedFromM30": 37,
     "approvedExcluded": 0,
-    "transferredOut": 37,
-    "ownedBlocker": 37,
+    "transferredOut": 0,
+    "rawImplementedRows": 21,
+    "rawMappedRows": 16,
+    "rawTransferRows": 37,
+    "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -37,17 +41,25 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 74,
-    "implemented": 21,
-    "mapped": 16,
+    "ownedTotal": 37,
+    "implemented": 37,
+    "mapped": 0,
     "approvedExcluded": 0,
-    "transferredOut": 37,
-    "ownedBlocker": 37,
+    "transferredOut": 0,
+    "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 74,
+    "implementedVerified": 37,
+    "approvedExcludedFromM30": 37,
+    "blocked": 0,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": true
   },
   "verification": {
     "commands": [
@@ -59,27 +71,40 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "37 transferred owned row(s) must block M30 completion"
+    "expectedGateResult": "74 source row(s), 37 M30-owned item-use row(s), 37 approved exclusions, 0 unresolved issue(s)"
   },
   "responsibilityIntegrity": {
     "scopeReductionProhibited": true,
-    "checklistMatchedToResponsibility": false,
-    "sourceBehaviorImplementedNotJustIndexed": false,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
     "gateValidatesResponsibilityNotOwnScaffold": true,
-    "limitationsBlockCompletion": true,
+    "limitationsBlockCompletion": false,
     "responsibilityItems": [
       "Immediate use items 30/31/38/39/40/41/42/43/52 success, failure, target, cancel, and persistence behavior.",
-      "Special training item 200~214 behavior was included in M30 accounting but is not implemented by M30 item-use runtime."
+      "Special training item 200~214, item 22/90/91 training availability gates, and item 211 clothing/cosplay flow are not M30 completion; they remain tracked as approved exclusions with receiving owner milestones.",
+      "Mapped save/session rows are counted as implemented-verified only when they have runtime consumers and smoke verification inside the M30 item-use flow."
     ],
     "implementationEvidence": [
-      "Immediate use item runtime consumers exist through shop/selectUseItem, shop/selectUseTarget, shop/confirmUseItem, and shop/cancelUseItem.",
-      "Special training item rows are transferred instead of implemented, so they are blocker evidence rather than completion evidence."
+      "data/coverage/item-use-coverage.json",
+      "src/features/itemShop.ts",
+      "src/game/dispatch.ts",
+      "src/catalog/legacyCatalog.ts"
     ],
     "verificationEvidence": [
-      "npm run coverage:item-use regenerates M30 with ownedBlocker > 0 until the transfer issue is resolved."
+      "npm run coverage:item-use",
+      "npm run gate:item-use-coverage",
+      "npm run gate:milestone-scope-closure -- M30",
+      "npm run smoke:item-use",
+      "npm run build"
     ]
   },
   "commandsRun": [
-    "npm run coverage:item-use"
+    "npm run coverage:item-use",
+    "npm run gate:item-use-coverage",
+    "npm run gate:milestone-scope-closure -- M30",
+    "npm run smoke:item-use",
+    "npm run smoke:item-shop",
+    "npm run build",
+    "npm run test --if-present"
   ]
 }

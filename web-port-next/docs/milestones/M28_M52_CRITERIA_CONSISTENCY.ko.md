@@ -11,13 +11,13 @@ Criteria baseline status: **complete**
 Evidence:
 - Consistency report: `data/coverage/manifests/M28-M52-criteria-consistency.json`
 - All M28~M52 source-unit manifests exist.
-- 2 manifests currently have `completedAllowedNow: true`; 24 remain false.
+- 3 manifests currently have `completedAllowedNow: true`; 23 remain false.
 - Aggregate manifest totals:
-  - total units: 11,118
-  - implemented-verified: 7,944
-  - blocked: 2,885
-  - scope-redesign-required: 163
-  - approved-excluded: 126
+  - total units: 11,155
+  - implemented-verified: 7,960
+  - blocked: 2,906
+  - scope-redesign-required: 126
+  - approved-excluded: 163
 
 M28 is now closed under the source-unit manifest rule:
 - 24 SHOP_MAIN menu rows are `implemented-verified`.
@@ -30,6 +30,12 @@ M29 is now closed under the source-unit manifest rule:
 - All 123 M29 approved exclusions are explicit inbound responsibility in receiver manifests: M30 49, M31 48, M34 12, M35 2, M32 4, M37 2, M47 4, M48 1, M49 1.
 - The newly added receiver rows are `blocked`, so they do not silently complete later milestones.
 - `npm run gate:shop-purchase-coverage` and `npm run gate:milestone-scope-closure -- M29` pass with M29 ownedTotal 83.
+
+M30 is now closed under the source-unit manifest rule:
+- 37 immediate item-use flow/effect rows are `implemented-verified`.
+- 37 non-M30 special training, clothing/cosplay, and training availability rows are `approved-excluded` from M30 ownership.
+- All 37 M30 approved exclusions are explicit blocked inbound responsibility in receiver manifests: M34 3, M41 6, M42 18, M43 8, M44 2.
+- `npm run gate:item-use-coverage` and `npm run gate:milestone-scope-closure -- M30` pass with M30 ownedTotal 37.
 
 ## Registry Enforcement
 
