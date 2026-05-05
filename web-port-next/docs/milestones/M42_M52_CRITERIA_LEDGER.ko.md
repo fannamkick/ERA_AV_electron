@@ -2,6 +2,15 @@
 
 This ledger records the remaining completion-criteria work after the M28~M41 source-unit manifest pass.
 
+## 2026-05-06 item-level classification rule
+
+M42~M52 must not start as isolated implementation work. First classify their existing checklist items in the phase documents themselves:
+
+- M42~M49: `docs/milestones/PHASE_5_M28_M49.ko.md`
+- M50~M52: `docs/milestones/PHASE_6_M50_M52.ko.md`
+
+Do not create a separate replacement ledger for this. The milestone sections must directly show whether each item is `[HERE]`, `[LATER]`, `[EXCLUDED]`, `[BLOCKED]`, `[REDESIGN]`, `[VERIFY]`, or `[DOC-ONLY]`.
+
 ## 2026-05-02 M28-M52 registry enforcement update
 
 Artifacts:

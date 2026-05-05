@@ -2,7 +2,25 @@
 
 ## 2026-05-05 next after M31 closure
 
-M31 is complete under the strict source-unit manifest rule. Continue with M32.
+M31 is complete under the strict source-unit manifest rule. Do not jump straight into M32 implementation. First classify the existing phase/milestone checklist items directly in `docs/milestones/PHASE_5_M28_M49.ko.md` and `docs/milestones/PHASE_6_M50_M52.ko.md`.
+
+Freeze pass output required for every remaining milestone:
+1. Owned runtime responsibility.
+2. Source-unit manifest path.
+3. Owned unit count.
+4. Approved-excluded candidates and reason.
+5. Other-owner candidates and receiver manifest status.
+6. States that forbid completion: `mapped`, `source-file-review`, `transferredOut`, owner-only rows, planned verification only.
+7. Item-level responsibility tags in phase/milestone docs: `[HERE:Mxx]`, `[LATER:Myy]`, `[EXCLUDED->Myy]`, `[BLOCKED:Mxx]`, `[REDESIGN]`, `[VERIFY:Mxx]`, `[DOC-ONLY]`.
+
+Classify in this order:
+1. M32, M33, M34, M34.5.
+2. M35~M41.
+3. M42~M44.
+4. M45~M49.
+5. M50~M52.
+
+Start by editing the M32 checklist in the existing Phase 5 document, then proceed downward.
 
 M32 must close only its character identity, lifecycle, and naming responsibility. Rows inherited from M31 or mapped into adjacent body/stat/equipment/event owners are not M32 completion evidence until M32 implements them, excludes them with approval, or redesigns ownership explicitly.
 
@@ -113,7 +131,7 @@ M31 strict closure까지 완료했다. 따라서 다음 순서는 M42로 바로 
 
 현재 즉시 목표는 M32~M41 완료 선언을 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다. M28~M31은 strict closure로 완료됐다. 그 다음에야 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.
 
-M28~M31의 source-unit manifest는 작성됐고 strict closure가 완료됐다. 다음 작업은 M32 closure부터 원본 단위 manifest 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다.
+M28~M31의 source-unit manifest는 작성됐고 strict closure가 완료됐다. 다음 작업은 M32~M52 책임 명시/freeze 보강이며, 그 뒤 M32 closure부터 원본 단위 manifest 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다.
 
 ## 먼저 해야 하는 것
 

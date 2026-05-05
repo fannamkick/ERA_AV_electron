@@ -2,6 +2,33 @@
 
 목적: 각 마일스톤이 자기 책임 안에서 끝났는지 판정한다. 기준은 "무엇을 세었는가"가 아니라 "원본 단위 매니페스트의 모든 단위를 어느 runtime owner가 실제로 구현하고 검증했는가"다.
 
+## 책임 명시 우선 원칙
+
+구현 마일스톤은 작업을 시작한 뒤에 책임을 이관하며 완료 범위를 줄이지 않는다. 먼저 전체 원본 단위를 보고, 각 단위의 runtime owner와 호출 책임을 확정한 뒤에만 구현이나 완료 판정을 시작한다.
+
+- 시작 전에는 해당 마일스톤의 owned unit, 승인 제외 후보, 다른 owner 후보를 모두 매니페스트에 적는다.
+- phase/마일스톤 상세 문서의 각 체크 항목은 책임 표기를 가진다. 그 항목이 이 호출에서 닫히는지, 다른 마일스톤에서 닫히는지, 승인 제외인지, 완료 금지 상태인지가 줄 단위로 보여야 한다.
+- 작업 중 새 owner 후보가 발견되면 그 자리에서 넘기고 계속하지 않는다. 먼저 `scope-redesign-required`로 막고, 책임 지도와 매니페스트를 고친 뒤 다시 시작한다.
+- `approved-excluded`는 "이번 마일스톤이 안 해도 된다"는 임시 회피가 아니다. 제외 범위, 제외 이유, 실제 owner, receiver manifest 반영 여부가 모두 있어야 한다.
+- 완료 커밋에는 "이번 마일스톤이 한 것", "하지 않은 것", "승인 제외한 것", "blocked/scope-redesign-required로 남긴 것"이 단위별 산출물로 남아야 한다.
+- 책임 재분리는 구현 중 편의상 수행하지 않는다. 재분리가 필요하면 구현을 멈추고 책임 명시 작업으로 전환한다.
+
+## 항목별 책임 표기 형식
+
+각 마일스톤의 체크 항목 앞에는 아래 표기 중 하나를 붙인다.
+
+| 표기 | 의미 | 완료 판정 |
+| --- | --- | --- |
+| `[HERE:Mxx]` | 이 항목은 현재 마일스톤 Mxx가 직접 구현/검증한다. | 증거가 있으면 완료 가능 |
+| `[LATER:Myy]` | 이 항목은 현재 마일스톤이 아니라 Myy의 책임이다. | 현재 Mxx 완료 근거로 금지 |
+| `[EXCLUDED->Myy]` | 사용자 승인 제외이며 Myy receiver manifest에 반영되어야 한다. | 승인/receiver가 있으면 현재 Mxx에서 제외 가능 |
+| `[BLOCKED:Mxx]` | 현재 Mxx 책임이지만 아직 미구현/미검증이다. | 완료 금지 |
+| `[REDESIGN]` | owner가 섞여 있어 책임 재분리가 필요하다. | 완료 금지 |
+| `[VERIFY:Mxx]` | 구현은 존재하나 이 마일스톤에서 검증 증거를 닫아야 한다. | 검증 전 완료 금지 |
+| `[DOC-ONLY]` | 조사/정책/문서 산출물이며 runtime 구현 완료가 아니다. | 구현 완료 근거로 금지 |
+
+기존 체크박스가 있어도 이 표기가 없으면 완료 근거로 쓰지 않는다. 표기와 매니페스트 unit 상태가 충돌하면 매니페스트와 runtime evidence를 기준으로 체크박스를 고친다.
+
 ## 기본 판정
 
 - `completed`: 마일스톤 제목과 책임 선언에 적힌 원본 동작이 runtime behavior, source evidence, consumer evidence, verification evidence를 모두 가진다. owned blocker, unresolved gap, role-only complete, missing evidence/consumer/verification, unapproved exclusion이 0이어야 한다.

@@ -11,8 +11,22 @@ Current execution point:
 - M29 is strictly closed.
 - M30 is strictly closed.
 - M31 is strictly closed.
-- M32 is next for strict reassessment.
+- The immediate next work is direct item-level responsibility classification inside the existing phase/milestone documents.
+- Do not create a separate replacement ledger for this. Edit the M32, M33, ... milestone sections in place.
+- M32 is the first strict reassessment target after its existing checklist is classified.
 - M32 must not count inherited/mapped/identity-adjacent rows as completed unless they are implemented-verified, approved-excluded, or explicit blocked owner responsibility.
+- Do not transfer responsibility while implementing. If a unit appears to belong elsewhere, stop implementation, mark `scope-redesign-required`, update the responsibility map and receiver manifest, then restart from the frozen scope.
+
+Responsibility freeze pass must leave, for each remaining M32~M52 milestone, the owned runtime responsibility, manifest path, owned unit count, approved-excluded candidates, other-owner candidates, receiver manifest status, and completion-forbidden states.
+
+It must also tag every checklist item in the phase/milestone docs with one of: `[HERE:Mxx]`, `[LATER:Myy]`, `[EXCLUDED->Myy]`, `[BLOCKED:Mxx]`, `[REDESIGN]`, `[VERIFY:Mxx]`, `[DOC-ONLY]`. Without this item-level tag, old checkboxes are not completion evidence.
+
+Classification order:
+- M32, M33, M34, M34.5.
+- M35~M41.
+- M42~M44.
+- M45~M49.
+- M50~M52.
 
 ## 2026-05-05 handoff after M31 strict closure
 

@@ -1,5 +1,16 @@
 # 진행 상태
 
+## 2026-05-05 책임 명시/freeze 우선
+
+M28~M31 strict closure 이후 다음 작업은 M32 구현 착수가 아니라 기존 phase/마일스톤 문서 안에서 항목별 책임 분류를 직접 붙이는 것이다.
+
+- 중앙 기준: `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`
+- 판정 기준: `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`
+- 시작 문서: `docs/agent/CODEX_BOOTSTRAP.ko.md`, `docs/agent/NEXT_MILESTONE.ko.md`
+- 원칙: 구현 중 책임을 이관하며 완료 범위를 줄이지 않는다. 다른 owner 후보가 보이면 구현을 멈추고 `scope-redesign-required`로 막은 뒤 책임 지도와 receiver manifest를 먼저 고친다.
+- 각 남은 M32~M52는 기존 `PHASE_5_M28_M49.ko.md`와 `PHASE_6_M50_M52.ko.md`의 자기 체크 항목에 `[HERE]`, `[LATER]`, `[EXCLUDED]`, `[BLOCKED]`, `[REDESIGN]`, `[VERIFY]`, `[DOC-ONLY]`를 직접 붙인다.
+- 처리 순서: M32~M34.5, M35~M41, M42~M44, M45~M49, M50~M52.
+
 ## 2026-05-02 M30 strict closure complete
 
 M30 is now closed under the source-unit manifest rule.

@@ -4,8 +4,8 @@
 
 ## 현재 closure 기준
 
-- M28은 strict closure 완료 상태다.
-- M29가 다음 closure 대상이다.
+- M28~M31은 strict closure 완료 상태다.
+- 다음 작업은 M32~M52 책임 명시/freeze 보강이다. 그 뒤 M32가 첫 closure 대상이다.
 - M32~M41은 strict source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전까지 M42를 재개하지 않는다. M28~M31은 strict closure 완료 상태다.
 - M28~M52 aggregate: total 11,226; implemented-verified 8,035; approved-excluded 273; blocked 2,819; scope-redesign-required 99; completedAllowedNow true 4 / false 22.
 
@@ -33,6 +33,7 @@
 
 - phase 문서는 scope 축소 근거가 아니다.
 - phase 문서의 `페이즈 책임`, `호출 책임`, `스킵 방지 규칙`은 마일스톤 체크리스트보다 우선한다.
+- 구현 중 책임 이관으로 완료 범위를 줄이지 않는다. 이관이 필요해 보이면 먼저 책임 명시/freeze 문서를 고치고, 해당 구현 호출은 `scope-redesign-required`로 막는다.
 - 각 마일스톤은 시작 전에 원본 단위 매니페스트를 만들고, 완료 전에 매니페스트의 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
 - `implemented`, `mapped`, `approved-excluded`는 원본 row와 full artifact 대조 없이 부여하지 않는다.
 - blocker가 남은 마일스톤은 다음 phase로 넘어가지 않는다.

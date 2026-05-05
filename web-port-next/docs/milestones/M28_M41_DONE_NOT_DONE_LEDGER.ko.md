@@ -1,5 +1,20 @@
 # M28~M41 완료/미완료 사실 장부
 
+## 2026-05-05 책임 명시/freeze 우선
+
+M28~M31은 strict closure 완료 상태다. 다음 작업은 M32 구현이 아니라 기존 `PHASE_5_M28_M49.ko.md` 안에서 M32부터 항목별 책임 분류를 직접 붙이는 것이다. 별도 대체 장부를 새로 만들지 않는다.
+
+각 남은 마일스톤은 구현 전에 아래를 먼저 남긴다.
+
+- owned runtime responsibility
+- source-unit manifest path
+- owned unit count
+- approved-excluded 후보와 이유
+- other-owner 후보와 receiver manifest 상태
+- 완료 금지 상태: `mapped`, `source-file-review`, `transferredOut`, owner-only row, 예정 verification only
+
+작업 중 책임 이관으로 완료 범위를 줄이지 않는다. 이관이 필요해 보이면 구현을 멈추고 `scope-redesign-required`로 막은 뒤 책임 지도와 receiver manifest를 먼저 고친다.
+
 ## 2026-05-05 M31 strict closure update
 
 M31 is now complete under the strict source-unit manifest rule.

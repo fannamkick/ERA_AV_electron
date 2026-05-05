@@ -5,7 +5,7 @@
 ## 현재 작업 기준
 
 - M28은 strict closure 완료 상태다.
-- 바로 다음 작업은 M32 closure 정정이다. M28~M31은 strict closure 완료 상태다.
+- 바로 다음 작업은 기존 phase/마일스톤 문서 안에서 M32부터 항목별 책임 분류를 직접 붙이는 것이다. 그 뒤 첫 closure 정정 대상은 M32다. M28~M31은 strict closure 완료 상태다.
 - M32~M41이 strict manifest 기준으로 닫히거나 blocked/scope-redesign-required로 정정되기 전에는 M42 구현을 재개하지 않는다. M28~M31은 strict closure 완료 상태다.
 - M28~M52 aggregate: total 11,226; implemented-verified 8,035; approved-excluded 273; blocked 2,819; scope-redesign-required 99; completedAllowedNow true 4 / false 22.
 
@@ -20,7 +20,9 @@
 - `blocker`, `needsDecision`, `missingMapping`, `needs-review`, `role-only`, 승인 없는 `approved-excluded`는 완료가 아니다.
 - 마일스톤 책임을 라인 색인, static profile, 자체 scaffold gate로 축소하지 않는다.
 - 책임 범위는 `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 해당 phase 문서의 `페이즈 책임`을 우선한다.
+- 구현 중 책임을 이관하며 완료 범위를 줄이지 않는다. 다른 owner 후보가 보이면 구현을 멈추고 `scope-redesign-required`로 막은 뒤 책임 지도와 receiver manifest를 먼저 고친다.
 - 각 마일스톤은 시작 전에 원본 단위 매니페스트를 만들고, 종료 전에 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
+- phase/마일스톤 상세 문서의 각 체크 항목은 `[HERE:Mxx]`, `[LATER:Myy]`, `[EXCLUDED->Myy]`, `[BLOCKED:Mxx]`, `[REDESIGN]`, `[VERIFY:Mxx]`, `[DOC-ONLY]` 중 하나로 책임 표기한다. 표기 없는 체크박스는 완료 근거가 아니다.
 - 완료 판정 전에는 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md` 기준으로 completed/blocked/scope-redesign-required를 먼저 판단한다.
 
 ## 완료 권위
