@@ -64,6 +64,16 @@ function main() {
   const templateIds = Object.keys(definitions.characters).sort((a, b) => Number(a) - Number(b) || a.localeCompare(b));
 
   assert(templateIds.length === 109, 'M32 must see all 109 character templates.');
+  const expectedCharacterTextLabels: Record<string, string> = {
+    '0': '처녀상실의 상대',
+    '1': '첫 키스의 상대',
+    '2': '동정상실의 상대',
+    '3': '애널처녀상실의 상대',
+    '90': '직업',
+  };
+  for (const [slotId, label] of Object.entries(expectedCharacterTextLabels)) {
+    assert(definitions.characterTextDefinitions[slotId]?.label === label, `CSTR label definition mismatch for ${slotId}`);
+  }
 
   const bundleResult = createCharacterBundle(definitions, templateIds);
   assert(bundleResult.ok, 'all character templates should create instances.');

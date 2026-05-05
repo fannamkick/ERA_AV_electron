@@ -40,12 +40,13 @@
     "original-game/CSV/VariableSize.CSV"
   ],
   "summary": {
-    "totalUnits": 8,
+    "totalUnits": 10,
     "queueRows": 358,
-    "blocked": 8,
+    "blocked": 10,
     "completedAllowedNow": false,
     "implemented-verified": 0,
-    "scope-redesign-required": 0
+    "scope-redesign-required": 0,
+    "approved-excluded": 0
   },
   "completionGate": {
     "completedAllowedNow": false,
@@ -60,7 +61,8 @@
   },
   "notes": [
     "M29 inbound event/world save rows must be implemented or explicitly excluded by the event/world owner before M47 can close.",
-    "Event/world has definitions, feature triggers/effects, and save-mapping rows. It also receives prior transferred event-local responsibilities, so no event row may be treated as implicitly done."
+    "Event/world has definitions, feature triggers/effects, and save-mapping rows. It also receives prior transferred event-local responsibilities, so no event row may be treated as implicitly done.",
+    "M32 approved-excluded inbound responsibilities are blocked here until M47 implements, explicitly excludes, or redesigns them."
   ],
   "units": [
     {
@@ -409,6 +411,56 @@
       "acceptedByOwner": true,
       "inboundFromMilestone": "M31",
       "fromMilestone": "M31",
+      "toMilestone": "M47"
+    },
+    {
+      "unitId": "M47:inbound-M32:0001",
+      "milestone": "M47",
+      "ownerMilestone": "M47",
+      "ownerRole": "M47-owner",
+      "sourceKind": "source-file-review",
+      "sourcePath": "original-game/ERB/イベント関係/NTR関係/BOYFRIENDNAME_CALC.ERB",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "sourceEvidenceId": "source-file-review:original-game/erb/イベント関係/ntr関係/boyfriendname_calc.erb",
+      "legacyReviewId": "source-file-review:original-game/erb/イベント関係/ntr関係/boyfriendname_calc.erb",
+      "legacyFamily": "",
+      "rowKind": "source-file-review",
+      "legacyId": "source-file-review:original-game/erb/イベント関係/ntr関係/boyfriendname_calc.erb",
+      "requiredBehavior": "BOYFRIENDNAME_CALC.ERB generates NTR boyfriend/sex-friend names. M47 owns event/world generated-name behavior.",
+      "runtimeConsumerId": "",
+      "verificationId": "",
+      "previousCompletionStatus": "inbound-from-M32-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M32 approved exclusion. BOYFRIENDNAME_CALC.ERB generates NTR boyfriend/sex-friend names. M47 owns event/world generated-name behavior. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "character-identity:source-review:original-game-erb-ntr-boyfriendname-calc-erb",
+      "acceptedByOwner": null,
+      "fromMilestone": "M32",
+      "toMilestone": "M47"
+    },
+    {
+      "unitId": "M47:inbound-M32:0002",
+      "milestone": "M47",
+      "ownerMilestone": "M47",
+      "ownerRole": "M47-owner",
+      "sourceKind": "source-file-review",
+      "sourcePath": "original-game/ERB/イベント関係/職業素質系/C_CLUB_GIRLNAME.ERB",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "sourceEvidenceId": "source-file-review:original-game/erb/イベント関係/職業素質系/c_club_girlname.erb",
+      "legacyReviewId": "source-file-review:original-game/erb/イベント関係/職業素質系/c_club_girlname.erb",
+      "legacyFamily": "",
+      "rowKind": "source-file-review",
+      "legacyId": "source-file-review:original-game/erb/イベント関係/職業素質系/c_club_girlname.erb",
+      "requiredBehavior": "C_CLUB_GIRLNAME.ERB generates cabaret event names and mutates event-local identity state. M47 owns event/world generated-name behavior.",
+      "runtimeConsumerId": "",
+      "verificationId": "",
+      "previousCompletionStatus": "inbound-from-M32-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M32 approved exclusion. C_CLUB_GIRLNAME.ERB generates cabaret event names and mutates event-local identity state. M47 owns event/world generated-name behavior. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "character-identity:source-review:original-game-erb-c-club-girlname-erb",
+      "acceptedByOwner": null,
+      "fromMilestone": "M32",
       "toMilestone": "M47"
     }
   ]

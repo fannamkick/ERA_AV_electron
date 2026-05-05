@@ -43,11 +43,13 @@
     "original-game/CSV/VariableSize.CSV"
   ],
   "summary": {
-    "totalUnits": 3,
+    "totalUnits": 4,
     "queueRows": 150,
-    "blocked": 2,
+    "blocked": 3,
     "scope-redesign-required": 1,
-    "completedAllowedNow": false
+    "completedAllowedNow": false,
+    "implemented-verified": 0,
+    "approved-excluded": 0
   },
   "completionGate": {
     "completedAllowedNow": false,
@@ -62,7 +64,8 @@
   },
   "notes": [
     "M29 inbound view/text/session row must be implemented or explicitly excluded by the info/settings owner before M49 can close.",
-    "M49 is view/text/settings closer, not a general dumping ground. Intake rows must preserve source id, original owner candidate, reason for M49 ownership, and exclusion status."
+    "M49 is view/text/settings closer, not a general dumping ground. Intake rows must preserve source id, original owner candidate, reason for M49 ownership, and exclusion status.",
+    "M32 approved-excluded inbound responsibilities are blocked here until M49 implements, explicitly excludes, or redesigns them."
   ],
   "units": [
     {
@@ -256,6 +259,31 @@
       "toMilestone": "M49",
       "inboundFromMilestone": "M29",
       "outboundUnitId": "M29:source-unit:0098"
+    },
+    {
+      "unitId": "M49:inbound-M32:0001",
+      "milestone": "M49",
+      "ownerMilestone": "M49",
+      "ownerRole": "M49-owner",
+      "sourceKind": "source-file-review",
+      "sourcePath": "original-game/ERB/ZNAME.ERB",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "sourceEvidenceId": "source-file-review:original-game/erb/zname.erb",
+      "legacyReviewId": "source-file-review:original-game/erb/zname.erb",
+      "legacyFamily": "",
+      "rowKind": "source-file-review",
+      "legacyId": "source-file-review:original-game/erb/zname.erb",
+      "requiredBehavior": "ZNAME.ERB is Korean particle/name formatting text behavior. M32 owns identity fields; M49 owns view/text formatting implementation.",
+      "runtimeConsumerId": "",
+      "verificationId": "",
+      "previousCompletionStatus": "inbound-from-M32-approved-exclusion",
+      "manifestStatus": "blocked",
+      "blockerReason": "Inbound responsibility from M32 approved exclusion. ZNAME.ERB is Korean particle/name formatting text behavior. M32 owns identity fields; M49 owns view/text formatting implementation. This receiving milestone must implement it, approve exclusion, or redesign ownership before completion.",
+      "sourceCoverageRowId": "character-identity:source-review:original-game-erb-zname-erb",
+      "acceptedByOwner": null,
+      "fromMilestone": "M32",
+      "toMilestone": "M49"
     }
   ]
 }

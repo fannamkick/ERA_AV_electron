@@ -4,15 +4,19 @@
   "milestone": "M32",
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
+    "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json",
     "recruitCoverage": "data/coverage/recruit-coverage.json",
     "definitions": "data/coverage/definitions.json"
   },
   "summary": {
-    "scopeRows": 294,
-    "implemented": 286,
-    "mapped": 8,
+    "scopeRows": 298,
+    "m32OwnedRows": 291,
+    "implementedVerifiedForStrictClosure": 291,
+    "approvedExcludedFromM32": 7,
+    "implemented": 291,
+    "mapped": 0,
     "transferredOut": 0,
-    "approvedExcluded": 0,
+    "approvedExcluded": 7,
     "unresolvedGaps": 0,
     "ownedBlockers": 0,
     "roleOnlyComplete": 0,

@@ -8,6 +8,7 @@
   "commitHash": "recorded by the M32 git commit that includes this closure file",
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
+    "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json",
     "recruitCoverage": "data/coverage/recruit-coverage.json",
     "definitions": "data/coverage/definitions.json"
   },
@@ -20,9 +21,25 @@
     "smoke": "tools/m32_character_identity_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 294,
-    "implemented": 286,
-    "mapped": 8,
+    "sourceUnitTotal": 298,
+    "ownedTotal": 291,
+    "implemented": 291,
+    "mapped": 0,
+    "approvedExcludedFromM32": 7,
+    "approvedExcluded": 0,
+    "transferredOut": 0,
+    "rawMappedRows": 0,
+    "ownedBlocker": 0,
+    "missingEvidence": 0,
+    "missingConsumer": 0,
+    "missingVerification": 0,
+    "roleOnlyComplete": 0,
+    "unapprovedExcluded": 0
+  },
+  "closureMetrics": {
+    "ownedTotal": 291,
+    "implemented": 291,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -32,18 +49,39 @@
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
   },
-  "closureMetrics": {
-    "ownedTotal": 294,
-    "implemented": 286,
-    "mapped": 8,
-    "approvedExcluded": 0,
-    "transferredOut": 0,
-    "ownedBlocker": 0,
-    "missingEvidence": 0,
-    "missingConsumer": 0,
-    "missingVerification": 0,
-    "roleOnlyComplete": 0,
-    "unapprovedExcluded": 0
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 298,
+    "implementedVerified": 291,
+    "approvedExcludedFromM32": 7,
+    "blocked": 0,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": true
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "M32 owns character templates, identity fields, CSTR profile text slots and labels, lifecycle flags, and CSTR identity save fields.",
+      "M32 does not own TALENT/body trait save semantics, Korean particle/text formatting, or event-generated name behavior; those rows are approved exclusions with receiver milestones.",
+      "Mapped-consumed rows are not completion. Every source unit is represented in M32-source-units as implemented-verified or approved-excluded."
+    ],
+    "implementationEvidence": [
+      "data/coverage/character-identity-coverage.json",
+      "data/coverage/manifests/M32-source-units.json",
+      "src/features/characterCreation.ts",
+      "src/features/characterLifecycle.ts",
+      "src/features/roster.ts"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:character-identity",
+      "npm run gate:character-identity",
+      "npm run gate:milestone-scope-closure -- M32",
+      "npm run smoke:character-identity",
+      "npm run build"
+    ]
   },
   "verification": {
     "commands": [
@@ -56,7 +94,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "294 M32 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "298 M32 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:character-identity",

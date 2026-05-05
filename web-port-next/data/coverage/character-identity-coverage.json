@@ -5,6 +5,7 @@
   "ownerRole": "character-identity-lifecycle-owner",
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
+    "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json",
     "recruitCoverage": "data/coverage/recruit-coverage.json",
     "definitions": "data/coverage/definitions.json"
   },
@@ -15,38 +16,48 @@
       "unit:M32:character-identity-original-game-erb-ntr-boyfriendname-calc-erb",
       "unit:M32:character-identity-original-game-erb-zname-erb"
     ],
+    "inheritedFromM29": 4,
     "inheritedFromM31": 20,
-    "rowCoverageRule": "Every M32 queue row and every inbound transfer to M32 must be implemented or mapped-consumed exactly once.",
+    "rowCoverageRule": "Every M32 queue row and every inbound transfer to M32 must be accounted exactly once, then strict closure must classify it as implemented-verified or approved-excluded.",
     "identityBoundary": "Definitions retain Chara/CSTR source values. Save state stores per-character identity/display/profileTextSlots only after an instance is created.",
     "lifecycleBoundary": "M32 owns persistent deleted/retired/assistant eligibility/recruitment status flags. Economic sale formulas and event prose are later feature owners."
   },
   "summary": {
-    "ownedRowRefs": 294,
-    "rows": 294,
-    "implemented": 286,
-    "mapped": 8,
+    "ownedRowRefs": 298,
+    "rows": 298,
+    "implemented": 291,
+    "mapped": 0,
     "transferredOut": 0,
-    "approvedExcluded": 0,
+    "m32OwnedRows": 291,
+    "implementedVerifiedForStrictClosure": 291,
+    "approvedExcludedFromM32": 7,
+    "approvedExcluded": 7,
     "ownedBlocker": 0,
     "missingQueueRowRefs": 0,
     "extraAccountedRowRefs": 0,
     "byScopeSource": {
       "implementation-queue": 274,
+      "M29-transfer": 4,
       "M31-transfer": 20
     },
     "byRowKind": {
       "definition": 271,
       "feature": 16,
-      "save-mapping": 4,
+      "save-mapping": 8,
       "source-file-review": 3
     },
     "byCompletionStatus": {
+      "approved-excluded": 7,
       "implemented-character-lifecycle-contract": 16,
       "implemented-character-profile-text-slot": 157,
       "implemented-character-template-identity": 109,
-      "implemented-profile-text-save-field": 4,
-      "mapped-consumed-character-text-definition": 5,
-      "mapped-consumed-source-contract": 3
+      "implemented-character-text-definition-label": 5,
+      "implemented-profile-text-save-field": 4
+    },
+    "transfersByOwner": {
+      "M33": 4,
+      "M47": 2,
+      "M49": 1
     }
   },
   "rows": [
@@ -4051,9 +4062,9 @@
       "characterId": "",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-character-text-definition",
+      "completionStatus": "implemented-character-text-definition-label",
       "runtimeConsumerId": "definitions.characterTextDefinitions labels CSTR profileTextSlots used by character information views",
-      "verificationId": "gate:character-identity"
+      "verificationId": "smoke:character-identity"
     },
     {
       "coverageRowId": "character-identity:definition:definition-character-text-1",
@@ -4066,9 +4077,9 @@
       "characterId": "",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-character-text-definition",
+      "completionStatus": "implemented-character-text-definition-label",
       "runtimeConsumerId": "definitions.characterTextDefinitions labels CSTR profileTextSlots used by character information views",
-      "verificationId": "gate:character-identity"
+      "verificationId": "smoke:character-identity"
     },
     {
       "coverageRowId": "character-identity:definition:definition-character-text-2",
@@ -4081,9 +4092,9 @@
       "characterId": "",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-character-text-definition",
+      "completionStatus": "implemented-character-text-definition-label",
       "runtimeConsumerId": "definitions.characterTextDefinitions labels CSTR profileTextSlots used by character information views",
-      "verificationId": "gate:character-identity"
+      "verificationId": "smoke:character-identity"
     },
     {
       "coverageRowId": "character-identity:definition:definition-character-text-3",
@@ -4096,9 +4107,9 @@
       "characterId": "",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-character-text-definition",
+      "completionStatus": "implemented-character-text-definition-label",
       "runtimeConsumerId": "definitions.characterTextDefinitions labels CSTR profileTextSlots used by character information views",
-      "verificationId": "gate:character-identity"
+      "verificationId": "smoke:character-identity"
     },
     {
       "coverageRowId": "character-identity:definition:definition-character-text-90",
@@ -4111,9 +4122,9 @@
       "characterId": "",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-character-text-definition",
+      "completionStatus": "implemented-character-text-definition-label",
       "runtimeConsumerId": "definitions.characterTextDefinitions labels CSTR profileTextSlots used by character information views",
-      "verificationId": "gate:character-identity"
+      "verificationId": "smoke:character-identity"
     },
     {
       "coverageRowId": "character-identity:inbound:feature-feature-flow-exit-original-game-erb-sell-chara-erb-11-625",
@@ -4416,14 +4427,89 @@
       "verificationId": "smoke:character-identity"
     },
     {
+      "coverageRowId": "character-identity:inbound:save-mapping-save-map-source-talent-153",
+      "reviewId": "save-mapping:save-map:source:talent-153",
+      "rowKind": "save-mapping",
+      "inheritedFromMilestone": "M29",
+      "sourceEvidenceId": "source:save-map:talent-153",
+      "sourcePath": "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "address": "TALENT:153",
+      "fieldPath": "people.characters.byId.*.attributes.traits[153]",
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "",
+      "verificationId": "receiver-manifest:M33",
+      "toMilestone": "M33",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "TALENT:153 is a body/trait save field, not character identity/lifecycle. M33 owns body/stat/TALENT seed, display, and save semantics."
+    },
+    {
+      "coverageRowId": "character-identity:inbound:save-mapping-save-map-source-talent-154",
+      "reviewId": "save-mapping:save-map:source:talent-154",
+      "rowKind": "save-mapping",
+      "inheritedFromMilestone": "M29",
+      "sourceEvidenceId": "source:save-map:talent-154",
+      "sourcePath": "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "address": "TALENT:154",
+      "fieldPath": "people.characters.byId.*.attributes.traits[154]",
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "",
+      "verificationId": "receiver-manifest:M33",
+      "toMilestone": "M33",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "TALENT:154 is a body/trait save field, not character identity/lifecycle. M33 owns body/stat/TALENT seed, display, and save semantics."
+    },
+    {
+      "coverageRowId": "character-identity:inbound:save-mapping-save-map-source-talent-325",
+      "reviewId": "save-mapping:save-map:source:talent-325",
+      "rowKind": "save-mapping",
+      "inheritedFromMilestone": "M29",
+      "sourceEvidenceId": "source:save-map:talent-325",
+      "sourcePath": "original-game/ERB/イベント関係/SUCCUBUS_STATUS.ERB",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "address": "TALENT:325",
+      "fieldPath": "people.characters.byId.*.attributes.traits[325]",
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "",
+      "verificationId": "receiver-manifest:M33",
+      "toMilestone": "M33",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "TALENT:325 is a body/trait save field, not character identity/lifecycle. M33 owns body/stat/TALENT seed, display, and save semantics."
+    },
+    {
+      "coverageRowId": "character-identity:inbound:save-mapping-save-map-source-talent-91",
+      "reviewId": "save-mapping:save-map:source:talent-91",
+      "rowKind": "save-mapping",
+      "inheritedFromMilestone": "M29",
+      "sourceEvidenceId": "source:save-map:talent-91",
+      "sourcePath": "original-game/CSV/Chara105_ミーナ・クレイン.csv",
+      "sourceLine": "",
+      "sourceLabel": "",
+      "address": "TALENT:91",
+      "fieldPath": "people.characters.byId.*.attributes.traits[91]",
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "",
+      "verificationId": "receiver-manifest:M33",
+      "toMilestone": "M33",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "TALENT:91 is a body/trait save field, not character identity/lifecycle. M33 owns body/stat/TALENT seed, display, and save semantics."
+    },
+    {
       "coverageRowId": "character-identity:source-review:original-game-erb-zname-erb",
       "reviewId": "source-file-review:original-game/erb/zname.erb",
       "rowKind": "source-file-review",
       "sourceEvidenceId": "source-file-review:original-game/erb/zname.erb",
       "sourcePath": "original-game/ERB/ZNAME.ERB",
-      "completionStatus": "mapped-consumed-source-contract",
-      "runtimeConsumerId": "buildRosterView identity fields expose displayName/callName for later particle/name formatting",
-      "verificationId": "gate:character-identity"
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "M49 view/text owner must decompose Korean particle/name formatting before completion",
+      "verificationId": "receiver-manifest:M49",
+      "toMilestone": "M49",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "ZNAME.ERB is Korean particle/name formatting text behavior. M32 owns identity fields; M49 owns view/text formatting implementation."
     },
     {
       "coverageRowId": "character-identity:source-review:original-game-erb-c-club-girlname-erb",
@@ -4431,9 +4517,12 @@
       "rowKind": "source-file-review",
       "sourceEvidenceId": "source-file-review:original-game/erb/イベント関係/職業素質系/c_club_girlname.erb",
       "sourcePath": "original-game/ERB/イベント関係/職業素質系/C_CLUB_GIRLNAME.ERB",
-      "completionStatus": "mapped-consumed-source-contract",
-      "runtimeConsumerId": "people.identity.profileTextSlots owns CSTR name slots; cabaret random-name event logic remains M47 event runtime",
-      "verificationId": "gate:character-identity"
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "M47 event/world owner must decompose cabaret generated-name event logic before completion",
+      "verificationId": "receiver-manifest:M47",
+      "toMilestone": "M47",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "C_CLUB_GIRLNAME.ERB generates cabaret event names and mutates event-local identity state. M47 owns event/world generated-name behavior."
     },
     {
       "coverageRowId": "character-identity:source-review:original-game-erb-ntr-boyfriendname-calc-erb",
@@ -4441,9 +4530,12 @@
       "rowKind": "source-file-review",
       "sourceEvidenceId": "source-file-review:original-game/erb/イベント関係/ntr関係/boyfriendname_calc.erb",
       "sourcePath": "original-game/ERB/イベント関係/NTR関係/BOYFRIENDNAME_CALC.ERB",
-      "completionStatus": "mapped-consumed-source-contract",
-      "runtimeConsumerId": "people.identity.profileTextSlots owns CSTR relationship-name slots; NTR random-name event logic remains M47 event runtime",
-      "verificationId": "gate:character-identity"
+      "completionStatus": "approved-excluded",
+      "runtimeConsumerId": "M47 event/world owner must decompose NTR generated-name event logic before completion",
+      "verificationId": "receiver-manifest:M47",
+      "toMilestone": "M47",
+      "acceptedByOwner": true,
+      "approvedExclusionReason": "BOYFRIENDNAME_CALC.ERB generates NTR boyfriend/sex-friend names. M47 owns event/world generated-name behavior."
     }
   ],
   "unresolvedIssues": []
