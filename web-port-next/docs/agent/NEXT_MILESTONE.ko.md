@@ -1,16 +1,16 @@
 # Next Milestone
 
-## 2026-05-02 next after M30 closure
+## 2026-05-05 next after M31 closure
 
-M30 is complete under the strict source-unit manifest rule. Continue with M31.
+M31 is complete under the strict source-unit manifest rule. Continue with M32.
 
-M31 must close only its recruit/listing/character-creation responsibility. Rows inherited from M29/M30 or mapped into adjacent identity/equipment/event owners are not M31 completion evidence until M31 implements them, excludes them with approval, or redesigns ownership explicitly.
+M32 must close only its character identity, lifecycle, and naming responsibility. Rows inherited from M31 or mapped into adjacent body/stat/equipment/event owners are not M32 completion evidence until M32 implements them, excludes them with approval, or redesigns ownership explicitly.
 
-Required M31 flow:
-1. Re-read `data/coverage/manifests/M31-source-units.json`, `data/coverage/recruit-coverage.json`, and `data/coverage/audits/M31-gap-audit.json`.
+Required M32 flow:
+1. Re-read `data/coverage/manifests/M32-source-units.json`, `data/coverage/character-identity-coverage.json`, and `data/coverage/audits/M32-gap-audit.json`.
 2. Resolve each `blocked` / `scope-redesign-required` unit only through real evidence, approved exclusion, or explicit owner redesign.
 3. Regenerate coverage/closure artifacts.
-4. Run `npm run coverage:recruit`, `npm run gate:recruit-coverage`, `npm run gate:milestone-scope-closure -- M31`, `npm run smoke:recruit-all`, and `npm run build`.
+4. Run `npm run coverage:character-identity`, `npm run gate:character-identity`, `npm run gate:milestone-scope-closure -- M32`, `npm run smoke:recruit-all`, and `npm run build`.
 
 ## 2026-05-02 next after M30 closure
 
@@ -89,7 +89,7 @@ Do not treat M42-M44 as implemented. Current counts are M42 0/35, M43 0/35, and 
 
 ## 2026-05-02 next order reset
 
-M35-M41 source-unit manifest pass 1 is complete. M28 has since been closed under the strict source-unit rule; M29-M41 still need blocked/scope-redesign-required closure before M42 implementation resumes.
+M35-M41 source-unit manifest pass 1 is complete. M28~M31 have since been closed under the strict source-unit rule; M32-M41 still need blocked/scope-redesign-required closure before M42 implementation resumes.
 
 Priority:
 1. Rewrite M41 COM_ABLE availability into branch/AST/state-reference verifiable units.
@@ -101,19 +101,19 @@ Current implemented-verified counts: M35 0/8, M36 86/93, M37 294/461, M38 0/6, M
 
 ## 2026-05-02 다음 처리 순서 보정
 
-M31~M34.5의 source-unit manifest 1차 산출까지 완료했다. 따라서 다음 순서는 M42로 바로 넘어가는 것이 아니라 아래 순서다.
+M31 strict closure까지 완료했다. 따라서 다음 순서는 M42로 바로 넘어가는 것이 아니라 아래 순서다.
 
-1. M31~M34.5의 blocked/scope-redesign-required unit을 실제 구현 검증 또는 명시적 scope 재설계로 닫는다.
-2. M35~M41도 같은 방식으로 source-unit manifest를 만든다.
-3. M31~M41 전체에서 `completedAllowedNow: true` 또는 정당한 blocked/scope-redesign-required closure가 확정된 뒤 M42 command effect 구현을 재개한다. M28~M30은 strict closure 완료 상태다.
+1. M32~M34.5의 blocked/scope-redesign-required unit을 실제 구현 검증 또는 명시적 scope 재설계로 닫는다.
+2. M35~M41도 같은 방식으로 source-unit manifest 기준 closure를 정리한다.
+3. M32~M41 전체에서 `completedAllowedNow: true` 또는 정당한 blocked/scope-redesign-required closure가 확정된 뒤 M42 command effect 구현을 재개한다. M28~M31은 strict closure 완료 상태다.
 
-현재 M31~M34.5 판정: M31 52/237, M32 286/294, M33 4768/5300, M34 1998/2235, M34.5 188/189만 `implemented-verified`다. 나머지는 완료로 계산하지 않는다.
+현재 M32~M34.5 판정: M32 286/298, M33 4768/5368, M34 1998/2238, M34.5 188/189만 `implemented-verified`다. 나머지는 완료로 계산하지 않는다.
 
-## M31~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
+## M32~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
 
-현재 즉시 목표는 M31~M41 완료 선언을 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다. M28~M30은 strict closure로 완료됐다. 그 다음에야 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.
+현재 즉시 목표는 M32~M41 완료 선언을 원본 단위 매니페스트 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다. M28~M31은 strict closure로 완료됐다. 그 다음에야 M42 command 0~34의 원본 효과 계산과 결과 반영을 실제 runtime behavior, source evidence, consumer evidence, 검증으로 닫는다.
 
-M28~M30의 source-unit manifest는 작성됐고 strict closure가 완료됐다. 다음 작업은 M31 closure부터 원본 단위 manifest 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다.
+M28~M31의 source-unit manifest는 작성됐고 strict closure가 완료됐다. 다음 작업은 M32 closure부터 원본 단위 manifest 기준으로 보강하거나 blocked/scope-redesign-required로 정정하는 것이다.
 
 ## 먼저 해야 하는 것
 
@@ -121,9 +121,9 @@ M28~M30의 source-unit manifest는 작성됐고 strict closure가 완료됐다. 
 - `../milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 phase 문서의 페이즈/마일스톤 책임 확인
 - 시작 전에 원본 단위 매니페스트를 만들고 종료 전에 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
 - `../milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`의 completed/blocked/scope-redesign-required 기준 확인
-- `../milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 2026-05-02 재판정 표를 기준으로 M31~M41을 순서대로 보강한다. M28~M30은 완료 상태다.
-- M29~M30은 `../../data/coverage/manifests/M29-source-units.json`, `M30-source-units.json`을 기준으로 closure를 정정한다.
-- M31~M41의 `원본 단위 매니페스트`와 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required closure 정정이 끝나기 전에는 M42 구현을 시작하지 않는다.
+- `../milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 2026-05-02 재판정 표를 기준으로 M32~M41을 순서대로 보강한다. M28~M31은 완료 상태다.
+- M29~M31은 strict closure 완료 상태다. 다음 작업은 `../../data/coverage/manifests/M32-source-units.json` 기준으로 M32를 정리한다.
+- M32~M41의 `원본 단위 매니페스트`와 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required closure 정정이 끝나기 전에는 M42 구현을 시작하지 않는다.
 - `[구현]` 마일스톤의 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification을 완료로 세지 않도록 coverage와 closure를 정리한다.
 
 ## 완료해야 하는 것

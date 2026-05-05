@@ -25,7 +25,8 @@
     "blocked": 7,
     "scope-redesign-required": 1,
     "completedAllowedNow": false,
-    "legacyCoverageRows": 7
+    "legacyCoverageRows": 7,
+    "implemented-verified": 0
   },
   "completionGate": {
     "completedAllowedNow": false,

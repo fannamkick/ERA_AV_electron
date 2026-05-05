@@ -1,6 +1,6 @@
 # M28~M52 Criteria Consistency Pass
 
-Generated: 2026-05-02
+Generated: 2026-05-05
 
 This is the final criteria-side consistency pass. It verifies that completion criteria artifacts exist and agree at a high level. It does not claim implementation completion.
 
@@ -11,13 +11,13 @@ Criteria baseline status: **complete**
 Evidence:
 - Consistency report: `data/coverage/manifests/M28-M52-criteria-consistency.json`
 - All M28~M52 source-unit manifests exist.
-- 3 manifests currently have `completedAllowedNow: true`; 23 remain false.
+- 4 manifests currently have `completedAllowedNow: true`; 22 remain false.
 - Aggregate manifest totals:
-  - total units: 11,155
-  - implemented-verified: 7,960
-  - blocked: 2,906
-  - scope-redesign-required: 126
-  - approved-excluded: 163
+  - total units: 11,226
+  - implemented-verified: 8,035
+  - blocked: 2,819
+  - scope-redesign-required: 99
+  - approved-excluded: 273
 
 M28 is now closed under the source-unit manifest rule:
 - 24 SHOP_MAIN menu rows are `implemented-verified`.
@@ -36,6 +36,12 @@ M30 is now closed under the source-unit manifest rule:
 - 37 non-M30 special training, clothing/cosplay, and training availability rows are `approved-excluded` from M30 ownership.
 - All 37 M30 approved exclusions are explicit blocked inbound responsibility in receiver manifests: M34 3, M41 6, M42 18, M43 8, M44 2.
 - `npm run gate:item-use-coverage` and `npm run gate:milestone-scope-closure -- M30` pass with M30 ownedTotal 37.
+
+M31 is now closed under the source-unit manifest rule:
+- 127 recruit listing, flow, visible listing session, and recruit session buffer rows are `implemented-verified`.
+- 110 non-M31 character seed, lifecycle, event hook, unused source, and aggregate source-review rows are `approved-excluded` from M31 ownership.
+- Receiver-owned M31 approved exclusions are explicit blocked inbound responsibility: M32 20, M33 74, M34 4, M35 1, M47 3.
+- `npm run gate:recruit-coverage` and `npm run gate:milestone-scope-closure -- M31` pass with M31 ownedTotal 127.
 
 ## Registry Enforcement
 
@@ -62,6 +68,6 @@ No milestone may be marked complete from checklist text, mapped status, source-f
 
 The next work is no longer criteria discovery. It is closure/implementation work:
 
-1. Resolve or redesign remaining M29~M52 `blocked` and `scope-redesign-required` units.
+1. Resolve or redesign remaining M32~M52 `blocked` and `scope-redesign-required` units.
 2. Keep registry contracts current by changing `tools/build_coverage_gate_registry.mjs`, then regenerating `coverage-gate-registry.json`.
 3. Only after owned units are closed should implementation/verdict milestones advance.

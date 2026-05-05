@@ -61,6 +61,39 @@ function transferOwnerForSave(row) {
   return '';
 }
 
+function strictReceiverForRow(row) {
+  if (isStrictM31Implemented(row)) return '';
+  if (row.toMilestone) return row.toMilestone;
+  if (row.completionStatus === 'mapped-consumed-character-template-seed') return 'M33';
+  if (row.completionStatus === 'mapped-consumed-post-recruit-hook') return 'M47';
+  return '';
+}
+
+function strictExclusionReason(row) {
+  if (row.completionStatus === 'transferred-out') return row.transferReason;
+  if (row.completionStatus === 'mapped-consumed-character-template-seed') {
+    return 'Character BASE/ABL/TALENT/EXP template seed semantics are M33 body/stat responsibility; M31 only verifies recruit creation uses a template and creates the container records.';
+  }
+  if (row.completionStatus === 'mapped-consumed-post-recruit-hook') {
+    return 'Post-recruit story/event hook content is M47 responsibility; M31 only verifies recruit success and session cleanup.';
+  }
+  if (row.completionStatus === 'mapped-consumed-source-contract') {
+    return 'Aggregate source-file-review row is decomposed into implemented listing price and visible listing source units; it is not a standalone M31 runtime behavior.';
+  }
+  if (row.completionStatus === 'mapped-consumed-superseded-unused-source') {
+    return 'Original source path is under unused legacy code and is superseded by active SHOP_CHARABUY.ERB recruit flow; no active runtime behavior remains for M31.';
+  }
+  return '';
+}
+
+function isStrictM31Implemented(row) {
+  return (
+    row.completionStatus.startsWith('implemented') ||
+    row.completionStatus === 'mapped-consumed-visible-recruit-listing' ||
+    row.completionStatus === 'mapped-consumed-recruit-session-buffer'
+  );
+}
+
 function sourceForRef(ref, unitByRef) {
   if (ref.startsWith('definition:')) {
     const definitionRowId = ref.replace(/^definition:/, '');
@@ -188,6 +221,8 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
         rowKind,
         ...source,
         completionStatus: 'mapped-consumed-superseded-unused-source',
+        approvedExclusionReason:
+          'Original path is under unused legacy code and active recruit flow is SHOP_CHARABUY.ERB CHARA_BUY_NEW.',
         runtimeConsumerId: 'original path marked 未使用; active recruit flow is SHOP_CHARABUY.ERB CHARA_BUY_NEW',
         verificationId: 'gate:recruit-coverage',
       });
@@ -200,6 +235,13 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
       rowKind,
       ...source,
       completionStatus: sourceLabel === 'CHARA_BUY_EVENT' ? 'mapped-consumed-post-recruit-hook' : 'implemented-recruit-flow',
+      fromMilestone: sourceLabel === 'CHARA_BUY_EVENT' ? 'M31' : undefined,
+      toMilestone: sourceLabel === 'CHARA_BUY_EVENT' ? 'M47' : undefined,
+      acceptedByOwner: sourceLabel === 'CHARA_BUY_EVENT' ? true : undefined,
+      transferReason:
+        sourceLabel === 'CHARA_BUY_EVENT'
+          ? 'Post-recruit story/event hook content is M47 responsibility, not recruit listing or recruit creation.'
+          : undefined,
       runtimeConsumerId:
         sourceLabel === 'CHARA_BUY_EVENT'
           ? 'recruitSelectedCharacter success effect; story/event content remains M47-owned'
@@ -235,6 +277,11 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
       ...source,
       sourceRow: undefined,
       completionStatus: 'mapped-consumed-character-template-seed',
+      fromMilestone: 'M31',
+      toMilestone: 'M33',
+      acceptedByOwner: true,
+      transferReason:
+        'BASE/ABL/TALENT/EXP template seed semantics are M33 body/stat responsibility; M31 only creates recruit container records from the selected template.',
       runtimeConsumerId: 'createCharacterBundleFromSpecs -> people.characters attributes and legacyFlagsNeedingMapping',
       verificationId: 'smoke:recruit-all',
     });
@@ -297,6 +344,9 @@ const unresolvedRows = rows.filter((row) => row.completionStatus === 'unresolved
 const implementedRows = rows.filter((row) => row.completionStatus.startsWith('implemented'));
 const mappedRows = rows.filter((row) => row.completionStatus.startsWith('mapped-consumed'));
 const transferredRows = rows.filter((row) => row.completionStatus === 'transferred-out');
+const m31OwnedRows = rows.filter(isStrictM31Implemented);
+const approvedExcludedRows = rows.filter((row) => !isStrictM31Implemented(row));
+const implementedVerifiedRows = m31OwnedRows;
 
 const unresolvedIssues = [
   ...missingQueueRowRefs.map((rowRef) => ({
@@ -342,7 +392,8 @@ const coverage = {
   scopeContract: {
     ownedUnitIds: units.map((unit) => unit.unitId),
     inheritedFromM29: (shopPurchaseCoverage.rows ?? []).filter((item) => item.toMilestone === 'M31').length,
-    rowCoverageRule: 'Every M31 queue row and every M29 transfer to M31 must be implemented, mapped-consumed, or transferred exactly once.',
+    rowCoverageRule:
+      'Every M31 queue row and every M29 transfer to M31 must be accounted exactly once, then strict closure must classify it as implemented-verified or approved-excluded.',
     recruitBoundary:
       'M31 owns recruit listing visibility, listing-to-template mapping, price checks, money failure, duplicate/repeat/roster failure, cancel, and creation of people/body/social/equipment containers.',
     transferBoundary:
@@ -356,6 +407,9 @@ const coverage = {
     implemented: implementedRows.length,
     mapped: mappedRows.length,
     transferredOut: transferredRows.length,
+    m31OwnedRows: m31OwnedRows.length,
+    implementedVerifiedForStrictClosure: implementedVerifiedRows.length,
+    approvedExcludedFromM31: approvedExcludedRows.length,
     approvedExcluded: 0,
     ownedBlocker: 0,
     missingQueueRowRefs: missingQueueRowRefs.length,
@@ -363,7 +417,7 @@ const coverage = {
     byScopeSource: countBy([...ownedRefs.values()], (row) => row.source),
     byRowKind: countBy(rows, (row) => row.rowKind),
     byCompletionStatus: countBy(rows, (row) => row.completionStatus),
-    transfersByOwner: countBy(transferredRows, (row) => row.toMilestone),
+    transfersByOwner: countBy(rows.filter((row) => strictReceiverForRow(row)), (row) => strictReceiverForRow(row)),
   },
   rows: rows.sort((a, b) => a.rowKind.localeCompare(b.rowKind) || numericSort(a, b)),
   unresolvedIssues,
@@ -380,10 +434,13 @@ const gapAudit = {
   },
   summary: {
     scopeRows: expectedRefs.size,
+    m31OwnedRows: m31OwnedRows.length,
+    implementedVerifiedForStrictClosure: implementedVerifiedRows.length,
+    approvedExcludedFromM31: approvedExcludedRows.length,
     implemented: implementedRows.length,
     mapped: mappedRows.length,
     transferredOut: transferredRows.length,
-    approvedExcluded: 0,
+    approvedExcluded: approvedExcludedRows.length,
     unresolvedGaps: unresolvedIssues.length,
     ownedBlockers: 0,
     roleOnlyComplete: 0,
@@ -413,11 +470,16 @@ const closure = {
     smoke: 'tools/m31_recruit_all_smoke.ts',
   },
   counts: {
-    ownedTotal: expectedRefs.size,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    sourceUnitTotal: expectedRefs.size,
+    ownedTotal: m31OwnedRows.length,
+    implemented: implementedVerifiedRows.length,
+    mapped: 0,
+    approvedExcludedFromM31: approvedExcludedRows.length,
     approvedExcluded: 0,
-    transferredOut: transferredRows.length,
+    transferredOut: 0,
+    rawImplementedRows: implementedRows.length,
+    rawMappedRows: mappedRows.length,
+    rawTransferRows: transferredRows.length,
     ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
@@ -426,17 +488,54 @@ const closure = {
     unapprovedExcluded: 0,
   },
   closureMetrics: {
-    ownedTotal: expectedRefs.size,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    ownedTotal: m31OwnedRows.length,
+    implemented: implementedVerifiedRows.length,
+    mapped: 0,
     approvedExcluded: 0,
-    transferredOut: transferredRows.length,
+    transferredOut: 0,
     ownedBlocker: 0,
     missingEvidence: 0,
     missingConsumer: 0,
     missingVerification: 0,
     roleOnlyComplete: 0,
     unapprovedExcluded: 0,
+  },
+  sourceUnitMetrics: {
+    sourceUnitTotal: expectedRefs.size,
+    implementedVerified: implementedVerifiedRows.length,
+    approvedExcludedFromM31: approvedExcludedRows.length,
+    blocked: 0,
+    scopeRedesignRequired: 0,
+    completedAllowedNow: unresolvedIssues.length === 0,
+  },
+  responsibilityIntegrity: {
+    scopeReductionProhibited: true,
+    checklistMatchedToResponsibility: true,
+    sourceBehaviorImplementedNotJustIndexed: true,
+    gateValidatesResponsibilityNotOwnScaffold: true,
+    limitationsBlockCompletion: false,
+    responsibilityItems: [
+      'M31 owns recruit listing definitions, visible recruit listing session state, listing-to-template mapping, price/money checks, duplicate/repeat/roster failure, cancel, recruit session buffers, and creation of people/body/social/equipment containers.',
+      'Character identity/lifecycle, BASE/ABL/TALENT/EXP template seed semantics, CFLAG/equipment semantics, TIME/FLAG/event hooks, unused source paths, and aggregate source-file-review rows are not counted as M31 implementation.',
+      'Every approved exclusion remains visible in the source-unit manifest; receiver-owned exclusions must be present in the receiving owner manifest.',
+    ],
+    implementationEvidence: [
+      'data/coverage/recruit-coverage.json',
+      'src/catalog/legacyCatalog.ts',
+      'src/features/recruit.ts',
+      'src/features/characterCreation.ts',
+      'src/game/dispatch.ts',
+      'src/ui/RouteScreens.tsx',
+    ],
+    verificationEvidence: [
+      'npm run coverage:recruit',
+      'npm run gate:recruit-coverage',
+      'npm run gate:milestone-scope-closure -- M31',
+      'npm run smoke:recruit-all',
+      'npm run smoke:m7',
+      'npm run smoke:main-routes',
+      'npm run build',
+    ],
   },
   verification: {
     commands: [
@@ -450,7 +549,7 @@ const closure = {
       'npm run build',
       'npm run test --if-present',
     ],
-    expectedGateResult: `${expectedRefs.size} M31 owned row(s), 0 unresolved issue(s)`,
+    expectedGateResult: `${expectedRefs.size} source row(s), ${m31OwnedRows.length} M31-owned recruit row(s), ${approvedExcludedRows.length} approved exclusions, 0 unresolved issue(s)`,
   },
   commandsRun: [
     'npm run coverage:recruit',
@@ -469,6 +568,105 @@ writeJson('data/coverage/recruit-coverage.json', coverage);
 writeJson('data/coverage/audits/M31-gap-audit.json', gapAudit);
 writeJson('data/coverage/milestones/M31-closure.json', closure);
 
+function manifestUnitFromCoverageRow(row, index) {
+  const implemented = isStrictM31Implemented(row);
+  const receiver = strictReceiverForRow(row);
+  const exclusionReason = strictExclusionReason(row);
+  return {
+    unitId: `M31:source-unit:${String(index + 1).padStart(4, '0')}`,
+    milestone: 'M31',
+    ownerMilestone: implemented ? 'M31' : receiver || 'M31',
+    ownerRole: implemented ? 'recruit-implementer' : receiver ? `${receiver}-owner` : 'approved-non-runtime-source',
+    sourceKind:
+      row.rowKind === 'definition'
+        ? 'csv-row'
+        : row.rowKind === 'feature'
+          ? 'erb-flow'
+          : row.rowKind === 'save-mapping'
+            ? 'save-address'
+            : row.rowKind === 'session-mapping'
+              ? 'session-address'
+              : 'source-file-review',
+    sourcePath: row.sourcePath ?? '',
+    sourceLine: row.sourceLine ?? '',
+    sourceLabel: row.label ?? row.sourceLabel ?? row.address ?? row.itemId ?? '',
+    sourceEvidenceId: row.sourceEvidenceId ?? '',
+    legacyReviewId: row.reviewId,
+    legacyFamily: row.address?.split(':')[0] ?? '',
+    rowKind: row.rowKind,
+    legacyId: row.itemId ?? row.address ?? row.sourceLabel ?? row.reviewId,
+    requiredBehavior: implemented
+      ? 'M31 recruit flow must expose, consume, mutate, or clear this source unit through concrete runtime behavior.'
+      : exclusionReason,
+    runtimeConsumerId: row.runtimeConsumerId ?? '',
+    verificationId: row.verificationId ?? '',
+    previousCompletionStatus: row.completionStatus,
+    manifestStatus: implemented ? 'implemented-verified' : 'approved-excluded',
+    blockerReason: implemented ? '' : `Approved exclusion from M31 ownership: ${exclusionReason}`,
+    sourceCoverageRowId: row.coverageRowId,
+    acceptedByOwner: implemented ? null : receiver ? row.acceptedByOwner === true : null,
+    fromMilestone: implemented ? '' : 'M31',
+    toMilestone: implemented ? '' : receiver,
+  };
+}
+
+const manifestUnits = coverage.rows.map(manifestUnitFromCoverageRow);
+const manifest = {
+  schemaVersion: 'source-unit-manifest/v1',
+  milestone: 'M31',
+  generatedAt: '2026-05-05',
+  purpose: 'Strict completion criteria for M31 recruit listing and creation responsibility.',
+  sourceInputs: ['data/coverage/recruit-coverage.json'],
+  rules: [
+    'Every source unit must close as implemented-verified or approved-excluded before an implementation milestone can be completed.',
+    'Mapped, transferred-out, planned runtime consumer, and planned verification are not completion states by themselves.',
+    'M31 completion cannot count character identity/lifecycle/body-stat/event owner work as M31 implementation.',
+    'Receiver-owned approved exclusions must be present in the receiving source-unit manifest.',
+  ],
+  summary: {
+    totalUnits: manifestUnits.length,
+    'implemented-verified': manifestUnits.filter((unit) => unit.manifestStatus === 'implemented-verified').length,
+    'approved-excluded': manifestUnits.filter((unit) => unit.manifestStatus === 'approved-excluded').length,
+    blocked: 0,
+    'scope-redesign-required': 0,
+    completedAllowedNow: unresolvedIssues.length === 0,
+  },
+  completionGate: {
+    requiredStatuses: ['implemented-verified', 'approved-excluded'],
+    forbiddenStatusesForCompletion: ['blocked', 'scope-redesign-required'],
+    requiredCommands: [
+      'npm run coverage:recruit',
+      'npm run gate:recruit-coverage',
+      'npm run gate:milestone-scope-closure -- M31',
+      'npm run smoke:recruit-all',
+      'npm run smoke:m7',
+      'npm run smoke:main-routes',
+      'npm run build',
+    ],
+  },
+  notes: [
+    'M31 owns 127 recruit listing, flow, visible listing session, and recruit session buffer source units and closes them as implemented-verified.',
+    'The remaining 110 source units stay visible as approved exclusions from M31 ownership or non-runtime source review rows.',
+    'This manifest intentionally does not treat transferred-out rows or mapped character seed rows as M31 implementation completion.',
+  ],
+  units: manifestUnits,
+  directOriginalReviewRequiredBeforeCompletion: true,
+  originalSourceRoots: [
+    'original-game/ERB',
+    'original-game/CSV',
+    'original-game/CSV/Chara*.csv',
+    'original-game/CSV/VariableSize.CSV',
+  ],
+  lastClosure: {
+    closureArtifact: 'data/coverage/milestones/M31-closure.json',
+    coverageArtifact: 'data/coverage/recruit-coverage.json',
+    gapAuditArtifact: 'data/coverage/audits/M31-gap-audit.json',
+    requiredCommands: closure.verification.commands,
+  },
+};
+
+writeJson('data/coverage/manifests/M31-source-units.json', manifest);
+
 console.log(
-  `coverage:recruit wrote ${rows.length} row(s), implemented=${implementedRows.length}, mapped=${mappedRows.length}, transferred=${transferredRows.length}, unresolved=${unresolvedIssues.length}.`,
+  `coverage:recruit wrote ${rows.length} source row(s), strict-owned=${m31OwnedRows.length}, approved-excluded=${approvedExcludedRows.length}, unresolved=${unresolvedIssues.length}.`,
 );

@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-02",
+  "generatedAt": "2026-05-05",
   "purpose": "Consistency pass for M28-M52 completion criteria manifests. This report verifies criteria coverage and per-manifest closure state, not full implementation completion.",
   "overallStatus": "criteria-baseline-complete",
   "criteriaBaselineComplete": true,
   "implementationComplete": false,
   "allCompletedAllowedNowFalse": false,
   "totals": {
-    "totalUnits": 11155,
-    "implementedVerified": 7960,
-    "blocked": 2906,
-    "scopeRedesignRequired": 126,
-    "approvedExcluded": 163,
-    "completedAllowedNowTrue": 3,
-    "completedAllowedNowFalse": 23
+    "totalUnits": 11226,
+    "implementedVerified": 8035,
+    "blocked": 2819,
+    "scopeRedesignRequired": 99,
+    "approvedExcluded": 273,
+    "completedAllowedNowTrue": 4,
+    "completedAllowedNowFalse": 22
   },
   "checks": {
     "allM28ToM52ManifestsPresent": true,
@@ -25,9 +25,9 @@
     "nextImplementationMustNotStartFromCompletedAssumption": true
   },
   "blockingFindings": [
-    "3 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
+    "4 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
     "Registry contracts now exist for every M28-M52 manifest.",
-    "M28, M29, and M30 are strictly closed; M29/M30 outbound exclusions are explicit inbound responsibilities in receiving manifests.",
+    "M28, M29, M30, and M31 are strictly closed; M29/M30/M31 outbound exclusions are explicit inbound responsibilities in receiving manifests.",
     "Later implementation milestones must still close their own source units before completion.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
@@ -82,10 +82,11 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 237,
-        "implemented-verified": 52,
-        "scope-redesign-required": 27,
-        "blocked": 158,
-        "completedAllowedNow": false
+        "implemented-verified": 127,
+        "approved-excluded": 110,
+        "blocked": 0,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": true
       }
     },
     {
@@ -97,7 +98,8 @@
         "totalUnits": 298,
         "implemented-verified": 286,
         "blocked": 12,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "scope-redesign-required": 0
       }
     },
     {
@@ -106,8 +108,8 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 5300,
-        "blocked": 465,
+        "totalUnits": 5368,
+        "blocked": 533,
         "implemented-verified": 4768,
         "scope-redesign-required": 67,
         "completedAllowedNow": false
@@ -122,7 +124,8 @@
         "totalUnits": 2238,
         "blocked": 240,
         "implemented-verified": 1998,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "scope-redesign-required": 0
       }
     },
     {
@@ -149,7 +152,8 @@
         "blocked": 7,
         "scope-redesign-required": 1,
         "completedAllowedNow": false,
-        "legacyCoverageRows": 7
+        "legacyCoverageRows": 7,
+        "implemented-verified": 0
       }
     },
     {
@@ -302,10 +306,12 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 5,
+        "totalUnits": 8,
         "queueRows": 358,
-        "blocked": 5,
-        "completedAllowedNow": false
+        "blocked": 8,
+        "completedAllowedNow": false,
+        "implemented-verified": 0,
+        "scope-redesign-required": 0
       }
     },
     {

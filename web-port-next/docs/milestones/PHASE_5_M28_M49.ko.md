@@ -185,6 +185,9 @@ M31 완료 근거:
 - `recruit:150` 구인광고는 원본 `FLAG:90 < 5` 흐름에 맞춰 5회 반복 영입으로 닫고, 각 인스턴스는 `character:51:n`으로 저장한다.
 - `SELL_CHARA.ERB` 은퇴/매각 및 `CSTR` save row 중 M32 owner 20개는 인물 생명주기/identity owner로 이관했다. 나머지 transfer는 M34/M35/M47 owner로 남긴다.
 - `TFLAG:100`, `TFLAG:400~421`, `TFLAG:430~431`, `TSTR:50~51`은 save가 아니라 `session.recruit` 버퍼로 소비한다.
+- 2026-05-05 strict closure에서 M31 source 237개는 M31-owned 127 implemented-verified와 M31 approved-excluded 110으로 재정리했다.
+- M31 approved-excluded 110개 중 receiver-owned row는 M32 20, M33 74, M34 4, M35 1, M47 3에 blocked inbound로 명시했다. unused/source-review 8개는 M31 runtime 구현 완료가 아닌 approved non-runtime source review로 남겼다.
+- `npm run gate:recruit-coverage`는 receiver-owned exclusion이 수신 manifest에 없으면 실패한다.
 
 검증:
 ```bash
@@ -218,7 +221,7 @@ npm run test --if-present
 - [x] `npm run build` 실행
 
 M32 완료 근거:
-- M32 scope는 implementation queue 274개와 M31 inbound transfer 20개를 합친 294개 row다.
+- M32 strict manifest scope는 implementation queue 274개, M31 inbound transfer 20개, M29 inbound 4개를 합친 298개 row다.
 - Chara template 109개는 `definitions.characters` 원형에서 `createCharacterBundleFromSpecs`를 통해 `people.characters.*.identity` 인스턴스로 생성된다.
 - `CSTR` seed 157개는 원형의 `initialState.characterTexts`에 남고, 생성 시 save 상태의 `identity.profileTextSlots`로 복사된다. `CSTR:9`는 `firstPerson`으로도 노출한다.
 - `NAME/CALLNAME/NICKNAME` 계열은 정의 문자열과 인스턴스 identity를 분리하고, roster view에서 표시를 검증한다.

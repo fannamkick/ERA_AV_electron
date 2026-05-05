@@ -23,7 +23,8 @@
     "totalUnits": 2238,
     "blocked": 240,
     "implemented-verified": 1998,
-    "completedAllowedNow": false
+    "completedAllowedNow": false,
+    "scope-redesign-required": 0
   },
   "completionGate": {
     "requiredStatuses": [

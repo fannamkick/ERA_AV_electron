@@ -5,9 +5,9 @@
 ## 현재 기준
 
 - M28 strict closure 완료: 24개 main-route contract row는 M28 소유 구현 완료, BOYFRIEND event-local session row 3개는 M28 approved-excluded 및 M47 책임.
-- 다음 작업은 M31 closure다. M28~M30은 strict closure 완료 상태다.
-- M31~M41이 strict manifest 기준으로 닫히거나 blocked/scope-redesign-required로 정정되기 전에는 M42 구현을 재개하지 않는다. M28~M30은 strict closure 완료 상태다.
-- 현재 aggregate: total 11,155; implemented-verified 7,960; approved-excluded 163; blocked 2,906; scope-redesign-required 126; completedAllowedNow true 3 / false 23.
+- 다음 작업은 M32 closure다. M28~M31은 strict closure 완료 상태다.
+- M32~M41이 strict manifest 기준으로 닫히거나 blocked/scope-redesign-required로 정정되기 전에는 M42 구현을 재개하지 않는다. M28~M31은 strict closure 완료 상태다.
+- 현재 aggregate: total 11,226; implemented-verified 8,035; approved-excluded 273; blocked 2,819; scope-redesign-required 99; completedAllowedNow true 4 / false 22.
 
 ## 읽기 순서
 

@@ -7,6 +7,10 @@ function readJson(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(root, relativePath), 'utf8'));
 }
 
+function fileExists(relativePath) {
+  return fs.existsSync(path.join(root, relativePath));
+}
+
 function fail(message, detail) {
   console.error(`gate:recruit-coverage failed: ${message}`);
   if (detail) console.error(JSON.stringify(detail, null, 2));
@@ -93,6 +97,53 @@ const badTransfers = coverage.rows.filter(
 );
 assert(badTransfers.length === 0, 'transfer rows are incomplete', badTransfers.slice(0, 20));
 
+function strictReceiverForRow(row) {
+  if (isStrictM31Implemented(row)) return '';
+  if (row.toMilestone) return row.toMilestone;
+  if (row.completionStatus === 'mapped-consumed-character-template-seed') return 'M33';
+  if (row.completionStatus === 'mapped-consumed-post-recruit-hook') return 'M47';
+  return '';
+}
+
+function isStrictM31Implemented(row) {
+  return (
+    row.completionStatus.startsWith('implemented') ||
+    row.completionStatus === 'mapped-consumed-visible-recruit-listing' ||
+    row.completionStatus === 'mapped-consumed-recruit-session-buffer'
+  );
+}
+
+function receiverManifestContains(manifest, row) {
+  const needles = [row.reviewId, row.coverageRowId, row.sourceEvidenceId].filter(Boolean);
+  return (manifest.units ?? []).some((unit) => {
+    const haystack = JSON.stringify({
+      legacyReviewId: unit.legacyReviewId,
+      reviewId: unit.reviewId,
+      sourceCoverageRowId: unit.sourceCoverageRowId,
+      sourceEvidenceId: unit.sourceEvidenceId,
+      inboundFromMilestone: unit.inboundFromMilestone,
+      fromMilestone: unit.fromMilestone,
+    });
+    return needles.some((needle) => haystack.includes(needle));
+  });
+}
+
+const receiverRows = coverage.rows.filter((row) => strictReceiverForRow(row));
+const missingReceiverRows = [];
+for (const row of receiverRows) {
+  const receiver = strictReceiverForRow(row);
+  const manifestPath = `data/coverage/manifests/${receiver}-source-units.json`;
+  if (!fileExists(manifestPath)) {
+    missingReceiverRows.push({ reviewId: row.reviewId, receiver, reason: 'receiver manifest missing' });
+    continue;
+  }
+  const manifest = readJson(manifestPath);
+  if (!receiverManifestContains(manifest, row)) {
+    missingReceiverRows.push({ reviewId: row.reviewId, coverageRowId: row.coverageRowId, sourceEvidenceId: row.sourceEvidenceId, receiver });
+  }
+}
+assert(missingReceiverRows.length === 0, 'M31 approved exclusions are missing receiver manifest rows', missingReceiverRows.slice(0, 20));
+
 const requiredRuntimeConsumers = new Set([
   'definitions.recruitListings -> computeVisibleRecruitListingIds -> buildRecruitView',
   'main/openRecruit; recruit/selectListing; recruit/confirm; recruit/cancel',
@@ -108,9 +159,18 @@ for (const consumer of requiredRuntimeConsumers) {
 }
 
 const summary = coverage.summary ?? {};
+const strictOwnedRows = coverage.rows.filter(isStrictM31Implemented);
+const approvedExcludedRows = coverage.rows.filter((row) => !isStrictM31Implemented(row));
 assert(Number(summary.ownedRowRefs) === expectedRefs.size, 'summary owned row count mismatch', summary);
 assert(Number(summary.rows) === coverage.rows.length, 'summary rows count mismatch', summary);
 assert(Number(summary.ownedBlocker) === 0, 'M31 must not close with owned blockers', summary);
+assert(Number(summary.m31OwnedRows) === strictOwnedRows.length, 'summary M31-owned strict count mismatch', summary);
+assert(
+  Number(summary.implementedVerifiedForStrictClosure) === strictOwnedRows.length,
+  'strict implemented-verified count must equal M31-owned rows',
+  summary,
+);
+assert(Number(summary.approvedExcludedFromM31) === approvedExcludedRows.length, 'approved exclusion count mismatch', summary);
 assert(
   Number(summary.implemented) + Number(summary.mapped) + Number(summary.transferredOut) === expectedRefs.size,
   'summary implemented + mapped + transferredOut must close all rows',
@@ -118,5 +178,5 @@ assert(
 );
 
 console.log(
-  `gate:recruit-coverage passed: ${coverage.rows.length} M31 row(s), implemented=${summary.implemented}, mapped=${summary.mapped}, transferred=${summary.transferredOut}.`,
+  `gate:recruit-coverage passed: ${coverage.rows.length} source row(s), M31-owned=${strictOwnedRows.length}, implemented-verified=${strictOwnedRows.length}, approved-excluded=${approvedExcludedRows.length}.`,
 );

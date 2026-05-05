@@ -10,8 +10,33 @@ Current execution point:
 - M28 is strictly closed.
 - M29 is strictly closed.
 - M30 is strictly closed.
-- M31 is next for strict reassessment.
-- M31 must not count inherited/mapped/recruit-adjacent rows as completed unless they are implemented-verified, approved-excluded, or explicit blocked owner responsibility.
+- M31 is strictly closed.
+- M32 is next for strict reassessment.
+- M32 must not count inherited/mapped/identity-adjacent rows as completed unless they are implemented-verified, approved-excluded, or explicit blocked owner responsibility.
+
+## 2026-05-05 handoff after M31 strict closure
+
+M31 is closed under the source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M31-source-units.json`
+- Closure: `data/coverage/milestones/M31-closure.json`
+- M31 summary: total 237, implemented-verified 127, approved-excluded 110, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M31 ownedTotal is 127 recruit listing, flow, visible listing session, and recruit session buffer rows, not the old mixed 237-row queue total.
+- The 110 non-M31 character seed, lifecycle, event hook, unused source, and aggregate source-review rows are not M31 implementation.
+- Receiver-owned approved exclusions have explicit blocked inbound responsibility: M32 20, M33 74, M34 4, M35 1, M47 3.
+- `gate:recruit-coverage` now reports source rows separately from M31-owned rows.
+- `gate:recruit-coverage` now fails if an M31 receiver-owned exclusion is missing from the receiver manifest.
+- `gate:milestone-scope-closure -- M31` passes with `responsibilityIntegrity` and M31 ownedTotal 127.
+
+Verified:
+- `npm run coverage:recruit`
+- `npm run gate:recruit-coverage`
+- `npm run gate:milestone-scope-closure -- M31`
+- `npm run smoke:recruit-all`
+- `npm run build`
+
+Next:
+- Start M32 only as its own responsibility slice.
 
 ## 2026-05-02 handoff after M30 strict closure
 
@@ -38,8 +63,7 @@ Verified:
 - `npm run gate:coverage-hardening`
 
 Next:
-- Start M31 only as its own responsibility slice.
-- M31 currently has `blocked` / `scope-redesign-required` source units and must not be marked complete until those are closed by implementation evidence, approved exclusion, or explicit scope redesign.
+- M31 is now closed; M32 is next.
 
 ## 2026-05-02 handoff after M29 strict closure
 
@@ -67,7 +91,7 @@ Verified:
 
 Next:
 - Start M30 only as its own responsibility slice.
-- M30 is now closed; M31 is next.
+- M30 is now closed; M32 is next.
 
 ## 2026-05-02 handoff after M28 strict closure
 
@@ -109,7 +133,7 @@ Criteria baseline is complete.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,155; implemented-verified 7,960; blocked 2,906; scope-redesign-required 126; approved-excluded 163.
+- Aggregate totals: total units 11,226; implemented-verified 8,035; blocked 2,819; scope-redesign-required 99; approved-excluded 273.
 - Known criteria gap: none; `coverage-gate-registry.json` includes M28~M52 contracts.
 
 Next worker should not create new ad hoc criteria. Begin closing manifest units with implementation evidence, approved exclusion, blocked status, or explicit ownership redesign.
@@ -130,7 +154,7 @@ Criteria call 2 is complete.
 
 - M45: `data/coverage/manifests/M45-source-units.json`, criteria units 2, queue rows 1122, blocked 1, scope-redesign-required 1.
 - M46: `data/coverage/manifests/M46-source-units.json`, criteria units 1, queue rows 432, blocked 1.
-- M47: `data/coverage/manifests/M47-source-units.json`, criteria units 1, queue rows 358, blocked 1.
+- M47: `data/coverage/manifests/M47-source-units.json`, total 8, queue rows 358, blocked 8.
 - M48: `data/coverage/manifests/M48-source-units.json`, criteria units 2, queue rows 325, blocked 1, scope-redesign-required 1.
 - M49: `data/coverage/manifests/M49-source-units.json`, criteria units 2, queue rows 150, blocked 1, scope-redesign-required 1.
 
@@ -165,17 +189,17 @@ M28 is now closed under strict completion. The next worker must not resume M42 b
 
 이번 세션에서 M31~M34.5 source-unit manifest 1차를 추가했다.
 
-- M31: `data/coverage/manifests/M31-source-units.json`, total 237, implemented-verified 52, blocked 158, scope-redesign-required 27.
-- M32: `data/coverage/manifests/M32-source-units.json`, total 294, implemented-verified 286, blocked 8.
+- M31: `data/coverage/manifests/M31-source-units.json`, total 237, implemented-verified 127, approved-excluded 110, completedAllowedNow true.
+- M32: `data/coverage/manifests/M32-source-units.json`, total 298, implemented-verified 286, blocked 12.
 - M33: `data/coverage/manifests/M33-source-units.json`, total 5300, implemented-verified 4768, blocked 465, scope-redesign-required 67.
-- M34: `data/coverage/manifests/M34-source-units.json`, total 2235, implemented-verified 1998, blocked 237. item 211 누락 3개를 blocked unit으로 추가했다.
+- M34: `data/coverage/manifests/M34-source-units.json`, total 2238, implemented-verified 1998, blocked 240.
 - M34.5: `data/coverage/manifests/M34.5-source-units.json`, total 189, implemented-verified 188, blocked 1. `responsibilityIntegrity` 누락을 blocked unit으로 추가했다.
 
-새 기준에서 M31~M34.5는 모두 `completedAllowedNow: false`다. 다음 작업자는 M35~M41 manifest를 만들기 전에, M31~M34.5의 blocked/scope-redesign-required를 완료로 착각하지 말아야 한다. M42는 아직 재개하지 않는다.
+새 기준에서 M32~M34.5는 아직 `completedAllowedNow: false`다. 다음 작업자는 M32~M34.5의 blocked/scope-redesign-required를 완료로 착각하지 말아야 한다. M42는 아직 재개하지 않는다.
 
-새 세션은 아래 요약만 읽고 M31~M41 원본 단위 매니페스트 보강/closure 정정부터 진행한다. M28~M30은 strict closure로 완료됐다. 그 뒤 M42 훈련 command 효과 0~34 구현을 재개한다. 완전 이식 여부는 모든 구현 책임과 M50~M52 최종 검증으로만 닫는다.
+새 세션은 아래 요약만 읽고 M32~M41 원본 단위 매니페스트 보강/closure 정정부터 진행한다. M28~M31은 strict closure로 완료됐다. 그 뒤 M42 훈련 command 효과 0~34 구현을 재개한다. 완전 이식 여부는 모든 구현 책임과 M50~M52 최종 검증으로만 닫는다.
 
-M28~M30 source-unit manifest는 작성됐고 strict closure가 완료됐다. 새 세션은 `data/coverage/manifests/M31-source-units.json`부터 `M41-source-units.json`까지와 `docs/milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`를 같이 본다.
+M28~M31 source-unit manifest는 작성됐고 strict closure가 완료됐다. 새 세션은 `data/coverage/manifests/M32-source-units.json`부터 `M41-source-units.json`까지와 `docs/milestones/M28_M41_DONE_NOT_DONE_LEDGER.ko.md`를 같이 본다.
 
 ## 에이전트 시작 문서
 
@@ -275,13 +299,13 @@ M28~M30 source-unit manifest는 작성됐고 strict closure가 완료됐다. 새
 - M28에서 메인 화면 route 연결은 완료했다. `unit:M28:main-route` 27행 중 메인 메뉴 정의 24개는 route/action/view/dispatch/smoke 근거를 갖고, BOYFRIEND event-local screen session row 3개는 M47로 책임 이관했다.
 - M29에서 아이템 상점 구매 flow는 strict closure 기준으로 완료했다. `unit:M29:shop-purchase` 206행은 M29-owned 83 implemented-verified와 M29 approved-excluded 123으로 재정리했고, 123개는 수신 manifest에 inbound 책임으로 명시했다. 실제 `SHOP_ITEM.ERB` 구매형 listing은 30개다.
 - M30은 strict closure 기준으로 완료했다. 즉시 사용 아이템 flow/effect 37개는 implemented-verified이고, 특수 item 200~214 및 item 22/90/91/211 계열 37개는 M30 approved-excluded로 수신 manifest에 blocked inbound 명시했다. `gate:item-use-coverage`와 `gate:milestone-scope-closure -- M30`은 통과한다.
-- M31에서 영입 listing과 인물 생성은 완료했다. owned scope 237행 중 implemented 52, mapped 158, transferredOut 27로 닫았고 `Item.csv` 영입 listing 48개와 `recruit:150` 반복 영입을 생성 결과에 연결했다.
+- M31에서 영입 listing과 인물 생성은 strict closure 기준으로 완료했다. source 237행 중 M31-owned 127 implemented-verified, M31 approved-excluded 110으로 닫았고 `Item.csv` 영입 listing 48개와 `recruit:150` 반복 영입을 생성 결과에 연결했다.
 - M32에서 인물 원형과 identity는 완료했다. implementation queue 274행과 M31 inbound transfer 20행, 총 294행 중 implemented 286, mapped 8로 닫았고 Chara template 109개, identity 문자열, CSTR seed, lifecycle 상태를 정의/save 경계에 연결했다.
 - M33에서 신체/능력/소질/경험은 완료했다. M27 queue 5,283행과 M33 필수 `Palam.csv` 정의 17행, 총 5,300행 중 implemented 4,768, mapped 465, transferredOut 67로 닫았다. Chara `BASE/ABL/TALENT/EXP` seed, `BASE/ABL/TALENT/EXP/MARK/PALAM` 표시 정의, `BASE/MAXBASE/EXP/MARK` save mapping을 people/body owner에 연결했다.
 - M33에서 업무/촬영/훈련 결과 반영은 `src/features/bodyStats.ts` 공통 helper로 통일했다. `bodyStatDeltas`, `paramDeltas`, `resourceDeltas`가 같은 `body.byCharacterId.*` 저장 필드를 갱신한다.
 - M34에서 관계/CFLAG/장비/의복 owner는 구현 근거가 있으나 strict 기준 재정리가 필요하다. 현재 manifest는 M30 inbound 3개까지 반영되어 total 2,238, implemented 1,998, blocked 240이다. `splitLegacyCharacterFlags`, `buildWardrobeView`, `main/openWardrobe`, `wardrobe/toggleClothing`이 CFLAG seed, RELATION seed, 의복/장비 route의 실제 소비 경로다.
 - M34.5에서 M35 진입 전 hardening을 완료했다. `gate:source-evidence`는 auxiliary evidence 완료 근거 169개를 primary `VariableSize.CSV` evidence로 재연결한 뒤 통과한다.
-- M35에서 턴 종료와 시간 진행 완성을 완료했다. `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`을 실제 script로 교체했고, M35 owned scope 7행을 mapped 7, unresolved issue 0개로 닫았다.
+- M35는 기존 coverage/gate/smoke 통과 이력이 있으나 strict manifest 기준 현재 total 8, blocked 7, scope-redesign-required 1이다.
 - M35에서 `run.clock`에 day/week/month/year/currentTimeSlot/counter를 연결하고, `run.progressFlags.flag_34/flag_61`을 weekly/monthly hook 소비로 닫았다. 미션 기한, scheduled event, weekly/monthly automatic hook, world event flag, 월말 비용, session cleanup, save roundtrip은 `smoke:turn-long`이 검증한다.
 - M36에서 방문/시설 완성을 완료했다. `coverage:visit-facility`, `gate:visit-facility`, `smoke:visit-all`을 실제 script로 교체했고, M36 owned scope 559행을 implemented 552, mapped 7, unresolved issue 0개로 닫았다.
 - M36에서 방문 장소 7개와 source file + source label 기준 방문 action 86개를 runtime에 연결했다. 방문 선택값은 `GameSession.visit`에만 남고, 완료 결과는 `featureState.visits`, `world.eventFlags`, `world.unlocks`, `economy.account/accountingEntries` owner에만 반영된다.
@@ -296,8 +320,8 @@ M28~M30 source-unit manifest는 작성됐고 strict closure가 완료됐다. 새
 - M41은 기존 `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability` 통과 이력이 있으나 strict manifest 기준으로는 M30 inbound 6개가 추가되어 total 1,631, implemented-verified 4, blocked 1,626, scope-redesign-required 1로 재정리됐다.
 - M41에서 원본 `COMABLE.ERB`의 `COM_ABLE*` source program 125개를 추출했고, `Train.csv` active command 105개 전부가 대응 source program을 가진다. `COMSEQ_REGISTER.ERB` dynamic call row와 `COMORDER.ERB` source-file-review row도 coverage/audit/closure에 반영했다.
 - M41 availability는 저장 상태를 바꾸지 않는 view 계산으로 연결했고, 불가 command는 원본 availability rule 기반 사유를 표시한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
-- 다음 작업은 M31~M41 원본 단위 매니페스트 보강/closure 정정이다. M28~M30은 strict closure로 완료됐다. 그 뒤 M42 훈련 command 효과 0~34를 원본 기준으로 닫는다.
-- M28~M30 manifest 기준 현재 상태: M28, M29, M30 모두 completedAllowedNow true다. M29와 M30 excluded row는 수신 manifest에 blocked inbound로 명시되어 후속 owner 완료를 막는다.
+- 다음 작업은 M32~M41 원본 단위 매니페스트 보강/closure 정정이다. M28~M31은 strict closure로 완료됐다. 그 뒤 M42 훈련 command 효과 0~34를 원본 기준으로 닫는다.
+- M28~M31 manifest 기준 현재 상태: M28, M29, M30, M31 모두 completedAllowedNow true다. M29와 M30 excluded row는 수신 manifest에 blocked inbound로 명시되어 후속 owner 완료를 막는다.
 - 원본 흐름 기준은 `GAME_FLOW_MAP.ko.md`가 소유한다.
 - 데이터/상태 소유권 기준은 `GAME_DOMAIN_SYSTEM.md`가 소유한다.
 - 모듈 경계와 import 방향은 `MODULE_SYSTEM.ko.md`가 소유한다.
@@ -511,14 +535,14 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 29. M34 관계/CFLAG/장비/의복 owner는 기존 coverage/gate/smoke/build 통과 이력이 있으나, strict manifest 기준으로는 M30 inbound 3개가 추가되어 total 2,238, implemented 1,998, blocked 240으로 재정리됐다.
 30. M34 이후 전수 검토에서 M35 진입 전 hardening 필요가 확인되었다.
 31. M34.5 전수 이식 gate hardening은 완료되었다. `gate:source-evidence`, `gate:coverage-hardening`, `gate:coverage-crosscheck`, `gate:pre-implementation-audit`, `gate:implementation-queue`, `build`, `test --if-present`가 통과했다.
-32. M35 턴 종료와 시간 진행 완성은 `npm run coverage:turn-pipeline`, `npm run gate:turn-pipeline`, `npm run gate:milestone-scope-closure -- M35`, `npm run smoke:turn-long`, `npm run smoke:m8`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M35 owned scope 7행 중 mapped 7, unresolved issue 0개로 닫았다.
+32. M35 턴 종료와 시간 진행은 기존 coverage/gate/smoke/build 통과 이력이 있으나, strict manifest 기준으로는 total 8, blocked 7, scope-redesign-required 1로 재정리됐다.
 33. M36 방문/시설 완성은 `npm run coverage:visit-facility`, `npm run gate:visit-facility`, `npm run gate:milestone-scope-closure -- M36`, `npm run smoke:visit-all`, `npm run smoke:m10`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M36 owned scope 559행 중 implemented 552, mapped 7, unresolved issue 0개로 닫았다.
 34. M37 업무/창관/특수 업무 완성은 `npm run coverage:work`, `npm run gate:work-coverage`, `npm run gate:milestone-scope-closure -- M37`, `npm run smoke:work-all`, `npm run smoke:m12`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M37 owned scope 461행 중 implemented 286, mapped 175, unresolved issue 0개로 닫았다.
 35. M38 촬영 정의와 장면 조건 완성은 `npm run coverage:filming-scene`, `npm run gate:filming-scene`, `npm run gate:milestone-scope-closure -- M38`, `npm run smoke:filming-scenes`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M38 owned scope 6행 중 mapped 6, unresolved issue 0개로 닫았다.
 36. M39 촬영 실행/결과/판매 완성은 `npm run coverage:filming-execution`, `npm run gate:filming-execution`, `npm run gate:milestone-scope-closure -- M39`, `npm run smoke:filming-all`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M39 owned scope 174행 중 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
 37. M40 훈련 메뉴와 세션 완성은 `npm run coverage:training-session`, `npm run gate:training-session`, `npm run gate:milestone-scope-closure -- M40`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M40 owned scope 11행 중 implemented 5, mapped 6, unresolved issue 0개로 닫았다.
 38. M41 훈련 가능 조건은 기존 coverage/gate/smoke/build 통과 이력이 있으나, strict manifest 기준으로는 M30 inbound 6개가 추가되어 total 1,631, implemented-verified 4, blocked 1,626, scope-redesign-required 1로 재정리됐다.
-39. 다음 작업은 M31~M41 원본 단위 매니페스트 보강/closure 정정 후 M42 훈련 command 효과 0~34 구현이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
+39. 다음 작업은 M32~M41 원본 단위 매니페스트 보강/closure 정정 후 M42 훈련 command 효과 0~34 구현이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
 
 ## 읽을 문서
 
@@ -535,9 +559,9 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 
 ## 최신 인수인계: 완료 선언 재정렬 후 M42 blocked
 
-- M28~M30은 strict closure 완료 상태다. M31~M41 완료 선언은 아직 완전 포팅 보장 기준으로 신뢰하지 않는다. `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 재판정 표 기준으로 각 마일스톤을 보강하거나 blocked/scope-redesign-required로 정정한다.
+- M28~M31은 strict closure 완료 상태다. M32~M41 완료 선언은 아직 완전 포팅 보장 기준으로 신뢰하지 않는다. `M28_M41_DONE_NOT_DONE_LEDGER.ko.md`의 재판정 표 기준으로 각 마일스톤을 보강하거나 blocked/scope-redesign-required로 정정한다.
 - M42는 완료가 아니다.
 - 이유: 이전 산출물은 원본 `COMF0.ERB`~`COMF34.ERB` 효과 계산을 구현한 것이 아니라 `SOURCE/LOSEBASE/EXP` 라인 인덱싱과 static profile 생성을 완료로 오판했다.
 - 현재 M42 closure는 `status: blocked`이며, `training-effect-0-34.json`은 implemented 0, ownedBlocker 35, missingVerification 35를 기록한다.
 - `npm run gate:training-effect -- 0-34`는 원본 효과 계산 구현 전까지 실패해야 한다.
-- 다음 세션은 M31~M41 원본 단위 매니페스트 보강/closure 정정 후 M42를 재개한다. M43로 넘어가지 않는다.
+- 다음 세션은 M32~M41 원본 단위 매니페스트 보강/closure 정정 후 M42를 재개한다. M43로 넘어가지 않는다.
