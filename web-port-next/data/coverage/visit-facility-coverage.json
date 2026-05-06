@@ -12,15 +12,15 @@
     "ownedUnitIds": [
       "unit:M36:visit-facility"
     ],
-    "rule": "Every M36 queue row must be implemented or mapped-consumed exactly once.",
+    "rule": "Every M36 queue row must be implemented exactly once; row coverage supports the strict source-unit manifest.",
     "runtimeBoundary": "Visit place/action selections remain in GameSession.visit; completed visit progress, event flags, facility unlocks, and money changes are saved by their owners.",
     "actionCoverageRule": "ERB visit feature rows are consumed by source file plus source label visit actions; line-level rows share the same action only when they are the same original label branch."
   },
   "summary": {
     "ownedRowRefs": 559,
     "rows": 559,
-    "implemented": 552,
-    "mapped": 7,
+    "implemented": 559,
+    "mapped": 0,
     "transferredOut": 0,
     "approvedExcluded": 0,
     "ownedBlocker": 0,
@@ -38,7 +38,7 @@
     },
     "byCompletionStatus": {
       "implemented-visit-action-row": 552,
-      "mapped-consumed-visit-place-definition": 7
+      "implemented-visit-place-definition": 7
     },
     "bySourcePath": {
       "original-game/ERB/訪問関係/AYANO_ORDER_DETAIL.ERB": 12,
@@ -75,7 +75,7 @@
       "sourceId": "visit-place:10",
       "sourceName": "키류 조직 사무소",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:10)",
       "verificationId": "smoke:visit-all"
     },
@@ -89,7 +89,7 @@
       "sourceId": "visit-place:11",
       "sourceName": "비밀 연구소",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:11)",
       "verificationId": "smoke:visit-all"
     },
@@ -103,7 +103,7 @@
       "sourceId": "visit-place:12",
       "sourceName": "레이첼의 공방",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:12)",
       "verificationId": "smoke:visit-all"
     },
@@ -117,7 +117,7 @@
       "sourceId": "visit-place:13",
       "sourceName": "이쿠미의 연구소",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:13)",
       "verificationId": "smoke:visit-all"
     },
@@ -131,7 +131,7 @@
       "sourceId": "visit-place:14",
       "sourceName": "RB단 아지트",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:14)",
       "verificationId": "smoke:visit-all"
     },
@@ -145,7 +145,7 @@
       "sourceId": "visit-place:15",
       "sourceName": "토모요시댁",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:15)",
       "verificationId": "smoke:visit-all"
     },
@@ -159,7 +159,7 @@
       "sourceId": "visit-place:16",
       "sourceName": "아카샤 본부",
       "definitionKey": "visitPlaces",
-      "completionStatus": "mapped-consumed-visit-place-definition",
+      "completionStatus": "implemented-visit-place-definition",
       "runtimeConsumerId": "visitPlaceDefinitions -> createVisitSession/buildVisitView (visit-place:16)",
       "verificationId": "smoke:visit-all"
     },

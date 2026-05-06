@@ -13,9 +13,9 @@
 ## 현재 closure 기준
 
 - M28은 strict closure 완료 상태다.
-- Next call target is M35 closure. M28~M35 are strict-closed.
-- M36~M41이 source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전에는 M42를 재개하지 않는다. M28~M35은 strict closure 완료 상태다.
-- Current M28~M52 aggregate: total 11,247; implemented-verified 8,828; approved-excluded 359; blocked 2,029; scope-redesign-required 31; completedAllowedNow true 9 / false 17.
+- Next call target is M37 closure. M28~M36 are strict-closed.
+- M37~M41? source-unit manifest ???? ???? ????? ????? ??? M42? ???? ???. M28~M36? strict closure ?? ???.
+- Current M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 359; blocked 2,022; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
 
 ## 프로젝트 책임
 
@@ -191,7 +191,7 @@ M30에 대한 현재 판단:
 - M17~M18: 원본 대조 정책과 반복 구현 규칙 고정
 - M19~M20: 원본 기능, 정의 데이터 1차 전수표 작성
 - M21~M27: 원본 근거, 저장 상태, 세션/계산 상태 전수표 보강과 구현 전 누락 감사
-- M28~M35: 전수표를 기준으로 기능군별 구현 완료
+- M28~M36: 전수표를 기준으로 기능군별 구현 완료
 - M34.5: M35 이후 누락 방지 gate hardening. M35로 넘어가기 전에 반드시 통과해야 하는 차단 마일스톤
 - M35~M49: hardening된 전수표와 gate를 기준으로 기능군별 구현 완료
 - M50~M52: 전체 저장/로드, 최종 누락 감사, 완전 이식 판정

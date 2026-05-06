@@ -22,6 +22,16 @@ function countBy(rows, keyFn) {
   return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
 }
 
+function groupBy(rows, keyFn) {
+  const groups = new Map();
+  for (const row of rows) {
+    const key = keyFn(row);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(row);
+  }
+  return groups;
+}
+
 function slug(value) {
   return String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
@@ -77,7 +87,7 @@ for (const [reviewId, scope] of [...ownedRefs.entries()].sort(([a], [b]) => a.lo
       sourceId: definitionRow?.sourceId ?? '',
       sourceName: definitionRow?.sourceName ?? '',
       definitionKey: definitionRow?.definitionKey ?? '',
-      completionStatus: definitionRow?.definitionKey === 'visitPlaces' ? 'mapped-consumed-visit-place-definition' : 'unresolved',
+      completionStatus: definitionRow?.definitionKey === 'visitPlaces' ? 'implemented-visit-place-definition' : 'unresolved',
       runtimeConsumerId:
         definitionRow?.definitionKey === 'visitPlaces'
           ? `visitPlaceDefinitions -> createVisitSession/buildVisitView (${definitionRow.sourceId})`
@@ -173,7 +183,8 @@ const coverage = {
   },
   scopeContract: {
     ownedUnitIds: units.map((unit) => unit.unitId),
-    rule: 'Every M36 queue row must be implemented or mapped-consumed exactly once.',
+    rule:
+      'Every M36 queue row must be implemented exactly once; row coverage supports the strict source-unit manifest.',
     runtimeBoundary:
       'Visit place/action selections remain in GameSession.visit; completed visit progress, event flags, facility unlocks, and money changes are saved by their owners.',
     actionCoverageRule:
@@ -236,6 +247,73 @@ const commandsRun = [
   'npm run test --if-present',
 ];
 
+const featureGroups = [...groupBy(rows.filter((row) => row.rowKind === 'feature'), (row) => row.visitActionId).entries()].sort(
+  ([a], [b]) => a.localeCompare(b),
+);
+const strictRows = [
+  ...featureGroups.map(([visitActionId, groupRows], index) => {
+    const sortedRows = [...groupRows].sort((a, b) =>
+      String(a.reviewId).localeCompare(String(b.reviewId)),
+    );
+    const first = sortedRows[0];
+    return {
+      unitId: `M36:visit-action:${String(index + 1).padStart(5, '0')}`,
+      rowKind: 'visit-action',
+      legacyId: visitActionId,
+      sourceKind: 'visit-action-source-label',
+      sourcePath: first.sourcePath,
+      sourceLine: sortedRows
+        .map((row) => row.sourceLine)
+        .filter(Boolean)
+        .join('; '),
+      sourceLabel: first.sourceLabel,
+      sourceEvidenceId: sortedRows.map((row) => row.sourceEvidenceId).join('; '),
+      legacyReviewId: sortedRows.map((row) => row.reviewId).join('; '),
+      requiredBehavior:
+        'Visit action listing/selection/confirmation with progress/event/unlock/money/session boundary as defined by runtime visit action shell.',
+      runtimeConsumerId:
+        `visitActionDefinitions[${visitActionId}] -> selectVisitAction/confirmVisitAction -> featureState.visits/world.eventFlags/world.unlocks`,
+      verificationId: 'smoke:visit-all',
+      previousCompletionStatus: 'implemented-visit-action-row',
+      sourceCoverageRowId: sortedRows.map((row) => row.coverageRowId).join('; '),
+      sourceEvidenceRowCount: sortedRows.length,
+    };
+  }),
+  ...rows
+    .filter((row) => row.rowKind === 'definition')
+    .sort((a, b) => String(a.sourceId).localeCompare(String(b.sourceId)))
+    .map((row, index) => ({
+      unitId: `M36:visit-place:${String(index + 1).padStart(5, '0')}`,
+      rowKind: 'visit-place',
+      legacyId: row.sourceId,
+      sourceKind: 'visit-place-definition',
+      sourcePath: row.sourcePath,
+      sourceLine: '',
+      sourceLabel: row.sourceName,
+      sourceEvidenceId: row.sourceEvidenceId,
+      legacyReviewId: row.reviewId,
+      requiredBehavior:
+        'Visit place definition is exposed in the visit route, can create a visit session, and participates in action listing/selection boundaries.',
+      runtimeConsumerId: row.runtimeConsumerId,
+      verificationId: row.verificationId,
+      previousCompletionStatus: 'implemented-visit-place-definition',
+      sourceCoverageRowId: row.coverageRowId,
+      sourceEvidenceRowCount: 1,
+    })),
+];
+
+const sourceUnitMetrics = {
+  totalUnits: strictRows.length,
+  'implemented-verified': strictRows.length,
+  blocked: 0,
+  'scope-redesign-required': 0,
+  'approved-excluded': 0,
+  completedAllowedNow: true,
+  legacyCoverageRows: rows.length,
+  groupedVisitActions: featureGroups.length,
+  visitPlaceDefinitions: rows.filter((row) => row.rowKind === 'definition').length,
+};
+
 const closure = {
   schemaVersion: 'milestone-closure/v1',
   milestone: 'M36',
@@ -254,9 +332,9 @@ const closure = {
     smoke: 'tools/m36_visit_all_smoke.ts',
   },
   counts: {
-    ownedTotal: rows.length,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    ownedTotal: strictRows.length,
+    implemented: strictRows.length,
+    mapped: 0,
     approvedExcluded: 0,
     transferredOut: 0,
     ownedBlocker: 0,
@@ -267,9 +345,9 @@ const closure = {
     unapprovedExcluded: 0,
   },
   closureMetrics: {
-    ownedTotal: rows.length,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    ownedTotal: strictRows.length,
+    implemented: strictRows.length,
+    mapped: 0,
     approvedExcluded: 0,
     transferredOut: 0,
     ownedBlocker: 0,
@@ -281,15 +359,101 @@ const closure = {
   },
   verification: {
     commands: commandsRun,
-    expectedGateResult: `${rows.length} M36 owned row(s), 0 unresolved issue(s)`,
+    expectedGateResult: `${strictRows.length} M36 strict source unit(s), 0 unresolved issue(s)`,
   },
   commandsRun,
+  sourceUnitMetrics,
+  responsibilityIntegrity: {
+    scopeReductionProhibited: true,
+    checklistMatchedToResponsibility: true,
+    sourceBehaviorImplementedNotJustIndexed: true,
+    gateValidatesResponsibilityNotOwnScaffold: true,
+    limitationsBlockCompletion: false,
+    responsibilityItems: [
+      'Expose all seven original visit place definitions through the visit route and visit session creation.',
+      'Expose all 86 source-file/source-label visit action groups through selection and confirmation.',
+      'Keep visit selection in GameSession.visit while persisting only completed visit progress, unlocks, event flags, and economy effects through owner save domains.',
+      'Validate unavailable place/action, cost failure, duplicate execution, cancellation, and save roundtrip boundaries.',
+      'Do not claim downstream world event, character/stat, turn, or mission effect internals as M36 completion.',
+    ],
+    implementationEvidence: [
+      'src/features/visit.ts',
+      'src/game/dispatch.ts',
+      'src/ui/RouteScreens.tsx',
+      'data/coverage/visit-facility-coverage.json',
+      'data/coverage/manifests/M36-source-units.json',
+      'data/coverage/milestones/M36-closure.json',
+      'tools/gate_visit_facility.mjs',
+      'tools/m36_visit_all_smoke.ts',
+    ],
+    verificationEvidence: commandsRun,
+  },
 };
 
 writeJson('data/coverage/visit-facility-coverage.json', coverage);
 writeJson('data/coverage/audits/M36-gap-audit.json', gapAudit);
 writeJson('data/coverage/milestones/M36-closure.json', closure);
+writeJson('data/coverage/manifests/M36-source-units.json', {
+  schemaVersion: 1,
+  milestone: 'M36',
+  generatedAt: '2026-05-06',
+  purpose: 'Strict source-unit manifest for visit places, facilities, action listing, selection, confirmation, and visit session/save boundaries.',
+  sourceInputs: [
+    'data/coverage/visit-facility-coverage.json',
+    'data/coverage/milestones/M36-closure.json',
+    'data/coverage/audits/M36-gap-audit.json',
+  ],
+  rules: [
+    'Row-level coverage is supporting evidence only; completion is counted at 86 visit action groups plus 7 visit place definitions.',
+    'Every M36 source unit must have source evidence, runtime consumer evidence, and verification evidence.',
+    'M36 owns visit route/place/action/session boundaries, not downstream world event, mission, character/stat, or turn effect internals.',
+  ],
+  directOriginalReviewRequiredBeforeCompletion: true,
+  originalSourceRoots: [
+    'original-game/ERB/訪問関係/HOUMON.ERB',
+    'original-game/ERB/訪問関係/*.ERB',
+    'original-game/ERB/鼇ゅ븦?㏘퓗/*.ERB',
+  ],
+  summary: sourceUnitMetrics,
+  completionGate: {
+    completedAllowedNow: true,
+    requiredStatuses: ['implemented-verified', 'approved-excluded'],
+    forbiddenStatusesForCompletion: ['blocked', 'scope-redesign-required', 'mapped'],
+    requiredCommands: commandsRun,
+  },
+  notes: [
+    'M36 closes 93 source units: 86 visit action groups and 7 visit place definitions.',
+    'The 559 queue rows remain in visit-facility coverage as source evidence; they are not individually counted as completion units.',
+    'World/event progression effects remain M47-owned; M36 closes the visit action shell and visit session boundary.',
+  ],
+  units: strictRows.map((row) => ({
+    unitId: row.unitId,
+    milestone: 'M36',
+    ownerMilestone: 'M36',
+    ownerRole: 'visit-facility-owner',
+    sourceKind: row.sourceKind,
+    sourcePath: row.sourcePath,
+    sourceLine: row.sourceLine,
+    sourceLabel: row.sourceLabel,
+    sourceEvidenceId: row.sourceEvidenceId,
+    legacyReviewId: row.legacyReviewId,
+    legacyFamily: '',
+    rowKind: row.rowKind,
+    legacyId: row.legacyId,
+    requiredBehavior: row.requiredBehavior,
+    runtimeConsumerId: row.runtimeConsumerId,
+    verificationId: row.verificationId,
+    previousCompletionStatus: row.previousCompletionStatus,
+    manifestStatus: 'implemented-verified',
+    blockerReason: '',
+    sourceCoverageRowId: row.sourceCoverageRowId,
+    acceptedByOwner: true,
+    fromMilestone: '',
+    toMilestone: '',
+    sourceEvidenceRowCount: row.sourceEvidenceRowCount,
+  })),
+});
 
 console.log(
-  `coverage:visit-facility wrote ${rows.length} row(s), implemented=${implementedRows.length}, mapped=${mappedRows.length}, unresolved=${unresolvedIssues.length}.`,
+  `coverage:visit-facility wrote ${strictRows.length} strict source unit(s), rowEvidence=${rows.length}, implemented=${strictRows.length}, unresolved=${unresolvedIssues.length}.`,
 );

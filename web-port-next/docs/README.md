@@ -4,9 +4,9 @@
 
 - M28 is strictly closed: `data/coverage/manifests/M28-source-units.json` has `completedAllowedNow: true`.
 - M28 owns 24 main-route contract rows. The 3 BOYFRIEND event-local session rows are approved-excluded from M28 and remain M47 responsibility.
-- M29 is the next closure target. M29 must not count non-purchase item use/equipment/recruit/event rows as purchase completion.
-- M36~M41 must be closed or explicitly redesigned before M42 implementation resumes. M28~M35 are now strict-closed.
-- Current aggregate: total units 11,247; implemented-verified 8,828; approved-excluded 359; blocked 2,029; scope-redesign-required 31; completedAllowedNow true 9 / false 17.
+- M37 is the next closure target. M37 must not count mapped save/session/calculation rows or downstream result owners as work/job completion.
+- M37~M41 must be closed or explicitly redesigned before M42 implementation resumes. M28~M36 are now strict-closed.
+- Current aggregate: total units 11,247; implemented-verified 8,835; approved-excluded 359; blocked 2,022; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
 
 ## 책임 분리
 

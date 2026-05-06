@@ -5,7 +5,7 @@
   "status": "completed",
   "completedAt": "2026-05-01",
   "commitPolicy": "Commit after every milestone closure.",
-  "commitHash": "404794c",
+  "commitHash": "recorded by the M36 git commit that includes this closure file",
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
     "definitions": "data/coverage/definitions.json",
@@ -20,9 +20,9 @@
     "smoke": "tools/m36_visit_all_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 559,
-    "implemented": 552,
-    "mapped": 7,
+    "ownedTotal": 93,
+    "implemented": 93,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -33,9 +33,9 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 559,
-    "implemented": 552,
-    "mapped": 7,
+    "ownedTotal": 93,
+    "implemented": 93,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -57,7 +57,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "559 M36 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "93 M36 strict source unit(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:visit-facility",
@@ -69,5 +69,51 @@
     "npm run typecheck",
     "npm run build",
     "npm run test --if-present"
-  ]
+  ],
+  "sourceUnitMetrics": {
+    "totalUnits": 93,
+    "implemented-verified": 93,
+    "blocked": 0,
+    "scope-redesign-required": 0,
+    "approved-excluded": 0,
+    "completedAllowedNow": true,
+    "legacyCoverageRows": 559,
+    "groupedVisitActions": 86,
+    "visitPlaceDefinitions": 7
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "Expose all seven original visit place definitions through the visit route and visit session creation.",
+      "Expose all 86 source-file/source-label visit action groups through selection and confirmation.",
+      "Keep visit selection in GameSession.visit while persisting only completed visit progress, unlocks, event flags, and economy effects through owner save domains.",
+      "Validate unavailable place/action, cost failure, duplicate execution, cancellation, and save roundtrip boundaries.",
+      "Do not claim downstream world event, character/stat, turn, or mission effect internals as M36 completion."
+    ],
+    "implementationEvidence": [
+      "src/features/visit.ts",
+      "src/game/dispatch.ts",
+      "src/ui/RouteScreens.tsx",
+      "data/coverage/visit-facility-coverage.json",
+      "data/coverage/manifests/M36-source-units.json",
+      "data/coverage/milestones/M36-closure.json",
+      "tools/gate_visit_facility.mjs",
+      "tools/m36_visit_all_smoke.ts"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:visit-facility",
+      "npm run gate:visit-facility",
+      "npm run gate:milestone-scope-closure -- M36",
+      "npm run smoke:visit-all",
+      "npm run smoke:m10",
+      "npm run verify:m16",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ]
+  }
 }

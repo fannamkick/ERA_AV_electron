@@ -8,12 +8,12 @@
   "allCompletedAllowedNowFalse": false,
   "totals": {
     "totalUnits": 11247,
-    "implementedVerified": 8828,
-    "blocked": 2029,
+    "implementedVerified": 8835,
+    "blocked": 2022,
     "scopeRedesignRequired": 31,
     "approvedExcluded": 359,
-    "completedAllowedNowTrue": 9,
-    "completedAllowedNowFalse": 17
+    "completedAllowedNowTrue": 10,
+    "completedAllowedNowFalse": 16
   },
   "checks": {
     "allM28ToM52ManifestsPresent": true,
@@ -25,9 +25,9 @@
     "nextImplementationMustNotStartFromCompletedAssumption": true
   },
   "blockingFindings": [
-    "9 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
+    "10 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
     "Registry contracts exist for every M28-M52 manifest.",
-    "M28 through M35 are strictly closed under their current source-unit manifests; M34.5 counts 188 substantive hardening units plus 1 separate closure integrity check.",
+    "M28 through M36 are strictly closed under their current source-unit manifests; M34.5 counts 188 substantive hardening units plus 1 separate closure integrity check.",
     "Later implementation milestones must still close their own source units before completion.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
@@ -139,10 +139,12 @@
       "summary": {
         "totalUnits": 188,
         "implemented-verified": 188,
-        "approved-excluded": 0,
         "blocked": 0,
-        "scope-redesign-required": 0,
         "completedAllowedNow": true,
+        "evidenceCorrections": 169,
+        "registryContracts": 19,
+        "approved-excluded": 0,
+        "scope-redesign-required": 0,
         "substantiveHardeningUnits": 188,
         "closureIntegrityChecks": 1
       }
@@ -155,9 +157,9 @@
       "summary": {
         "totalUnits": 8,
         "implemented-verified": 8,
-        "approved-excluded": 0,
         "blocked": 0,
         "scope-redesign-required": 0,
+        "approved-excluded": 0,
         "completedAllowedNow": true
       }
     },
@@ -168,11 +170,14 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 93,
-        "implemented-verified": 86,
-        "approved-excluded": 0,
-        "blocked": 7,
+        "implemented-verified": 93,
+        "blocked": 0,
         "scope-redesign-required": 0,
-        "completedAllowedNow": false
+        "approved-excluded": 0,
+        "completedAllowedNow": true,
+        "legacyCoverageRows": 559,
+        "groupedVisitActions": 86,
+        "visitPlaceDefinitions": 7
       }
     },
     {
@@ -183,9 +188,7 @@
       "summary": {
         "totalUnits": 463,
         "implemented-verified": 294,
-        "approved-excluded": 0,
         "blocked": 169,
-        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
@@ -196,10 +199,7 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 6,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
         "blocked": 6,
-        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
@@ -211,9 +211,7 @@
       "summary": {
         "totalUnits": 174,
         "implemented-verified": 135,
-        "approved-excluded": 0,
         "blocked": 39,
-        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
@@ -225,9 +223,7 @@
       "summary": {
         "totalUnits": 11,
         "implemented-verified": 5,
-        "approved-excluded": 0,
         "blocked": 6,
-        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
@@ -239,10 +235,10 @@
       "summary": {
         "totalUnits": 1631,
         "implemented-verified": 4,
-        "approved-excluded": 0,
         "blocked": 1626,
         "scope-redesign-required": 1,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "sourcePrograms": 125
       }
     },
     {
@@ -252,11 +248,9 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 53,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
         "blocked": 53,
-        "scope-redesign-required": 0,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "legacyCoverageRows": 35
       }
     },
     {
@@ -266,11 +260,11 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 43,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
         "blocked": 40,
         "scope-redesign-required": 3,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "activeTrainCommands": 32,
+        "extraComfWithoutTrainRow": 3
       }
     },
     {
@@ -280,11 +274,14 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 63,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
-        "blocked": 40,
         "scope-redesign-required": 23,
-        "completedAllowedNow": false
+        "blocked": 40,
+        "completedAllowedNow": false,
+        "activeTrainCommands": 38,
+        "numericComfSources": 47,
+        "activeWithoutComf": 11,
+        "extraComfWithoutTrainRow": 20,
+        "namedComfSources": 3
       }
     },
     {
@@ -294,8 +291,7 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 2,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 1122,
         "blocked": 1,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
@@ -308,10 +304,8 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 1,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 432,
         "blocked": 1,
-        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
@@ -322,11 +316,12 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 10,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 358,
         "blocked": 10,
+        "completedAllowedNow": false,
+        "implemented-verified": 0,
         "scope-redesign-required": 0,
-        "completedAllowedNow": false
+        "approved-excluded": 0
       }
     },
     {
@@ -336,8 +331,7 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 3,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 325,
         "blocked": 2,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
@@ -350,11 +344,12 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 4,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 150,
         "blocked": 3,
         "scope-redesign-required": 1,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "implemented-verified": 0,
+        "approved-excluded": 0
       }
     },
     {
@@ -364,11 +359,10 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 9,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 193,
         "blocked": 9,
-        "scope-redesign-required": 0,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "queuedImplementationRows": 193
       }
     },
     {
@@ -378,11 +372,11 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 8,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
-        "blocked": 7,
+        "queueRows": 1,
         "scope-redesign-required": 1,
-        "completedAllowedNow": false
+        "blocked": 7,
+        "completedAllowedNow": false,
+        "queuedImplementationRows": 1
       }
     },
     {
@@ -392,11 +386,10 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 10,
-        "implemented-verified": 0,
-        "approved-excluded": 0,
+        "queueRows": 0,
         "blocked": 10,
-        "scope-redesign-required": 0,
-        "completedAllowedNow": false
+        "completedAllowedNow": false,
+        "queuedImplementationRows": 0
       }
     }
   ]

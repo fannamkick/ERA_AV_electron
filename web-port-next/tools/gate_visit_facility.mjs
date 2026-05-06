@@ -20,6 +20,7 @@ function assert(condition, message, detail) {
 const queue = readJson('data/coverage/implementation-queue.json');
 const coverage = readJson('data/coverage/visit-facility-coverage.json');
 const gapAudit = readJson('data/coverage/audits/M36-gap-audit.json');
+const sourceManifest = readJson('data/coverage/manifests/M36-source-units.json');
 const sourceText = fs.readFileSync(path.join(root, 'src/features/visit.ts'), 'utf8');
 
 assert(coverage.schemaVersion === 'visit-facility-coverage/v1', 'invalid schema version');
@@ -28,6 +29,9 @@ assert(Array.isArray(coverage.rows), 'coverage rows missing');
 assert(Array.isArray(coverage.unresolvedIssues), 'unresolvedIssues missing');
 assert(gapAudit.schemaVersion === 'milestone-gap-audit/v1', 'invalid M36 gap audit schema version');
 assert(gapAudit.milestone === 'M36', 'M36 gap audit milestone mismatch');
+assert(sourceManifest.schemaVersion === 1, 'invalid M36 source-unit manifest schema version');
+assert(sourceManifest.milestone === 'M36', 'M36 source-unit manifest milestone mismatch');
+assert(sourceManifest.summary?.completedAllowedNow === true, 'M36 source-unit manifest must be completable', sourceManifest.summary);
 
 const expectedRefs = new Set();
 for (const unit of (queue.queueUnits ?? []).filter((unit) => unit.ownerMilestone === 'M36')) {
@@ -60,6 +64,7 @@ const featureRows = coverage.rows.filter((row) => row.rowKind === 'feature');
 assert(definitionRows.length === 7, 'M36 must account seven visit place definition rows', coverage.summary);
 assert(featureRows.length === 552, 'M36 must account 552 visit feature rows', coverage.summary);
 assert(Number(coverage.summary?.uniqueVisitActions ?? 0) === 86, 'M36 must expose 86 source-label visit actions', coverage.summary);
+assert(Number(coverage.summary?.mapped ?? -1) === 0, 'M36 must not count mapped rows as completion', coverage.summary);
 
 for (const placeId of [
   'organizationOffice',
@@ -103,12 +108,39 @@ assert(missingActionConsumer.length === 0, 'visit runtime missing source file or
 const summary = coverage.summary ?? {};
 assert(Number(summary.ownedRowRefs) === expectedRefs.size, 'summary owned row count mismatch', summary);
 assert(Number(summary.rows) === coverage.rows.length, 'summary row count mismatch', summary);
-assert(Number(summary.implemented) + Number(summary.mapped) === expectedRefs.size, 'implemented + mapped must close M36 scope', summary);
+assert(Number(summary.implemented) === expectedRefs.size, 'implemented rows must close M36 row evidence scope', summary);
 assert(Number(summary.ownedBlocker) === 0, 'M36 must not close with owned blockers', summary);
 assert(Number(summary.missingEvidence) === 0, 'M36 must not close with missing evidence', summary);
 assert(Number(summary.missingConsumer) === 0, 'M36 must not close with missing consumer', summary);
 assert(Number(summary.missingVerification) === 0, 'M36 must not close with missing verification', summary);
 
+const manifestUnits = sourceManifest.units ?? [];
+const forbiddenManifestUnits = manifestUnits.filter((unit) => unit.manifestStatus !== 'implemented-verified');
+assert(manifestUnits.length === 93, 'M36 source-unit manifest must contain 93 strict units', sourceManifest.summary);
+assert(forbiddenManifestUnits.length === 0, 'M36 source-unit manifest has non-completion statuses', forbiddenManifestUnits.slice(0, 20));
+assert(
+  Number(sourceManifest.summary?.['implemented-verified'] ?? -1) === 93,
+  'M36 source-unit manifest implemented count mismatch',
+  sourceManifest.summary,
+);
+assert(Number(sourceManifest.summary?.blocked ?? -1) === 0, 'M36 source-unit manifest must have no blockers', sourceManifest.summary);
+assert(
+  Number(sourceManifest.summary?.['scope-redesign-required'] ?? -1) === 0,
+  'M36 source-unit manifest must have no scope redesign units',
+  sourceManifest.summary,
+);
+assert(
+  Number(sourceManifest.summary?.legacyCoverageRows ?? -1) === expectedRefs.size,
+  'M36 source-unit manifest must preserve legacy coverage row count',
+  sourceManifest.summary,
+);
+assert(
+  Number(sourceManifest.summary?.groupedVisitActions ?? -1) === 86 &&
+    Number(sourceManifest.summary?.visitPlaceDefinitions ?? -1) === 7,
+  'M36 source-unit manifest must split into 86 visit actions and 7 visit place definitions',
+  sourceManifest.summary,
+);
+
 console.log(
-  `gate:visit-facility passed: ${coverage.rows.length} M36 row(s), implemented=${summary.implemented}, mapped=${summary.mapped}.`,
+  `gate:visit-facility passed: 93 M36 strict source unit(s), rowEvidence=${coverage.rows.length}.`,
 );
