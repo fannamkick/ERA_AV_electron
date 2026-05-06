@@ -30,6 +30,17 @@ function basename(sourceFile) {
   return String(sourceFile).split(/[\\/]/u).pop();
 }
 
+function currentDateStamp() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+  const byType = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${byType.year}-${byType.month}-${byType.day}`;
+}
+
 function sourceDefinitionId(sourceFile, sourceLabel) {
   return `work:${basename(sourceFile).replace(/\.ERB$/u, '').toLowerCase().replace(/[^a-z0-9]+/g, '.')}.${String(sourceLabel)
     .toLowerCase()
@@ -290,10 +301,35 @@ const gapAudit = {
   issues: unresolvedIssues,
 };
 
-const commandsRun = [
+const manifestPath = 'data/coverage/manifests/M37-source-units.json';
+const sourceUnitManifest = fileExists(manifestPath) ? readJson(manifestPath) : null;
+const manifestUnits = sourceUnitManifest?.units ?? [];
+const manifestStatusCounts = countBy(manifestUnits, (unit) => unit.manifestStatus);
+const blockedManifestUnits = manifestUnits.filter((unit) => unit.manifestStatus === 'blocked');
+const scopeRedesignUnits = manifestUnits.filter((unit) => unit.manifestStatus === 'scope-redesign-required');
+const strictOwnedTotal = manifestUnits.length || rows.length;
+const strictImplemented = manifestStatusCounts['implemented-verified'] ?? implementedRows.length;
+const strictApprovedExcluded = manifestStatusCounts['approved-excluded'] ?? 0;
+const strictScopeRedesignRequired = manifestStatusCounts['scope-redesign-required'] ?? 0;
+const strictOwnedBlocker = blockedManifestUnits.length;
+const strictCompletedAllowed =
+  sourceUnitManifest?.summary?.completedAllowedNow === true &&
+  strictOwnedBlocker === 0 &&
+  strictScopeRedesignRequired === 0 &&
+  strictImplemented + strictApprovedExcluded === strictOwnedTotal;
+
+function fileExists(relativePath) {
+  return fs.existsSync(path.join(root, relativePath));
+}
+
+const blockedVerificationCommands = [
   'npm run coverage:work',
   'npm run gate:work-coverage',
   'npm run gate:milestone-scope-closure -- M37',
+];
+
+const completionVerificationCommands = [
+  ...blockedVerificationCommands,
   'npm run smoke:work-all',
   'npm run smoke:m12',
   'npm run verify:m16',
@@ -302,15 +338,32 @@ const commandsRun = [
   'npm run test --if-present',
 ];
 
+const verificationCommands = strictCompletedAllowed ? completionVerificationCommands : blockedVerificationCommands;
+
 const closure = {
   schemaVersion: 'milestone-closure/v1',
   milestone: 'M37',
   title: 'Work, brothel, side job, and special work execution',
-  status: 'completed',
-  completedAt: '2026-05-01',
-  commitPolicy: 'Commit after every milestone closure.',
-  commitHash: 'recorded by the M37 git commit that includes this closure file',
-  sourceInputs: coverage.sourceInputs,
+  status: strictCompletedAllowed ? 'completed' : 'blocked',
+  completedAt: strictCompletedAllowed ? currentDateStamp() : null,
+  strictReassessedAt: currentDateStamp(),
+  commitPolicy: 'Commit after every milestone closure or strict closure correction.',
+  previousCompletedClaim: {
+    completedAt: '2026-05-01',
+    commitHash: 'f000824',
+    counts: {
+      ownedTotal: rows.length,
+      implemented: implementedRows.length,
+      mapped: mappedRows.length,
+      ownedBlocker: 0,
+    },
+    invalidReason:
+      'The old closure counted mapped save/session/calculation rows as closed. Under the strict source-unit rule, mapped rows are not completion evidence.',
+  },
+  sourceInputs: {
+    ...coverage.sourceInputs,
+    sourceUnitManifest: manifestPath,
+  },
   outputs: {
     workCoverage: 'data/coverage/work-coverage.json',
     gapAudit: 'data/coverage/audits/M37-gap-audit.json',
@@ -320,12 +373,12 @@ const closure = {
     smoke: 'tools/m37_work_all_smoke.ts',
   },
   counts: {
-    ownedTotal: rows.length,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    ownedTotal: strictOwnedTotal,
+    implemented: strictImplemented,
+    mapped: 0,
     approvedExcluded: 0,
     transferredOut: 0,
-    ownedBlocker: 0,
+    ownedBlocker: strictOwnedBlocker,
     missingEvidence: missingEvidence.length,
     missingConsumer: missingConsumer.length,
     missingVerification: missingVerification.length,
@@ -333,27 +386,62 @@ const closure = {
     unapprovedExcluded: 0,
   },
   closureMetrics: {
-    ownedTotal: rows.length,
-    implemented: implementedRows.length,
-    mapped: mappedRows.length,
+    ownedTotal: strictOwnedTotal,
+    implemented: strictImplemented,
+    mapped: 0,
     approvedExcluded: 0,
     transferredOut: 0,
-    ownedBlocker: 0,
+    ownedBlocker: strictOwnedBlocker,
     missingEvidence: missingEvidence.length,
     missingConsumer: missingConsumer.length,
     missingVerification: missingVerification.length,
     roleOnlyComplete: 0,
     unapprovedExcluded: 0,
   },
-  verification: {
-    commands: commandsRun,
-    expectedGateResult: `${rows.length} M37 owned row(s), 0 unresolved issue(s)`,
+  blockingBreakdown: {
+    byRowKind: countBy(blockedManifestUnits, (unit) => unit.rowKind),
+    byLegacyFamily: countBy(blockedManifestUnits, (unit) => unit.legacyFamily || String(unit.legacyId || '').split(':')[0]),
+    scopeRedesignRequired: scopeRedesignUnits.length,
   },
-  commandsRun,
+  responsibilityIntegrity: {
+    scopeReductionProhibited: true,
+    checklistMatchedToResponsibility: false,
+    sourceBehaviorImplementedNotJustIndexed: false,
+    gateValidatesResponsibilityNotOwnScaffold: false,
+    limitationsBlockCompletion: true,
+    responsibilityItems: [
+      'Implement the full work/brothel/side-job/special-work source behavior, not only source labels and dispatch rows.',
+      'Close work result save-field effects only when source behavior is implemented and verified.',
+      'Do not count mapped save/session/calculation rows as M37 completion evidence.',
+      'Resolve inbound M29 CFLAG:401 and FLAG:41 inside M37 or explicitly redesign ownership before completion.',
+    ],
+    implementationEvidence: [
+      'definitions.workDefinitions contains 8 ERB-derived work listings and 72 source-label work definitions.',
+      'work/select, work/selectCharacter, work/execute, and work/cancel dispatch through GameSession.work.',
+      'applyWorkResult currently applies rewardMoney, experienceDeltas, bodyStatDeltas, assignments, careerFlagsByCharacterId, and turn completion.',
+    ],
+    verificationEvidence: [
+      'npm run gate:work-coverage validates M37 row indexing and strict closure consistency.',
+      'npm run gate:milestone-scope-closure -- M37 must fail while ownedBlocker is nonzero.',
+    ],
+    blockingLimitations: [
+      `${strictOwnedBlocker} source units remain blocked in ${manifestPath}.`,
+      `${rows.length - implementedRows.length} coverage rows are mapped evidence, not source behavior completion.`,
+    ],
+  },
+  verification: {
+    commands: completionVerificationCommands,
+    expectedGateResult: strictCompletedAllowed
+      ? `${strictOwnedTotal} M37 source unit(s), 0 blocker(s)`
+      : 'gate:work-coverage passes as coverage indexing; gate:milestone-scope-closure fails until M37 blockers are resolved.',
+  },
+  commandsRun: verificationCommands,
 };
 
 writeJson('data/coverage/work-coverage.json', coverage);
 writeJson('data/coverage/audits/M37-gap-audit.json', gapAudit);
 writeJson('data/coverage/milestones/M37-closure.json', closure);
 
-console.log(`coverage:work wrote ${rows.length} row(s), implemented=${implementedRows.length}, mapped=${mappedRows.length}, unresolved=${unresolvedIssues.length}.`);
+console.log(
+  `coverage:work wrote ${rows.length} row(s), implemented=${implementedRows.length}, mapped=${mappedRows.length}, unresolved=${unresolvedIssues.length}; strictStatus=${closure.status}, strictBlockers=${strictOwnedBlocker}.`,
+);

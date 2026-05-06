@@ -4,7 +4,7 @@
   "title": "Work, brothel, side job, and special work execution",
   "status": "blocked",
   "completedAt": null,
-  "strictReassessedAt": "2026-05-06",
+  "strictReassessedAt": "2026-05-07",
   "commitPolicy": "Commit after every milestone closure or strict closure correction.",
   "previousCompletedClaim": {
     "completedAt": "2026-05-01",
@@ -60,10 +60,11 @@
     "unapprovedExcluded": 0
   },
   "blockingBreakdown": {
-    "saveMapping": 161,
-    "sessionAndCalculationMapping": 6,
-    "inboundFromM29": 2,
-    "legacyFamilies": {
+    "byRowKind": {
+      "save-mapping": 163,
+      "session-mapping": 6
+    },
+    "byLegacyFamily": {
       "ABL": 12,
       "BASE": 2,
       "CFLAG": 37,
@@ -73,15 +74,16 @@
       "FLAG": 12,
       "ITEM": 1,
       "JUEL": 1,
-      "MARK": 2,
-      "PBAND": 1,
-      "TALENT": 72,
       "LOSEBASE": 1,
+      "MARK": 2,
       "MASTER": 1,
+      "PBAND": 1,
       "PLAYER": 1,
+      "TALENT": 72,
       "TARGET": 1,
       "TFLAG": 2
-    }
+    },
+    "scopeRedesignRequired": 0
   },
   "responsibilityIntegrity": {
     "scopeReductionProhibited": true,
@@ -91,9 +93,9 @@
     "limitationsBlockCompletion": true,
     "responsibilityItems": [
       "Implement the full work/brothel/side-job/special-work source behavior, not only source labels and dispatch rows.",
-      "Close result save-field effects for ABL/BASE/CFLAG/CSTR/DAY/EXP/FLAG/ITEM/JUEL/MARK/PBAND/TALENT rows with source behavior evidence.",
-      "Close work session/calculation fields for LOSEBASE, MASTER, PLAYER, TARGET, TFLAG:13, and TFLAG:14 with runtime evidence.",
-      "Close M29 inbound work-owned CFLAG:401 and FLAG:41 as implemented, approved-excluded, or scope-redesign-required."
+      "Close work result save-field effects only when source behavior is implemented and verified.",
+      "Do not count mapped save/session/calculation rows as M37 completion evidence.",
+      "Resolve inbound M29 CFLAG:401 and FLAG:41 inside M37 or explicitly redesign ownership before completion."
     ],
     "implementationEvidence": [
       "definitions.workDefinitions contains 8 ERB-derived work listings and 72 source-label work definitions.",
@@ -101,23 +103,30 @@
       "applyWorkResult currently applies rewardMoney, experienceDeltas, bodyStatDeltas, assignments, careerFlagsByCharacterId, and turn completion."
     ],
     "verificationEvidence": [
-      "npm run gate:work-coverage passed under the old row-coverage rule.",
-      "npm run gate:milestone-scope-closure -- M37 currently fails and must continue to fail while ownedBlocker is nonzero."
+      "npm run gate:work-coverage validates M37 row indexing and strict closure consistency.",
+      "npm run gate:milestone-scope-closure -- M37 must fail while ownedBlocker is nonzero."
     ],
     "blockingLimitations": [
-      "The 161 save-mapping rows are not proven by the current WorkDefinition effect shape.",
-      "The 6 session/calculation rows remain mapped evidence, not direct source-unit completion.",
-      "M29 inbound CFLAG:401 and FLAG:41 have no runtimeConsumerId in the M37 manifest."
+      "169 source units remain blocked in data/coverage/manifests/M37-source-units.json.",
+      "175 coverage rows are mapped evidence, not source behavior completion."
     ]
   },
   "verification": {
     "commands": [
+      "npm run coverage:work",
       "npm run gate:work-coverage",
-      "npm run gate:milestone-scope-closure -- M37"
+      "npm run gate:milestone-scope-closure -- M37",
+      "npm run smoke:work-all",
+      "npm run smoke:m12",
+      "npm run verify:m16",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
     ],
-    "expectedGateResult": "gate:work-coverage passes as coverage indexing; gate:milestone-scope-closure fails until 169 blockers are resolved."
+    "expectedGateResult": "gate:work-coverage passes as coverage indexing; gate:milestone-scope-closure fails until M37 blockers are resolved."
   },
   "commandsRun": [
+    "npm run coverage:work",
     "npm run gate:work-coverage",
     "npm run gate:milestone-scope-closure -- M37"
   ]

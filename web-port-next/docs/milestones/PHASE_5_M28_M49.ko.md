@@ -532,6 +532,8 @@ M37 현재 판정:
 - `work/select`, `work/selectCharacter`, `work/execute`, `work/cancel`이 업무 선택값을 `GameSession.work`에만 두고, 실행 결과만 `economy`, `people.attributes.experiences`, `body.byCharacterId`, `work.assignments`, `work.careerFlagsByCharacterId`, `run.clock` owner에 반영한다.
 - `smoke:work-all`은 M37 source-backed 업무 정의 80개를 실제 dispatch로 실행한다. 단, 이 검증은 ABL/BASE/CFLAG/CSTR/DAY/EXP/FLAG/ITEM/JUEL/MARK/PBAND/TALENT 등 161개 save-field 결과와 6개 session/calculation row, M29 inbound `CFLAG:401`/`FLAG:41`까지 닫는 증거가 아니다.
 - `data/coverage/milestones/M37-closure.json`은 strict 재판정으로 `blocked` 상태다. `gate:milestone-scope-closure -- M37`는 blocker 169개가 해소되기 전까지 통과하면 안 된다.
+- 2026-05-07 정정: `tools/build_work_coverage.mjs`가 과거처럼 mapped 175개를 완료로 세어 `completed` closure를 다시 쓰지 못하게 막았다. 이제 `coverage:work`를 다시 실행해도 strict source-unit manifest 기준으로 M37 closure는 `blocked`, ownedBlocker 169로 남는다.
+- `gate:work-coverage`는 coverage indexing 검증용이다. 이 gate가 통과해도 M37 완료가 아니며, source-unit manifest의 `completedAllowedNow`와 closure status가 어긋나면 실패한다.
 
 검증:
 ```bash

@@ -20,6 +20,8 @@ function assert(condition, message, detail) {
 const queue = readJson('data/coverage/implementation-queue.json');
 const coverage = readJson('data/coverage/work-coverage.json');
 const gapAudit = readJson('data/coverage/audits/M37-gap-audit.json');
+const sourceUnitManifest = readJson('data/coverage/manifests/M37-source-units.json');
+const closure = readJson('data/coverage/milestones/M37-closure.json');
 const legacyCatalogText = fs.readFileSync(path.join(root, 'src/catalog/legacyCatalog.ts'), 'utf8');
 const sourceGroupText = fs.readFileSync(path.join(root, 'src/catalog/workSourceGroups.ts'), 'utf8');
 const workRuntimeText = fs.readFileSync(path.join(root, 'src/features/work.ts'), 'utf8');
@@ -30,6 +32,10 @@ assert(Array.isArray(coverage.rows), 'coverage rows missing');
 assert(Array.isArray(coverage.unresolvedIssues), 'unresolvedIssues missing');
 assert(gapAudit.schemaVersion === 'milestone-gap-audit/v1', 'invalid M37 gap audit schema version');
 assert(gapAudit.milestone === 'M37', 'M37 gap audit milestone mismatch');
+assert(sourceUnitManifest.schemaVersion === 1 || sourceUnitManifest.schemaVersion === 'source-unit-manifest/v1', 'invalid M37 source-unit manifest schema version');
+assert(sourceUnitManifest.milestone === 'M37', 'M37 source-unit manifest milestone mismatch');
+assert(closure.schemaVersion === 'milestone-closure/v1', 'invalid M37 closure schema version');
+assert(closure.milestone === 'M37', 'M37 closure milestone mismatch');
 
 const expectedRefs = new Set();
 for (const unit of (queue.queueUnits ?? []).filter((unit) => unit.ownerMilestone === 'M37')) {
@@ -114,5 +120,43 @@ assert(Number(summary.ownedBlocker) === 0, 'M37 must not close with owned blocke
 assert(Number(summary.missingEvidence) === 0, 'M37 must not close with missing evidence', summary);
 assert(Number(summary.missingConsumer) === 0, 'M37 must not close with missing consumer', summary);
 assert(Number(summary.missingVerification) === 0, 'M37 must not close with missing verification', summary);
+
+const manifestUnits = sourceUnitManifest.units ?? [];
+const manifestStatusCounts = manifestUnits.reduce((counts, unit) => {
+  counts[unit.manifestStatus] = (counts[unit.manifestStatus] ?? 0) + 1;
+  return counts;
+}, {});
+const manifestBlocked = manifestStatusCounts.blocked ?? 0;
+const manifestImplemented = manifestStatusCounts['implemented-verified'] ?? 0;
+const manifestApprovedExcluded = manifestStatusCounts['approved-excluded'] ?? 0;
+const manifestScopeRedesign = manifestStatusCounts['scope-redesign-required'] ?? 0;
+const manifestAllowsCompletion =
+  sourceUnitManifest.summary?.completedAllowedNow === true &&
+  manifestBlocked === 0 &&
+  manifestScopeRedesign === 0 &&
+  manifestImplemented + manifestApprovedExcluded === manifestUnits.length;
+
+const closureMetrics = closure.closureMetrics ?? closure.counts ?? {};
+assert(Number(closureMetrics.ownedTotal) === manifestUnits.length, 'M37 closure ownedTotal must match source-unit manifest', {
+  manifestUnits: manifestUnits.length,
+  closureMetrics,
+});
+assert(Number(closureMetrics.implemented) === manifestImplemented, 'M37 closure implemented count must match source-unit manifest', {
+  manifestImplemented,
+  closureMetrics,
+});
+assert(Number(closureMetrics.ownedBlocker) === manifestBlocked, 'M37 closure blocker count must match source-unit manifest', {
+  manifestBlocked,
+  closureMetrics,
+});
+assert(
+  manifestAllowsCompletion ? closure.status === 'completed' : closure.status !== 'completed',
+  'M37 closure status must follow source-unit manifest completion state',
+  {
+    manifestSummary: sourceUnitManifest.summary,
+    manifestStatusCounts,
+    closureStatus: closure.status,
+  },
+);
 
 console.log(`gate:work-coverage passed: ${coverage.rows.length} M37 row(s), implemented=${summary.implemented}, mapped=${summary.mapped}.`);

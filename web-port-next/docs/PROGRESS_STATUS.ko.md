@@ -341,6 +341,7 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 - ERB-derived 업무 listing 8개와 원본 업무 source file + source label 기반 업무 정의 72개를 runtime `definitions.workDefinitions`로 연결했다.
 - `work/select`, `work/selectCharacter`, `work/execute`, `work/cancel`이 성공/실패/대상 누락/취소/session cleanup/턴 종료/save roundtrip을 검증한다.
 - `coverage:work`, `gate:work-coverage`, `smoke:work-all`은 placeholder가 아니라 실제 script다.
+- 2026-05-07 정정: `coverage:work`는 더 이상 mapped 175개를 완료로 세어 M37 closure를 `completed`로 덮어쓰지 않는다. strict manifest 기준 total 463, implemented-verified 294, blocked 169가 유지되며 `gate:milestone-scope-closure -- M37`는 실패해야 정상이다.
 - M38 촬영 정의와 장면 조건은 strict 기준 미완료다.
 - `unit:M38:filming-definition` 6행은 mapped/indexing만으로는 완료가 아니어서 closure를 `blocked`로 정정했다. 현재 total 6, implemented-verified 0, blocked 6이다.
 - ERB-derived 촬영 장면 6개를 runtime `definitions.filmingSceneDefinitions`로 연결했다.
