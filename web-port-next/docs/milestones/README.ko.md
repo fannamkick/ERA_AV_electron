@@ -4,10 +4,10 @@
 
 ## 현재 closure 기준
 
-- M28~M34은 strict closure 완료 상태다.
-- Next work is M34.5 closure correction. M28~M34 are strict-closed.
-- M34.5~M41은 strict source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전까지 M42를 재개하지 않는다. M28~M34은 strict closure 완료 상태다.
-- M28~M52 aggregate: total 11,226; implemented-verified 8,035; approved-excluded 273; blocked 2,819; scope-redesign-required 99; completedAllowedNow true 4 / false 22.
+- M28~M34.5은 strict closure 완료 상태다.
+- Next work is M35 closure correction. M28~M34.5 are strict-closed.
+- M35~M41은 strict source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전까지 M42를 재개하지 않는다. M28~M34.5은 strict closure 완료 상태다.
+- M28~M52 aggregate: total 11,248; implemented-verified 8,821; approved-excluded 359; blocked 2,036; scope-redesign-required 32; completedAllowedNow true 8 / false 18.
 
 완료 판정 권위는 여전히 다음 산출물에 있다.
 

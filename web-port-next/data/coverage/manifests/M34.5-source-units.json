@@ -20,11 +20,13 @@
   ],
   "summary": {
     "totalUnits": 189,
-    "implemented-verified": 188,
-    "blocked": 1,
-    "completedAllowedNow": false,
+    "implemented-verified": 189,
+    "blocked": 0,
+    "completedAllowedNow": true,
     "evidenceCorrections": 169,
-    "registryContracts": 19
+    "registryContracts": 19,
+    "approved-excluded": 0,
+    "scope-redesign-required": 0
   },
   "completionGate": {
     "requiredStatuses": [
@@ -44,8 +46,10 @@
     ]
   },
   "notes": [
-    "M34.5 manifest is complete for hardening scope only. It does not make M31-M34 feature manifests complete.",
-    "Hardening units are listed, but M34.5 cannot be completed under the new rule until its closure has responsibilityIntegrity."
+    "M34.5 manifest is complete for hardening scope only. It does not implement feature runtime behavior for M35-M52.",
+    "Evidence-correction rows anchor auxiliary cflag/source labels to primary original-game/CSV/VariableSize.CSV evidence.",
+    "Registry-contract rows ensure M35-M52 and final verification commands exist as explicit gate contracts.",
+    "Closure responsibilityIntegrity is now implemented-verified, so M34.5 can close under the source-unit manifest rule."
   ],
   "units": [
     {
@@ -4757,19 +4761,19 @@
       "sourcePath": "data/coverage/milestones/M34.5-closure.json",
       "sourceLine": "",
       "sourceLabel": "responsibilityIntegrity",
-      "sourceEvidenceId": "",
-      "legacyReviewId": "",
+      "sourceEvidenceId": "closure:m34.5:responsibility-integrity",
+      "legacyReviewId": "closure:m34.5:responsibility-integrity",
       "legacyFamily": "",
       "rowKind": "closure-requirement",
       "legacyId": "responsibilityIntegrity",
-      "requiredBehavior": "M34.5 closure must include responsibilityIntegrity proving hardening responsibility was validated, not only counted.",
+      "requiredBehavior": "M34.5 closure includes responsibilityIntegrity proving hardening responsibility was validated, not only counted.",
       "runtimeConsumerId": "tools/gate_milestone_scope_closure.mjs",
       "verificationId": "gate:milestone-scope-closure -- M34.5",
-      "previousCompletionStatus": "missing-responsibility-integrity",
-      "manifestStatus": "blocked",
-      "blockerReason": "M34.5 closure currently lacks responsibilityIntegrity under the new completion rules.",
-      "sourceCoverageRowId": "",
-      "acceptedByOwner": null,
+      "previousCompletionStatus": "implemented-responsibility-integrity",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
+      "sourceCoverageRowId": "data/coverage/milestones/M34.5-closure.json:responsibilityIntegrity",
+      "acceptedByOwner": true,
       "fromMilestone": "",
       "toMilestone": ""
     }

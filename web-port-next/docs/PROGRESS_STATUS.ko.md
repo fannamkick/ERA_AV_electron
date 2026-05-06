@@ -1,5 +1,16 @@
 # 진행 상태
 
+## 2026-05-06 M34.5 strict closure complete
+
+M34.5 is now closed under the strict source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M34.5-source-units.json`
+- Closure: `data/coverage/milestones/M34.5-closure.json`
+- Summary: total 189, implemented-verified 189, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M34.5 ownedTotal is 189 hardening units: 169 evidence corrections, 19 registry contracts, and 1 closure responsibilityIntegrity unit.
+- This closes verification/hardening scope only. It does not implement M35-M52 feature runtime behavior.
+- Next strict target: M35 turn/time/hook/session cleanup closure correction.
+
 ## 2026-05-06 M34 strict closure complete
 
 M34 is now closed under the strict source-unit manifest rule.
@@ -11,18 +22,18 @@ M34 is now closed under the strict source-unit manifest rule.
 - M34 ownedTotal is 2,247 social/equipment/CFLAG source units: CFLAG definitions, CFLAG/RELATION seeds, equipment/clothing save rows, clothing session view rows, wardrobe route behavior, and item 211 apron costume behavior.
 - M33 CFLAG/FLAG/PBAND 79 rows and M30/M29/M31 inbound clothing/equipment rows are no longer blocked inbound; they are accepted and closed by M34 implementation evidence.
 - M34 gate forbids `mapped`, `transferred`, and `source-file-review` statuses as completion evidence.
-- Next strict target: M34.5, then M35~M41 before M42 resumes.
+- Next strict target: M35, then M36~M41 before M42 resumes.
 
 ## 2026-05-05 책임 명시/freeze 우선
 
-M28~M34 are strict-closed. Next work starts at M34.5 inside the existing phase/milestone documents.
+M28~M34.5 are strict-closed. Next work starts at M34.5 inside the existing phase/milestone documents.
 
 - 중앙 기준: `docs/milestones/PORT_RESPONSIBILITY_MAP.ko.md`
 - 판정 기준: `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`
 - 시작 문서: `docs/agent/CODEX_BOOTSTRAP.ko.md`, `docs/agent/NEXT_MILESTONE.ko.md`
 - 원칙: 구현 중 책임을 이관하며 완료 범위를 줄이지 않는다. 다른 owner 후보가 보이면 구현을 멈추고 `scope-redesign-required`로 막은 뒤 책임 지도와 receiver manifest를 먼저 고친다.
 - 각 남은 M32~M52는 기존 `PHASE_5_M28_M49.ko.md`와 `PHASE_6_M50_M52.ko.md`의 자기 체크 항목에 `[HERE]`, `[LATER]`, `[EXCLUDED]`, `[BLOCKED]`, `[REDESIGN]`, `[VERIFY]`, `[DOC-ONLY]`를 직접 붙인다.
-- 처리 순서: M34~M34.5, M35~M41, M42~M44, M45~M49, M50~M52.
+- Processing order: M35~M41, M42~M44, M45~M49, M50~M52.
 
 ## 2026-05-02 M30 strict closure complete
 
@@ -34,9 +45,9 @@ M30 is now closed under the source-unit manifest rule.
 | Closure | `data/coverage/milestones/M30-closure.json` |
 | Source units tracked | 74 |
 | M30-owned item-use units | 37 |
-| Implemented-verified | 37 |
+| Implemented-verified | 8,821 |
 | Approved-excluded from M30 ownership | 37 |
-| Blocked | 0 |
+| Blocked | 2,036 |
 | Scope-redesign-required | 0 |
 | `completedAllowedNow` | true |
 
@@ -67,9 +78,9 @@ M29 is now closed under the source-unit manifest rule.
 | Closure | `data/coverage/milestones/M29-closure.json` |
 | Source units tracked | 206 |
 | M29-owned purchase units | 83 |
-| Implemented-verified | 83 |
+| Implemented-verified | 8,821 |
 | Approved-excluded from M29 ownership | 123 |
-| Blocked | 0 |
+| Blocked | 2,036 |
 | Scope-redesign-required | 0 |
 | `completedAllowedNow` | true |
 
@@ -113,9 +124,9 @@ M28 is now closed under the source-unit manifest rule.
 | --- | --- |
 | Manifest | `data/coverage/manifests/M28-source-units.json` |
 | Closure | `data/coverage/milestones/M28-closure.json` |
-| Implemented-verified | 24 |
+| Implemented-verified | 8,821 |
 | Approved-excluded | 3 |
-| Blocked | 0 |
+| Blocked | 2,036 |
 | Scope-redesign-required | 0 |
 | `completedAllowedNow` | true |
 
@@ -138,11 +149,11 @@ The criteria-side baseline is complete.
 | Consistency report | `data/coverage/manifests/M28-M52-criteria-consistency.json` |
 | Summary doc | `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md` |
 | Manifests present | M28~M52 all present |
-| `completedAllowedNow: true` | 7 |
-| `completedAllowedNow: false` | 19 |
+| `completedAllowedNow: true` | 8 |
+| `completedAllowedNow: false` | 18 |
 | Total units | 11,248 |
-| Implemented-verified | 8,820 |
-| Blocked | 2,037 |
+| Implemented-verified | 8,821 |
+| Blocked | 2,036 |
 | Scope-redesign-required | 32 |
 | Approved-excluded | 359 |
 | Known criteria gap | none; M28~M52 registry contracts exist |
@@ -214,7 +225,7 @@ M31~M34.5에 대해 병렬 에이전트 비판 검토 결과를 반영해 source
 | M32 | `data/coverage/manifests/M32-source-units.json` | 298 | 291 | 0 | 0 | true |
 | M33 | `data/coverage/manifests/M33-source-units.json` | 5378 | 5299 | 0 | 0 | true |
 | M34 | `data/coverage/manifests/M34-source-units.json` | 2247 | 2247 | 0 | 0 | true |
-| M34.5 | `data/coverage/manifests/M34.5-source-units.json` | 189 | 188 | 1 | 0 | false |
+| M34.5 | `data/coverage/manifests/M34.5-source-units.json` | 189 | 189 | 0 | 0 | true |
 
 구체적 후속 처리:
 
@@ -316,8 +327,8 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 - 원본 `COMSEQ_REGISTER.ERB` dynamic call row와 `COMORDER.ERB` source-file-review row를 coverage/audit/closure에 반영했다.
 - availability는 저장 상태를 바꾸지 않는 view 계산으로 연결했고, 불가 command는 원본 availability rule 기반 사유를 표시한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
 - `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`는 placeholder가 아니라 실제 script다.
-- Next work is M34.5~M41 source-unit manifest closure correction. M28~M34 are strict-closed; M42 resumes only after those gates are closed or explicitly blocked/scope-redesign-required.
-- M28~M34 manifest status: M28, M29, M30, M31, M32, M33, and M34 all have completedAllowedNow true. M34 total is 2,247 implemented-verified, blocked 0.
+- Next work is M35~M41 source-unit manifest closure correction. M28~M34.5 are strict-closed; M42 resumes only after those gates are closed or explicitly blocked/scope-redesign-required.
+- M28~M34.5 manifest status: M28, M29, M30, M31, M32, M33, and M34 all have completedAllowedNow true. M34 total is 2,247 implemented-verified, blocked 0.
 
 ## 미완료
 
@@ -557,7 +568,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 
 ## 다음 작업
 
-- Next work is M34.5~M41 source-unit manifest closure correction. M28~M34 are strict-closed; M42 resumes only after those gates are closed or explicitly blocked/scope-redesign-required.
+- Next work is M35~M41 source-unit manifest closure correction. M28~M34.5 are strict-closed; M42 resumes only after those gates are closed or explicitly blocked/scope-redesign-required.
 2. 그 뒤 M42 훈련 command 효과 0~34 구현을 재개한다. M42가 닫히기 전에는 M43으로 넘어가지 않는다.
 
 ## 이전 완료 요약
@@ -600,7 +611,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 36. M39 촬영 실행/결과/판매 완성은 `npm run coverage:filming-execution`, `npm run gate:filming-execution`, `npm run gate:milestone-scope-closure -- M39`, `npm run smoke:filming-all`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M39 owned scope 174행 중 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
 37. M40 훈련 메뉴와 세션 완성은 `npm run coverage:training-session`, `npm run gate:training-session`, `npm run gate:milestone-scope-closure -- M40`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M40 owned scope 11행 중 implemented 5, mapped 6, unresolved issue 0개로 닫았다.
 38. M41 훈련 가능 조건은 기존 `coverage:training-availability`/gate/smoke/build 통과 이력이 있으나, strict manifest 기준으로는 M30 inbound 6개가 추가되어 total 1,631, implemented-verified 4, blocked 1,626, scope-redesign-required 1로 재정리됐다.
-39. 다음 작업은 M34.5~M41 원본 단위 매니페스트 보강/closure 정정 후 M42 훈련 command 효과 0~34 구현이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
+39. 다음 작업은 M35~M41 원본 단위 매니페스트 보강/closure 정정 후 M42 훈련 command 효과 0~34 구현이다. command 0~34의 source 계산, 결과 owner, 성공/불가/취소/session cleanup을 원본 기준으로 닫는다.
 
 ## 주의
 
@@ -618,4 +629,4 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - `data/coverage/milestones/M42-closure.json`은 `status: blocked`다.
 - `npm run gate:training-effect -- 0-34`는 현재 실패해야 정상이다.
 - `npm run coverage:definitions`와 `npm run gate:definition-consumption` 기준으로 M20 definition coverage는 command 1~34를 다시 M42 blocker로 유지한다. command 0은 M14 최소 훈련 1차 consumer만으로 used다.
-- 다음 작업은 M34.5~M41 원본 단위 매니페스트 보강/closure 정정 후 M42 재개다. M43로 넘어가지 않는다.
+- 다음 작업은 M35~M41 원본 단위 매니페스트 보강/closure 정정 후 M42 재개다. M43로 넘어가지 않는다.

@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-05",
+  "generatedAt": "2026-05-06",
   "purpose": "Consistency pass for M28-M52 completion criteria manifests. This report verifies criteria coverage and per-manifest closure state, not full implementation completion.",
   "overallStatus": "criteria-baseline-complete",
   "criteriaBaselineComplete": true,
   "implementationComplete": false,
   "allCompletedAllowedNowFalse": false,
   "totals": {
-    "totalUnits": 11226,
-    "implementedVerified": 8035,
-    "blocked": 2819,
-    "scopeRedesignRequired": 99,
-    "approvedExcluded": 273,
-    "completedAllowedNowTrue": 4,
-    "completedAllowedNowFalse": 22
+    "totalUnits": 11248,
+    "implementedVerified": 8821,
+    "blocked": 2036,
+    "scopeRedesignRequired": 32,
+    "approvedExcluded": 359,
+    "completedAllowedNowTrue": 8,
+    "completedAllowedNowFalse": 18
   },
   "checks": {
     "allM28ToM52ManifestsPresent": true,
@@ -25,9 +25,9 @@
     "nextImplementationMustNotStartFromCompletedAssumption": true
   },
   "blockingFindings": [
-    "4 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
-    "Registry contracts now exist for every M28-M52 manifest.",
-    "M28, M29, M30, and M31 are strictly closed; M29/M30/M31 outbound exclusions are explicit inbound responsibilities in receiving manifests.",
+    "8 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
+    "Registry contracts exist for every M28-M52 manifest.",
+    "M28 through M34.5 are strictly closed under their current source-unit manifests.",
     "Later implementation milestones must still close their own source units before completion.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
@@ -35,7 +35,7 @@
   "milestones": [
     {
       "milestone": "M28",
-      "manifestPath": "data/coverage/manifests/M28-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M28-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
@@ -49,7 +49,7 @@
     },
     {
       "milestone": "M29",
-      "manifestPath": "data/coverage/manifests/M29-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M29-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
@@ -63,7 +63,7 @@
     },
     {
       "milestone": "M30",
-      "manifestPath": "data/coverage/manifests/M30-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M30-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
@@ -77,7 +77,7 @@
     },
     {
       "milestone": "M31",
-      "manifestPath": "data/coverage/manifests/M31-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M31-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
@@ -91,198 +91,209 @@
     },
     {
       "milestone": "M32",
-      "manifestPath": "data/coverage/manifests/M32-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M32-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 298,
-        "implemented-verified": 286,
-        "blocked": 12,
-        "completedAllowedNow": false,
-        "scope-redesign-required": 0
+        "implemented-verified": 291,
+        "approved-excluded": 7,
+        "blocked": 0,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": true
       }
     },
     {
       "milestone": "M33",
-      "manifestPath": "data/coverage/manifests/M33-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M33-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 5368,
-        "blocked": 533,
-        "implemented-verified": 4768,
-        "scope-redesign-required": 67,
-        "completedAllowedNow": false
+        "totalUnits": 5378,
+        "implemented-verified": 5299,
+        "approved-excluded": 79,
+        "blocked": 0,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": true
       }
     },
     {
       "milestone": "M34",
-      "manifestPath": "data/coverage/manifests/M34-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M34-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 2238,
-        "blocked": 240,
-        "implemented-verified": 1998,
-        "completedAllowedNow": false,
-        "scope-redesign-required": 0
+        "totalUnits": 2247,
+        "implemented-verified": 2247,
+        "approved-excluded": 0,
+        "blocked": 0,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": true
       }
     },
     {
       "milestone": "M34.5",
-      "manifestPath": "data/coverage/manifests/M34.5-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M34.5-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 189,
-        "implemented-verified": 188,
-        "blocked": 1,
-        "completedAllowedNow": false,
-        "evidenceCorrections": 169,
-        "registryContracts": 19
+        "implemented-verified": 189,
+        "approved-excluded": 0,
+        "blocked": 0,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": true
       }
     },
     {
       "milestone": "M35",
-      "manifestPath": "data/coverage/manifests/M35-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M35-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 8,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 7,
         "scope-redesign-required": 1,
-        "completedAllowedNow": false,
-        "legacyCoverageRows": 7,
-        "implemented-verified": 0
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M36",
-      "manifestPath": "data/coverage/manifests/M36-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M36-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 93,
         "implemented-verified": 86,
+        "approved-excluded": 0,
         "blocked": 7,
-        "completedAllowedNow": false,
-        "legacyCoverageRows": 559,
-        "groupedVisitActions": 86,
-        "visitPlaceDefinitions": 7
+        "scope-redesign-required": 0,
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M37",
-      "manifestPath": "data/coverage/manifests/M37-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M37-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 463,
         "implemented-verified": 294,
+        "approved-excluded": 0,
         "blocked": 169,
+        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
     {
       "milestone": "M38",
-      "manifestPath": "data/coverage/manifests/M38-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M38-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 6,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 6,
+        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
     {
       "milestone": "M39",
-      "manifestPath": "data/coverage/manifests/M39-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M39-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 174,
         "implemented-verified": 135,
+        "approved-excluded": 0,
         "blocked": 39,
+        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
     {
       "milestone": "M40",
-      "manifestPath": "data/coverage/manifests/M40-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M40-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 11,
         "implemented-verified": 5,
+        "approved-excluded": 0,
         "blocked": 6,
+        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
     {
       "milestone": "M41",
-      "manifestPath": "data/coverage/manifests/M41-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M41-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 1631,
         "implemented-verified": 4,
+        "approved-excluded": 0,
         "blocked": 1626,
         "scope-redesign-required": 1,
-        "completedAllowedNow": false,
-        "sourcePrograms": 125
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M42",
-      "manifestPath": "data/coverage/manifests/M42-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M42-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 53,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 53,
-        "completedAllowedNow": false,
-        "legacyCoverageRows": 35
+        "scope-redesign-required": 0,
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M43",
-      "manifestPath": "data/coverage/manifests/M43-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M43-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 43,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 40,
         "scope-redesign-required": 3,
-        "completedAllowedNow": false,
-        "activeTrainCommands": 32,
-        "extraComfWithoutTrainRow": 3
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M44",
-      "manifestPath": "data/coverage/manifests/M44-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M44-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 63,
-        "scope-redesign-required": 23,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 40,
-        "completedAllowedNow": false,
-        "activeTrainCommands": 38,
-        "numericComfSources": 47,
-        "activeWithoutComf": 11,
-        "extraComfWithoutTrainRow": 20,
-        "namedComfSources": 3
+        "scope-redesign-required": 23,
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M45",
-      "manifestPath": "data/coverage/manifests/M45-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M45-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 2,
-        "queueRows": 1122,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 1,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
@@ -290,38 +301,41 @@
     },
     {
       "milestone": "M46",
-      "manifestPath": "data/coverage/manifests/M46-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M46-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 1,
-        "queueRows": 432,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 1,
+        "scope-redesign-required": 0,
         "completedAllowedNow": false
       }
     },
     {
       "milestone": "M47",
-      "manifestPath": "data/coverage/manifests/M47-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M47-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 8,
-        "queueRows": 358,
-        "blocked": 8,
-        "completedAllowedNow": false,
+        "totalUnits": 10,
         "implemented-verified": 0,
-        "scope-redesign-required": 0
+        "approved-excluded": 0,
+        "blocked": 10,
+        "scope-redesign-required": 0,
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M48",
-      "manifestPath": "data/coverage/manifests/M48-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M48-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 3,
-        "queueRows": 325,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 2,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
@@ -329,55 +343,58 @@
     },
     {
       "milestone": "M49",
-      "manifestPath": "data/coverage/manifests/M49-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M49-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 3,
-        "queueRows": 150,
-        "blocked": 2,
+        "totalUnits": 4,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
+        "blocked": 3,
         "scope-redesign-required": 1,
         "completedAllowedNow": false
       }
     },
     {
       "milestone": "M50",
-      "manifestPath": "data/coverage/manifests/M50-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M50-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 9,
-        "queueRows": 193,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 9,
-        "completedAllowedNow": false,
-        "queuedImplementationRows": 193
+        "scope-redesign-required": 0,
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M51",
-      "manifestPath": "data/coverage/manifests/M51-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M51-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 8,
-        "queueRows": 1,
-        "scope-redesign-required": 1,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 7,
-        "completedAllowedNow": false,
-        "queuedImplementationRows": 1
+        "scope-redesign-required": 1,
+        "completedAllowedNow": false
       }
     },
     {
       "milestone": "M52",
-      "manifestPath": "data/coverage/manifests/M52-source-units.json",
+      "manifestPath": "data\\coverage\\manifests/M52-source-units.json",
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
         "totalUnits": 10,
-        "queueRows": 0,
+        "implemented-verified": 0,
+        "approved-excluded": 0,
         "blocked": 10,
-        "completedAllowedNow": false,
-        "queuedImplementationRows": 0
+        "scope-redesign-required": 0,
+        "completedAllowedNow": false
       }
     }
   ]

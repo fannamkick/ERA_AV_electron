@@ -404,7 +404,7 @@ rg "CFLAG" src/game src/domains src/features src/ui
 - [HERE:M34.5] [x] `test:roundtrip:all`, `report:full-port`, `gate:complete-port-verdict`, `verify:complete` skeleton을 추가한다.
 - [HERE:M34.5] [x] `gate:milestone-scope-closure`가 registry를 읽어 해당 Mxx의 coverage/gate/smoke/audit/closure 연결을 검사하게 강화한다.
 - [DOC-ONLY] [x] `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`의 다음 작업을 M35가 아니라 M34.5로 갱신한다.
-- [BLOCKED:M34.5] [x] M34.5 closure를 `data/coverage/milestones/M34.5-closure.json`에 남긴다. strict manifest 기준 `responsibilityIntegrity` 1개가 blocked라서 closure integrity 보강 전 완료 금지다.
+- [HERE:M34.5] [x] M34.5 closure? `responsibilityIntegrity`? ????. strict manifest ?? total 189, implemented-verified 189, blocked 0?? ?? ????.
 - [VERIFY:M34.5] [x] `npm run gate:source-evidence` 실행
 - [VERIFY:M34.5] [x] `npm run gate:coverage-hardening` 실행
 - [VERIFY:M34.5] [x] `npm run gate:coverage-crosscheck` 실행
@@ -434,7 +434,7 @@ npm run test --if-present
 - 완료 결과: 턴 종료 후 시간, 이벤트, 비용/보상, session 폐기, 저장 roundtrip이 검증된다.
 - 누락 차단: hook 순서가 불명확하거나 턴 종료 중 임시 선택값이 저장되면 완료하지 않는다.
 
-- [LATER:M34.5] [x] M34.5가 완료되지 않았으면 M35를 시작하지 않음
+- [HERE:M35] [x] M34.5 strict closure is complete, so the M35 entry gate is open.
 - [VERIFY:M35] [x] `coverage:turn-pipeline`, `gate:turn-pipeline`, `smoke:turn-long`이 실제 script로 존재하고 실패 조건을 가짐
 - [BLOCKED:M35] [x] 원본 턴 종료 흐름의 day/week/month/year 진행 규칙을 구현
 - [BLOCKED:M35] [x] 전반/후반 또는 phase 전환 규칙을 저장 상태와 session 폐기로 분리

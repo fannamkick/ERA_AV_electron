@@ -10,11 +10,13 @@
     "coverageHardeningGate": "tools/gate_coverage_hardening.mjs",
     "futurePlaceholder": "tools/future_milestone_placeholder.mjs",
     "definitionCoverage": "data/coverage/definitions.json",
-    "socialEquipmentCflagCoverage": "data/coverage/social-equipment-cflag-coverage.json"
+    "socialEquipmentCflagCoverage": "data/coverage/social-equipment-cflag-coverage.json",
+    "sourceUnitManifest": "data/coverage/manifests/M34.5-source-units.json",
+    "milestoneClosureGate": "tools/gate_milestone_scope_closure.mjs"
   },
   "closureMetrics": {
-    "ownedTotal": 188,
-    "implemented": 188,
+    "ownedTotal": 189,
+    "implemented": 189,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -50,19 +52,60 @@
     ]
   },
   "commandsRun": [
-    "npm run coverage:definitions",
-    "npm run coverage:social-equipment-cflag",
     "npm run coverage:gate-registry",
     "npm run gate:source-evidence",
     "npm run gate:coverage-hardening",
+    "npm run gate:milestone-scope-closure -- M34.5",
+    "npm run build",
+    "npm run test --if-present",
+    "npm run coverage:definitions",
+    "npm run coverage:social-equipment-cflag",
     "npm run coverage:crosscheck",
     "npm run gate:definition-consumption",
     "npm run gate:coverage-crosscheck",
     "npm run gate:pre-implementation-audit",
-    "npm run gate:implementation-queue",
-    "npm run build",
-    "npm run test --if-present",
-    "npm run gate:milestone-scope-closure -- M34.5"
+    "npm run gate:implementation-queue"
   ],
-  "commitHash": "4b0ae500cdddc749a31abc78e6b1a0e217291b57"
+  "commitHash": "recorded by the M34.5 git commit that includes this closure file",
+  "sourceUnitMetrics": {
+    "totalUnits": 189,
+    "implemented-verified": 189,
+    "blocked": 0,
+    "completedAllowedNow": true,
+    "evidenceCorrections": 169,
+    "registryContracts": 19,
+    "approved-excluded": 0,
+    "scope-redesign-required": 0
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "Prevent auxiliary source evidence from being used as completion evidence without a primary original source anchor.",
+      "Require M34.5 and M35-M52 registry contracts with required scripts and blocking gates.",
+      "Require future placeholder scripts to fail explicitly instead of silently passing incomplete milestones.",
+      "Require final audit, view/text coverage, full roundtrip, full-port report, complete-port verdict, and verify:complete script contracts.",
+      "Require milestone closure to include responsibilityIntegrity so completed status cannot be a count-only scaffold."
+    ],
+    "implementationEvidence": [
+      "tools/gate_source_evidence.mjs",
+      "tools/gate_coverage_hardening.mjs",
+      "tools/build_coverage_gate_registry.mjs",
+      "tools/gate_milestone_scope_closure.mjs",
+      "data/coverage/coverage-gate-registry.json",
+      "data/coverage/manifests/M34.5-source-units.json",
+      "data/coverage/milestones/M34.5-closure.json"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:gate-registry",
+      "npm run gate:source-evidence",
+      "npm run gate:coverage-hardening",
+      "npm run gate:milestone-scope-closure -- M34.5",
+      "npm run build",
+      "npm run test --if-present"
+    ]
+  }
 }

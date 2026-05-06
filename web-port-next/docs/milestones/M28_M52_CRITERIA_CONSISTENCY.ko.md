@@ -13,9 +13,9 @@ Evidence:
 - All M28~M52 source-unit manifests exist.
 - 4 manifests currently have `completedAllowedNow: true`; 22 remain false.
 - Aggregate manifest totals:
-  - total units: 11,226
-  - implemented-verified: 8,035
-  - blocked: 2,819
+  - total units: 11,248
+  - implemented-verified: 8,821
+  - blocked: 2,036
   - scope-redesign-required: 99
   - approved-excluded: 273
 
