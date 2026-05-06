@@ -2,8 +2,10 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M41",
   "title": "Training command availability and unavailable reasons",
-  "status": "completed",
-  "completedAt": "2026-05-01",
+  "status": "blocked",
+  "completedAt": null,
+  "blockedAt": "2026-05-06",
+  "blockerReason": "Strict source-unit reassessment found M41 command availability largely unimplemented at direct source-unit level. M41 cannot be complete while training rows are only mapped or require source redesign.",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M41 git commit that includes this closure file",
   "sourceInputs": {
@@ -23,12 +25,12 @@
     "smoke": "tools/m41_training_availability_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 1625,
-    "implemented": 1371,
-    "mapped": 254,
+    "ownedTotal": 1631,
+    "implemented": 4,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 1626,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -36,17 +38,25 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 1625,
-    "implemented": 1371,
-    "mapped": 254,
+    "ownedTotal": 1631,
+    "implemented": 4,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 1626,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 1631,
+    "implementedVerified": 4,
+    "approvedExcludedFromM41": 0,
+    "blocked": 1626,
+    "scopeRedesignRequired": 1,
+    "completedAllowedNow": false
   },
   "verification": {
     "commands": [
@@ -61,7 +71,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "1625 M41 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "blocked: 1626 training availability source unit(s) remain unverified and 1 source-file-review unit requires scope redesign"
   },
   "commandsRun": [
     "npm run coverage:training-availability",

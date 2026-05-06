@@ -40,7 +40,7 @@ M34 is now closed under the strict source-unit manifest rule.
 
 ## 2026-05-05 책임 명시/freeze 우선
 
-M28~M34.5 are strict-closed. Next work starts at M34.5 inside the existing `PHASE_5_M28_M49.ko.md` milestone sections; do not create a replacement ledger.
+M32~M34.5 are strict-closed. M28 has exact M47 inbound correction, and M31 has self-exclusion correction. Next work stays inside the existing `PHASE_5_M28_M49.ko.md` milestone sections; do not create a replacement ledger.
 
 각 남은 마일스톤은 구현 전에 아래를 먼저 남긴다.
 
@@ -248,8 +248,64 @@ Next actions:
 
 ## 즉시 보강할 항목
 
-- Do not mechanically add `responsibilityIntegrity` to M37~M41 closures. Resolve the reassessment rows first or record them as blocked. M28~M36 are strict-closed.
+- Do not mechanically add `responsibilityIntegrity` to M37~M41 closures. Resolve the reassessment rows first or record them as blocked. M32~M36 are strict-closed; M28 and M31 have transfer/exclusion correction items.
 - M30에서 excluded 처리한 특수 item 200~214 및 item 22/90/91 계열은 완료가 아니며, M41/M42/M43/M44 수신 owner가 각각 구현/제외/재설계를 끝내야 한다.
 - M35의 넓은 책임을 save field mapping 7개가 아니라 runtime hook/cleanup별 사실로 풀어 적는다.
 - M38/M41 registry에 smoke 필수 누락을 기록한다.
 - M39/M41의 `source-file-review` mapped 완료 row를 분해하거나 미완료로 되돌릴지 결정한다.
+
+## 2026-05-06 approved-excluded 이관 전수 감사
+
+대상은 M28~M33 manifest의 `approved-excluded` 359개다. 단순 source path 포함이 아니라 `sourceEvidenceId` 또는 `legacyId`가 수신 milestone manifest에 정확히 존재하는지로 대조했다.
+
+판정:
+- 정확 수신 확인: 356 / 359
+- 정확 수신 누락: 3 / 359
+- 자기 자신에게 제외 처리된 항목: 8 / 359
+- 수신은 됐지만 receiver가 아직 `blocked`로 들고 있는 항목: 48 / 359
+
+정확 수신 누락:
+- M28 -> M47: `TCVAR:20`, `TCVAR:50`, `TCVAR:70`
+- M47의 broad criteria unit은 `BOYFRIEND.ERB` 경로를 포함하지만, 위 3개 session row의 `sourceEvidenceId`/`legacyId`를 정확히 들고 있지 않다. 따라서 M28의 이관은 현재 기준으로 완전 수신이 아니다.
+
+잘못된 이관 형태:
+- M31 -> M31: 8개
+- `SHOP_SLAVE1.ERB` unused flow 6개와 `SHOP_SLAVE3.ERB`/`SHOP.ERH` source-file-review 2개가 M31에서 M31로 approved-excluded 처리되어 있다.
+- 이것은 책임 이관이 아니다. non-runtime 승인 제외로 닫으려면 "원본에서 미사용이며 runtime 미구현 승인 제외" 근거를 별도 상태로 남겨야 하고, 그렇지 않으면 M31 blocked 또는 scope-redesign-required로 되돌려야 한다.
+
+수신됐지만 아직 닫히지 않은 receiver 책임:
+- M29 -> M37: 2개
+- M29 -> M47/M48/M49: 6개
+- M30 -> M41/M42/M43/M44: 34개
+- M31 -> M47: 3개
+- M32 -> M47/M49: 3개
+
+결론:
+- "넘긴 항목이 모두 제대로 닫혔다"는 말은 틀리다.
+- 정확 수신 누락 3개와 자기 자신 제외 8개는 즉시 correction 대상이다.
+- receiver가 blocked로 들고 있는 48개는 이관 자체는 추적되지만 게임 포팅 완료가 아니다. 해당 receiver milestone이 구현, 승인 제외, 또는 scope redesign으로 직접 닫아야 한다.
+
+## 2026-05-06 게임 기능 완결 기준 재판정
+
+기준: `people`, `body`, `meta`, `mission`, `event` 같은 owner 이름이 보인다는 이유만으로 넘길 수 없다. 현재 마일스톤의 플레이어 기능이 끝나려면 필요한 동작, 저장 반영, 실패/취소/roundtrip 검증은 현재 마일스톤 또는 명시된 receiver milestone에서 실제로 닫혀야 한다.
+
+| 범위 | 판정 | 이유 | correction |
+| --- | --- | --- | --- |
+| M28 -> M47 3개 | 무효/미완 | BOYFRIEND event-local `TCVAR:20/50/70`은 M47 broad criteria path에는 걸리지만 정확 sourceEvidenceId 수신이 없다. | M47 manifest에 세 row를 정확 inbound로 추가하거나 M28을 blocked로 되돌린다. |
+| M29 -> M30/M31/M34 109개 | 조건부 유효 | 구매 listing 자체가 아니라 즉시 사용, 영입 listing, 의복/장비 소비라서 구매 완료와 분리 가능하다. 다만 receiver가 구현으로 실제 닫힌 row만 게임 완료로 센다. | receiver closure가 blocked이면 전체 포팅 완료 아님. M30 특수 item chain은 M42~M44까지 따라가야 한다. |
+| M29 -> M32/M35/M37/M47/M48/M49 14개 | 조건부/고위험 | "구매가 직접 mutate하지 않는다"는 근거만으로는 부족하다. 해당 save/event/info/turn 의미가 실제 어디서 발생하는지 receiver가 닫아야 한다. | receiver가 blocked이면 유지. implemented라고 된 row도 원본 발생 경로가 구매/사용/이벤트 중 어디인지 재확인한다. |
+| M30 -> M41/M42/M43/M44 34개 | 미완/blocked | 특수 item 200~214와 item 22/90/91은 item-use가 아니라 훈련 availability/effect에서 소비된다는 이관 자체는 가능하지만, 훈련 기능 완결 전에는 게임 기능이 닫힌 것이 아니다. | M41/M42/M43/M44가 각각 source 계산, 소비, 실패/취소, 결과 반영을 닫기 전까지 전체 포팅 blocker다. |
+| M30 -> M34 3개 | 유효 | item 211은 `COSPLAY.ERB` 의복 흐름에서 소비되고 M34가 implemented-verified로 닫았다. | 추가 correction 없음. |
+| M31 -> M32/M33/M34/M35 99개 | 조건부 유효 | 영입은 사람 container 생성까지 소유하고, identity/body/social/time 의미는 후속 owner가 seed/save/display로 닫을 수 있다. 단 "owner가 다르다"가 아니라 영입 성공 시 생성 결과가 실제 template/container에 연결되어야 한다. | M32/M33/M34/M35 implemented evidence 유지. 생성 직후 필요한 초기값 누락이 발견되면 M31/M32/M33 경계 재설계. |
+| M31 -> M47 3개 | 미완/blocked | post-recruit story/event hook은 M31 listing/generation이 아니지만 이벤트 기능으로는 아직 닫히지 않았다. | M47에서 직접 구현/검증해야 한다. |
+| M31 -> M31 8개 | 무효/상태 오류 | 자기 자신에게 approved-excluded한 것은 이관이 아니다. unused/source-file-review라면 non-runtime 승인 제외로 별도 증명해야 한다. | M31 closure를 correction하거나 해당 8개를 explicit non-runtime exclusion 상태로 바꾼다. |
+| M32 -> M33 4개 | 유효 | TALENT save field semantics는 body/stat owner인 M33에서 implemented-verified로 닫혔다. | 추가 correction 없음. |
+| M32 -> M47/M49 3개 | 미완/blocked | generated-name/text formatting은 identity field owner가 아니라 event/text owner일 수 있지만, 현재 receiver가 blocked다. | M47/M49에서 실제 이름 생성/표시 동작을 닫아야 한다. |
+| M33 -> M34 79개 | 유효 | CFLAG/FLAG/PBAND/equipment semantics는 M34에서 implemented-verified로 닫혔다. | 추가 correction 없음. |
+| M38~M41 closure | 무효 완료 선언 | manifest가 blocked인데 closure JSON이 completed였다. mapped/source-file-review를 기능 완결로 세던 구판정이다. | M38~M41 closure status를 `blocked`로 정정했다. M42는 이 blocker 해소 전 재개하지 않는다. |
+
+현재 우선 correction 순서:
+1. M31 self-exclusion 8개 상태 correction.
+2. M28 -> M47 3개 정확 inbound 추가 또는 M28 blocked 정정.
+3. M38~M41 blocked closure에 맞춰 progress/handoff 문구 정리.
+4. 그 뒤 M37, M38, M39, M40, M41을 하나씩 실제 기능 완결 기준으로 닫는다.

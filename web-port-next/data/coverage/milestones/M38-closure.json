@@ -2,8 +2,10 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M38",
   "title": "Filming scene definitions and scene conditions",
-  "status": "completed",
-  "completedAt": "2026-05-01",
+  "status": "blocked",
+  "completedAt": null,
+  "blockedAt": "2026-05-06",
+  "blockerReason": "Strict source-unit reassessment found 6 filming scene definition rows still blocked. M38 cannot be complete when scene definitions are only mapped/indexed rather than implemented as runtime scene behavior.",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "85b9e9f",
   "sourceInputs": {
@@ -21,10 +23,10 @@
   "counts": {
     "ownedTotal": 6,
     "implemented": 0,
-    "mapped": 6,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 6,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -34,15 +36,23 @@
   "closureMetrics": {
     "ownedTotal": 6,
     "implemented": 0,
-    "mapped": 6,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 6,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 6,
+    "implementedVerified": 0,
+    "approvedExcludedFromM38": 0,
+    "blocked": 6,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": false
   },
   "verification": {
     "commands": [
@@ -56,7 +66,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "6 M38 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "blocked: 6 filming scene definition source unit(s) remain unimplemented under strict source-unit rules"
   },
   "commandsRun": [
     "npm run coverage:filming-scene",

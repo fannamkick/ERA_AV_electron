@@ -565,12 +565,12 @@ npm run test --if-present
 - [BLOCKED:M38] [x] M20/M23/M25 coverage의 촬영 정의 관련 status 갱신
 - [VERIFY:M38] [x] `npm run build` 실행
 
-M38 완료 근거:
-- M38 owned scope는 `unit:M38:filming-definition` 6행이다. 모두 `filmingSceneDefinitions` ERB-derived definition row이며 `data/coverage/filming-scene-coverage.json`에 기록했다.
+M38 현재 판정:
+- M38 owned scope는 `unit:M38:filming-definition` 6행이다. 모두 `filmingSceneDefinitions` ERB-derived definition row이며 `data/coverage/filming-scene-coverage.json`에 기록되어 있지만, strict 기준에서는 runtime scene behavior 구현 검증이 아니라 indexing/mapped 근거라 완료가 아니다.
 - 촬영 장면 6개 `filming-scene:1`, `2`, `3`, `4`, `5`, `10`을 runtime `definitions.filmingSceneDefinitions`에 연결했다.
 - `buildShootingView`, `computeVisibleFilmingSceneIds`, `selectShootingTarget`, `selectShootingScene`, `cancelShootingSelection`이 장면 표시, 대상 조건, 장면 선택, session 계산 버퍼를 소비한다.
 - M38은 촬영 실행/결과/판매 저장 owner가 아니다. 촬영 결과, 출시/판매 상태, 실행 후 저장 반영은 M39가 소유한다.
-- `data/coverage/audits/M38-gap-audit.json`과 `data/coverage/milestones/M38-closure.json`을 생성했다. ownedTotal 6, mapped 6, blocker/missing/unapproved 0.
+- `data/coverage/milestones/M38-closure.json`은 strict 재판정으로 `blocked` 상태다. 현재 total 6, implemented-verified 0, blocked 6이다.
 
 검증:
 ```bash
@@ -603,13 +603,13 @@ npm run test --if-present
 - [BLOCKED:M39] [x] M19/M24/M25 coverage의 촬영 실행 관련 status 갱신. save/session/calculation 및 source-file-review blocked row가 남아 있으면 완료 금지다.
 - [VERIFY:M39] [x] `npm run build` 실행
 
-M39 완료 근거:
+M39 현재 판정:
 - M39 owned scope는 `unit:M39:filming-execution` 172행과 source-file-review 2행을 합쳐 총 174행이다.
 - feature row 135개는 `main/openShooting`, `shooting/selectTarget`, `shooting/selectScene`, `shooting/confirmScene`, `calculateShootingResult`, `applyShootingResult`, `endTurn` 소비 경로로 닫았다.
 - save mapping row 16개는 `economy.videoSalesTotal`, `work.filmingProgressFlags`, `work.filmingByCharacterId`, `work.careerFlagsByCharacterId` 저장 owner로 소비한다.
 - session/calculation mapping row 21개는 `session.shooting.sceneTemporaryValues`, `session.shooting.sceneFlags`, `session.interaction.participants.assistantId`, `calculateShootingResult` lifecycle로 소비하고, 완료/취소 후 save payload에 남지 않는다.
 - `AV_POINTCALC.ERB`와 `VIDEO.ERH` source-file-review 2행은 촬영 계산 helper와 비디오 판매/출시 저장 owner로 소비 근거를 남겼다.
-- `data/coverage/filming-execution-coverage.json`, `data/coverage/audits/M39-gap-audit.json`, `data/coverage/milestones/M39-closure.json`을 생성했다. closure 기준은 ownedTotal 174, implemented 135, mapped 39, blocker/missing/unapproved 0이다.
+- `data/coverage/milestones/M39-closure.json`은 strict 재판정으로 `blocked` 상태다. 현재 total 174, implemented-verified 135, blocked 39이다. mapped save/session/calculation row는 촬영 기능 완료 근거가 아니다.
 
 검증:
 
@@ -643,13 +643,13 @@ npm run test --if-present
 - [BLOCKED:M40] [x] M19/M20/M25 coverage의 훈련 메뉴 관련 status 갱신
 - [VERIFY:M40] [x] `npm run build` 실행
 
-M40 완료 근거:
+M40 현재 판정:
 - M40 owned scope는 `unit:M40:training-session` 11행이며 전부 `original-game/ERB/指導関係/TRAIN_MAIN.ERB`의 `EVENTTRAIN`, `EVENTCOM`, `EVENTCOMEND`, `EVENTEND`, `JUEL_CHECK`, `SHOW_STATUS`, `FIGURE_INDENT`, `FIGURE_INDENT_SLASH` 근거다.
 - `coverage:training-session`, `gate:training-session`, `smoke:training-session`을 placeholder가 아닌 실제 script로 교체했다.
 - 105개 훈련 command 후보 전체를 view에 노출하고, M41 소유 가능 조건은 disabled reason으로 남긴다. M40은 command 효과 전체가 아니라 세션 진입/선택/취소/완료 lifecycle만 닫는다.
 - 대상/실행자/조수 선택, 조수 해제, command 선택 시 TFLAG/SOURCE/PALAM/result preview reset, 선택 취소, 화면 취소, 실행 후 턴 종료와 interaction session 폐기를 검증했다.
 - `SHOW_STATUS`는 훈련 view의 대상/실행자/조수/일자/시간대 요약으로 소비하고, `FIGURE_INDENT`/`FIGURE_INDENT_SLASH`는 8칸 폭 숫자 포맷으로 소비한다.
-- `data/coverage/training-session-coverage.json`, `data/coverage/audits/M40-gap-audit.json`, `data/coverage/milestones/M40-closure.json`을 생성했다. ownedTotal 11, implemented 5, mapped 6, blocker/missing/unapproved 0.
+- `data/coverage/milestones/M40-closure.json`은 strict 재판정으로 `blocked` 상태다. 현재 total 11, implemented-verified 5, blocked 6이다. mapped training flow row는 세션 lifecycle 완료 근거가 아니다.
 
 검증:
 
@@ -683,14 +683,14 @@ npm run test --if-present
 - [BLOCKED:M41] [x] M20/M25 coverage의 훈련 가능 조건 status 갱신
 - [VERIFY:M41] [x] `npm run build` 실행
 
-M41 완료 근거:
+M41 현재 판정:
 - M41 strict manifest scope는 M30 inbound 6개까지 반영되어 1,631행이다. 기존 `unit:M41:training-availability` feature row와 `unit:M41:training-availability-original-game-erb-comorder-erb` source-file-review는 strict 기준 재검증 대상이다.
 - `COMABLE.ERB`의 `COM_ABLE*` source program 125개를 `data/coverage/training-availability-rules.json`으로 추출했고, `Train.csv` active command 105개 전부가 대응 source program을 가진다.
 - availability는 save/session을 변경하지 않는 view 계산으로 처리한다. 원본 조건의 읽기 대상은 새 runtime owner(`people`, `body`, `social`, `inventory`, `equipment`, `run`, `featureState`, `session`)로 해석하고, 원본 raw 변수명은 runtime 모델명으로 쓰지 않는다.
 - 불가 command는 `Original availability rule COM_ABLE...` 형식의 사유를 반환한다. command 효과와 후처리는 M42~M44 소유로 남긴다.
 - item 22/90/91 계열과 장비/상태/자원/관계/능력/소질/경험 조건을 원본 availability interpreter에 연결했고, 대표 item 부족 및 임시 장비 조건을 smoke로 검증했다.
 - `coverage:training-availability`, `gate:training-availability`, `smoke:training-availability`를 placeholder가 아닌 실제 script로 교체했다.
-- `data/coverage/training-availability-coverage.json`, `data/coverage/training-availability-rules.json`, `data/coverage/audits/M41-gap-audit.json`, `data/coverage/milestones/M41-closure.json` 생성 이력은 있다. strict manifest 기준 현재 M41은 total 1,631, implemented-verified 4, blocked 1,626, scope-redesign-required 1이다.
+- `data/coverage/training-availability-coverage.json`, `data/coverage/training-availability-rules.json`, `data/coverage/audits/M41-gap-audit.json`, `data/coverage/milestones/M41-closure.json` 생성 이력은 있다. strict manifest 기준 현재 M41은 total 1,631, implemented-verified 4, blocked 1,626, scope-redesign-required 1이며 closure는 `blocked`다.
 
 검증:
 

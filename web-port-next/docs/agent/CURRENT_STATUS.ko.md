@@ -131,7 +131,7 @@ M34 is now closed under the strict source-unit manifest rule.
 
 ## 2026-05-02 M36-M41 source-unit manifest pass 1
 
-- M36-M41 were all reassessed as `completedAllowedNow: false`.
+- M36 was later strict-closed; M37-M41 remain not completable under strict rules.
 - New artifacts: `data/coverage/manifests/M35-source-units.json` through `M41-source-units.json`.
 - Current strict counts:
   - M35: total 8, implemented-verified 8, blocked 0, scope-redesign-required 0, completedAllowedNow true.
@@ -141,7 +141,7 @@ M34 is now closed under the strict source-unit manifest rule.
   - M39: total 174, implemented-verified 135, blocked 39.
   - M40: total 11, implemented-verified 5, blocked 6.
   - M41: total 1625, implemented-verified 4, blocked 1620, scope-redesign-required 1.
-- The remaining M37-M41 `completed` closures are not completion evidence under the strict rules. Do not resume M42 until M37-M41 blocked/scope-redesign-required units are closed or explicitly redesigned.
+- M37-M41 are not completion evidence under the strict rules. M38~M41 closure files have been corrected to `blocked`; do not resume M42 until M37-M41 blocked/scope-redesign-required units are closed or explicitly redesigned.
 
 
 ## 2026-05-02 M31~M34.5 source-unit manifest 1차
@@ -167,13 +167,13 @@ M34 is now closed under the strict source-unit manifest rule.
 
 ## 최근 완료/차단 요약
 
-- M40은 훈련 메뉴와 interaction session lifecycle을 닫았다.
-- M41은 105개 훈련 command availability와 불가 사유를 원본 `COMABLE.ERB`, `COMSEQ_REGISTER.ERB`, `COMORDER.ERB` 근거로 닫았다.
+- M40은 훈련 메뉴와 interaction session lifecycle 일부를 구현했지만 strict 기준으로는 total 11 중 blocked 6이라 완료가 아니다.
+- M41은 105개 훈련 command availability coverage 이력이 있으나 strict 기준으로는 total 1,631 중 implemented-verified 4, blocked 1,626, scope-redesign-required 1이라 완료가 아니다.
 - M42는 원본 `COMF0.ERB`~`COMF34.ERB`의 `SOURCE/LOSEBASE/EXP` 라인을 인덱싱하고 static profile을 만들었지만, 원본 branch/expression/effect behavior를 구현하지 않았으므로 완료가 아니다.
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
 - M30은 strict closure 완료. 즉시 사용 아이템 9개 flow/effect 37개는 implemented-verified이고, M30 approved-excluded 37개는 수신 manifest에 blocked inbound로 명시했다.
 - completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
-- M37~M41? ??? ????? ?? ?? blocked/scope-redesign-required ??? ????. M28~M36? strict closure? ????, M34.5? 2026-05-06 ?? 188? ?? hardening ??? ?? closure integrity check? ????.
+- M28/M31 transfer correction과 M37~M41 blocked/scope-redesign-required 해소가 다음 작업이다. M28은 M47 inbound 3개 정확 수신이 빠졌고, M31은 self-exclusion 8개를 explicit non-runtime exclusion 또는 blocked/scope-redesign-required로 고쳐야 한다.
 - M28~M36 source-unit manifest status: M28, M29, M30, M31, M32, M33, M34, M34.5, M35, and M36 all have completedAllowedNow true.
 
 ## 현재 미완료 초점

@@ -2,8 +2,10 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M39",
   "title": "Filming execution, result, release, and sales state",
-  "status": "completed",
-  "completedAt": "2026-05-01",
+  "status": "blocked",
+  "completedAt": null,
+  "blockedAt": "2026-05-06",
+  "blockerReason": "Strict source-unit reassessment found 39 filming save/session/calculation rows still blocked. M39 cannot be complete when filming result state is only mapped rather than directly verified.",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "f8b7e26",
   "sourceInputs": {
@@ -23,10 +25,10 @@
   "counts": {
     "ownedTotal": 174,
     "implemented": 135,
-    "mapped": 39,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 39,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -36,15 +38,23 @@
   "closureMetrics": {
     "ownedTotal": 174,
     "implemented": 135,
-    "mapped": 39,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 39,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 174,
+    "implementedVerified": 135,
+    "approvedExcludedFromM39": 0,
+    "blocked": 39,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": false
   },
   "verification": {
     "commands": [
@@ -58,7 +68,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "174 M39 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "blocked: 39 filming save/session/calculation source unit(s) remain unverified under strict source-unit rules"
   },
   "commandsRun": [
     "npm run coverage:filming-execution",

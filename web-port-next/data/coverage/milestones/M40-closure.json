@@ -2,8 +2,10 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M40",
   "title": "Training session entry, selection lifecycle, status view, and cleanup",
-  "status": "completed",
-  "completedAt": "2026-05-01",
+  "status": "blocked",
+  "completedAt": null,
+  "blockedAt": "2026-05-06",
+  "blockerReason": "Strict source-unit reassessment found 6 training lifecycle rows still blocked. M40 cannot be complete while mapped training flow rows lack direct runtime verification.",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M40 git commit that includes this closure file",
   "sourceInputs": {
@@ -22,10 +24,10 @@
   "counts": {
     "ownedTotal": 11,
     "implemented": 5,
-    "mapped": 6,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 6,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -35,15 +37,23 @@
   "closureMetrics": {
     "ownedTotal": 11,
     "implemented": 5,
-    "mapped": 6,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 6,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 11,
+    "implementedVerified": 5,
+    "approvedExcludedFromM40": 0,
+    "blocked": 6,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": false
   },
   "verification": {
     "commands": [
@@ -57,7 +67,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "11 M40 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "blocked: 6 training lifecycle source unit(s) remain unverified under strict source-unit rules"
   },
   "commandsRun": [
     "npm run coverage:training-session",
