@@ -132,7 +132,7 @@ Artifacts:
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | M35 | 8 | 8 | 0 | 0 | yes | Strict closure complete. The old 7 save-field mapped rows are supporting evidence only; 8 functional turn pipeline units are implemented-verified. |
 | M36 | 93 | 93 | 0 | 0 | yes | Strict closure complete. The old 559 row coverage is row evidence only; 86 visit action groups and 7 visit place definitions are implemented-verified. |
-| M37 | 463 | 316 | 147 | 0 | no | 286 work feature rows, 8 work definitions, 21 work result write-effect rows, and 1 LUNCH_STALL ABL:74 reward read row are implemented-verified. Remaining save/session/calculation/source-address rows remain blocked. |
+| M37 | 463 | 323 | 140 | 0 | no | 286 work feature rows, 8 work definitions, 21 work result write-effect rows, 1 LUNCH_STALL ABL:74 reward read row, and 7 EVENT_WORK_MESSAGE_SP message branch read rows are implemented-verified. Remaining save/session/calculation/source-address rows remain blocked. |
 | M38 | 6 | 0 | 6 | 0 | no | All six filming scene definitions are mapped-only, so none are completed under the strict rule. |
 | M39 | 174 | 135 | 39 | 0 | no | 135 filming execution feature rows are completion candidates. Save/session/calculation/source-file-review mapped rows remain blocked. |
 | M40 | 11 | 5 | 6 | 0 | no | Five training session lifecycle rows are completion candidates. Six wait/format/status mapped rows remain blocked. |
@@ -141,7 +141,7 @@ Artifacts:
 Next actions:
 - M35: split `turn/end` into clock advance, mission deadline, scheduled event, weekly/monthly hook, world hook, and save boundary source units.
 - M36: complete. The seven visit place definitions were promoted with source evidence, runtime consumer evidence, and `smoke:visit-all`.
-- M37: implement or explicitly redesign 147 blocked units with owner-specific runtime/save verification. Do not promote mapped save/session/calculation rows without source behavior evidence.
+- M37: implement or explicitly redesign 140 blocked units with owner-specific runtime/save verification. Do not promote mapped save/session/calculation rows without source behavior evidence.
 - M38: re-verify the six scene definitions as source-unit definitions, not mapped rows.
 - M39: decompose two source-file-review rows and verify 37 save/session/calculation mapped rows row-by-row.
 - M40: close six mapped wait/format/status rows with source-unit evidence and responsibilityIntegrity.
@@ -183,7 +183,7 @@ Next actions:
 | M34.5 | completed, total 188, implemented-verified 188 | completed | no | responsibilityIntegrity blocker was closed with explicit hardening evidence. | Complete. Next strict target is M35. |
 | M35 | completed, implemented 8, mapped 0 | completed | no | 8개 functional turn pipeline unit으로 재분해했고 mapped save rows는 supporting evidence로만 남김 | M35 완료. M36으로 진행 |
 | M36 | completed, source units 93, implemented-verified 93 | completed | 아니오 | mapped 7개 완료 처리 문제를 strict source-unit manifest로 정정 | 완료. 559 row는 evidence로 유지하고 86 visit action group + 7 visit place definition만 완료 단위로 센다 |
-| M37 | old completed, implemented 286, mapped 175 | blocked | 예 | 업무 실행, 업무 정의, save-field owner, session/calculation owner가 섞임. strict 재판정 후 total 463, implemented-verified 316, blocked 147 | M37이 닫을 업무 실행 단위와 save/session/calculation 결과 단위를 분리하고, blocked 147을 구현 또는 scope redesign |
+| M37 | old completed, implemented 286, mapped 175 | blocked | 예 | 업무 실행, 업무 정의, save-field owner, session/calculation owner가 섞임. strict 재판정 후 total 463, implemented-verified 323, blocked 140 | M37이 닫을 업무 실행 단위와 save/session/calculation 결과 단위를 분리하고, blocked 140을 구현 또는 scope redesign |
 | M38 | completed, implemented 0, mapped 6 | scope-redesign-required | 예 | 촬영 장면 정의만 mapped이고 대상/장면 조건/불가 사유/예상 결과 책임이 분리되지 않음 | 장면 정의와 조건/불가 사유/예상 결과 단위를 분리한 매니페스트 작성 |
 | M39 | completed, implemented 135, mapped 39 | blocked | 예 | `AV_POINTCALC.ERB`, `VIDEO.ERH` source-file-review 2개가 파일 단위 mapped로 남음 | 파일 단위 row를 label/read/write/계산 단위로 분해 |
 | M40 | completed, implemented 5, mapped 6 | manifest-needed | 예 | training session mapped 6개와 원본 단위 매니페스트 없음 | `EVENTTRAIN`, `EVENTCOM`, `EVENTCOMEND`, `EVENTEND`, `JUEL_CHECK`, 표시 helper 단위를 재증명 |
@@ -250,7 +250,7 @@ Next actions:
 | M34.5 | hardening용 registry와 final verify skeleton, auxiliary evidence 차단을 추가했다. coverage-hardening gate는 통과한다. 이후 M28~M34 registry contract도 추가되어 M28~M52 registry enforcement gap은 해소되었다. | 당시에는 M28~M34 registry contract가 없었지만 현재 기준에서는 해소됨. | hardening gate 자체가 새 `responsibilityIntegrity` closure 기준을 검증하지 않는다. |
 | M35 | 턴 진행, 날짜/주차/월/년 갱신, hook 순서, session cleanup, save roundtrip을 strict 기준으로 닫았다. | 업무/미션/이벤트/경제 내부 효과는 M35 완료가 아니다. M35는 호출 순서와 lifecycle boundary만 닫는다. | strict closure 완료. `gate:turn-pipeline`과 `gate:milestone-scope-closure -- M35`는 owned 8, implemented 8을 확인한다. |
 | M36 | 방문 장소 7개와 방문 action 86개, 비용/해금/진행 row를 구현했다. strict 기준 source units 93, implemented-verified 93, mapped 0. | 방문 이후 이벤트/세계 hook은 후속 owner가 소유한다. | closure에 `responsibilityIntegrity`가 있고 gate 통과. |
-| M37 | 업무/창관/특수 업무 실행 80개, 업무 정의 8개, 업무 결과 write-effect 21개와 LUNCH_STALL ABL:74 보상 read 1개는 구현 검증됐다. strict 기준 implemented-verified 316. | 남은 save/session/calculation/source-address 147개는 M37 완료가 아니다. | M37 closure는 blocked 147이다. 업무 결과의 원본 save-field 효과를 구현하거나 명시적으로 scope redesign 해야 한다. |
+| M37 | 업무/창관/특수 업무 실행 80개, 업무 정의 8개, 업무 결과 write-effect 21개와 LUNCH_STALL ABL:74 보상 read 1개, EVENT_WORK_MESSAGE_SP message branch read 7개는 구현 검증됐다. strict 기준 implemented-verified 323. | 남은 save/session/calculation/source-address 140개는 M37 완료가 아니다. | M37 closure는 blocked 140이다. 업무 결과의 원본 save-field 효과를 구현하거나 명시적으로 scope redesign 해야 한다. |
 | M38 | 촬영 장면 정의 6개와 장면 조건 table을 연결했다. coverage 기준 mapped 6. | 실제 촬영 실행/수익/판매는 M39가 소유한다. | implemented 0, mapped 6만으로 "촬영 정의 완성"을 닫았으므로 조건/예상 결과가 runtime에서 충분히 검증되는지 재확인 필요. registry에 smoke 필수도 빠져 있다. |
 | M39 | 촬영 실행, 수익, 팬, 점수, 출시/판매 상태를 구현했다. coverage 기준 implemented 135, mapped 39. | source-file-review 2개가 파일 단위 mapped 완료로 남아 있다. | source-file-review는 라벨/row 수준으로 분해됐는지 재감사해야 한다. |
 | M40 | 훈련 대상/실행자/조수/command 선택, session lifecycle, 완료 후 cleanup을 구현했다. coverage 기준 implemented 5, mapped 6. | command 효과와 availability는 M41~M44가 소유한다. | closure에 `responsibilityIntegrity`가 없다. |

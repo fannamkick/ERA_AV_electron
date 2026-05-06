@@ -87,6 +87,13 @@ function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: st
                 ...character.attributes.abilities,
                 '74': 9,
               },
+              traits: {
+                ...character.attributes.traits,
+                '76': true,
+                '180': true,
+                '509': true,
+                '519': true,
+              },
             },
           },
         },
@@ -98,7 +105,10 @@ function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: st
           [characterId]: {
             ...(context.state.work.careerFlagsByCharacterId[characterId] ?? {}),
             flag_130: 1,
-            flag_42: 0,
+            flag_42: 1,
+            flag_50: 0,
+            flag_53: 1,
+            flag_607: 1,
           },
         },
       },
@@ -229,6 +239,18 @@ function main() {
       context.state.people.characters[characterId]?.attributes.traits[traitId] === true,
       `M37 work trait flag should be applied: TALENT:${traitId}.`,
     );
+  }
+  const expectedMessageBranches: Record<string, boolean | number> = {
+    'message.eventWork.publicMasturbation': true,
+    'message.eventWork.failureTargetMode': 1,
+    'message.eventWork.printMemberOnStripEnd': true,
+    'message.eventWork.allActiveMembersLewdProstitutes': true,
+    'message.eventWork.scatArmpitHairText': true,
+    'message.eventWork.talent509LewdBranch': true,
+    'message.eventWork.talent519Branch': true,
+  };
+  for (const [flagId, expected] of Object.entries(expectedMessageBranches)) {
+    assert(workFlags[flagId] === expected, `M37 event work message branch should be calculated: ${flagId}.`);
   }
 
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));

@@ -22,9 +22,9 @@
   ],
   "summary": {
     "totalUnits": 463,
-    "implemented-verified": 316,
+    "implemented-verified": 323,
     "approved-excluded": 0,
-    "blocked": 147,
+    "blocked": 140,
     "scope-redesign-required": 0,
     "completedAllowedNow": false
   },
@@ -7883,15 +7883,16 @@
       "rowKind": "save-mapping",
       "legacyId": "CFLAG:130",
       "requiredBehavior": "",
-      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.flag_130 <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.allActiveMembersLewdProstitutes <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-cflag-130",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00315",
@@ -8333,15 +8334,16 @@
       "rowKind": "save-mapping",
       "legacyId": "CFLAG:607",
       "requiredBehavior": "",
-      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.flag_607 <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.scatArmpitHairText <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-cflag-607",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00333",
@@ -9308,15 +9310,16 @@
       "rowKind": "save-mapping",
       "legacyId": "FLAG:42",
       "requiredBehavior": "",
-      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.flag_42 <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.failureTargetMode <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-flag-42",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00372",
@@ -9383,15 +9386,16 @@
       "rowKind": "save-mapping",
       "legacyId": "FLAG:50",
       "requiredBehavior": "",
-      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.flag_50 <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.printMemberOnStripEnd <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-flag-50",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00375",
@@ -9458,15 +9462,16 @@
       "rowKind": "save-mapping",
       "legacyId": "FLAG:53",
       "requiredBehavior": "",
-      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.flag_53 <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.publicMasturbation <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-flag-53",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00378",
@@ -10733,15 +10738,16 @@
       "rowKind": "save-mapping",
       "legacyId": "TALENT:509",
       "requiredBehavior": "",
-      "runtimeConsumerId": "people.characters.byId.*.attributes.traits[509] <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.talent509LewdBranch <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-talent-509",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00429",
@@ -10833,15 +10839,16 @@
       "rowKind": "save-mapping",
       "legacyId": "TALENT:519",
       "requiredBehavior": "",
-      "runtimeConsumerId": "people.characters.byId.*.attributes.traits[519] <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.talent519Branch <- EVENT_WORK_MESSAGE_SP branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-talent-519",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00433",

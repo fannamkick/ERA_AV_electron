@@ -8,7 +8,7 @@ M28/M29/M31 correction is now closed under the strict source-unit manifest rule.
 - M29 is strict-closed after reclaim implementation: total 206, implemented-verified 101, approved-excluded 105, blocked 0, `completedAllowedNow: true`.
 - M31 is strict-closed after reclaim implementation: total 237, implemented-verified 153, approved-excluded 84, blocked 0, `completedAllowedNow: true`.
 - M47 is now total 13, blocked 13.
-- Aggregate M28~M52: total 11,250; implemented-verified 8,880; approved-excluded 315; blocked 2,024; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- Aggregate M28~M52: total 11,250; implemented-verified 8,887; approved-excluded 315; blocked 2,017; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
 - Next strict target: M37, then M38~M41. M42 is still not resumed.
 
 ## 2026-05-06 M36 strict closure complete
@@ -187,7 +187,7 @@ The criteria-side baseline is complete.
 | `completedAllowedNow: false` | 16 |
 | Total units | 11,250 |
 | Implemented-verified | 8,879 |
-| Blocked | 2,024 |
+| Blocked | 2,017 |
 | Scope-redesign-required | 31 |
 | Approved-excluded | 315 |
 | Known criteria gap | none; M28~M52 registry contracts exist |
@@ -240,7 +240,7 @@ Parallel agent review was incorporated into first-pass source-unit manifests for
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | M35 | `data/coverage/manifests/M35-source-units.json` | 8 | 0 | 7 | 1 | false |
 | M36 | `data/coverage/manifests/M36-source-units.json` | 93 | 93 | 0 | 0 | true |
-| M37 | `data/coverage/manifests/M37-source-units.json` | 463 | 316 | 147 | 0 | false |
+| M37 | `data/coverage/manifests/M37-source-units.json` | 463 | 323 | 140 | 0 | false |
 | M38 | `data/coverage/manifests/M38-source-units.json` | 6 | 0 | 6 | 0 | false |
 | M39 | `data/coverage/manifests/M39-source-units.json` | 174 | 135 | 39 | 0 | false |
 | M40 | `data/coverage/manifests/M40-source-units.json` | 11 | 5 | 6 | 0 | false |
@@ -337,11 +337,11 @@ Codex/서브에이전트는 토큰 누수 방지를 위해 `docs/agent/CODEX_BOO
 ## M37 업데이트
 
 - M37 업무/창관/특수 업무는 strict 기준으로 아직 완료가 아니다.
-- source-unit manifest 기준 total 463, implemented-verified 316, blocked 147이다. old `mapped` 175는 완료 근거가 아니다.
+- source-unit manifest 기준 total 463, implemented-verified 323, blocked 140이다. old `mapped` 175는 완료 근거가 아니다.
 - ERB-derived 업무 listing 8개와 원본 업무 source file + source label 기반 업무 정의 72개를 runtime `definitions.workDefinitions`로 연결했다.
 - `work/select`, `work/selectCharacter`, `work/execute`, `work/cancel`이 성공/실패/대상 누락/취소/session cleanup/턴 종료/save roundtrip을 검증한다.
 - `coverage:work`, `gate:work-coverage`, `smoke:work-all`은 placeholder가 아니라 실제 script다.
-- 2026-05-07 정정: `coverage:work`는 더 이상 mapped 175개를 완료로 세어 M37 closure를 `completed`로 덮어쓰지 않는다. strict manifest 기준 total 463, implemented-verified 316, blocked 147이 유지되며 `gate:milestone-scope-closure -- M37`는 실패해야 정상이다.
+- 2026-05-07 정정: `coverage:work`는 더 이상 mapped 175개를 완료로 세어 M37 closure를 `completed`로 덮어쓰지 않는다. strict manifest 기준 total 463, implemented-verified 323, blocked 140이 유지되며 `gate:milestone-scope-closure -- M37`는 실패해야 정상이다.
 - M38 촬영 정의와 장면 조건은 strict 기준 미완료다.
 - `unit:M38:filming-definition` 6행은 mapped/indexing만으로는 완료가 아니어서 closure를 `blocked`로 정정했다. 현재 total 6, implemented-verified 0, blocked 6이다.
 - ERB-derived 촬영 장면 6개를 runtime `definitions.filmingSceneDefinitions`로 연결했다.
@@ -589,7 +589,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M34.5에서 `npm run gate:source-evidence` 실패 원인이던 auxiliary evidence 완료성 row 169개를 primary source evidence로 재연결했고, M35~M52 gate registry와 final verify skeleton을 추가했다.
 - M35 turn pipeline coverage/gate/smoke 통과, owned row 7개와 unresolved issue 0개
 - M36 visit facility coverage/gate/smoke 통과, owned row 559개와 unresolved issue 0개
-- M37 work coverage/gate/smoke는 통과하지만 strict closure는 blocked 147 때문에 미완료다.
+- M37 work coverage/gate/smoke는 통과하지만 strict closure는 blocked 140 때문에 미완료다.
 - M38 filming scene coverage/gate/smoke 통과, owned row 6개와 unresolved issue 0개
 - M39 filming execution coverage/gate/smoke 통과, owned row 174개와 unresolved issue 0개
 - M40 training session coverage/gate/smoke 통과, owned row 11개와 unresolved issue 0개
@@ -641,7 +641,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 31. M34.5 전수 이식 gate hardening은 완료되었다. `gate:source-evidence`, `gate:coverage-hardening`, `gate:coverage-crosscheck`, `gate:pre-implementation-audit`, `gate:implementation-queue`, `build`, `test --if-present`가 통과했다.
 32. M35 ? ??? ?? ??? strict closure ??. total 8, implemented-verified 8, blocked 0, scope-redesign-required 0?? ?? mapped 7 row? supporting evidence?? ???.
 33. M36 visit/facility is strict-closed: `npm run coverage:visit-facility`, `npm run gate:visit-facility`, `npm run gate:milestone-scope-closure -- M36`, `npm run smoke:visit-all`, `npm run smoke:m10`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present` verified 93 source units implemented-verified, mapped 0, blocked 0; 559 rows remain evidence.
-34. M37 업무/창관/특수 업무는 strict 재판정 결과 아직 완료가 아니다. `coverage:work`, `gate:work-coverage`, `smoke:work-all`은 업무 dispatch/정의 실행 및 일부 업무 결과 write-effect 증거지만, `gate:milestone-scope-closure -- M37`는 strict 기준에서 실패해야 한다. 현재 M37은 total 463, implemented-verified 316, blocked 147이다.
+34. M37 업무/창관/특수 업무는 strict 재판정 결과 아직 완료가 아니다. `coverage:work`, `gate:work-coverage`, `smoke:work-all`은 업무 dispatch/정의 실행 및 일부 업무 결과 write-effect 증거지만, `gate:milestone-scope-closure -- M37`는 strict 기준에서 실패해야 한다. 현재 M37은 total 463, implemented-verified 323, blocked 140이다.
 35. M38 촬영 정의와 장면 조건은 strict 기준 미완료다. 기존 coverage/gate/smoke는 장면 정의 indexing 근거지만 closure는 `blocked`이고 manifest는 total 6, implemented-verified 0, blocked 6이다.
 36. M39 촬영 실행/결과/판매는 strict 기준 미완료다. 구현 검증 135개는 남지만 save/session/calculation 39개가 blocked라 closure는 `blocked`이다.
 37. M40 훈련 메뉴와 세션은 strict 기준 미완료다. 구현 검증 5개는 남지만 mapped training flow 6개가 blocked라 closure는 `blocked`이다.

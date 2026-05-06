@@ -15,7 +15,7 @@
 - M28은 strict closure 완료 상태다.
 - Next call target is M37 closure. M28~M36 are strict-closed.
 - M37~M41은 source-unit manifest 기준으로 닫히거나 blocked/scope-redesign-required로 명시되기 전까지 M42를 재개하지 않는다. M28~M36은 strict closure 완료 상태다.
-- Current M28~M52 aggregate: total 11,250; implemented-verified 8,880; approved-excluded 315; blocked 2,024; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- Current M28~M52 aggregate: total 11,250; implemented-verified 8,887; approved-excluded 315; blocked 2,017; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
 
 ## 프로젝트 책임
 

@@ -272,6 +272,36 @@ function legacyWorkRewardMoney(state: GameState, work: WorkDefinition, character
   return work.rewardMoney + legacyLunchStallAbilityRewardBonus(state, work, characterId);
 }
 
+function legacyEventWorkMessageBranchFlags(
+  state: GameState,
+  work: WorkDefinition,
+  characterId: string,
+): Record<string, boolean | number | string> {
+  if (work.source.path.split(/[\\/]/u).pop() !== 'EVENT_WORK_MESSAGE_SP.ERB') {
+    return {};
+  }
+
+  const character = state.people.characters[characterId];
+  const flags = state.work.careerFlagsByCharacterId[characterId] ?? {};
+  const traits = character?.attributes.traits ?? {};
+  const allActiveMembersLewdProstitutes = Object.values(state.people.characters)
+    .filter((member) => isCharacterActive(member))
+    .every((member) => {
+      const memberFlags = state.work.careerFlagsByCharacterId[member.id] ?? {};
+      return Number(memberFlags.flag_130 ?? 0) !== 0 && member.attributes.traits['76'] === true && member.attributes.traits['180'] === true;
+    });
+
+  return {
+    'message.eventWork.publicMasturbation': (Number(flags.flag_53 ?? 0) & 1) !== 0,
+    'message.eventWork.failureTargetMode': Number(flags.flag_42 ?? 0),
+    'message.eventWork.printMemberOnStripEnd': Number(flags.flag_50 ?? 0) === 0,
+    'message.eventWork.allActiveMembersLewdProstitutes': allActiveMembersLewdProstitutes,
+    'message.eventWork.scatArmpitHairText': Number(flags.flag_607 ?? 0) === 1,
+    'message.eventWork.talent509LewdBranch': traits['509'] === true && traits['76'] === true,
+    'message.eventWork.talent519Branch': traits['519'] === true,
+  };
+}
+
 export function calculateWorkResult(work: WorkDefinition, characterId: string, state: GameState): WorkCalculatedResult {
   return {
     workId: work.id,
@@ -283,7 +313,7 @@ export function calculateWorkResult(work: WorkDefinition, characterId: string, s
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
     traitFlags: { ...(work.traitFlags ?? {}) },
-    workFlagValues: { ...(work.workFlagValues ?? {}) },
+    workFlagValues: { ...legacyEventWorkMessageBranchFlags(state, work, characterId), ...(work.workFlagValues ?? {}) },
     workFlagDeltas: { ...(work.workFlagDeltas ?? {}) },
     economyFlagValues: { ...(work.economyFlagValues ?? {}) },
   };
