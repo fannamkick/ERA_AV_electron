@@ -31,7 +31,7 @@ Do not return to M34 unless a new regression appears in `gate:social-equipment-c
 
 ## 2026-05-05 next after M31 closure
 
-M31 is no longer complete under the strict source-unit manifest rule. Source-owner reclaim audit made M31 blocked: total 237, implemented-verified 127, approved-excluded 19, blocked 91.
+M31 is strict-closed after source-owner correction: total 237, implemented-verified 153, approved-excluded 84, blocked 0.
 
 Freeze pass output required for every remaining milestone:
 1. Owned runtime responsibility.
@@ -61,7 +61,7 @@ Required M32 flow:
 
 ## 2026-05-02 next after M30 closure
 
-M29 is no longer complete under the strict source-unit manifest rule. Source-owner reclaim audit made M29 blocked: total 206, implemented-verified 83, approved-excluded 105, blocked 18.
+M29 is strict-closed after source-owner correction: total 206, implemented-verified 101, approved-excluded 105, blocked 0.
 
 M30 must close only its item-use/special-item responsibility. Rows approved-excluded from M29 are not M30 completion evidence until M30 implements them, excludes them with approval, or redesigns ownership explicitly.
 
@@ -136,7 +136,7 @@ Do not treat M42-M44 as implemented. Current counts are M42 0/35, M43 0/35, and 
 
 ## 2026-05-02 next order reset
 
-M36-M41 source-unit manifest pass 1 is complete. M29 and M31 are now blocked after source-owner reclaim audit; M28 still needs exact M47 inbound correction. M32~M36 are strict-closed. M37-M41 still need blocked/scope-redesign-required closure before M42 implementation resumes.
+M36-M41 source-unit manifest pass 1 is complete. M28~M36 are strict-closed after M28/M29/M31 correction. M37-M41 still need blocked/scope-redesign-required closure before M42 implementation resumes.
 
 Priority:
 1. Rewrite M41 COM_ABLE availability into branch/AST/state-reference verifiable units.
@@ -148,19 +148,19 @@ Current implemented-verified counts: M35 8/8, M36 93/93, M37 294/463, M38 0/6, M
 
 ## 2026-05-02 다음 처리 순서 보정
 
-M31 strict closure는 source-owner reclaim audit 후 blocked로 되돌아갔다. 따라서 다음 순서는 M42로 바로 넘어가는 것이 아니라 아래 순서다.
+M31 strict closure는 source-owner correction 후 완료 상태다. 따라서 다음 순서는 M42로 바로 넘어가는 것이 아니라 아래 순서다.
 
 1. M34.5의 blocked/scope-redesign-required unit을 실제 구현 검증 또는 명시적 scope 재설계로 닫는다.
 2. M37~M41도 같은 방식으로 source-unit manifest 기준 closure를 정리한다.
-M28 exact inbound correction, M29 reclaim 18, M31 reclaim 91, and M37~M41 closure work must be handled before M42 resumes. M32~M36 are strict-closed.
+M37~M41 closure work must be handled before M42 resumes. M28~M36 are strict-closed.
 
-M28 exact inbound correction, M29 reclaim 18, M31 reclaim 91, and M37~M41 closure work must be handled before M42 resumes. M32~M36 are strict-closed.
+M37~M41 closure work must be handled before M42 resumes. M28~M36 are strict-closed.
 
 ## M37~M41 완료 선언 재정렬 후 M42. 훈련 command 효과 0~34 완성
 
-M28 exact inbound correction, M29 reclaim 18, M31 reclaim 91, and M37~M41 closure work must be handled before M42 resumes. M32~M36 are strict-closed.
+M37~M41 closure work must be handled before M42 resumes. M28~M36 are strict-closed.
 
-M32~M36 source-unit manifests are strict-closed. Next work starts with M28 exact inbound correction, M29 reclaim 18, M31 reclaim 91, then M37 closure correction and M38~M41.
+M28~M36 source-unit manifests are strict-closed. Next work starts with M37 closure correction and M38~M41.
 
 ## 먼저 해야 하는 것
 
@@ -168,9 +168,9 @@ M32~M36 source-unit manifests are strict-closed. Next work starts with M28 exact
 - `../milestones/PORT_RESPONSIBILITY_MAP.ko.md`와 phase 문서의 페이즈/마일스톤 책임 확인
 - 시작 전에 원본 단위 매니페스트를 만들고 종료 전에 모든 단위를 `implemented-verified`, `approved-excluded`, `blocked`, `scope-redesign-required` 중 하나로 닫는다.
 - `../milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`의 completed/blocked/scope-redesign-required 기준 확인
-M28 exact inbound correction, M29 reclaim 18, M31 reclaim 91, and M37~M41 closure work must be handled before M42 resumes. M32~M36 are strict-closed.
-- M29와 M31은 strict closure 완료 상태가 아니다. M29는 blocked 18, M31은 blocked 91이다.
-- M28 exact inbound correction, M29 reclaim 18, M31 reclaim 91 및 M37~M41의 `원본 단위 매니페스트`와 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required closure 정정이 끝나기 전에는 M42 구현을 시작하지 않는다.
+M37~M41 closure work must be handled before M42 resumes. M28~M36 are strict-closed.
+- M29와 M31은 source-owner correction 후 strict-closed다.
+- M37~M41의 `원본 단위 매니페스트`와 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required closure 정정이 끝나기 전에는 M42 구현을 시작하지 않는다.
 - `[구현]` 마일스톤의 `mapped`, `source-file-review`, `transferredOut`, 예정 consumer/verification을 완료로 세지 않도록 coverage와 closure를 정리한다.
 
 ## 완료해야 하는 것

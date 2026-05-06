@@ -64,11 +64,13 @@ const purchaseItemIds = new Set([
   '37',
 ]);
 
-const itemUseTransferIds = new Set(['30', '31', '38', '39', '40', '41', '42', '43', '52', '90', '91', '211']);
+const immediateUseListingItemIds = new Set(['30', '31', '38', '39', '40', '41', '42', '43', '52']);
+const itemUseTransferIds = new Set(['90', '91', '211']);
 const clothingTransferIds = new Set(['60', '61', '62', '63', '64']);
 
 function transferOwnerForItem(itemId) {
   if (clothingTransferIds.has(itemId)) return 'M34';
+  if (immediateUseListingItemIds.has(itemId)) return 'M30';
   if (itemUseTransferIds.has(itemId)) return 'M30';
   if (Number(itemId) >= 100 && Number(itemId) <= 199) return 'M31';
   if (Number(itemId) >= 200) return 'M30';
@@ -149,6 +151,19 @@ for (const reviewId of [...queueRefs].filter((ref) => ref.startsWith('definition
       label: row?.sourceName ?? '',
       completionStatus: 'implemented-shop-purchase-listing',
       runtimeConsumerId: 'definitions.shopListings -> computeVisibleShopListingIds -> buildItemShopView',
+      verificationId: 'smoke:item-shop',
+    });
+  } else if (immediateUseListingItemIds.has(itemId)) {
+    rows.push({
+      coverageRowId: `shop-purchase:definition:immediate-use-listing:${itemId}`,
+      reviewId,
+      rowKind: 'definition',
+      itemId,
+      sourceEvidenceId: row?.sourceEvidenceId ?? '',
+      sourcePath: row?.sourceFile ?? '',
+      label: row?.sourceName ?? '',
+      completionStatus: 'implemented-shop-immediate-use-listing',
+      runtimeConsumerId: 'definitions.items -> computeVisibleItemUseIds -> buildItemShopView',
       verificationId: 'smoke:item-shop',
     });
   } else {
@@ -272,6 +287,20 @@ for (const reviewId of [...queueRefs].filter((ref) => ref.startsWith('session-ma
       runtimeConsumerId: 'session.shop.visibleListingIds',
       verificationId: 'smoke:item-shop',
     });
+  } else if (immediateUseListingItemIds.has(itemId)) {
+    rows.push({
+      coverageRowId: `shop-purchase:session:immediate-use-itemsales:${itemId}`,
+      reviewId,
+      rowKind: 'session-mapping',
+      itemId,
+      address: row?.address ?? '',
+      sourceEvidenceId: row?.sourceEvidenceId ?? '',
+      sourcePath: row?.sourceFile ?? '',
+      sessionFieldPath: row?.sessionFieldPath ?? '',
+      completionStatus: 'mapped-consumed-visible-use-listing',
+      runtimeConsumerId: 'session.shop.visibleUseItemIds',
+      verificationId: 'smoke:item-shop',
+    });
   } else {
     const toMilestone = transferOwnerForItem(itemId);
     rows.push({
@@ -392,7 +421,7 @@ const closure = {
   milestone: 'M29',
   title: 'Item shop purchase coverage',
   status: 'completed',
-  completedAt: '2026-05-02',
+  completedAt: '2026-05-06',
   commitPolicy: 'Commit after every milestone closure.',
   commitHash: 'recorded by the M29 git commit that includes this closure file',
   sourceInputs: coverage.sourceInputs,
@@ -451,7 +480,8 @@ const closure = {
     limitationsBlockCompletion: false,
     responsibilityItems: [
       'M29 owns purchase listing definitions, visible listing session state, selected item state, price/money checks, inventory result writes, success/failure/cancel paths, and purchase-result save roundtrip.',
-      'Immediate-use items, special item effects, clothing/cosplay packs, recruit listings, event/body effects, and unrelated flags are not M29 completion; they remain tracked as approved exclusions with receiving owner milestones.',
+      'M29 also owns SHOP_ITEM visibility/session selection for immediate-use purchasable items 30/31/38/39/40/41/42/43/52. Their post-selection effects remain M30 item-use responsibility.',
+      'Immediate-use item effects, special item effects, clothing/cosplay packs, recruit listings, event/body effects, and unrelated flags are not M29 completion; they remain tracked as approved exclusions with receiving owner milestones.',
       'Mapped save/session rows are counted as implemented-verified only when they have runtime consumers and smoke verification inside the M29 purchase flow.',
     ],
     implementationEvidence: [
@@ -480,7 +510,7 @@ const closure = {
       'npm run build',
       'npm run test --if-present',
     ],
-    expectedGateResult: '206 source row(s), 83 M29-owned purchase row(s), 123 approved exclusions, 0 unresolved issue(s)',
+    expectedGateResult: '206 source row(s), 101 M29-owned purchase/listing row(s), 105 approved exclusions, 0 unresolved issue(s)',
   },
   commandsRun: [
     'npm run coverage:shop-purchase',
@@ -570,7 +600,8 @@ const manifest = {
   },
   notes: [
     'M29 owns 83 purchase/listing/result source units and closes them as implemented-verified.',
-    'The remaining 123 source units stay visible in the manifest as approved exclusions from M29 ownership, with receiving owner milestones recorded.',
+    'M29 additionally owns 18 immediate-use item listing/ITEMSALES source units and closes them as implemented-verified while leaving item effects to M30.',
+    'The remaining 105 source units stay visible in the manifest as approved exclusions from M29 ownership, with receiving owner milestones recorded.',
     'This manifest intentionally does not treat transferred-out rows as M29 implementation completion.',
   ],
   units: manifestUnits,

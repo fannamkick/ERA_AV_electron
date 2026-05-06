@@ -61,6 +61,22 @@ function transferOwnerForSave(row) {
   return '';
 }
 
+function isCharacterTemplateInitialSaveRow(source) {
+  const sourcePath = source?.sourcePath ?? '';
+  return sourcePath.includes('original-game/CSV/Chara');
+}
+
+function recruitCreationRuntimeConsumerForSave(source) {
+  const address = source?.address ?? '';
+  if (address.startsWith('CSTR:')) return 'createCharacterBundleFromSpecs -> people.characters.identity.profileTextSlots';
+  if (address.startsWith('BASE:')) return 'createCharacterBundleFromSpecs -> people/body base stat initial state';
+  if (address.startsWith('ABL:')) return 'createCharacterBundleFromSpecs -> people.characters.attributes.abilities';
+  if (address.startsWith('EXP:')) return 'createCharacterBundleFromSpecs -> people.characters.attributes.experiences';
+  if (address.startsWith('TALENT:')) return 'createCharacterBundleFromSpecs -> people.characters.attributes.traits';
+  if (address.startsWith('CFLAG:')) return 'createCharacterBundleFromSpecs -> splitLegacyCharacterFlags -> people/body/equipment/social state';
+  return 'createCharacterBundleFromSpecs -> generated character bundle';
+}
+
 function strictReceiverForRow(row) {
   if (isStrictM31Implemented(row)) return '';
   if (row.toMilestone) return row.toMilestone;
@@ -252,6 +268,20 @@ for (const reviewId of [...ownedRefs.keys()].sort()) {
   }
 
   if (rowKind === 'save-mapping') {
+    if (isCharacterTemplateInitialSaveRow(source)) {
+      rows.push({
+        coverageRowId: `recruit:save-initial:${reviewId.replace(/^save-mapping:/, '')}`,
+        reviewId,
+        rowKind,
+        ...source,
+        sourceRow: undefined,
+        completionStatus: 'implemented-recruit-creation-initial-field',
+        runtimeConsumerId: recruitCreationRuntimeConsumerForSave(source),
+        verificationId: 'smoke:recruit-all',
+      });
+      continue;
+    }
+
     const toMilestone = transferOwnerForSave(source.sourceRow);
     if (toMilestone) {
       rows.push({
@@ -457,7 +487,7 @@ const closure = {
   milestone: 'M31',
   title: 'Recruit listing and character creation coverage',
   status: 'completed',
-  completedAt: '2026-05-01',
+  completedAt: '2026-05-06',
   commitPolicy: 'Commit after every milestone closure.',
   commitHash: 'recorded by the M31 git commit that includes this closure file',
   sourceInputs: coverage.sourceInputs,
@@ -516,7 +546,8 @@ const closure = {
     limitationsBlockCompletion: false,
     responsibilityItems: [
       'M31 owns recruit listing definitions, visible recruit listing session state, listing-to-template mapping, price/money checks, duplicate/repeat/roster failure, cancel, recruit session buffers, and creation of people/body/social/equipment containers.',
-      'Character identity/lifecycle, BASE/ABL/TALENT/EXP template seed semantics, CFLAG/equipment semantics, TIME/FLAG/event hooks, unused source paths, and aggregate source-file-review rows are not counted as M31 implementation.',
+      'M31 owns character-template initial values when recruit creation consumes CSV/Chara source rows into the generated character bundle.',
+      'Downstream field semantics, character sale/lifecycle, event hooks, unused source paths, and aggregate source-file-review rows are not counted as M31 implementation unless recruit creation directly consumes a CSV/Chara initial row into the generated bundle.',
       'Every approved exclusion remains visible in the source-unit manifest; receiver-owned exclusions must be present in the receiving owner manifest.',
     ],
     implementationEvidence: [
@@ -645,8 +676,8 @@ const manifest = {
     ],
   },
   notes: [
-    'M31 owns 127 recruit listing, flow, visible listing session, and recruit session buffer source units and closes them as implemented-verified.',
-    'The remaining 110 source units stay visible as approved exclusions from M31 ownership or non-runtime source review rows.',
+    'M31 owns recruit listing, flow, visible listing session, recruit session buffer, and CSV/Chara initial generated-character source units and closes them as implemented-verified.',
+    'The remaining source units stay visible as approved exclusions from M31 ownership or non-runtime source review rows.',
     'This manifest intentionally does not treat transferred-out rows or mapped character seed rows as M31 implementation completion.',
   ],
   units: manifestUnits,

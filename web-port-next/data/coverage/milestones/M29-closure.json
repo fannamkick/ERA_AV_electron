@@ -2,8 +2,8 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M29",
   "title": "Item shop purchase coverage",
-  "status": "blocked",
-  "completedAt": null,
+  "status": "completed",
+  "completedAt": "2026-05-06",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M29 git commit that includes this closure file",
   "sourceInputs": {
@@ -24,15 +24,15 @@
   "counts": {
     "sourceUnitTotal": 206,
     "ownedTotal": 101,
-    "implemented": 83,
+    "implemented": 101,
     "mapped": 0,
     "approvedExcludedFromM29": 105,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "rawImplementedRows": 43,
-    "rawMappedRows": 40,
-    "rawTransferRows": 123,
-    "ownedBlocker": 18,
+    "rawImplementedRows": 52,
+    "rawMappedRows": 49,
+    "rawTransferRows": 105,
+    "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -41,11 +41,11 @@
   },
   "closureMetrics": {
     "ownedTotal": 101,
-    "implemented": 83,
+    "implemented": 101,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 18,
+    "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -54,22 +54,22 @@
   },
   "sourceUnitMetrics": {
     "sourceUnitTotal": 206,
-    "implementedVerified": 83,
+    "implementedVerified": 101,
     "approvedExcludedFromM29": 105,
-    "blocked": 18,
+    "blocked": 0,
     "scopeRedesignRequired": 0,
-    "completedAllowedNow": false
+    "completedAllowedNow": true
   },
   "responsibilityIntegrity": {
     "scopeReductionProhibited": true,
     "checklistMatchedToResponsibility": true,
     "sourceBehaviorImplementedNotJustIndexed": true,
     "gateValidatesResponsibilityNotOwnScaffold": true,
-    "limitationsBlockCompletion": true,
+    "limitationsBlockCompletion": false,
     "responsibilityItems": [
-      "M29 cannot exclude immediate-use item listing/ITEMSALES rows just because their post-purchase effects belong to M30. Purchase listing and selection remain M29-owned.",
       "M29 owns purchase listing definitions, visible listing session state, selected item state, price/money checks, inventory result writes, success/failure/cancel paths, and purchase-result save roundtrip.",
-      "Immediate-use items, special item effects, clothing/cosplay packs, recruit listings, event/body effects, and unrelated flags are not M29 completion; they remain tracked as approved exclusions with receiving owner milestones.",
+      "M29 also owns SHOP_ITEM visibility/session selection for immediate-use purchasable items 30/31/38/39/40/41/42/43/52. Their post-selection effects remain M30 item-use responsibility.",
+      "Immediate-use item effects, special item effects, clothing/cosplay packs, recruit listings, event/body effects, and unrelated flags are not M29 completion; they remain tracked as approved exclusions with receiving owner milestones.",
       "Mapped save/session rows are counted as implemented-verified only when they have runtime consumers and smoke verification inside the M29 purchase flow."
     ],
     "implementationEvidence": [
@@ -98,7 +98,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "blocked: 18 immediate-use purchasable item listing/ITEMSALES source unit(s) remain M29-owned."
+    "expectedGateResult": "206 source row(s), 101 M29-owned purchase/listing row(s), 105 approved exclusions, 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:shop-purchase",
@@ -108,7 +108,5 @@
     "npm run smoke:phase1",
     "npm run build",
     "npm run test --if-present"
-  ],
-  "blockedAt": "2026-05-06",
-  "blockerReason": "M29 still owns 18 immediate-use purchasable item listing/visibility source units. Effects may belong to M30, but SHOP_ITEM listing/ITEMSALES/purchase selection cannot be excluded from M29."
+  ]
 }

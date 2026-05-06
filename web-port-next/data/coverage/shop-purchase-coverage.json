@@ -19,12 +19,12 @@
   "summary": {
     "queueRowRefs": 206,
     "rows": 206,
-    "implemented": 43,
-    "mapped": 40,
-    "transferredOut": 123,
-    "m29OwnedRows": 83,
-    "outOfScopeAccepted": 123,
-    "implementedVerifiedForStrictClosure": 83,
+    "implemented": 52,
+    "mapped": 49,
+    "transferredOut": 105,
+    "m29OwnedRows": 101,
+    "outOfScopeAccepted": 105,
+    "implementedVerifiedForStrictClosure": 101,
     "approvedExcluded": 0,
     "ownedBlocker": 0,
     "missingQueueRowRefs": 0,
@@ -36,16 +36,18 @@
       "session-mapping": 111
     },
     "byCompletionStatus": {
+      "implemented-shop-immediate-use-listing": 9,
       "implemented-shop-purchase-flow": 13,
       "implemented-shop-purchase-listing": 30,
       "mapped-consumed-purchase-result": 8,
       "mapped-consumed-read-condition": 1,
       "mapped-consumed-shop-selection": 1,
       "mapped-consumed-visible-listing": 30,
-      "transferred-out": 123
+      "mapped-consumed-visible-use-listing": 9,
+      "transferred-out": 105
     },
     "transfersByOwner": {
-      "M30": 49,
+      "M30": 31,
       "M31": 48,
       "M32": 4,
       "M34": 12,
@@ -441,34 +443,28 @@
       "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:30",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:30",
       "reviewId": "definition:definition:item:30",
       "rowKind": "definition",
       "itemId": "30",
       "sourceEvidenceId": "source:definition:definition-item-30",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "영양제",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:31",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:31",
       "reviewId": "definition:definition:item:31",
       "rowKind": "definition",
       "itemId": "31",
       "sourceEvidenceId": "source:definition:definition-item-31",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "향",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
       "coverageRowId": "shop-purchase:definition:34",
@@ -495,109 +491,88 @@
       "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:38",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:38",
       "reviewId": "definition:definition:item:38",
       "rowKind": "definition",
       "itemId": "38",
       "sourceEvidenceId": "source:definition:definition-item-38",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "부스터메일",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:39",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:39",
       "reviewId": "definition:definition:item:39",
       "rowKind": "definition",
       "itemId": "39",
       "sourceEvidenceId": "source:definition:definition-item-39",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "【비밀지식】",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:40",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:40",
       "reviewId": "definition:definition:item:40",
       "rowKind": "definition",
       "itemId": "40",
       "sourceEvidenceId": "source:definition:definition-item-40",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "배란유발제",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:41",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:41",
       "reviewId": "definition:definition:item:41",
       "rowKind": "definition",
       "itemId": "41",
       "sourceEvidenceId": "source:definition:definition-item-41",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "강모제",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:42",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:42",
       "reviewId": "definition:definition:item:42",
       "rowKind": "definition",
       "itemId": "42",
       "sourceEvidenceId": "source:definition:definition-item-42",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "【조합지식】",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:43",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:43",
       "reviewId": "definition:definition:item:43",
       "rowKind": "definition",
       "itemId": "43",
       "sourceEvidenceId": "source:definition:definition-item-43",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "배란억제제",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:definition-transfer:52",
+      "coverageRowId": "shop-purchase:definition:immediate-use-listing:52",
       "reviewId": "definition:definition:item:52",
       "rowKind": "definition",
       "itemId": "52",
       "sourceEvidenceId": "source:definition:definition-item-52",
       "sourcePath": "original-game/CSV/Item.csv",
       "label": "【기교Lv】",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "implemented-shop-immediate-use-listing",
+      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView",
+      "verificationId": "smoke:item-shop"
     },
     {
       "coverageRowId": "shop-purchase:definition-transfer:60",
@@ -1226,7 +1201,7 @@
       "fromMilestone": "M29",
       "toMilestone": "M30",
       "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
+      "transferReason": "Outside M29 purchase-listing scope.",
       "verificationId": "gate:milestone-scope-closure -- M30"
     },
     {
@@ -1265,7 +1240,7 @@
       "fromMilestone": "M29",
       "toMilestone": "M30",
       "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
+      "transferReason": "Outside M29 purchase-listing scope.",
       "verificationId": "gate:milestone-scope-closure -- M30"
     },
     {
@@ -1280,7 +1255,7 @@
       "fromMilestone": "M29",
       "toMilestone": "M30",
       "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
+      "transferReason": "Outside M29 purchase-listing scope.",
       "verificationId": "gate:milestone-scope-closure -- M30"
     },
     {
@@ -1767,7 +1742,7 @@
       "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:30",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:30",
       "reviewId": "session-mapping:session-map:source:itemsales-30",
       "rowKind": "session-mapping",
       "itemId": "30",
@@ -1775,15 +1750,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-30",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:30]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:31",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:31",
       "reviewId": "session-mapping:session-map:source:itemsales-31",
       "rowKind": "session-mapping",
       "itemId": "31",
@@ -1791,12 +1763,9 @@
       "sourceEvidenceId": "source:session-map:itemsales-31",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:31]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
       "coverageRowId": "shop-purchase:session:itemsales:34",
@@ -1825,7 +1794,7 @@
       "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:38",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:38",
       "reviewId": "session-mapping:session-map:source:itemsales-38",
       "rowKind": "session-mapping",
       "itemId": "38",
@@ -1833,15 +1802,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-38",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:38]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:39",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:39",
       "reviewId": "session-mapping:session-map:source:itemsales-39",
       "rowKind": "session-mapping",
       "itemId": "39",
@@ -1849,15 +1815,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-39",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:39]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:40",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:40",
       "reviewId": "session-mapping:session-map:source:itemsales-40",
       "rowKind": "session-mapping",
       "itemId": "40",
@@ -1865,15 +1828,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-40",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:40]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:41",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:41",
       "reviewId": "session-mapping:session-map:source:itemsales-41",
       "rowKind": "session-mapping",
       "itemId": "41",
@@ -1881,15 +1841,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-41",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:41]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:42",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:42",
       "reviewId": "session-mapping:session-map:source:itemsales-42",
       "rowKind": "session-mapping",
       "itemId": "42",
@@ -1897,15 +1854,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-42",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:42]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:43",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:43",
       "reviewId": "session-mapping:session-map:source:itemsales-43",
       "rowKind": "session-mapping",
       "itemId": "43",
@@ -1913,15 +1867,12 @@
       "sourceEvidenceId": "source:session-map:itemsales-43",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:43]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
-      "coverageRowId": "shop-purchase:session-transfer:itemsales:52",
+      "coverageRowId": "shop-purchase:session:immediate-use-itemsales:52",
       "reviewId": "session-mapping:session-map:source:itemsales-52",
       "rowKind": "session-mapping",
       "itemId": "52",
@@ -1929,12 +1880,9 @@
       "sourceEvidenceId": "source:session-map:itemsales-52",
       "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:52]",
-      "completionStatus": "transferred-out",
-      "fromMilestone": "M29",
-      "toMilestone": "M30",
-      "acceptedByOwner": true,
-      "transferReason": "Immediate-use or special item effect is owned by M30 item-use/special-item implementation.",
-      "verificationId": "gate:milestone-scope-closure -- M30"
+      "completionStatus": "mapped-consumed-visible-use-listing",
+      "runtimeConsumerId": "session.shop.visibleUseItemIds",
+      "verificationId": "smoke:item-shop"
     },
     {
       "coverageRowId": "shop-purchase:session-transfer:itemsales:60",

@@ -78,7 +78,7 @@
 | 우선순위 | 대상 | 해야 할 일 |
 | --- | --- | --- |
 | 1 | M35~M41 전체 | 기존 `completed`를 유지하지 않는다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별 `implemented-verified`/`approved-excluded`/`blocked`/`scope-redesign-required`로 닫는다. |
-| 2 | M29/M31/M33/M37/M38 | M29와 M31은 source-owner reclaim blocker가 확인됐다. M29 blocked 18, M31 blocked 91을 receiver owner 이름만 보고 닫으면 안 된다. M33/M37/M38도 같은 source-owner 기준으로 재확인해야 한다. |
+| 2 | M29/M31/M33/M37/M38 | M29와 M31은 source-owner reclaim blocker가 확인됐고, 이후 correction에서 M29 101개와 M31 153개를 implemented-verified로 닫았다. M37/M38은 같은 source-owner 기준으로 실제 기능 closure가 남아 있다. |
 | 3 | M30 수신 owner | M30은 완료. M30에서 excluded한 특수 item 200~214 및 item 22/90/91 plus item 211 계열은 M34-closed plus M41/M42/M43/M44에서 닫는다. |
 | 4 | M32/M34/M35/M39/M41 | mapped-only 또는 source-file-review 완료를 금지하고, 원본 label/read/write/command 단위로 분해한다. |
 | 5 | M34.5/M36/M40 | manifest-needed. 기존 구현 근거를 원본 단위 매니페스트로 재증명하거나 blocked로 되돌린다. |

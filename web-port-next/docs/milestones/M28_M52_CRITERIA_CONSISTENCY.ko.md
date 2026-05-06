@@ -15,8 +15,8 @@ Evidence:
 - All M28~M52 source-unit manifests exist.
 - 8 manifests currently have `completedAllowedNow: true`; 18 remain false.
 - Aggregate manifest totals:
-  - total units: 11,247
-  - implemented-verified: 8,835
+  - total units: 11,250
+  - implemented-verified: 8,879
   - blocked: 2,131
   - scope-redesign-required: 31
   - approved-excluded: 250
@@ -26,12 +26,12 @@ M28 is now closed under the source-unit manifest rule:
 - 3 BOYFRIEND event-local session rows are `approved-excluded` from M28 and remain owned by M47.
 - `npm run gate:milestone-scope-closure -- M28` passes with `responsibilityIntegrity`.
 
-M29 is not closed under the source-unit manifest rule:
+M29 is closed under the source-unit manifest rule after source-owner correction:
 - 83 purchase/listing/result rows are `implemented-verified`.
 - 105 non-purchase/use/equipment/recruit/event/downstream rows are `approved-excluded` from M29 ownership and remain assigned to receiving owner milestones.
-- 18 immediate-use purchasable item listing/ITEMSALES rows are `blocked` and M29-owned. Item effects may belong to M30, but SHOP_ITEM listing, visibility, price, purchase selection, success/failure/cancel, and result writeback remain M29 responsibility.
+- 18 immediate-use purchasable item definition/ITEMSALES rows are now `implemented-verified` by M29 through item shop use listing visibility/session selection. Item effects remain M30 responsibility.
 - The newly added receiver rows are `blocked`, so they do not silently complete later milestones.
-- `npm run gate:milestone-scope-closure -- M29` must fail while M29 closure status is `blocked`.
+- `npm run gate:milestone-scope-closure -- M29` passes with ownedTotal 101.
 
 M30 is now closed under the source-unit manifest rule:
 - 37 immediate item-use flow/effect rows are `implemented-verified`.
@@ -39,11 +39,11 @@ M30 is now closed under the source-unit manifest rule:
 - All 37 M30 approved exclusions are explicit blocked inbound responsibility in receiver manifests: M34 3, M41 6, M42 18, M43 8, M44 2.
 - `npm run gate:item-use-coverage` and `npm run gate:milestone-scope-closure -- M30` pass with M30 ownedTotal 37.
 
-M31 is not closed under the source-unit manifest rule:
+M31 is closed under the source-unit manifest rule after source-owner correction:
 - 127 recruit listing, flow, visible listing session, and recruit session buffer rows are `implemented-verified`.
-- 19 non-M31 lifecycle/event owner rows are `approved-excluded` from M31 ownership.
-- 91 recruit creation result integration and source-review rows are `blocked` and M31-owned. Downstream field semantics may belong to M32/M33/M34/M35, but proving recruit creation applies initial identity/body/social/time fields is M31 responsibility.
-- `npm run gate:milestone-scope-closure -- M31` must fail while M31 closure status is `blocked`.
+- 84 non-M31 lifecycle/event/downstream/non-runtime rows are `approved-excluded` from M31 ownership.
+- CSV/Chara initial generated-character rows are now `implemented-verified` by M31 through `createCharacterBundleFromSpecs` and `smoke:recruit-all`. ERB event/sale/downstream rows remain approved exclusions with receiver ownership.
+- `npm run gate:milestone-scope-closure -- M31` passes with ownedTotal 153.
 
 ## Registry Enforcement
 

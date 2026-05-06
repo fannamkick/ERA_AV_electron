@@ -6,6 +6,7 @@ import { dispatchGameAction } from '../src/game/dispatch';
 import type { GameActionContext, GameActionResult } from '../src/game/results';
 import { createGameSavePayload } from '../src/game/savePayload';
 import { createInitialGameData, type GameSession, type GameState } from '../src/game/state';
+import { splitLegacyCharacterFlags } from '../src/features/socialEquipmentCflag';
 
 type SmokeContext = {
   readonly catalog: GameDefinitions;
@@ -132,6 +133,46 @@ function assertCharacterCreated(context: SmokeContext, characterId: string, temp
   assert(context.state.equipment.byCharacterId[characterId], `equipment state missing for ${characterId}`);
 }
 
+function assertTemplateInitialStateApplied(context: SmokeContext, characterId: string, templateId: CatalogId) {
+  const template = context.catalog.characters[templateId];
+  const character = context.state.people.characters[characterId];
+  const body = context.state.body.byCharacterId[characterId];
+  const equipment = context.state.equipment.byCharacterId[characterId];
+  assert(template, `template missing for ${templateId}`);
+  assert(character, `character missing for ${characterId}`);
+  assert(body, `body missing for ${characterId}`);
+  assert(equipment, `equipment missing for ${characterId}`);
+
+  for (const [textId, text] of Object.entries(template.initialState.characterTexts)) {
+    assert(character.identity.profileTextSlots[textId] === text, `CSTR ${textId} should be applied to ${characterId}`);
+  }
+  for (const [abilityId, value] of Object.entries(template.initialState.abilities)) {
+    assert(character.attributes.abilities[abilityId] === value, `ABL ${abilityId} should be applied to ${characterId}`);
+  }
+  for (const [experienceId, value] of Object.entries(template.initialState.experiences)) {
+    assert(character.attributes.experiences[experienceId] === value, `EXP ${experienceId} should be applied to ${characterId}`);
+  }
+  for (const talentId of template.initialState.talents) {
+    assert(character.attributes.traits[talentId] === true, `TALENT ${talentId} should be applied to ${characterId}`);
+  }
+  for (const [baseId, value] of Object.entries(template.initialState.baseStats)) {
+    const peopleValue = character.attributes.baseStats.current[baseId];
+    const bodyValue = body.bodyStats[baseId] ?? body.baseStats[baseId];
+    assert(peopleValue === value || bodyValue === value, `BASE ${baseId} should be applied to ${characterId}`);
+  }
+
+  const splitFlags = splitLegacyCharacterFlags(template);
+  for (const [flagId, value] of Object.entries(splitFlags.bodyConditionFlags)) {
+    assert(body.conditionFlags[flagId] === value, `body CFLAG ${flagId} should be applied to ${characterId}`);
+  }
+  for (const [flagId, value] of Object.entries(splitFlags.equipmentAvailabilityFlags)) {
+    assert(equipment.availabilityFlags[flagId] === value, `equipment CFLAG ${flagId} should be applied to ${characterId}`);
+  }
+  for (const [flagId, value] of Object.entries(splitFlags.equipmentClothing)) {
+    assert(equipment.clothing[flagId] === value, `clothing CFLAG ${flagId} should be applied to ${characterId}`);
+  }
+}
+
 function main() {
   const initialData = createInitialGameData();
   let context: SmokeContext = {
@@ -167,6 +208,7 @@ function main() {
   assert(step.result.status === 'success', 'normal recruit confirm should succeed.');
   context = step.context;
   assertCharacterCreated(context, 'character:1', '1');
+  assertTemplateInitialStateApplied(context, 'character:1', '1');
   assert(
     context.state.economy.account.currentMoney === moneyBeforeNormalRecruit - normalCandidate.definition.basePrice!,
     'normal recruit should subtract listing price.',
@@ -214,6 +256,7 @@ function main() {
     assert(step.result.status === 'success', `recruit ad confirm ${index} should succeed.`);
     context = step.context;
     assertCharacterCreated(context, `character:51:${index}`, '51');
+    assertTemplateInitialStateApplied(context, `character:51:${index}`, '51');
     assert(
       !Object.keys(context.state.people.characters[`character:51:${index}`].flags.legacyFlagsNeedingMapping).some((key) =>
         key.startsWith('TFLAG:'),

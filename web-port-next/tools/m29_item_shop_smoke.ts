@@ -55,6 +55,10 @@ function visibleListingIds(context: SmokeContext): readonly string[] {
   return buildItemShopView(context.catalog, context.state, context.session).visibleListings.map((listing) => listing.listingId);
 }
 
+function visibleUseItemIds(context: SmokeContext): readonly string[] {
+  return buildItemShopView(context.catalog, context.state, context.session).visibleUseItems.map((item) => item.itemId);
+}
+
 function withPlayerTrait(context: SmokeContext, traitId: string): SmokeContext {
   const player = Object.values(context.state.people.characters).find((character) => character.roles.includes('trainer'));
   assert(player, 'M29 smoke needs a trainer character.');
@@ -74,6 +78,34 @@ function withPlayerTrait(context: SmokeContext, traitId: string): SmokeContext {
               traits: {
                 ...player.attributes.traits,
                 [traitId]: true,
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function withPlayerAbility(context: SmokeContext, abilityId: string, value: number): SmokeContext {
+  const player = Object.values(context.state.people.characters).find((character) => character.roles.includes('trainer'));
+  assert(player, 'M29 smoke needs a trainer character.');
+
+  return {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        ...context.state.people,
+        characters: {
+          ...context.state.people.characters,
+          [player.id]: {
+            ...player,
+            attributes: {
+              ...player.attributes,
+              abilities: {
+                ...player.attributes.abilities,
+                [abilityId]: value,
               },
             },
           },
@@ -120,14 +152,14 @@ function main() {
     assert(actualListingIds.includes(listingId), `shop listing ${listingId} should exist.`);
   }
   for (const listingId of ['item:30', 'item:31', 'item:38', 'item:39', 'item:40', 'item:41', 'item:42', 'item:43', 'item:52', 'item:60', 'item:90']) {
-    assert(!actualListingIds.includes(listingId), `${listingId} should transfer out of M29 purchase listings.`);
+    assert(!actualListingIds.includes(listingId), `${listingId} should not be a normal purchase listing.`);
   }
 
   assertNoBoundaryErrors('initial state/session', validateStateSessionBoundary(context.state, context.session));
 
   let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
   assert(step.result.status === 'success', 'normal new game should succeed.');
-  context = step.context;
+  context = withPlayerAbility(step.context, '12', 0);
 
   step = dispatchChecked(context, { type: 'main/openItemShop' });
   assert(step.result.status === 'success', 'item shop entry should succeed.');
@@ -135,6 +167,7 @@ function main() {
   assert(context.session.ui.route === 'itemShop', 'item shop entry should route to itemShop.');
 
   let visible = visibleListingIds(context);
+  let visibleUse = visibleUseItemIds(context);
   assert(visible.includes('item:0'), 'basic item 0 should be visible.');
   assert(visible.includes('item:24'), 'condom item 24 should be visible.');
   assert(visible.includes('item:37'), 'lovescope item 37 should be visible before purchase.');
@@ -143,6 +176,12 @@ function main() {
   assert(!visible.includes('item:23'), 'trait-gated item 23 should be hidden without trait 93.');
   assert(!visible.includes('item:26'), 'combination-knowledge item 26 should be hidden without trait 55.');
   assert(!visible.includes('item:27'), 'combination-knowledge item 27 should be hidden without trait 55.');
+  assert(!visibleUse.includes('30'), 'trait-gated immediate-use item 30 should be hidden before trait 55.');
+  assert(!visibleUse.includes('31'), 'trait-gated immediate-use item 31 should be hidden before trait 55.');
+  assert(visibleUse.includes('38'), 'immediate-use item 38 should be visible through the item shop use listing.');
+  assert(visibleUse.includes('39'), 'immediate-use item 39 should be visible through the item shop use listing.');
+  assert(visibleUse.includes('42'), 'immediate-use item 42 should be visible through the item shop use listing.');
+  assert(visibleUse.includes('52'), 'immediate-use item 52 should be visible through the item shop use listing.');
 
   const beforeHiddenSelection = context.state;
   step = dispatchChecked(context, { type: 'shop/selectListing', listingId: 'item:26' });
@@ -150,6 +189,15 @@ function main() {
   assert(step.result.failure?.code === 'shop-listing-not-visible', 'hidden listing should use shop-listing-not-visible.');
   assert(step.result.state === beforeHiddenSelection, 'hidden listing failure should preserve save state.');
   context = step.context;
+
+  step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '42' });
+  assert(step.result.status === 'success', 'immediate-use listing selection should succeed inside item shop.');
+  context = step.context;
+  assert(context.session.shop.selectedUseItemId === '42', 'immediate-use selection should use selectedUseItemId.');
+  step = dispatchChecked(context, { type: 'shop/cancelUseItem' });
+  assert(step.result.status === 'success', 'immediate-use selection cancel should succeed.');
+  context = step.context;
+  assert(context.session.shop.selectedUseItemId === undefined, 'immediate-use cancel should clear selectedUseItemId.');
 
   step = dispatchChecked(context, { type: 'shop/selectListing', listingId: 'item:0' });
   assert(step.result.status === 'success', 'single inventory item selection should succeed.');
@@ -215,8 +263,15 @@ function main() {
   assert(step.result.status === 'success', 'item shop re-entry with trait should succeed.');
   context = step.context;
   visible = visibleListingIds(context);
+  visibleUse = visibleUseItemIds(context);
   assert(visible.includes('item:26'), 'combination-knowledge item 26 should become visible with trait 55.');
   assert(visible.includes('item:27'), 'combination-knowledge item 27 should become visible with trait 55.');
+  assert(visibleUse.includes('30'), 'immediate-use item 30 should become visible with trait 55.');
+  assert(visibleUse.includes('31'), 'immediate-use item 31 should become visible with trait 55.');
+  assert(visibleUse.includes('40'), 'immediate-use item 40 should become visible with trait 55.');
+  assert(visibleUse.includes('41'), 'immediate-use item 41 should become visible with trait 55.');
+  assert(visibleUse.includes('43'), 'immediate-use item 43 should become visible with trait 55.');
+  assert(!visibleUse.includes('42'), 'combination-knowledge immediate-use item 42 should hide after trait 55 is present.');
 
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));
   assertNoBoundaryErrors('save payload', validateSavePayloadBoundary(savePayload));

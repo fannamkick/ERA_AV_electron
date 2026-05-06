@@ -55,6 +55,7 @@ const expectedPurchaseItemIds = [
   '34',
   '37',
 ];
+const expectedImmediateUseListingItemIds = ['30', '31', '38', '39', '40', '41', '42', '43', '52'];
 
 const queue = readJson('data/coverage/implementation-queue.json');
 const coverage = readJson('data/coverage/shop-purchase-coverage.json');
@@ -149,12 +150,31 @@ assert(implementedDefinitions.length === expectedPurchaseItemIds.length, 'implem
   actual: implementedDefinitions.length,
 });
 
+const implementedImmediateUseDefinitions = coverage.rows.filter(
+  (row) => row.rowKind === 'definition' && row.completionStatus === 'implemented-shop-immediate-use-listing',
+);
+assert(implementedImmediateUseDefinitions.length === expectedImmediateUseListingItemIds.length, 'implemented immediate-use listing definition count mismatch', {
+  expected: expectedImmediateUseListingItemIds.length,
+  actual: implementedImmediateUseDefinitions.length,
+});
+for (const itemId of expectedImmediateUseListingItemIds) {
+  assert(
+    implementedImmediateUseDefinitions.some((row) => row.itemId === itemId),
+    `immediate-use listing definition missing from M29 ownership: ${itemId}`,
+  );
+  assert(
+    coverage.rows.some((row) => row.completionStatus === 'mapped-consumed-visible-use-listing' && row.itemId === itemId),
+    `immediate-use ITEMSALES session row missing from M29 ownership: ${itemId}`,
+  );
+}
+
 const requiredRuntimeConsumers = new Set([
   'definitions.shopListings -> computeVisibleShopListingIds -> buildItemShopView',
   'main/openItemShop; shop/selectListing; shop/changeQuantity; shop/confirmPurchase; shop/cancel',
   'purchaseSelectedShopItem',
   'session.shop.selectedItemId',
   'session.shop.visibleListingIds',
+  'session.shop.visibleUseItemIds',
 ]);
 const presentRuntimeConsumers = new Set(coverage.rows.map((row) => row.runtimeConsumerId).filter(Boolean));
 for (const consumer of requiredRuntimeConsumers) {
