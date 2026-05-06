@@ -66,4 +66,5 @@ export type GameAction =
   | { readonly type: 'roster/deleteCharacter'; readonly characterId: string }
   | { readonly type: 'roster/setAssistantEligible'; readonly characterId: string; readonly assistantEligible: boolean }
   | { readonly type: 'wardrobe/toggleClothing'; readonly characterId: string; readonly flagId: string }
+  | { readonly type: 'wardrobe/selectCostume'; readonly characterId: string; readonly costumeId: CatalogId }
   | { readonly type: 'wardrobe/cancel' };

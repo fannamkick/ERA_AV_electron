@@ -68,6 +68,6 @@ No milestone may be marked complete from checklist text, mapped status, source-f
 
 The next work is no longer criteria discovery. It is closure/implementation work:
 
-1. Resolve or redesign remaining M32~M52 `blocked` and `scope-redesign-required` units.
+1. Resolve or redesign remaining M34.5~M52 `blocked` and `scope-redesign-required` units.
 2. Keep registry contracts current by changing `tools/build_coverage_gate_registry.mjs`, then regenerating `coverage-gate-registry.json`.
 3. Only after owned units are closed should implementation/verdict milestones advance.

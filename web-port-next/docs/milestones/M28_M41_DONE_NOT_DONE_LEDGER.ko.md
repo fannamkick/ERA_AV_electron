@@ -1,8 +1,21 @@
 # M28~M41 완료/미완료 사실 장부
 
+## 2026-05-06 M34 strict closure complete
+
+M34 is now closed under the strict source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M34-source-units.json`
+- Closure: `data/coverage/milestones/M34-closure.json`
+- Coverage: `data/coverage/social-equipment-cflag-coverage.json`
+- Summary: total 2,247, implemented-verified 2,247, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M34 ownedTotal is 2,247 social/equipment/CFLAG source units: CFLAG definitions, CFLAG/RELATION seeds, equipment/clothing save rows, clothing session view rows, wardrobe route behavior, and item 211 apron costume behavior.
+- M33 CFLAG/FLAG/PBAND 79 rows and M30/M29/M31 inbound clothing/equipment rows are no longer blocked inbound; they are accepted and closed by M34 implementation evidence.
+- M34 gate forbids `mapped`, `transferred`, and `source-file-review` statuses as completion evidence.
+- Next strict target: M34.5, then M35~M41 before M42 resumes.
+
 ## 2026-05-05 책임 명시/freeze 우선
 
-M28~M33은 strict closure 완료 상태다. 다음 작업은 M34부터 기존 `PHASE_5_M28_M49.ko.md` 안에서 항목별 책임 분류/closure 정정을 직접 이어가는 것이다. 별도 대체 장부를 새로 만들지 않는다.
+M28~M34 are strict-closed. Next work starts at M34.5 inside the existing `PHASE_5_M28_M49.ko.md` milestone sections; do not create a replacement ledger.
 
 각 남은 마일스톤은 구현 전에 아래를 먼저 남긴다.
 
@@ -112,7 +125,7 @@ Next actions:
 현재 공통 상태:
 - M28은 2026-05-02 strict closure 재검증 기준으로 통과했다.
 - M29와 M30은 2026-05-02 strict closure 재검증 기준으로 통과했고, approved-excluded row는 수신 manifest inbound로 명시했다.
-- M34~M41의 closure는 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M33은 2026-05-06 strict closure로 닫혔다.
+- M34.5~M41의 closure는 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M33은 2026-05-06 strict closure로 닫혔다.
 - 따라서 이 장부는 "기능 검증 결과가 존재한다"와 "현재 완료 판정은 보강 필요하다"를 분리해서 읽어야 한다.
 - 2026-05-02 기준, `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 책임 재설계 신호로 본다.
 
@@ -130,8 +143,8 @@ Next actions:
 | M30 | completed, implemented 37, approved-excluded 37 | completed | 아니오 | strict closure 완료. 수신 manifest inbound도 명시됨 | 즉시 사용 item 9개 flow/effect 37개만 M30 완료로 세고 특수 item/availability/clothing 37개는 실제 owner manifest에서 blocked inbound로 추적 |
 | M31 | completed, implemented 127, approved-excluded 110 | completed | 아니오 | strict closure 완료. 수신 manifest inbound도 명시됨 | 영입 listing/flow/session 127개만 M31 완료로 세고 identity/body-stat/lifecycle/event/source-review 110개는 M31 완료가 아닌 approved-excluded로 추적 |
 | M32 | completed, source 298 / M32-owned 291 / approved-excluded 7 | strict 완료 | 아니오 | mapped row를 완료로 세던 문제를 제거함 | 수신 owner M33 4, M47 2, M49 1이 각 manifest에서 blocked inbound로 남음 |
-| M33 | completed, source 5,378, M33-owned implemented-verified 5,299, approved-excluded 79 | completed | 아니오 | seed/stat owner와 CFLAG/FLAG/PBAND 후속 owner가 strict manifest에서 분리됨 | 완료. CFLAG/FLAG/PBAND 79개는 M34 blocked inbound로 남김 |
-| M34 | completed, implemented 1,998, mapped 234 | blocked | 예 | CFLAG/장비/의복 mapped row가 완료 근거로 남음 | CFLAG/관계/장비/의복 단위를 `implemented-verified` 또는 blocked로 재분류 |
+| M33 | completed, source 5,378, M33-owned implemented-verified 5,299, approved-excluded 79 | completed | 아니오 | seed/stat owner와 CFLAG/FLAG/PBAND 후속 owner가 strict manifest에서 분리됨 | 완료. CFLAG/FLAG/PBAND 79개는 M34에서 이후 implemented-verified로 닫힘 |
+| M34 | completed, total 2,247, implemented-verified 2,247 | completed | no | All mapped/blocked rows were promoted to implementation evidence, including item 211 apron behavior. | Complete. Next strict target is M34.5. |
 | M34.5 | completed, implemented 188 | manifest-needed | 예 | gate hardening 자체의 원본 단위 매니페스트와 `responsibilityIntegrity` 없음 | 188개 hardening 단위가 어떤 gate/registry/evidence correction을 닫는지 매니페스트 작성 |
 | M35 | completed, implemented 0, mapped 7 | blocked | 예 | `[구현]`인데 mapped-only 완료. turn hook/cleanup이 save field mapping으로만 표현됨 | `EVENT_TURNEND`, `EVENT_NEXTDAY`, `EVENT_AFTERTRAIN` 등 hook/order/effect 단위 매니페스트 작성 |
 | M36 | completed, implemented 552, mapped 7 | manifest-needed | 예 | 방문 장소 definition mapped 7개와 원본 단위 매니페스트 없음 | 방문 장소 7개와 visit action 86개를 매니페스트로 재작성하고 mapped definition을 재증명 |
@@ -144,7 +157,7 @@ Next actions:
 재판정 결론:
 - M28은 strict closure 완료 상태다.
 - M42는 아직 시작하면 안 된다.
-- 다음 작업은 M32부터 순서대로 매니페스트 보강/책임 재설계/blocked closure 정정을 수행하거나, M42에 직접 영향을 주는 M40~M41을 먼저 보강하는 별도 순서를 명시적으로 선택하는 것이다.
+- `data/coverage/manifests/M32-source-units.json`
 
 ## 2026-05-02 M28~M30 source-unit manifest 1차 산출
 
@@ -159,18 +172,18 @@ Next actions:
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | M28 | 27 | 24 | 0 | 0 | 예 | strict closure 완료. SHOP_MAIN menu row 24개는 route contract로 구현 검증했고, BOYFRIEND session row 3개는 M28 approved-excluded 및 M47 책임으로 기록했다. |
 | M29 | 206 | 83 | 0 | 123 | 예 | 구매형 listing/flow/result 83개는 implemented-verified. 비구매/사용/장비/영입/이벤트 123개는 M29 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. |
-| M30 | 74 | 37 | 0 | 37 | 예 | 즉시 사용 item flow/effect 37개는 implemented-verified. 특수 item 200~214 및 item 22/90/91/211 계열 37개는 M30 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. |
+| M30 | 74 | 37 | 0 | 37 | 예 | 즉시 사용 item flow/effect 37개는 implemented-verified. 특수 item 200~214 및 item 22/90/91 plus item 211 계열 37개는 M30 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. |
 
 다음 조치:
 - M28: 완료. closure에 `responsibilityIntegrity`를 추가했고, M28 ownedTotal은 main route contract 24개로 고정했다. BOYFRIEND session row 3개는 M47 책임으로 남긴다.
 - M29: 구매형 listing/flow manifest로 closure를 재작성한다. mapped 40개는 listing/flow의 하위 검증으로 승격하거나 blocked로 둔다.
-- M30: 완료. 즉시 사용 item 9개 flow/effect 37개는 M30 소유 구현으로 고정했고, 특수 item 200~214 및 item 22/90/91/211 계열 37개는 M34/M41/M42/M43/M44 manifest의 blocked inbound로 남긴다.
+- M30: 완료. 즉시 사용 item 9개 flow/effect 37개는 M30 소유 구현으로 고정했고, 특수 item 200~214 및 item 22/90/91 계열 37개는 M41/M42/M43/M44 manifest의 blocked inbound로 남긴다.
 
 ## 2026-05-02 M31~M34.5 source-unit manifest 1차 산출
 
 산출물:
 - `data/coverage/manifests/M31-source-units.json`
-- `data/coverage/manifests/M32-source-units.json`
+- Next work is M34.5~M41 manifest closure correction before M42 resumes.
 - `data/coverage/manifests/M33-source-units.json`
 - `data/coverage/manifests/M34-source-units.json`
 - `data/coverage/manifests/M34.5-source-units.json`
@@ -179,26 +192,26 @@ Next actions:
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | M31 | 237 | 127 | 0 | 0 | 예 | 영입 listing/flow/session 127개는 implemented-verified. character seed/lifecycle/event/source-review 110개는 M31 approved-excluded이며 수신 manifest 또는 non-runtime source review로 명시됐다. |
 | M32 | 298 | 291 | 0 | 0 | 예 | strict closure 완료. Chara identity/lifecycle/CSTR label/save field 291개는 implemented-verified, TALENT save field 4개와 source-file-review 3개는 approved-excluded로 M33/M47/M49 수신 manifest에 blocked inbound로 남겼다. |
-| M33 | 5,378 | 5,299 | 0 | 0 | 예 | strict closure 완료. M33-owned 5,299개는 implemented-verified이며, CFLAG/FLAG/PBAND 79개는 M33 완료가 아니라 approved-excluded 및 M34 blocked inbound로 남겼다. |
-| M34 | 2,250 | 1,998 | 252 | 0 | 아니오 | CFLAG/RELATION seed와 wardrobe route 1,998개는 완료 후보. M33에서 넘어온 CFLAG/FLAG/PBAND 79개를 포함해 blocked 252개를 구현/검증하거나 제외/재설계해야 한다. |
+| M33 | 5,378 | 5,299 | 0 | 0 | 예 | strict closure 완료. M33-owned 5,299개는 implemented-verified이며, CFLAG/FLAG/PBAND 79개는 M33 완료가 아니라 approved-excluded였고 M34에서 이후 닫혔다. |
+| M34 | 2,247 | 2,247 | 0 | 0 | yes | Strict closure complete. CFLAG/RELATION seeds, wardrobe route, M33 inbound 79 rows, and item 211 apron behavior are implemented-verified. |
 | M34.5 | 189 | 188 | 1 | 0 | 아니오 | evidence correction 169개와 registry contract 19개는 hardening 완료 후보. 새 기준상 M34.5 closure의 `responsibilityIntegrity`가 없어 1개 blocked다. |
 
 다음 조치:
 - M31: 완료. listing/가격/조건/생성 session 127개는 M31 소유 구현으로 고정했고 template seed, source-file-review, 후속 lifecycle/event row 110개는 M31 approved-excluded로 남겼다.
 - M32: 완료. source-file-review 3개는 M32 완료가 아니라 M47/M49 approved-excluded로 고정했고, CSTR label 5개는 `smoke:character-identity`에서 구현 검증했다.
-- M33: 완료. seed/display/save-field owner 5,299개를 직접 검증 단위로 승격했고, CFLAG/FLAG/PBAND 79개는 M33 완료가 아니라 M34 manifest blocked inbound로 남겼다.
-- M34: item 211 누락 3개와 mapped 234개를 구현/검증하거나 blocked로 유지한다.
+- M33: complete. Seed/display/save-field owner 5,299 rows were verified directly; CFLAG/FLAG/PBAND 79 rows were not counted as M33 completion and are now closed by M34.
+- M34: complete. Item 211 missing rows, mapped rows, and M33 inbound rows are all implemented-verified.
 - M34.5: hardening closure에 `responsibilityIntegrity`를 추가하거나 새 기준으로 blocked를 유지한다.
 
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼고 M28에서는 approved-excluded로 닫았다. | strict closure 완료. `responsibilityIntegrity` 포함. |
 | M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영을 구현했다. strict 기준 implemented-verified 83. | 123개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner로 넘겼고, 전부 수신 manifest에 blocked inbound로 명시했다. | 수신 owner가 각 row를 구현/제외/재설계하기 전까지 해당 milestone은 완료되지 않는다. |
-| M30 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 선택, 대상 지정, 성공/실패/취소, 저장 반영 경로를 구현했다. strict 기준 implemented-verified 37. | 특수 item 200~214 및 item 22/90/91/211 계열 37개는 M30 완료가 아니라 approved-excluded이며, M34/M41/M42/M43/M44 수신 manifest에 blocked inbound로 남겼다. | strict closure 완료. `gate:item-use-coverage`는 source 74, M30-owned 37, implemented-verified 37, approved-excluded 37과 receiver manifest 매칭을 확인한다. item 213은 `COMF137.ERB`라 기존 M42~M44 range 설계도 재확인해야 한다. |
+| M30 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 선택, 대상 지정, 성공/실패/취소, 저장 반영 경로를 구현했다. strict 기준 implemented-verified 37. | 특수 item 200~214 및 item 22/90/91 계열 37개는 M30 완료가 아니라 approved-excluded이며, M41/M42/M43/M44 수신 manifest에 blocked inbound로 남겼다. | strict closure 완료. `gate:item-use-coverage`는 source 74, M30-owned 37, implemented-verified 37, approved-excluded 37과 receiver manifest 매칭을 확인한다. item 213은 `COMF137.ERB`라 기존 M42~M44 range 설계도 재확인해야 한다. |
 | M31 | 영입 listing 48개, 반복 영입 제한, 인물 생성 결과, visible listing session, recruit session buffer를 구현했다. strict 기준 implemented-verified 127. | 110개 row는 M31 완료가 아니라 approved-excluded다. M32 20, M33 74, M34 4, M35 1, M47 3은 수신 owner에서 blocked inbound로 남고, unused/source-review 8개는 non-runtime source review로 남긴다. | strict closure 완료. `gate:recruit-coverage`는 source 237, M31-owned 127, approved-excluded 110과 receiver manifest 매칭을 확인한다. |
 | M32 | Chara template 109개, CSTR seed 157개, CSTR label definition 5개, M31 inbound lifecycle/CSTR save field 20개, retired/deleted/assistant lifecycle과 roster identity 표시를 구현 검증했다. strict 기준 M32-owned implemented-verified 291. | 7개 row는 M32 완료가 아니다. TALENT save field 4개는 M33, `C_CLUB_GIRLNAME.ERB`/`BOYFRIENDNAME_CALC.ERB`는 M47, `ZNAME.ERB`는 M49로 approved-excluded 및 blocked inbound 처리했다. | strict closure 완료. `gate:character-identity`는 source 298, implemented-verified 291, approved-excluded 7과 receiver manifest 반영을 확인한다. |
-| M33 | BASE/ABL/TALENT/EXP/MARK/PALAM 계열 seed, 표시 정의, save field, M31/M32 inbound body/stat row를 직접 검증했다. strict 기준 M33-owned implemented-verified 5,299. | CFLAG/FLAG/PBAND 79개는 M33 완료가 아니다. approved-excluded로 남기고 M34 수신 manifest에 blocked inbound로 명시했다. | strict closure 완료. `gate:body-stat-mapping`은 source 5,378, implemented-verified 5,299, approved-excluded 79와 receiver manifest 반영을 확인한다. |
-| M34 | CFLAG, 관계, 장비, 의복 상태를 social/equipment/wardrobe owner로 분해했다. coverage 기준 implemented 1,998. | CFLAG seed 소비와 의복 route 외 이벤트/훈련/미션 효과는 후속 owner가 소유한다. M33에서 넘어온 CFLAG/FLAG/PBAND 79개까지 M34 blocked inbound다. | strict manifest 기준 total 2,250, implemented 1,998, blocked 252다. mapped/blocked row가 완료성 기능 구현으로 오독되지 않게 해야 한다. |
+| M33 | BASE/ABL/TALENT/EXP/MARK/PALAM 계열 seed, 표시 정의, save field, M31/M32 inbound body/stat row를 직접 검증했다. strict 기준 M33-owned implemented-verified 5,299. | CFLAG/FLAG/PBAND 79개는 M33 완료가 아니다. approved-excluded로 남겼고 이후 M34에서 implemented-verified로 닫았다. | strict closure 완료. `gate:body-stat-mapping`은 source 5,378, implemented-verified 5,299, approved-excluded 79와 receiver manifest 반영을 확인한다. |
+| M34 | Implemented social/equipment/wardrobe ownership for CFLAG, relationship, equipment, clothing, and item 211 apron behavior. Strict count: 2,247 implemented-verified. | No M34-owned rows transferred out. Event/training/mission effects remain later-owner responsibilities. | Strict closure complete. `gate:social-equipment-cflag` forbids mapped/transferred/source-file-review completion. |
 | M34.5 | hardening용 registry와 final verify skeleton, auxiliary evidence 차단을 추가했다. coverage-hardening gate는 통과한다. 이후 M28~M34 registry contract도 추가되어 M28~M52 registry enforcement gap은 해소되었다. | 당시에는 M28~M34 registry contract가 없었지만 현재 기준에서는 해소됨. | hardening gate 자체가 새 `responsibilityIntegrity` closure 기준을 검증하지 않는다. |
 | M35 | 턴 진행, 날짜/주차/월/년 갱신, 장기 턴 smoke를 구현했다. coverage 기준 mapped 7. | coverage에는 implemented 0으로 기록되어 있고, hook/자동 처리 책임이 save field mapping 7개로만 표현된다. | 문서 책임 범위가 넓으므로 실제 hook/자동 구매/미션/이벤트/session cleanup 근거를 별도 사실 장부로 풀어야 한다. |
 | M36 | 방문 장소 7개와 방문 action 86개, 비용/해금/진행 row를 구현했다. coverage 기준 implemented 552, mapped 7. | 방문 이후 이벤트/세계 hook은 후속 owner가 소유한다. | closure에 `responsibilityIntegrity`가 없다. |
@@ -210,8 +223,8 @@ Next actions:
 
 ## 즉시 보강할 항목
 
-- M34~M41 closure에 `responsibilityIntegrity`를 기계적으로 추가하지 않는다. 먼저 이 장부의 `재확인 필요`를 해소하거나 blocked로 적는다. M28~M33은 strict closure 완료 상태다.
-- M30에서 excluded 처리한 특수 item 200~214 및 item 22/90/91/211 계열은 완료가 아니며, M34/M41/M42/M43/M44 수신 owner가 각각 구현/제외/재설계를 끝내야 한다.
+- Do not mechanically add `responsibilityIntegrity` to M34.5~M41 closures. Resolve the reassessment rows first or record them as blocked. M28~M34 are strict-closed.
+- M30에서 excluded 처리한 특수 item 200~214 및 item 22/90/91 계열은 완료가 아니며, M41/M42/M43/M44 수신 owner가 각각 구현/제외/재설계를 끝내야 한다.
 - M35의 넓은 책임을 save field mapping 7개가 아니라 runtime hook/cleanup별 사실로 풀어 적는다.
 - M38/M41 registry에 smoke 필수 누락을 기록한다.
 - M39/M41의 `source-file-review` mapped 완료 row를 분해하거나 미완료로 되돌릴지 결정한다.

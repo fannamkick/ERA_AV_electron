@@ -35,7 +35,7 @@ import {
   selectTrainingTarget,
 } from '../features/training';
 import { endTurn } from '../features/turnEnd';
-import { toggleWardrobeClothing } from '../features/socialEquipmentCflag';
+import { selectWardrobeCostume, toggleWardrobeClothing } from '../features/socialEquipmentCflag';
 import {
   cancelVisit,
   cancelVisitSelection,
@@ -748,6 +748,17 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
     }
     case 'wardrobe/toggleClothing': {
       const wardrobe = toggleWardrobeClothing(context.state, action.characterId, action.flagId);
+      if (!wardrobe.ok) {
+        return failureResult(context, wardrobe.failure);
+      }
+
+      return successResult(context, {
+        state: wardrobe.state,
+        effects: [logEffect(wardrobe.message, 'success')],
+      });
+    }
+    case 'wardrobe/selectCostume': {
+      const wardrobe = selectWardrobeCostume(context.state, action.characterId, action.costumeId);
       if (!wardrobe.ok) {
         return failureResult(context, wardrobe.failure);
       }

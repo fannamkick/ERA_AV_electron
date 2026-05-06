@@ -13,8 +13,8 @@
 ## 현재 closure 기준
 
 - M28은 strict closure 완료 상태다.
-- 다음 호출 대상은 M32 closure다. M28~M31은 strict closure 완료 상태다.
-- M32~M41이 source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전에는 M42를 재개하지 않는다. M28~M31은 strict closure 완료 상태다.
+- 다음 호출 대상은 M34.5 closure다. M28~M34은 strict closure 완료 상태다.
+- M34.5~M41이 source-unit manifest 기준으로 닫히거나 명시적으로 재설계되기 전에는 M42를 재개하지 않는다. M28~M34은 strict closure 완료 상태다.
 - 현재 M28~M52 aggregate: total 11,226; implemented-verified 8,035; approved-excluded 273; blocked 2,819; scope-redesign-required 99; completedAllowedNow true 4 / false 22.
 
 ## 프로젝트 책임
@@ -45,8 +45,8 @@
 
 M30에 대한 현재 판단:
 - M30의 올바른 책임은 즉시 사용 아이템 9개의 사용 flow와 효과다.
-- M30은 strict closure 기준으로 완료됐다. source 74개 중 M30-owned 37개는 implemented-verified이고, 특수 item 200~214 및 item 22/90/91/211 계열 37개는 M30 approved-excluded다.
-- excluded 37개는 M34/M41/M42/M43/M44 수신 manifest에 blocked inbound로 명시되어, 해당 owner가 구현/제외/재설계하기 전까지 완료되지 않는다.
+- M30은 strict closure 기준으로 완료됐다. source 74개 중 M30-owned 37개는 implemented-verified이고, 특수 item 200~214 및 item 22/90/91 plus item 211 계열 37개는 M30 approved-excluded다.
+- excluded 37개는 M34-closed plus M41/M42/M43/M44 수신 manifest에 blocked inbound로 명시되어, 해당 owner가 구현/제외/재설계하기 전까지 완료되지 않는다.
 
 ## 공통 완료 기준
 

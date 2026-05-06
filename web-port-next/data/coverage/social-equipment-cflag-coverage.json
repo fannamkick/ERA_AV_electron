@@ -22,10 +22,25 @@
       "data/coverage/shop-purchase-coverage.json",
       "data/coverage/shop-purchase-coverage.json",
       "data/coverage/shop-purchase-coverage.json",
+      "data/coverage/item-use-coverage.json",
+      "data/coverage/item-use-coverage.json",
+      "data/coverage/item-use-coverage.json",
       "data/coverage/recruit-coverage.json",
       "data/coverage/recruit-coverage.json",
       "data/coverage/recruit-coverage.json",
       "data/coverage/recruit-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
@@ -99,14 +114,14 @@
     "ownedUnitIds": [
       "unit:M34:social-equipment-cflag"
     ],
-    "rule": "Every M34 queue row and inbound transfer must be implemented or mapped-consumed exactly once.",
+    "rule": "Every M34 queue row and inbound transfer must be implemented-verified or approved-excluded exactly once. Mapped rows are not completion states.",
     "runtimeBoundary": "Raw CFLAG remains source evidence only. Runtime state uses body.conditionFlags, equipment.clothing/availabilityFlags, people flags, social.relationships, and wardrobe route actions."
   },
   "summary": {
-    "ownedRowRefs": 2232,
-    "rows": 2232,
-    "implemented": 1998,
-    "mapped": 234,
+    "ownedRowRefs": 2247,
+    "rows": 2247,
+    "implemented": 2247,
+    "mapped": 0,
     "transferredOut": 0,
     "approvedExcluded": 0,
     "ownedBlocker": 0,
@@ -116,33 +131,40 @@
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0,
     "byRowKind": {
-      "definition": 2152,
+      "definition": 2153,
       "feature": 1,
-      "save-mapping": 75,
-      "session-mapping": 4
+      "save-mapping": 88,
+      "session-mapping": 5
     },
     "byScopeSource": {
-      "data/coverage/body-stat-coverage.json": 67,
+      "data/coverage/body-stat-coverage.json": 79,
       "data/coverage/definitions.json": 151,
       "data/coverage/features.json": 1,
+      "data/coverage/item-use-coverage.json": 3,
       "data/coverage/recruit-coverage.json": 4,
       "data/coverage/shop-purchase-coverage.json": 12,
       "implementation-queue": 1997
     },
     "byCompletionStatus": {
+      "implemented-cflag-definition-label": 151,
+      "implemented-cflag-equipment-save-field": 87,
       "implemented-character-cflag-seed": 1465,
       "implemented-character-relation-seed": 532,
-      "implemented-wardrobe-route": 1,
-      "mapped-consumed-cflag-definition": 151,
-      "mapped-consumed-cflag-equipment-save-field": 75,
-      "mapped-consumed-clothing-pack-definition": 4,
-      "mapped-consumed-clothing-session-view": 4
+      "implemented-clothing-item-definition": 1,
+      "implemented-clothing-item-save-field": 1,
+      "implemented-clothing-item-visibility-view": 1,
+      "implemented-clothing-pack-definition": 4,
+      "implemented-clothing-session-view": 4,
+      "implemented-wardrobe-route": 1
     },
     "bySeedFamily": {
       "CFLAG": 1465,
       "RELATION": 532
     },
-    "inboundTransfers": 83
+    "inboundTransfers": 98,
+    "m34OwnedRows": 2247,
+    "implementedVerifiedForStrictClosure": 2247,
+    "approvedExcludedFromM34": 0
   },
   "rows": [
     {
@@ -156,7 +178,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -171,7 +193,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -186,7 +208,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -201,7 +223,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -216,7 +238,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -231,7 +253,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -246,7 +268,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -261,7 +283,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -276,7 +298,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -291,7 +313,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -306,7 +328,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -321,7 +343,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -336,7 +358,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -351,7 +373,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -366,7 +388,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -381,7 +403,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -396,7 +418,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -411,7 +433,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -426,7 +448,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -441,7 +463,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -456,7 +478,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -471,7 +493,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -486,7 +508,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -501,7 +523,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -516,7 +538,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -531,7 +553,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -546,7 +568,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -561,7 +583,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -576,7 +598,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -591,7 +613,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -606,7 +628,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -621,7 +643,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -636,7 +658,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -651,7 +673,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -666,7 +688,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -681,7 +703,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -696,7 +718,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -711,7 +733,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -726,7 +748,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -741,7 +763,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -756,7 +778,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -771,7 +793,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -786,7 +808,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -801,7 +823,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -816,7 +838,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -831,7 +853,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -846,7 +868,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -861,7 +883,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -876,7 +898,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -891,7 +913,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -906,7 +928,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -921,7 +943,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -936,7 +958,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -951,7 +973,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -966,7 +988,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -981,7 +1003,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -996,7 +1018,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1011,7 +1033,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1026,7 +1048,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1041,7 +1063,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1056,7 +1078,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1071,7 +1093,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1086,7 +1108,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1101,7 +1123,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1116,7 +1138,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1131,7 +1153,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1146,7 +1168,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1161,7 +1183,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1176,7 +1198,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1191,7 +1213,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1206,7 +1228,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1221,7 +1243,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1236,7 +1258,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1251,7 +1273,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1266,7 +1288,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1281,7 +1303,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1296,7 +1318,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1311,7 +1333,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1326,7 +1348,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1341,7 +1363,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1356,7 +1378,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1371,7 +1393,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1386,7 +1408,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1401,7 +1423,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1416,7 +1438,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1431,7 +1453,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1446,7 +1468,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1461,7 +1483,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1476,7 +1498,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1491,7 +1513,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1506,7 +1528,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1521,7 +1543,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1536,7 +1558,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1551,7 +1573,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1566,7 +1588,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1581,7 +1603,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1596,7 +1618,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1611,7 +1633,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1626,7 +1648,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1641,7 +1663,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1656,7 +1678,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1671,7 +1693,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1686,7 +1708,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1701,7 +1723,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1716,7 +1738,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1731,7 +1753,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1746,7 +1768,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1761,7 +1783,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1776,7 +1798,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1791,7 +1813,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1806,7 +1828,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1821,7 +1843,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1836,7 +1858,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1851,7 +1873,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1866,7 +1888,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1881,7 +1903,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1896,7 +1918,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1911,7 +1933,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1926,7 +1948,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1941,7 +1963,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1956,7 +1978,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1971,7 +1993,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -1986,7 +2008,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2001,7 +2023,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2016,7 +2038,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2031,7 +2053,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2046,7 +2068,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2061,7 +2083,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2076,7 +2098,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2091,7 +2113,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2106,7 +2128,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2121,7 +2143,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2136,7 +2158,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2151,7 +2173,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2166,7 +2188,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2181,7 +2203,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2196,7 +2218,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2211,7 +2233,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2226,7 +2248,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2241,7 +2263,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2256,7 +2278,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2271,7 +2293,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2286,7 +2308,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2301,7 +2323,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2316,7 +2338,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2331,7 +2353,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2346,7 +2368,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2361,7 +2383,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2376,7 +2398,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2391,7 +2413,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -2406,7 +2428,7 @@
       "definitionKey": "legacyCharacterFlagDefinitions",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-cflag-definition",
+      "completionStatus": "implemented-cflag-definition-label",
       "runtimeConsumerId": "definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView",
       "verificationId": "gate:social-equipment-cflag"
     },
@@ -32366,6 +32388,26 @@
       "verificationId": "smoke:social-equipment-cflag"
     },
     {
+      "coverageRowId": "social-equipment-cflag:definition:definition-definition-item-special-211",
+      "reviewId": "definition:definition:item-special:211",
+      "rowKind": "definition",
+      "scopeSource": "data/coverage/item-use-coverage.json",
+      "sourceEvidenceId": "source:definition:definition-item-special-211",
+      "sourcePath": "original-game/CSV/Item.csv",
+      "sourceId": "211",
+      "definitionKey": "items",
+      "seedFamily": "",
+      "seedIndex": "",
+      "completionStatus": "implemented-clothing-item-definition",
+      "runtimeConsumerId": "definitions.items[itemId:211] + inventory.itemCounts[itemId:211] -> buildWardrobeView.costumeOptions -> wardrobe/selectCostume",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "transferReason": "Item 211 is consumed by the cosplay/clothing flow in COSPLAY.ERB, not by item-use confirmation.",
+      "acceptedByOwner": true
+    },
+    {
       "coverageRowId": "social-equipment-cflag:definition:definition-definition-item-60",
       "reviewId": "definition:definition:item:60",
       "rowKind": "definition",
@@ -32376,7 +32418,7 @@
       "definitionKey": "items",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-clothing-pack-definition",
+      "completionStatus": "implemented-clothing-pack-definition",
       "runtimeConsumerId": "definitions.items -> wardrobe clothing pack ownership -> equipment.clothing/inventory.itemCounts",
       "verificationId": "gate:social-equipment-cflag",
       "inboundTransfer": true,
@@ -32396,7 +32438,7 @@
       "definitionKey": "items",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-clothing-pack-definition",
+      "completionStatus": "implemented-clothing-pack-definition",
       "runtimeConsumerId": "definitions.items -> wardrobe clothing pack ownership -> equipment.clothing/inventory.itemCounts",
       "verificationId": "gate:social-equipment-cflag",
       "inboundTransfer": true,
@@ -32416,7 +32458,7 @@
       "definitionKey": "items",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-clothing-pack-definition",
+      "completionStatus": "implemented-clothing-pack-definition",
       "runtimeConsumerId": "definitions.items -> wardrobe clothing pack ownership -> equipment.clothing/inventory.itemCounts",
       "verificationId": "gate:social-equipment-cflag",
       "inboundTransfer": true,
@@ -32436,7 +32478,7 @@
       "definitionKey": "items",
       "seedFamily": "",
       "seedIndex": "",
-      "completionStatus": "mapped-consumed-clothing-pack-definition",
+      "completionStatus": "implemented-clothing-pack-definition",
       "runtimeConsumerId": "definitions.items -> wardrobe clothing pack ownership -> equipment.clothing/inventory.itemCounts",
       "verificationId": "gate:social-equipment-cflag",
       "inboundTransfer": true,
@@ -32459,6 +32501,26 @@
       "verificationId": "smoke:social-equipment-cflag"
     },
     {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-1",
+      "reviewId": "save-mapping:save-map:source:cflag-1",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-1",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+      "address": "CFLAG:1",
+      "family": "CFLAG",
+      "fieldPath": "mission.characterProgress.byCharacterId.*.flags.flag_1",
+      "runtimeOwner": "mission",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "mission.characterProgress.byCharacterId.*.flags.flag_1 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
+    },
+    {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-100",
       "reviewId": "save-mapping:save-map:source:cflag-100",
       "rowKind": "save-mapping",
@@ -32469,14 +32531,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_100",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_100 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-101",
@@ -32489,14 +32551,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_101",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_101 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-102",
@@ -32509,14 +32571,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_102",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_102 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-106",
@@ -32529,14 +32591,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_106",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_106 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-115",
@@ -32549,14 +32611,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_115",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_115 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-121",
@@ -32569,14 +32631,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_121",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_121 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-122",
@@ -32589,14 +32651,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_122",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_122 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-123",
@@ -32609,14 +32671,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_123",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_123 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-124",
@@ -32629,14 +32691,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_124",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_124 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-136",
@@ -32649,14 +32711,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_136",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_136 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-138",
@@ -32669,14 +32731,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_138",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_138 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-165",
@@ -32689,14 +32751,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_165",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_165 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-166",
@@ -32709,14 +32771,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_166",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_166 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-174",
@@ -32729,14 +32791,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_174",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_174 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-175",
@@ -32749,14 +32811,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_175",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_175 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-176",
@@ -32769,14 +32831,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_176",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_176 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-177",
@@ -32789,14 +32851,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_177",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_177 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-178",
@@ -32809,14 +32871,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_178",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_178 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-179",
@@ -32829,14 +32891,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_179",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_179 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-180",
@@ -32849,14 +32911,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_180",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_180 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-20",
@@ -32869,14 +32931,114 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_20",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_20 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-21",
+      "reviewId": "save-mapping:save-map:source:cflag-21",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-21",
+      "sourcePath": "original-game/CSV/Chara0.csv",
+      "address": "CFLAG:21",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_21",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_21 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-22",
+      "reviewId": "save-mapping:save-map:source:cflag-22",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-22",
+      "sourcePath": "original-game/ERB/システム関係/SELL_CHARA.ERB",
+      "address": "CFLAG:22",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_22",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_22 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-23",
+      "reviewId": "save-mapping:save-map:source:cflag-23",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-23",
+      "sourcePath": "original-game/ERB/システム関係/SELL_CHARA.ERB",
+      "address": "CFLAG:23",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_23",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_23 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-24",
+      "reviewId": "save-mapping:save-map:source:cflag-24",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-24",
+      "sourcePath": "original-game/ERB/システム関係/SELL_CHARA.ERB",
+      "address": "CFLAG:24",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_24",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_24 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-25",
+      "reviewId": "save-mapping:save-map:source:cflag-25",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-25",
+      "sourcePath": "original-game/CSV/Chara190_涼本鈴華.csv",
+      "address": "CFLAG:25",
+      "family": "CFLAG",
+      "fieldPath": "mission.characterProgress.byCharacterId.*.flags.flag_25",
+      "runtimeOwner": "mission",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "mission.characterProgress.byCharacterId.*.flags.flag_25 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-30",
@@ -32889,14 +33051,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_30",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_30 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-36",
@@ -32909,14 +33071,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_36",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_36 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-41",
@@ -32929,7 +33091,7 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_41",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_41 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -32949,14 +33111,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_48",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_48 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-580",
@@ -32969,14 +33131,54 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_580",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_580 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-6",
+      "reviewId": "save-mapping:save-map:source:cflag-6",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-6",
+      "sourcePath": "original-game/CSV/Chara100_後藤彩香.csv",
+      "address": "CFLAG:6",
+      "family": "CFLAG",
+      "fieldPath": "meta.achievementAndBonusFlags.flag_6",
+      "runtimeOwner": "meta",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "meta.achievementAndBonusFlags.flag_6 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-60",
+      "reviewId": "save-mapping:save-map:source:cflag-60",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-60",
+      "sourcePath": "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+      "address": "CFLAG:60",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_60",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_60 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-600",
@@ -32989,7 +33191,7 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_600",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_600 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33009,7 +33211,7 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_601",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_601 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33029,7 +33231,7 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_603",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_603 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33049,14 +33251,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_604",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_604 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-610",
@@ -33069,14 +33271,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_610",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_610 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-614",
@@ -33089,14 +33291,14 @@
       "family": "CFLAG",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_614",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_614 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-617",
@@ -33109,14 +33311,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_617",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_617 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-618",
@@ -33129,14 +33331,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_618",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_618 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-620",
@@ -33149,14 +33351,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_620",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_620 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-623",
@@ -33169,14 +33371,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_623",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_623 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-624",
@@ -33189,14 +33391,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_624",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_624 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-627",
@@ -33209,14 +33411,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_627",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_627 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-628",
@@ -33229,14 +33431,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_628",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_628 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-629",
@@ -33249,14 +33451,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_629",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_629 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-630",
@@ -33269,14 +33471,34 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_630",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_630 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-65",
+      "reviewId": "save-mapping:save-map:source:cflag-65",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-65",
+      "sourcePath": "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+      "address": "CFLAG:65",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_65",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_65 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-651",
@@ -33289,14 +33511,34 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_651",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_651 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-671",
+      "reviewId": "save-mapping:save-map:source:cflag-671",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-671",
+      "sourcePath": "original-game/ERB/イベント関係/CALC_COOKING.ERB",
+      "address": "CFLAG:671",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_671",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_671 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-672",
@@ -33309,14 +33551,34 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_672",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_672 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-684",
+      "reviewId": "save-mapping:save-map:source:cflag-684",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-684",
+      "sourcePath": "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+      "address": "CFLAG:684",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_684",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_684 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-690",
@@ -33329,14 +33591,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_690",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_690 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-70",
@@ -33349,14 +33611,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_70",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_70 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-700",
@@ -33369,14 +33631,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_700",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_700 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-701",
@@ -33389,14 +33651,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_701",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_701 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-703",
@@ -33409,14 +33671,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_703",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_703 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-709",
@@ -33429,14 +33691,34 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_709",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_709 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-71",
+      "reviewId": "save-mapping:save-map:source:cflag-71",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/body-stat-coverage.json",
+      "sourceEvidenceId": "source:save-map:cflag-71",
+      "sourcePath": "original-game/ERB/システム関係/SELL_CHARA_ESTIMATE.ERB",
+      "address": "CFLAG:71",
+      "family": "CFLAG",
+      "fieldPath": "people.characters.byId.*.progressFlags.flag_71",
+      "runtimeOwner": "people",
+      "completionStatus": "implemented-cflag-equipment-save-field",
+      "runtimeConsumerId": "people.characters.byId.*.progressFlags.flag_71 <- splitLegacyCharacterFlags/wardrobe route",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M33",
+      "toMilestone": "M34",
+      "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-712",
@@ -33449,14 +33731,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_712",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_712 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-720",
@@ -33469,14 +33751,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_720",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_720 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-722",
@@ -33489,14 +33771,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_722",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_722 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-74",
@@ -33509,14 +33791,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_74",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_74 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-760",
@@ -33529,14 +33811,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_760",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_760 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-825",
@@ -33549,14 +33831,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_825",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_825 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-826",
@@ -33569,14 +33851,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_826",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_826 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-835",
@@ -33589,14 +33871,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_835",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_835 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-836",
@@ -33609,14 +33891,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_836",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_836 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-97",
@@ -33629,14 +33911,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_97",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_97 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-cflag-99",
@@ -33649,14 +33931,14 @@
       "family": "CFLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_99",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_99 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-flag-32",
@@ -33669,14 +33951,14 @@
       "family": "FLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_32",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_32 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-flag-38",
@@ -33689,14 +33971,14 @@
       "family": "FLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_38",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_38 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-flag-60",
@@ -33709,14 +33991,34 @@
       "family": "FLAG",
       "fieldPath": "body.byCharacterId.*.conditionFlags.flag_60",
       "runtimeOwner": "body",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "body.byCharacterId.*.conditionFlags.flag_60 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-item-211",
+      "reviewId": "save-mapping:save-map:source:item-211",
+      "rowKind": "save-mapping",
+      "scopeSource": "data/coverage/item-use-coverage.json",
+      "sourceEvidenceId": "source:save-map:item-211",
+      "sourcePath": "original-game/ERB/イベント関係/EGG_ITEM.ERB",
+      "address": "ITEM:211",
+      "family": "ITEM",
+      "fieldPath": "inventory.itemCounts[itemId:211]",
+      "runtimeOwner": "inventory",
+      "completionStatus": "implemented-clothing-item-save-field",
+      "runtimeConsumerId": "inventory.itemCounts[itemId:211] -> buildWardrobeView.costumeOptions -> wardrobe/selectCostume",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "transferReason": "Item 211 is consumed by the cosplay/clothing flow in COSPLAY.ERB, not by item-use confirmation.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-item-61",
@@ -33729,7 +34031,7 @@
       "family": "ITEM",
       "fieldPath": "inventory.itemCounts[itemId:61]",
       "runtimeOwner": "inventory",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "inventory.itemCounts[itemId:61] <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33749,7 +34051,7 @@
       "family": "ITEM",
       "fieldPath": "inventory.itemCounts[itemId:62]",
       "runtimeOwner": "inventory",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "inventory.itemCounts[itemId:62] <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33769,7 +34071,7 @@
       "family": "ITEM",
       "fieldPath": "inventory.itemCounts[itemId:63]",
       "runtimeOwner": "inventory",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "inventory.itemCounts[itemId:63] <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33789,7 +34091,7 @@
       "family": "ITEM",
       "fieldPath": "inventory.itemCounts[itemId:64]",
       "runtimeOwner": "inventory",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "inventory.itemCounts[itemId:64] <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33809,14 +34111,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_146",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_146 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-304",
@@ -33829,14 +34131,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_304",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_304 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-305",
@@ -33849,14 +34151,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_305",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_305 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-54",
@@ -33869,14 +34171,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_54",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_54 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-56",
@@ -33889,14 +34191,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_56",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_56 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-68",
@@ -33909,14 +34211,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_68",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_68 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-83",
@@ -33929,14 +34231,14 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_83",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_83 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:save-mapping:save-mapping-save-map-source-pband-84",
@@ -33949,14 +34251,32 @@
       "family": "PBAND",
       "fieldPath": "equipment.byCharacterId.*.availabilityFlags.flag_84",
       "runtimeOwner": "equipment",
-      "completionStatus": "mapped-consumed-cflag-equipment-save-field",
+      "completionStatus": "implemented-cflag-equipment-save-field",
       "runtimeConsumerId": "equipment.byCharacterId.*.availabilityFlags.flag_84 <- splitLegacyCharacterFlags/wardrobe route",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
       "fromMilestone": "M33",
       "toMilestone": "M34",
       "transferReason": "CFLAG/FLAG/PBAND condition and equipment flags are owned by M34 relationship/CFLAG/equipment milestone.",
-      "acceptedByOwner": "M34 responsibility matrix"
+      "acceptedByOwner": true
+    },
+    {
+      "coverageRowId": "social-equipment-cflag:session-mapping:session-mapping-session-map-source-itemsales-211",
+      "reviewId": "session-mapping:session-map:source:itemsales-211",
+      "rowKind": "session-mapping",
+      "scopeSource": "data/coverage/item-use-coverage.json",
+      "sourceEvidenceId": "source:session-map:itemsales-211",
+      "sourcePath": "original-game/CSV/Item.csv",
+      "address": "ITEMSALES:211",
+      "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:211]",
+      "completionStatus": "implemented-clothing-item-visibility-view",
+      "runtimeConsumerId": "ITEMSALES:211 source behavior -> session-free wardrobe costume option availability from inventory.itemCounts[itemId:211]",
+      "verificationId": "smoke:social-equipment-cflag",
+      "inboundTransfer": true,
+      "fromMilestone": "M30",
+      "toMilestone": "M34",
+      "transferReason": "Item 211 is consumed by the cosplay/clothing flow in COSPLAY.ERB, not by item-use confirmation.",
+      "acceptedByOwner": true
     },
     {
       "coverageRowId": "social-equipment-cflag:session-mapping:session-mapping-session-map-source-itemsales-60",
@@ -33967,7 +34287,7 @@
       "sourcePath": "original-game/CSV/Item.csv",
       "address": "ITEMSALES:60",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:60]",
-      "completionStatus": "mapped-consumed-clothing-session-view",
+      "completionStatus": "implemented-clothing-session-view",
       "runtimeConsumerId": "session.shop.visibleListingByItemId[itemId:60] <- buildWardrobeView/session-free route entry",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -33985,7 +34305,7 @@
       "sourcePath": "original-game/CSV/Item.csv",
       "address": "ITEMSALES:61",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:61]",
-      "completionStatus": "mapped-consumed-clothing-session-view",
+      "completionStatus": "implemented-clothing-session-view",
       "runtimeConsumerId": "session.shop.visibleListingByItemId[itemId:61] <- buildWardrobeView/session-free route entry",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -34003,7 +34323,7 @@
       "sourcePath": "original-game/CSV/Item.csv",
       "address": "ITEMSALES:62",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:62]",
-      "completionStatus": "mapped-consumed-clothing-session-view",
+      "completionStatus": "implemented-clothing-session-view",
       "runtimeConsumerId": "session.shop.visibleListingByItemId[itemId:62] <- buildWardrobeView/session-free route entry",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,
@@ -34021,7 +34341,7 @@
       "sourcePath": "original-game/CSV/Item.csv",
       "address": "ITEMSALES:63",
       "sessionFieldPath": "session.shop.visibleListingByItemId[itemId:63]",
-      "completionStatus": "mapped-consumed-clothing-session-view",
+      "completionStatus": "implemented-clothing-session-view",
       "runtimeConsumerId": "session.shop.visibleListingByItemId[itemId:63] <- buildWardrobeView/session-free route entry",
       "verificationId": "smoke:social-equipment-cflag",
       "inboundTransfer": true,

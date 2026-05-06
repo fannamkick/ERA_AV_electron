@@ -103,7 +103,16 @@ function assertCflagSeedsSplit() {
 function assertWardrobeRouteAndRoundtrip() {
   const data = createInitialGameData();
   let context: SmokeContext = {
-    state: makeStateWithAllCharacters(data.save),
+    state: {
+      ...makeStateWithAllCharacters(data.save),
+      inventory: {
+        ...data.save.inventory,
+        itemCounts: {
+          ...data.save.inventory.itemCounts,
+          '211': 1,
+        },
+      },
+    },
     session: {
       ...data.session,
       ui: {
@@ -123,6 +132,9 @@ function assertWardrobeRouteAndRoundtrip() {
   assert(entry, 'M34 smoke needs at least one character with clothing flags.');
   const flagId = Object.keys(entry.clothing).sort((left, right) => Number(left) - Number(right))[0];
   assert(entry.clothingLabels[flagId], 'wardrobe view should consume legacy CFLAG label definitions.');
+  const apronOption = entry.costumeOptions.find((option) => option.itemId === '211' && option.costumeId === '28');
+  assert(apronOption, 'wardrobe view should expose item 211 naked apron costume option.');
+  assert(apronOption.label === '에이프런', 'item 211 definition label should be consumed by wardrobe costume option.');
   const beforeValue = context.state.equipment.byCharacterId[entry.characterId].clothing[flagId];
 
   step = dispatchChecked(context, { type: 'wardrobe/toggleClothing', characterId: entry.characterId, flagId });
@@ -130,12 +142,19 @@ function assertWardrobeRouteAndRoundtrip() {
   context = step.context;
   assert(context.state.equipment.byCharacterId[entry.characterId].clothing[flagId] !== beforeValue, 'wardrobe toggle should update equipment.clothing.');
 
+  step = dispatchChecked(context, { type: 'wardrobe/selectCostume', characterId: entry.characterId, costumeId: '28' });
+  assert(step.result.status === 'success', 'wardrobe item 211 costume selection should succeed.');
+  context = step.context;
+  assert(context.state.equipment.byCharacterId[entry.characterId].clothing['42'] === 1, 'item 211 costume should apply CFLAG clothing flag 42.');
+
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));
   assertNoBoundaryErrors('M34 save payload', validateSavePayloadBoundary(savePayload));
   const serialized = serializeGameSavePayload(savePayload);
   assert(!serialized.includes('CFLAG'), 'save payload should not expose raw CFLAG model names.');
+  assert(!serialized.includes('ITEMSALES'), 'save payload should not expose raw ITEMSALES session names.');
   const parsed = parseGameSavePayload(serialized);
   assert(parsed.ok, 'M34 save payload should parse after serialization.');
+  assert(parsed.payload.state.inventory.itemCounts['211'] === 1, 'item 211 inventory ownership should survive save roundtrip.');
   assert(
     parsed.payload.state.equipment.byCharacterId[entry.characterId].clothing[flagId] ===
       context.state.equipment.byCharacterId[entry.characterId].clothing[flagId],

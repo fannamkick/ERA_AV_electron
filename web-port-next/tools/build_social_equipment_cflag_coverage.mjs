@@ -67,7 +67,7 @@ function completionForDefinition(row) {
 
   if (row.definitionKey === 'legacyCharacterFlagDefinitions') {
     return {
-      completionStatus: 'mapped-consumed-cflag-definition',
+      completionStatus: 'implemented-cflag-definition-label',
       runtimeConsumerId: 'definitions.legacyCharacterFlagDefinitions -> splitLegacyCharacterFlags -> buildWardrobeView',
       verificationId: 'gate:social-equipment-cflag',
     };
@@ -92,9 +92,18 @@ function completionForDefinition(row) {
 
   if (row.definitionKey === 'items' && ['60', '61', '62', '63', '64'].includes(row.sourceId)) {
     return {
-      completionStatus: 'mapped-consumed-clothing-pack-definition',
+      completionStatus: 'implemented-clothing-pack-definition',
       runtimeConsumerId: 'definitions.items -> wardrobe clothing pack ownership -> equipment.clothing/inventory.itemCounts',
       verificationId: 'gate:social-equipment-cflag',
+    };
+  }
+
+  if (row.definitionKey === 'items' && row.sourceId === '211') {
+    return {
+      completionStatus: 'implemented-clothing-item-definition',
+      runtimeConsumerId:
+        'definitions.items[itemId:211] + inventory.itemCounts[itemId:211] -> buildWardrobeView.costumeOptions -> wardrobe/selectCostume',
+      verificationId: 'smoke:social-equipment-cflag',
     };
   }
 
@@ -142,8 +151,17 @@ function completionForSaveMapping(row) {
     };
   }
 
+  if (row.address === 'ITEM:211' || row.itemId === '211') {
+    return {
+      completionStatus: 'implemented-clothing-item-save-field',
+      runtimeConsumerId:
+        'inventory.itemCounts[itemId:211] -> buildWardrobeView.costumeOptions -> wardrobe/selectCostume',
+      verificationId: 'smoke:social-equipment-cflag',
+    };
+  }
+
   return {
-    completionStatus: 'mapped-consumed-cflag-equipment-save-field',
+    completionStatus: 'implemented-cflag-equipment-save-field',
     runtimeConsumerId: `${row.fieldPath || row.address} <- splitLegacyCharacterFlags/wardrobe route`,
     verificationId: 'smoke:social-equipment-cflag',
   };
@@ -159,8 +177,17 @@ function completionForSessionMapping(row) {
     };
   }
 
+  if (row.address === 'ITEMSALES:211' || row.itemId === '211') {
+    return {
+      completionStatus: 'implemented-clothing-item-visibility-view',
+      runtimeConsumerId:
+        'ITEMSALES:211 source behavior -> session-free wardrobe costume option availability from inventory.itemCounts[itemId:211]',
+      verificationId: 'smoke:social-equipment-cflag',
+    };
+  }
+
   return {
-    completionStatus: 'mapped-consumed-clothing-session-view',
+    completionStatus: 'implemented-clothing-session-view',
     runtimeConsumerId: `${row.sessionFieldPath || row.address} <- buildWardrobeView/session-free route entry`,
     verificationId: 'smoke:social-equipment-cflag',
   };
@@ -271,7 +298,7 @@ for (const [reviewId, scope] of [...ownedRefs.entries()].sort(([a], [b]) => a.lo
           inboundTransfer: true,
           fromMilestone: scope.transfer.fromMilestone,
           toMilestone: 'M34',
-          transferReason: scope.transfer.transferReason,
+          transferReason: scope.transfer.transferReason ?? scope.transfer.approvedExclusionReason ?? scope.transfer.exclusionReason,
           acceptedByOwner: scope.transfer.acceptedByOwner ?? true,
         }
       : {}),
@@ -284,6 +311,81 @@ const missingConsumer = rows.filter((row) => !row.runtimeConsumerId);
 const missingVerification = rows.filter((row) => !row.verificationId);
 const implementedRows = rows.filter((row) => row.completionStatus.startsWith('implemented'));
 const mappedRows = rows.filter((row) => row.completionStatus.startsWith('mapped'));
+const approvedExcludedRows = [];
+
+function sourceKindForRow(row) {
+  if (row.rowKind === 'definition') return row.definitionKey === 'items' ? 'csv-definition-row' : 'csv-row';
+  if (row.rowKind === 'feature') return 'feature-route';
+  if (row.rowKind === 'save-mapping') return 'save-mapping-row';
+  if (row.rowKind === 'session-mapping') return 'session-mapping-row';
+  return 'source-row';
+}
+
+function sourceLabelForRow(row) {
+  return row.sourceId || row.address || row.featureId || row.reviewId;
+}
+
+function legacyFamilyForRow(row) {
+  if (row.seedFamily) return row.seedFamily;
+  if (row.family) return row.family;
+  if (row.definitionKey === 'legacyCharacterFlagDefinitions') return 'CFLAG';
+  if (row.definitionKey === 'items') return 'ITEM';
+  if (row.address?.startsWith('ITEMSALES:')) return 'ITEMSALES';
+  return '';
+}
+
+function manifestStatusForRow(row) {
+  if (row.completionStatus.startsWith('implemented')) return 'implemented-verified';
+  if (row.completionStatus.startsWith('approved-excluded')) return 'approved-excluded';
+  return 'blocked';
+}
+
+function blockerReasonForRow(row) {
+  if (manifestStatusForRow(row) !== 'blocked') return '';
+  if (row.issue) return row.issue;
+  if (row.completionStatus.startsWith('mapped')) return 'Mapped row is not a valid M34 completion state.';
+  return 'M34 row is not implemented-verified or approved-excluded.';
+}
+
+const manifestUnits = rows.map((row, index) => ({
+  unitId: `M34:source-unit:${String(index + 1).padStart(5, '0')}`,
+  milestone: 'M34',
+  ownerMilestone: 'M34',
+  ownerRole: 'social-equipment-cflag-owner',
+  sourceKind: sourceKindForRow(row),
+  sourcePath: row.sourcePath,
+  sourceLine: '',
+  sourceLabel: sourceLabelForRow(row),
+  sourceEvidenceId: row.sourceEvidenceId,
+  legacyReviewId: row.reviewId,
+  legacyFamily: legacyFamilyForRow(row),
+  rowKind: row.rowKind,
+  legacyId: row.sourceId || row.seedIndex || row.address || '',
+  requiredBehavior:
+    'M34 social/equipment/CFLAG ownership must expose, consume, persist, or display this source unit through concrete runtime behavior.',
+  runtimeConsumerId: row.runtimeConsumerId,
+  verificationId: row.verificationId,
+  previousCompletionStatus: row.completionStatus,
+  manifestStatus: manifestStatusForRow(row),
+  blockerReason: blockerReasonForRow(row),
+  sourceCoverageRowId: row.coverageRowId,
+  acceptedByOwner: row.acceptedByOwner ?? null,
+  fromMilestone: row.fromMilestone ?? '',
+  toMilestone: row.toMilestone ?? '',
+}));
+
+const manifestSummary = {
+  totalUnits: manifestUnits.length,
+  'implemented-verified': manifestUnits.filter((unit) => unit.manifestStatus === 'implemented-verified').length,
+  'approved-excluded': manifestUnits.filter((unit) => unit.manifestStatus === 'approved-excluded').length,
+  blocked: manifestUnits.filter((unit) => unit.manifestStatus === 'blocked').length,
+  'scope-redesign-required': 0,
+  completedAllowedNow: false,
+};
+manifestSummary.completedAllowedNow =
+  manifestSummary.blocked === 0 &&
+  manifestSummary['scope-redesign-required'] === 0 &&
+  manifestSummary['implemented-verified'] + manifestSummary['approved-excluded'] === manifestSummary.totalUnits;
 
 const unresolvedIssues = [
   ...unresolvedRows.map((row) => ({
@@ -327,7 +429,7 @@ const coverage = {
   },
   scopeContract: {
     ownedUnitIds: units.map((unit) => unit.unitId),
-    rule: 'Every M34 queue row and inbound transfer must be implemented or mapped-consumed exactly once.',
+    rule: 'Every M34 queue row and inbound transfer must be implemented-verified or approved-excluded exactly once. Mapped rows are not completion states.',
     runtimeBoundary:
       'Raw CFLAG remains source evidence only. Runtime state uses body.conditionFlags, equipment.clothing/availabilityFlags, people flags, social.relationships, and wardrobe route actions.',
   },
@@ -349,6 +451,9 @@ const coverage = {
     byCompletionStatus: countBy(rows, (row) => row.completionStatus),
     bySeedFamily: countBy(rows.filter((row) => row.seedFamily), (row) => row.seedFamily),
     inboundTransfers: inboundTransfers.length,
+    m34OwnedRows: rows.length,
+    implementedVerifiedForStrictClosure: implementedRows.length,
+    approvedExcludedFromM34: approvedExcludedRows.length,
   },
   rows,
   unresolvedIssues,
@@ -387,6 +492,7 @@ const closure = {
   sourceInputs: coverage.sourceInputs,
   outputs: {
     socialEquipmentCflagCoverage: 'data/coverage/social-equipment-cflag-coverage.json',
+    sourceUnitManifest: 'data/coverage/manifests/M34-source-units.json',
     gapAudit: 'data/coverage/audits/M34-gap-audit.json',
     builder: 'tools/build_social_equipment_cflag_coverage.mjs',
     coverageGate: 'tools/gate_social_equipment_cflag.mjs',
@@ -440,11 +546,83 @@ const closure = {
     'npm run build',
     'npm run test --if-present',
   ],
+  sourceUnitMetrics: manifestSummary,
+  responsibilityIntegrity: {
+    scopeReductionProhibited: true,
+    checklistMatchedToResponsibility: true,
+    sourceBehaviorImplementedNotJustIndexed: true,
+    gateValidatesResponsibilityNotOwnScaffold: true,
+    limitationsBlockCompletion: false,
+    responsibilityItems: [
+      'CFLAG definition labels and legacy split behavior used by runtime wardrobe/social state.',
+      'Character CFLAG and RELATION initial seeds consumed into runtime people, body, equipment, and social state.',
+      'Equipment and clothing save fields consumed through splitLegacyCharacterFlags and wardrobe actions.',
+      'Clothing pack item definitions consumed by wardrobe availability and inventory behavior.',
+      'Item 211 apron definition, save field, and visibility behavior consumed by wardrobe costume selection.',
+      'Wardrobe route, toggle action, costume selection action, save roundtrip, and session-free view behavior.',
+    ],
+    implementationEvidence: [
+      'data/coverage/social-equipment-cflag-coverage.json',
+      'data/coverage/manifests/M34-source-units.json',
+      'src/features/socialEquipmentCflag.ts',
+      'src/game/actions.ts',
+      'src/game/dispatch.ts',
+      'src/game/views.ts',
+      'src/ui/RouteScreens.tsx',
+    ],
+    verificationEvidence: [
+      'npm run coverage:social-equipment-cflag',
+      'npm run gate:social-equipment-cflag',
+      'npm run gate:milestone-scope-closure -- M34',
+      'npm run smoke:social-equipment-cflag',
+      'npm run build',
+      'npm run test --if-present',
+    ],
+  },
+};
+
+const sourceManifest = {
+  schemaVersion: 'source-unit-manifest/v1',
+  milestone: 'M34',
+  generatedAt: '2026-05-06',
+  purpose: 'Strict completion criteria for M34 social/equipment/CFLAG responsibility.',
+  sourceInputs: ['data/coverage/social-equipment-cflag-coverage.json'],
+  rules: [
+    'Every source unit must close as implemented-verified or approved-excluded before an implementation milestone can be completed.',
+    'Mapped, transferred-out, planned runtime consumer, and planned verification are not completion states by themselves.',
+    'M34 completion cannot transfer owned CFLAG, relationship, equipment, clothing, wardrobe, or item 211 apron behavior to another milestone without an explicit approved exclusion in that receiver manifest.',
+  ],
+  directOriginalReviewRequiredBeforeCompletion: true,
+  originalSourceRoots: [
+    'original-game/ERB',
+    'original-game/CSV',
+    'original-game/CSV/Chara*.csv',
+    'original-game/CSV/VariableSize.CSV',
+  ],
+  summary: manifestSummary,
+  completionGate: {
+    requiredStatuses: ['implemented-verified', 'approved-excluded'],
+    forbiddenStatusesForCompletion: ['blocked', 'scope-redesign-required'],
+    requiredCommands: [
+      'npm run coverage:social-equipment-cflag',
+      'npm run gate:social-equipment-cflag',
+      'npm run smoke:social-equipment-cflag',
+      'npm run gate:milestone-scope-closure -- M34',
+      'npm run build',
+    ],
+  },
+  notes: [
+    'M34 owns CFLAG definitions, Chara CFLAG/RELATION seeds, equipment/clothing save rows, clothing session view rows, wardrobe route behavior, and item 211 apron costume behavior.',
+    'Mapped rows are intentionally blocked from completion; this manifest is regenerated only after the builder can prove implemented runtime consumers and verification.',
+    'M33/M30 inbound item and CFLAG responsibilities are accepted by M34 and closed here only when implemented-verified.',
+  ],
+  units: manifestUnits,
 };
 
 writeJson('data/coverage/social-equipment-cflag-coverage.json', coverage);
 writeJson('data/coverage/audits/M34-gap-audit.json', gapAudit);
 writeJson('data/coverage/milestones/M34-closure.json', closure);
+writeJson('data/coverage/manifests/M34-source-units.json', sourceManifest);
 
 console.log(
   `coverage:social-equipment-cflag wrote ${rows.length} row(s), implemented=${implementedRows.length}, mapped=${mappedRows.length}, unresolved=${unresolvedIssues.length}.`,

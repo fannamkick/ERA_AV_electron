@@ -25,10 +25,25 @@
       "data/coverage/shop-purchase-coverage.json",
       "data/coverage/shop-purchase-coverage.json",
       "data/coverage/shop-purchase-coverage.json",
+      "data/coverage/item-use-coverage.json",
+      "data/coverage/item-use-coverage.json",
+      "data/coverage/item-use-coverage.json",
       "data/coverage/recruit-coverage.json",
       "data/coverage/recruit-coverage.json",
       "data/coverage/recruit-coverage.json",
       "data/coverage/recruit-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
@@ -100,6 +115,7 @@
   },
   "outputs": {
     "socialEquipmentCflagCoverage": "data/coverage/social-equipment-cflag-coverage.json",
+    "sourceUnitManifest": "data/coverage/manifests/M34-source-units.json",
     "gapAudit": "data/coverage/audits/M34-gap-audit.json",
     "builder": "tools/build_social_equipment_cflag_coverage.mjs",
     "coverageGate": "tools/gate_social_equipment_cflag.mjs",
@@ -107,9 +123,9 @@
     "smoke": "tools/m34_social_equipment_cflag_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 2232,
-    "implemented": 1998,
-    "mapped": 234,
+    "ownedTotal": 2247,
+    "implemented": 2247,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -120,9 +136,9 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 2232,
-    "implemented": 1998,
-    "mapped": 234,
+    "ownedTotal": 2247,
+    "implemented": 2247,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -142,7 +158,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "2232 M34 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "2247 M34 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:social-equipment-cflag",
@@ -152,5 +168,45 @@
     "npm run typecheck",
     "npm run build",
     "npm run test --if-present"
-  ]
+  ],
+  "sourceUnitMetrics": {
+    "totalUnits": 2247,
+    "implemented-verified": 2247,
+    "approved-excluded": 0,
+    "blocked": 0,
+    "scope-redesign-required": 0,
+    "completedAllowedNow": true
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "CFLAG definition labels and legacy split behavior used by runtime wardrobe/social state.",
+      "Character CFLAG and RELATION initial seeds consumed into runtime people, body, equipment, and social state.",
+      "Equipment and clothing save fields consumed through splitLegacyCharacterFlags and wardrobe actions.",
+      "Clothing pack item definitions consumed by wardrobe availability and inventory behavior.",
+      "Item 211 apron definition, save field, and visibility behavior consumed by wardrobe costume selection.",
+      "Wardrobe route, toggle action, costume selection action, save roundtrip, and session-free view behavior."
+    ],
+    "implementationEvidence": [
+      "data/coverage/social-equipment-cflag-coverage.json",
+      "data/coverage/manifests/M34-source-units.json",
+      "src/features/socialEquipmentCflag.ts",
+      "src/game/actions.ts",
+      "src/game/dispatch.ts",
+      "src/game/views.ts",
+      "src/ui/RouteScreens.tsx"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:social-equipment-cflag",
+      "npm run gate:social-equipment-cflag",
+      "npm run gate:milestone-scope-closure -- M34",
+      "npm run smoke:social-equipment-cflag",
+      "npm run build",
+      "npm run test --if-present"
+    ]
+  }
 }

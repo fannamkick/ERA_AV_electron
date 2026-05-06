@@ -1,6 +1,6 @@
 import type { CharacterTemplate, GameDefinitions } from '../catalog/types';
 import type { GameState } from '../game/state';
-import type { WardrobeCharacterView, WardrobeView } from '../game/views';
+import type { WardrobeCharacterView, WardrobeCostumeOptionView, WardrobeView } from '../game/views';
 
 type LegacyFlagOwner =
   | 'body'
@@ -34,6 +34,9 @@ export const legacyCflagOwnerById: ReadonlyMap<string, LegacyFlagOwner> = new Ma
 );
 
 const clothingFlagIds = new Set(['40', '41', '42', '43', '44', '45', '46', '48', '49', '170', '171', '173', '174', '175', '176', '177', '600', '601', '603']);
+const nakedApronItemId = '211';
+const nakedApronCostumeId = '28';
+const nakedApronClothingFlagId = '42';
 const affectionFlagIds = new Set(['2']);
 const familyFlagIds = new Set(['21', '22', '23', '24']);
 const settingsFlagIds = new Set(['8', '20', '26']);
@@ -124,8 +127,25 @@ function flagLabelsFor(
   );
 }
 
+function costumeOptionsFor(state: GameState, definitions: GameDefinitions | undefined): readonly WardrobeCostumeOptionView[] {
+  const itemCount = state.inventory.itemCounts[nakedApronItemId] ?? 0;
+  if (itemCount <= 0) return [];
+  const item = definitions?.items[nakedApronItemId];
+  return [
+    {
+      itemId: nakedApronItemId,
+      costumeId: nakedApronCostumeId,
+      clothingFlagId: nakedApronClothingFlagId,
+      label: item?.label ?? '에이프런',
+      available: true,
+      sourceEvidenceId: item?.source.originalId === nakedApronItemId ? 'source:definition:definition-item-special-211' : undefined,
+    },
+  ];
+}
+
 export function buildWardrobeView(state: GameState, definitions?: GameDefinitions): WardrobeView {
   const characters = Object.values(state.people.characters).sort((left, right) => left.id.localeCompare(right.id));
+  const costumeOptions = costumeOptionsFor(state, definitions);
   const entries: WardrobeCharacterView[] = characters.map((character) => {
     const equipment = state.equipment.byCharacterId[character.id];
     const clothing = equipment?.clothing ?? {};
@@ -137,6 +157,7 @@ export function buildWardrobeView(state: GameState, definitions?: GameDefinition
       availabilityFlags,
       clothingLabels: flagLabelsFor(definitions, clothing),
       availabilityFlagLabels: flagLabelsFor(definitions, availabilityFlags),
+      costumeOptions,
       clothingFlagCount: Object.keys(clothing).length,
       availabilityFlagCount: Object.keys(availabilityFlags).length,
     };
@@ -198,5 +219,60 @@ export function toggleWardrobeClothing(state: GameState, characterId: string, fl
       },
     },
     message: `${character.identity.displayName} wardrobe flag ${flagId} set to ${nextValue}.`,
+  };
+}
+
+export function selectWardrobeCostume(state: GameState, characterId: string, costumeId: string): WardrobeToggleResult {
+  const character = state.people.characters[characterId];
+  const equipment = state.equipment.byCharacterId[characterId];
+
+  if (!character || !equipment) {
+    return {
+      ok: false,
+      failure: {
+        code: 'wardrobe-character-missing',
+        message: `Wardrobe character is missing: ${characterId}`,
+      },
+    };
+  }
+
+  if (costumeId !== nakedApronCostumeId) {
+    return {
+      ok: false,
+      failure: {
+        code: 'wardrobe-costume-unknown',
+        message: `Wardrobe costume is not owned by M34: ${costumeId}`,
+      },
+    };
+  }
+
+  if ((state.inventory.itemCounts[nakedApronItemId] ?? 0) <= 0) {
+    return {
+      ok: false,
+      failure: {
+        code: 'wardrobe-costume-locked',
+        message: `Wardrobe costume ${costumeId} requires item ${nakedApronItemId}.`,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    state: {
+      ...state,
+      equipment: {
+        byCharacterId: {
+          ...state.equipment.byCharacterId,
+          [characterId]: {
+            ...equipment,
+            clothing: {
+              ...equipment.clothing,
+              [nakedApronClothingFlagId]: 1,
+            },
+          },
+        },
+      },
+    },
+    message: `${character.identity.displayName} costume ${costumeId} selected from item ${nakedApronItemId}.`,
   };
 }

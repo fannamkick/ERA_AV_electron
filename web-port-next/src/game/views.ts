@@ -60,8 +60,18 @@ export type WardrobeCharacterView = {
   readonly availabilityFlags: Record<string, boolean | number | string>;
   readonly clothingLabels: Record<string, string>;
   readonly availabilityFlagLabels: Record<string, string>;
+  readonly costumeOptions: readonly WardrobeCostumeOptionView[];
   readonly clothingFlagCount: number;
   readonly availabilityFlagCount: number;
+};
+
+export type WardrobeCostumeOptionView = {
+  readonly itemId: CatalogId;
+  readonly costumeId: CatalogId;
+  readonly clothingFlagId: CatalogId;
+  readonly label: string;
+  readonly available: boolean;
+  readonly sourceEvidenceId?: string;
 };
 
 export type WardrobeView = {

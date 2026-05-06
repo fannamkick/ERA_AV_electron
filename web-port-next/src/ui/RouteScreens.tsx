@@ -655,6 +655,16 @@ function WardrobeScreen({ catalog, state, onAction }: ScreenProps) {
                   Toggle {entry.clothingLabels[clothingFlagId] ?? clothingFlagId}
                 </button>
               )}
+              {entry.costumeOptions.map((option) => (
+                <button
+                  key={option.costumeId}
+                  type="button"
+                  disabled={!option.available}
+                  onClick={() => onAction({ type: 'wardrobe/selectCostume', characterId: entry.characterId, costumeId: option.costumeId })}
+                >
+                  Wear {option.label}
+                </button>
+              ))}
             </div>
           );
         })}
