@@ -9,7 +9,9 @@
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
     "definitions": "data/coverage/definitions.json",
-    "saveMapping": "data/coverage/save-mapping.json"
+    "saveMapping": "data/coverage/save-mapping.json",
+    "recruitCoverage": "data/coverage/recruit-coverage.json",
+    "characterIdentityCoverage": "data/coverage/character-identity-coverage.json"
   },
   "outputs": {
     "bodyStatCoverage": "data/coverage/body-stat-coverage.json",
@@ -20,11 +22,14 @@
     "smoke": "tools/m33_body_stat_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 5300,
-    "implemented": 4768,
-    "mapped": 465,
+    "sourceUnitTotal": 5378,
+    "ownedTotal": 5299,
+    "implemented": 5299,
+    "mapped": 0,
+    "approvedExcludedFromM33": 79,
     "approvedExcluded": 0,
-    "transferredOut": 67,
+    "transferredOut": 0,
+    "rawMappedRows": 0,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
@@ -33,17 +38,53 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 5300,
-    "implemented": 4768,
-    "mapped": 465,
+    "ownedTotal": 5299,
+    "implemented": 5299,
+    "mapped": 0,
     "approvedExcluded": 0,
-    "transferredOut": 67,
+    "transferredOut": 0,
     "ownedBlocker": 0,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
+  },
+  "sourceUnitMetrics": {
+    "sourceUnitTotal": 5378,
+    "implementedVerified": 5299,
+    "approvedExcludedFromM33": 79,
+    "blocked": 0,
+    "scopeRedesignRequired": 0,
+    "completedAllowedNow": true
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "M33 owns BASE/ABL/TALENT/EXP/MARK/PALAM definitions, Chara BASE/ABL/TALENT/EXP seeds, and body/stat/trait/experience save fields.",
+      "M33 does not own CFLAG/FLAG/PBAND condition, relationship, mission, or equipment semantics; those rows are approved exclusions with M34 receiver responsibility.",
+      "Mapped-consumed rows and transferred-out rows are not completion. Every source unit is represented in M33-source-units as implemented-verified or approved-excluded."
+    ],
+    "implementationEvidence": [
+      "data/coverage/body-stat-coverage.json",
+      "data/coverage/manifests/M33-source-units.json",
+      "src/features/bodyStats.ts",
+      "src/features/characterCreation.ts",
+      "src/features/training.ts",
+      "src/features/work.ts",
+      "src/features/shooting.ts"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:body-stat",
+      "npm run gate:body-stat-mapping",
+      "npm run gate:milestone-scope-closure -- M33",
+      "npm run smoke:body-stat",
+      "npm run build"
+    ]
   },
   "verification": {
     "commands": [
@@ -56,7 +97,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "5300 M33 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "5378 M33 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:body-stat",

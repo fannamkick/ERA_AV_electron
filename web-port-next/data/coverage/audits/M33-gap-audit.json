@@ -5,14 +5,19 @@
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
     "definitions": "data/coverage/definitions.json",
-    "saveMapping": "data/coverage/save-mapping.json"
+    "saveMapping": "data/coverage/save-mapping.json",
+    "recruitCoverage": "data/coverage/recruit-coverage.json",
+    "characterIdentityCoverage": "data/coverage/character-identity-coverage.json"
   },
   "summary": {
-    "scopeRows": 5300,
-    "implemented": 4768,
-    "mapped": 465,
-    "transferredOut": 67,
-    "approvedExcluded": 0,
+    "scopeRows": 5378,
+    "m33OwnedRows": 5299,
+    "implementedVerifiedForStrictClosure": 5299,
+    "approvedExcludedFromM33": 79,
+    "implemented": 5299,
+    "mapped": 0,
+    "transferredOut": 0,
+    "approvedExcluded": 79,
     "unresolvedGaps": 0,
     "ownedBlockers": 0,
     "roleOnlyComplete": 0,

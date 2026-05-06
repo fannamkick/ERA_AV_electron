@@ -228,6 +228,51 @@ function assertSharedBodyResultFields() {
     'training should write shared body.conditionParams result field.',
   );
 
+  context = {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        characters: {
+          ...context.state.people.characters,
+          [characterId]: {
+            ...context.state.people.characters[characterId],
+            attributes: {
+              ...context.state.people.characters[characterId].attributes,
+              abilities: {
+                ...context.state.people.characters[characterId].attributes.abilities,
+                '1': context.state.people.characters[characterId].attributes.abilities['1'] ?? 1,
+              },
+              traits: {
+                ...context.state.people.characters[characterId].attributes.traits,
+                '91': true,
+                '153': true,
+                '154': true,
+                '325': true,
+              },
+              experiences: {
+                ...context.state.people.characters[characterId].attributes.experiences,
+                '70': context.state.people.characters[characterId].attributes.experiences['70'] ?? 1,
+              },
+            },
+          },
+        },
+      },
+      body: {
+        byCharacterId: {
+          ...context.state.body.byCharacterId,
+          [characterId]: {
+            ...context.state.body.byCharacterId[characterId],
+            imprints: {
+              ...context.state.body.byCharacterId[characterId].imprints,
+              '0': 1,
+            },
+          },
+        },
+      },
+    },
+  };
+
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));
   assertNoBoundaryErrors('M33 save payload', validateSavePayloadBoundary(savePayload));
   const parsed = parseGameSavePayload(serializeGameSavePayload(savePayload));
@@ -240,6 +285,14 @@ function assertSharedBodyResultFields() {
     parsed.payload.state.people.characters[characterId].attributes.experiences['13'] !== undefined,
     'training/work/shooting experience owner should survive save roundtrip.',
   );
+  assert(
+    parsed.payload.state.people.characters[characterId].attributes.traits['153'] === true &&
+      parsed.payload.state.people.characters[characterId].attributes.traits['154'] === true &&
+      parsed.payload.state.people.characters[characterId].attributes.traits['325'] === true &&
+      parsed.payload.state.people.characters[characterId].attributes.traits['91'] === true,
+    'TALENT save fields should survive save roundtrip.',
+  );
+  assert(parsed.payload.state.body.byCharacterId[characterId].imprints['0'] === 1, 'MARK save field should survive save roundtrip.');
   assertNoBoundaryErrors('M33 final state/session', validateStateSessionBoundary(context.state, context.session));
 }
 
