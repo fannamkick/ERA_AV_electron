@@ -64,6 +64,48 @@ function workIdsForM37(catalog: GameDefinitions): readonly string[] {
   return ids;
 }
 
+function isLunchStallWork(catalog: GameDefinitions, workId: string): boolean {
+  const definition = catalog.workDefinitions[workId];
+  return definition?.source.path.split(/[\\/]/u).pop() === 'WORK_S_LUNCHSTALL.ERB' && definition.source.originalName === 'LUNCH_STALL';
+}
+
+function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: string): SmokeContext {
+  const character = context.state.people.characters[characterId];
+  assert(character, 'M37 lunch-stall ability smoke needs a character.');
+  return {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        characters: {
+          ...context.state.people.characters,
+          [characterId]: {
+            ...character,
+            attributes: {
+              ...character.attributes,
+              abilities: {
+                ...character.attributes.abilities,
+                '74': 9,
+              },
+            },
+          },
+        },
+      },
+      work: {
+        ...context.state.work,
+        careerFlagsByCharacterId: {
+          ...context.state.work.careerFlagsByCharacterId,
+          [characterId]: {
+            ...(context.state.work.careerFlagsByCharacterId[characterId] ?? {}),
+            flag_130: 1,
+            flag_42: 0,
+          },
+        },
+      },
+    },
+  };
+}
+
 function main() {
   const initialData = createInitialGameData();
   let context: SmokeContext = {
@@ -79,6 +121,7 @@ function main() {
   assert(step.result.status === 'success', 'normal new game should succeed.');
   context = step.context;
   const characterId = firstCharacterId(context);
+  context = seedLegacyLunchStallAbilityInput(context, characterId);
 
   step = dispatchChecked(context, { type: 'main/openWork' });
   assert(step.result.status === 'success', 'work entry should succeed.');
@@ -143,13 +186,20 @@ function main() {
     context = step.context;
 
     const staminaBefore = context.state.body.byCharacterId[characterId]?.bodyStats.stamina ?? 0;
-    expectedMoney += definition.rewardMoney;
+    const expectedReward = definition.rewardMoney + (isLunchStallWork(context.catalog, workId) ? 9 : 0);
+    expectedMoney += expectedReward;
     expectedTurn += definition.completesTimeBlock ? 1 : 0;
     step = dispatchChecked(context, { type: 'work/execute' });
     assert(step.result.status === 'success', `work execution should succeed for ${workId}.`);
     context = step.context;
     assert(context.session.ui.route === 'mainMenu', `completed work should return to main menu for ${workId}.`);
     assert(context.state.economy.account.currentMoney === expectedMoney, `work reward mismatch for ${workId}.`);
+    if (isLunchStallWork(context.catalog, workId)) {
+      assert(
+        expectedReward === definition.rewardMoney + 9,
+        'M37 lunch-stall reward should consume ABL:74 ability contribution.',
+      );
+    }
     assert(context.state.run.clock.turn === expectedTurn, `turn count mismatch for ${workId}.`);
     assert(context.session.work.visibleWorkIds.length === 0, `completed work should clear work session for ${workId}.`);
     assert(context.state.work.assignments[characterId]?.workTypeId === workId, `assignment should persist latest work ${workId}.`);

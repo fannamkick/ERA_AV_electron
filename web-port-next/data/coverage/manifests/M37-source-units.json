@@ -22,9 +22,9 @@
   ],
   "summary": {
     "totalUnits": 463,
-    "implemented-verified": 315,
+    "implemented-verified": 316,
     "approved-excluded": 0,
-    "blocked": 148,
+    "blocked": 147,
     "scope-redesign-required": 0,
     "completedAllowedNow": false
   },
@@ -7657,15 +7657,16 @@
       "rowKind": "save-mapping",
       "legacyId": "ABL:74",
       "requiredBehavior": "",
-      "runtimeConsumerId": "people.characters.byId.*.attributes.abilities[74] <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "people.characters.byId.*.attributes.abilities[74] -> LUNCH_STALL reward calculation <- calculateWorkResult",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-abl-74",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00306",

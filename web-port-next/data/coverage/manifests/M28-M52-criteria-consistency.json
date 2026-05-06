@@ -8,8 +8,8 @@
   "allCompletedAllowedNowFalse": false,
   "totals": {
     "totalUnits": 11247,
-    "implementedVerified": 8835,
-    "blocked": 2022,
+    "implementedVerified": 8836,
+    "blocked": 2021,
     "scopeRedesignRequired": 31,
     "approvedExcluded": 359,
     "completedAllowedNowTrue": 10,
@@ -187,8 +187,8 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 463,
-        "implemented-verified": 315,
-        "blocked": 148,
+        "implemented-verified": 316,
+        "blocked": 147,
         "completedAllowedNow": false
       }
     },

@@ -35,11 +35,11 @@
   },
   "counts": {
     "ownedTotal": 463,
-    "implemented": 315,
+    "implemented": 316,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 148,
+    "ownedBlocker": 147,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -48,11 +48,11 @@
   },
   "closureMetrics": {
     "ownedTotal": 463,
-    "implemented": 315,
+    "implemented": 316,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 148,
+    "ownedBlocker": 147,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -61,11 +61,11 @@
   },
   "blockingBreakdown": {
     "byRowKind": {
-      "save-mapping": 142,
+      "save-mapping": 141,
       "session-mapping": 6
     },
     "byLegacyFamily": {
-      "ABL": 12,
+      "ABL": 11,
       "BASE": 2,
       "CFLAG": 30,
       "CSTR": 2,
@@ -107,7 +107,7 @@
       "npm run gate:milestone-scope-closure -- M37 must fail while ownedBlocker is nonzero."
     ],
     "blockingLimitations": [
-      "148 source units remain blocked in data/coverage/manifests/M37-source-units.json.",
+      "147 source units remain blocked in data/coverage/manifests/M37-source-units.json.",
       "175 coverage rows are mapped evidence, not source behavior completion."
     ]
   },

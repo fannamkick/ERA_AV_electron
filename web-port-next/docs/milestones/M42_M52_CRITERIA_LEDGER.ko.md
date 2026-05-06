@@ -112,7 +112,7 @@ Artifacts:
 Result:
 - All M28~M52 source-unit manifests exist.
 - M28 is now closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,250; implemented-verified 8,879; blocked 2,025; scope-redesign-required 31; approved-excluded 315.
+- Aggregate totals: total units 11,250; implemented-verified 8,880; blocked 2,024; scope-redesign-required 31; approved-excluded 315.
 - Registry contracts exist for M28~M52.
 
 Criteria-side baseline is now complete with uniform registry enforcement. Future work should close manifest units through evidence, approved exclusion, blocked status, or explicit scope redesign.

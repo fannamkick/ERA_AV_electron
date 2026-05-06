@@ -249,14 +249,37 @@ function validateWorkExecution(state: GameState, work: WorkDefinition, character
   return undefined;
 }
 
-export function calculateWorkResult(work: WorkDefinition, characterId: string): WorkCalculatedResult {
+function legacyLunchStallAbilityRewardBonus(state: GameState, work: WorkDefinition, characterId: string): number {
+  if (work.source.path.split(/[\\/]/u).pop() !== 'WORK_S_LUNCHSTALL.ERB' || work.source.originalName !== 'LUNCH_STALL') {
+    return 0;
+  }
+
+  return Object.values(state.people.characters)
+    .filter((character) => isCharacterActive(character))
+    .reduce((bonus, character) => {
+      const flags = state.work.careerFlagsByCharacterId[character.id] ?? {};
+      if (Number(flags.flag_130 ?? 0) === 0) {
+        return bonus;
+      }
+      if (character.id === characterId && Number(flags.flag_42 ?? 0) >= 2) {
+        return bonus;
+      }
+      return bonus + Number(character.attributes.abilities['74'] ?? 0);
+    }, 0);
+}
+
+function legacyWorkRewardMoney(state: GameState, work: WorkDefinition, characterId: string): number {
+  return work.rewardMoney + legacyLunchStallAbilityRewardBonus(state, work, characterId);
+}
+
+export function calculateWorkResult(work: WorkDefinition, characterId: string, state: GameState): WorkCalculatedResult {
   return {
     workId: work.id,
     characterId,
     workKind: workKindFromDefinition(work),
     sourceFile: work.source.path.split(/[\\/]/u).pop(),
     sourceLabel: work.source.originalName ?? work.source.originalId,
-    rewardMoney: work.rewardMoney,
+    rewardMoney: legacyWorkRewardMoney(state, work, characterId),
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
     traitFlags: { ...(work.traitFlags ?? {}) },
@@ -378,7 +401,7 @@ export function executeSelectedWork(
     };
   }
 
-  const calculatedResult = calculateWorkResult(workResult.definition, session.work.selectedCharacterId!);
+  const calculatedResult = calculateWorkResult(workResult.definition, session.work.selectedCharacterId!, state);
   const stateAfterWork = applyWorkResult(state, calculatedResult);
   const sessionAfterWork: GameSession = {
     ...session,

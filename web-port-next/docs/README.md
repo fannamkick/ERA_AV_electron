@@ -6,7 +6,7 @@
 - M28 owns 24 main-route contract rows. The 3 BOYFRIEND event-local session rows are approved-excluded from M28 and remain M47 responsibility.
 - M37 is the next closure target. M37 must not count mapped save/session/calculation rows or downstream result owners as work/job completion.
 - M37~M41 must be closed or explicitly redesigned before M42 implementation resumes. M28~M36 are now strict-closed.
-- Current aggregate: total units 11,250; implemented-verified 8,879; approved-excluded 315; blocked 2,025; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- Current aggregate: total units 11,250; implemented-verified 8,880; approved-excluded 315; blocked 2,024; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
 
 ## 책임 분리
 

@@ -91,7 +91,7 @@ M34 is now closed under the strict source-unit manifest rule.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,250; implemented-verified 8,879; blocked 2,025; scope-redesign-required 31; approved-excluded 315.
+- Aggregate totals: total units 11,250; implemented-verified 8,880; blocked 2,024; scope-redesign-required 31; approved-excluded 315.
 - Registry enforcement gap is closed: `coverage-gate-registry.json` has contracts for M28~M52.
 - Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
 
@@ -134,7 +134,7 @@ M34 is now closed under the strict source-unit manifest rule.
 - Current strict counts:
   - M35: total 8, implemented-verified 8, blocked 0, scope-redesign-required 0, completedAllowedNow true.
   - M36: total 93, implemented-verified 93, blocked 0, completedAllowedNow true.
-  - M37: total 463, implemented-verified 315, blocked 148.
+  - M37: total 463, implemented-verified 316, blocked 147.
   - M38: total 6, implemented-verified 0, blocked 6.
   - M39: total 174, implemented-verified 135, blocked 39.
   - M40: total 11, implemented-verified 5, blocked 6.
