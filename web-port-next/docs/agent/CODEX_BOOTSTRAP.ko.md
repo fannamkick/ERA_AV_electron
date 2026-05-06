@@ -12,7 +12,9 @@
 ## 절대 규칙
 
 - `.env.local`을 읽거나 출력하지 않는다.
-- 유료 AI/OpenRouter 호출을 실행하지 않는다.
+- OpenRouter worker MCP는 적극 사용한다. 큰 원본 대조, manifest 분류, blocked row 원인 분석, gate 실패 로그 요약, patch proposal처럼 병렬화 가능한 bounded subtask는 `openrouter_worker`로 위임한다.
+- OpenRouter worker 결과는 완료 판정 권위가 아니다. Codex 본체가 원본 row, coverage/gap/closure, gate/smoke/build 결과를 재검토한 뒤에만 반영한다.
+- OpenRouter worker에는 `.env.local`, secret, 불필요한 대형 파일 전체를 넘기지 않는다. `readonly_globs`, `editable_globs`, `allowed_commands`를 좁혀서 호출한다.
 - unrelated dirty files를 되돌리거나 커밋에 섞지 않는다.
 - 기존 `web-port` 산출물은 참고 자료이며 구현 기준으로 승격하지 않는다.
 - 기본 shell은 PowerShell이다. Bash heredoc(`node - <<'NODE'`)과 Bash redirection 예시를 그대로 실행하지 않는다. 반복 이슈는 `KNOWN_ISSUES.ko.md`를 따른다.
@@ -46,6 +48,7 @@ closure 작성/완료 판정 시 query 결과만 사용하지 않는다. 해당 
 ## I/O 누수 방지
 
 - 긴 문서 전체 읽기 금지. `rg` 또는 section 조회로 현재 마일스톤과 관련 줄만 읽는다.
+- 병렬 검토가 필요한 경우 OpenRouter worker MCP를 먼저 고려한다. 단순 전체 파일 dump 대신 worker별로 원본 family, manifest 구간, gate 실패 로그 같은 좁은 범위를 맡긴다.
 - 마일스톤 전후 맥락은 `docs/milestones/README.ko.md`와 해당 phase 문서로 먼저 좁힌다.
 - 대형 coverage/audit JSON 전체 출력 금지. summary, count, blocking row id, 특정 row만 조회한다.
 - 원본 ERB/CSV 전체 출력 금지. 라벨/호출 흐름 주변을 읽되, 구현 판단에는 필요한 원본 block을 직접 확인한다.

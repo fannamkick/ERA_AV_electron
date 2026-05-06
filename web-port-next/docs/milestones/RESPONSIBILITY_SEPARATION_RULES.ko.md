@@ -13,6 +13,15 @@
 - 완료 커밋에는 "이번 마일스톤이 한 것", "하지 않은 것", "승인 제외한 것", "blocked/scope-redesign-required로 남긴 것"이 단위별 산출물로 남아야 한다.
 - 책임 재분리는 구현 중 편의상 수행하지 않는다. 재분리가 필요하면 구현을 멈추고 책임 명시 작업으로 전환한다.
 
+## OpenRouter Worker MCP 사용 원칙
+
+OpenRouter worker MCP는 책임 분리와 누락 방지를 위한 적극 사용 도구다. Codex 본체가 모든 것을 단독으로 읽다가 누락하거나 토큰을 낭비하지 않도록, 병렬화 가능한 bounded subtask는 worker에 맡긴다.
+
+- 사용 대상: 원본 row와 manifest 대조, owner 후보 분류, blocked/scope-redesign-required 원인 분석, gate 실패 로그 요약, 좁은 범위 patch proposal.
+- 금지 대상: 완료 판정 위임, secret/.env 전달, unrelated dirty file 편집, 넓은 glob으로 전체 repo를 읽게 하는 호출.
+- worker 결과 반영 조건: Codex 본체가 원본 row, coverage/gap/closure, gate/smoke/build를 직접 확인하고, 책임 원칙과 충돌하지 않는 경우에만 반영한다.
+- worker가 제안한 transfer/approved-excluded는 자동 승인하지 않는다. receiver manifest와 runtime owner 증거가 맞는지 재확인해야 한다.
+
 ## 항목별 책임 표기 형식
 
 각 마일스톤의 체크 항목 앞에는 아래 표기 중 하나를 붙인다.

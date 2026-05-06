@@ -650,7 +650,8 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 ## 주의
 
 - `.env.local`은 읽지 않는다.
-- 유료 AI/OpenRouter 호출은 실행하지 않는다.
+- OpenRouter worker MCP는 적극 사용한다. 원본 대조, manifest 분류, blocked row 원인 분석, gate 실패 로그 요약, patch proposal처럼 병렬화 가능한 bounded subtask는 worker에 위임한다.
+- worker 결과는 완료 판정 권위가 아니다. Codex 본체가 원본 row, coverage/gap/closure, gate/smoke/build를 재검토한 뒤 반영한다.
 - 기존 unrelated dirty files는 되돌리지 않는다.
 - 기존 `web-port` 산출물은 참고 자료이며 구현 기준으로 승격하지 않는다.
 - 마일스톤 완료 시 `NEW_PORT_MILESTONES.ko.md`의 "마일스톤 완료 운영 의무"를 모두 지킨다. `PROGRESS_STATUS.ko.md`, `SESSION_HANDOFF.ko.md`, 필요한 기준 문서, coverage/audit/closure 산출물, 검증 명령, 별도 커밋이 빠지면 완료 처리하지 않는다.

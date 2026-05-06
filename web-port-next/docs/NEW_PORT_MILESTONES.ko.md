@@ -61,7 +61,8 @@ M30에 대한 현재 판단:
 - [ ] 보류 항목은 원본 위치, 보류 사유, 해소 마일스톤을 가진 blocker로 남김
 - [ ] 구현 제외는 사용자 승인 없이는 완료 처리하지 않음
 - [ ] `.env.local` 접근 없음
-- [ ] 유료 AI/OpenRouter 호출 없음
+- [ ] OpenRouter worker MCP 적극 사용: 원본 대조, manifest 분류, blocked row 원인 분석, gate 실패 로그 요약, patch proposal처럼 병렬화 가능한 bounded subtask는 worker에 위임
+- [ ] OpenRouter worker 결과를 그대로 완료 판정으로 쓰지 않음. Codex 본체가 원본 row, coverage/gap/closure, gate/smoke/build를 재검토한 뒤 반영
 - [ ] 마일스톤 하나를 완료할 때마다 검증 결과를 확인한 뒤 별도 커밋을 남김
 
 ## 에이전트 I/O 누수 방지 원칙
@@ -133,7 +134,7 @@ M30에 대한 현재 판단:
 - [ ] 문서 갱신까지 포함한 변경 세트를 확인한 뒤 해당 마일스톤 단위 커밋을 남긴다.
 - [ ] 커밋 후 `Mxx-closure.json`의 `commitHash` 또는 커밋 근거 문구가 실제 커밋을 가리키도록 갱신한다. 이 갱신이 별도 커밋을 필요로 하면 같은 마일스톤 후속 문서 커밋으로 남긴다.
 - [ ] 완료 직후 다음 작업이 무엇인지 `PROGRESS_STATUS.ko.md`와 `SESSION_HANDOFF.ko.md`에 같은 내용으로 남긴다.
-- [ ] unrelated dirty files, 기존 `web-port` 산출물, `.env.local`, 유료 AI/OpenRouter 관련 변경이나 호출을 완료 커밋에 섞지 않는다.
+- [ ] unrelated dirty files, 기존 `web-port` 산출물, `.env.local`, OpenRouter worker 실행 산출물 중 작업 범위 밖 변경을 완료 커밋에 섞지 않는다.
 
 ## 책임 축소 절대 금지
 

@@ -47,4 +47,5 @@
 - 실행 순서와 체크박스는 `NEW_PORT_MILESTONES.ko.md`에만 기록한다.
 - 세션 재개용 요약은 `SESSION_HANDOFF.ko.md`에만 기록한다.
 - `.env.local`은 읽거나 출력하거나 문서화하지 않는다.
-- 유료 AI/OpenRouter 호출은 사용자가 명시적으로 승인하기 전까지 실행하지 않는다.
+- OpenRouter worker MCP는 사용자가 승인한 운영 도구다. 원본 대조, manifest 분류, blocked row 원인 분석, gate 실패 로그 요약, patch proposal처럼 병렬화 가능한 bounded subtask에 적극 사용한다.
+- worker 결과는 완료 판정 권위가 아니다. Codex 본체가 원본 row, coverage/gap/closure, gate/smoke/build 결과를 확인한 뒤 반영한다.
