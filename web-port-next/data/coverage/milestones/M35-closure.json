@@ -3,9 +3,9 @@
   "milestone": "M35",
   "title": "Turn end, time progression, and automatic hook pipeline",
   "status": "completed",
-  "completedAt": "2026-05-01",
+  "completedAt": "2026-05-06",
   "commitPolicy": "Commit after every milestone closure.",
-  "commitHash": "657f937",
+  "commitHash": "recorded by the M35 git commit that includes this closure file",
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
     "saveMapping": "data/coverage/save-mapping.json",
@@ -24,9 +24,9 @@
     "smoke": "tools/m35_turn_long_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 7,
-    "implemented": 0,
-    "mapped": 7,
+    "ownedTotal": 8,
+    "implemented": 8,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -37,9 +37,9 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 7,
-    "implemented": 0,
-    "mapped": 7,
+    "ownedTotal": 8,
+    "implemented": 8,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "ownedBlocker": 0,
@@ -61,7 +61,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "7 M35 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "8 M35 functional source unit(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:turn-pipeline",
@@ -73,5 +73,46 @@
     "npm run typecheck",
     "npm run build",
     "npm run test --if-present"
-  ]
+  ],
+  "sourceUnitMetrics": {
+    "totalUnits": 8,
+    "implemented-verified": 8,
+    "blocked": 0,
+    "scope-redesign-required": 0,
+    "approved-excluded": 0,
+    "completedAllowedNow": true
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": true,
+    "sourceBehaviorImplementedNotJustIndexed": true,
+    "gateValidatesResponsibilityNotOwnScaffold": true,
+    "limitationsBlockCompletion": false,
+    "responsibilityItems": [
+      "Advance day/week/month/year/currentTimeSlot and turn counters at the turn boundary.",
+      "Run scheduled event and mission deadline hooks before returning control.",
+      "Run weekly/monthly automatic hook markers and monthly maintenance at the correct rollover.",
+      "Reflect processed event hooks into world event flags without owning downstream event behavior.",
+      "Clear transient session state and keep session data out of save payload roundtrip."
+    ],
+    "implementationEvidence": [
+      "src/features/turnEnd.ts",
+      "data/coverage/turn-pipeline-coverage.json",
+      "data/coverage/manifests/M35-source-units.json",
+      "data/coverage/milestones/M35-closure.json",
+      "tools/gate_turn_pipeline.mjs",
+      "tools/m35_turn_long_smoke.ts"
+    ],
+    "verificationEvidence": [
+      "npm run coverage:turn-pipeline",
+      "npm run gate:turn-pipeline",
+      "npm run gate:milestone-scope-closure -- M35",
+      "npm run smoke:turn-long",
+      "npm run smoke:m8",
+      "npm run verify:m16",
+      "npm run typecheck",
+      "npm run build",
+      "npm run test --if-present"
+    ]
+  }
 }

@@ -106,7 +106,7 @@ Artifacts:
 
 | M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | completable now | strict finding |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
-| M35 | 8 | 0 | 7 | 1 | no | The old 7 save-field mapped rows are not completion evidence. Clock/hook/deadline/session cleanup units need direct source evidence or responsibility redesign. |
+| M35 | 8 | 8 | 0 | 0 | yes | Strict closure complete. The old 7 save-field mapped rows are supporting evidence only; 8 functional turn pipeline units are implemented-verified. |
 | M36 | 93 | 86 | 7 | 0 | no | The old 552 line rows are source evidence for 86 visit actions, not 552 completed units. Seven visit place definitions remain blocked. |
 | M37 | 461 | 294 | 167 | 0 | no | 286 work feature rows and 8 work definitions are completion candidates. Save/session/calculation mapped rows remain blocked. |
 | M38 | 6 | 0 | 6 | 0 | no | All six filming scene definitions are mapped-only, so none are completed under the strict rule. |
@@ -136,7 +136,7 @@ Next actions:
 현재 공통 상태:
 - M28은 2026-05-02 strict closure 재검증 기준으로 통과했다.
 - M29와 M30은 2026-05-02 strict closure 재검증 기준으로 통과했고, approved-excluded row는 수신 manifest inbound로 명시했다.
-- M35~M41의 closure는 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M33은 2026-05-06 strict closure로 닫혔다.
+- M36~M41의 closure는 `responsibilityIntegrity` 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M35는 2026-05-06 strict closure로 닫혔다.
 - 따라서 이 장부는 "기능 검증 결과가 존재한다"와 "현재 완료 판정은 보강 필요하다"를 분리해서 읽어야 한다.
 - 2026-05-02 기준, `[구현]` 마일스톤의 `transferredOut`은 완료가 아니라 미완료 또는 책임 재설계 신호로 본다.
 
@@ -157,7 +157,7 @@ Next actions:
 | M33 | completed, source 5,378, M33-owned implemented-verified 5,299, approved-excluded 79 | completed | 아니오 | seed/stat owner와 CFLAG/FLAG/PBAND 후속 owner가 strict manifest에서 분리됨 | 완료. CFLAG/FLAG/PBAND 79개는 M34에서 이후 implemented-verified로 닫힘 |
 | M34 | completed, total 2,247, implemented-verified 2,247 | completed | no | All mapped/blocked rows were promoted to implementation evidence, including item 211 apron behavior. | Complete. Next strict target is M34.5. |
 | M34.5 | completed, total 188, implemented-verified 188 | completed | no | responsibilityIntegrity blocker was closed with explicit hardening evidence. | Complete. Next strict target is M35. |
-| M35 | completed, implemented 0, mapped 7 | blocked | 예 | `[구현]`인데 mapped-only 완료. turn hook/cleanup이 save field mapping으로만 표현됨 | `EVENT_TURNEND`, `EVENT_NEXTDAY`, `EVENT_AFTERTRAIN` 등 hook/order/effect 단위 매니페스트 작성 |
+| M35 | completed, implemented 8, mapped 0 | completed | no | 8개 functional turn pipeline unit으로 재분해했고 mapped save rows는 supporting evidence로만 남김 | M35 완료. M36으로 진행 |
 | M36 | completed, implemented 552, mapped 7 | manifest-needed | 예 | 방문 장소 definition mapped 7개와 원본 단위 매니페스트 없음 | 방문 장소 7개와 visit action 86개를 매니페스트로 재작성하고 mapped definition을 재증명 |
 | M37 | completed, implemented 286, mapped 175 | scope-redesign-required | 예 | 업무 실행, 업무 정의, save-field owner, session/calculation owner가 섞임 | M37이 닫을 업무 실행 단위와 다른 owner 단위를 매니페스트에서 분리 |
 | M38 | completed, implemented 0, mapped 6 | scope-redesign-required | 예 | 촬영 장면 정의만 mapped이고 대상/장면 조건/불가 사유/예상 결과 책임이 분리되지 않음 | 장면 정의와 조건/불가 사유/예상 결과 단위를 분리한 매니페스트 작성 |
@@ -194,7 +194,7 @@ Next actions:
 
 산출물:
 - `data/coverage/manifests/M31-source-units.json`
-- Next work is M35~M41 manifest closure correction before M42 resumes.
+- Next work is M36~M41 manifest closure correction before M42 resumes.
 - `data/coverage/manifests/M33-source-units.json`
 - `data/coverage/manifests/M34-source-units.json`
 - `data/coverage/manifests/M34.5-source-units.json`
@@ -224,7 +224,7 @@ Next actions:
 | M33 | BASE/ABL/TALENT/EXP/MARK/PALAM 계열 seed, 표시 정의, save field, M31/M32 inbound body/stat row를 직접 검증했다. strict 기준 M33-owned implemented-verified 5,299. | CFLAG/FLAG/PBAND 79개는 M33 완료가 아니다. approved-excluded로 남겼고 이후 M34에서 implemented-verified로 닫았다. | strict closure 완료. `gate:body-stat-mapping`은 source 5,378, implemented-verified 5,299, approved-excluded 79와 receiver manifest 반영을 확인한다. |
 | M34 | Implemented social/equipment/wardrobe ownership for CFLAG, relationship, equipment, clothing, and item 211 apron behavior. Strict count: 2,247 implemented-verified. | No M34-owned rows transferred out. Event/training/mission effects remain later-owner responsibilities. | Strict closure complete. `gate:social-equipment-cflag` forbids mapped/transferred/source-file-review completion. |
 | M34.5 | hardening용 registry와 final verify skeleton, auxiliary evidence 차단을 추가했다. coverage-hardening gate는 통과한다. 이후 M28~M34 registry contract도 추가되어 M28~M52 registry enforcement gap은 해소되었다. | 당시에는 M28~M34 registry contract가 없었지만 현재 기준에서는 해소됨. | hardening gate 자체가 새 `responsibilityIntegrity` closure 기준을 검증하지 않는다. |
-| M35 | 턴 진행, 날짜/주차/월/년 갱신, 장기 턴 smoke를 구현했다. coverage 기준 mapped 7. | coverage에는 implemented 0으로 기록되어 있고, hook/자동 처리 책임이 save field mapping 7개로만 표현된다. | 문서 책임 범위가 넓으므로 실제 hook/자동 구매/미션/이벤트/session cleanup 근거를 별도 사실 장부로 풀어야 한다. |
+| M35 | 턴 진행, 날짜/주차/월/년 갱신, hook 순서, session cleanup, save roundtrip을 strict 기준으로 닫았다. | 업무/미션/이벤트/경제 내부 효과는 M35 완료가 아니다. M35는 호출 순서와 lifecycle boundary만 닫는다. | strict closure 완료. `gate:turn-pipeline`과 `gate:milestone-scope-closure -- M35`는 owned 8, implemented 8을 확인한다. |
 | M36 | 방문 장소 7개와 방문 action 86개, 비용/해금/진행 row를 구현했다. coverage 기준 implemented 552, mapped 7. | 방문 이후 이벤트/세계 hook은 후속 owner가 소유한다. | closure에 `responsibilityIntegrity`가 없다. |
 | M37 | 업무/창관/특수 업무 실행 80개, 조건/결과/턴 종료를 구현했다. coverage 기준 implemented 286, mapped 175. | mapped 175개는 source label/definition/owner 확정 성격이 섞여 있다. | mapped row가 결과 계산 누락을 숨기지 않는지 재확인 필요. |
 | M38 | 촬영 장면 정의 6개와 장면 조건 table을 연결했다. coverage 기준 mapped 6. | 실제 촬영 실행/수익/판매는 M39가 소유한다. | implemented 0, mapped 6만으로 "촬영 정의 완성"을 닫았으므로 조건/예상 결과가 runtime에서 충분히 검증되는지 재확인 필요. registry에 smoke 필수도 빠져 있다. |
@@ -234,7 +234,7 @@ Next actions:
 
 ## 즉시 보강할 항목
 
-- Do not mechanically add `responsibilityIntegrity` to M35~M41 closures. Resolve the reassessment rows first or record them as blocked. M28~M34.5 are strict-closed.
+- Do not mechanically add `responsibilityIntegrity` to M36~M41 closures. Resolve the reassessment rows first or record them as blocked. M28~M35 are strict-closed.
 - M30에서 excluded 처리한 특수 item 200~214 및 item 22/90/91 계열은 완료가 아니며, M41/M42/M43/M44 수신 owner가 각각 구현/제외/재설계를 끝내야 한다.
 - M35의 넓은 책임을 save field mapping 7개가 아니라 runtime hook/cleanup별 사실로 풀어 적는다.
 - M38/M41 registry에 smoke 필수 누락을 기록한다.

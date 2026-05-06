@@ -16,7 +16,7 @@
     "ownedUnitIds": [
       "unit:M35:turn-time"
     ],
-    "rule": "Every M35 queue row and inbound transfer must be mapped-consumed by the turn pipeline exactly once.",
+    "rule": "M35 closes turn pipeline behavior as functional source units. Save mappings are supporting evidence only and are not completion by themselves.",
     "hookOrder": [
       "scheduled-events",
       "mission-deadline",
@@ -26,13 +26,23 @@
       "world-event-hook",
       "session-cleanup"
     ],
-    "saveBoundary": "Turn completion may mutate run clock/progress, mission deadlines, economy monthly entries, and world event flags; it must clear session choices and keep session/view data out of save payload."
+    "saveBoundary": "Turn completion may mutate run clock/progress, mission deadlines, economy monthly entries, and world event flags; it must clear session choices and keep session/view data out of save payload.",
+    "supportingSaveMappingRefs": [
+      "save-mapping:save-map:source:cflag-34",
+      "save-mapping:save-map:source:day-0",
+      "save-mapping:save-map:source:day-3",
+      "save-mapping:save-map:source:day-4",
+      "save-mapping:save-map:source:flag-61",
+      "save-mapping:save-map:source:time",
+      "save-mapping:save-map:source:time-0"
+    ]
   },
   "summary": {
     "ownedRowRefs": 7,
-    "rows": 7,
-    "implemented": 0,
-    "mapped": 7,
+    "rows": 8,
+    "implemented": 8,
+    "implementedVerifiedForStrictClosure": 8,
+    "mapped": 0,
     "transferredOut": 0,
     "approvedExcluded": 0,
     "ownedBlocker": 0,
@@ -42,28 +52,197 @@
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0,
     "inboundTransfers": 3,
+    "supportingSaveMappingRows": 7,
     "byRowKind": {
-      "save-mapping": 7
-    },
-    "byScopeSource": {
-      "data/coverage/recruit-coverage.json": 1,
-      "data/coverage/shop-purchase-coverage.json": 2,
-      "implementation-queue": 4
+      "turn-functional-unit": 8
     },
     "byCompletionStatus": {
-      "mapped-consumed-turn-save-field": 7
-    },
-    "byAddress": {
-      "CFLAG:34": 1,
-      "DAY:0": 1,
-      "DAY:3": 1,
-      "DAY:4": 1,
-      "FLAG:61": 1,
-      "TIME": 1,
-      "TIME:0": 1
+      "implemented-verified": 8
     }
   },
   "rows": [
+    {
+      "coverageRowId": "turn-pipeline:functional:clock-advance",
+      "unitId": "M35:source-unit:00001",
+      "reviewId": "M35:functional:clock-advance",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:save-map:time",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+      "legacyId": "clock-advance",
+      "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+      "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+      "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [
+        "turn-pipeline:save-mapping:save-map-source-day-0",
+        "turn-pipeline:save-mapping:save-map-source-day-3",
+        "turn-pipeline:save-mapping:save-map-source-day-4",
+        "turn-pipeline:save-mapping:save-map-source-time",
+        "turn-pipeline:save-mapping:save-map-source-time-0"
+      ],
+      "sourceReviewIds": [
+        "save-mapping:save-map:source:day-0",
+        "save-mapping:save-map:source:day-3",
+        "save-mapping:save-map:source:day-4",
+        "save-mapping:save-map:source:time",
+        "save-mapping:save-map:source:time-0"
+      ]
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:mission-deadline",
+      "unitId": "M35:source-unit:00002",
+      "reviewId": "M35:functional:mission-deadline",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:m35:functional:mission-deadline",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "sourceLabel": "mission deadline decrement/fail hook",
+      "legacyId": "mission-deadline",
+      "requiredBehavior": "mission deadline decrement/fail hook",
+      "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+      "verificationId": "smoke:turn-long",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [],
+      "sourceReviewIds": []
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:scheduled-events",
+      "unitId": "M35:source-unit:00003",
+      "reviewId": "M35:functional:scheduled-events",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:m35:functional:scheduled-events",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "sourceLabel": "scheduled event processing hook",
+      "legacyId": "scheduled-events",
+      "requiredBehavior": "scheduled event processing hook",
+      "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+      "verificationId": "smoke:turn-long;smoke:m8",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [],
+      "sourceReviewIds": []
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+      "unitId": "M35:source-unit:00004",
+      "reviewId": "M35:functional:weekly-automatic-processing",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:save-map:flag-61",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+      "legacyId": "weekly-automatic-processing",
+      "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+      "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+      "verificationId": "smoke:turn-long",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [
+        "turn-pipeline:save-mapping:save-map-source-flag-61"
+      ],
+      "sourceReviewIds": [
+        "save-mapping:save-map:source:flag-61"
+      ]
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+      "unitId": "M35:source-unit:00005",
+      "reviewId": "M35:functional:monthly-automatic-processing",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:save-map:cflag-34",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+      "legacyId": "monthly-automatic-processing",
+      "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+      "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+      "verificationId": "smoke:turn-long",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [
+        "turn-pipeline:save-mapping:save-map-source-cflag-34"
+      ],
+      "sourceReviewIds": [
+        "save-mapping:save-map:source:cflag-34"
+      ]
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:world-event-hook",
+      "unitId": "M35:source-unit:00006",
+      "reviewId": "M35:functional:world-event-hook",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:m35:functional:world-event-hook",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "sourceLabel": "world event hook processing during turn end",
+      "legacyId": "world-event-hook",
+      "requiredBehavior": "world event hook processing during turn end",
+      "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+      "verificationId": "smoke:turn-long;smoke:m8",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [],
+      "sourceReviewIds": []
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+      "unitId": "M35:source-unit:00007",
+      "reviewId": "M35:functional:session-cleanup-boundary",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:m35:functional:session-cleanup-boundary",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "sourceLabel": "transient session cleanup at turn boundary",
+      "legacyId": "session-cleanup-boundary",
+      "requiredBehavior": "transient session cleanup at turn boundary",
+      "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+      "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [],
+      "sourceReviewIds": []
+    },
+    {
+      "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+      "unitId": "M35:source-unit:00008",
+      "reviewId": "M35:functional:save-roundtrip-boundary",
+      "rowKind": "turn-functional-unit",
+      "sourceEvidenceId": "source:save-map:time",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "sourceLabel": "turn result is persisted through save/load boundary",
+      "legacyId": "save-roundtrip-boundary",
+      "requiredBehavior": "turn result is persisted through save/load boundary",
+      "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+      "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+      "completionStatus": "implemented-verified",
+      "manifestStatus": "implemented-verified",
+      "acceptedByOwner": true,
+      "sourceCoverageRowIds": [
+        "turn-pipeline:save-mapping:save-map-source-cflag-34",
+        "turn-pipeline:save-mapping:save-map-source-day-0",
+        "turn-pipeline:save-mapping:save-map-source-day-3",
+        "turn-pipeline:save-mapping:save-map-source-day-4",
+        "turn-pipeline:save-mapping:save-map-source-flag-61",
+        "turn-pipeline:save-mapping:save-map-source-time",
+        "turn-pipeline:save-mapping:save-map-source-time-0"
+      ],
+      "sourceReviewIds": [
+        "save-mapping:save-map:source:cflag-34",
+        "save-mapping:save-map:source:day-0",
+        "save-mapping:save-map:source:day-3",
+        "save-mapping:save-map:source:day-4",
+        "save-mapping:save-map:source:flag-61",
+        "save-mapping:save-map:source:time",
+        "save-mapping:save-map:source:time-0"
+      ]
+    }
+  ],
+  "supportingSaveMappingRows": [
     {
       "coverageRowId": "turn-pipeline:save-mapping:save-map-source-cflag-34",
       "reviewId": "save-mapping:save-map:source:cflag-34",
@@ -91,7 +270,7 @@
       "rowKind": "save-mapping",
       "scopeSource": "implementation-queue",
       "sourceEvidenceId": "source:save-map:day-0",
-      "sourcePath": "",
+      "sourcePath": "original-game/ERB/イベント関係/ENDING.ERB",
       "sourceLabel": "",
       "family": "DAY",
       "address": "DAY:0",
@@ -107,7 +286,7 @@
       "rowKind": "save-mapping",
       "scopeSource": "implementation-queue",
       "sourceEvidenceId": "source:save-map:day-3",
-      "sourcePath": "",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTMONTH.ERB",
       "sourceLabel": "",
       "family": "DAY",
       "address": "DAY:3",
@@ -123,7 +302,7 @@
       "rowKind": "save-mapping",
       "scopeSource": "implementation-queue",
       "sourceEvidenceId": "source:save-map:day-4",
-      "sourcePath": "",
+      "sourcePath": "original-game/ERB/システム関係/SHOP_MAIN.ERB",
       "sourceLabel": "",
       "family": "DAY",
       "address": "DAY:4",
@@ -181,7 +360,7 @@
       "rowKind": "save-mapping",
       "scopeSource": "implementation-queue",
       "sourceEvidenceId": "source:save-map:time-0",
-      "sourcePath": "",
+      "sourcePath": "original-game/ERB/システム関係/SHOP_SLAVE4.ERB",
       "sourceLabel": "",
       "family": "TIME",
       "address": "TIME:0",

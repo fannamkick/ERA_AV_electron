@@ -1,5 +1,17 @@
 # Current Status
 
+## 2026-05-06 M35 strict closure complete
+
+M35 is now closed under the strict source-unit manifest rule.
+
+- Manifest: `data/coverage/manifests/M35-source-units.json`
+- Closure: `data/coverage/milestones/M35-closure.json`
+- Coverage: `data/coverage/turn-pipeline-coverage.json`
+- Summary: total 8, implemented-verified 8, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M35 closes 8 functional turn pipeline units. The 7 save-field rows are supporting evidence only and are not counted as completion.
+- This closes turn ordering, time progression, hook invocation, session cleanup, and save roundtrip boundary. It does not close downstream feature internals.
+- Next strict target: M36 visit/facility closure correction.
+
 ## 2026-05-06 M34.5 strict closure complete
 
 M34.5 is now closed under the strict source-unit manifest rule.
@@ -9,7 +21,7 @@ M34.5 is now closed under the strict source-unit manifest rule.
 - Summary: total 188, implemented-verified 188, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
 - M34.5 ownedTotal is 188 substantive hardening units: 169 evidence corrections and 19 registry contracts. The closure responsibilityIntegrity check is mandatory but is not counted as a source unit.
 - This closes verification/hardening scope only. It does not implement M35-M52 feature runtime behavior.
-- Next strict target: M35 turn/time/hook/session cleanup closure correction.
+- Next strict target: M36 visit/facility closure correction.
 
 ## 2026-05-06 M34 strict closure complete
 
@@ -56,7 +68,7 @@ M34 is now closed under the strict source-unit manifest rule.
 
 ## 2026-05-02 criteria registry gap closed
 
-- M28~M34.5 registry contracts were added to `tools/build_coverage_gate_registry.mjs`.
+- M28~M35 registry contracts were added to `tools/build_coverage_gate_registry.mjs`.
 - `npm run coverage:gate-registry` regenerated `data/coverage/coverage-gate-registry.json` with 26 milestone contracts.
 - `npm run gate:coverage-hardening` passed with 26 contract(s), 20 coverage file(s), and 9 final script(s).
 - `data/coverage/manifests/M28-M52-criteria-consistency.json` now reports `criteriaBaselineComplete: true` and no missing registry contracts.
@@ -69,7 +81,7 @@ M34 is now closed under the strict source-unit manifest rule.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,247; implemented-verified 8,820; blocked 2,036; scope-redesign-required 32; approved-excluded 359.
+- Aggregate totals: total units 11,247; implemented-verified 8,828; blocked 2,029; scope-redesign-required 31; approved-excluded 359.
 - Registry enforcement gap is closed: `coverage-gate-registry.json` has contracts for M28~M52.
 - Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
 
@@ -105,19 +117,19 @@ M34 is now closed under the strict source-unit manifest rule.
   - M44: total 61, implemented-verified 0, blocked 38, scope-redesign-required 23.
 - These are criteria manifests only. They do not implement training effects. They prevent M42-M44 from being marked complete through static profiles, line indexes, or unassigned COMF files.
 
-## 2026-05-02 M35-M41 source-unit manifest pass 1
+## 2026-05-02 M36-M41 source-unit manifest pass 1
 
-- M35-M41 were all reassessed as `completedAllowedNow: false`.
+- M36-M41 were all reassessed as `completedAllowedNow: false`.
 - New artifacts: `data/coverage/manifests/M35-source-units.json` through `M41-source-units.json`.
 - Current strict counts:
-  - M35: total 8, implemented-verified 0, blocked 7, scope-redesign-required 1.
+  - M35: total 8, implemented-verified 8, blocked 0, scope-redesign-required 0, completedAllowedNow true.
   - M36: total 93, implemented-verified 86, blocked 7.
   - M37: total 461, implemented-verified 294, blocked 167.
   - M38: total 6, implemented-verified 0, blocked 6.
   - M39: total 174, implemented-verified 135, blocked 39.
   - M40: total 11, implemented-verified 5, blocked 6.
   - M41: total 1625, implemented-verified 4, blocked 1620, scope-redesign-required 1.
-- The old M35-M41 `completed` closures are not completion evidence under the strict rules. Do not resume M42 until M35-M41 blocked/scope-redesign-required units are closed or explicitly redesigned.
+- The old M36-M41 `completed` closures are not completion evidence under the strict rules. Do not resume M42 until M35-M41 blocked/scope-redesign-required units are closed or explicitly redesigned.
 
 
 ## 2026-05-02 M31~M34.5 source-unit manifest 1차
@@ -137,7 +149,7 @@ M34 is now closed under the strict source-unit manifest rule.
 ## 현재 위치
 
 - 마지막 strict-closed 마일스톤: M34.5. 단, M34.5는 gate/evidence hardening 완료이며 M35~M52 runtime 기능 구현 완료가 아니다.
-- Current milestone: M35 closure correction
+- Current milestone: M36 closure correction
 - M42 상태: blocked. 이전 M42 커밋은 원본 효과 계산을 구현한 완료 커밋으로 신뢰하지 않는다.
 - 최종 완전 이식 판정: 아직 아님. M52에서만 판정한다.
 
@@ -149,16 +161,16 @@ M34 is now closed under the strict source-unit manifest rule.
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
 - M30은 strict closure 완료. 즉시 사용 아이템 9개 flow/effect 37개는 implemented-verified이고, M30 approved-excluded 37개는 수신 manifest에 blocked inbound로 명시했다.
 - completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
-- M35~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M28~M34.5은 strict closure로 완료됐고, M34.5는 2026-05-06 기준 188개 실질 hardening 단위와 별도 closure integrity check로 정정됐다.
-- M28~M34.5 source-unit manifest status: M28, M29, M30, M31, M32, M33, and M34 all have completedAllowedNow true.
+- M36~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M28~M35은 strict closure로 완료됐고, M34.5는 2026-05-06 기준 188개 실질 hardening 단위와 별도 closure integrity check로 정정됐다.
+- M28~M35 source-unit manifest status: M28, M29, M30, M31, M32, M33, and M34 all have completedAllowedNow true.
 
 ## 현재 미완료 초점
 
-- Current milestone: M35 closure correction
+- Current milestone: M36 closure correction
 - 그 다음 command 0~34의 원본 효과 계산을 실제 runtime behavior로 구현해야 한다.
 - 원본 효과/조건/후처리 책임은 라인 존재 확인이나 profile 생성으로 대체할 수 없다.
 - `npm run gate:training-effect -- 0-34`는 M42가 실제 구현되기 전까지 실패해야 한다.
-- command 35~69는 M43, command 70 이상 전체와 후처리는 M44가 소유한다. M30 재판정 중 `COMF137.ERB` 소비가 확인되어 M44의 기존 70~104 범위 표현은 보강 대상이다. M35~M41 정정과 M42가 닫히기 전에는 M43로 넘어가지 않는다.
+- command 35~69는 M43, command 70 이상 전체와 후처리는 M44가 소유한다. M30 재판정 중 `COMF137.ERB` 소비가 확인되어 M44의 기존 70~104 범위 표현은 보강 대상이다. M36~M41 정정과 M42가 닫히기 전에는 M43로 넘어가지 않는다.
 
 ## 권위 자료
 

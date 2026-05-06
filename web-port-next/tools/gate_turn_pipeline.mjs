@@ -56,9 +56,10 @@ for (const row of inboundTransfersForMilestone(
   expectedRefs.add(row.reviewId);
 }
 
+const supportingRows = coverage.supportingSaveMappingRows ?? coverage.rows;
 const accountedRefs = new Map();
-for (const row of coverage.rows) {
-  assert(row.reviewId, 'coverage row missing reviewId', row);
+for (const row of supportingRows) {
+  assert(row.reviewId, 'supporting save mapping row missing reviewId', row);
   accountedRefs.set(row.reviewId, (accountedRefs.get(row.reviewId) ?? 0) + 1);
 }
 
@@ -68,19 +69,38 @@ const duplicateRefs = [...accountedRefs.entries()].filter(([, count]) => count !
 assert(missingRefs.length === 0, 'M35 owned refs missing from turn pipeline coverage', missingRefs);
 assert(extraRefs.length === 0, 'turn pipeline coverage includes refs outside M35 owned scope', extraRefs);
 assert(duplicateRefs.length === 0, 'turn pipeline coverage refs are duplicated', duplicateRefs);
-assert(coverage.rows.length === expectedRefs.size, 'coverage row count must match M35 owned scope', coverage.summary);
 assert(coverage.unresolvedIssues.length === 0, 'M35 coverage has unresolved issues', coverage.unresolvedIssues);
 assert(Number(gapAudit.summary?.unresolvedGaps ?? -1) === 0, 'M35 gap audit has unresolved gaps', gapAudit.summary);
 
 const badClosedRows = coverage.rows.filter(
-  (row) => !row.sourceEvidenceId || !row.runtimeConsumerId || !row.verificationId || !row.completionStatus,
+  (row) =>
+    row.completionStatus !== 'implemented-verified' ||
+    row.manifestStatus !== 'implemented-verified' ||
+    !row.sourceEvidenceId ||
+    !row.runtimeConsumerId ||
+    !row.verificationId,
 );
-assert(badClosedRows.length === 0, 'closed rows missing evidence, consumer, or verification', badClosedRows);
+assert(badClosedRows.length === 0, 'closed rows missing implemented evidence, consumer, or verification', badClosedRows);
 
 const expectedAddresses = new Set(['DAY:0', 'DAY:3', 'DAY:4', 'TIME', 'TIME:0', 'CFLAG:34', 'FLAG:61']);
-const coverageAddresses = new Set(coverage.rows.map((row) => row.address));
+const coverageAddresses = new Set(supportingRows.map((row) => row.address));
 for (const address of expectedAddresses) {
   assert(coverageAddresses.has(address), `M35 must account mapped save address ${address}`, coverage.summary);
+}
+
+const requiredFunctionalUnitIds = new Set([
+  'M35:source-unit:00001',
+  'M35:source-unit:00002',
+  'M35:source-unit:00003',
+  'M35:source-unit:00004',
+  'M35:source-unit:00005',
+  'M35:source-unit:00006',
+  'M35:source-unit:00007',
+  'M35:source-unit:00008',
+]);
+const coverageUnitIds = new Set(coverage.rows.map((row) => row.unitId));
+for (const unitId of requiredFunctionalUnitIds) {
+  assert(coverageUnitIds.has(unitId), `M35 strict functional unit missing: ${unitId}`, coverage.summary);
 }
 
 for (const hookId of coverage.scopeContract?.hookOrder ?? []) {
@@ -103,10 +123,14 @@ for (const requiredText of [
 const summary = coverage.summary ?? {};
 assert(Number(summary.ownedRowRefs) === expectedRefs.size, 'summary owned row count mismatch', summary);
 assert(Number(summary.rows) === coverage.rows.length, 'summary row count mismatch', summary);
-assert(Number(summary.mapped) === coverage.rows.length, 'all M35 rows must be mapped-consumed', summary);
+assert(Number(summary.implementedVerifiedForStrictClosure) === coverage.rows.length, 'all M35 rows must be implemented-verified', summary);
+assert(Number(summary.mapped) === 0, 'mapped rows must not be counted as M35 completion', summary);
+assert(Number(summary.supportingSaveMappingRows) === expectedRefs.size, 'supporting save mapping row count mismatch', summary);
 assert(Number(summary.ownedBlocker) === 0, 'M35 must not close with owned blockers', summary);
 assert(Number(summary.missingEvidence) === 0, 'M35 must not close with missing evidence', summary);
 assert(Number(summary.missingConsumer) === 0, 'M35 must not close with missing consumer', summary);
 assert(Number(summary.missingVerification) === 0, 'M35 must not close with missing verification', summary);
 
-console.log(`gate:turn-pipeline passed: ${coverage.rows.length} M35 row(s), mapped=${summary.mapped}.`);
+console.log(
+  `gate:turn-pipeline passed: ${coverage.rows.length} M35 strict functional unit(s), supportingSaveRows=${summary.supportingSaveMappingRows}.`,
+);
