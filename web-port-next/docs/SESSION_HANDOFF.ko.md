@@ -6,8 +6,9 @@ M34.5 is closed under the source-unit manifest rule.
 
 - Manifest: `data/coverage/manifests/M34.5-source-units.json`
 - Closure: `data/coverage/milestones/M34.5-closure.json`
-- M34.5 summary: total 189, implemented-verified 189, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
-- M34.5 ownedTotal is 189 hardening units: 169 evidence corrections, 19 registry contracts, and 1 closure responsibilityIntegrity unit.
+- M34.5 summary: total 188, implemented-verified 188, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M34.5 ownedTotal is 188 substantive hardening units: 169 evidence corrections and 19 registry contracts. The closure responsibilityIntegrity check is mandatory but is not counted as a source unit.
+- Correction reason: the previous 189 count treated `responsibilityIntegrity` as an implemented source unit. That made `169 + 19 + 1` arithmetically valid but self-referential, because the closure file was being used to prove its own closure. It is now tracked as a separate mandatory gate check instead.
 - `gate:source-evidence`, `gate:coverage-hardening`, and `gate:milestone-scope-closure -- M34.5` pass.
 - This is not feature runtime implementation. It only closes gate hardening responsibility.
 
@@ -243,7 +244,7 @@ Criteria baseline is complete.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,248; implemented-verified 8,821; blocked 2,036; scope-redesign-required 32; approved-excluded 359.
+- Aggregate totals: total units 11,247; implemented-verified 8,820; blocked 2,036; scope-redesign-required 32; approved-excluded 359.
 - Known criteria gap: none; `coverage-gate-registry.json` includes M28~M52 contracts.
 
 Next worker should not create new ad hoc criteria. Begin closing manifest units with implementation evidence, approved exclusion, blocked status, or explicit ownership redesign.
@@ -303,7 +304,7 @@ M28 is now closed under strict completion. The next worker must not resume M42 b
 - M32: `data/coverage/manifests/M32-source-units.json`, total 298, implemented-verified 291, approved-excluded 7, blocked 0, completedAllowedNow true.
 - M33: `data/coverage/manifests/M33-source-units.json`, total 5378, implemented-verified 5299, approved-excluded 79, blocked 0, completedAllowedNow true.
 - M34: `data/coverage/manifests/M34-source-units.json`, total 2,247, implemented-verified 2,247, blocked 0, completedAllowedNow true.
-- M34.5: `data/coverage/manifests/M34.5-source-units.json`, total 189, implemented-verified 189, blocked 0, completedAllowedNow true.
+- M34.5: `data/coverage/manifests/M34.5-source-units.json`, total 188, implemented-verified 188, blocked 0, completedAllowedNow true.
 
 Current criteria: M28~M34.5 are strict-closed. Do not mistake M35~M41 blocked/scope-redesign-required units for completion. M42 is still not resumed.
 

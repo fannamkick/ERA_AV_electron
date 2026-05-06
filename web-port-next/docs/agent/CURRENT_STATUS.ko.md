@@ -6,8 +6,8 @@ M34.5 is now closed under the strict source-unit manifest rule.
 
 - Manifest: `data/coverage/manifests/M34.5-source-units.json`
 - Closure: `data/coverage/milestones/M34.5-closure.json`
-- Summary: total 189, implemented-verified 189, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
-- M34.5 ownedTotal is 189 hardening units: 169 evidence corrections, 19 registry contracts, and 1 closure responsibilityIntegrity unit.
+- Summary: total 188, implemented-verified 188, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M34.5 ownedTotal is 188 substantive hardening units: 169 evidence corrections and 19 registry contracts. The closure responsibilityIntegrity check is mandatory but is not counted as a source unit.
 - This closes verification/hardening scope only. It does not implement M35-M52 feature runtime behavior.
 - Next strict target: M35 turn/time/hook/session cleanup closure correction.
 
@@ -69,7 +69,7 @@ M34 is now closed under the strict source-unit manifest rule.
 - Summary doc: `docs/milestones/M28_M52_CRITERIA_CONSISTENCY.ko.md`.
 - All M28~M52 source-unit manifests exist.
 - M28 is closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,248; implemented-verified 8,821; blocked 2,036; scope-redesign-required 32; approved-excluded 359.
+- Aggregate totals: total units 11,247; implemented-verified 8,820; blocked 2,036; scope-redesign-required 32; approved-excluded 359.
 - Registry enforcement gap is closed: `coverage-gate-registry.json` has contracts for M28~M52.
 - Criteria discovery is done. Next work is closing blocked/scope-redesign-required units through implementation evidence or explicit ownership redesign.
 
@@ -129,14 +129,14 @@ M34 is now closed under the strict source-unit manifest rule.
   - M32: total 298, implemented-verified 286, blocked 12, completedAllowedNow false.
   - M33: total 5300, implemented-verified 4768, blocked 465, scope-redesign-required 67, completedAllowedNow false.
   - M34: total 2247, implemented-verified 2247, blocked 0, completedAllowedNow true.
-  - M34.5: total 189, implemented-verified 189, blocked 0, completedAllowedNow true.
+  - M34.5: total 188, implemented-verified 188, blocked 0, completedAllowedNow true.
 - 다음 즉시 작업은 M34.5의 blocked/scope-redesign-required를 실제 구현 검증 또는 명시적 재설계 범위로 닫는 것이다.
 
 기준 날짜: 2026-05-02
 
 ## 현재 위치
 
-- 마지막 완료 마일스톤: M41. 훈련 가능 조건 필수 구현
+- 마지막 strict-closed 마일스톤: M34.5. 단, M34.5는 gate/evidence hardening 완료이며 M35~M52 runtime 기능 구현 완료가 아니다.
 - Current milestone: M35 closure correction
 - M42 상태: blocked. 이전 M42 커밋은 원본 효과 계산을 구현한 완료 커밋으로 신뢰하지 않는다.
 - 최종 완전 이식 판정: 아직 아님. M52에서만 판정한다.
@@ -149,7 +149,7 @@ M34 is now closed under the strict source-unit manifest rule.
 - M42 coverage 기준: ownedTotal 35, implemented 0, ownedBlocker 35, missingVerification 35.
 - M30은 strict closure 완료. 즉시 사용 아이템 9개 flow/effect 37개는 implemented-verified이고, M30 approved-excluded 37개는 수신 manifest에 blocked inbound로 명시했다.
 - completed/blocked/scope-redesign-required 판정 기준은 `docs/milestones/RESPONSIBILITY_SEPARATION_RULES.ko.md`에 고정했다.
-- M35~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M28~M34.5은 2026-05-02 strict closure로 완료됐다.
+- M35~M41은 여전히 매니페스트 보강 또는 blocked/scope-redesign-required 정정이 필요하다. M28~M34.5은 strict closure로 완료됐고, M34.5는 2026-05-06 기준 188개 실질 hardening 단위와 별도 closure integrity check로 정정됐다.
 - M28~M34.5 source-unit manifest status: M28, M29, M30, M31, M32, M33, and M34 all have completedAllowedNow true.
 
 ## 현재 미완료 초점

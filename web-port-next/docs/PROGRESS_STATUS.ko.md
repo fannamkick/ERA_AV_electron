@@ -6,8 +6,8 @@ M34.5 is now closed under the strict source-unit manifest rule.
 
 - Manifest: `data/coverage/manifests/M34.5-source-units.json`
 - Closure: `data/coverage/milestones/M34.5-closure.json`
-- Summary: total 189, implemented-verified 189, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
-- M34.5 ownedTotal is 189 hardening units: 169 evidence corrections, 19 registry contracts, and 1 closure responsibilityIntegrity unit.
+- Summary: total 188, implemented-verified 188, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M34.5 ownedTotal is 188 substantive hardening units: 169 evidence corrections and 19 registry contracts. The closure responsibilityIntegrity check is mandatory but is not counted as a source unit.
 - This closes verification/hardening scope only. It does not implement M35-M52 feature runtime behavior.
 - Next strict target: M35 turn/time/hook/session cleanup closure correction.
 
@@ -45,7 +45,7 @@ M30 is now closed under the source-unit manifest rule.
 | Closure | `data/coverage/milestones/M30-closure.json` |
 | Source units tracked | 74 |
 | M30-owned item-use units | 37 |
-| Implemented-verified | 8,821 |
+| Implemented-verified | 8,820 |
 | Approved-excluded from M30 ownership | 37 |
 | Blocked | 2,036 |
 | Scope-redesign-required | 0 |
@@ -78,7 +78,7 @@ M29 is now closed under the source-unit manifest rule.
 | Closure | `data/coverage/milestones/M29-closure.json` |
 | Source units tracked | 206 |
 | M29-owned purchase units | 83 |
-| Implemented-verified | 8,821 |
+| Implemented-verified | 8,820 |
 | Approved-excluded from M29 ownership | 123 |
 | Blocked | 2,036 |
 | Scope-redesign-required | 0 |
@@ -124,7 +124,7 @@ M28 is now closed under the source-unit manifest rule.
 | --- | --- |
 | Manifest | `data/coverage/manifests/M28-source-units.json` |
 | Closure | `data/coverage/milestones/M28-closure.json` |
-| Implemented-verified | 8,821 |
+| Implemented-verified | 8,820 |
 | Approved-excluded | 3 |
 | Blocked | 2,036 |
 | Scope-redesign-required | 0 |
@@ -151,8 +151,8 @@ The criteria-side baseline is complete.
 | Manifests present | M28~M52 all present |
 | `completedAllowedNow: true` | 8 |
 | `completedAllowedNow: false` | 18 |
-| Total units | 11,248 |
-| Implemented-verified | 8,821 |
+| Total units | 11,247 |
+| Implemented-verified | 8,820 |
 | Blocked | 2,036 |
 | Scope-redesign-required | 32 |
 | Approved-excluded | 359 |
@@ -225,7 +225,7 @@ M31~M34.5에 대해 병렬 에이전트 비판 검토 결과를 반영해 source
 | M32 | `data/coverage/manifests/M32-source-units.json` | 298 | 291 | 0 | 0 | true |
 | M33 | `data/coverage/manifests/M33-source-units.json` | 5378 | 5299 | 0 | 0 | true |
 | M34 | `data/coverage/manifests/M34-source-units.json` | 2247 | 2247 | 0 | 0 | true |
-| M34.5 | `data/coverage/manifests/M34.5-source-units.json` | 189 | 189 | 0 | 0 | true |
+| M34.5 | `data/coverage/manifests/M34.5-source-units.json` | 188 | 188 | 0 | 0 | true |
 
 구체적 후속 처리:
 

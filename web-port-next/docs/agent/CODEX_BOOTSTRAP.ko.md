@@ -7,7 +7,7 @@
 - M28은 strict closure 완료 상태다.
 - Next work is M35 closure correction. M28~M34.5 are strict-closed.
 - M35~M41이 strict manifest 기준으로 닫히거나 blocked/scope-redesign-required로 정정되기 전에는 M42 구현을 재개하지 않는다. M28~M34.5은 strict closure 완료 상태다.
-- M28~M52 aggregate: total 11,248; implemented-verified 8,821; approved-excluded 359; blocked 2,036; scope-redesign-required 32; completedAllowedNow true 8 / false 18.
+- M28~M52 aggregate: total 11,247; implemented-verified 8,820; approved-excluded 359; blocked 2,036; scope-redesign-required 32; completedAllowedNow true 8 / false 18.
 
 ## 절대 규칙
 

@@ -15,8 +15,8 @@
     "milestoneClosureGate": "tools/gate_milestone_scope_closure.mjs"
   },
   "closureMetrics": {
-    "ownedTotal": 189,
-    "implemented": 189,
+    "ownedTotal": 188,
+    "implemented": 188,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -28,7 +28,8 @@
     "unapprovedExcluded": 0,
     "missingRequiredScript": 0,
     "auxiliaryCompletionEvidence": 0,
-    "undigestedSourceFileReview": 0
+    "undigestedSourceFileReview": 0,
+    "closureIntegrityChecks": 1
   },
   "evidenceCorrections": {
     "auxiliaryCompletionRowsFoundBeforeM34_5": 169,
@@ -68,14 +69,16 @@
   ],
   "commitHash": "recorded by the M34.5 git commit that includes this closure file",
   "sourceUnitMetrics": {
-    "totalUnits": 189,
-    "implemented-verified": 189,
+    "totalUnits": 188,
+    "implemented-verified": 188,
     "blocked": 0,
     "completedAllowedNow": true,
     "evidenceCorrections": 169,
     "registryContracts": 19,
     "approved-excluded": 0,
-    "scope-redesign-required": 0
+    "scope-redesign-required": 0,
+    "substantiveHardeningUnits": 188,
+    "closureIntegrityChecks": 1
   },
   "responsibilityIntegrity": {
     "scopeReductionProhibited": true,
@@ -96,8 +99,7 @@
       "tools/build_coverage_gate_registry.mjs",
       "tools/gate_milestone_scope_closure.mjs",
       "data/coverage/coverage-gate-registry.json",
-      "data/coverage/manifests/M34.5-source-units.json",
-      "data/coverage/milestones/M34.5-closure.json"
+      "data/coverage/manifests/M34.5-source-units.json"
     ],
     "verificationEvidence": [
       "npm run coverage:gate-registry",
@@ -106,6 +108,20 @@
       "npm run gate:milestone-scope-closure -- M34.5",
       "npm run build",
       "npm run test --if-present"
-    ]
+    ],
+    "countedAsSourceUnit": false
+  },
+  "closureIntegrityCheck": {
+    "countedAsSourceUnit": false,
+    "status": "passed",
+    "source": "data/coverage/milestones/M34.5-closure.json:responsibilityIntegrity",
+    "verificationId": "gate:milestone-scope-closure -- M34.5",
+    "reason": "responsibilityIntegrity is mandatory closure-gate evidence, not an owned source unit or runtime feature unit."
+  },
+  "correctionAnalysis": {
+    "issue": "The previous M34.5 closure counted responsibilityIntegrity as an implemented source unit, producing 169 evidence corrections + 19 registry contracts + 1 closure-integrity = 189.",
+    "cause": "M34.5 is a verification/hardening milestone, so closure-gate integrity was added during closure and then classified like a normal manifest unit. That made the count arithmetically valid but self-referential for strict responsibility closure.",
+    "correction": "M34.5 now counts only 188 substantive hardening units. responsibilityIntegrity remains mandatory and gate-verified, but it is tracked as a closure integrity check outside owned source-unit totals.",
+    "completionMeaning": "M34.5 completion means gate/evidence hardening is complete. It does not complete M35-M52 runtime feature behavior."
   }
 }

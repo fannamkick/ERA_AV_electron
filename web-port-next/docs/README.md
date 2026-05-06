@@ -6,7 +6,7 @@
 - M28 owns 24 main-route contract rows. The 3 BOYFRIEND event-local session rows are approved-excluded from M28 and remain M47 responsibility.
 - M29 is the next closure target. M29 must not count non-purchase item use/equipment/recruit/event rows as purchase completion.
 - M35~M41 must be closed or explicitly redesigned before M42 implementation resumes. M28~M34.5 are now strict-closed.
-- Current aggregate: total units 11,248; implemented-verified 8,821; approved-excluded 359; blocked 2,036; scope-redesign-required 32; completedAllowedNow true 8 / false 18.
+- Current aggregate: total units 11,247; implemented-verified 8,820; approved-excluded 359; blocked 2,036; scope-redesign-required 32; completedAllowedNow true 8 / false 18.
 
 ## 책임 분리
 

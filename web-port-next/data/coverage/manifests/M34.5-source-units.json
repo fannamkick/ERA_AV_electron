@@ -5,13 +5,13 @@
   "purpose": "Completion criteria for coverage hardening and future gate enforcement.",
   "sourceInputs": [
     "data/coverage/definitions.json",
-    "data/coverage/coverage-gate-registry.json",
-    "data/coverage/milestones/M34.5-closure.json"
+    "data/coverage/coverage-gate-registry.json"
   ],
   "rules": [
     "M34.5 is a verification/hardening milestone, not feature runtime implementation.",
     "Each evidence-correction unit must anchor auxiliary labels to primary original source evidence.",
-    "Each registry-contract unit must have required scripts and blocking gates registered."
+    "Each registry-contract unit must have required scripts and blocking gates registered.",
+    "Closure responsibilityIntegrity is a gate requirement, not a source unit counted toward M34.5 owned completion."
   ],
   "directOriginalReviewRequiredBeforeCompletion": false,
   "originalSourceRoots": [
@@ -19,14 +19,16 @@
     "data/coverage/coverage-gate-registry.json"
   ],
   "summary": {
-    "totalUnits": 189,
-    "implemented-verified": 189,
+    "totalUnits": 188,
+    "implemented-verified": 188,
     "blocked": 0,
     "completedAllowedNow": true,
     "evidenceCorrections": 169,
     "registryContracts": 19,
     "approved-excluded": 0,
-    "scope-redesign-required": 0
+    "scope-redesign-required": 0,
+    "substantiveHardeningUnits": 188,
+    "closureIntegrityChecks": 1
   },
   "completionGate": {
     "requiredStatuses": [
@@ -49,7 +51,8 @@
     "M34.5 manifest is complete for hardening scope only. It does not implement feature runtime behavior for M35-M52.",
     "Evidence-correction rows anchor auxiliary cflag/source labels to primary original-game/CSV/VariableSize.CSV evidence.",
     "Registry-contract rows ensure M35-M52 and final verification commands exist as explicit gate contracts.",
-    "Closure responsibilityIntegrity is now implemented-verified, so M34.5 can close under the source-unit manifest rule."
+    "M34.5 closes 188 substantive hardening units: 169 evidence corrections and 19 registry contracts.",
+    "The closure responsibilityIntegrity check is required for completion but is not counted as an owned source unit, avoiding self-referential completion evidence."
   ],
   "units": [
     {
@@ -4751,31 +4754,13 @@
       "acceptedByOwner": true,
       "fromMilestone": "",
       "toMilestone": ""
-    },
-    {
-      "unitId": "M34.5:blocked:closure-responsibility-integrity",
-      "milestone": "M34.5",
-      "ownerMilestone": "M34.5",
-      "ownerRole": "coverage-gate-hardening",
-      "sourceKind": "closure-integrity",
-      "sourcePath": "data/coverage/milestones/M34.5-closure.json",
-      "sourceLine": "",
-      "sourceLabel": "responsibilityIntegrity",
-      "sourceEvidenceId": "closure:m34.5:responsibility-integrity",
-      "legacyReviewId": "closure:m34.5:responsibility-integrity",
-      "legacyFamily": "",
-      "rowKind": "closure-requirement",
-      "legacyId": "responsibilityIntegrity",
-      "requiredBehavior": "M34.5 closure includes responsibilityIntegrity proving hardening responsibility was validated, not only counted.",
-      "runtimeConsumerId": "tools/gate_milestone_scope_closure.mjs",
-      "verificationId": "gate:milestone-scope-closure -- M34.5",
-      "previousCompletionStatus": "implemented-responsibility-integrity",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "data/coverage/milestones/M34.5-closure.json:responsibilityIntegrity",
-      "acceptedByOwner": true,
-      "fromMilestone": "",
-      "toMilestone": ""
     }
-  ]
+  ],
+  "closureIntegrityCheck": {
+    "countedAsSourceUnit": false,
+    "status": "passed",
+    "source": "data/coverage/milestones/M34.5-closure.json:responsibilityIntegrity",
+    "verificationId": "gate:milestone-scope-closure -- M34.5",
+    "reason": "The closure integrity record validates the closure gate itself and must not inflate source-unit completion counts."
+  }
 }

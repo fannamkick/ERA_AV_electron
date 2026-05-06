@@ -6,8 +6,8 @@ M34.5 is now closed under the strict source-unit manifest rule.
 
 - Manifest: `data/coverage/manifests/M34.5-source-units.json`
 - Closure: `data/coverage/milestones/M34.5-closure.json`
-- Summary: total 189, implemented-verified 189, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
-- M34.5 ownedTotal is 189 hardening units: 169 evidence corrections, 19 registry contracts, and 1 closure responsibilityIntegrity unit.
+- Summary: total 188, implemented-verified 188, approved-excluded 0, blocked 0, scope-redesign-required 0, `completedAllowedNow: true`.
+- M34.5 ownedTotal is 188 substantive hardening units: 169 evidence corrections and 19 registry contracts. The closure responsibilityIntegrity check is mandatory but is not counted as a source unit.
 - This closes verification/hardening scope only. It does not implement M35-M52 feature runtime behavior.
 - Next strict target: M35 turn/time/hook/session cleanup closure correction.
 
@@ -156,7 +156,7 @@ Next actions:
 | M32 | completed, source 298 / M32-owned 291 / approved-excluded 7 | strict 완료 | 아니오 | mapped row를 완료로 세던 문제를 제거함 | 수신 owner M33 4, M47 2, M49 1이 각 manifest에서 blocked inbound로 남음 |
 | M33 | completed, source 5,378, M33-owned implemented-verified 5,299, approved-excluded 79 | completed | 아니오 | seed/stat owner와 CFLAG/FLAG/PBAND 후속 owner가 strict manifest에서 분리됨 | 완료. CFLAG/FLAG/PBAND 79개는 M34에서 이후 implemented-verified로 닫힘 |
 | M34 | completed, total 2,247, implemented-verified 2,247 | completed | no | All mapped/blocked rows were promoted to implementation evidence, including item 211 apron behavior. | Complete. Next strict target is M34.5. |
-| M34.5 | completed, total 189, implemented-verified 189 | completed | no | responsibilityIntegrity blocker was closed with explicit hardening evidence. | Complete. Next strict target is M35. |
+| M34.5 | completed, total 188, implemented-verified 188 | completed | no | responsibilityIntegrity blocker was closed with explicit hardening evidence. | Complete. Next strict target is M35. |
 | M35 | completed, implemented 0, mapped 7 | blocked | 예 | `[구현]`인데 mapped-only 완료. turn hook/cleanup이 save field mapping으로만 표현됨 | `EVENT_TURNEND`, `EVENT_NEXTDAY`, `EVENT_AFTERTRAIN` 등 hook/order/effect 단위 매니페스트 작성 |
 | M36 | completed, implemented 552, mapped 7 | manifest-needed | 예 | 방문 장소 definition mapped 7개와 원본 단위 매니페스트 없음 | 방문 장소 7개와 visit action 86개를 매니페스트로 재작성하고 mapped definition을 재증명 |
 | M37 | completed, implemented 286, mapped 175 | scope-redesign-required | 예 | 업무 실행, 업무 정의, save-field owner, session/calculation owner가 섞임 | M37이 닫을 업무 실행 단위와 다른 owner 단위를 매니페스트에서 분리 |
@@ -205,7 +205,7 @@ Next actions:
 | M32 | 298 | 291 | 0 | 0 | 예 | strict closure 완료. Chara identity/lifecycle/CSTR label/save field 291개는 implemented-verified, TALENT save field 4개와 source-file-review 3개는 approved-excluded로 M33/M47/M49 수신 manifest에 blocked inbound로 남겼다. |
 | M33 | 5,378 | 5,299 | 0 | 0 | 예 | strict closure 완료. M33-owned 5,299개는 implemented-verified이며, CFLAG/FLAG/PBAND 79개는 M33 완료가 아니라 approved-excluded였고 M34에서 이후 닫혔다. |
 | M34 | 2,247 | 2,247 | 0 | 0 | yes | Strict closure complete. CFLAG/RELATION seeds, wardrobe route, M33 inbound 79 rows, and item 211 apron behavior are implemented-verified. |
-| M34.5 | 189 | 189 | 0 | 0 | yes | Strict closure complete. Evidence corrections, registry contracts, and closure responsibilityIntegrity are implemented-verified. |
+| M34.5 | 188 | 188 | 0 | 0 | yes | Strict closure complete for 188 substantive hardening units. Closure responsibilityIntegrity is a separate mandatory gate check. |
 
 다음 조치:
 - M31: 완료. listing/가격/조건/생성 session 127개는 M31 소유 구현으로 고정했고 template seed, source-file-review, 후속 lifecycle/event row 110개는 M31 approved-excluded로 남겼다.

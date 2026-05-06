@@ -7,8 +7,8 @@
   "implementationComplete": false,
   "allCompletedAllowedNowFalse": false,
   "totals": {
-    "totalUnits": 11248,
-    "implementedVerified": 8821,
+    "totalUnits": 11247,
+    "implementedVerified": 8820,
     "blocked": 2036,
     "scopeRedesignRequired": 32,
     "approvedExcluded": 359,
@@ -27,7 +27,7 @@
   "blockingFindings": [
     "8 M28-M52 manifest(s) currently have completedAllowedNow=true; remaining manifests still require closure.",
     "Registry contracts exist for every M28-M52 manifest.",
-    "M28 through M34.5 are strictly closed under their current source-unit manifests.",
+    "M28 through M34.5 are strictly closed under their current source-unit manifests; M34.5 counts 188 substantive hardening units plus 1 separate closure integrity check.",
     "Later implementation milestones must still close their own source units before completion.",
     "M52 has explicit verdict criteria despite zero queue rows, so narrative sign-off is blocked.",
     "The next project phase must close blocked/scope-redesign-required units or redesign ownership before claiming completion."
@@ -137,12 +137,14 @@
       "manifestExists": true,
       "registryContractExists": true,
       "summary": {
-        "totalUnits": 189,
-        "implemented-verified": 189,
+        "totalUnits": 188,
+        "implemented-verified": 188,
         "approved-excluded": 0,
         "blocked": 0,
         "scope-redesign-required": 0,
-        "completedAllowedNow": true
+        "completedAllowedNow": true,
+        "substantiveHardeningUnits": 188,
+        "closureIntegrityChecks": 1
       }
     },
     {

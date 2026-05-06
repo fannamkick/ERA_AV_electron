@@ -2,7 +2,7 @@
 
 ## 2026-05-06 next after M34.5 strict closure
 
-M34.5 is now strict-closed: total 189, implemented-verified 189, approved-excluded 0, blocked 0, completedAllowedNow true.
+M34.5 is now strict-closed: total 188, implemented-verified 188, approved-excluded 0, blocked 0, completedAllowedNow true.
 
 Next order:
 1. M35 turn/time/hook/session cleanup closure correction.
