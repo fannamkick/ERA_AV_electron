@@ -2,16 +2,28 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M37",
   "title": "Work, brothel, side job, and special work execution",
-  "status": "completed",
-  "completedAt": "2026-05-01",
-  "commitPolicy": "Commit after every milestone closure.",
-  "commitHash": "f000824",
+  "status": "blocked",
+  "completedAt": null,
+  "strictReassessedAt": "2026-05-06",
+  "commitPolicy": "Commit after every milestone closure or strict closure correction.",
+  "previousCompletedClaim": {
+    "completedAt": "2026-05-01",
+    "commitHash": "f000824",
+    "counts": {
+      "ownedTotal": 461,
+      "implemented": 286,
+      "mapped": 175,
+      "ownedBlocker": 0
+    },
+    "invalidReason": "The old closure counted mapped save/session/calculation rows as closed. Under the strict source-unit rule, mapped rows are not completion evidence."
+  },
   "sourceInputs": {
     "implementationQueue": "data/coverage/implementation-queue.json",
     "definitions": "data/coverage/definitions.json",
     "features": "data/coverage/features.json",
     "saveMapping": "data/coverage/save-mapping.json",
-    "sessionMapping": "data/coverage/session-mapping.json"
+    "sessionMapping": "data/coverage/session-mapping.json",
+    "sourceUnitManifest": "data/coverage/manifests/M37-source-units.json"
   },
   "outputs": {
     "workCoverage": "data/coverage/work-coverage.json",
@@ -22,12 +34,12 @@
     "smoke": "tools/m37_work_all_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 461,
-    "implemented": 286,
-    "mapped": 175,
+    "ownedTotal": 463,
+    "implemented": 294,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 169,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -35,41 +47,78 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 461,
-    "implemented": 286,
-    "mapped": 175,
+    "ownedTotal": 463,
+    "implemented": 294,
+    "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 169,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
     "roleOnlyComplete": 0,
     "unapprovedExcluded": 0
   },
+  "blockingBreakdown": {
+    "saveMapping": 161,
+    "sessionAndCalculationMapping": 6,
+    "inboundFromM29": 2,
+    "legacyFamilies": {
+      "ABL": 12,
+      "BASE": 2,
+      "CFLAG": 37,
+      "CSTR": 2,
+      "DAY": 2,
+      "EXP": 19,
+      "FLAG": 12,
+      "ITEM": 1,
+      "JUEL": 1,
+      "MARK": 2,
+      "PBAND": 1,
+      "TALENT": 72,
+      "LOSEBASE": 1,
+      "MASTER": 1,
+      "PLAYER": 1,
+      "TARGET": 1,
+      "TFLAG": 2
+    }
+  },
+  "responsibilityIntegrity": {
+    "scopeReductionProhibited": true,
+    "checklistMatchedToResponsibility": false,
+    "sourceBehaviorImplementedNotJustIndexed": false,
+    "gateValidatesResponsibilityNotOwnScaffold": false,
+    "limitationsBlockCompletion": true,
+    "responsibilityItems": [
+      "Implement the full work/brothel/side-job/special-work source behavior, not only source labels and dispatch rows.",
+      "Close result save-field effects for ABL/BASE/CFLAG/CSTR/DAY/EXP/FLAG/ITEM/JUEL/MARK/PBAND/TALENT rows with source behavior evidence.",
+      "Close work session/calculation fields for LOSEBASE, MASTER, PLAYER, TARGET, TFLAG:13, and TFLAG:14 with runtime evidence.",
+      "Close M29 inbound work-owned CFLAG:401 and FLAG:41 as implemented, approved-excluded, or scope-redesign-required."
+    ],
+    "implementationEvidence": [
+      "definitions.workDefinitions contains 8 ERB-derived work listings and 72 source-label work definitions.",
+      "work/select, work/selectCharacter, work/execute, and work/cancel dispatch through GameSession.work.",
+      "applyWorkResult currently applies rewardMoney, experienceDeltas, bodyStatDeltas, assignments, careerFlagsByCharacterId, and turn completion."
+    ],
+    "verificationEvidence": [
+      "npm run gate:work-coverage passed under the old row-coverage rule.",
+      "npm run gate:milestone-scope-closure -- M37 currently fails and must continue to fail while ownedBlocker is nonzero."
+    ],
+    "blockingLimitations": [
+      "The 161 save-mapping rows are not proven by the current WorkDefinition effect shape.",
+      "The 6 session/calculation rows remain mapped evidence, not direct source-unit completion.",
+      "M29 inbound CFLAG:401 and FLAG:41 have no runtimeConsumerId in the M37 manifest."
+    ]
+  },
   "verification": {
     "commands": [
-      "npm run coverage:work",
       "npm run gate:work-coverage",
-      "npm run gate:milestone-scope-closure -- M37",
-      "npm run smoke:work-all",
-      "npm run smoke:m12",
-      "npm run verify:m16",
-      "npm run typecheck",
-      "npm run build",
-      "npm run test --if-present"
+      "npm run gate:milestone-scope-closure -- M37"
     ],
-    "expectedGateResult": "461 M37 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "gate:work-coverage passes as coverage indexing; gate:milestone-scope-closure fails until 169 blockers are resolved."
   },
   "commandsRun": [
-    "npm run coverage:work",
     "npm run gate:work-coverage",
-    "npm run gate:milestone-scope-closure -- M37",
-    "npm run smoke:work-all",
-    "npm run smoke:m12",
-    "npm run verify:m16",
-    "npm run typecheck",
-    "npm run build",
-    "npm run test --if-present"
+    "npm run gate:milestone-scope-closure -- M37"
   ]
 }

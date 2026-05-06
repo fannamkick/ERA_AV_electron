@@ -38,7 +38,7 @@
 | 관계/CFLAG/장비/의복 | M34 | owner 분해와 wardrobe route는 있으나 mapped 234개가 기능 효과를 대신하지 않는지 재확인 필요. |
 | 턴/시간/hook | M8, M35, M45, M47, M50 | M35는 mapped 7개만으로 넓은 hook 책임을 닫아 재검토 필요. |
 | 방문/시설 | M10, M36 | 방문 장소/행동 구현 근거는 강함. 세계 이벤트 hook은 M47까지 봐야 완성. |
-| 업무/창관/특수 업무 | M12, M37 | 실행 smoke는 있으나 mapped 175개가 결과 누락을 숨기지 않는지 재확인 필요. |
+| 업무/창관/특수 업무 | M12, M37 | strict 재판정 결과 M37은 total 463, implemented-verified 294, blocked 169다. save/session/calculation 결과 row와 M29 inbound CFLAG:401/FLAG:41을 닫기 전까지 업무 기능군 완료가 아니다. |
 | 촬영 정의/실행/판매 | M13, M38, M39 | M38은 implemented 0/mapped 6, M39에는 source-file-review mapped row가 있어 재검토 필요. |
 | 훈련 메뉴/가능 조건/효과 | M14, M40~M44 | M40/M41 일부 구현. M42 blocked라 훈련 효과 전체는 현재 미완성. M30 재판정 중 `COMF137.ERB` 소비가 확인되어 M44는 70~104가 아니라 70 이상 전체로 보강해야 한다. |
 | 공통 유지보수/회복/자동 처리 | M45 | 아직 미진행. |

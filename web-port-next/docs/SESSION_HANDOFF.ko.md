@@ -331,7 +331,7 @@ M36-M41 source-unit manifest pass 1 was added.
 
 - M35: `data/coverage/manifests/M35-source-units.json`, total 8, implemented-verified 8, blocked 0, scope-redesign-required 0, completedAllowedNow true.
 - M36: `data/coverage/manifests/M36-source-units.json`, total 93, implemented-verified 93, blocked 0, completedAllowedNow true.
-- M37: `data/coverage/manifests/M37-source-units.json`, total 461, implemented-verified 294, blocked 167.
+- M37: `data/coverage/manifests/M37-source-units.json`, total 463, implemented-verified 294, blocked 169.
 - M38: `data/coverage/manifests/M38-source-units.json`, total 6, implemented-verified 0, blocked 6.
 - M39: `data/coverage/manifests/M39-source-units.json`, total 174, implemented-verified 135, blocked 39.
 - M40: `data/coverage/manifests/M40-source-units.json`, total 11, implemented-verified 5, blocked 6.
@@ -464,8 +464,8 @@ M28~M36 source-unit manifest는 작성됐고 strict closure가 완료됐다. 새
 - M35에서 `run.clock`에 day/week/month/year/currentTimeSlot/counter를 연결하고, `run.progressFlags.flag_34/flag_61`을 weekly/monthly hook 소비로 닫았다. 미션 기한, scheduled event, weekly/monthly automatic hook, world event flag, 월말 비용, session cleanup, save roundtrip은 `smoke:turn-long`이 검증한다.
 33. M36 visit/facility is strict-closed: 93 source units implemented-verified, mapped 0, blocked 0; 559 rows remain evidence. Verification included `coverage:visit-facility`, `gate:visit-facility`, `gate:milestone-scope-closure -- M36`, `smoke:visit-all`, `smoke:m10`, `verify:m16`, `typecheck`, `build`, and `test --if-present`.
 - M36에서 방문 장소 7개와 source file + source label 기준 방문 action 86개를 runtime에 연결했다. 방문 선택값은 `GameSession.visit`에만 남고, 완료 결과는 `featureState.visits`, `world.eventFlags`, `world.unlocks`, `economy.account/accountingEntries` owner에만 반영된다.
-- M37에서 업무/창관/특수 업무 완성을 완료했다. `coverage:work`, `gate:work-coverage`, `smoke:work-all`을 실제 script로 교체했고, M37 owned scope 461행을 implemented 286, mapped 175, unresolved issue 0개로 닫았다.
-- M37에서 ERB-derived 업무 listing 8개와 원본 업무 source file + source label 기반 업무 정의 72개를 runtime `definitions.workDefinitions`로 연결했다. 업무 선택값은 `GameSession.work`에만 남고, 실행 결과는 `economy`, `people`, `body`, `work`, `run` owner에만 반영된다.
+- M37은 strict 기준으로 아직 닫히지 않았다. 업무/창관/특수 업무 dispatch와 80개 업무 정의 실행은 검증됐지만, strict manifest 기준 total 463 중 implemented-verified 294, blocked 169다.
+- M37 blocked 169의 구성은 save mapping 161, session/calculation mapping 6, M29 inbound `CFLAG:401`/`FLAG:41` 2개다. `gate:work-coverage`의 old mapped 175는 완료 근거가 아니며, `gate:milestone-scope-closure -- M37`는 통과하면 안 된다.
 - M38에서 촬영 정의와 장면 조건 완성을 완료했다. `coverage:filming-scene`, `gate:filming-scene`, `smoke:filming-scenes`를 실제 script로 교체했고, M38 owned scope 6행을 mapped 6, unresolved issue 0개로 닫았다.
 - M38에서 ERB-derived 촬영 장면 6개를 runtime `definitions.filmingSceneDefinitions`로 연결했다. 장면/대상 선택값과 촬영량 버퍼는 `GameSession.shooting`에만 남는다.
 - M39에서 촬영 실행/결과/판매 완성을 완료했다. `coverage:filming-execution`, `gate:filming-execution`, `smoke:filming-all`을 실제 script로 교체했고, M39 owned scope 174행을 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
@@ -645,7 +645,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 - M34.5에서 `npm run gate:source-evidence` 실패 원인이던 auxiliary evidence 완료성 row 169개를 primary source evidence로 재연결했고, M35~M52 gate registry와 final verify skeleton을 추가했다.
 - M35 turn pipeline coverage/gate/smoke 통과: owned row 7개, unresolved issue 0개
 - M36 visit facility coverage/gate/smoke 통과: owned row 559개, unresolved issue 0개
-- M37 work coverage/gate/smoke 통과: owned row 461개, unresolved issue 0개
+- M37 work coverage/gate/smoke는 old row coverage 기준으로 통과했지만 strict closure는 blocked 169 때문에 미완료
 - M38 filming scene coverage/gate/smoke 통과: owned row 6개, unresolved issue 0개
 - M39 filming execution coverage/gate/smoke 통과: owned row 174개, unresolved issue 0개
 - M40 training session coverage/gate/smoke 통과: owned row 11개, unresolved issue 0개
@@ -692,7 +692,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 31. M34.5 전수 이식 gate hardening은 완료되었다. `gate:source-evidence`, `gate:coverage-hardening`, `gate:coverage-crosscheck`, `gate:pre-implementation-audit`, `gate:implementation-queue`, `build`, `test --if-present`가 통과했다.
 32. M35 ? ??? ?? ??? strict closure ??. total 8, implemented-verified 8, blocked 0, scope-redesign-required 0?? ?? mapped 7 row? supporting evidence?? ???.
 33. M36 visit/facility is strict-closed: 93 source units implemented-verified, mapped 0, blocked 0; 559 rows remain evidence. Verification included `coverage:visit-facility`, `gate:visit-facility`, `gate:milestone-scope-closure -- M36`, `smoke:visit-all`, `smoke:m10`, `verify:m16`, `typecheck`, `build`, and `test --if-present`.
-34. M37 업무/창관/특수 업무 완성은 `npm run coverage:work`, `npm run gate:work-coverage`, `npm run gate:milestone-scope-closure -- M37`, `npm run smoke:work-all`, `npm run smoke:m12`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M37 owned scope 461행 중 implemented 286, mapped 175, unresolved issue 0개로 닫았다.
+34. M37 업무/창관/특수 업무는 strict 재판정 결과 아직 완료가 아니다. `coverage:work`, `gate:work-coverage`, `smoke:work-all`은 업무 dispatch/정의 실행 증거지만, `gate:milestone-scope-closure -- M37`는 strict 기준에서 실패해야 한다. 현재 M37은 total 463, implemented-verified 294, blocked 169다.
 35. M38 촬영 정의와 장면 조건 완성은 `npm run coverage:filming-scene`, `npm run gate:filming-scene`, `npm run gate:milestone-scope-closure -- M38`, `npm run smoke:filming-scenes`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M38 owned scope 6행 중 mapped 6, unresolved issue 0개로 닫았다.
 36. M39 촬영 실행/결과/판매 완성은 `npm run coverage:filming-execution`, `npm run gate:filming-execution`, `npm run gate:milestone-scope-closure -- M39`, `npm run smoke:filming-all`, `npm run smoke:m13`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M39 owned scope 174행 중 implemented 135, mapped 39, unresolved issue 0개로 닫았다.
 37. M40 훈련 메뉴와 세션 완성은 `npm run coverage:training-session`, `npm run gate:training-session`, `npm run gate:milestone-scope-closure -- M40`, `npm run smoke:training-session`, `npm run smoke:m14`, `npm run verify:m16`, `npm run typecheck`, `npm run build`, `npm run test --if-present`로 확인되었다. M40 owned scope 11행 중 implemented 5, mapped 6, unresolved issue 0개로 닫았다.

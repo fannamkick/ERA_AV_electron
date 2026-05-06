@@ -136,7 +136,7 @@ M34 is now closed under the strict source-unit manifest rule.
 - Current strict counts:
   - M35: total 8, implemented-verified 8, blocked 0, scope-redesign-required 0, completedAllowedNow true.
   - M36: total 93, implemented-verified 93, blocked 0, completedAllowedNow true.
-  - M37: total 461, implemented-verified 294, blocked 167.
+  - M37: total 463, implemented-verified 294, blocked 169.
   - M38: total 6, implemented-verified 0, blocked 6.
   - M39: total 174, implemented-verified 135, blocked 39.
   - M40: total 11, implemented-verified 5, blocked 6.

@@ -515,23 +515,24 @@ npm run test --if-present
 - 완료 결과: 업무 전체가 성공/실패/취소/저장 roundtrip과 coverage 갱신을 갖는다.
 - 누락 차단: 계산값이 save에 남거나 업무 결과가 책임 owner 밖으로 흩어지면 완료하지 않는다.
 
-- [BLOCKED:M37] [x] 업무 정의 전체를 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
+- [BLOCKED:M37] [ ] 업무 정의 전체를 구현 또는 사용자 승인 제외로 닫고, 소유 blocker 0개 확인
 - [HERE:M37] [x] 창관, 아르바이트, 일반 업무, 특수 업무를 정의 데이터와 handler owner로 분리
 - [VERIFY:M37] [x] 업무 참여 조건, 대상 조건, 시설 조건, 시간 조건을 view 계산으로 구현
-- [VERIFY:M37] [x] 업무 결과가 돈, 인물, 신체, 경험, 업무 이력, 시간 진행에 반영되는지 검증
-- [BLOCKED:M37] [x] 업무 실행 중 선택값과 계산값은 session/calculation에만 둠
+- [BLOCKED:M37] [ ] 업무 결과가 돈, 인물, 신체, 경험, 업무 이력, 시간 진행에 반영되는지 검증. 현재 strict manifest 기준 save/session/calculation/source-address 169개가 결과 구현 증거 없이 남아 있다.
+- [BLOCKED:M37] [ ] 업무 실행 중 선택값과 계산값은 session/calculation에만 둠. `LOSEBASE`, `MASTER`, `PLAYER`, `TARGET`, `TFLAG:13`, `TFLAG:14` session/calculation mapping 6개는 아직 완료 증거가 아니다.
 - [VERIFY:M37] [x] 성공, 조건 미충족, 대상 누락, 취소, 턴 종료를 검증
 - [VERIFY:M37] [x] 업무 후 저장 roundtrip을 검증
-- [BLOCKED:M37] [x] M19/M20/M24/M25 coverage의 업무 관련 status 갱신
+- [BLOCKED:M37] [ ] M19/M20/M24/M25 coverage의 업무 관련 status 갱신. `mapped`를 완료로 세던 구판정을 strict source-unit status로 정정해야 한다.
 - [VERIFY:M37] [x] `npm run build` 실행
 
-M37 완료 근거:
-- M37 owned scope는 `unit:M37:work` 461행이다. definition 8행, feature 286행, save mapping 161행, session/calculation mapping 6행을 모두 `data/coverage/work-coverage.json`에 기록했다.
+M37 현재 판정:
+- M37 source-unit manifest는 total 463개다. 구현 검증 완료는 definition 8개와 feature 286개, 총 294개다.
+- blocked 169개는 save mapping 161개, session/calculation mapping 6개, M29 inbound save-address 2개다.
 - ERB-derived 업무 listing 8개는 `definitions.workDefinitions[work:arbeit:*]`로 연결했다.
 - 원본 업무/창관/특수 업무 source file + source label 72개는 `workSourceGroups`와 `createSourceLabelWorkDefinitions`를 통해 `definitions.workDefinitions`에 연결했다.
 - `work/select`, `work/selectCharacter`, `work/execute`, `work/cancel`이 업무 선택값을 `GameSession.work`에만 두고, 실행 결과만 `economy`, `people.attributes.experiences`, `body.byCharacterId`, `work.assignments`, `work.careerFlagsByCharacterId`, `run.clock` owner에 반영한다.
-- `smoke:work-all`은 M37 source-backed 업무 정의 80개를 모두 실제 dispatch로 실행하고, 실패/대상 누락/취소/session cleanup/save roundtrip을 검증한다.
-- `data/coverage/audits/M37-gap-audit.json`과 `data/coverage/milestones/M37-closure.json`을 생성했다. ownedTotal 461, implemented 286, mapped 175, blocker/missing/unapproved 0.
+- `smoke:work-all`은 M37 source-backed 업무 정의 80개를 실제 dispatch로 실행한다. 단, 이 검증은 ABL/BASE/CFLAG/CSTR/DAY/EXP/FLAG/ITEM/JUEL/MARK/PBAND/TALENT 등 161개 save-field 결과와 6개 session/calculation row, M29 inbound `CFLAG:401`/`FLAG:41`까지 닫는 증거가 아니다.
+- `data/coverage/milestones/M37-closure.json`은 strict 재판정으로 `blocked` 상태다. `gate:milestone-scope-closure -- M37`는 blocker 169개가 해소되기 전까지 통과하면 안 된다.
 
 검증:
 ```bash
