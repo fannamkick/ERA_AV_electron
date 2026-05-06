@@ -345,6 +345,18 @@ function WorkScreen({ catalog, state, session, onAction }: ScreenProps) {
               />
             ))}
           </div>
+          <div className="listing-list compact-list" aria-label="work assistant">
+            {view.eligibleCharacters.map((candidate) => (
+              <ChoiceButton
+                detail={!candidate.available ? candidate.disabledReason : undefined}
+                key={`assistant:${candidate.characterId}`}
+                label={candidate.label}
+                meta={candidate.available ? 'assistant' : 'unavailable'}
+                selected={candidate.characterId === view.selectedAssistantId}
+                onClick={() => onAction({ type: 'work/selectAssistant', characterId: candidate.characterId })}
+              />
+            ))}
+          </div>
           <ActionRow compact>
             <button type="button" disabled={!view.selectedWork || !view.selectedCharacter} onClick={() => onAction({ type: 'work/execute' })}>
               실행

@@ -16,6 +16,7 @@ export type WorkFailure = {
 export type WorkCalculatedResult = {
   readonly workId: CatalogId;
   readonly characterId: string;
+  readonly assistantId?: string;
   readonly workKind: string;
   readonly sourceFile?: string;
   readonly sourceLabel?: string;
@@ -119,6 +120,10 @@ export function buildWorkView(definitions: GameDefinitions, state: GameState, se
     session.work.selectedCharacterId !== undefined
       ? eligibleCharacters.find((candidate) => candidate.characterId === session.work.selectedCharacterId)
       : undefined;
+  const selectedAssistant =
+    session.work.selectedAssistantId !== undefined
+      ? eligibleCharacters.find((candidate) => candidate.characterId === session.work.selectedAssistantId)
+      : undefined;
 
   return {
     kind: 'work',
@@ -130,6 +135,8 @@ export function buildWorkView(definitions: GameDefinitions, state: GameState, se
     eligibleCharacters,
     selectedCharacterId: session.work.selectedCharacterId,
     selectedCharacter,
+    selectedAssistantId: session.work.selectedAssistantId,
+    selectedAssistant,
   };
 }
 
@@ -137,6 +144,7 @@ export function createWorkSession(definitions: GameDefinitions, state: GameState
   return {
     selectedWorkId: undefined,
     selectedCharacterId: undefined,
+    selectedAssistantId: undefined,
     visibleWorkIds: computeVisibleWorkIds(definitions, state),
     eligibleCharacterIds: eligibleCharacterIds(state),
   };
@@ -215,7 +223,62 @@ export function selectWorkCharacter(state: GameState, session: GameSession, char
   };
 }
 
-function validateWorkExecution(state: GameState, work: WorkDefinition, characterId: string | undefined): WorkFailure | undefined {
+export function selectWorkAssistant(state: GameState, session: GameSession, characterId: string | undefined): WorkUpdateResult {
+  if (characterId === undefined) {
+    return {
+      ok: true,
+      state,
+      session: {
+        ...session,
+        work: {
+          ...session.work,
+          selectedAssistantId: undefined,
+        },
+      },
+      message: '?낅Т 蹂댁“ ?몃Ъ ?좏깮???댁젣?덉뒿?덈떎.',
+    };
+  }
+
+  if (!state.people.characters[characterId]) {
+    return {
+      ok: false,
+      failure: {
+        code: 'work-assistant-not-found',
+        message: `?낅Т 蹂댁“ ?몃Ъ??李얠쓣 ???놁뒿?덈떎: ${characterId}`,
+      },
+    };
+  }
+
+  if (session.work.eligibleCharacterIds.length > 0 && !session.work.eligibleCharacterIds.includes(characterId)) {
+    return {
+      ok: false,
+      failure: {
+        code: 'work-assistant-not-in-session',
+        message: `?꾩옱 ?낅Т ?붾㈃??蹂댁“ ?꾨낫媛 ?꾨떃?덈떎: ${characterId}`,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    state,
+    session: {
+      ...session,
+      work: {
+        ...session.work,
+        selectedAssistantId: characterId,
+      },
+    },
+    message: `${state.people.characters[characterId].identity.displayName}???낅Т 蹂댁“ ?몃Ъ濡??좏깮?덉뒿?덈떎.`,
+  };
+}
+
+function validateWorkExecution(
+  state: GameState,
+  work: WorkDefinition,
+  characterId: string | undefined,
+  assistantId: string | undefined,
+): WorkFailure | undefined {
   const disabledReason = workDisabledReason(state, work);
   if (disabledReason) {
     return {
@@ -244,6 +307,23 @@ function validateWorkExecution(state: GameState, work: WorkDefinition, character
       code: 'work-character-unavailable',
       message: `업무에 참여할 수 없는 인물입니다: ${character.identity.displayName}`,
     };
+  }
+
+  if (assistantId !== undefined) {
+    const assistant = state.people.characters[assistantId];
+    if (!assistant) {
+      return {
+        code: 'work-assistant-not-found',
+        message: `?낅Т 蹂댁“ ?몃Ъ??李얠쓣 ???놁뒿?덈떎: ${assistantId}`,
+      };
+    }
+
+    if (!isCharacterActive(assistant)) {
+      return {
+        code: 'work-assistant-unavailable',
+        message: `?낅Т 蹂댁“濡??ъ슜?????녿뒗 ?몃Ъ?낅땲?? ${assistant.identity.displayName}`,
+      };
+    }
   }
 
   return undefined;
@@ -276,14 +356,18 @@ function legacyEventWorkMessageBranchFlags(
   state: GameState,
   work: WorkDefinition,
   characterId: string,
+  assistantId: string | undefined,
 ): Record<string, boolean | number | string> {
   if (work.source.path.split(/[\\/]/u).pop() !== 'EVENT_WORK_MESSAGE_SP.ERB') {
     return {};
   }
 
   const character = state.people.characters[characterId];
+  const assistant = assistantId !== undefined ? state.people.characters[assistantId] : undefined;
   const flags = state.work.careerFlagsByCharacterId[characterId] ?? {};
+  const assistantFlags = assistantId !== undefined ? state.work.careerFlagsByCharacterId[assistantId] ?? {} : {};
   const traits = character?.attributes.traits ?? {};
+  const assistantTraits = assistant?.attributes.traits ?? {};
   const allActiveMembersLewdProstitutes = Object.values(state.people.characters)
     .filter((member) => isCharacterActive(member))
     .every((member) => {
@@ -293,6 +377,7 @@ function legacyEventWorkMessageBranchFlags(
 
   return {
     'message.eventWork.publicMasturbation': (Number(flags.flag_53 ?? 0) & 1) !== 0,
+    'message.eventWork.futanariPairVUse': traits['121'] === true && Number(flags.flag_54 ?? 0) === 0 && assistantTraits['121'] === true && Number(assistantFlags.flag_54 ?? 0) === 0,
     'message.eventWork.failureTargetMode': Number(flags.flag_42 ?? 0),
     'message.eventWork.printMemberOnStripEnd': Number(flags.flag_50 ?? 0) === 0,
     'message.eventWork.allActiveMembersLewdProstitutes': allActiveMembersLewdProstitutes,
@@ -302,10 +387,16 @@ function legacyEventWorkMessageBranchFlags(
   };
 }
 
-export function calculateWorkResult(work: WorkDefinition, characterId: string, state: GameState): WorkCalculatedResult {
+export function calculateWorkResult(
+  work: WorkDefinition,
+  characterId: string,
+  state: GameState,
+  assistantId?: string,
+): WorkCalculatedResult {
   return {
     workId: work.id,
     characterId,
+    assistantId,
     workKind: workKindFromDefinition(work),
     sourceFile: work.source.path.split(/[\\/]/u).pop(),
     sourceLabel: work.source.originalName ?? work.source.originalId,
@@ -313,7 +404,7 @@ export function calculateWorkResult(work: WorkDefinition, characterId: string, s
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
     traitFlags: { ...(work.traitFlags ?? {}) },
-    workFlagValues: { ...legacyEventWorkMessageBranchFlags(state, work, characterId), ...(work.workFlagValues ?? {}) },
+    workFlagValues: { ...legacyEventWorkMessageBranchFlags(state, work, characterId, assistantId), ...(work.workFlagValues ?? {}) },
     workFlagDeltas: { ...(work.workFlagDeltas ?? {}) },
     economyFlagValues: { ...(work.economyFlagValues ?? {}) },
   };
@@ -423,7 +514,7 @@ export function executeSelectedWork(
     };
   }
 
-  const failure = validateWorkExecution(state, workResult.definition, session.work.selectedCharacterId);
+  const failure = validateWorkExecution(state, workResult.definition, session.work.selectedCharacterId, session.work.selectedAssistantId);
   if (failure) {
     return {
       ok: false,
@@ -431,7 +522,7 @@ export function executeSelectedWork(
     };
   }
 
-  const calculatedResult = calculateWorkResult(workResult.definition, session.work.selectedCharacterId!, state);
+  const calculatedResult = calculateWorkResult(workResult.definition, session.work.selectedCharacterId!, state, session.work.selectedAssistantId);
   const stateAfterWork = applyWorkResult(state, calculatedResult);
   const sessionAfterWork: GameSession = {
     ...session,

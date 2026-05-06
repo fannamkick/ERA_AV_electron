@@ -232,6 +232,8 @@ export type WorkView = {
   readonly eligibleCharacters: readonly WorkCharacterCandidateView[];
   readonly selectedCharacterId?: string;
   readonly selectedCharacter?: WorkCharacterCandidateView;
+  readonly selectedAssistantId?: string;
+  readonly selectedAssistant?: WorkCharacterCandidateView;
 };
 
 export type ShootingTargetView = {

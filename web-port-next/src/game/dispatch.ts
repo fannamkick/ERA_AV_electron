@@ -44,7 +44,7 @@ import {
   selectVisitAction,
   selectVisitPlace,
 } from '../features/visit';
-import { cancelWork, createWorkSession, executeSelectedWork, selectWork, selectWorkCharacter } from '../features/work';
+import { cancelWork, createWorkSession, executeSelectedWork, selectWork, selectWorkAssistant, selectWorkCharacter } from '../features/work';
 import type { GameAction } from './actions';
 import { logEffect } from './effects';
 import {
@@ -564,6 +564,18 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
     }
     case 'work/selectCharacter': {
       const selection = selectWorkCharacter(context.state, context.session, action.characterId);
+      if (!selection.ok) {
+        return failureResult(context, selection.failure);
+      }
+
+      return successResult(context, {
+        state: selection.state,
+        session: selection.session,
+        effects: [logEffect(selection.message)],
+      });
+    }
+    case 'work/selectAssistant': {
+      const selection = selectWorkAssistant(context.state, context.session, action.characterId);
       if (!selection.ok) {
         return failureResult(context, selection.failure);
       }

@@ -93,7 +93,7 @@ OpenRouter worker MCP는 책임 분리와 누락 방지를 위한 적극 사용 
 | M33 | seed/stat owner | 초기 seed와 표시 정의는 owner 분해로 닫고, 행동 결과 변화는 해당 기능 owner에서 별도 닫음 | seed ingestion을 업무/촬영/훈련 효과 구현으로 해석 |
 | M34 | CFLAG/equipment/social owner | 의미가 확인된 CFLAG/관계/장비/의복 상태만 owner와 lifecycle을 가짐 | 의미 불명 CFLAG나 이벤트/훈련/미션 효과를 mapped로 닫음 |
 | M35 | turn pipeline owner | day/week/month/year, hook 순서, 자동 처리, 미션/이벤트 hook, session cleanup, save roundtrip이 각각 검증됨 | save mapping 7개 또는 long smoke 하나만으로 턴 전체 완료 |
-| M37 | work execution owner | 업무 dispatch/정의 실행 80개, definition 8개, 업무 결과 write-effect 21개, LUNCH_STALL ABL:74 보상 read 1개, EVENT_WORK_MESSAGE_SP message branch read 7개는 검증됨. 완료 판정은 남은 save/session/calculation/source-address row 140개까지 닫아야 함 | mapped 175개를 완료로 세어 업무 계산/결과 누락을 숨김 |
+| M37 | work execution owner | 업무 dispatch/정의 실행 80개, definition 8개, 업무 결과 write-effect 21개, LUNCH_STALL ABL:74 보상 read 1개, EVENT_WORK_MESSAGE_SP message branch read 8개는 검증됨. 완료 판정은 남은 save/session/calculation/source-address row 139개까지 닫아야 함 | mapped 175개를 완료로 세어 업무 계산/결과 누락을 숨김 |
 | M38 | filming scene definition/condition owner | 장면 정의, 대상 조건, 장면 조건, 불가 사유, 예상 결과 근거가 runtime에서 소비됨 | implemented 0/mapped 6만으로 장면 정의 완성 처리 |
 | M39 | filming execution/sales owner | 촬영 계산, 출시/판매 상태, session cleanup, roundtrip이 row 수준으로 검증됨 | source-file-review 2개가 파일 단위 mapped로 남음 |
 | M40 | training session owner | 대상/실행자/조수/command 선택과 session lifecycle만 닫고 효과/availability를 완료로 세지 않음 | command 효과를 session 완료로 포함 |

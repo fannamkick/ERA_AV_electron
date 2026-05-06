@@ -55,6 +55,14 @@ function firstCharacterId(context: SmokeContext): string {
   return characterId;
 }
 
+function secondCharacterId(context: SmokeContext, firstId: string): string {
+  const characterId = Object.keys(context.state.people.characters)
+    .sort()
+    .find((id) => id !== firstId);
+  assert(characterId, 'M37 assistant branch smoke needs a second character.');
+  return characterId;
+}
+
 function workIdsForM37(catalog: GameDefinitions): readonly string[] {
   const ids = Object.values(catalog.workDefinitions)
     .filter((work) => work.tags.includes('source-label') || work.tags.includes('erb-derived'))
@@ -69,47 +77,56 @@ function isLunchStallWork(catalog: GameDefinitions, workId: string): boolean {
   return definition?.source.path.split(/[\\/]/u).pop() === 'WORK_S_LUNCHSTALL.ERB' && definition.source.originalName === 'LUNCH_STALL';
 }
 
-function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: string): SmokeContext {
+function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: string, assistantId: string): SmokeContext {
   const character = context.state.people.characters[characterId];
+  const assistant = context.state.people.characters[assistantId];
   assert(character, 'M37 lunch-stall ability smoke needs a character.');
+  assert(assistant, 'M37 event message assistant branch smoke needs an assistant.');
+  const characters = Object.fromEntries(
+    Object.entries(context.state.people.characters).map(([id, member]) => [
+      id,
+      {
+        ...member,
+        attributes: {
+          ...member.attributes,
+          abilities: {
+            ...member.attributes.abilities,
+            ...(id === characterId ? { '74': 9 } : {}),
+          },
+          traits: {
+            ...member.attributes.traits,
+            '76': true,
+            '121': true,
+            '180': true,
+            ...(id === characterId ? { '509': true, '519': true } : {}),
+          },
+        },
+      },
+    ]),
+  );
+  const careerFlagsByCharacterId = Object.fromEntries(
+    Object.keys(context.state.people.characters).map((id) => [
+      id,
+      {
+        ...(context.state.work.careerFlagsByCharacterId[id] ?? {}),
+        flag_130: 1,
+        flag_54: 0,
+        ...(id === characterId ? { flag_42: 1, flag_50: 0, flag_53: 1, flag_607: 1 } : {}),
+      },
+    ]),
+  );
   return {
     ...context,
     state: {
       ...context.state,
       people: {
-        characters: {
-          ...context.state.people.characters,
-          [characterId]: {
-            ...character,
-            attributes: {
-              ...character.attributes,
-              abilities: {
-                ...character.attributes.abilities,
-                '74': 9,
-              },
-              traits: {
-                ...character.attributes.traits,
-                '76': true,
-                '180': true,
-                '509': true,
-                '519': true,
-              },
-            },
-          },
-        },
+        characters,
       },
       work: {
         ...context.state.work,
         careerFlagsByCharacterId: {
           ...context.state.work.careerFlagsByCharacterId,
-          [characterId]: {
-            ...(context.state.work.careerFlagsByCharacterId[characterId] ?? {}),
-            flag_130: 1,
-            flag_42: 1,
-            flag_50: 0,
-            flag_53: 1,
-            flag_607: 1,
-          },
+          ...careerFlagsByCharacterId,
         },
       },
     },
@@ -127,11 +144,12 @@ function main() {
   assertNoBoundaryErrors('initial state/session', validateStateSessionBoundary(context.state, context.session));
   const m37WorkIds = workIdsForM37(context.catalog);
 
-  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
-  assert(step.result.status === 'success', 'normal new game should succeed.');
+  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'easy' } });
+  assert(step.result.status === 'success', 'easy new game should succeed.');
   context = step.context;
   const characterId = firstCharacterId(context);
-  context = seedLegacyLunchStallAbilityInput(context, characterId);
+  const assistantId = secondCharacterId(context, characterId);
+  context = seedLegacyLunchStallAbilityInput(context, characterId, assistantId);
 
   step = dispatchChecked(context, { type: 'main/openWork' });
   assert(step.result.status === 'success', 'work entry should succeed.');
@@ -194,6 +212,9 @@ function main() {
     step = dispatchChecked(context, { type: 'work/selectCharacter', characterId });
     assert(step.result.status === 'success', `character selection should succeed for ${workId}.`);
     context = step.context;
+    step = dispatchChecked(context, { type: 'work/selectAssistant', characterId: assistantId });
+    assert(step.result.status === 'success', `assistant selection should succeed for ${workId}.`);
+    context = step.context;
 
     const staminaBefore = context.state.body.byCharacterId[characterId]?.bodyStats.stamina ?? 0;
     const expectedReward = definition.rewardMoney + (isLunchStallWork(context.catalog, workId) ? 9 : 0);
@@ -242,6 +263,7 @@ function main() {
   }
   const expectedMessageBranches: Record<string, boolean | number> = {
     'message.eventWork.publicMasturbation': true,
+    'message.eventWork.futanariPairVUse': true,
     'message.eventWork.failureTargetMode': 1,
     'message.eventWork.printMemberOnStripEnd': true,
     'message.eventWork.allActiveMembersLewdProstitutes': true,

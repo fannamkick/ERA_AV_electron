@@ -22,9 +22,9 @@
   ],
   "summary": {
     "totalUnits": 463,
-    "implemented-verified": 323,
+    "implemented-verified": 324,
     "approved-excluded": 0,
-    "blocked": 140,
+    "blocked": 139,
     "scope-redesign-required": 0,
     "completedAllowedNow": false
   },
@@ -8259,15 +8259,16 @@
       "rowKind": "save-mapping",
       "legacyId": "CFLAG:54",
       "requiredBehavior": "",
-      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.flag_54 <- applyWorkResult/calculateWorkResult/endTurn work pipeline",
+      "runtimeConsumerId": "work.characterProgress.byCharacterId.*.flags.message.eventWork.futanariPairVUse <- work/selectAssistant + EVENT_WORK_MESSAGE_SP TARGET/ASSI branch calculation",
       "verificationId": "smoke:work-all",
       "previousCompletionStatus": "mapped-consumed-work-save-field",
-      "manifestStatus": "blocked",
-      "blockerReason": "Mapped work save/session/calculation row is not direct completion evidence under strict source-unit rules.",
+      "manifestStatus": "implemented-verified",
+      "blockerReason": "",
       "sourceCoverageRowId": "work:save:save-map-source-cflag-54",
       "acceptedByOwner": null,
       "fromMilestone": "",
-      "toMilestone": ""
+      "toMilestone": "",
+      "status": "implemented-verified"
     },
     {
       "unitId": "M37:source-unit:00330",

@@ -48,6 +48,7 @@ export type GameAction =
   | { readonly type: 'mission/cancel' }
   | { readonly type: 'work/select'; readonly workId: CatalogId }
   | { readonly type: 'work/selectCharacter'; readonly characterId: string }
+  | { readonly type: 'work/selectAssistant'; readonly characterId?: string }
   | { readonly type: 'work/execute' }
   | { readonly type: 'work/cancel' }
   | { readonly type: 'shooting/selectTarget'; readonly characterId: string }
