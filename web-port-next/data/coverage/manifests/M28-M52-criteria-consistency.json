@@ -187,8 +187,8 @@
       "registryContractExists": true,
       "summary": {
         "totalUnits": 463,
-        "implemented-verified": 294,
-        "blocked": 169,
+        "implemented-verified": 315,
+        "blocked": 148,
         "completedAllowedNow": false
       }
     },

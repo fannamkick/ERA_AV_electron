@@ -143,7 +143,7 @@ Priority:
 2. Re-close mapped-only milestones such as M38 as real source-unit implementation/verification units.
 3. Promote or block remaining mapped rows in M36/M37/M39/M40 with row-level runtime/save/session evidence.
 
-Current implemented-verified counts: M35 8/8, M36 93/93, M37 294/463, M38 0/6, M39 135/174, M40 5/11, M41 4/1631.
+Current implemented-verified counts: M35 8/8, M36 93/93, M37 315/463, M38 0/6, M39 135/174, M40 5/11, M41 4/1631.
 
 
 ## 2026-05-02 다음 처리 순서 보정

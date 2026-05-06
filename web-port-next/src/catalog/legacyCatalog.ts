@@ -156,6 +156,70 @@ function workRewardForIndex(index: number, kind: string): number {
   return base + index * 5;
 }
 
+function legacyWorkResultEffectsForDefinition(workId: CatalogId): Partial<WorkDefinition> {
+  const arbeitExperienceId = /^work:arbeit:(\d+)$/u.exec(workId)?.[1];
+  if (!arbeitExperienceId) {
+    return {};
+  }
+
+  return {
+    experienceDeltas: {
+      [`${129 + Number(arbeitExperienceId)}`]: 1,
+    },
+  };
+}
+
+function legacyWorkResultEffectsForSourceLabel(sourceFile: string, sourceLabel: string): Partial<WorkDefinition> {
+  const workId = workSourceDefinitionId(sourceFile, sourceLabel);
+  const effects: Record<CatalogId, Partial<WorkDefinition>> = {
+    [workSourceDefinitionId('SHOP_YUUKAKU.ERB', 'WORK_NORMAL')]: {
+      workFlagValues: {
+        flag_50: 2,
+        flag_51: 1,
+        flag_52: 1,
+      },
+      economyFlagValues: {
+        flag_41: 0,
+      },
+    },
+    [workSourceDefinitionId('WORK_RESULT.ERB', 'WORKING_MAIN')]: {
+      workFlagValues: {
+        flag_53: 0,
+      },
+    },
+    [workSourceDefinitionId('WORK_RECEPTION.ERB', 'RECEPTION_MAIN')]: {
+      workFlagValues: {
+        flag_47: 1,
+        flag_49: 0,
+      },
+      traitFlags: {
+        '398': true,
+      },
+    },
+    [workSourceDefinitionId('WORK_S_CONCERT.ERB', 'CONCERT')]: {
+      workFlagValues: {
+        flag_52: 0,
+      },
+    },
+    [workSourceDefinitionId('WORK_S_SEXORGY.ERB', 'SEX_ORGY')]: {
+      workFlagValues: {
+        flag_55: 0,
+      },
+      workFlagDeltas: {
+        flag_131: 1,
+        flag_133: 1,
+      },
+    },
+    [workSourceDefinitionId('ARBEIT_07_OTOHA.ERB', 'ARBEIT_EXEC_7')]: {
+      traitFlags: {
+        '202': true,
+      },
+    },
+  };
+
+  return effects[workId] ?? {};
+}
+
 function createErbWorkDefinitions(): Record<CatalogId, WorkDefinition> {
   const artifact = rawErbDerivedDefinitions as ErbDerivedDefinitionsArtifact;
   const rows = artifact.rows.filter((row) => row.definitionKey === 'workDefinitions');
@@ -163,6 +227,8 @@ function createErbWorkDefinitions(): Record<CatalogId, WorkDefinition> {
 
   for (const [index, row] of rows.entries()) {
     const id = `work:${row.sourceId}`;
+    const legacyEffects = legacyWorkResultEffectsForDefinition(id);
+    const { experienceDeltas: legacyExperienceDeltas, ...legacyNonExperienceEffects } = legacyEffects;
     result[id] = {
       id,
       label: row.displayText ?? row.sourceName,
@@ -181,7 +247,9 @@ function createErbWorkDefinitions(): Record<CatalogId, WorkDefinition> {
       },
       experienceDeltas: {
         'work.arbeit': 1,
+        ...(legacyExperienceDeltas ?? {}),
       },
+      ...legacyNonExperienceEffects,
       completesTimeBlock: true,
     };
   }
@@ -215,6 +283,7 @@ function createSourceLabelWorkDefinitions(): Record<CatalogId, WorkDefinition> {
         experienceDeltas: {
           [`work.${group.kind}`]: 1,
         },
+        ...legacyWorkResultEffectsForSourceLabel(group.sourceFile, label),
         completesTimeBlock: true,
       };
       index += 1;

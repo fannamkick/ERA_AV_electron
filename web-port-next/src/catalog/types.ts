@@ -54,6 +54,10 @@ export type WorkDefinition = CatalogDefinition & {
   readonly rewardMoney: number;
   readonly bodyStatDeltas: Record<string, number>;
   readonly experienceDeltas: Record<CatalogId, number>;
+  readonly traitFlags?: Record<CatalogId, boolean | number>;
+  readonly workFlagValues?: Record<string, boolean | number | string>;
+  readonly workFlagDeltas?: Record<string, number>;
+  readonly economyFlagValues?: Record<string, boolean | number | string>;
   readonly completesTimeBlock: boolean;
 };
 

@@ -164,6 +164,23 @@ function main() {
     executed += 1;
   }
 
+  const workFlags = context.state.work.careerFlagsByCharacterId[characterId] ?? {};
+  for (const flagId of ['flag_41', 'flag_47', 'flag_49', 'flag_50', 'flag_51', 'flag_52', 'flag_53', 'flag_55', 'flag_131', 'flag_133']) {
+    assert(Object.prototype.hasOwnProperty.call(workFlags, flagId) || Object.prototype.hasOwnProperty.call(context.state.economy.transactionFlags, flagId), `M37 legacy work flag should be written: ${flagId}.`);
+  }
+  for (const experienceId of ['130', '131', '132', '133', '134', '135', '136', '137']) {
+    assert(
+      (context.state.people.characters[characterId]?.attributes.experiences[experienceId] ?? 0) > 0,
+      `M37 arbeit experience should be applied: EXP:${experienceId}.`,
+    );
+  }
+  for (const traitId of ['202', '398']) {
+    assert(
+      context.state.people.characters[characterId]?.attributes.traits[traitId] === true,
+      `M37 work trait flag should be applied: TALENT:${traitId}.`,
+    );
+  }
+
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));
   assertNoBoundaryErrors('M37 save payload', validateSavePayloadBoundary(savePayload));
   const serialized = serializeGameSavePayload(savePayload);

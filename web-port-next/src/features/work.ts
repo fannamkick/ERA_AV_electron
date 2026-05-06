@@ -22,6 +22,10 @@ export type WorkCalculatedResult = {
   readonly rewardMoney: number;
   readonly bodyStatDeltas: Record<string, number>;
   readonly experienceDeltas: Record<CatalogId, number>;
+  readonly traitFlags: Record<CatalogId, boolean | number>;
+  readonly workFlagValues: Record<string, boolean | number | string>;
+  readonly workFlagDeltas: Record<string, number>;
+  readonly economyFlagValues: Record<string, boolean | number | string>;
 };
 
 export type WorkUpdateResult =
@@ -255,6 +259,10 @@ export function calculateWorkResult(work: WorkDefinition, characterId: string): 
     rewardMoney: work.rewardMoney,
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
+    traitFlags: { ...(work.traitFlags ?? {}) },
+    workFlagValues: { ...(work.workFlagValues ?? {}) },
+    workFlagDeltas: { ...(work.workFlagDeltas ?? {}) },
+    economyFlagValues: { ...(work.economyFlagValues ?? {}) },
   };
 }
 
@@ -263,9 +271,24 @@ export function applyWorkResult(state: GameState, result: WorkCalculatedResult):
   const currentCareerFlags = state.work.careerFlagsByCharacterId[result.characterId] ?? {};
   const currentAssignments = state.work.assignments;
   const nextExperiences = { ...(character?.attributes.experiences ?? {}) };
+  const nextTraits = { ...(character?.attributes.traits ?? {}) };
+  const nextCareerFlags: Record<string, boolean | number | string> = { ...currentCareerFlags };
   for (const [experienceId, delta] of Object.entries(result.experienceDeltas)) {
     nextExperiences[experienceId] = (nextExperiences[experienceId] ?? 0) + delta;
   }
+  for (const [traitId, value] of Object.entries(result.traitFlags)) {
+    nextTraits[traitId] = value;
+  }
+  for (const [flagId, value] of Object.entries(result.workFlagValues)) {
+    nextCareerFlags[flagId] = value;
+  }
+  for (const [flagId, delta] of Object.entries(result.workFlagDeltas)) {
+    nextCareerFlags[flagId] = ((nextCareerFlags[flagId] as number | undefined) ?? 0) + delta;
+  }
+  nextCareerFlags[`${result.workId}.completedCount`] = ((nextCareerFlags[`${result.workId}.completedCount`] as number | undefined) ?? 0) + 1;
+  nextCareerFlags[`${result.workKind}.completedCount`] = ((nextCareerFlags[`${result.workKind}.completedCount`] as number | undefined) ?? 0) + 1;
+  nextCareerFlags.lastWorkSourceFile = result.sourceFile ?? '';
+  nextCareerFlags.lastWorkSourceLabel = result.sourceLabel ?? '';
 
   return {
     ...state,
@@ -275,6 +298,10 @@ export function applyWorkResult(state: GameState, result: WorkCalculatedResult):
         currentMoney: state.economy.account.currentMoney + result.rewardMoney,
       },
       accountingEntries: [...state.economy.accountingEntries, `work:${result.workId}:character:${result.characterId}:reward:${result.rewardMoney}`],
+      transactionFlags: {
+        ...state.economy.transactionFlags,
+        ...result.economyFlagValues,
+      },
     },
     people: character
       ? {
@@ -285,6 +312,7 @@ export function applyWorkResult(state: GameState, result: WorkCalculatedResult):
               attributes: {
                 ...character.attributes,
                 experiences: nextExperiences,
+                traits: nextTraits,
               },
             },
           },
@@ -312,13 +340,7 @@ export function applyWorkResult(state: GameState, result: WorkCalculatedResult):
       },
       careerFlagsByCharacterId: {
         ...state.work.careerFlagsByCharacterId,
-        [result.characterId]: {
-          ...currentCareerFlags,
-          [`${result.workId}.completedCount`]: ((currentCareerFlags[`${result.workId}.completedCount`] as number | undefined) ?? 0) + 1,
-          [`${result.workKind}.completedCount`]: ((currentCareerFlags[`${result.workKind}.completedCount`] as number | undefined) ?? 0) + 1,
-          lastWorkSourceFile: result.sourceFile ?? '',
-          lastWorkSourceLabel: result.sourceLabel ?? '',
-        },
+        [result.characterId]: nextCareerFlags,
       },
     },
   };
