@@ -1,4 +1,4 @@
-# 에이전트 시작 문서
+﻿# 에이전트 시작 문서
 
 이 폴더는 Codex/서브에이전트가 세션 시작 때 먼저 읽는 얇은 문서다. 목적은 토큰 누수를 줄이는 것이며, 완료 판정 기준을 줄이는 것이 아니다.
 
@@ -7,7 +7,7 @@
 - M28 strict closure 완료: 24개 main-route contract row는 M28 소유 구현 완료, BOYFRIEND event-local session row 3개는 M28 approved-excluded 및 M47 책임.
 - Next work is M37 closure correction. M28~M36 are strict-closed.
 - M37~M41? strict manifest ???? ???? blocked/scope-redesign-required? ???? ??? M42 ??? ???? ???. M28~M36? strict closure ?? ???.
-- 현재 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 359; blocked 2,022; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- 현재 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 250; blocked 2,131; scope-redesign-required 31; completedAllowedNow true 8 / false 18.
 
 ## 읽기 순서
 

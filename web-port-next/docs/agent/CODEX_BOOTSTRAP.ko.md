@@ -1,4 +1,4 @@
-# Codex Bootstrap
+﻿# Codex Bootstrap
 
 이 문서는 세션 시작용 압축 규칙이다. 완료 기준을 대체하지 않는다.
 
@@ -7,7 +7,7 @@
 - M28은 strict closure 완료 상태다.
 - Next work is M37 closure correction. M28~M36 are strict-closed.
 - M37~M41? strict manifest ???? ???? blocked/scope-redesign-required? ???? ??? M42 ??? ???? ???. M28~M36? strict closure ?? ???.
-- M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 359; blocked 2,022; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 250; blocked 2,131; scope-redesign-required 31; completedAllowedNow true 8 / false 18.
 
 ## 절대 규칙
 

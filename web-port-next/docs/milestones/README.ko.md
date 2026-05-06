@@ -1,4 +1,4 @@
-# Phase Milestone Index
+﻿# Phase Milestone Index
 
 이 디렉터리는 마일스톤 목록을 phase별로 나눈 탐색용 문서다.
 
@@ -7,7 +7,7 @@
 - M28~M36은 strict closure 완료 상태다.
 - Next work is M37 closure correction. M28~M36 are strict-closed.
 - M37~M41? strict source-unit manifest ???? ???? ????? ????? ??? M42? ???? ???. M28~M36? strict closure ?? ???.
-- M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 359; blocked 2,022; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 250; blocked 2,131; scope-redesign-required 31; completedAllowedNow true 8 / false 18.
 
 완료 판정 권위는 여전히 다음 산출물에 있다.
 

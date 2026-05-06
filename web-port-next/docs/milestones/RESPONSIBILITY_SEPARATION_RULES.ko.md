@@ -78,7 +78,7 @@
 | 대상 | 기본 판단 | completed 허용 조건 | blocked 조건 |
 | --- | --- | --- | --- |
 | M28 | route owner | 메인 메뉴 route/action/view/disabled reason이 모두 있고 event/world row를 완료로 세지 않음 | event-local screen row를 route 완료로 세거나 transfer를 completed total로 사용 |
-| M29 | purchase owner | 구매형 listing만 성공/실패/취소/roundtrip을 닫고, 비구매 row는 scope 밖으로 공식 재설계 | 비구매 item 123개 transfer를 구매 완료로 계산 |
+| M29 | purchase owner | 구매형 listing만 성공/실패/취소/roundtrip을 닫고, 비구매 row는 scope 밖으로 공식 재설계. 단 상점에 노출되는 immediate-use item listing/ITEMSALES는 M29가 닫는다. | 비구매/즉시사용 item 123개를 일괄 transfer로 구매 완료 계산 |
 | M30 | immediate item-use owner로 재설계 필요 | 즉시 사용 아이템 9개만 M30으로 재정의하거나, 특수 item 200~214 효과까지 실제 구현 | 특수 item 효과/의복/훈련 availability/effect row를 M30 완료로 계산 |
 | M31 | recruit listing/generation owner | listing, 가격/조건, template 연결, 생성 결과, 실패/취소/roundtrip이 모두 있음 | transferredOut 27개 또는 mapped 158개가 생성 결과 누락을 숨김 |
 | M33 | seed/stat owner | 초기 seed와 표시 정의는 owner 분해로 닫고, 행동 결과 변화는 해당 기능 owner에서 별도 닫음 | seed ingestion을 업무/촬영/훈련 효과 구현으로 해석 |

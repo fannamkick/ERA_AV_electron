@@ -2,8 +2,8 @@
   "schemaVersion": "milestone-closure/v1",
   "milestone": "M31",
   "title": "Recruit listing and character creation coverage",
-  "status": "completed",
-  "completedAt": "2026-05-01",
+  "status": "blocked",
+  "completedAt": null,
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M31 git commit that includes this closure file",
   "sourceInputs": {
@@ -24,16 +24,16 @@
   },
   "counts": {
     "sourceUnitTotal": 237,
-    "ownedTotal": 127,
+    "ownedTotal": 218,
     "implemented": 127,
     "mapped": 0,
-    "approvedExcludedFromM31": 110,
+    "approvedExcludedFromM31": 19,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "rawImplementedRows": 52,
     "rawMappedRows": 158,
     "rawTransferRows": 27,
-    "ownedBlocker": 0,
+    "ownedBlocker": 91,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -41,12 +41,12 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 127,
+    "ownedTotal": 218,
     "implemented": 127,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "ownedBlocker": 0,
+    "ownedBlocker": 91,
     "missingEvidence": 0,
     "missingConsumer": 0,
     "missingVerification": 0,
@@ -56,18 +56,19 @@
   "sourceUnitMetrics": {
     "sourceUnitTotal": 237,
     "implementedVerified": 127,
-    "approvedExcludedFromM31": 110,
-    "blocked": 0,
+    "approvedExcludedFromM31": 19,
+    "blocked": 91,
     "scopeRedesignRequired": 0,
-    "completedAllowedNow": true
+    "completedAllowedNow": false
   },
   "responsibilityIntegrity": {
     "scopeReductionProhibited": true,
     "checklistMatchedToResponsibility": true,
     "sourceBehaviorImplementedNotJustIndexed": true,
     "gateValidatesResponsibilityNotOwnScaffold": true,
-    "limitationsBlockCompletion": false,
+    "limitationsBlockCompletion": true,
     "responsibilityItems": [
+      "M31 cannot exclude generated-character initial identity/body/social/time integration rows without proving recruit creation applies them. Field semantics may be downstream, but creation result integration remains M31-owned.",
       "M31 owns recruit listing definitions, visible recruit listing session state, listing-to-template mapping, price/money checks, duplicate/repeat/roster failure, cancel, recruit session buffers, and creation of people/body/social/equipment containers.",
       "Character identity/lifecycle, BASE/ABL/TALENT/EXP template seed semantics, CFLAG/equipment semantics, TIME/FLAG/event hooks, unused source paths, and aggregate source-file-review rows are not counted as M31 implementation.",
       "Every approved exclusion remains visible in the source-unit manifest; receiver-owned exclusions must be present in the receiving owner manifest."
@@ -102,7 +103,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "237 source row(s), 127 M31-owned recruit row(s), 110 approved exclusions, 0 unresolved issue(s)"
+    "expectedGateResult": "blocked: 91 recruit creation/source-review source unit(s) remain M31-owned."
   },
   "commandsRun": [
     "npm run coverage:recruit",
@@ -114,5 +115,7 @@
     "npm run typecheck",
     "npm run build",
     "npm run test --if-present"
-  ]
+  ],
+  "blockedAt": "2026-05-06",
+  "blockerReason": "M31 still owns 91 recruit creation/source-review units: 83 generated-character initial field integration rows plus 8 invalid self-exclusion rows."
 }

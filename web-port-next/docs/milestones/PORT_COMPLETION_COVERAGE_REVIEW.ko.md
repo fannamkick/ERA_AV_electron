@@ -31,9 +31,9 @@
 | --- | --- | --- |
 | 실행 계약, 저장/session/view 경계 | M1~M3, M9, M16, M50 | 구조는 있다. 전체 기능 후 roundtrip은 M50 전까지 완성 아님. |
 | 메인 route와 기능 진입 | M5, M28 | M28 strict closure 완료. M47 event-local row 3개는 M28 approved-excluded 및 M47 책임으로 분리됨. |
-| 아이템 구매 | M6, M29 | M29 strict closure 완료. 구매형 listing/flow/result 83개만 M29 완료로 세고, 123개 비구매 row는 수신 manifest blocked inbound로 추적한다. |
+| 아이템 구매 | M6, M29 | M29 strict closure blocked. listing/flow/result 83개만 implemented-verified이고, 105개는 approved-excluded, 18개 immediate-use purchasable listing/ITEMSALES row는 M29-owned blocked다. 효과가 M30 소유라는 이유만으로 상점 listing/구매 선택을 M30에 넘길 수 없다. |
 | 아이템 사용/특수 아이템 | M30 | M30 strict closure 완료. 즉시 사용 아이템 9개 flow/effect 37개만 M30 완료로 세고, 특수 훈련 item 200~214 및 item 22/90/91 plus item 211 계열 37개는 M30 approved-excluded로 수신 manifest blocked inbound에 남겼다. |
-| 영입과 인물 생성 | M7, M31, M32 | 영입 listing/생성/identity는 구현 근거가 있으나 M31 transferredOut 27개 재확인 필요. |
+| 영입과 인물 생성 | M7, M31, M32 | M31 strict closure blocked. recruit listing/session 127개는 implemented-verified이나, recruit creation result integration/source-review 91개는 M31-owned blocked다. 필드 의미는 M32/M33/M34/M35일 수 있어도 생성 결과에 초기값이 적용되는지 검증하는 책임은 M31이다. |
 | 신체/능력/소질/경험 | M14, M33, M42~M44 | seed/owner는 대량 연결됐지만 훈련 효과 계산은 M42~M44 미완료. |
 | 관계/CFLAG/장비/의복 | M34 | owner 분해와 wardrobe route는 있으나 mapped 234개가 기능 효과를 대신하지 않는지 재확인 필요. |
 | 턴/시간/hook | M8, M35, M45, M47, M50 | M35는 mapped 7개만으로 넓은 hook 책임을 닫아 재검토 필요. |
@@ -78,7 +78,7 @@
 | 우선순위 | 대상 | 해야 할 일 |
 | --- | --- | --- |
 | 1 | M35~M41 전체 | 기존 `completed`를 유지하지 않는다. 각 마일스톤은 원본 단위 매니페스트를 만들고 단위별 `implemented-verified`/`approved-excluded`/`blocked`/`scope-redesign-required`로 닫는다. |
-| 2 | M29/M31/M33/M37/M38 | 책임 범위가 섞였거나 `transferredOut`가 있으므로 scope 재설계부터 한다. M28은 완료됨. |
+| 2 | M29/M31/M33/M37/M38 | M29와 M31은 source-owner reclaim blocker가 확인됐다. M29 blocked 18, M31 blocked 91을 receiver owner 이름만 보고 닫으면 안 된다. M33/M37/M38도 같은 source-owner 기준으로 재확인해야 한다. |
 | 3 | M30 수신 owner | M30은 완료. M30에서 excluded한 특수 item 200~214 및 item 22/90/91 plus item 211 계열은 M34-closed plus M41/M42/M43/M44에서 닫는다. |
 | 4 | M32/M34/M35/M39/M41 | mapped-only 또는 source-file-review 완료를 금지하고, 원본 label/read/write/command 단위로 분해한다. |
 | 5 | M34.5/M36/M40 | manifest-needed. 기존 구현 근거를 원본 단위 매니페스트로 재증명하거나 blocked로 되돌린다. |

@@ -1,4 +1,4 @@
-# M42~M52 Criteria Ledger
+﻿# M42~M52 Criteria Ledger
 
 This ledger records the remaining completion-criteria work after the M28~M41 source-unit manifest pass.
 
@@ -112,7 +112,7 @@ Artifacts:
 Result:
 - All M28~M52 source-unit manifests exist.
 - M28 is now closed; 1 manifest has `completedAllowedNow: true` and 25 remain false.
-- Aggregate totals: total units 11,247; implemented-verified 8,835; blocked 2,022; scope-redesign-required 31; approved-excluded 359.
+- Aggregate totals: total units 11,247; implemented-verified 8,835; blocked 2,131; scope-redesign-required 31; approved-excluded 250.
 - Registry contracts exist for M28~M52.
 
 Criteria-side baseline is now complete with uniform registry enforcement. Future work should close manifest units through evidence, approved exclusion, blocked status, or explicit scope redesign.

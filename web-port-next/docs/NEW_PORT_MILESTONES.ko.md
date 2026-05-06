@@ -1,4 +1,4 @@
-# 신규 포트 마일스톤
+﻿# 신규 포트 마일스톤
 
 ## 책임 구조
 
@@ -15,7 +15,7 @@
 - M28은 strict closure 완료 상태다.
 - Next call target is M37 closure. M28~M36 are strict-closed.
 - M37~M41? source-unit manifest ???? ???? ????? ????? ??? M42? ???? ???. M28~M36? strict closure ?? ???.
-- Current M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 359; blocked 2,022; scope-redesign-required 31; completedAllowedNow true 10 / false 16.
+- Current M28~M52 aggregate: total 11,247; implemented-verified 8,835; approved-excluded 250; blocked 2,131; scope-redesign-required 31; completedAllowedNow true 8 / false 18.
 
 ## 프로젝트 책임
 

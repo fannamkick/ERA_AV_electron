@@ -55,17 +55,17 @@ M32~M34.5 are strict-closed. M28 has exact M47 inbound correction, and M31 has s
 
 ## 2026-05-05 M31 strict closure update
 
-M31 is now complete under the strict source-unit manifest rule.
+M31 is now blocked under the strict source-unit manifest rule after source-owner reclaim audit.
 
 - Manifest: `data/coverage/manifests/M31-source-units.json`
 - Closure: `data/coverage/milestones/M31-closure.json`
-- Summary: total 237, implemented-verified 127, approved-excluded 110, blocked 0, scope-redesign-required 0, completedAllowedNow true.
-- M31 ownedTotal is 127 recruit listing, flow, visible listing session, and recruit session buffer rows, not the old mixed 237-row queue total.
-- The 110 non-M31 character seed, lifecycle, event hook, unused source, and aggregate source-review rows are excluded from M31 ownership and remain assigned to receiving owner milestones or approved non-runtime source review.
-- Receiver-owned excluded rows are explicit blocked inbound responsibility: M32 20, M33 74, M34 4, M35 1, M47 3.
-- `npm run gate:recruit-coverage` passes with source 237, M31-owned 127, implemented-verified 127, approved-excluded 110.
+- Summary: total 237, implemented-verified 127, approved-excluded 19, blocked 91, scope-redesign-required 0, completedAllowedNow false.
+- M31 ownedTotal is now 218: 127 implemented recruit listing/flow/session rows plus 91 blocked recruit creation integration/self-exclusion rows.
+- Only 19 non-M31 lifecycle/event rows remain approved-excluded. Creation result integration rows are M31-owned until M31 proves generated character initial fields are applied.
+- Receiver-owned excluded rows remain visible, but M33/M34/M35 seed rows are no longer enough to close M31 without M31 integration verification.
+- `npm run gate:recruit-coverage` has historical evidence only; `npm run gate:milestone-scope-closure -- M31` must fail while closure status is blocked.
 - `npm run gate:recruit-coverage` now fails if an M31 receiver-owned exclusion is missing from the receiver manifest.
-- `npm run gate:milestone-scope-closure -- M31` passes with `responsibilityIntegrity`.
+- `npm run gate:milestone-scope-closure -- M31` fails because M31 closure status is `blocked`.
 
 ## 2026-05-02 M30 strict closure update
 
@@ -83,18 +83,18 @@ M30 is now complete under the strict source-unit manifest rule.
 
 ## 2026-05-02 M29 strict closure update
 
-M29 is now complete under the strict source-unit manifest rule.
+M29 is now blocked under the strict source-unit manifest rule after source-owner reclaim audit.
 
 - Manifest: `data/coverage/manifests/M29-source-units.json`
 - Closure: `data/coverage/milestones/M29-closure.json`
-- Summary: total 206, implemented-verified 83, approved-excluded 123, blocked 0, scope-redesign-required 0, completedAllowedNow true.
-- M29 ownedTotal is 83 purchase/listing/result rows, not the old mixed 206-row queue total.
-- The 123 non-purchase/use/equipment/recruit/event/downstream rows are excluded from M29 ownership and remain assigned to receiving owner milestones.
-- All 123 excluded rows now have explicit inbound responsibility in receiver manifests: M30 49, M31 48, M34 12, M35 2, M32 4, M37 2, M47 4, M48 1, M49 1.
+- Summary: total 206, implemented-verified 83, approved-excluded 105, blocked 18, scope-redesign-required 0, completedAllowedNow false.
+- M29 ownedTotal is now 101: 83 implemented purchase rows plus 18 blocked immediate-use purchasable listing/ITEMSALES rows.
+- The remaining 105 non-purchase/equipment/recruit/event/downstream rows are excluded from M29 ownership and remain assigned to receiving owner milestones.
+- Immediate-use item effects transfer to M30, but item 30/31/38/39/40/41/42/43/52 definition/ITEMSALES listing rows are M29-owned blocked.
 - Newly added receiver rows are blocked, not completed: M32 +4, M37 +2, M47 +4, M48 +1, M49 +1.
-- `npm run gate:shop-purchase-coverage` passes with source 206, M29-owned 83, implemented-verified 83, approved-excluded 123.
+- `npm run gate:shop-purchase-coverage` has historical evidence only; strict closure now requires closing the 18 M29-owned blocked rows.
 - `npm run gate:shop-purchase-coverage` now fails if an M29 transfer row is missing from the receiver manifest.
-- `npm run gate:milestone-scope-closure -- M29` passes with `responsibilityIntegrity`.
+- `npm run gate:milestone-scope-closure -- M29` fails because M29 closure status is `blocked`.
 
 ## 2026-05-02 M28 strict closure update
 
@@ -164,9 +164,9 @@ Next actions:
 | M | 기존 closure 상태 | 새 판정 | M42 전 차단 | 핵심 사유 | 다음 조치 |
 | --- | --- | --- | --- | --- | --- |
 | M28 | completed, implemented 24, approved-excluded 3 | completed | 아니오 | strict closure 완료. `responsibilityIntegrity` 있음 | route/action/view 24개는 M28 소유 완료, event-local row 3개는 M47 책임으로 M28에서 approved-excluded |
-| M29 | completed, implemented 83, approved-excluded 123 | completed | 아니오 | strict closure 완료. 수신 manifest inbound도 명시됨 | 구매형 listing/구매 결과 83개만 M29 완료로 세고 123개 비구매 row는 실제 owner manifest에서 blocked inbound로 추적 |
+| M29 | blocked, implemented 83, approved-excluded 105, blocked 18 | blocked | 예 | source-owner reclaim audit에서 즉시 사용 purchasable item listing/ITEMSALES 18개가 M29-owned로 복구됨 | 효과는 M30이어도 상점 listing/구매 선택은 M29가 닫아야 함 |
 | M30 | completed, implemented 37, approved-excluded 37 | completed | 아니오 | strict closure 완료. 수신 manifest inbound도 명시됨 | 즉시 사용 item 9개 flow/effect 37개만 M30 완료로 세고 특수 item/availability/clothing 37개는 실제 owner manifest에서 blocked inbound로 추적 |
-| M31 | completed, implemented 127, approved-excluded 110 | completed | 아니오 | strict closure 완료. 수신 manifest inbound도 명시됨 | 영입 listing/flow/session 127개만 M31 완료로 세고 identity/body-stat/lifecycle/event/source-review 110개는 M31 완료가 아닌 approved-excluded로 추적 |
+| M31 | blocked, implemented 127, approved-excluded 19, blocked 91 | blocked | 예 | source-owner reclaim audit에서 recruit creation result integration 83개와 self-exclusion 8개가 M31-owned로 복구됨 | downstream semantics는 후속 owner여도 생성 결과 적용 검증은 M31이 닫아야 함 |
 | M32 | completed, source 298 / M32-owned 291 / approved-excluded 7 | strict 완료 | 아니오 | mapped row를 완료로 세던 문제를 제거함 | 수신 owner M33 4, M47 2, M49 1이 각 manifest에서 blocked inbound로 남음 |
 | M33 | completed, source 5,378, M33-owned implemented-verified 5,299, approved-excluded 79 | completed | 아니오 | seed/stat owner와 CFLAG/FLAG/PBAND 후속 owner가 strict manifest에서 분리됨 | 완료. CFLAG/FLAG/PBAND 79개는 M34에서 이후 implemented-verified로 닫힘 |
 | M34 | completed, total 2,247, implemented-verified 2,247 | completed | no | All mapped/blocked rows were promoted to implementation evidence, including item 211 apron behavior. | Complete. Next strict target is M34.5. |
@@ -196,7 +196,7 @@ Next actions:
 | M | manifest total | `implemented-verified` | `blocked` | `scope-redesign-required` | 현재 완료 가능 | 핵심 판정 |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | M28 | 27 | 24 | 0 | 0 | 예 | strict closure 완료. SHOP_MAIN menu row 24개는 route contract로 구현 검증했고, BOYFRIEND session row 3개는 M28 approved-excluded 및 M47 책임으로 기록했다. |
-| M29 | 206 | 83 | 0 | 123 | 예 | 구매형 listing/flow/result 83개는 implemented-verified. 비구매/사용/장비/영입/이벤트 123개는 M29 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. |
+| M29 | 206 | 83 | 18 | 105 | 아니오 | 구매형 listing/flow/result 83개는 implemented-verified. 비구매/사용/장비/영입/이벤트 105개는 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. immediate-use purchasable listing/ITEMSALES 18개는 M29-owned blocked로 되돌렸다. |
 | M30 | 74 | 37 | 0 | 37 | 예 | 즉시 사용 item flow/effect 37개는 implemented-verified. 특수 item 200~214 및 item 22/90/91 plus item 211 계열 37개는 M30 approved-excluded이며 수신 manifest에 blocked inbound로 명시됐다. |
 
 다음 조치:
@@ -222,7 +222,7 @@ Next actions:
 | M34.5 | 188 | 188 | 0 | 0 | yes | Strict closure complete for 188 substantive hardening units. Closure responsibilityIntegrity is a separate mandatory gate check. |
 
 다음 조치:
-- M31: 완료. listing/가격/조건/생성 session 127개는 M31 소유 구현으로 고정했고 template seed, source-file-review, 후속 lifecycle/event row 110개는 M31 approved-excluded로 남겼다.
+- M31: blocked. listing/가격/조건/생성 session 127개 구현 이력은 남지만, creation result integration/self-exclusion 91개가 M31-owned blocked다.
 - M32: 완료. source-file-review 3개는 M32 완료가 아니라 M47/M49 approved-excluded로 고정했고, CSTR label 5개는 `smoke:character-identity`에서 구현 검증했다.
 - M33: complete. Seed/display/save-field owner 5,299 rows were verified directly; CFLAG/FLAG/PBAND 79 rows were not counted as M33 completion and are now closed by M34.
 - M34: complete. Item 211 missing rows, mapped rows, and M33 inbound rows are all implemented-verified.
@@ -231,9 +231,9 @@ Next actions:
 | M | 완료로 처리한 것 | 안 했거나 넘긴 것 | 재확인 필요 |
 | --- | --- | --- | --- |
 | M28 | 메인 메뉴 route/action/view 24개를 연결하고 `smoke:main-routes`로 확인했다. | BOYFRIEND event-local screen session row 3개는 M47로 넘겼고 M28에서는 approved-excluded로 닫았다. | strict closure 완료. `responsibilityIntegrity` 포함. |
-| M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영을 구현했다. strict 기준 implemented-verified 83. | 123개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner로 넘겼고, 전부 수신 manifest에 blocked inbound로 명시했다. | 수신 owner가 각 row를 구현/제외/재설계하기 전까지 해당 milestone은 완료되지 않는다. |
+| M29 | 구매형 상점 listing 30개, 가격/노출/구매 성공/실패/취소, 돈/인벤토리 반영 구현 이력은 있다. strict 기준 implemented-verified 83. | 105개 row는 구매가 아닌 사용/장비/영입/이벤트 등 다른 owner 책임으로 남고, 18개 immediate-use purchasable listing/ITEMSALES row는 M29-owned blocked로 되돌렸다. | M29는 완료가 아니다. item 효과와 별개로 상점 listing/구매 선택은 M29가 닫아야 한다. |
 | M30 | 즉시 사용 아이템 30/31/38/39/40/41/42/43/52의 선택, 대상 지정, 성공/실패/취소, 저장 반영 경로를 구현했다. strict 기준 implemented-verified 37. | 특수 item 200~214 및 item 22/90/91 계열 37개는 M30 완료가 아니라 approved-excluded이며, M41/M42/M43/M44 수신 manifest에 blocked inbound로 남겼다. | strict closure 완료. `gate:item-use-coverage`는 source 74, M30-owned 37, implemented-verified 37, approved-excluded 37과 receiver manifest 매칭을 확인한다. item 213은 `COMF137.ERB`라 기존 M42~M44 range 설계도 재확인해야 한다. |
-| M31 | 영입 listing 48개, 반복 영입 제한, 인물 생성 결과, visible listing session, recruit session buffer를 구현했다. strict 기준 implemented-verified 127. | 110개 row는 M31 완료가 아니라 approved-excluded다. M32 20, M33 74, M34 4, M35 1, M47 3은 수신 owner에서 blocked inbound로 남고, unused/source-review 8개는 non-runtime source review로 남긴다. | strict closure 완료. `gate:recruit-coverage`는 source 237, M31-owned 127, approved-excluded 110과 receiver manifest 매칭을 확인한다. |
+| M31 | 영입 listing 48개, 반복 영입 제한, visible listing session, recruit session buffer 구현 이력은 있다. strict 기준 implemented-verified 127. | 19개는 다른 owner 책임으로 남고, 91개 creation result integration/self-exclusion row는 M31-owned blocked로 되돌렸다. | M31은 완료가 아니다. `gate:milestone-scope-closure -- M31`은 status blocked 때문에 실패해야 한다. |
 | M32 | Chara template 109개, CSTR seed 157개, CSTR label definition 5개, M31 inbound lifecycle/CSTR save field 20개, retired/deleted/assistant lifecycle과 roster identity 표시를 구현 검증했다. strict 기준 M32-owned implemented-verified 291. | 7개 row는 M32 완료가 아니다. TALENT save field 4개는 M33, `C_CLUB_GIRLNAME.ERB`/`BOYFRIENDNAME_CALC.ERB`는 M47, `ZNAME.ERB`는 M49로 approved-excluded 및 blocked inbound 처리했다. | strict closure 완료. `gate:character-identity`는 source 298, implemented-verified 291, approved-excluded 7과 receiver manifest 반영을 확인한다. |
 | M33 | BASE/ABL/TALENT/EXP/MARK/PALAM 계열 seed, 표시 정의, save field, M31/M32 inbound body/stat row를 직접 검증했다. strict 기준 M33-owned implemented-verified 5,299. | CFLAG/FLAG/PBAND 79개는 M33 완료가 아니다. approved-excluded로 남겼고 이후 M34에서 implemented-verified로 닫았다. | strict closure 완료. `gate:body-stat-mapping`은 source 5,378, implemented-verified 5,299, approved-excluded 79와 receiver manifest 반영을 확인한다. |
 | M34 | Implemented social/equipment/wardrobe ownership for CFLAG, relationship, equipment, clothing, and item 211 apron behavior. Strict count: 2,247 implemented-verified. | No M34-owned rows transferred out. Event/training/mission effects remain later-owner responsibilities. | Strict closure complete. `gate:social-equipment-cflag` forbids mapped/transferred/source-file-review completion. |
@@ -292,8 +292,8 @@ Next actions:
 | 범위 | 판정 | 이유 | correction |
 | --- | --- | --- | --- |
 | M28 -> M47 3개 | 무효/미완 | BOYFRIEND event-local `TCVAR:20/50/70`은 M47 broad criteria path에는 걸리지만 정확 sourceEvidenceId 수신이 없다. | M47 manifest에 세 row를 정확 inbound로 추가하거나 M28을 blocked로 되돌린다. |
-| M29 -> M30/M31/M34 109개 | 조건부 유효 | 구매 listing 자체가 아니라 즉시 사용, 영입 listing, 의복/장비 소비라서 구매 완료와 분리 가능하다. 다만 receiver가 구현으로 실제 닫힌 row만 게임 완료로 센다. | receiver closure가 blocked이면 전체 포팅 완료 아님. M30 특수 item chain은 M42~M44까지 따라가야 한다. |
-| M29 -> M32/M35/M37/M47/M48/M49 14개 | 조건부/고위험 | "구매가 직접 mutate하지 않는다"는 근거만으로는 부족하다. 해당 save/event/info/turn 의미가 실제 어디서 발생하는지 receiver가 닫아야 한다. | receiver가 blocked이면 유지. implemented라고 된 row도 원본 발생 경로가 구매/사용/이벤트 중 어디인지 재확인한다. |
+| M29 -> M30/M31/M34 91개 | 조건부 유효 | 구매 listing 자체가 아니라 영입 listing, 의복/장비 소비, 비구매 사용/효과라서 구매 완료와 분리 가능하다. 단 immediate-use purchasable item listing/ITEMSALES 18개는 M29가 처리해야 했던 것으로 되돌렸다. | receiver closure가 blocked이면 전체 포팅 완료 아님. M30 특수 item chain은 M42~M44까지 따라가야 한다. |
+| M29 -> M32/M35/M37/M47/M48/M49 14개 | 조건부/고위험 | "구매가 직접 mutate하지 않는다"는 근거만으로는 부족하다. 해당 save/event/info/turn 의미가 실제 어디서 발생하는지 receiver가 닫아야 한다. | receiver가 blocked이면 유지. implemented라고 된 row도 원본 발생 경로가 구매/사용/이벤트 중 어디인지 재확인한다. M29 approved-excluded 총계는 91+14=105다. |
 | M30 -> M41/M42/M43/M44 34개 | 미완/blocked | 특수 item 200~214와 item 22/90/91은 item-use가 아니라 훈련 availability/effect에서 소비된다는 이관 자체는 가능하지만, 훈련 기능 완결 전에는 게임 기능이 닫힌 것이 아니다. | M41/M42/M43/M44가 각각 source 계산, 소비, 실패/취소, 결과 반영을 닫기 전까지 전체 포팅 blocker다. |
 | M30 -> M34 3개 | 유효 | item 211은 `COSPLAY.ERB` 의복 흐름에서 소비되고 M34가 implemented-verified로 닫았다. | 추가 correction 없음. |
 | M31 -> M32/M33/M34/M35 99개 | 조건부 유효 | 영입은 사람 container 생성까지 소유하고, identity/body/social/time 의미는 후속 owner가 seed/save/display로 닫을 수 있다. 단 "owner가 다르다"가 아니라 영입 성공 시 생성 결과가 실제 template/container에 연결되어야 한다. | M32/M33/M34/M35 implemented evidence 유지. 생성 직후 필요한 초기값 누락이 발견되면 M31/M32/M33 경계 재설계. |
@@ -309,3 +309,18 @@ Next actions:
 2. M28 -> M47 3개 정확 inbound 추가 또는 M28 blocked 정정.
 3. M38~M41 blocked closure에 맞춰 progress/handoff 문구 정리.
 4. 그 뒤 M37, M38, M39, M40, M41을 하나씩 실제 기능 완결 기준으로 닫는다.
+
+## 2026-05-06 source owner reclaim 감사
+
+이번 기준은 "receiver owner가 보이는가"가 아니라 "원래 마일스톤이 자기 기능을 끝내려면 처리했어야 했는가"다.
+
+판정:
+- M29는 completed가 아니다. 즉시 사용 아이템의 효과는 M30이지만, 원본 `SHOP_ITEM.ERB`에서 30/31/38/39/40/41/42/43/52는 `ITEMSALES`로 노출되고 `BOUGHT`로 구매 선택/결제를 탄다. 따라서 listing/가격/노출/선택/구매/취소는 M29가 처리했어야 한다.
+- M29 reclaim 대상: 18개. item 30/31/38/39/40/41/42/43/52의 definition 9개와 `ITEMSALES` session row 9개를 `blocked`로 되돌렸다. M29 closure는 `blocked`, total 206, implemented-verified 83, approved-excluded 105, blocked 18이다.
+- M31은 completed가 아니다. M31은 "영입 listing과 인물 생성 결과"를 맡았으므로 downstream field semantics는 M32/M33/M34/M35가 소유하더라도, recruit creation이 initial identity/body/social/time fields를 실제 생성 결과에 적용하는 통합 검증은 M31 책임이다.
+- M31 reclaim 대상: 91개. CSTR initial identity 4개, BASE/ABL/TALENT/EXP/body-stat seed 74개, CFLAG/social seed 4개, TIME 1개, invalid self-exclusion/source-review 8개를 `blocked`로 되돌렸다. M31 closure는 `blocked`, total 237, implemented-verified 127, approved-excluded 19, blocked 91이다.
+
+정리:
+- M29/M31에서 문제였던 것은 "넘긴 대상이 있느냐"가 아니라, 현재 마일스톤의 기능 완결에 필요한 listing/생성 결과 통합을 owner 이름만 보고 제외했다는 점이다.
+- M30/M32/M33/M34/M35가 field/effect semantics를 닫더라도 M29의 구매 listing과 M31의 생성 결과 integration은 해당 마일스톤에서 증명해야 한다.
+- 이후 순서는 M28 exact inbound correction, M29 reclaim 18개, M31 reclaim 91개, M37~M41 blocked closure다.
