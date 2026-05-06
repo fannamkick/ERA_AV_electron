@@ -324,3 +324,20 @@ Next actions:
 - M29/M31에서 문제였던 것은 "넘긴 대상이 있느냐"가 아니라, 현재 마일스톤의 기능 완결에 필요한 listing/생성 결과 통합을 owner 이름만 보고 제외했다는 점이다.
 - M30/M32/M33/M34/M35가 field/effect semantics를 닫더라도 M29의 구매 listing과 M31의 생성 결과 integration은 해당 마일스톤에서 증명해야 한다.
 - 이후 순서는 M28 exact inbound correction, M29 reclaim 18개, M31 reclaim 91개, M37~M41 blocked closure다.
+
+## 2026-05-06 추가 source-owner 재확인
+
+대상: M28~M41 source-unit manifest의 approved-excluded, blocked 항목.
+
+판정 기준: 받는 owner 이름이 있는지가 아니라, 원래 마일스톤이 자기 gameplay 기능을 완결하려면 직접 처리해야 했던 동작인지 확인했다.
+
+결과:
+- M29/M31은 source-owner reclaim 대상이 맞다. 이미 M29 blocked 18, M31 blocked 91로 되돌렸다.
+- M28의 M47 3개는 route 기능 자체가 아니라 BOYFRIEND event-local screen state라서 source-owner reclaim은 아니다. 다만 정확한 receiver inbound가 부족하므로 M28 exact inbound correction은 남아 있다.
+- M30의 M41/M42/M43/M44 34개는 item-use confirmation이 아니라 training availability/effect consumption이라서 M30 source-owner reclaim은 아니다. 단 receiver가 blocked이므로 전체 포팅 완료도 아니다.
+- M32의 M33/M47/M49 7개는 identity/lifecycle 자체가 아니라 TALENT semantics, generated event name, text formatting이라서 M32 source-owner reclaim은 아니다.
+- M33의 M34 79개는 CFLAG/FLAG/PBAND/equipment semantics이고 M34에서 implemented-verified로 닫혔으므로 추가 reclaim 대상이 아니다.
+- M34/M35/M36은 approved-excluded가 없고 현재 manifest 상 자기 책임 단위가 implemented-verified다.
+- M37/M38/M39/M40/M41은 이미 blocked 또는 scope-redesign-required를 포함하므로 완료 상태가 아니다. 여기서는 transfer reclaim이 아니라 실제 기능 구현/검증으로 닫아야 한다.
+
+따라서 "본인이 처리해야 했던 걸 owner 이름만 보고 넘긴" 대표 correction은 현재 M29와 M31이다. 다음 실제 작업은 이 blocker를 구현 또는 scope redesign으로 닫는 것이다.

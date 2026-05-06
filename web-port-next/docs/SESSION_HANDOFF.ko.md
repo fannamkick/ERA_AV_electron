@@ -715,6 +715,7 @@ rg "CFLAG|TFLAG|SOURCE|TEQUIP|ITEMSALES|BOUGHT|COMF|SCENE_|LOSEBASE" src/game sr
 ## 최신 인수인계: 완료 선언 재정렬 후 M42 blocked
 
 New sessions should continue with M28/M29/M31 correction and M37~M41 source-unit manifest closure correction. M29 and M31 are blocked after source-owner reclaim audit; M28 needs exact M47 inbound correction; M32~M36 are strict-closed. M42 command effect 0~34 resumes only after these blockers and M37~M41 are closed or explicitly blocked/scope-redesign-required.
+- Additional source-owner recheck across M28~M41: M29 and M31 are the confirmed reclaim corrections. M28 is not a source-owner reclaim but still needs exact M47 receiver inbound correction. M30/M32/M33 exclusions are conditionally valid by source-owner role, while M37~M41 are already blocked and must be closed by actual gameplay implementation or scope redesign.
 - M42는 완료가 아니다.
 - 이유: 이전 산출물은 원본 `COMF0.ERB`~`COMF34.ERB` 효과 계산을 구현한 것이 아니라 `SOURCE/LOSEBASE/EXP` 라인 인덱싱과 static profile 생성을 완료로 오판했다.
 - 현재 M42 closure는 `status: blocked`이며, `training-effect-0-34.json`은 implemented 0, ownedBlocker 35, missingVerification 35를 기록한다.
