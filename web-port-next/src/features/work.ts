@@ -42,9 +42,37 @@ export type WorkUpdateResult =
       readonly failure: WorkFailure;
     };
 
+function workSourceFileName(work: WorkDefinition): string {
+  return work.source.path.split(/[\\/]/u).pop() ?? '';
+}
+
+function workSourceLabel(work: WorkDefinition): string {
+  return work.source.originalName ?? work.source.originalId ?? work.id;
+}
+
+function isSourceWork(work: WorkDefinition, sourceFile: string, sourceLabel?: string): boolean {
+  return workSourceFileName(work) === sourceFile && (sourceLabel === undefined || workSourceLabel(work) === sourceLabel);
+}
+
+function requiredBrothelFlagsSatisfied(state: GameState, work: WorkDefinition): boolean {
+  return Object.entries(work.requiredBrothelFlags ?? {}).every(([flagId, expected]) => state.work.brothelFlags[flagId] === expected);
+}
+
+function workVisible(state: GameState, work: WorkDefinition): boolean {
+  if (state.work.brothelFlags[`visible:${work.id}`] === true) {
+    return true;
+  }
+
+  return work.defaultAvailable && requiredBrothelFlagsSatisfied(state, work);
+}
+
 function workDisabledReason(state: GameState, work: WorkDefinition): string | undefined {
   if (!work.defaultAvailable) {
     return '아직 표시 조건을 만족하지 않았습니다.';
+  }
+
+  if (!requiredBrothelFlagsSatisfied(state, work)) {
+    return '원본 업무 공개 조건이 아직 충족되지 않았습니다.';
   }
 
   if (Object.keys(state.people.characters).length === 0) {
@@ -63,7 +91,7 @@ function eligibleCharacterIds(state: GameState): readonly string[] {
 
 export function computeVisibleWorkIds(definitions: GameDefinitions, state: GameState): readonly CatalogId[] {
   return Object.values(definitions.workDefinitions)
-    .filter((work) => work.defaultAvailable || state.work.brothelFlags[`visible:${work.id}`] === true)
+    .filter((work) => workVisible(state, work))
     .map((work) => work.id)
     .sort();
 }
@@ -348,8 +376,136 @@ function legacyLunchStallAbilityRewardBonus(state: GameState, work: WorkDefiniti
     }, 0);
 }
 
+function legacyWorkResultSatisfactionBonus(state: GameState, work: WorkDefinition, characterId: string): number {
+  if (!isSourceWork(work, 'WORK_RESULT.ERB', 'WORKING_MAIN')) {
+    return 0;
+  }
+
+  const experience = state.people.characters[characterId]?.attributes.experiences['74'] ?? 0;
+  if (experience > 10000) return 40;
+  if (experience > 5000) return 35;
+  if (experience > 3000) return 30;
+  if (experience > 1000) return 25;
+  if (experience > 500) return 20;
+  if (experience > 100) return 15;
+  if (experience > 50) return 10;
+  return 0;
+}
+
+function legacyConcertRewardMoney(state: GameState, work: WorkDefinition, characterId: string, rewardMoney: number): number {
+  if (!isSourceWork(work, 'WORK_S_CONCERT.ERB', 'CONCERT')) {
+    return rewardMoney;
+  }
+
+  const character = state.people.characters[characterId];
+  const flags = state.work.careerFlagsByCharacterId[characterId] ?? {};
+  const traitBonus = character?.attributes.traits['510'] === true ? 5 : 0;
+  const compatibility = Number(flags.flag_51 ?? 0);
+  const multiplier = compatibility >= 200 ? 2 : compatibility >= 150 ? 1.5 : compatibility >= 120 ? 1.2 : 1;
+  return Math.round((rewardMoney + traitBonus) * multiplier);
+}
+
 function legacyWorkRewardMoney(state: GameState, work: WorkDefinition, characterId: string): number {
-  return work.rewardMoney + legacyLunchStallAbilityRewardBonus(state, work, characterId);
+  const rewardMoney =
+    work.rewardMoney +
+    legacyLunchStallAbilityRewardBonus(state, work, characterId) +
+    legacyWorkResultSatisfactionBonus(state, work, characterId);
+  return legacyConcertRewardMoney(state, work, characterId, rewardMoney);
+}
+
+function resolveLegacyWorkCharacterId(
+  work: WorkDefinition,
+  state: GameState,
+  characterId: string,
+  assistantId: string | undefined,
+): string {
+  if (!isSourceWork(work, 'WORK_S_STRIP.ERB', 'STRIPTEASE') || assistantId === undefined) {
+    return characterId;
+  }
+
+  const selectedExperience = state.people.characters[characterId]?.attributes.experiences['11'] ?? 0;
+  const assistantExperience = state.people.characters[assistantId]?.attributes.experiences['11'] ?? 0;
+  return assistantExperience > selectedExperience ? assistantId : characterId;
+}
+
+function workResultLoveEligible(state: GameState, characterId: string): boolean {
+  const character = state.people.characters[characterId];
+  if (!character) {
+    return false;
+  }
+
+  const experiences = character.attributes.experiences;
+  const traits = character.attributes.traits;
+  return (
+    (experiences['74'] ?? 0) >= 100 &&
+    (experiences['75'] ?? 0) >= 300 &&
+    traits['85'] !== true &&
+    traits['183'] === true &&
+    traits['184'] !== true &&
+    (experiences['91'] ?? 0) >= 60
+  );
+}
+
+function trainerMasterHasTrait(state: GameState, traitId: string): boolean {
+  return Object.values(state.people.characters).some((character) => character.roles.includes('trainer') && character.attributes.traits[traitId] === true);
+}
+
+function legacyWorkSourceTraitFlags(state: GameState, work: WorkDefinition, characterId: string): Record<CatalogId, boolean | number> {
+  if (isSourceWork(work, 'WORK_RESULT.ERB', 'WORKING_MAIN') && workResultLoveEligible(state, characterId)) {
+    return {
+      '184': true,
+    };
+  }
+
+  return {};
+}
+
+function legacyWorkSourceBranchFlags(
+  state: GameState,
+  work: WorkDefinition,
+  characterId: string,
+  assistantId: string | undefined,
+): Record<string, boolean | number | string> {
+  const character = state.people.characters[characterId];
+  const flags = state.work.careerFlagsByCharacterId[characterId] ?? {};
+  const traits = character?.attributes.traits ?? {};
+
+  if (isSourceWork(work, 'WORK_S_VAUCTION.ERB', 'V_AUCTION')) {
+    return {
+      'message.vAuction.retiredIdolAvActress': traits['401'] === true && Number(flags.flag_28 ?? 0) === 1,
+    };
+  }
+
+  if (isSourceWork(work, 'WORK_S_STRIP.ERB', 'STRIPTEASE')) {
+    return {
+      'work.strip.selectedHighestCowgirlExperienceId': characterId,
+      'work.strip.comparedAssistantCowgirlExperience': assistantId !== undefined,
+    };
+  }
+
+  if (isSourceWork(work, 'WORK_RESULT.ERB', 'WORKING_MAIN')) {
+    return {
+      'work.result.satisfactionExperience74Tier': legacyWorkResultSatisfactionBonus(state, work, characterId),
+      'message.workResult.uniformManiaCustomer': traits['184'] === true && (state.inventory.itemCounts['19'] ?? 0) > 0,
+      'work.result.loveEligibleByExperience75': workResultLoveEligible(state, characterId),
+    };
+  }
+
+  if (isSourceWork(work, 'WORK_S_CONCERT.ERB', 'CONCERT')) {
+    const compatibility = Number(flags.flag_51 ?? 0);
+    return {
+      'work.concert.compatibilityFlag51': compatibility,
+      'work.concert.talent510Bonus': traits['510'] === true,
+    };
+  }
+
+  if (isSourceWork(work, 'WORK_S_SEXORGY.ERB')) {
+    return {
+      'work.sexOrgy.masterTalent133Branch': trainerMasterHasTrait(state, '133'),
+    };
+  }
+
+  return {};
 }
 
 function legacyEventWorkMessageBranchFlags(
@@ -393,18 +549,23 @@ export function calculateWorkResult(
   state: GameState,
   assistantId?: string,
 ): WorkCalculatedResult {
+  const resolvedCharacterId = resolveLegacyWorkCharacterId(work, state, characterId, assistantId);
   return {
     workId: work.id,
-    characterId,
+    characterId: resolvedCharacterId,
     assistantId,
     workKind: workKindFromDefinition(work),
-    sourceFile: work.source.path.split(/[\\/]/u).pop(),
-    sourceLabel: work.source.originalName ?? work.source.originalId,
-    rewardMoney: legacyWorkRewardMoney(state, work, characterId),
+    sourceFile: workSourceFileName(work),
+    sourceLabel: workSourceLabel(work),
+    rewardMoney: legacyWorkRewardMoney(state, work, resolvedCharacterId),
     bodyStatDeltas: { ...work.bodyStatDeltas },
     experienceDeltas: { ...work.experienceDeltas },
-    traitFlags: { ...(work.traitFlags ?? {}) },
-    workFlagValues: { ...legacyEventWorkMessageBranchFlags(state, work, characterId, assistantId), ...(work.workFlagValues ?? {}) },
+    traitFlags: { ...(work.traitFlags ?? {}), ...legacyWorkSourceTraitFlags(state, work, resolvedCharacterId) },
+    workFlagValues: {
+      ...legacyEventWorkMessageBranchFlags(state, work, resolvedCharacterId, assistantId),
+      ...legacyWorkSourceBranchFlags(state, work, resolvedCharacterId, assistantId),
+      ...(work.workFlagValues ?? {}),
+    },
     workFlagDeltas: { ...(work.workFlagDeltas ?? {}) },
     economyFlagValues: { ...(work.economyFlagValues ?? {}) },
   };

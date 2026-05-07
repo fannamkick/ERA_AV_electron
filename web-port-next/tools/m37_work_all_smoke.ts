@@ -6,7 +6,7 @@ import { createGameSavePayload, parseGameSavePayload, serializeGameSavePayload }
 import { createInitialGameData, type GameSession, type GameState } from '../src/game/state';
 import type { GameDefinitions } from '../src/catalog/types';
 import { workSourceLabelCount } from '../src/catalog/workSourceGroups';
-import { buildWorkView } from '../src/features/work';
+import { buildWorkView, calculateWorkResult, computeVisibleWorkIds } from '../src/features/work';
 
 type SmokeContext = {
   readonly catalog: GameDefinitions;
@@ -77,6 +77,52 @@ function isLunchStallWork(catalog: GameDefinitions, workId: string): boolean {
   return definition?.source.path.split(/[\\/]/u).pop() === 'WORK_S_LUNCHSTALL.ERB' && definition.source.originalName === 'LUNCH_STALL';
 }
 
+function workIdBySource(catalog: GameDefinitions, sourceFile: string, sourceLabel: string): string {
+  const work = Object.values(catalog.workDefinitions).find((definition) => {
+    const fileName = definition.source.path.split(/[\\/]/u).pop();
+    return fileName === sourceFile && definition.source.originalName === sourceLabel;
+  });
+  assert(work, `M37 smoke needs source-label work ${sourceFile}:${sourceLabel}.`);
+  return work.id;
+}
+
+function withCharacterPatch(
+  context: SmokeContext,
+  characterId: string,
+  patch: {
+    readonly experiences?: Record<string, number>;
+    readonly traits?: Record<string, boolean | number>;
+  },
+): SmokeContext {
+  const character = context.state.people.characters[characterId];
+  assert(character, `M37 smoke needs character patch target ${characterId}.`);
+  return {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        characters: {
+          ...context.state.people.characters,
+          [characterId]: {
+            ...character,
+            attributes: {
+              ...character.attributes,
+              experiences: {
+                ...character.attributes.experiences,
+                ...(patch.experiences ?? {}),
+              },
+              traits: {
+                ...character.attributes.traits,
+                ...(patch.traits ?? {}),
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
 function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: string, assistantId: string): SmokeContext {
   const character = context.state.people.characters[characterId];
   const assistant = context.state.people.characters[assistantId];
@@ -133,6 +179,92 @@ function seedLegacyLunchStallAbilityInput(context: SmokeContext, characterId: st
   };
 }
 
+function seedLegacyWorkBranchInputs(context: SmokeContext, characterId: string, assistantId: string): SmokeContext {
+  let next = withCharacterPatch(context, characterId, {
+    experiences: {
+      '11': 1,
+      '74': 12000,
+      '75': 300,
+      '91': 60,
+    },
+    traits: {
+      '85': false,
+      '133': true,
+      '183': true,
+      '184': false,
+      '401': true,
+      '510': true,
+    },
+  });
+  next = withCharacterPatch(next, assistantId, {
+    experiences: {
+      '11': 9,
+    },
+  });
+
+  return {
+    ...next,
+    state: {
+      ...next.state,
+      inventory: {
+        ...next.state.inventory,
+        itemCounts: {
+          ...next.state.inventory.itemCounts,
+          '19': 1,
+        },
+      },
+      work: {
+        ...next.state.work,
+        brothelFlags: {
+          ...next.state.work.brothelFlags,
+          pband_1: 3,
+        },
+        careerFlagsByCharacterId: {
+          ...next.state.work.careerFlagsByCharacterId,
+          [characterId]: {
+            ...(next.state.work.careerFlagsByCharacterId[characterId] ?? {}),
+            flag_28: 1,
+            flag_51: 200,
+          },
+        },
+      },
+    },
+  };
+}
+
+function assertLegacyWorkSourceBranches(context: SmokeContext, characterId: string, assistantId: string) {
+  const arbeit6Id = workIdBySource(context.catalog, 'ARBEIT_06_AYESHA.ERB', 'ARBEIT_EXEC_6');
+  assert(computeVisibleWorkIds(context.catalog, context.state).includes(arbeit6Id), 'PBAND:1 should expose ARBEIT_06_AYESHA when pband_1 is 3.');
+
+  const vAuction = context.catalog.workDefinitions[workIdBySource(context.catalog, 'WORK_S_VAUCTION.ERB', 'V_AUCTION')];
+  const vAuctionResult = calculateWorkResult(vAuction, characterId, context.state, assistantId);
+  assert(vAuctionResult.workFlagValues['message.vAuction.retiredIdolAvActress'] === true, 'CFLAG:28 should drive V auction retired-idol AV actress text branch.');
+
+  const strip = context.catalog.workDefinitions[workIdBySource(context.catalog, 'WORK_S_STRIP.ERB', 'STRIPTEASE')];
+  const stripResult = calculateWorkResult(strip, characterId, context.state, assistantId);
+  assert(stripResult.characterId === assistantId, 'EXP:11 should select the strip participant with higher cowgirl-position experience.');
+  assert(stripResult.workFlagValues['work.strip.selectedHighestCowgirlExperienceId'] === assistantId, 'EXP:11 strip branch should record the resolved participant.');
+
+  const workingMain = context.catalog.workDefinitions[workIdBySource(context.catalog, 'WORK_RESULT.ERB', 'WORKING_MAIN')];
+  const workingMainResult = calculateWorkResult(workingMain, characterId, context.state, assistantId);
+  assert(workingMainResult.rewardMoney > workingMain.rewardMoney, 'EXP:74 should increase WORK_RESULT satisfaction reward.');
+  assert(workingMainResult.traitFlags['184'] === true, 'EXP:75 should participate in WORK_RESULT love eligibility.');
+
+  const itemBranchContext = withCharacterPatch(context, characterId, { traits: { '184': true } });
+  const itemBranchResult = calculateWorkResult(workingMain, characterId, itemBranchContext.state, assistantId);
+  assert(itemBranchResult.workFlagValues['message.workResult.uniformManiaCustomer'] === true, 'ITEM:19 should drive WORK_RESULT uniform-mania customer text branch.');
+
+  const concert = context.catalog.workDefinitions[workIdBySource(context.catalog, 'WORK_S_CONCERT.ERB', 'CONCERT')];
+  const concertResult = calculateWorkResult(concert, characterId, context.state, assistantId);
+  assert(concertResult.rewardMoney > concert.rewardMoney, 'FLAG:51 and TALENT:510 should affect concert work scoring.');
+  assert(concertResult.workFlagValues['work.concert.compatibilityFlag51'] === 200, 'FLAG:51 should be consumed by concert compatibility scoring.');
+  assert(concertResult.workFlagValues['work.concert.talent510Bonus'] === true, 'TALENT:510 should be consumed by concert scoring.');
+
+  const sexOrgy = context.catalog.workDefinitions[workIdBySource(context.catalog, 'WORK_S_SEXORGY.ERB', 'SEX_ORGY')];
+  const sexOrgyResult = calculateWorkResult(sexOrgy, characterId, context.state, assistantId);
+  assert(sexOrgyResult.workFlagValues['work.sexOrgy.masterTalent133Branch'] === true, 'TALENT:133 should be consumed by sex-orgy master branch scoring.');
+}
+
 function main() {
   const initialData = createInitialGameData();
   let context: SmokeContext = {
@@ -149,7 +281,11 @@ function main() {
   context = step.context;
   const characterId = firstCharacterId(context);
   const assistantId = secondCharacterId(context, characterId);
+  const arbeit6Id = workIdBySource(context.catalog, 'ARBEIT_06_AYESHA.ERB', 'ARBEIT_EXEC_6');
+  assert(!computeVisibleWorkIds(context.catalog, context.state).includes(arbeit6Id), 'PBAND:1 should hide ARBEIT_06_AYESHA before pband_1 reaches 3.');
   context = seedLegacyLunchStallAbilityInput(context, characterId, assistantId);
+  context = seedLegacyWorkBranchInputs(context, characterId, assistantId);
+  assertLegacyWorkSourceBranches(context, characterId, assistantId);
 
   step = dispatchChecked(context, { type: 'main/openWork' });
   assert(step.result.status === 'success', 'work entry should succeed.');
@@ -216,8 +352,10 @@ function main() {
     assert(step.result.status === 'success', `assistant selection should succeed for ${workId}.`);
     context = step.context;
 
-    const staminaBefore = context.state.body.byCharacterId[characterId]?.bodyStats.stamina ?? 0;
-    const expectedReward = definition.rewardMoney + (isLunchStallWork(context.catalog, workId) ? 9 : 0);
+    const calculatedBeforeExecute = calculateWorkResult(definition, characterId, context.state, assistantId);
+    const resultCharacterId = calculatedBeforeExecute.characterId;
+    const staminaBefore = context.state.body.byCharacterId[resultCharacterId]?.bodyStats.stamina ?? 0;
+    const expectedReward = calculatedBeforeExecute.rewardMoney;
     expectedMoney += expectedReward;
     expectedTurn += definition.completesTimeBlock ? 1 : 0;
     step = dispatchChecked(context, { type: 'work/execute' });
@@ -233,13 +371,13 @@ function main() {
     }
     assert(context.state.run.clock.turn === expectedTurn, `turn count mismatch for ${workId}.`);
     assert(context.session.work.visibleWorkIds.length === 0, `completed work should clear work session for ${workId}.`);
-    assert(context.state.work.assignments[characterId]?.workTypeId === workId, `assignment should persist latest work ${workId}.`);
+    assert(context.state.work.assignments[resultCharacterId]?.workTypeId === workId, `assignment should persist latest work ${workId}.`);
     assert(
-      context.state.work.careerFlagsByCharacterId[characterId]?.[`${workId}.completedCount`] === 1,
+      context.state.work.careerFlagsByCharacterId[resultCharacterId]?.[`${workId}.completedCount`] === 1,
       `career completion count should persist for ${workId}.`,
     );
     assert(
-      (context.state.body.byCharacterId[characterId]?.bodyStats.stamina ?? 0) < staminaBefore,
+      (context.state.body.byCharacterId[resultCharacterId]?.bodyStats.stamina ?? 0) < staminaBefore,
       `work should apply body stat delta for ${workId}.`,
     );
     executed += 1;

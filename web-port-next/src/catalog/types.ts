@@ -58,6 +58,7 @@ export type WorkDefinition = CatalogDefinition & {
   readonly workFlagValues?: Record<string, boolean | number | string>;
   readonly workFlagDeltas?: Record<string, number>;
   readonly economyFlagValues?: Record<string, boolean | number | string>;
+  readonly requiredBrothelFlags?: Record<string, boolean | number | string>;
   readonly completesTimeBlock: boolean;
 };
 

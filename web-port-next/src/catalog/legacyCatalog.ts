@@ -171,6 +171,14 @@ function legacyWorkResultEffectsForDefinition(workId: CatalogId): Partial<WorkDe
 
 function legacyWorkResultEffectsForSourceLabel(sourceFile: string, sourceLabel: string): Partial<WorkDefinition> {
   const workId = workSourceDefinitionId(sourceFile, sourceLabel);
+  if (sourceFile === 'ARBEIT_06_AYESHA.ERB') {
+    return {
+      requiredBrothelFlags: {
+        pband_1: 3,
+      },
+    };
+  }
+
   const effects: Record<CatalogId, Partial<WorkDefinition>> = {
     [workSourceDefinitionId('SHOP_YUUKAKU.ERB', 'WORK_NORMAL')]: {
       workFlagValues: {
