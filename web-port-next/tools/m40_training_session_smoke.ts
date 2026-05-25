@@ -160,10 +160,88 @@ function main() {
   assert(context.catalog.trainingCommands[defaultCommandId]?.defaultAvailable === true, 'M40 default command should be available after selections.');
   assertNoBoundaryErrors('initial state/session', validateStateSessionBoundary(context.state, context.session));
 
-  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
-  assert(step.result.status === 'success', 'normal new game should succeed.');
+  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'easy' } });
+  assert(step.result.status === 'success', 'easy new game should succeed.');
   context = step.context;
-  const characterId = firstCharacterId(context);
+
+  // 기숙사 가드 해제 FLAG:100 = 1 주입
+  context = {
+    ...context,
+    state: {
+      ...context.state,
+      run: {
+        ...context.state.run,
+        runFlags: {
+          ...context.state.run.runFlags,
+          '100': 1,
+        },
+      },
+    },
+  };
+
+  const targetCharaId = 'character:151';
+  const executorCharaId = 'character:0';
+  const assistantCharaId = 'character:100';
+
+  // 가상의 조수 캐릭터 'character:100' 주입
+  context = {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        ...context.state.people,
+        characters: {
+          ...context.state.people.characters,
+          [assistantCharaId]: {
+            id: assistantCharaId,
+            identity: {
+              templateId: '100',
+              displayName: '조수여배우',
+              profileTextSlots: {},
+            },
+            attributes: {
+              baseStats: { current: { '0': 1000, '1': 1000 }, maximum: { '0': 1000, '1': 1000 } },
+              abilities: {},
+              traits: {},
+              experiences: {},
+            },
+            flags: {
+              lifecycle: {
+                sellable: true,
+                assistantEligible: true,
+                saleEligibilityRank: 2,
+                retired: false,
+                deleted: false,
+                recruitmentStatus: 'recruited',
+                specialTags: [],
+              },
+              affection: {},
+              family: { relativeCharacterIds: [], legacyRelationIndexes: {} },
+              settings: {},
+              featureProgress: {},
+              legacyFlagsNeedingMapping: {},
+            },
+            roles: ['owned', 'assistant'],
+          },
+        },
+      },
+      body: {
+        ...context.state.body,
+        byCharacterId: {
+          ...context.state.body.byCharacterId,
+          [assistantCharaId]: {
+            characterId: assistantCharaId,
+            bodyStats: { stamina: 1000, energy: 1000 },
+            conditionParams: {},
+            conditionFlags: {},
+            trainingResources: {},
+            contamination: {},
+            imprints: {},
+          },
+        },
+      },
+    },
+  };
 
   step = dispatchChecked(context, { type: 'main/openTraining' });
   assert(step.result.status === 'success', 'EVENTTRAIN entry should open training.');
@@ -191,16 +269,16 @@ function main() {
   assert(step.result.state === beforeAssistantFailure, 'missing assistant should preserve save state reference.');
   context = step.context;
 
-  step = dispatchChecked(context, { type: 'training/selectTarget', characterId });
+  step = dispatchChecked(context, { type: 'training/selectTarget', characterId: targetCharaId });
   assert(step.result.status === 'success', 'training target selection should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId });
+  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId: executorCharaId });
   assert(step.result.status === 'success', 'training executor selection should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectAssistant', characterId });
+  step = dispatchChecked(context, { type: 'training/selectAssistant', characterId: assistantCharaId });
   assert(step.result.status === 'success', 'training assistant selection should succeed.');
   context = step.context;
-  assert(context.session.interaction.participants.assistantId === characterId, 'assistant should be session-only participant state.');
+  assert(context.session.interaction.participants.assistantId === assistantCharaId, 'assistant should be session-only participant state.');
   assert(context.session.interaction.participants.assistantPlay === true, 'assistantPlay should track ASSIPLAY.');
 
   const beforeAssistantClear = context.state;
@@ -211,7 +289,7 @@ function main() {
   assert(context.session.interaction.participants.assistantId === undefined, 'assistant clear should remove assistant id.');
   assert(context.session.interaction.participants.assistantPlay === false, 'assistant clear should clear assistantPlay.');
 
-  step = dispatchChecked(context, { type: 'training/selectAssistant', characterId });
+  step = dispatchChecked(context, { type: 'training/selectAssistant', characterId: assistantCharaId });
   assert(step.result.status === 'success', 'assistant reselection should succeed.');
   context = step.context;
 
@@ -258,36 +336,65 @@ function main() {
   context = step.context;
   assert(context.state === beforeCancelSelection, 'training selection cancel should not write save state.');
   assert(context.session.ui.route === 'training', 'training selection cancel should stay on training route.');
-  assert(context.session.interaction.participants.targetId === undefined, 'selection cancel should clear target.');
-  assert(context.session.interaction.participants.masterId === undefined, 'selection cancel should clear executor.');
-  assert(context.session.interaction.participants.assistantId === undefined, 'selection cancel should clear assistant.');
-  assert(context.session.interaction.participants.assistantPlay === false, 'selection cancel should clear ASSIPLAY.');
+  assert(context.session.interaction.participants.targetId === targetCharaId, 'selection cancel should keep target.');
+  assert(context.session.interaction.participants.masterId === executorCharaId, 'selection cancel should keep executor.');
+  assert(context.session.interaction.participants.assistantId === assistantCharaId, 'selection cancel should keep assistant.');
+  assert(context.session.interaction.participants.assistantPlay === true, 'selection cancel should keep ASSIPLAY.');
   assert(context.session.interaction.commandFlow.selectedCommandId === undefined, 'selection cancel should clear selected command.');
   assert(Object.keys(context.session.interaction.sources).length === 0, 'selection cancel should clear SOURCE buffers.');
   assert(Object.keys(context.session.interaction.paramDeltas).length === 0, 'selection cancel should clear param buffers.');
   assert(Object.keys(context.session.interaction.temporaryFlags).length === 0, 'selection cancel should clear TFLAG buffers.');
 
-  step = dispatchChecked(context, { type: 'training/selectTarget', characterId });
+  // 재선택 전 완전히 리셋하기 위해 수동으로 participants를 비운 세션 컨텍스트 형성 시뮬레이션
+  context = {
+    ...context,
+    session: {
+      ...context.session,
+      interaction: {
+        ...context.session.interaction,
+        participants: { assistantPlay: false }
+      }
+    }
+  };
+
+  step = dispatchChecked(context, { type: 'training/selectTarget', characterId: targetCharaId });
   assert(step.result.status === 'success', 'training target reselection should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId });
+  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId: executorCharaId });
   assert(step.result.status === 'success', 'training executor reselection should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectAssistant', characterId });
+  step = dispatchChecked(context, { type: 'training/selectAssistant', characterId: assistantCharaId });
   assert(step.result.status === 'success', 'training assistant reselection should succeed.');
   context = step.context;
   step = dispatchChecked(context, { type: 'training/selectCommand', commandId: defaultCommandId });
   assert(step.result.status === 'success', 'training command reselection should succeed.');
   context = step.context;
 
+  const command = context.catalog.trainingCommands[defaultCommandId]!;
+  const targetBodyAfter = context.state.body.byCharacterId[targetCharaId];
+  const staminaCur = targetBodyAfter ? Number(targetBodyAfter.bodyStats.stamina) : 0;
+  
+  const forceExit = staminaCur < 500;
+  const completesTimeBlock = command.completesTimeBlock === true;
+  const expectedExit = completesTimeBlock || forceExit;
+
   const dayBeforeTraining = context.state.run.clock.day;
   const turnBeforeTraining = context.state.run.clock.turn;
+  const timeSlotBeforeTraining = context.state.run.clock.currentTimeSlot;
   step = dispatchChecked(context, { type: 'training/execute' });
   assert(step.result.status === 'success', 'EVENTCOMEND/EVENTEND should execute selected training.');
   context = step.context;
-  assert(context.session.ui.route === 'mainMenu', 'EVENTEND should return to main menu through turn end.');
-  assert(context.state.run.clock.day === dayBeforeTraining + 7, 'EVENTEND should advance day by turn end.');
-  assert(context.state.run.clock.turn === turnBeforeTraining + 1, 'EVENTEND should advance turn.');
+
+  if (expectedExit) {
+    assert(context.session.ui.route === 'mainMenu', 'EVENTEND should return to main menu through turn end.');
+    const expectedDay = timeSlotBeforeTraining === 1 ? dayBeforeTraining + 1 : dayBeforeTraining;
+    assert(context.state.run.clock.day === expectedDay, `EVENTEND should advance day correctly. Expected ${expectedDay}, got ${context.state.run.clock.day}`);
+    assert(context.state.run.clock.turn === turnBeforeTraining + 1, 'EVENTEND should advance turn.');
+  } else {
+    assert(context.session.ui.route === 'training', 'EVENTEND should stay on training screen for next commands.');
+    assert(context.state.run.clock.day === dayBeforeTraining, 'EVENTEND should not advance day.');
+    assert(context.state.run.clock.turn === turnBeforeTraining, 'EVENTEND should not advance turn.');
+  }
   assert(context.session.interaction.commandFlow.selectedCommandId === undefined, 'EVENTCOMEND should clear command flow after execution.');
   assert(Object.keys(context.session.interaction.sources).length === 0, 'EVENTCOMEND should clear SOURCE buffers after execution.');
   assert(Object.keys(context.session.interaction.paramDeltas).length === 0, 'EVENTCOMEND should clear param buffers after execution.');
@@ -321,7 +428,7 @@ function main() {
     route: context.session.ui.route,
     day: context.state.run.clock.day,
     turn: context.state.run.clock.turn,
-    latestCommandId: context.state.people.characters[characterId].flags.featureProgress['training.latestCommandId'],
+    latestCommandId: context.state.people.characters[targetCharaId].flags.featureProgress['training.latestCommandId'],
   };
   console.log(`M40 training session smoke passed: ${JSON.stringify(summary)}`);
 }

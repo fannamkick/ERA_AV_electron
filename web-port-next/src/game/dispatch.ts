@@ -247,11 +247,22 @@ function enterTraining(context: GameActionContext): GameActionResult {
     });
   }
 
+  const masterChara = Object.values(context.state.people.characters).find((c) => c.roles.includes('trainer'));
+  const masterId = masterChara?.id ?? 'character:0';
+
+  const session = createTrainingSession();
+
   return successResult(context, {
     route: phaseTwoRoutes.training,
     session: {
       ...context.session,
-      interaction: createTrainingSession(),
+      interaction: {
+        ...session,
+        participants: {
+          ...session.participants,
+          masterId,
+        },
+      },
     },
     effects: [logEffect('Moving to the training screen.')],
   });
@@ -788,12 +799,28 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
         session: cancelTrainingSelection(context.session),
         effects: [logEffect('Training selections and calculation buffers cleared.')],
       });
-    case 'training/cancel':
-      return successResult(context, {
-        route: phaseOneRoutes.mainMenu,
-        session: cancelTraining(context.session),
-        effects: [logEffect('Leaving the training screen.')],
-      });
+    case 'training/cancel': {
+      const didSpendTime = context.session.interaction.commandFlow.timeSpent === true;
+      if (didSpendTime) {
+        const sessionCleared = cancelTraining(context.session);
+        const turn = endTurn(context.state, sessionCleared);
+        return successResult(context, {
+          state: turn.state,
+          session: {
+            ...turn.session,
+            ui: { ...turn.session.ui, route: 'mainMenu' },
+          },
+          route: phaseOneRoutes.mainMenu,
+          effects: [logEffect('Leaving the training room and ending the turn.', 'success'), ...turn.effects],
+        });
+      } else {
+        return successResult(context, {
+          route: phaseOneRoutes.mainMenu,
+          session: cancelTraining(context.session),
+          effects: [logEffect('Leaving the training screen.')],
+        });
+      }
+    }
     case 'roster/retireCharacter': {
       const lifecycle = markCharacterRetired(context.state, action.characterId);
       if (!lifecycle.ok) {

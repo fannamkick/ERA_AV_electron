@@ -17,6 +17,8 @@ export type CommandFlowState = {
   readonly selectedCommandId?: string;
   readonly previousCommandId?: string;
   readonly nextCommandId?: string;
+  readonly timeSpent?: boolean;
+  readonly executionCount?: number;
 };
 
 export type TemporaryEquipmentState = {

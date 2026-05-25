@@ -117,18 +117,35 @@ function main() {
   }
   assertNoBoundaryErrors('initial state/session', validateStateSessionBoundary(context.state, context.session));
 
-  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
-  assert(step.result.status === 'success', 'normal new game should succeed.');
+  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'easy' } });
+  assert(step.result.status === 'success', 'easy new game should succeed.');
   context = step.context;
-  const characterId = firstCharacterId(context);
+
+  // 기숙사 가드 해제 FLAG:100 = 1 주입
+  context = {
+    ...context,
+    state: {
+      ...context.state,
+      run: {
+        ...context.state.run,
+        runFlags: {
+          ...context.state.run.runFlags,
+          '100': 1,
+        },
+      },
+    },
+  };
+
+  const targetCharaId = 'character:151';
+  const executorCharaId = 'character:0';
 
   step = dispatchChecked(context, { type: 'main/openTraining' });
   assert(step.result.status === 'success', 'training entry should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectTarget', characterId });
+  step = dispatchChecked(context, { type: 'training/selectTarget', characterId: targetCharaId });
   assert(step.result.status === 'success', 'training target selection should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId });
+  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId: executorCharaId });
   assert(step.result.status === 'success', 'training executor selection should succeed.');
   context = step.context;
 

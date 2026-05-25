@@ -9,6 +9,9 @@ import { applyBodyStatDeltas, applyConditionParamDeltas, applyTrainingResourceDe
 import { isCharacterActive } from './characterLifecycle';
 import { trainingAvailabilityDisabledReason } from './trainingAvailability';
 import { endTurn } from './turnEnd';
+import { executeTrainingCommand } from './training/engine';
+import { executeKojoMatching } from './kojo/engine';
+import { trainingCommandRegistry } from './training/registry';
 
 export type TrainingFailure = {
   readonly code: string;
@@ -295,8 +298,31 @@ export function applyAfterTrainCharacterDeathCheck(
     nextState = withCharacterExperienceDelta(nextState, targetId, abnormalExperienceId, 1);
     nextState = withCharacterAbilityDelta(nextState, targetId, obedienceAbilityId, -3);
     nextState = withCharacterBaseCurrent(nextState, targetId, staminaBaseStatId, 100);
+    
+    // bodyStats.stamina 도 100으로 확실하게 업데이트
+    const body = nextState.body.byCharacterId[targetId];
+    if (body) {
+      nextState = {
+        ...nextState,
+        body: {
+          ...nextState.body,
+          byCharacterId: {
+            ...nextState.body.byCharacterId,
+            [targetId]: {
+              ...body,
+              bodyStats: {
+                ...body.bodyStats,
+                stamina: 100,
+              },
+            },
+          },
+        },
+      };
+    }
+    
     effects.push(logEffect('M35 CHARADEAD_CHECK revived the target from false death.', 'success'));
   } else if (delayedReviveTraitIds.some((traitId) => hasTrait(nextState, targetId, traitId))) {
+    let nextStaminaValue = 0;
     if ((hasTrait(nextState, targetId, '315') || hasTrait(nextState, targetId, '316')) && characterBaseCurrent(nextState, targetId, lifespanBaseStatId) > 0) {
       nextState = withCharacterBaseCurrent(nextState, targetId, lifespanBaseStatId, Math.max(1, characterBaseCurrent(nextState, targetId, lifespanBaseStatId) - 14));
     }
@@ -306,6 +332,28 @@ export function applyAfterTrainCharacterDeathCheck(
       nextState = withCharacterAbilityDelta(nextState, targetId, obedienceAbilityId, -current);
     }
     nextState = withCharacterBaseCurrent(nextState, targetId, staminaBaseStatId, 0);
+
+    // bodyStats.stamina 도 0으로 업데이트
+    const body = nextState.body.byCharacterId[targetId];
+    if (body) {
+      nextState = {
+        ...nextState,
+        body: {
+          ...nextState.body,
+          byCharacterId: {
+            ...nextState.body.byCharacterId,
+            [targetId]: {
+              ...body,
+              bodyStats: {
+                ...body.bodyStats,
+                stamina: 0,
+              },
+            },
+          },
+        },
+      };
+    }
+
     effects.push(logEffect('M35 CHARADEAD_CHECK marked delayed revive death state.'));
   } else {
     const targetNo = characterLegacyNo(nextState, targetId);
@@ -321,6 +369,28 @@ export function applyAfterTrainCharacterDeathCheck(
       },
     };
     nextState = withCharacterBaseCurrent(nextState, targetId, staminaBaseStatId, -1);
+
+    // bodyStats.stamina 도 -1로 업데이트
+    const body = nextState.body.byCharacterId[targetId];
+    if (body) {
+      nextState = {
+        ...nextState,
+        body: {
+          ...nextState.body,
+          byCharacterId: {
+            ...nextState.body.byCharacterId,
+            [targetId]: {
+              ...body,
+              bodyStats: {
+                ...body.bodyStats,
+                stamina: -1,
+              },
+            },
+          },
+        },
+      };
+    }
+
     nextState = withRunFlag(nextState, `flag_${targetNo + 999}`, -2);
     nextState = withRunFlag(nextState, globalKillCountFlag, killCount);
     effects.push(logEffect('M35 CHARADEAD_CHECK marked target death and kill count.', 'warning'));
@@ -531,6 +601,27 @@ export function selectTrainingTarget(state: GameState, session: GameSession, cha
     };
   }
 
+  const character = state.people.characters[characterId];
+  if (character?.roles.includes('trainer')) {
+    return {
+      ok: false,
+      failure: {
+        code: 'training-target-unavailable',
+        message: '마스터는 조교 대상이 될 수 없습니다.',
+      },
+    };
+  }
+
+  if (session.interaction.participants.assistantId === characterId) {
+    return {
+      ok: false,
+      failure: {
+        code: 'training-target-unavailable',
+        message: '현재 지원 조수로 임명된 여배우는 조교 대상으로 지정할 수 없습니다.',
+      },
+    };
+  }
+
   const interaction = clearTrainingCommandBuffers(session.interaction);
 
   return {
@@ -558,6 +649,18 @@ export function selectTrainingExecutor(state: GameState, session: GameSession, c
       failure: {
         code: state.people.characters[characterId] ? 'training-executor-unavailable' : 'training-executor-not-found',
         message: disabledReason,
+      },
+    };
+  }
+
+  const character = state.people.characters[characterId];
+  const hasExecutorRole = character?.roles.includes('trainer') || character?.roles.includes('assistant');
+  if (!hasExecutorRole) {
+    return {
+      ok: false,
+      failure: {
+        code: 'training-executor-unavailable',
+        message: '조교사 역할(마스터 또는 조수)이 없는 캐릭터는 실행자가 될 수 없습니다.',
       },
     };
   }
@@ -594,6 +697,47 @@ export function selectTrainingAssistant(
         failure: {
           code: state.people.characters[characterId] ? 'training-assistant-unavailable' : 'training-assistant-not-found',
           message: disabledReason,
+        },
+      };
+    }
+
+    const character = state.people.characters[characterId];
+    if (!character?.roles.includes('assistant')) {
+      return {
+        ok: false,
+        failure: {
+          code: 'training-assistant-unavailable',
+          message: '승인된 조수(Assistant) 역할이 부여되지 않은 캐릭터는 조수로 지정할 수 없습니다.',
+        },
+      };
+    }
+
+    if (session.interaction.participants.targetId === characterId) {
+      return {
+        ok: false,
+        failure: {
+          code: 'training-assistant-unavailable',
+          message: '현재 조교 대상을 조수로 겸임 지정할 수 없습니다.',
+        },
+      };
+    }
+
+    if (session.interaction.participants.masterId === characterId) {
+      return {
+        ok: false,
+        failure: {
+          code: 'training-assistant-unavailable',
+          message: '현재 조교사를 조수로 겸임 지정할 수 없습니다.',
+        },
+      };
+    }
+
+    if (characterId === 'character:0' || characterId === '0') {
+      return {
+        ok: false,
+        failure: {
+          code: 'training-assistant-unavailable',
+          message: '마스터 자신은 조수 역할을 맡을 수 없습니다.',
         },
       };
     }
@@ -852,7 +996,8 @@ export function executeSelectedTraining(
     };
   }
 
-  const targetFailure = selectedParticipantFailure(state, 'target', session.interaction.participants.targetId);
+  const targetId = session.interaction.participants.targetId;
+  const targetFailure = selectedParticipantFailure(state, 'target', targetId);
   if (targetFailure) {
     return {
       ok: false,
@@ -860,7 +1005,8 @@ export function executeSelectedTraining(
     };
   }
 
-  const executorFailure = selectedParticipantFailure(state, 'executor', session.interaction.participants.masterId);
+  const executorId = session.interaction.participants.masterId;
+  const executorFailure = selectedParticipantFailure(state, 'executor', executorId);
   if (executorFailure) {
     return {
       ok: false,
@@ -894,44 +1040,212 @@ export function executeSelectedTraining(
     };
   }
 
-  const calculatedResult = calculateTrainingResult(
-    commandResult.definition,
-    session.interaction.participants.targetId!,
-    session.interaction.participants.masterId!,
-    session.interaction.participants.assistantId,
-  );
-  const stateAfterTraining = applyTrainingResult(state, calculatedResult);
+  // 1. 범용 조교 계산 엔진 또는 정적 카탈로그 계산 실행 (미구현 방어용 가드 결합)
+  const isImplemented = trainingCommandRegistry[commandId] !== undefined;
+
+  let stateAfterTraining: GameState;
+  const engineEffects: string[] = [];
+
+  if (isImplemented) {
+    // 구현된 커맨드: 공용 조교 엔진 실행 (실시간 기력/체력/구슬/경험 정산)
+    const trainingEngineResult = executeTrainingCommand(state, session, commandId);
+    stateAfterTraining = trainingEngineResult.state;
+    engineEffects.push(...trainingEngineResult.effects);
+  } else {
+    // 미구현 커맨드: 카탈로그 명세 델타를 활용하여 Mock 적용
+    const calculatedResult = calculateTrainingResult(
+      commandResult.definition,
+      targetId!,
+      executorId!,
+      session.interaction.participants.assistantId,
+    );
+    stateAfterTraining = applyTrainingResult(state, calculatedResult);
+    engineEffects.push(`${commandResult.definition.label} 집행.`);
+  }
+
+  // 2. 처녀막 상실 V절정(isVirginVOrgasm) 여부 판정
+  const targetBefore = state.people.characters[targetId!];
+  const targetAfter = stateAfterTraining.people.characters[targetId!];
+
+  const hadVirgin = targetBefore?.attributes.traits['0'] === true || (typeof targetBefore?.attributes.traits['0'] === 'number' && targetBefore.attributes.traits['0'] !== 0);
+  const vExpBefore = targetBefore?.attributes.experiences['0'] ?? 0;
+  const vExpAfter = targetAfter?.attributes.experiences['0'] ?? 0;
+  const isVirginVOrgasm = hadVirgin && vExpAfter > vExpBefore;
+
+  // 3. 구상 대사 매칭 엔진 실행
+  stateAfterTraining = executeKojoMatching(stateAfterTraining, session, targetId!, { commandId, isVirginVOrgasm });
+
+  // 4. 사망/부활 상태 체크
   const afterTrainDeathCheck = applyAfterTrainCharacterDeathCheck(
     stateAfterTraining,
     session,
-    calculatedResult.targetId,
-    calculatedResult.executorId,
+    targetId!,
+    executorId!,
   );
-  const sessionAfterTraining: GameSession = {
-    ...afterTrainDeathCheck.session,
-    interaction: initialInteractionSessionState,
-  };
-  const turn = commandResult.definition.completesTimeBlock === true ? endTurn(afterTrainDeathCheck.state, sessionAfterTraining) : undefined;
 
-  if (turn) {
-    return {
-      ok: true,
-      state: turn.state,
-      session: turn.session,
-      message: `${commandResult.definition.label} training completed.`,
-      effects: [
-        logEffect(`${commandResult.definition.label} training result applied.`, 'success'),
-        ...afterTrainDeathCheck.effects,
-        ...turn.effects,
-      ],
-    };
+  // 5. 결과 요약 브리핑(Report) 데이터 조립
+  const commandLabel = commandResult.definition.label;
+  const targetBody = afterTrainDeathCheck.state.body.byCharacterId[targetId!];
+  const specObj = trainingCommandRegistry[commandId];
+  const staminaCost = specObj ? specObj.staminaCost : Math.abs(commandResult.definition.bodyStatDeltas?.stamina ?? 0);
+
+  const juelGainsList: string[] = [];
+  const expGainsList: string[] = [];
+  if (targetBefore && targetAfter) {
+    const beforeJuel = state.body.byCharacterId[targetId!]?.trainingResources ?? {};
+    const afterJuel = targetBody?.trainingResources ?? {};
+    for (const juelId of ['0', '1', '2', '17']) {
+      const diff = (afterJuel[juelId] ?? 0) - (beforeJuel[juelId] ?? 0);
+      if (diff > 0) juelGainsList.push(`[주얼:${juelId}] +${diff}`);
+    }
+    for (const [expId, valAfter] of Object.entries(targetAfter.attributes.experiences)) {
+      const valBefore = targetBefore.attributes.experiences[expId] ?? 0;
+      const diff = valAfter - valBefore;
+      if (diff > 0) expGainsList.push(`[경험:${expId}] +${diff}`);
+    }
   }
 
+  const juelGains = juelGainsList.join(', ');
+  const expGains = expGainsList.join(', ');
+  const orgasmsText = engineEffects.filter((eff) => eff.includes('절정 발생')).join('\n');
+
+  const reportText = `[조교 보고서] ${commandLabel} 완료 (소모 체력: ${staminaCost})` +
+    (orgasmsText ? `\n- 발생: ${orgasmsText}` : '') +
+    (juelGains ? `\n- 획득: ${juelGains}` : '') +
+    (expGains ? `\n- 경험: ${expGains}` : '') +
+    (afterTrainDeathCheck.returnValue === 1 ? '\n※ 대상 여배우가 체력 고갈로 인해 쓰러졌습니다! ※' : '');
+
+  // 캐릭터 말풍선 대사 뒤에 브리핑 결과 합산하여 기록
+  let finalState = afterTrainDeathCheck.state;
+  const currentKojo = finalState.text.characterTextEntries[targetId!]?.current ?? '';
+  const mergedText = currentKojo ? `${currentKojo}\n\n${reportText}` : reportText;
+
+  const targetCharaObj = finalState.people.characters[targetId!];
+  const targetBodyObj = finalState.body.byCharacterId[targetId!];
+
+  finalState = {
+    ...finalState,
+    people: targetCharaObj
+      ? {
+          ...finalState.people,
+          characters: {
+            ...finalState.people.characters,
+            [targetId!]: {
+              ...targetCharaObj,
+              flags: {
+                ...targetCharaObj.flags,
+                featureProgress: {
+                  ...targetCharaObj.flags.featureProgress,
+                  'training.latestCommandId': commandId,
+                },
+              },
+            },
+          },
+        }
+      : finalState.people,
+    body: targetBodyObj
+      ? {
+          ...finalState.body,
+          byCharacterId: {
+            ...finalState.body.byCharacterId,
+            [targetId!]: {
+              ...targetBodyObj,
+              milestones: {
+                ...targetBodyObj.milestones,
+                'training.latestCommandId': commandId,
+              },
+            },
+          },
+        }
+      : finalState.body,
+    text: {
+      ...finalState.text,
+      characterTextEntries: {
+        ...finalState.text.characterTextEntries,
+        [targetId!]: {
+          ...(finalState.text.characterTextEntries[targetId!] ?? {}),
+          current: mergedText,
+        },
+      },
+    },
+  };
+
+  // 6. 조교 시퀀스 지속 및 퇴실 처리 제어
+  const targetBodyAfter = finalState.body.byCharacterId[targetId!];
+  const staminaCur = targetBodyAfter ? Number(targetBodyAfter.bodyStats.stamina) : 0;
+
+  // 대상 캐릭터가 체력 고갈로 쓰러졌거나 기절(체력 < 500)했는지 체크
+  const forceExit = afterTrainDeathCheck.returnValue === 1 || staminaCur < 500;
+  const completesTimeBlock = commandResult.definition.completesTimeBlock === true;
+
+  // 이번 커맨드 또는 기존 이력 중 시간 소모가 있었는지 판별
+  const didSpendTime = session.interaction.commandFlow.timeSpent === true || completesTimeBlock;
+  const currentExecCount = session.interaction.commandFlow.executionCount ?? 0;
+
+  let sessionAfterTraining: GameSession = {
+    ...afterTrainDeathCheck.session,
+    interaction: {
+      ...initialInteractionSessionState,
+      participants: session.interaction.participants, // 참가자 유지
+      commandFlow: {
+        ...session.interaction.commandFlow,
+        timeSpent: didSpendTime,
+        executionCount: currentExecCount + 1,
+      },
+      temporaryFlags: {
+        ...session.interaction.temporaryFlags, // 기존 임시 플래그 보존
+        ...(didSpendTime ? { 'TFLAG:timeSpent': true } : {}), // 하위 호환성 유지
+      },
+    },
+  };
+
+  if (forceExit) {
+    // 기절/강제퇴실 시
+    if (didSpendTime) {
+      // 시간 소모가 있었다면 턴을 종료하며 퇴실
+      const turn = endTurn(finalState, {
+        ...sessionAfterTraining,
+        interaction: initialInteractionSessionState, // 퇴실 시 완전히 세션 비우기
+      });
+      return {
+        ok: true,
+        state: turn.state,
+        session: {
+          ...turn.session,
+          ui: { ...turn.session.ui, route: 'mainMenu' }
+        },
+        message: `${commandLabel} 완료. 대상 여배우가 체력 고갈로 기절하여 조교가 강제 종료되었습니다.`,
+        effects: [
+          logEffect(`${commandLabel} training completed.`, 'success'),
+          ...afterTrainDeathCheck.effects,
+          ...turn.effects,
+        ],
+      };
+    } else {
+      // 시간 소모가 없었다면 턴 종료 없이 세션만 클리어하고 퇴실
+      return {
+        ok: true,
+        state: finalState,
+        session: {
+          ...sessionAfterTraining,
+          interaction: initialInteractionSessionState,
+          ui: { ...sessionAfterTraining.ui, route: 'mainMenu' }
+        },
+        message: `${commandLabel} 완료. 대상 여배우가 체력 고갈로 기절하여 조교가 강제 종료되었습니다. (시간 소모 없음)`,
+        effects: [
+          logEffect(`${commandLabel} training completed.`, 'success'),
+          ...afterTrainDeathCheck.effects,
+        ],
+      };
+    }
+  }
+
+  // 강제퇴실이 아니면 조교방에 그대로 대기
   return {
     ok: true,
-    state: afterTrainDeathCheck.state,
+    state: finalState,
     session: sessionAfterTraining,
-    message: `${commandResult.definition.label} training completed.`,
+    message: `${commandLabel} 완료.`,
     effects: afterTrainDeathCheck.effects,
   };
 }
@@ -939,7 +1253,10 @@ export function executeSelectedTraining(
 export function cancelTrainingSelection(session: GameSession): GameSession {
   return {
     ...session,
-    interaction: initialInteractionSessionState,
+    interaction: {
+      ...initialInteractionSessionState,
+      participants: session.interaction.participants, // 참가자(여배우, 조교사, 조수)는 유지!
+    },
   };
 }
 

@@ -1,4 +1,4 @@
-import type { CharacterId, CharacterState } from '../domains/people/types';
+import type { CharacterId, CharacterRole, CharacterState } from '../domains/people/types';
 import type { GameState } from '../game/state';
 
 export type SaleEligibilityRank = 0 | 1 | 2;
@@ -207,6 +207,10 @@ export function setCharacterAssistantEligible(
     };
   }
 
+  const nextRoles = assistantEligible
+    ? [...refreshed.roles.filter((r) => r !== 'assistant'), 'assistant'] as readonly CharacterRole[]
+    : refreshed.roles.filter((r) => r !== 'assistant');
+
   return {
     ok: true,
     state: updateCharacter(state, {
@@ -218,6 +222,7 @@ export function setCharacterAssistantEligible(
           assistantEligible,
         },
       },
+      roles: nextRoles,
     }),
   };
 }
