@@ -139,6 +139,20 @@ export function parseGameSavePayload(serializedPayload: string): ParseGameSavePa
     };
   }
 
+  const stateObj = parsed.state;
+  const requiredStateKeys = ['people', 'body', 'economy', 'run', 'inventory', 'work', 'social', 'equipment', 'featureState'];
+  for (const key of requiredStateKeys) {
+    if (!isRecord(stateObj[key])) {
+      return {
+        ok: false,
+        failure: {
+          code: 'invalid-save-state-domain',
+          message: `저장 payload.state 내에 유효한 '${key}' 도메인이 누락되었거나 객체가 아닙니다.`,
+        },
+      };
+    }
+  }
+
   return {
     ok: true,
     payload: parsed as GameSavePayload,

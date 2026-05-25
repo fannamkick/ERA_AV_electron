@@ -1,12 +1,6 @@
 "use strict";
-// Electron Preload 스크립트
-// 렌더러 프로세스와 메인 프로세스 간의 안전한 통신 브리지
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const electron_1 = __importDefault(require("electron"));
-const { contextBridge, ipcRenderer } = electron_1.default;
+const { contextBridge, ipcRenderer } = require('electron');
 // window 객체에 안전하게 API 노출
 contextBridge.exposeInMainWorld('electronAPI', {
     // 스토리지 API (storage.ts 호환)

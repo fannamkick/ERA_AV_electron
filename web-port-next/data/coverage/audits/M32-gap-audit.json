@@ -9,11 +9,11 @@
     "definitions": "data/coverage/definitions.json"
   },
   "summary": {
-    "scopeRows": 298,
-    "m32OwnedRows": 291,
-    "implementedVerifiedForStrictClosure": 291,
+    "scopeRows": 296,
+    "m32OwnedRows": 289,
+    "implementedVerifiedForStrictClosure": 289,
     "approvedExcludedFromM32": 7,
-    "implemented": 291,
+    "implemented": 289,
     "mapped": 0,
     "transferredOut": 0,
     "approvedExcluded": 7,

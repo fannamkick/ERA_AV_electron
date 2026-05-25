@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "source-effect-classification/v1",
+  "milestone": "M35",
+  "rules": [
+    "Rows are generated from original source and default to unclassified.",
+    "Only add classifications after direct source review.",
+    "owned/implemented rows require implementationEvidence and runtimeTraceEvidence.",
+    "transferred rows require transferId with accepted sender/receiver contract.",
+    "excluded rows require exclusionReason grounded in original source.",
+    "groupBlocks may only set blocked status and must never be used to mark completion."
+  ],
+  "groupBlocks": [
+    {
+      "reviewGroupId": "M35:review:event-turnend:eventturnend",
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "currentLabel": "EVENTTURNEND",
+      "status": "blocked",
+      "ownerMilestone": "M35",
+      "reviewNotes": "M35 owns the EVENTTURNEND transaction boundary and cannot close while this group is only partially represented by src/features/turnEnd.ts. Direct review found pre-turnend calls, global persistence, death cleanup, charm clamp, TIME/DAY/DAY:2 mutation, CFLAG resets, auto-buy/use calls, TARGET/ASSI cleanup, downstream event calls, achievement check, and BEGIN SHOP. This group is blocked until each effect is either implemented with trace, transferred with accepted receiver evidence, or excluded with source-grounded reason."
+    }
+  ],
+  "rows": []
+}

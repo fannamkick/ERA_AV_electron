@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "erb-fact-review.schema.json",
+  "title": "ERB Fact Review",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "approved",
+    "riskLevel",
+    "findings",
+    "missingFacts",
+    "suggestedFixes"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "erb-fact-review/v1" },
+    "approved": { "type": "boolean" },
+    "riskLevel": { "enum": ["low", "medium", "high"] },
+    "findings": { "type": "array" },
+    "missingFacts": { "type": "array" },
+    "suggestedFixes": { "type": "array" }
+  },
+  "additionalProperties": true
+}

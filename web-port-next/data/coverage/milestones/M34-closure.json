@@ -29,12 +29,6 @@
       "data/coverage/item-use-coverage.json",
       "data/coverage/item-use-coverage.json",
       "data/coverage/recruit-coverage.json",
-      "data/coverage/recruit-coverage.json",
-      "data/coverage/recruit-coverage.json",
-      "data/coverage/recruit-coverage.json",
-      "data/coverage/body-stat-coverage.json",
-      "data/coverage/body-stat-coverage.json",
-      "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
@@ -123,8 +117,8 @@
     "smoke": "tools/m34_social_equipment_cflag_smoke.ts"
   },
   "counts": {
-    "ownedTotal": 2247,
-    "implemented": 2247,
+    "ownedTotal": 2241,
+    "implemented": 2241,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -136,8 +130,8 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 2247,
-    "implemented": 2247,
+    "ownedTotal": 2241,
+    "implemented": 2241,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -158,7 +152,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "2247 M34 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "2241 M34 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:social-equipment-cflag",
@@ -170,8 +164,8 @@
     "npm run test --if-present"
   ],
   "sourceUnitMetrics": {
-    "totalUnits": 2247,
-    "implemented-verified": 2247,
+    "totalUnits": 2241,
+    "implemented-verified": 2241,
     "approved-excluded": 0,
     "blocked": 0,
     "scope-redesign-required": 0,

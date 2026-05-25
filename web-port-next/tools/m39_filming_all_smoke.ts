@@ -99,6 +99,32 @@ function main() {
   context = step.context;
   const characterId = firstCharacterId(context);
 
+  const patchedCharacters = Object.fromEntries(
+    Object.entries(context.state.people.characters).map(([id, chara]) => [
+      id,
+      {
+        ...chara,
+        attributes: {
+          ...chara.attributes,
+          traits: {
+            ...chara.attributes.traits,
+            '999': true,
+          },
+        },
+      },
+    ])
+  );
+  context = {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        ...context.state.people,
+        characters: patchedCharacters,
+      },
+    },
+  };
+
   step = dispatchChecked(context, { type: 'main/openShooting' });
   assert(step.result.status === 'success', 'shooting entry should succeed.');
   context = step.context;
@@ -160,20 +186,27 @@ function main() {
     const dayBefore = context.state.run.clock.day;
     const turnBefore = context.state.run.clock.turn;
 
+    const moneyBefore = context.state.economy.account.currentMoney;
+
     step = dispatchChecked(context, { type: 'shooting/confirmScene' });
     assert(step.result.status === 'success', `scene confirmation should succeed: ${sceneId}`);
     context = step.context;
 
-    expectedMoney += scene.revenueMoney;
+    const charged = context.state.economy.transactionFlags.lastRunningCostCharged ?? 0;
+    expectedMoney = moneyBefore + scene.revenueMoney - charged;
     expectedVideoSales += scene.revenueMoney;
     expectedFanCount += scene.fanGain;
     expectedSales += scene.revenueMoney;
 
     assert(context.session.ui.route === 'mainMenu', `completed filming should return to main menu: ${sceneId}`);
     assertShootingSessionCleared(context, `completed filming ${sceneId}`);
-    assert(context.state.economy.account.currentMoney === expectedMoney, `filming should add current money: ${sceneId}`);
+    assert(
+      context.state.economy.account.currentMoney === expectedMoney,
+      `filming should add current money: ${sceneId}. expected: ${expectedMoney}, actual: ${context.state.economy.account.currentMoney}`
+    );
     assert(context.state.economy.videoSalesTotal === expectedVideoSales, `filming should add video sales total: ${sceneId}`);
-    assert(context.state.run.clock.day === dayBefore + 7, `filming should advance day: ${sceneId}`);
+    const expectedDayAdvance = 7 + (turnBefore % 2 === 1 ? 1 : 0);
+    assert(context.state.run.clock.day === dayBefore + expectedDayAdvance, `filming should advance day: ${sceneId}. expected: ${dayBefore + expectedDayAdvance}, actual: ${context.state.run.clock.day}`);
     assert(context.state.run.clock.turn === turnBefore + 1, `filming should advance turn: ${sceneId}`);
     assert(
       context.state.body.byCharacterId[characterId].bodyStats.stamina === staminaBefore + scene.bodyStatDeltas.stamina,

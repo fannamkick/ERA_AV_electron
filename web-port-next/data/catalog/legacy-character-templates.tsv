@@ -100,7 +100,7 @@ id	displayName	callName	nickname	sourcePath	baseStatCount	abilityCount	talentCou
 89	니시카타 쿄우코	쿄우코	안즈	original-game/CSV/Chara89_西方杏子.csv	13	6	14	5	15	3	3
 90	카세 후미카	후미카	타니마치 노조미	original-game/CSV/Chara90_加瀬芙美香.csv	13	6	19	1	10	1	2
 91	미야마 카나	카나	미야마 카나코	original-game/CSV/Chara91_宮間かなで.csv	13	11	24	7	17	1	12
-92	92			original-game/CSV/Chara92_アンドロイド.csv	13	0	7	0	7	1	3
+92				original-game/CSV/Chara92_アンドロイド.csv	13	0	7	0	7	1	3
 93	리 메이링	메이링	텐도우 미스즈	original-game/CSV/Chara93_李美鈴.csv	13	3	26	1	16	1	5
 94	하세카와 미코토	미코토	하세 미이코	original-game/CSV/Chara94_羽瀬川みこと.csv	13	6	28	2	16	1	8
 95	키류 엘렌	엘렌	키리시마 엘렌	original-game/CSV/Chara95_桐生エレン.csv	13	10	29	7	30	3	3

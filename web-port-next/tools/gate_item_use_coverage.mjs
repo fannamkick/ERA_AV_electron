@@ -134,9 +134,9 @@ assert(
 );
 
 const requiredRuntimeConsumers = new Set([
-  'definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem',
   'shop/selectUseItem; shop/selectUseTarget; shop/confirmUseItem; shop/cancelUseItem',
-  'session.shop.visibleUseItemIds',
+  'getTechniqueClearLimit -> item 52 cap',
+  'isPubicHairSystemEnabled -> item 41 visibility',
   'run.runFlags.techniqueItemProgress -> applyTechniqueItemUse',
   'people.characters[trainer].attributes.baseStats.maximum[60] -> item 52 filming capacity',
 ]);

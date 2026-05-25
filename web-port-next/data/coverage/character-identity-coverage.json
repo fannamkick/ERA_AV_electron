@@ -17,19 +17,19 @@
       "unit:M32:character-identity-original-game-erb-zname-erb"
     ],
     "inheritedFromM29": 4,
-    "inheritedFromM31": 20,
+    "inheritedFromM31": 18,
     "rowCoverageRule": "Every M32 queue row and every inbound transfer to M32 must be accounted exactly once, then strict closure must classify it as implemented-verified or approved-excluded.",
-    "identityBoundary": "Definitions retain Chara/CSTR source values. Save state stores per-character identity/display/profileTextSlots only after an instance is created.",
-    "lifecycleBoundary": "M32 owns persistent deleted/retired/assistant eligibility/recruitment status flags. Economic sale formulas and event prose are later feature owners."
+    "identityBoundary": "Definitions retain Chara/CSTR source values, including blank Chara92 static names. Save state stores per-character identity/display/profileTextSlots only after an instance is created; M36 ADD_IKUMI_ANDROID supplies Chara92 runtime identityOverrides.",
+    "lifecycleBoundary": "M32 owns persistent deleted/retired/sale eligibility/assistant eligibility/recruitment status flags, CHECK_SELLASSIABLE lifecycle eligibility, and sale-listing lifecycle filters. Economic sale formulas, money mutation, event prose, and downstream relationship/body/social side effects are later feature owners."
   },
   "summary": {
-    "ownedRowRefs": 298,
-    "rows": 298,
-    "implemented": 291,
+    "ownedRowRefs": 296,
+    "rows": 296,
+    "implemented": 289,
     "mapped": 0,
     "transferredOut": 0,
-    "m32OwnedRows": 291,
-    "implementedVerifiedForStrictClosure": 291,
+    "m32OwnedRows": 289,
+    "implementedVerifiedForStrictClosure": 289,
     "approvedExcludedFromM32": 7,
     "approvedExcluded": 7,
     "ownedBlocker": 0,
@@ -38,12 +38,12 @@
     "byScopeSource": {
       "implementation-queue": 274,
       "M29-transfer": 4,
-      "M31-transfer": 20
+      "M31-transfer": 18
     },
     "byRowKind": {
       "definition": 271,
       "feature": 16,
-      "save-mapping": 8,
+      "save-mapping": 6,
       "source-file-review": 3
     },
     "byCompletionStatus": {
@@ -52,7 +52,7 @@
       "implemented-character-profile-text-slot": 157,
       "implemented-character-template-identity": 109,
       "implemented-character-text-definition-label": 5,
-      "implemented-profile-text-save-field": 4
+      "implemented-profile-text-save-field": 2
     },
     "transfersByOwner": {
       "M33": 4,
@@ -3944,7 +3944,9 @@
       "seedIndex": "",
       "completionStatus": "implemented-character-template-identity",
       "runtimeConsumerId": "definitions.characters -> createCharacterBundleFromSpecs -> people.characters.identity -> buildRosterView",
-      "verificationId": "smoke:character-identity"
+      "verificationId": "smoke:character-identity",
+      "dynamicIdentityOwnerMilestone": "M36",
+      "dynamicIdentityNote": "Chara92 preserves blank NAME/CALLNAME/NICKNAME from the CSV; ADD_IKUMI_ANDROID supplies runtime identityOverrides under M36."
     },
     {
       "coverageRowId": "character-identity:definition:definition-character-template-93",
@@ -4138,7 +4140,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4153,7 +4155,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4168,7 +4170,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4183,7 +4185,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4198,7 +4200,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4213,7 +4215,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4228,7 +4230,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4243,7 +4245,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4258,7 +4260,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4273,7 +4275,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4288,7 +4290,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4303,7 +4305,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4318,7 +4320,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4333,7 +4335,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4348,7 +4350,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {
@@ -4363,37 +4365,7 @@
       "address": "",
       "fieldPath": "",
       "completionStatus": "implemented-character-lifecycle-contract",
-      "runtimeConsumerId": "roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks",
-      "verificationId": "smoke:character-identity"
-    },
-    {
-      "coverageRowId": "character-identity:inbound:save-mapping-save-map-source-cstr-0",
-      "reviewId": "save-mapping:save-map:source:cstr-0",
-      "rowKind": "save-mapping",
-      "inheritedFromMilestone": "M31",
-      "sourceEvidenceId": "source:save-map:cstr-0",
-      "sourcePath": "original-game/CSV/Chara06_神田ひより.csv",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "address": "CSTR:0",
-      "fieldPath": "people.characters.byId.*.profileTextSlots[0]",
-      "completionStatus": "implemented-profile-text-save-field",
-      "runtimeConsumerId": "people.characters.byId.*.identity.profileTextSlots",
-      "verificationId": "smoke:character-identity"
-    },
-    {
-      "coverageRowId": "character-identity:inbound:save-mapping-save-map-source-cstr-1",
-      "reviewId": "save-mapping:save-map:source:cstr-1",
-      "rowKind": "save-mapping",
-      "inheritedFromMilestone": "M31",
-      "sourceEvidenceId": "source:save-map:cstr-1",
-      "sourcePath": "original-game/CSV/Chara06_神田ひより.csv",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "address": "CSTR:1",
-      "fieldPath": "people.characters.byId.*.profileTextSlots[1]",
-      "completionStatus": "implemented-profile-text-save-field",
-      "runtimeConsumerId": "people.characters.byId.*.identity.profileTextSlots",
+      "runtimeConsumerId": "CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks",
       "verificationId": "smoke:character-identity"
     },
     {

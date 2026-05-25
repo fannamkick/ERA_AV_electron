@@ -13,10 +13,35 @@ export type MenuItemView = {
   readonly disabledReason?: string;
 };
 
+export type MainMenuStatusView = {
+  readonly seasonIndex: number;
+  readonly legacyDay4SeasonIndex: number;
+  readonly seasonLabel: string;
+  readonly dateLabel: string;
+  readonly yearLabel: string;
+  readonly timeSlotLabel: string;
+  readonly startedWeek: number;
+  readonly remainingWeeks?: number;
+  readonly trainerLabel?: string;
+  readonly targetMoney?: number;
+  readonly goalProgress?: {
+    readonly current: number;
+    readonly target: number;
+    readonly cappedCurrent: number;
+  };
+  readonly itemSummary: readonly string[];
+  readonly otherSummary: readonly string[];
+  readonly trainableCharacterCount: number;
+  readonly assistantCount: number;
+  readonly currentAndFormerAssistantCount: number;
+  readonly hasSecretKnowledge: boolean;
+};
+
 export type MainMenuView = {
   readonly kind: 'mainMenu';
   readonly route: 'mainMenu';
   readonly currentMoney: number;
+  readonly status: MainMenuStatusView;
   readonly menuItems: readonly MenuItemView[];
 };
 
@@ -43,7 +68,9 @@ export type RosterEntryView = {
   readonly imprintCount: number;
   readonly retired: boolean;
   readonly deleted: boolean;
+  readonly sellable: boolean;
   readonly assistantEligible: boolean;
+  readonly saleEligibilityRank: 0 | 1 | 2;
   readonly recruitmentStatus: 'notRecruitable' | 'recruitable' | 'recruited';
 };
 
@@ -134,18 +161,50 @@ export type RecruitListingView = {
   readonly disabledReason?: string;
 };
 
+export type RecruitManualView = {
+  readonly candidateNumber: number;
+  readonly itemId: CatalogId;
+  readonly sourceLineStart: number;
+  readonly sourceLineEnd: number;
+  readonly lines: readonly string[];
+  readonly hints: readonly string[];
+  readonly resultItemId?: CatalogId;
+  readonly styleColor?: string;
+  readonly fontName?: string;
+};
+
+export type RecruitInterviewView = {
+  readonly candidateName: string;
+  readonly promptLines: readonly string[];
+  readonly descriptionLines: readonly string[];
+  readonly contractPrompt: string;
+  readonly confirmLabel: string;
+  readonly rejectLabel: string;
+  readonly rerollLabel?: string;
+};
+
 export type RecruitView = {
   readonly kind: 'recruit';
   readonly route: 'recruit';
   readonly currentMoney: number;
+  readonly pageIndex: number;
+  readonly maxPageIndex: number;
+  readonly pageSize: number;
+  readonly totalVisibleListingCount: number;
+  readonly previousPageLabel: string;
+  readonly nextPageLabel: string;
+  readonly returnLabel: string;
   readonly visibleListings: readonly RecruitListingView[];
   readonly selectedListingId?: CatalogId;
   readonly selectedListing?: RecruitListingView;
+  readonly selectedManual?: RecruitManualView;
+  readonly interview?: RecruitInterviewView;
 };
 
 export type SaveLoadView = {
   readonly kind: 'saveLoad';
   readonly route: 'saveLoad';
+  readonly mode?: 'save' | 'load';
   readonly schemaVersion: number;
   readonly currentMoney: number;
   readonly month: number;

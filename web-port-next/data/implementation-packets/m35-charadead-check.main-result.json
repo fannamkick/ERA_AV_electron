@@ -1,0 +1,212 @@
+{
+  "packetId": "m35-charadead-check",
+  "implementedEffects": [
+    {
+      "effectId": "M35:event_aftertrain:00004:label:01",
+      "implementation": "src/features/training.ts applyAfterTrainCharacterDeathCheck",
+      "test": "tools/m35_turn_long_smoke.ts assertAfterTrainDeathCheck"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00006:branch-or-loop:01",
+      "implementation": "TALENT:85 condition checks target traits before CFLAG:619 decrement.",
+      "test": "love target CFLAG:619 clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00007:state-write:01",
+      "implementation": "social.ntrProgress[characterId.flag_619] decremented by RAND:5 equivalent.",
+      "test": "loveProgress >= 0 && loveProgress <= initial"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00008:branch-or-loop:01",
+      "implementation": "CFLAG:619 clamp condition represented by Math.max(0, ...).",
+      "test": "loveProgress lower bound assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00009:state-write:01",
+      "implementation": "CFLAG:619 clamp to 0 represented by Math.max(0, ...).",
+      "test": "loveProgress lower bound assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00010:branch-or-loop:01",
+      "implementation": "ENDIF represented by closed CFLAG clamp block.",
+      "test": "love target branch completes and living return remains unchanged"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00011:branch-or-loop:01",
+      "implementation": "ENDIF represented by closed TALENT:85 block.",
+      "test": "love target branch completes and living return remains unchanged"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00015:branch-or-loop:01",
+      "implementation": "BASE:0 > 0 returns without death branch.",
+      "test": "living target keeps BASE:0"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00016:control-transfer:01",
+      "implementation": "applyAfterTrainCharacterDeathCheck returns returnValue 0 for living target.",
+      "test": "living target keeps BASE:0"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00022:branch-or-loop:01",
+      "implementation": "TALENT:310/312/313 with ABL:10 > RAND:7+3 revive condition.",
+      "test": "trait 310 with ABL:10=10 revive branch"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00026:state-write:01",
+      "implementation": "EXP:50 increments on revive.",
+      "test": "revive branch EXP:50 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00028:state-write:01",
+      "implementation": "ABL:10 decreases by 3 on revive.",
+      "test": "revive branch ABL:10 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00031:state-write:01",
+      "implementation": "BASE:0 set to 100 on revive.",
+      "test": "revive branch BASE:0 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00033:branch-or-loop:01",
+      "implementation": "TALENT:315/316/199 delayed revive branch.",
+      "test": "trait 315 delayed revive branch"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00040:branch-or-loop:01",
+      "implementation": "TALENT:315/316 and BASE:10 > 0 lifespan reduction condition.",
+      "test": "trait 315 with BASE:10=5"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00041:state-write:01",
+      "implementation": "BASE:10 decreases by 14 for spirit/ghost branch.",
+      "test": "lifespan clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00042:branch-or-loop:01",
+      "implementation": "BASE:10 < 1 clamp condition represented by Math.max(1, ...).",
+      "test": "lifespan clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00043:state-write:01",
+      "implementation": "BASE:10 set to at least 1.",
+      "test": "lifespan clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00044:branch-or-loop:01",
+      "implementation": "ENDIF represented by closed lifespan block.",
+      "test": "delayed revive branch completes"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00045:state-write:01",
+      "implementation": "ABL:10 decreases by 3 in delayed revive branch.",
+      "test": "delayed revive ABL:10 clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00046:branch-or-loop:01",
+      "implementation": "ABL:10 < 0 clamp condition represented after decrement.",
+      "test": "delayed revive ABL:10 clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00047:state-write:01",
+      "implementation": "ABL:10 clamped to 0.",
+      "test": "delayed revive ABL:10 clamp assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00048:state-write:01",
+      "implementation": "BASE:0 set to 0 for delayed revive death state.",
+      "test": "delayed revive BASE:0 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00068:branch-or-loop:01",
+      "implementation": "fallback death branch when revive/delayed-revive conditions fail.",
+      "test": "normal death branch fixture"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00070:state-write:01",
+      "implementation": "session.interaction.temporaryFlags['13'] set to 999 before SELF_KOJO handoff.",
+      "test": "TFLAG:13 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00077:state-write:01",
+      "implementation": "BASE:0 set to -1 for normal death.",
+      "test": "death branch BASE:0 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00081:state-write:01",
+      "implementation": "run.runFlags[flag_NO+999] set to -2 using target template number.",
+      "test": "flag_1000 assertion for character:1"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00084:state-write:01",
+      "implementation": "run.runFlags.flag_31 kill count increments.",
+      "test": "flag_31 assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00085:branch-or-loop:01",
+      "implementation": "ENDIF represented by closed death branch selection.",
+      "test": "all death-check branch fixtures complete"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00089:branch-or-loop:01",
+      "implementation": "FLAG:31 >= 3 and MASTER TALENT:93 missing condition.",
+      "test": "third kill charisma assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00091:state-write:01",
+      "implementation": "trainer character gets trait 93.",
+      "test": "third kill charisma assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00092:branch-or-loop:01",
+      "implementation": "ENDIF represented by closed charisma branch.",
+      "test": "third kill charisma assertion"
+    },
+    {
+      "effectId": "M35:event_aftertrain:00094:control-transfer:01",
+      "implementation": "applyAfterTrainCharacterDeathCheck returns returnValue 1 after death handling.",
+      "test": "death branch fixtures reach handled state"
+    }
+  ],
+  "remainingEffects": [],
+  "transferredEffects": [
+    {
+      "effectId": "M35:event_aftertrain:00071:call-edge:01",
+      "to": "SELF_KOJO prose/event renderer",
+      "reason": "Caller-side TFLAG:13 setup is implemented, but SELF_KOJO callee text/prose behavior is outside this CHARADEAD_CHECK packet and must be closed with the event/text owner."
+    }
+  ],
+  "excludedEffects": [
+    {
+      "effectId": "M35:event_aftertrain:00051:branch-or-loop:01",
+      "reason": "Original source line is commented out with ';'."
+    },
+    {
+      "effectId": "M35:event_aftertrain:00057:state-write:01",
+      "reason": "Original source line is commented out with ';'."
+    },
+    {
+      "effectId": "M35:event_aftertrain:00058:state-write:01",
+      "reason": "Original source line is commented out with ';'."
+    },
+    {
+      "effectId": "M35:event_aftertrain:00060:state-write:01",
+      "reason": "Original source line is commented out with ';'."
+    },
+    {
+      "effectId": "M35:event_aftertrain:00063:state-write:01",
+      "reason": "Original source line is commented out with ';'."
+    },
+    {
+      "effectId": "M35:event_aftertrain:00066:state-write:01",
+      "reason": "Original source line is commented out with ';'."
+    }
+  ],
+  "changedFiles": [
+    "src/features/training.ts",
+    "tools/m35_turn_long_smoke.ts"
+  ],
+  "tests": [
+    "npm run typecheck",
+    "npm run smoke:turn-long"
+  ]
+}

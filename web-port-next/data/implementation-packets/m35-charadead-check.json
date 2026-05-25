@@ -1,0 +1,4594 @@
+{
+  "schemaVersion": "feature-implementation-packet/v1",
+  "generatedBy": "tools/build_feature_packet.mjs",
+  "generatedAt": "2026-05-08T11:39:53.850Z",
+  "packetId": "m35-charadead-check",
+  "milestone": "M35",
+  "purpose": "Implementation packet built from existing original-source analysis artifacts. This packet reduces repeated source reading; it is not completion evidence by itself.",
+  "trustRules": [
+    "original-game ERB/CSV files remain authoritative",
+    "packet rows must preserve sourcePath and sourceLine/label references where available",
+    "mapped/classified rows are implementation inputs, not implementation proof",
+    "workers may propose patches from packets, but main Codex must review and integrate",
+    "runtime tests/traces are still required to claim implementation parity"
+  ],
+  "scope": {
+    "inputMilestone": "M35",
+    "inputSources": [],
+    "derivedSources": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "sourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "activeSourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "labelFilters": [],
+    "labelRanges": [],
+    "packetRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "labelId": "M35:review:event-aftertrain:charadead-check",
+        "label": "CHARADEAD_CHECK",
+        "labelKind": "review-group",
+        "startLine": 4,
+        "endLine": 94
+      }
+    ],
+    "reviewGroupFilters": [
+      "M35:review:event-aftertrain:charadead-check"
+    ],
+    "selectedReviewGroups": [
+      {
+        "reviewGroupId": "M35:review:event-aftertrain:charadead-check",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "currentLabel": "CHARADEAD_CHECK",
+        "sourceLineStart": 4,
+        "sourceLineEnd": 94,
+        "effectCount": 40,
+        "statusCounts": {
+          "unclassified": 40
+        },
+        "kindCounts": {
+          "branch-or-loop": 16,
+          "call-edge": 1,
+          "control-transfer": 2,
+          "label": 1,
+          "state-write": 20
+        },
+        "stateFamilies": [
+          "ABL",
+          "BASE",
+          "CFLAG",
+          "EXP",
+          "FLAG",
+          "TALENT",
+          "TFLAG"
+        ],
+        "callTargets": [
+          "SELF_KOJO"
+        ],
+        "riskReasons": [
+          "contains-call-edges",
+          "contains-needs-review-rows",
+          "contains-state-writes"
+        ],
+        "effectIds": [
+          "M35:event_aftertrain:00004:label:01",
+          "M35:event_aftertrain:00006:branch-or-loop:01",
+          "M35:event_aftertrain:00007:state-write:01",
+          "M35:event_aftertrain:00008:branch-or-loop:01",
+          "M35:event_aftertrain:00009:state-write:01",
+          "M35:event_aftertrain:00010:branch-or-loop:01",
+          "M35:event_aftertrain:00011:branch-or-loop:01",
+          "M35:event_aftertrain:00015:branch-or-loop:01",
+          "M35:event_aftertrain:00016:control-transfer:01",
+          "M35:event_aftertrain:00022:branch-or-loop:01",
+          "M35:event_aftertrain:00026:state-write:01",
+          "M35:event_aftertrain:00028:state-write:01",
+          "M35:event_aftertrain:00031:state-write:01",
+          "M35:event_aftertrain:00033:branch-or-loop:01",
+          "M35:event_aftertrain:00040:branch-or-loop:01",
+          "M35:event_aftertrain:00041:state-write:01",
+          "M35:event_aftertrain:00042:branch-or-loop:01",
+          "M35:event_aftertrain:00043:state-write:01",
+          "M35:event_aftertrain:00044:branch-or-loop:01",
+          "M35:event_aftertrain:00045:state-write:01",
+          "M35:event_aftertrain:00046:branch-or-loop:01",
+          "M35:event_aftertrain:00047:state-write:01",
+          "M35:event_aftertrain:00048:state-write:01",
+          "M35:event_aftertrain:00051:branch-or-loop:01",
+          "M35:event_aftertrain:00057:state-write:01",
+          "M35:event_aftertrain:00058:state-write:01",
+          "M35:event_aftertrain:00060:state-write:01",
+          "M35:event_aftertrain:00063:state-write:01",
+          "M35:event_aftertrain:00066:state-write:01",
+          "M35:event_aftertrain:00068:branch-or-loop:01",
+          "M35:event_aftertrain:00070:state-write:01",
+          "M35:event_aftertrain:00071:call-edge:01",
+          "M35:event_aftertrain:00077:state-write:01",
+          "M35:event_aftertrain:00081:state-write:01",
+          "M35:event_aftertrain:00084:state-write:01",
+          "M35:event_aftertrain:00085:branch-or-loop:01",
+          "M35:event_aftertrain:00089:branch-or-loop:01",
+          "M35:event_aftertrain:00091:state-write:01",
+          "M35:event_aftertrain:00092:branch-or-loop:01",
+          "M35:event_aftertrain:00094:control-transfer:01"
+        ]
+      }
+    ],
+    "effectIdFilters": [],
+    "effectIdFileFilters": [],
+    "riskFilters": [],
+    "maxEffects": 50,
+    "granularity": "effect-id-subpacket"
+  },
+  "sourceFiles": [
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "resolvedSourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "pathResolution": "exact",
+      "pathResolutionCandidates": [],
+      "sourceSha256": "d55d2900800073ac8c118ada69f18466a9092ad3266ccb57dec22f7c235bb271",
+      "encoding": "utf-8-sig",
+      "lineCount": 1069,
+      "labelCount": 8,
+      "callCount": 10,
+      "inputCount": 0,
+      "stateReadCount": 862,
+      "stateWriteCount": 290,
+      "coreStateReadCount": 574,
+      "coreStateWriteCount": 150,
+      "labels": "CHARADEAD_CHECK@4, SELF_CHECK@102, AFTERTRAIN_SEX_CHECK@161, AFTERTRAIN_ANALSEX_CHECK@279, AFTERTRAIN_LESBIANSEX_CHECK@390, AFTERTRAIN_MASTURBATION_CHECK@629, AFTERTRAIN_BEASTSEX_CHECK@786, AFTERTRAIN_TENTACLESEX_CHECK@925",
+      "topWrittenFamilies": "B:44, ABL:39, N:34, S:34, JUEL:31, EXP:23, TALENT:21, A:19, CFLAG:11, RELATION:6",
+      "topReadFamilies": "ABL:154, TALENT:113, N:87, B:83, S:68, ASSI:43, A:36, PALAMNAME:31, JUEL:31, EXP:27",
+      "topCoreWrittenFamilies": "ABL:39, JUEL:31, EXP:23, TALENT:21, CFLAG:11, RELATION:6, BASE:5, TFLAG:4, TIME:4, FLAG:3",
+      "topCoreReadFamilies": "ABL:154, TALENT:113, ASSI:43, PALAMNAME:31, JUEL:31, EXP:27, RELATION:24, PALAM:22, PALAMLV:22, EXPNAME:22"
+    }
+  ],
+  "sourceOutline": {
+    "labels": [
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK",
+        "label": "CHARADEAD_CHECK",
+        "rawLabel": "CHARADEAD_CHECK",
+        "scope": "",
+        "kind": "global",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "line": 4,
+        "incomingStaticCalls": 9,
+        "outgoingCalls": 1,
+        "entryKind": ""
+      }
+    ],
+    "outgoingCalls": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "line": 71,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK",
+        "sourceLabel": "CHARADEAD_CHECK",
+        "kind": "CALL",
+        "targetRaw": "SELF_KOJO",
+        "targetLabel": "SELF_KOJO",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_K.ERB:72:SELF_KOJO"
+        ],
+        "resolvedTargets": "SELF_KOJO@original-game/ERB/イベント関係/EVENT_K.ERB:72",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL SELF_KOJO"
+      }
+    ],
+    "incomingCalls": [
+      {
+        "sourcePath": "original-game/ERB/指導関係/TRAIN_MAIN.ERB",
+        "line": 239,
+        "sourceLabelId": "original-game/ERB/指導関係/TRAIN_MAIN.ERB:220:EVENTEND",
+        "sourceLabel": "EVENTEND",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+        "line": 515,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_RECEPTION.ERB:402:RECEPTION_MAIN2",
+        "sourceLabel": "RECEPTION_MAIN2",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_RESULT.ERB",
+        "line": 115,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_RESULT.ERB:32:WORKING_MAIN",
+        "sourceLabel": "WORKING_MAIN",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_S_CONCERT.ERB",
+        "line": 873,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_S_CONCERT.ERB:6:CONCERT",
+        "sourceLabel": "CONCERT",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB",
+        "line": 623,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB:6:KB_PLAY",
+        "sourceLabel": "KB_PLAY",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_S_LUNCHSTALL.ERB",
+        "line": 807,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_S_LUNCHSTALL.ERB:8:LUNCH_STALL",
+        "sourceLabel": "LUNCH_STALL",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_S_SEXORGY.ERB",
+        "line": 759,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_S_SEXORGY.ERB:6:SEX_ORGY",
+        "sourceLabel": "SEX_ORGY",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+        "line": 1207,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_S_STRIP.ERB:6:STRIPTEASE",
+        "sourceLabel": "STRIPTEASE",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/娼館関係/WORK_S_VAUCTION.ERB",
+        "line": 460,
+        "sourceLabelId": "original-game/ERB/娼館関係/WORK_S_VAUCTION.ERB:6:V_AUCTION",
+        "sourceLabel": "V_AUCTION",
+        "kind": "CALL",
+        "targetRaw": "CHARADEAD_CHECK",
+        "targetLabel": "CHARADEAD_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK"
+        ],
+        "resolvedTargets": "CHARADEAD_CHECK@original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHARADEAD_CHECK"
+      }
+    ],
+    "dynamicCalls": [],
+    "flowActions": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "line": 16,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK",
+        "sourceLabel": "CHARADEAD_CHECK",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN 0"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "line": 30,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK",
+        "sourceLabel": "CHARADEAD_CHECK",
+        "action": "WAIT",
+        "actionKind": "pause",
+        "text": "WAIT"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "line": 94,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB:4:CHARADEAD_CHECK",
+        "sourceLabel": "CHARADEAD_CHECK",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN 1"
+      }
+    ],
+    "stateAccesses": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "ABL",
+        "reads": 154,
+        "writes": 39
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "BASE",
+        "reads": 14,
+        "writes": 5
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "CFLAG",
+        "reads": 17,
+        "writes": 11
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "EXP",
+        "reads": 27,
+        "writes": 23
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "FLAG",
+        "reads": 4,
+        "writes": 3
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "TALENT",
+        "reads": 113,
+        "writes": 21
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "area": "イベント関係",
+        "family": "TFLAG",
+        "reads": 5,
+        "writes": 4
+      }
+    ],
+    "sourceSnippets": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "label": "CHARADEAD_CHECK",
+        "startLine": 4,
+        "endLine": 94,
+        "text": "    4: @CHARADEAD_CHECK\n    5: \n    6: IF TALENT:85 == 1\n    7: \tCFLAG:619 -= RAND:5\n    8: \t\tIF CFLAG:619 <= 0\n    9: \t\t\tCFLAG:619 = 0\n   10: \t\tENDIF\n   11: ENDIF\n   12: \n   13: \n   14: ;生きてるなら問題ナシ\n   15: SIF BASE:0 > 0\n   16: \tRETURN 0\n   17: \n   18: ;3~9の乱数を設定\n   19: R = RAND:7 + 3\n   20: \n   21: ;調教キャラが가이노이드・忍者・サイボーグなら死亡時に従順LV依存で復活\n   22: IF (TALENT:310 || TALENT:312 || TALENT:313) && ABL:10 > R\n   23: \tDRAWLINE\n   24: \tPRINTFORML %타겟은()% 순간 죽었다고 생각했으나, \n   25: \tPRINTFORML 기적적으로 가사상태에서 살아났다.\n   26: \tEXP:50 += 1\n   27: \tPRINTL 이상경험 +1\n   28: \tABL:10 -= 3\n   29: \tPRINTFORML %CALLNAME:TARGET%의 복종이 3 내려갔다.\n   30: \tWAIT\n   31: \tBASE:0 = 100\n   32: ;調教キャラが精霊・幽霊・매각 불가なら死亡, と見せかけて後に必ず復活\n   33: ELSEIF TALENT:315 || TALENT:316 || TALENT:199\n   34: \tDRAWLINE\n   35: \tPRINTL \n   36: \tPRINTFORML %타겟은()% 죽고 말았다……\n   37: \tPRINTL \n   38: \tDRAWLINE\n   39: \t;수명持ちの精霊・幽霊を死なせると수명が7日縮まる\n   40: \tIF (TALENT:315 || TALENT:316) && BASE:10 > 0\n   41: \t\tBASE:10 -= 14\n   42: \t\tSIF BASE:10 < 1\n   43: \t\t\tBASE:10 = 1\n   44: \tENDIF\n   45: \tABL:10 -= 3\n   46: \tSIF ABL:10 < 0\n   47: \t\tABL:10 = 0\n   48: \tBASE:0 = 0\n   49: \n   50: ;調教キャラが【愛】持ちなら死亡, と見せかけて従順LV依存で幽霊として復活\n   51: ;ELSEIF TALENT:85 && ABL:10 > R\n   52: ;\tDRAWLINE\n   53: ;\tPRINTL \n   54: ;\tPRINTFORML %타겟은()% 죽고 말았다……\n   55: ;\tPRINTL \n   56: ;\tDRAWLINE\n   57: ;\tTALENT:316 = 1\n   58: ;\tBASE:0 = 0\n   59: ;\t;幽霊化したキャラの残り수명は7日\n   60: ;\tBASE:10 = 15\n   61: \n   62: ;\t;이상경험に加算\n   63: ;\tEXP:50 += 1\n   64: \n   65: \t;キャラの殺害回数に加算\n   66: ;\tFLAG:31 += 1\n   67: \n   68: ELSE\n   69: \t;死亡時口上\n   70: \tTFLAG:13 = 999\n   71: \tCALL SELF_KOJO\n   72: \tDRAWLINE\n   73: \tPRINTL \n   74: \tPRINTFORML %타겟은()% 죽고 말았다……\n   75: \tPRINTL \n   76: \tDRAWLINE\n   77: \tBASE:0 = -1\n   78: \n   79: \t;死亡フラグを残す\n   80: \tT = NO:TARGET + 999\n   81: \tFLAG:T = -2\n   82: \n   83: \t;キャラの殺害回数に加算\n   84: \tFLAG:31 += 1\n   85: ENDIF\n   86: \n   87: ;殺した人数が3人以上で,【威圧感】が付く\n   88: ;↑このバリアントではTALENT名は【카리스마】\n   89: IF FLAG:31 >= 3 && TALENT:MASTER:93 == 0\n   90: \tPRINTFORMW %플레이어는(1)%【%TALENTNAME:93%】를 익혔다\n   91: \tTALENT:MASTER:93 = 1\n   92: ENDIF\n   93: \n   94: RETURN 1"
+      }
+    ]
+  },
+  "legacyStateAndMapping": {
+    "rows": [
+      {
+        "address": "ABL:3",
+        "family": "ABL",
+        "index": "3",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 337,
+        "writeCount": 21,
+        "charaSeedCount": 6,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            33
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP3.ERB",
+            21
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            17
+          ],
+          [
+            "original-game/ERB/指導関係/COMF13.ERB",
+            16
+          ],
+          [
+            "original-game/ERB/指導関係/COMF152.ERB",
+            16
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:5",
+        "family": "ABL",
+        "index": "5",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 6,
+        "writeCount": 0,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/NTR関係/BOYFRIEND.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 6
+      },
+      {
+        "address": "ABL:11",
+        "family": "ABL",
+        "index": "11",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 503,
+        "writeCount": 23,
+        "charaSeedCount": 26,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            70
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            26
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            26
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            25
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP11.ERB",
+            22
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:16",
+        "family": "ABL",
+        "index": "16",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 681,
+        "writeCount": 10,
+        "charaSeedCount": 23,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP16.ERB",
+            26
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/指導関係/COMF66.ERB",
+            21
+          ],
+          [
+            "original-game/ERB/指導関係/COMF_VAGINASEX.ERB",
+            20
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:20",
+        "family": "ABL",
+        "index": "20",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 155,
+        "writeCount": 3,
+        "charaSeedCount": 14,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP20.ERB",
+            31
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+            18
+          ],
+          [
+            "original-game/ERB/指導関係/COMF38.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_RESULT.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/指導関係/COMF135.ERB",
+            10
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:21",
+        "family": "ABL",
+        "index": "21",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 293,
+        "writeCount": 9,
+        "charaSeedCount": 3,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP21.ERB",
+            31
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+            16
+          ],
+          [
+            "original-game/ERB/指導関係/COMF44.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            11
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            11
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:22",
+        "family": "ABL",
+        "index": "22",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 136,
+        "writeCount": 9,
+        "charaSeedCount": 14,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            47
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP22.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB2.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+            8
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:30",
+        "family": "ABL",
+        "index": "30",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 87,
+        "writeCount": 6,
+        "charaSeedCount": 5,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP30.ERB",
+            29
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/クリアボーナス関係/CLEARBONUS_BOYFRIEND.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/システム関係/SELL_CHARA_ESTIMATE.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:31",
+        "family": "ABL",
+        "index": "31",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 101,
+        "writeCount": 4,
+        "charaSeedCount": 2,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP31.ERB",
+            29
+          ],
+          [
+            "original-game/ERB/指導関係/COMF125.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/指導関係/COMF3.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/指導関係/COMF90.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/指導関係/COMF91.ERB",
+            9
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:32",
+        "family": "ABL",
+        "index": "32",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 437,
+        "writeCount": 6,
+        "charaSeedCount": 5,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP32.ERB",
+            29
+          ],
+          [
+            "original-game/ERB/指導関係/COMF66.ERB",
+            19
+          ],
+          [
+            "original-game/ERB/指導関係/COMF68.ERB",
+            16
+          ],
+          [
+            "original-game/ERB/指導関係/COMF71.ERB",
+            16
+          ],
+          [
+            "original-game/ERB/指導関係/COMF140.ERB",
+            15
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:33",
+        "family": "ABL",
+        "index": "33",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 85,
+        "writeCount": 3,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP33.ERB",
+            27
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            15
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB2.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/システム関係/SELL_CHARA_ESTIMATE.ERB",
+            6
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:38",
+        "family": "ABL",
+        "index": "38",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 31,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP38.ERB",
+            23
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/指導関係/COMF180.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/Abl.csv",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:40",
+        "family": "ABL",
+        "index": "40",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 46,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP40.ERB",
+            25
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/指導関係/COMF89.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP32.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP33.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "ABL:41",
+        "family": "ABL",
+        "index": "41",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 46,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP41.ERB",
+            22
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            11
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/指導関係/COMF100.ERB",
+            5
+          ],
+          [
+            "original-game/CSV/Abl.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "BASE:10",
+        "family": "BASE",
+        "index": "10",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 12,
+        "writeCount": 5,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_SLAVE2.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:49",
+        "family": "CFLAG",
+        "index": "49",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 10,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/指導関係/COMF110.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/指導関係/COMF58.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:107",
+        "family": "CFLAG",
+        "index": "107",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 0,
+        "writeCount": 4,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMF100.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 4
+      },
+      {
+        "address": "CFLAG:619",
+        "family": "CFLAG",
+        "index": "619",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 15,
+        "writeCount": 16,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_SELL_AFTER.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/訪問関係/SAKURA_AZITO_DETAIL.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:3",
+        "family": "EXP",
+        "index": "3",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 19,
+        "writeCount": 69,
+        "charaSeedCount": 1,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            14
+          ],
+          [
+            "original-game/ERB/指導関係/COMF66.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/指導関係/COMF122.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:5",
+        "family": "EXP",
+        "index": "5",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 18,
+        "writeCount": 28,
+        "charaSeedCount": 14,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/クリアボーナス関係/CLEARBONUS_BOYFRIEND.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP30.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:20",
+        "family": "EXP",
+        "index": "20",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 14,
+        "writeCount": 78,
+        "charaSeedCount": 6,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/NTR関係/MOLESTER_DETAIL.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/クリアボーナス関係/CLEARBONUS_BOYFRIEND.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/指導関係/COMF66.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP32.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:21",
+        "family": "EXP",
+        "index": "21",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 6,
+        "writeCount": 4,
+        "charaSeedCount": 3,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP16.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/exp.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara07_多々良ひな.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara08_多々良ゆな.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:30",
+        "family": "EXP",
+        "index": "30",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 7,
+        "writeCount": 10,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP21.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/指導関係/COMF48.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/指導関係/COMF142.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:33",
+        "family": "EXP",
+        "index": "33",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 14,
+        "writeCount": 11,
+        "charaSeedCount": 2,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMF135.ERB",
+            11
+          ],
+          [
+            "original-game/ERB/指導関係/COMF38.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP20.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:55",
+        "family": "EXP",
+        "index": "55",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 21,
+        "writeCount": 3,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMF100.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP41.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/exp.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "EXP:56",
+        "family": "EXP",
+        "index": "56",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 14,
+        "writeCount": 6,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMF89.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/システム関係/面接/INTERVIEW.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP40.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/exp.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:<dynamic>",
+        "family": "FLAG",
+        "index": "<dynamic>",
+        "addressKind": "dynamic-index",
+        "mappingAction": "define-pattern-mapping",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 21,
+        "writeCount": 11,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SHOP_CHARABUY.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/システム関係/未使用/SHOP_SLAVE1.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/指導関係/COMF53.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_SLAVE3.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:31",
+        "family": "FLAG",
+        "index": "31",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 1,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 2
+      },
+      {
+        "address": "FLAG:549",
+        "family": "FLAG",
+        "index": "549",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 3,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SYSTEM_CONFIG.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 5
+      },
+      {
+        "address": "TALENT:15",
+        "family": "TALENT",
+        "index": "15",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 42,
+        "writeCount": 8,
+        "charaSeedCount": 21,
+        "topFiles": [
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/訪問関係/IKUMI_LABO_CALC.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:17",
+        "family": "TALENT",
+        "index": "17",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 26,
+        "writeCount": 6,
+        "charaSeedCount": 11,
+        "topFiles": [
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/訪問関係/IKUMI_LABO_CALC.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/指導関係/COMORDER.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:20",
+        "family": "TALENT",
+        "index": "20",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 52,
+        "writeCount": 7,
+        "charaSeedCount": 9,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            15
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:24",
+        "family": "TALENT",
+        "index": "24",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 32,
+        "writeCount": 9,
+        "charaSeedCount": 22,
+        "topFiles": [
+          [
+            "original-game/ERB/訪問関係/IKUMI_LABO_CALC.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:27",
+        "family": "TALENT",
+        "index": "27",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 43,
+        "writeCount": 10,
+        "charaSeedCount": 39,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_LESPLAY_NEW.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:32",
+        "family": "TALENT",
+        "index": "32",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 52,
+        "writeCount": 6,
+        "charaSeedCount": 3,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:33",
+        "family": "TALENT",
+        "index": "33",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 64,
+        "writeCount": 3,
+        "charaSeedCount": 13,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP17.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP11.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP22.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:64",
+        "family": "TALENT",
+        "index": "64",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 32,
+        "writeCount": 1,
+        "charaSeedCount": 13,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            15
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP32.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/アルバイト関係/ARBEIT_05_ELENA.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:70",
+        "family": "TALENT",
+        "index": "70",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 60,
+        "writeCount": 3,
+        "charaSeedCount": 64,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP17.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:71",
+        "family": "TALENT",
+        "index": "71",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 89,
+        "writeCount": 15,
+        "charaSeedCount": 5,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            22
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:74",
+        "family": "TALENT",
+        "index": "74",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 28,
+        "writeCount": 9,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/CHEAT.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP0.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/ＡＶ撮影関係/撮影シーン関連/SCENE02_MUSTERBATION.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:75",
+        "family": "TALENT",
+        "index": "75",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 32,
+        "writeCount": 9,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/CHEAT.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP2.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:76",
+        "family": "TALENT",
+        "index": "76",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 441,
+        "writeCount": 17,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/ビデオ周り/VIDEO_TITLE.ERB",
+            74
+          ],
+          [
+            "original-game/ERB/システム関係/衣服/FUNC_CLOTH.ERB",
+            33
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_SELL_AFTER.ERB",
+            26
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            17
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:81",
+        "family": "TALENT",
+        "index": "81",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 32,
+        "writeCount": 10,
+        "charaSeedCount": 22,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP33.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP22.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/能力上昇関係/ABLUP23.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:83",
+        "family": "TALENT",
+        "index": "83",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 128,
+        "writeCount": 6,
+        "charaSeedCount": 5,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            69
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+            16
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_NORMAL.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:88",
+        "family": "TALENT",
+        "index": "88",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 57,
+        "writeCount": 4,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_NORMAL.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/指導関係/COMF59.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:93",
+        "family": "TALENT",
+        "index": "93",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 14,
+        "writeCount": 8,
+        "charaSeedCount": 21,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/ビデオ周り/SPECIAL_TITLE.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/クリアボーナス関係/CLEARBONUS.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:118",
+        "family": "TALENT",
+        "index": "118",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 6,
+        "writeCount": 1,
+        "charaSeedCount": 18,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara01_宮間かなで.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara105_ミーナ・クレイン.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara107_赤坂姫乃.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:124",
+        "family": "TALENT",
+        "index": "124",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 22,
+        "writeCount": 3,
+        "charaSeedCount": 3,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMF89.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:135",
+        "family": "TALENT",
+        "index": "135",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 111,
+        "writeCount": 6,
+        "charaSeedCount": 2,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+            19
+          ],
+          [
+            "original-game/ERB/システム関係/SELL_CHARA_ESTIMATE.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:136",
+        "family": "TALENT",
+        "index": "136",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 36,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP40.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/指導関係/COMF89.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:137",
+        "family": "TALENT",
+        "index": "137",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 11,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/能力上昇関係/ABLUP41.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/指導関係/COMF100.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:150",
+        "family": "TALENT",
+        "index": "150",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 9,
+        "writeCount": 4,
+        "charaSeedCount": 3,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            4
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara19_ヒトミちゃん.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara204_和泉透子.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:199",
+        "family": "TALENT",
+        "index": "199",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 59,
+        "writeCount": 1,
+        "charaSeedCount": 2,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            43
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            11
+          ],
+          [
+            "original-game/ERB/システム関係/SELL_CHARA.ERB",
+            3
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara19_ヒトミちゃん.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:310",
+        "family": "TALENT",
+        "index": "310",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 9,
+        "writeCount": 0,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:311",
+        "family": "TALENT",
+        "index": "311",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 2,
+        "writeCount": 0,
+        "charaSeedCount": 5,
+        "topFiles": [
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara208_春日律花.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara24_寺本祐香里.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara89_西方杏子.csv",
+            1
+          ],
+          [
+            "original-game/CSV/Chara94_羽瀬川みこと.csv",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:312",
+        "family": "TALENT",
+        "index": "312",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 4,
+        "writeCount": 0,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 4
+      },
+      {
+        "address": "TALENT:313",
+        "family": "TALENT",
+        "index": "313",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 2,
+        "writeCount": 0,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 2
+      },
+      {
+        "address": "TALENT:315",
+        "family": "TALENT",
+        "index": "315",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 4,
+        "writeCount": 0,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/SELL_CHARA.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 4
+      },
+      {
+        "address": "TALENT:316",
+        "family": "TALENT",
+        "index": "316",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 4,
+        "writeCount": 0,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/SELL_CHARA.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_SOURCE_SUB1.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 4
+      },
+      {
+        "address": "TALENT:440",
+        "family": "TALENT",
+        "index": "440",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 45,
+        "writeCount": 8,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/CHEAT.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/システム関係/INFO.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TALENT:553",
+        "family": "TALENT",
+        "index": "553",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 20,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/実績関係/ACHIEVEMENT_19_ONLYONE_KANADE.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            2
+          ],
+          [
+            "original-game/CSV/Talent.csv",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/NTR関係/BADBOY_RAPE.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TFLAG:13",
+        "family": "TFLAG",
+        "index": "13",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-session-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 0,
+        "writeCount": 55,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/娼館関係/WORK_NORMAL.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/イベント関係/NTR関係/MOLESTER_DETAIL.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_CONCERT.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+            5
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "TFLAG:899",
+        "family": "TFLAG",
+        "index": "899",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-session-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 125,
+        "writeCount": 3,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            37
+          ],
+          [
+            "original-game/ERB/システム関係/PASSOUT.ERB",
+            29
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_A.ERB",
+            27
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            22
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_K.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      }
+    ],
+    "summary": {
+      "rows": 63,
+      "byFamily": {
+        "ABL": 14,
+        "BASE": 1,
+        "CFLAG": 3,
+        "EXP": 8,
+        "FLAG": 3,
+        "TALENT": 32,
+        "TFLAG": 2
+      },
+      "byMappingAction": {
+        "define-pattern-mapping": 1,
+        "map-save-state": 60,
+        "map-session-state": 2
+      },
+      "reads": 4812,
+      "writes": 563
+    }
+  },
+  "sourceEffects": {
+    "available": true,
+    "ledgerPath": "data/coverage/source-effects/M35.effects.json",
+    "rows": [
+      {
+        "effectId": "M35:event_aftertrain:00004:label:01",
+        "kind": "label",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 4,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "@CHARADEAD_CHECK",
+        "label": "CHARADEAD_CHECK",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00006:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 6,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF TALENT:85 == 1",
+        "controlKind": "IF",
+        "condition": "TALENT:85 == 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00007:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 7,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tCFLAG:619 -= RAND:5",
+        "stateFamily": "CFLAG",
+        "stateAddress": "CFLAG:619",
+        "operator": "-=",
+        "expression": "RAND:5",
+        "reads": [],
+        "writes": [
+          "CFLAG:619"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00008:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 8,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tIF CFLAG:619 <= 0",
+        "controlKind": "IF",
+        "condition": "CFLAG:619 <= 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00009:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 9,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCFLAG:619 = 0",
+        "stateFamily": "CFLAG",
+        "stateAddress": "CFLAG:619",
+        "operator": "=",
+        "expression": "0",
+        "reads": [],
+        "writes": [
+          "CFLAG:619"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00010:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 10,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00011:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 11,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00015:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 15,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF BASE:0 > 0",
+        "controlKind": "SIF",
+        "condition": "BASE:0 > 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00016:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 16,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tRETURN 0",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00022:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 22,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF (TALENT:310 || TALENT:312 || TALENT:313) && ABL:10 > R",
+        "controlKind": "IF",
+        "condition": "(TALENT:310 || TALENT:312 || TALENT:313) && ABL:10 > R",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00026:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 26,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tEXP:50 += 1",
+        "stateFamily": "EXP",
+        "stateAddress": "EXP:50",
+        "operator": "+=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "EXP:50"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00028:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 28,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tABL:10 -= 3",
+        "stateFamily": "ABL",
+        "stateAddress": "ABL:10",
+        "operator": "-=",
+        "expression": "3",
+        "reads": [],
+        "writes": [
+          "ABL:10"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00031:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 31,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tBASE:0 = 100",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:0",
+        "operator": "=",
+        "expression": "100",
+        "reads": [],
+        "writes": [
+          "BASE:0"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00033:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 33,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF TALENT:315 || TALENT:316 || TALENT:199",
+        "controlKind": "ELSEIF",
+        "condition": "TALENT:315 || TALENT:316 || TALENT:199",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00040:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 40,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF (TALENT:315 || TALENT:316) && BASE:10 > 0",
+        "controlKind": "IF",
+        "condition": "(TALENT:315 || TALENT:316) && BASE:10 > 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00041:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 41,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tBASE:10 -= 14",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:10",
+        "operator": "-=",
+        "expression": "14",
+        "reads": [],
+        "writes": [
+          "BASE:10"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00042:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 42,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF BASE:10 < 1",
+        "controlKind": "SIF",
+        "condition": "BASE:10 < 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00043:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 43,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tBASE:10 = 1",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:10",
+        "operator": "=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "BASE:10"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00044:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 44,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00045:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 45,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tABL:10 -= 3",
+        "stateFamily": "ABL",
+        "stateAddress": "ABL:10",
+        "operator": "-=",
+        "expression": "3",
+        "reads": [],
+        "writes": [
+          "ABL:10"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00046:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 46,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tSIF ABL:10 < 0",
+        "controlKind": "SIF",
+        "condition": "ABL:10 < 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00047:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 47,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tABL:10 = 0",
+        "stateFamily": "ABL",
+        "stateAddress": "ABL:10",
+        "operator": "=",
+        "expression": "0",
+        "reads": [],
+        "writes": [
+          "ABL:10"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00048:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 48,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tBASE:0 = 0",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:0",
+        "operator": "=",
+        "expression": "0",
+        "reads": [],
+        "writes": [
+          "BASE:0"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00051:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 51,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";ELSEIF TALENT:85 && ABL:10 > R",
+        "controlKind": "ELSEIF",
+        "condition": "TALENT:85 && ABL:10 > R",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00057:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 57,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tTALENT:316 = 1",
+        "stateFamily": "TALENT",
+        "stateAddress": "TALENT:316",
+        "operator": "=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "TALENT:316"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00058:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 58,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tBASE:0 = 0",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:0",
+        "operator": "=",
+        "expression": "0",
+        "reads": [],
+        "writes": [
+          "BASE:0"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00060:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 60,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tBASE:10 = 15",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:10",
+        "operator": "=",
+        "expression": "15",
+        "reads": [],
+        "writes": [
+          "BASE:10"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00063:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 63,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tEXP:50 += 1",
+        "stateFamily": "EXP",
+        "stateAddress": "EXP:50",
+        "operator": "+=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "EXP:50"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00066:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 66,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tFLAG:31 += 1",
+        "stateFamily": "FLAG",
+        "stateAddress": "FLAG:31",
+        "operator": "+=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "FLAG:31"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00068:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 68,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00070:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 70,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tTFLAG:13 = 999",
+        "stateFamily": "TFLAG",
+        "stateAddress": "TFLAG:13",
+        "operator": "=",
+        "expression": "999",
+        "reads": [],
+        "writes": [
+          "TFLAG:13"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00071:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 71,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tCALL SELF_KOJO",
+        "callKind": "CALL",
+        "callTarget": "SELF_KOJO",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "SELF_KOJO"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00077:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 77,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tBASE:0 = -1",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:0",
+        "operator": "=",
+        "expression": "-1",
+        "reads": [],
+        "writes": [
+          "BASE:0"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00081:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 81,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tFLAG:T = -2",
+        "stateFamily": "FLAG",
+        "stateAddress": "FLAG:T",
+        "operator": "=",
+        "expression": "-2",
+        "reads": [],
+        "writes": [
+          "FLAG:T"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00084:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 84,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tFLAG:31 += 1",
+        "stateFamily": "FLAG",
+        "stateAddress": "FLAG:31",
+        "operator": "+=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "FLAG:31"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00085:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 85,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00089:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 89,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF FLAG:31 >= 3 && TALENT:MASTER:93 == 0",
+        "controlKind": "IF",
+        "condition": "FLAG:31 >= 3 && TALENT:MASTER:93 == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00091:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 91,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tTALENT:MASTER:93 = 1",
+        "stateFamily": "TALENT",
+        "stateAddress": "TALENT:MASTER:93",
+        "operator": "=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "TALENT:MASTER:93"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00092:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 92,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_aftertrain:00094:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 94,
+        "currentLabel": "CHARADEAD_CHECK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "RETURN 1",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      }
+    ],
+    "summary": {
+      "rows": 40,
+      "byKind": {
+        "branch-or-loop": 16,
+        "call-edge": 1,
+        "control-transfer": 2,
+        "label": 1,
+        "state-write": 20
+      },
+      "byStatus": {
+        "unclassified": 40
+      },
+      "bySourcePath": {
+        "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB": 40
+      },
+      "byCurrentLabel": {
+        "CHARADEAD_CHECK": 40
+      },
+      "sourcePathsWithoutEffects": []
+    },
+    "effectCrosswalk": [
+      {
+        "effectId": "M35:event_aftertrain:00004:label:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 4,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00006:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 6,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00007:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 7,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00008:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 8,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00009:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 9,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00010:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 10,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00011:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 11,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00015:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 15,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00016:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 16,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00022:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 22,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00026:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 26,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00028:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 28,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00031:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 31,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00033:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 33,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00040:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 40,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00041:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 41,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00042:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 42,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00043:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 43,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00044:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 44,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00045:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 45,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00046:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 46,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00047:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 47,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00048:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 48,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00051:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 51,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00057:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 57,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00058:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 58,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00060:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 60,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00063:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 63,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00066:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 66,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00068:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 68,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00070:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 70,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00071:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 71,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00077:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 77,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00081:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 81,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00084:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 84,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00085:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 85,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00089:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 89,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00091:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 91,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00092:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 92,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_aftertrain:00094:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": 94,
+        "currentLabel": "CHARADEAD_CHECK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      }
+    ],
+    "effectCrosswalkSummary": {
+      "rows": 40,
+      "withImplementationClaim": 0,
+      "withoutImplementationClaim": 40
+    }
+  },
+  "existingImplementationClaims": {
+    "manifestPath": "data/coverage/manifests/M35-source-units.json",
+    "sourceUnits": [],
+    "coverageRows": [],
+    "relatedSourceUnits": [
+      {
+        "unitId": "M35:source-unit:00001",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": "",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyReviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:clock-advance",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00008",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLine": "",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyReviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "acceptedByOwner": true
+      }
+    ],
+    "relatedCoverageRows": [
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:clock-advance",
+        "unitId": "M35:source-unit:00001",
+        "reviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:mission-deadline",
+        "unitId": "M35:source-unit:00002",
+        "reviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "unitId": "M35:source-unit:00005",
+        "reviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "unitId": "M35:source-unit:00008",
+        "reviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34",
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-flag-61",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:scheduled-events",
+        "unitId": "M35:source-unit:00003",
+        "reviewId": "M35:functional:scheduled-events",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "sourceLabel": "scheduled event processing hook",
+        "legacyId": "scheduled-events",
+        "requiredBehavior": "scheduled event processing hook",
+        "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "unitId": "M35:source-unit:00007",
+        "reviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "unitId": "M35:source-unit:00004",
+        "reviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-flag-61"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:world-event-hook",
+        "unitId": "M35:source-unit:00006",
+        "reviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      }
+    ],
+    "summary": {
+      "sourceUnits": 0,
+      "coverageRows": 0,
+      "relatedSourceUnits": 2,
+      "relatedCoverageRows": 8,
+      "sourceUnitsByStatus": {},
+      "coverageRowsByStatus": {}
+    }
+  },
+  "implementationWorkOrder": {
+    "recommendedWorkerInput": "Use only this packet scope to propose bounded web code/test patches. Do not expand the source scope unless main asks. Do not infer completion from packet inclusion.",
+    "requiredWorkerResultShape": {
+      "implementedEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "implementation": "changed runtime file/function",
+          "test": "test or smoke evidence to add/run, or empty if not yet testable",
+          "notes": "short reason the effect is covered"
+        }
+      ],
+      "remainingEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "reason": "why not implemented in this patch proposal"
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "requiredPatchReviewQuestions": [
+      "Which original labels/effects does the patch implement?",
+      "Which web feature/domain files are changed?",
+      "Which state/session/view effects are observable?",
+      "Which input/cancel/failure/retry paths are covered?",
+      "Which source effects remain unimplemented or require transfer/exclusion?"
+    ],
+    "highRiskRows": [
+      {
+        "riskId": "ambiguous-state-family",
+        "severity": "alias-required-before-auto-completion",
+        "count": 3,
+        "reason": "FLAG/CFLAG/GLOBAL/TFLAG-like families require semantic aliasing before implementation can be trusted.",
+        "rowRefs": [
+          {
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "kind": "CFLAG",
+            "id": "CFLAG"
+          },
+          {
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "kind": "FLAG",
+            "id": "FLAG"
+          },
+          {
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "kind": "TFLAG",
+            "id": "TFLAG"
+          }
+        ]
+      },
+      {
+        "riskId": "unclosed-source-effects",
+        "severity": "packet-review-required",
+        "count": 40,
+        "reason": "Source-effect rows are not implementation evidence, but unclassified/blocked rows identify work that cannot be silently ignored.",
+        "rowRefs": [
+          {
+            "effectId": "M35:event_aftertrain:00004:label:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 4,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "label"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00006:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 6,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00007:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 7,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00008:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 8,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00009:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 9,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00010:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 10,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00011:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 11,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00015:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 15,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00016:control-transfer:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 16,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "control-transfer"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00022:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 22,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00026:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 26,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00028:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 28,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00031:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 31,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00033:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 33,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00040:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 40,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00041:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 41,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00042:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 42,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00043:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 43,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00044:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 44,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00045:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 45,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00046:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 46,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00047:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 47,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00048:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 48,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00051:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 51,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_aftertrain:00057:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            "sourceLine": 57,
+            "currentLabel": "CHARADEAD_CHECK",
+            "kind": "state-write"
+          }
+        ]
+      }
+    ],
+    "workerEditableGlobs": [
+      "src/**/*.ts",
+      "tools/*smoke*.ts",
+      "tools/vite.*smoke*.config.ts",
+      "data/coverage/source-effects/classifications/*.json"
+    ],
+    "suggestedReadOnlyInputs": [
+      "data/implementation-packets/m35-charadead-check.json",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+      "data/coverage/source-effects/M35.effects.json"
+    ],
+    "packetBudget": {
+      "sourceEffects": 40,
+      "sourceFiles": 1,
+      "labels": 1,
+      "outgoingCalls": 1,
+      "sourceSnippetBytes": 2066
+    },
+    "packetAccountingRule": "Every sourceEffects.rows effectId must appear exactly once in implementedEffects, remainingEffects, transferredEffects, or excludedEffects in worker output."
+  },
+  "assertions": {
+    "completeness": {
+      "ok": true,
+      "missingFileSummaryRows": [],
+      "unresolvedSourcePaths": [],
+      "ambiguousSourcePaths": []
+    },
+    "analysisJoin": {
+      "sourceFileCount": 1,
+      "labelCount": 1,
+      "outgoingCallCount": 1,
+      "incomingCallCount": 9,
+      "dynamicCallCount": 0,
+      "flowActionCount": 3,
+      "stateAccessFamilyRows": 7,
+      "legacyAddressRows": 63,
+      "sourceEffectRows": 40,
+      "sourceEffectCrosswalkRows": 40,
+      "sourceEffectRowsWithoutImplementationClaim": 40,
+      "sourceUnitRows": 0,
+      "coverageRows": 0
+    }
+  }
+}

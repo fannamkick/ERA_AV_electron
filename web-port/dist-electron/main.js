@@ -32,15 +32,17 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // Electron 메인 프로세스
-const electron_1 = __importDefault(require("electron"));
+// Electron 28.x: CommonJS에서 named import가 작동하지 않는 경우가 있어 require 직접 사용
+// process.type === 'browser'이면 메인 프로세스
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs/promises"));
-const { app, BrowserWindow, ipcMain, dialog } = electron_1.default;
 let mainWindow = null;
 let storageCache = {};
 // 세이브 파일 경로 (app.whenReady() 이후 초기화됨)

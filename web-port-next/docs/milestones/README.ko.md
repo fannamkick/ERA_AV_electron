@@ -7,6 +7,7 @@ This directory is now organized around split-method milestone docs.
 - `PHASE_5_M28_M49.ko.md`: lightweight index only.
 - `M28_MAIN_ROUTES.ko.md` through `M49_INFO_CONFIG_MISC.ko.md`: per-milestone split docs.
 - `MILESTONE_DOCUMENTATION_RULES.ko.md`: required shape and worker rules.
+- `../GAME_FEATURE_MAP.ko.md`: canonical feature-first map that these milestone docs must refine.
 - Legacy narrative docs are archived under `../trash/2026-05-08-milestone-restructure/`.
 
 ## Current Target
@@ -38,8 +39,9 @@ A submilestone closes only when it has:
 ## Working Pattern
 
 1. Open current `Mxx_*.ko.md`.
-2. Build original inventory from ERB/CSV/VariableSize/Chara CSV.
-3. Attack inventory quality with workers.
-4. Implement or verify source effects.
-5. Record implementation claims and runtime traces.
-6. Only then update closure/gap artifacts.
+2. Locate the feature in `../GAME_FEATURE_MAP.ko.md`.
+3. Build original inventory from ERB/CSV/VariableSize/Chara CSV.
+4. Attack inventory quality with workers.
+5. Implement or verify source effects.
+6. Record implementation claims and runtime traces.
+7. Only then update closure/gap artifacts.

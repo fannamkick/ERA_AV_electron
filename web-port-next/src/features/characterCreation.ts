@@ -9,6 +9,11 @@ import {
   createPeopleBaseStatsFromTemplate,
   createUnmappedLegacyCharacterFlags,
 } from './bodyStats';
+import {
+  computeSellAssistantEligibilityRank,
+  legacySaleEligibilityRank,
+  type SaleEligibilityRank,
+} from './characterLifecycle';
 import { splitLegacyCharacterFlags } from './socialEquipmentCflag';
 
 export type CharacterCreationFailure = {
@@ -58,8 +63,11 @@ function createCharacterRoles(templateId: CatalogId): readonly CharacterRole[] {
 
 function createCharacterFromTemplate(template: CharacterTemplate, spec: CharacterCreationSpec): CharacterState {
   const splitFlags = splitLegacyCharacterFlags(template);
-
-  return {
+  const initialLifecycleRank = Math.max(
+    0,
+    Math.min(2, Number(template.initialState.characterFlags['1'] ?? 0)),
+  ) as SaleEligibilityRank;
+  const baseCharacter: CharacterState = {
     id: spec.characterId ?? characterIdForTemplate(template.id),
     identity: {
       templateId: template.id,
@@ -83,8 +91,9 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
     },
     flags: {
       lifecycle: {
-        sellable: template.id !== '0',
-        assistantEligible: template.id !== '0',
+        sellable: false,
+        assistantEligible: false,
+        saleEligibilityRank: initialLifecycleRank,
         retired: false,
         deleted: false,
         recruitmentStatus: template.id === '0' ? 'notRecruitable' : 'recruited',
@@ -106,6 +115,24 @@ function createCharacterFromTemplate(template: CharacterTemplate, spec: Characte
       },
     },
     roles: createCharacterRoles(template.id),
+  };
+  const saleEligibilityRank = Math.max(
+    baseCharacter.flags.lifecycle.saleEligibilityRank,
+    legacySaleEligibilityRank(baseCharacter),
+    computeSellAssistantEligibilityRank(baseCharacter),
+  ) as SaleEligibilityRank;
+
+  return {
+    ...baseCharacter,
+    flags: {
+      ...baseCharacter.flags,
+      lifecycle: {
+        ...baseCharacter.flags.lifecycle,
+        saleEligibilityRank,
+        sellable: saleEligibilityRank >= 1 && template.id !== '0' && !baseCharacter.attributes.traits['199'],
+        assistantEligible: saleEligibilityRank >= 2,
+      },
+    },
   };
 }
 

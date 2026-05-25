@@ -1,0 +1,140 @@
+{
+  "recommendedWorkerInput": "Do not reinterpret broad M35. Implement only EVENT_NEWDAY call-order reachability in the target file and smoke test. Do not implement callee internals.",
+  "runtimeTargetHints": {
+    "primaryFile": "src/features/turnEnd.ts",
+    "primarySymbol": "applyNewDayEventHooks",
+    "callSite": "endTurn after clock/boundary calculation and before returning effects",
+    "testFile": "tools/m35_turn_long_smoke.ts",
+    "testCommand": "npm run smoke:turn-long",
+    "similarCode": [
+      "applyWeeklyAutomaticHooks",
+      "applyMonthlyAutomaticHooks",
+      "applyProcessedEventFlags",
+      "turnEndAfterHooks"
+    ]
+  },
+  "stateAliasRecipe": [
+    {
+      "legacy": "CALL MORNING_COWGIRL",
+      "web": "record reached new-day hook id, do not implement callee body"
+    },
+    {
+      "legacy": "CALL HAPPY_BIRTHDAY",
+      "web": "record reached new-day hook id, do not implement callee body"
+    },
+    {
+      "legacy": "CALL ONESHO",
+      "web": "record reached new-day hook id, do not implement callee body"
+    },
+    {
+      "legacy": "CALL PARTICULAR_DATE",
+      "web": "record reached new-day hook id, do not implement callee body"
+    },
+    {
+      "legacy": "CALL START_COOCKING",
+      "web": "record reached new-day hook id, do not implement callee body"
+    }
+  ],
+  "implementationRecipe": {
+    "originalBehavior": [
+      "EVENT_NEWDAY is an EVENT_NEXTDAY label reached from EVENT_TURNEND.",
+      "The disabled SOMETIMES_SHE_COMES_BACK block is commented out in original source and must not be wired.",
+      "Active behavior is ordered calls: MORNING_COWGIRL, HAPPY_BIRTHDAY, ONESHO, PARTICULAR_DATE, START_COOCKING, then RETURN 1."
+    ],
+    "patchSteps": [
+      "Add a small applyNewDayEventHooks helper in src/features/turnEnd.ts.",
+      "The helper should record the ordered callee ids in persistent turn/world event state or effects, without implementing callee internals.",
+      "Call the helper from endTurn in the turn-end flow.",
+      "Add smoke assertions in tools/m35_turn_long_smoke.ts that the ordered EVENT_NEWDAY callee ids are recorded.",
+      "Create data/implementation-packets/m35-event-newday.worker-result.json using the prefilled accounting, updating implemented evidence for the actual patch."
+    ],
+    "doNotDo": [
+      "Do not implement MORNING_COWGIRL/HAPPY_BIRTHDAY/ONESHO/PARTICULAR_DATE/START_COOCKING internals.",
+      "Do not wire SOMETIMES_SHE_COMES_BACK; the source call is commented out.",
+      "Do not close M35."
+    ]
+  },
+  "workerEditableGlobs": [
+    "src/features/turnEnd.ts",
+    "tools/m35_turn_long_smoke.ts",
+    "data/implementation-packets/m35-event-newday.worker-result.json"
+  ],
+  "suggestedReadOnlyInputs": [
+    "data/implementation-packets/m35-event-newday.json",
+    "src/features/turnEnd.ts",
+    "tools/m35_turn_long_smoke.ts",
+    "package.json"
+  ],
+  "allowedCommands": [
+    "rg -n \"applyNewDayEventHooks|newDay|EVENT_NEWDAY|weeklyHook|monthlyHook\" src/features/turnEnd.ts tools/m35_turn_long_smoke.ts",
+    "npm run typecheck",
+    "npm run smoke:turn-long",
+    "node tools/check_feature_packet_worker_result.mjs m35-event-newday data/implementation-packets/m35-event-newday.worker-result.json"
+  ],
+  "prefilledWorkerResult": {
+    "implementedEffects": [
+      {
+        "effectId": "M35:event_nextday:00135:label:01",
+        "implementation": "src/features/turnEnd.ts applyNewDayEventHooks entrypoint",
+        "test": "tools/m35_turn_long_smoke.ts ordered new-day hook assertion"
+      },
+      {
+        "effectId": "M35:event_nextday:00158:control-transfer:01",
+        "implementation": "applyNewDayEventHooks returns after recording active callee order",
+        "test": "tools/m35_turn_long_smoke.ts ordered new-day hook assertion"
+      }
+    ],
+    "remainingEffects": [],
+    "transferredEffects": [
+      {
+        "effectId": "M35:event_nextday:00145:call-edge:01",
+        "to": "MORNING_COWGIRL packet",
+        "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+      },
+      {
+        "effectId": "M35:event_nextday:00148:call-edge:01",
+        "to": "HAPPY_BIRTHDAY packet",
+        "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+      },
+      {
+        "effectId": "M35:event_nextday:00151:call-edge:01",
+        "to": "ONESHO packet",
+        "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+      },
+      {
+        "effectId": "M35:event_nextday:00154:call-edge:01",
+        "to": "PARTICULAR_DATE packet",
+        "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+      },
+      {
+        "effectId": "M35:event_nextday:00156:call-edge:01",
+        "to": "START_COOCKING packet",
+        "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+      }
+    ],
+    "excludedEffects": [
+      {
+        "effectId": "M35:event_nextday:00138:call-edge:01",
+        "reason": "Original source line is commented out with ';CALL SOMETIMES_SHE_COMES_BACK'."
+      },
+      {
+        "effectId": "M35:event_nextday:00139:branch-or-loop:01",
+        "reason": "Original source block is commented out/disabled."
+      },
+      {
+        "effectId": "M35:event_nextday:00140:control-transfer:01",
+        "reason": "Original source block is commented out/disabled."
+      }
+    ],
+    "changedFiles": [
+      "src/features/turnEnd.ts",
+      "tools/m35_turn_long_smoke.ts",
+      "data/implementation-packets/m35-event-newday.worker-result.json"
+    ],
+    "tests": [
+      "npm run typecheck",
+      "npm run smoke:turn-long",
+      "node tools/check_feature_packet_worker_result.mjs m35-event-newday data/implementation-packets/m35-event-newday.worker-result.json"
+    ]
+  }
+}

@@ -1,0 +1,980 @@
+{
+  "schemaVersion": "feature-implementation-packet/v1",
+  "generatedBy": "tools/build_feature_packet.mjs",
+  "generatedAt": "2026-05-08T12:05:30.631Z",
+  "packetId": "m35-sometimes-she-comes-back",
+  "milestone": "M35",
+  "purpose": "Implementation packet built from existing original-source analysis artifacts. This packet reduces repeated source reading; it is not completion evidence by itself.",
+  "trustRules": [
+    "original-game ERB/CSV files remain authoritative",
+    "packet rows must preserve sourcePath and sourceLine/label references where available",
+    "mapped/classified rows are implementation inputs, not implementation proof",
+    "workers may propose patches from packets, but main Codex must review and integrate",
+    "runtime tests/traces are still required to claim implementation parity"
+  ],
+  "scope": {
+    "inputMilestone": "M35",
+    "inputSources": [],
+    "derivedSources": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "sourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "activeSourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB"
+    ],
+    "labelFilters": [
+      "SOMETIMES_SHE_COMES_BACK"
+    ],
+    "labelRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "label": "SOMETIMES_SHE_COMES_BACK",
+        "labelKind": "global",
+        "startLine": 590,
+        "endLine": 618
+      }
+    ],
+    "packetRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "label": "SOMETIMES_SHE_COMES_BACK",
+        "labelKind": "global",
+        "startLine": 590,
+        "endLine": 618
+      }
+    ],
+    "reviewGroupFilters": [],
+    "selectedReviewGroups": [],
+    "effectIdFilters": [],
+    "effectIdFileFilters": [],
+    "riskFilters": [],
+    "maxEffects": 30,
+    "granularity": "label-range-subpacket"
+  },
+  "sourceFiles": [
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "resolvedSourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "pathResolution": "exact",
+      "pathResolutionCandidates": [],
+      "sourceSha256": "041470d32f13350dcd1a4b756fac628fe1c6cdbda99844703801ba538840e029",
+      "encoding": "utf-8-sig",
+      "lineCount": 1166,
+      "labelCount": 14,
+      "callCount": 32,
+      "inputCount": 2,
+      "stateReadCount": 1190,
+      "stateWriteCount": 272,
+      "coreStateReadCount": 639,
+      "coreStateWriteCount": 164,
+      "labels": "EVENT_NEXTDAY@4, EVENT_NEWDAY@135, RUNNING_COST@162, EVENT_MORASI@282, EVENT_YOUJI@291, EVENT_HIMAN@361, EVENT_YASERU@371, EVENT_JUNIORHIGHSCHOOL@381, EVENT_HIGHSCHOOL@449, EVENT_NOROI@514, SOMETIMES_SHE_COMES_BACK@590, ONESHO@619, NIGHT_STALKING_CHECK@661, MORNING_COWGIRL@904",
+      "topWrittenFamilies": "TALENT:73, A:47, JUEL:22, S:17, CFLAG:13, F:13, EXP:11, FLAG:10, ABL:8, R:6",
+      "topReadFamilies": "COUNT:219, TALENT:179, ABL:136, L:97, A:78, S:62, CALLNAME:34, CFLAG:31, C:29, EXP:27",
+      "topCoreWrittenFamilies": "TALENT:73, JUEL:22, CFLAG:13, EXP:11, FLAG:10, ABL:8, CSTR:6, TARGET:5, BASE:5, MARK:4",
+      "topCoreReadFamilies": "TALENT:179, ABL:136, CALLNAME:34, CFLAG:31, EXP:27, MASTER:26, FLAG:25, JUEL:23, DAY:22, TALENTNAME:22"
+    }
+  ],
+  "sourceOutline": {
+    "labels": [
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "label": "SOMETIMES_SHE_COMES_BACK",
+        "rawLabel": "SOMETIMES_SHE_COMES_BACK",
+        "scope": "",
+        "kind": "global",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 590,
+        "incomingStaticCalls": 0,
+        "outgoingCalls": 0,
+        "entryKind": "unreferenced-global"
+      }
+    ],
+    "outgoingCalls": [],
+    "incomingCalls": [],
+    "dynamicCalls": [],
+    "flowActions": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 603,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "sourceLabel": "SOMETIMES_SHE_COMES_BACK",
+        "action": "WAIT",
+        "actionKind": "pause",
+        "text": "WAIT"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 606,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "sourceLabel": "SOMETIMES_SHE_COMES_BACK",
+        "action": "WAIT",
+        "actionKind": "pause",
+        "text": "WAIT"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 609,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "sourceLabel": "SOMETIMES_SHE_COMES_BACK",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN 1"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 613,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK",
+        "sourceLabel": "SOMETIMES_SHE_COMES_BACK",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN 0"
+      }
+    ],
+    "stateAccesses": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "area": "イベント関係",
+        "family": "BASE",
+        "reads": 20,
+        "writes": 5
+      }
+    ],
+    "sourceSnippets": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "label": "SOMETIMES_SHE_COMES_BACK",
+        "startLine": 590,
+        "endLine": 618,
+        "text": "  590: @SOMETIMES_SHE_COMES_BACK\n  591: REPEAT CHARANUM\n  592: \t;主人公は判定から省く\n  593: \tSIF COUNT == 0\n  594: \t\tCONTINUE\n  595: \n  596: \tIF BASE:COUNT:0 == 0\n  597: \t\tBASE:COUNT:0 = MAXBASE:COUNT:0 / 10\n  598: \t\tBASE:COUNT:1 = MAXBASE:COUNT:1\n  599: \t\tDRAWLINE\n  600: \t\tPRINTFORML 아침, %플레이어가(1)% 눈을 뜨자, 분명 죽었을터인 %조사처리(CALLNAME:COUNT,\"가\")% 거기에 있었다\n  601: \t\tPRINTFORML %조사처리(CALLNAME:COUNT,\"는\")% 아무일도 없었던 것처럼, 아침 인사를 했다\n  602: \t\tPRINTL  \n  603: \t\tWAIT \n  604: \t\tPRINTFORML %조사처리(NAME:COUNT,\"가\")% 복귀했습니다……\n  605: \t\tDRAWLINE\n  606: \t\tWAIT\n  607: \t\t;一度に帰ってくるのは一人ずつ\n  608: \t\tD = 1\n  609: \t\tRETURN 1\n  610: \tENDIF\n  611: REND\n  612: \n  613: RETURN 0\n  614: \n  615: ;-------------------------------------------------\n  616: ;【오줌싸개】持ちのおねしょチェック\n  617: ;TALENT:오줌싸개を持つキャラは방뇨回数依存でおねしょ\n  618: ;-------------------------------------------------"
+      }
+    ]
+  },
+  "legacyStateAndMapping": {
+    "rows": [
+      {
+        "address": "BASE:0",
+        "family": "BASE",
+        "index": "0",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 264,
+        "writeCount": 63,
+        "charaSeedCount": 109,
+        "topFiles": [
+          [
+            "original-game/ERB/娼館関係/WORK_S_SEXORGY.ERB",
+            23
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_ADDICT.ERB",
+            20
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            18
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            17
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            14
+          ]
+        ],
+        "sampleCount": 8
+      }
+    ],
+    "summary": {
+      "rows": 1,
+      "byFamily": {
+        "BASE": 1
+      },
+      "byMappingAction": {
+        "map-save-state": 1
+      },
+      "reads": 264,
+      "writes": 63
+    }
+  },
+  "sourceEffects": {
+    "available": true,
+    "ledgerPath": "data/coverage/source-effects/M35.effects.json",
+    "rows": [
+      {
+        "effectId": "M35:event_nextday:00590:label:01",
+        "kind": "label",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 590,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "@SOMETIMES_SHE_COMES_BACK",
+        "label": "SOMETIMES_SHE_COMES_BACK",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00591:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 591,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00593:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 593,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tSIF COUNT == 0",
+        "controlKind": "SIF",
+        "condition": "COUNT == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00594:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 594,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00596:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 596,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF BASE:COUNT:0 == 0",
+        "controlKind": "IF",
+        "condition": "BASE:COUNT:0 == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00597:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 597,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tBASE:COUNT:0 = MAXBASE:COUNT:0 / 10",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:COUNT:0",
+        "operator": "=",
+        "expression": "MAXBASE:COUNT:0 / 10",
+        "reads": [],
+        "writes": [
+          "BASE:COUNT:0"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00598:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 598,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tBASE:COUNT:1 = MAXBASE:COUNT:1",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:COUNT:1",
+        "operator": "=",
+        "expression": "MAXBASE:COUNT:1",
+        "reads": [],
+        "writes": [
+          "BASE:COUNT:1"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00609:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 609,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tRETURN 1",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00610:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 610,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00611:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 611,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00613:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 613,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "RETURN 0",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      }
+    ],
+    "summary": {
+      "rows": 11,
+      "byKind": {
+        "branch-or-loop": 6,
+        "control-transfer": 2,
+        "label": 1,
+        "state-write": 2
+      },
+      "byStatus": {
+        "unclassified": 11
+      },
+      "bySourcePath": {
+        "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB": 11
+      },
+      "byCurrentLabel": {
+        "SOMETIMES_SHE_COMES_BACK": 11
+      },
+      "sourcePathsWithoutEffects": []
+    },
+    "effectCrosswalk": [
+      {
+        "effectId": "M35:event_nextday:00590:label:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 590,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00591:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 591,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00593:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 593,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00594:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 594,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00596:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 596,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00597:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 597,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00598:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 598,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00609:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 609,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00610:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 610,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00611:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 611,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00613:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 613,
+        "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      }
+    ],
+    "effectCrosswalkSummary": {
+      "rows": 11,
+      "withImplementationClaim": 0,
+      "withoutImplementationClaim": 11
+    }
+  },
+  "existingImplementationClaims": {
+    "manifestPath": "data/coverage/manifests/M35-source-units.json",
+    "sourceUnits": [],
+    "coverageRows": [],
+    "relatedSourceUnits": [
+      {
+        "unitId": "M35:source-unit:00004",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyReviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00006",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyReviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:world-event-hook",
+        "acceptedByOwner": true
+      }
+    ],
+    "relatedCoverageRows": [
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:clock-advance",
+        "unitId": "M35:source-unit:00001",
+        "reviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:mission-deadline",
+        "unitId": "M35:source-unit:00002",
+        "reviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "unitId": "M35:source-unit:00005",
+        "reviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "unitId": "M35:source-unit:00008",
+        "reviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34",
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-flag-61",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:scheduled-events",
+        "unitId": "M35:source-unit:00003",
+        "reviewId": "M35:functional:scheduled-events",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "sourceLabel": "scheduled event processing hook",
+        "legacyId": "scheduled-events",
+        "requiredBehavior": "scheduled event processing hook",
+        "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "unitId": "M35:source-unit:00007",
+        "reviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "unitId": "M35:source-unit:00004",
+        "reviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-flag-61"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:world-event-hook",
+        "unitId": "M35:source-unit:00006",
+        "reviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      }
+    ],
+    "summary": {
+      "sourceUnits": 0,
+      "coverageRows": 0,
+      "relatedSourceUnits": 2,
+      "relatedCoverageRows": 8,
+      "sourceUnitsByStatus": {},
+      "coverageRowsByStatus": {}
+    }
+  },
+  "implementationWorkOrder": {
+    "recommendedWorkerInput": "Use only this packet scope to propose bounded web code/test patches. Do not expand the source scope unless main asks. Do not infer completion from packet inclusion.",
+    "requiredWorkerResultShape": {
+      "implementedEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "implementation": "changed runtime file/function",
+          "test": "test or smoke evidence to add/run, or empty if not yet testable",
+          "notes": "short reason the effect is covered"
+        }
+      ],
+      "remainingEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "reason": "why not implemented in this patch proposal"
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "requiredPatchReviewQuestions": [
+      "Which original labels/effects does the patch implement?",
+      "Which web feature/domain files are changed?",
+      "Which state/session/view effects are observable?",
+      "Which input/cancel/failure/retry paths are covered?",
+      "Which source effects remain unimplemented or require transfer/exclusion?"
+    ],
+    "highRiskRows": [
+      {
+        "riskId": "unreferenced-global-label",
+        "severity": "scope-review-required",
+        "count": 1,
+        "reason": "Global labels with no static incoming calls may still be engine entries, dynamic-call targets, or feature entrypoints.",
+        "rowRefs": [
+          {
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "line": 590,
+            "label": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "global",
+            "id": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:590:SOMETIMES_SHE_COMES_BACK"
+          }
+        ]
+      },
+      {
+        "riskId": "unclosed-source-effects",
+        "severity": "packet-review-required",
+        "count": 11,
+        "reason": "Source-effect rows are not implementation evidence, but unclassified/blocked rows identify work that cannot be silently ignored.",
+        "rowRefs": [
+          {
+            "effectId": "M35:event_nextday:00590:label:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 590,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "label"
+          },
+          {
+            "effectId": "M35:event_nextday:00591:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 591,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00593:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 593,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00594:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 594,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00596:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 596,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00597:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 597,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_nextday:00598:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 598,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_nextday:00609:control-transfer:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 609,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "control-transfer"
+          },
+          {
+            "effectId": "M35:event_nextday:00610:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 610,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00611:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 611,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00613:control-transfer:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 613,
+            "currentLabel": "SOMETIMES_SHE_COMES_BACK",
+            "kind": "control-transfer"
+          }
+        ]
+      }
+    ],
+    "workerEditableGlobs": [
+      "src/**/*.ts",
+      "tools/*smoke*.ts",
+      "tools/vite.*smoke*.config.ts",
+      "data/coverage/source-effects/classifications/*.json"
+    ],
+    "suggestedReadOnlyInputs": [
+      "data/implementation-packets/m35-sometimes-she-comes-back.json",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "data/coverage/source-effects/M35.effects.json"
+    ],
+    "packetBudget": {
+      "sourceEffects": 11,
+      "sourceFiles": 1,
+      "labels": 1,
+      "outgoingCalls": 0,
+      "sourceSnippetBytes": 826
+    },
+    "packetAccountingRule": "Every sourceEffects.rows effectId must appear exactly once in implementedEffects, remainingEffects, transferredEffects, or excludedEffects in worker output."
+  },
+  "assertions": {
+    "completeness": {
+      "ok": true,
+      "missingFileSummaryRows": [],
+      "unresolvedSourcePaths": [],
+      "ambiguousSourcePaths": []
+    },
+    "analysisJoin": {
+      "sourceFileCount": 1,
+      "labelCount": 1,
+      "outgoingCallCount": 0,
+      "incomingCallCount": 0,
+      "dynamicCallCount": 0,
+      "flowActionCount": 4,
+      "stateAccessFamilyRows": 1,
+      "legacyAddressRows": 1,
+      "sourceEffectRows": 11,
+      "sourceEffectCrosswalkRows": 11,
+      "sourceEffectRowsWithoutImplementationClaim": 11,
+      "sourceUnitRows": 0,
+      "coverageRows": 0
+    }
+  }
+}

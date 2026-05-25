@@ -5,6 +5,7 @@ export type SaveState = {
 };
 
 export type SaveLoadSessionState = {
+  readonly mode?: 'save' | 'load';
   readonly snapshotText: string;
   readonly loadText: string;
   readonly lastSnapshotAt?: string;

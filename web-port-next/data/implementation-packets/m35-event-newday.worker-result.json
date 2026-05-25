@@ -1,0 +1,71 @@
+{
+  "implementedEffects": [
+    {
+      "effectId": "M35:event_nextday:00135:label:01",
+      "implementation": "src/features/turnEnd.ts newday-event-hook/applyNewDayEventHooks records EVENT_NEWDAY reachability",
+      "test": "tools/m35_turn_long_smoke.ts asserts newDayHookLastTurn/newDayHookOrder"
+    },
+    {
+      "effectId": "M35:event_nextday:00158:control-transfer:01",
+      "implementation": "src/features/turnEnd.ts applyNewDayEventHooks returns after recording active callee order",
+      "test": "tools/m35_turn_long_smoke.ts asserts EVENT_NEWDAY effect log and save roundtrip"
+    }
+  ],
+  "remainingEffects": [],
+  "transferredEffects": [
+    {
+      "effectId": "M35:event_nextday:00145:call-edge:01",
+      "to": "MORNING_COWGIRL packet",
+      "reason": "M35 records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+    },
+    {
+      "effectId": "M35:event_nextday:00148:call-edge:01",
+      "to": "HAPPY_BIRTHDAY packet",
+      "reason": "M35 records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+    },
+    {
+      "effectId": "M35:event_nextday:00151:call-edge:01",
+      "to": "ONESHO packet",
+      "reason": "M35 records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+    },
+    {
+      "effectId": "M35:event_nextday:00154:call-edge:01",
+      "to": "PARTICULAR_DATE packet",
+      "reason": "M35 records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+    },
+    {
+      "effectId": "M35:event_nextday:00156:call-edge:01",
+      "to": "START_COOCKING packet",
+      "reason": "M35 records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+    }
+  ],
+  "excludedEffects": [
+    {
+      "effectId": "M35:event_nextday:00138:call-edge:01",
+      "reason": "Original source line is commented out with ';CALL SOMETIMES_SHE_COMES_BACK'."
+    },
+    {
+      "effectId": "M35:event_nextday:00139:branch-or-loop:01",
+      "reason": "Original source block is commented out/disabled."
+    },
+    {
+      "effectId": "M35:event_nextday:00140:control-transfer:01",
+      "reason": "Original source block is commented out/disabled."
+    }
+  ],
+  "changedFiles": [
+    "src/features/turnEnd.ts",
+    "tools/m35_turn_long_smoke.ts",
+    "data/implementation-packets/m35-event-newday.worker-result.json"
+  ],
+  "tests": [
+    "npm run typecheck",
+    "npm run smoke:turn-long",
+    "node tools/check_feature_packet_worker_result.mjs m35-event-newday data/implementation-packets/m35-event-newday.worker-result.json"
+  ],
+  "workerRunIds": [
+    "worker-live-probe-add-file",
+    "m35-event-newday-turnend-replacetext",
+    "m35-event-newday-turnend-replacetext-v2"
+  ]
+}

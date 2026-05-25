@@ -1,0 +1,3477 @@
+{
+  "schemaVersion": "feature-implementation-packet/v1",
+  "generatedBy": "tools/build_feature_packet.mjs",
+  "generatedAt": "2026-05-08T11:39:53.813Z",
+  "packetId": "m35-event-nextday",
+  "milestone": "M35",
+  "purpose": "Implementation packet built from existing original-source analysis artifacts. This packet reduces repeated source reading; it is not completion evidence by itself.",
+  "trustRules": [
+    "original-game ERB/CSV files remain authoritative",
+    "packet rows must preserve sourcePath and sourceLine/label references where available",
+    "mapped/classified rows are implementation inputs, not implementation proof",
+    "workers may propose patches from packets, but main Codex must review and integrate",
+    "runtime tests/traces are still required to claim implementation parity"
+  ],
+  "scope": {
+    "inputMilestone": "M35",
+    "inputSources": [],
+    "derivedSources": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "sourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "activeSourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB"
+    ],
+    "labelFilters": [
+      "EVENT_NEXTDAY"
+    ],
+    "labelRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "label": "EVENT_NEXTDAY",
+        "labelKind": "global",
+        "startLine": 4,
+        "endLine": 134
+      }
+    ],
+    "packetRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "label": "EVENT_NEXTDAY",
+        "labelKind": "global",
+        "startLine": 4,
+        "endLine": 134
+      }
+    ],
+    "reviewGroupFilters": [],
+    "selectedReviewGroups": [],
+    "effectIdFilters": [],
+    "effectIdFileFilters": [],
+    "riskFilters": [],
+    "maxEffects": 100,
+    "granularity": "label-range-subpacket"
+  },
+  "sourceFiles": [
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "resolvedSourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "pathResolution": "exact",
+      "pathResolutionCandidates": [],
+      "sourceSha256": "041470d32f13350dcd1a4b756fac628fe1c6cdbda99844703801ba538840e029",
+      "encoding": "utf-8-sig",
+      "lineCount": 1166,
+      "labelCount": 14,
+      "callCount": 32,
+      "inputCount": 2,
+      "stateReadCount": 1190,
+      "stateWriteCount": 272,
+      "coreStateReadCount": 639,
+      "coreStateWriteCount": 164,
+      "labels": "EVENT_NEXTDAY@4, EVENT_NEWDAY@135, RUNNING_COST@162, EVENT_MORASI@282, EVENT_YOUJI@291, EVENT_HIMAN@361, EVENT_YASERU@371, EVENT_JUNIORHIGHSCHOOL@381, EVENT_HIGHSCHOOL@449, EVENT_NOROI@514, SOMETIMES_SHE_COMES_BACK@590, ONESHO@619, NIGHT_STALKING_CHECK@661, MORNING_COWGIRL@904",
+      "topWrittenFamilies": "TALENT:73, A:47, JUEL:22, S:17, CFLAG:13, F:13, EXP:11, FLAG:10, ABL:8, R:6",
+      "topReadFamilies": "COUNT:219, TALENT:179, ABL:136, L:97, A:78, S:62, CALLNAME:34, CFLAG:31, C:29, EXP:27",
+      "topCoreWrittenFamilies": "TALENT:73, JUEL:22, CFLAG:13, EXP:11, FLAG:10, ABL:8, CSTR:6, TARGET:5, BASE:5, MARK:4",
+      "topCoreReadFamilies": "TALENT:179, ABL:136, CALLNAME:34, CFLAG:31, EXP:27, MASTER:26, FLAG:25, JUEL:23, DAY:22, TALENTNAME:22"
+    }
+  ],
+  "sourceOutline": {
+    "labels": [
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "label": "EVENT_NEXTDAY",
+        "rawLabel": "EVENT_NEXTDAY",
+        "scope": "",
+        "kind": "global",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 4,
+        "incomingStaticCalls": 1,
+        "outgoingCalls": 19,
+        "entryKind": ""
+      }
+    ],
+    "outgoingCalls": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 16,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_MORASI",
+        "targetLabel": "EVENT_MORASI",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:282:EVENT_MORASI"
+        ],
+        "resolvedTargets": "EVENT_MORASI@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:282",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_MORASI"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 18,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_MORASI",
+        "targetLabel": "EVENT_MORASI",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:282:EVENT_MORASI"
+        ],
+        "resolvedTargets": "EVENT_MORASI@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:282",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_MORASI"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 24,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_YOUJI",
+        "targetLabel": "EVENT_YOUJI",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:291:EVENT_YOUJI"
+        ],
+        "resolvedTargets": "EVENT_YOUJI@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:291",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_YOUJI"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 30,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_YOUJI",
+        "targetLabel": "EVENT_YOUJI",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:291:EVENT_YOUJI"
+        ],
+        "resolvedTargets": "EVENT_YOUJI@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:291",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_YOUJI"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 36,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_HIMAN",
+        "targetLabel": "EVENT_HIMAN",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:361:EVENT_HIMAN"
+        ],
+        "resolvedTargets": "EVENT_HIMAN@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:361",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_HIMAN"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 42,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_YASERU",
+        "targetLabel": "EVENT_YASERU",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:371:EVENT_YASERU"
+        ],
+        "resolvedTargets": "EVENT_YASERU@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:371",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_YASERU"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 56,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "APHRODISIAC_ADDICT",
+        "targetLabel": "APHRODISIAC_ADDICT",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_ADDICT.ERB:7:APHRODISIAC_ADDICT"
+        ],
+        "resolvedTargets": "APHRODISIAC_ADDICT@original-game/ERB/イベント関係/EVENT_ADDICT.ERB:7",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL APHRODISIAC_ADDICT"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 63,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EVENT_NOROI",
+        "targetLabel": "EVENT_NOROI",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:514:EVENT_NOROI"
+        ],
+        "resolvedTargets": "EVENT_NOROI@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:514",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_NOROI"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 69,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "GET_CHILD_ALL",
+        "targetLabel": "GET_CHILD_ALL",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:73:GET_CHILD_ALL"
+        ],
+        "resolvedTargets": "GET_CHILD_ALL@original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:73",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL GET_CHILD_ALL"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 76,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "REACH_FULL_TERM",
+        "targetLabel": "REACH_FULL_TERM",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:802:REACH_FULL_TERM"
+        ],
+        "resolvedTargets": "REACH_FULL_TERM@original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:802",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL REACH_FULL_TERM(LOCAL)"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 87,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "CHILD_BIRTH",
+        "targetLabel": "CHILD_BIRTH",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:814:CHILD_BIRTH"
+        ],
+        "resolvedTargets": "CHILD_BIRTH@original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:814",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL CHILD_BIRTH"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 89,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "EGG_BIRTH",
+        "targetLabel": "EGG_BIRTH",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:985:EGG_BIRTH"
+        ],
+        "resolvedTargets": "EGG_BIRTH@original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:985",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EGG_BIRTH"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 96,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "DEPEARENT",
+        "targetLabel": "DEPEARENT",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:1031:DEPEARENT"
+        ],
+        "resolvedTargets": "DEPEARENT@original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:1031",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL DEPEARENT"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 100,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "DEPEARENT",
+        "targetLabel": "DEPEARENT",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:1031:DEPEARENT"
+        ],
+        "resolvedTargets": "DEPEARENT@original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB:1031",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL DEPEARENT"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 110,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "GROW_3_SIZE_IWS",
+        "targetLabel": "GROW_3_SIZE_IWS",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/システム関係/SYSTEM_IWS.ERB:397:GROW_3_SIZE_IWS"
+        ],
+        "resolvedTargets": "GROW_3_SIZE_IWS@original-game/ERB/システム関係/SYSTEM_IWS.ERB:397",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL GROW_3_SIZE_IWS"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 116,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "WASHING_CLOTH",
+        "targetLabel": "WASHING_CLOTH",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/システム関係/衣服/FUNC_CLOTH.ERB:523:WASHING_CLOTH"
+        ],
+        "resolvedTargets": "WASHING_CLOTH@original-game/ERB/システム関係/衣服/FUNC_CLOTH.ERB:523",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL WASHING_CLOTH"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 124,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "NIGHT_STALKING_CHECK",
+        "targetLabel": "NIGHT_STALKING_CHECK",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:661:NIGHT_STALKING_CHECK"
+        ],
+        "resolvedTargets": "NIGHT_STALKING_CHECK@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:661",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL NIGHT_STALKING_CHECK"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 127,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "RUNNING_COST",
+        "targetLabel": "RUNNING_COST",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:162:RUNNING_COST"
+        ],
+        "resolvedTargets": "RUNNING_COST@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:162",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL RUNNING_COST"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 129,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "kind": "CALL",
+        "targetRaw": "SYSTEM_KIKENBI",
+        "targetLabel": "SYSTEM_KIKENBI",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/システム関係/SYSTEM_OTHERS.ERB:4:SYSTEM_KIKENBI"
+        ],
+        "resolvedTargets": "SYSTEM_KIKENBI@original-game/ERB/システム関係/SYSTEM_OTHERS.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL SYSTEM_KIKENBI"
+      }
+    ],
+    "incomingCalls": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "line": 100,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:6:EVENTTURNEND",
+        "sourceLabel": "EVENTTURNEND",
+        "kind": "CALL",
+        "targetRaw": "EVENT_NEXTDAY",
+        "targetLabel": "EVENT_NEXTDAY",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY"
+        ],
+        "resolvedTargets": "EVENT_NEXTDAY@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_NEXTDAY"
+      }
+    ],
+    "dynamicCalls": [],
+    "flowActions": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 131,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:4:EVENT_NEXTDAY",
+        "sourceLabel": "EVENT_NEXTDAY",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN 1"
+      }
+    ],
+    "stateAccesses": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "area": "イベント関係",
+        "family": "FLAG",
+        "reads": 25,
+        "writes": 10
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "area": "イベント関係",
+        "family": "TARGET",
+        "reads": 9,
+        "writes": 5
+      }
+    ],
+    "sourceSnippets": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "label": "EVENT_NEXTDAY",
+        "startLine": 4,
+        "endLine": 134,
+        "text": "    4: @EVENT_NEXTDAY\n    5: \n    6: ;キャラの素質変更に関わるチェック\n    7: REPEAT CHARANUM\n    8: \tSIF COUNT == 0\n    9: \t\tCONTINUE\n   10: \n   11: \tTARGET = COUNT\n   12: \n   13: \t;방뇨経験40以上(【유치】があれば15以上)で【오줌싸개】がつく\n   14: \tIF TALENT:57 == 0\n   15: \t\tSIF TALENT:132 && EXP:31 >= 50\n   16: \t\t\tCALL EVENT_MORASI\n   17: \t\tSIF TALENT:132 == 0 && EXP:31 >= 100\n   18: \t\t\tCALL EVENT_MORASI\n   19: \tENDIF\n   20: \t;반발각인3があり, かつ【유치】か【유리멘탈】である時に\n   21: \tIF MARK:3 == 3 && (TALENT:132 || TALENT:134)\n   22: \t\t;욕망が5かつ従順が5かつ마조끼が5かつ이상경험が5以上になると유아퇴행する\n   23: \t\tSIF ABL:11 >= 5 && ABL:10 >= 5 && ABL:21 >= 5 && EXP:50 >= 5\n   24: \t\t\tCALL EVENT_YOUJI\n   25: \n   26: \t;반발각인3があり\n   27: \tELSEIF MARK:3 == 3\n   28: \t\t;욕망が5かつ従順が5かつ마조끼が5かつ露出5と이상경험が7以上に加え【오줌싸개】がつくと【유아퇴행】する\t\n   29: \t\tSIF ABL:11 >= 5 && ABL:10 >= 5 && ABL:21 >= 5 && ABL:17 >= 5 && EXP:50 >= 7 && TALENT:57 == 1\n   30: \t\t\tCALL EVENT_YOUJI\n   31: \tENDIF\n   32: \n   33: \t;ストレス비만持ちで부정의 구슬が1000以上でかつ비만でない時に,【비만】に変化\n   34: \tIF TALENT:115 == 0\n   35: \t\tSIF TALENT:323 == 1  && JUEL:100 >= 1000\n   36: \t\t\tCALL EVENT_HIMAN\n   37: \tENDIF\n   38: \n   39: \t;ストレス비만持ちで부정의 구슬がなく비만である時に,【비만】から回復\n   40: \tIF TALENT:115 == 1\n   41: \t\tSIF TALENT:323 == 1  && JUEL:100 == 0\n   42: \t\t\tCALL EVENT_YASERU\n   43: \tENDIF\n   44: \n   45: ;一応コメントアウト。\n   46: ;△進学イベ\n   47: ;\t;12歳で3月31日を終えた時,【중학생】に進学(【愛】がない場合, 素質は付かない)\n   48: ;\tIF BASE:9 == 12 && DAY:1 == 3 && DAY:2 == 31\n   49: ;\t\tCALL EVENT_JUNIORHIGHSCHOOL\n   50: ;\tENDIF\n   51: ;\t;15歳で3月31日を終えた時,【고등학생】に進学(【愛】がない場合, 素質は付かない)\n   52: ;\tIF BASE:9 == 15 && DAY:1 == 3 && DAY:2 == 31\n   53: ;\t\tCALL EVENT_HIGHSCHOOL\n   54: ;\tENDIF\n   55: \t;약물중독\n   56: \tCALL APHRODISIAC_ADDICT\n   57: \n   58: \tCOUNT = TARGET\n   59: \n   60: REND\n   61: \n   62: ;왕도짓코\n   63: CALL EVENT_NOROI\n   64: \n   65: ;お香の使用回数をクリア\n   66: FLAG:61 = 0\n   67: \n   68: ;임신発覚\n   69: CALL GET_CHILD_ALL\n   70: \t\t\t\t\t\t;****슬라임パッチ追加ここから****\n   71: FOR LOCAL, 0, CHARANUM\n   72: \tIF TALENT:LOCAL:153 || TALENT:LOCAL:154 || TALENT:LOCAL:157\n   73: \t\t;出産2日前からは산월突入で調教不可に\n   74: \t\tIF (CFLAG:LOCAL:110 - 2) == DAY\n   75: \t\t\tDRAWLINE\n   76: \t\t\tCALL REACH_FULL_TERM(LOCAL)\n   77: \t\t;出産前日には육아室への訪問を問うイベント発生\n   78: \t\tELSEIF (CFLAG:LOCAL:110 - 1) == DAY\n   79: \t\t\tDRAWLINE\n   80: \t\t\tPRINTFORML %CALLNAME:LOCAL%의 출산일이 가까워졌다……\n   81: \t\t\tDRAWLINE\n   82: \t\t;出産予定日なら出産\n   83: \t\tELSEIF CFLAG:LOCAL:110 <= DAY && (TALENT:LOCAL:153 || TALENT:LOCAL:157)\n   84: \t\t\tDRAWLINE\n   85: \t\t\tC = LOCAL\n   86: \t\t\tIF TALENT:LOCAL:153\n   87: \t\t\t\tCALL CHILD_BIRTH\n   88: \t\t\tELSEIF TALENT:LOCAL:157\n   89: \t\t\t\tCALL EGG_BIRTH\n   90: \t\t\tENDIF\n   91: \t\t;出産20日で親離れで調教可能に\n   92: \t\t;出産20日で親離れで調教可能に\n   93: \t\tELSEIF (CFLAG:LOCAL:110 + 20) <= DAY && CFLAG:LOCAL:141 != 3\n   94: \t\t\tC = LOCAL\n   95: \t\t\tDRAWLINE\n   96: \t\t\tCALL DEPEARENT\n   97: \t\tELSEIF (CFLAG:LOCAL:110 + 10) <= DAY && CFLAG:LOCAL:141 == 3\n   98: \t\t\tC = LOCAL\n   99: \t\t\tDRAWLINE\n  100: \t\t\tCALL DEPEARENT\n  101: \t\tENDIF\n  102: \tENDIF\n  103: NEXT\n  104: \t\t\t\t\t\t;****슬라임パッチ追加ここまで****\n  105: \n  106: ;임신・육아 중はサイズが設定されているキャラは成長\n  107: REPEAT CHARANUM\n  108: \tIF BASE:COUNT:22 >0 && FLAG:38 > 0\n  109: \t\tSIF TALENT:COUNT:153 || TALENT:COUNT:154\n  110: \t\t\tCALL GROW_3_SIZE_IWS\n  111: \tENDIF\n  112: REND\n  113: \n  114: ;着衣設定の場合, 汚れた衣類を洗濯する\n  115: SIF FLAG:37\n  116: \tCALL WASHING_CLOTH\n  117: \n  118: ;前回の調教対象がいる場合\n  119: IF FLAG:1 > 0\n  120: \tTARGET = FLAG:1\n  121: ENDIF\n  122: \n  123: ;성교중독による夜這いチェック\n  124: CALL NIGHT_STALKING_CHECK\n  125: \n  126: ;運営費\n  127: CALL RUNNING_COST\n  128: \n  129: CALL SYSTEM_KIKENBI\n  130: \n  131: RETURN 1\n  132: ;=================================================\n  133: ;朝に起こるイベント\n  134: ;================================================="
+      }
+    ]
+  },
+  "legacyStateAndMapping": {
+    "rows": [
+      {
+        "address": "FLAG:1",
+        "family": "FLAG",
+        "index": "1",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 20,
+        "writeCount": 10,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/DELCHARA.erb",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/LYCEE.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_CHARASORT.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_NEWGAME.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:5",
+        "family": "FLAG",
+        "index": "5",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 48,
+        "writeCount": 11,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_ITEM.ERB",
+            11
+          ],
+          [
+            "original-game/ERB/システム関係/INFO.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_DEBUG.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:37",
+        "family": "FLAG",
+        "index": "37",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 35,
+        "writeCount": 3,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/指導関係/COMABLE.ERB",
+            15
+          ],
+          [
+            "original-game/ERB/システム関係/衣服/FUNC_CLOTH.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_CONFIG.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_BEFORETRAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:38",
+        "family": "FLAG",
+        "index": "38",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 14,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SYSTEM_CONFIG.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_IWS.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:40",
+        "family": "FLAG",
+        "index": "40",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 19,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_CONCERT.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_STRIP.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_KBPLAY.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_S_SEXORGY.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:48",
+        "family": "FLAG",
+        "index": "48",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 64,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+            58
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            7
+          ],
+          [
+            "original-game/ERB/システム関係/SYSTEM_NEWGAME.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "FLAG:61",
+        "family": "FLAG",
+        "index": "61",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 2,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SHOP_ITEM.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 4
+      }
+    ],
+    "summary": {
+      "rows": 7,
+      "byFamily": {
+        "FLAG": 7
+      },
+      "byMappingAction": {
+        "map-save-state": 7
+      },
+      "reads": 202,
+      "writes": 32
+    }
+  },
+  "sourceEffects": {
+    "available": true,
+    "ledgerPath": "data/coverage/source-effects/M35.effects.json",
+    "rows": [
+      {
+        "effectId": "M35:event_nextday:00004:label:01",
+        "kind": "label",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 4,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "@EVENT_NEXTDAY",
+        "label": "EVENT_NEXTDAY",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00007:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 7,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00008:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 8,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tSIF COUNT == 0",
+        "controlKind": "SIF",
+        "condition": "COUNT == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00009:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 9,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00011:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 11,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tTARGET = COUNT",
+        "stateFamily": "TARGET",
+        "stateAddress": "TARGET",
+        "operator": "=",
+        "expression": "COUNT",
+        "reads": [],
+        "writes": [
+          "TARGET"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00014:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 14,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF TALENT:57 == 0",
+        "controlKind": "IF",
+        "condition": "TALENT:57 == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00015:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 15,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF TALENT:132 && EXP:31 >= 50",
+        "controlKind": "SIF",
+        "condition": "TALENT:132 && EXP:31 >= 50",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00016:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 16,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL EVENT_MORASI",
+        "callKind": "CALL",
+        "callTarget": "EVENT_MORASI",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_MORASI"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00017:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 17,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF TALENT:132 == 0 && EXP:31 >= 100",
+        "controlKind": "SIF",
+        "condition": "TALENT:132 == 0 && EXP:31 >= 100",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00018:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 18,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL EVENT_MORASI",
+        "callKind": "CALL",
+        "callTarget": "EVENT_MORASI",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_MORASI"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00019:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 19,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00021:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 21,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF MARK:3 == 3 && (TALENT:132 || TALENT:134)",
+        "controlKind": "IF",
+        "condition": "MARK:3 == 3 && (TALENT:132 || TALENT:134)",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00023:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 23,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF ABL:11 >= 5 && ABL:10 >= 5 && ABL:21 >= 5 && EXP:50 >= 5",
+        "controlKind": "SIF",
+        "condition": "ABL:11 >= 5 && ABL:10 >= 5 && ABL:21 >= 5 && EXP:50 >= 5",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00024:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 24,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL EVENT_YOUJI",
+        "callKind": "CALL",
+        "callTarget": "EVENT_YOUJI",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_YOUJI"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00027:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 27,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF MARK:3 == 3",
+        "controlKind": "ELSEIF",
+        "condition": "MARK:3 == 3",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00029:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 29,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF ABL:11 >= 5 && ABL:10 >= 5 && ABL:21 >= 5 && ABL:17 >= 5 && EXP:50 >= 7 && TALENT:57 == 1",
+        "controlKind": "SIF",
+        "condition": "ABL:11 >= 5 && ABL:10 >= 5 && ABL:21 >= 5 && ABL:17 >= 5 && EXP:50 >= 7 && TALENT:57 == 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00030:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 30,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL EVENT_YOUJI",
+        "callKind": "CALL",
+        "callTarget": "EVENT_YOUJI",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_YOUJI"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00031:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 31,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00034:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 34,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF TALENT:115 == 0",
+        "controlKind": "IF",
+        "condition": "TALENT:115 == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00035:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 35,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF TALENT:323 == 1  && JUEL:100 >= 1000",
+        "controlKind": "SIF",
+        "condition": "TALENT:323 == 1  && JUEL:100 >= 1000",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00036:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 36,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL EVENT_HIMAN",
+        "callKind": "CALL",
+        "callTarget": "EVENT_HIMAN",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_HIMAN"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00037:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 37,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00040:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 40,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF TALENT:115 == 1",
+        "controlKind": "IF",
+        "condition": "TALENT:115 == 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00041:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 41,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF TALENT:323 == 1  && JUEL:100 == 0",
+        "controlKind": "SIF",
+        "condition": "TALENT:323 == 1  && JUEL:100 == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00042:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 42,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL EVENT_YASERU",
+        "callKind": "CALL",
+        "callTarget": "EVENT_YASERU",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_YASERU"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00043:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 43,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00048:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 48,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tIF BASE:9 == 12 && DAY:1 == 3 && DAY:2 == 31",
+        "controlKind": "IF",
+        "condition": "BASE:9 == 12 && DAY:1 == 3 && DAY:2 == 31",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00049:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 49,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\t\tCALL EVENT_JUNIORHIGHSCHOOL",
+        "callKind": "CALL",
+        "callTarget": "EVENT_JUNIORHIGHSCHOOL",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_JUNIORHIGHSCHOOL"
+        ],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00050:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 50,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00052:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 52,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tIF BASE:9 == 15 && DAY:1 == 3 && DAY:2 == 31",
+        "controlKind": "IF",
+        "condition": "BASE:9 == 15 && DAY:1 == 3 && DAY:2 == 31",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00053:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 53,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\t\tCALL EVENT_HIGHSCHOOL",
+        "callKind": "CALL",
+        "callTarget": "EVENT_HIGHSCHOOL",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_HIGHSCHOOL"
+        ],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00054:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 54,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00056:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 56,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tCALL APHRODISIAC_ADDICT",
+        "callKind": "CALL",
+        "callTarget": "APHRODISIAC_ADDICT",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "APHRODISIAC_ADDICT"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00060:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 60,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00063:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 63,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL EVENT_NOROI",
+        "callKind": "CALL",
+        "callTarget": "EVENT_NOROI",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EVENT_NOROI"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00066:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 66,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "FLAG:61 = 0",
+        "stateFamily": "FLAG",
+        "stateAddress": "FLAG:61",
+        "operator": "=",
+        "expression": "0",
+        "reads": [],
+        "writes": [
+          "FLAG:61"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00069:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 69,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL GET_CHILD_ALL",
+        "callKind": "CALL",
+        "callTarget": "GET_CHILD_ALL",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "GET_CHILD_ALL"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00071:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 71,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "FOR LOCAL, 0, CHARANUM",
+        "controlKind": "FOR",
+        "condition": "LOCAL, 0, CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00072:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 72,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF TALENT:LOCAL:153 || TALENT:LOCAL:154 || TALENT:LOCAL:157",
+        "controlKind": "IF",
+        "condition": "TALENT:LOCAL:153 || TALENT:LOCAL:154 || TALENT:LOCAL:157",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00074:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 74,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tIF (CFLAG:LOCAL:110 - 2) == DAY",
+        "controlKind": "IF",
+        "condition": "(CFLAG:LOCAL:110 - 2) == DAY",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00076:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 76,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL REACH_FULL_TERM(LOCAL)",
+        "callKind": "CALL",
+        "callTarget": "REACH_FULL_TERM",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "REACH_FULL_TERM"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00078:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 78,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF (CFLAG:LOCAL:110 - 1) == DAY",
+        "controlKind": "ELSEIF",
+        "condition": "(CFLAG:LOCAL:110 - 1) == DAY",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00083:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 83,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF CFLAG:LOCAL:110 <= DAY && (TALENT:LOCAL:153 || TALENT:LOCAL:157)",
+        "controlKind": "ELSEIF",
+        "condition": "CFLAG:LOCAL:110 <= DAY && (TALENT:LOCAL:153 || TALENT:LOCAL:157)",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00086:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 86,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tIF TALENT:LOCAL:153",
+        "controlKind": "IF",
+        "condition": "TALENT:LOCAL:153",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00087:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 87,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\t\tCALL CHILD_BIRTH",
+        "callKind": "CALL",
+        "callTarget": "CHILD_BIRTH",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "CHILD_BIRTH"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00088:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 88,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF TALENT:LOCAL:157",
+        "controlKind": "ELSEIF",
+        "condition": "TALENT:LOCAL:157",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00089:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 89,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\t\tCALL EGG_BIRTH",
+        "callKind": "CALL",
+        "callTarget": "EGG_BIRTH",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "EGG_BIRTH"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00090:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 90,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00093:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 93,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF (CFLAG:LOCAL:110 + 20) <= DAY && CFLAG:LOCAL:141 != 3",
+        "controlKind": "ELSEIF",
+        "condition": "(CFLAG:LOCAL:110 + 20) <= DAY && CFLAG:LOCAL:141 != 3",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00096:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 96,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL DEPEARENT",
+        "callKind": "CALL",
+        "callTarget": "DEPEARENT",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "DEPEARENT"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00097:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 97,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF (CFLAG:LOCAL:110 + 10) <= DAY && CFLAG:LOCAL:141 == 3",
+        "controlKind": "ELSEIF",
+        "condition": "(CFLAG:LOCAL:110 + 10) <= DAY && CFLAG:LOCAL:141 == 3",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00100:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 100,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL DEPEARENT",
+        "callKind": "CALL",
+        "callTarget": "DEPEARENT",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "DEPEARENT"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00101:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 101,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00102:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 102,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00103:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 103,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "NEXT",
+        "controlKind": "NEXT",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00107:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 107,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00108:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 108,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF BASE:COUNT:22 >0 && FLAG:38 > 0",
+        "controlKind": "IF",
+        "condition": "BASE:COUNT:22 >0 && FLAG:38 > 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00109:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 109,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tSIF TALENT:COUNT:153 || TALENT:COUNT:154",
+        "controlKind": "SIF",
+        "condition": "TALENT:COUNT:153 || TALENT:COUNT:154",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00110:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 110,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCALL GROW_3_SIZE_IWS",
+        "callKind": "CALL",
+        "callTarget": "GROW_3_SIZE_IWS",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "GROW_3_SIZE_IWS"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00111:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 111,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00112:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 112,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00115:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 115,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:37",
+        "controlKind": "SIF",
+        "condition": "FLAG:37",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00116:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 116,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tCALL WASHING_CLOTH",
+        "callKind": "CALL",
+        "callTarget": "WASHING_CLOTH",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "WASHING_CLOTH"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00119:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 119,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF FLAG:1 > 0",
+        "controlKind": "IF",
+        "condition": "FLAG:1 > 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00120:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 120,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tTARGET = FLAG:1",
+        "stateFamily": "TARGET",
+        "stateAddress": "TARGET",
+        "operator": "=",
+        "expression": "FLAG:1",
+        "reads": [],
+        "writes": [
+          "TARGET"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00121:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 121,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00124:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 124,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL NIGHT_STALKING_CHECK",
+        "callKind": "CALL",
+        "callTarget": "NIGHT_STALKING_CHECK",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "NIGHT_STALKING_CHECK"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00127:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 127,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL RUNNING_COST",
+        "callKind": "CALL",
+        "callTarget": "RUNNING_COST",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "RUNNING_COST"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00129:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 129,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL SYSTEM_KIKENBI",
+        "callKind": "CALL",
+        "callTarget": "SYSTEM_KIKENBI",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "SYSTEM_KIKENBI"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00131:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 131,
+        "currentLabel": "EVENT_NEXTDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "RETURN 1",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      }
+    ],
+    "summary": {
+      "rows": 70,
+      "byKind": {
+        "branch-or-loop": 44,
+        "call-edge": 21,
+        "control-transfer": 1,
+        "label": 1,
+        "state-write": 3
+      },
+      "byStatus": {
+        "unclassified": 70
+      },
+      "bySourcePath": {
+        "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB": 70
+      },
+      "byCurrentLabel": {
+        "EVENT_NEXTDAY": 70
+      },
+      "sourcePathsWithoutEffects": []
+    },
+    "effectCrosswalk": [
+      {
+        "effectId": "M35:event_nextday:00004:label:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 4,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00007:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 7,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00008:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 8,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00009:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 9,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00011:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 11,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00014:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 14,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00015:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 15,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00016:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 16,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00017:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 17,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00018:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 18,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00019:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 19,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00021:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 21,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00023:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 23,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00024:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 24,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00027:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 27,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00029:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 29,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00030:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 30,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00031:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 31,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00034:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 34,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00035:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 35,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00036:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 36,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00037:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 37,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00040:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 40,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00041:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 41,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00042:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 42,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00043:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 43,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00048:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 48,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00049:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 49,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00050:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 50,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00052:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 52,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00053:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 53,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00054:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 54,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00056:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 56,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00060:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 60,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00063:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 63,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00066:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 66,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00069:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 69,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00071:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 71,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00072:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 72,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00074:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 74,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00076:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 76,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00078:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 78,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00083:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 83,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00086:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 86,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00087:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 87,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00088:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 88,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00089:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 89,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00090:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 90,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00093:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 93,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00096:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 96,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00097:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 97,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00100:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 100,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00101:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 101,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00102:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 102,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00103:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 103,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00107:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 107,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00108:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 108,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00109:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 109,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00110:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 110,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00111:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 111,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00112:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 112,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00115:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 115,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00116:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 116,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00119:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 119,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00120:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 120,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00121:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 121,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00124:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 124,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00127:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 127,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00129:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 129,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00131:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 131,
+        "currentLabel": "EVENT_NEXTDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      }
+    ],
+    "effectCrosswalkSummary": {
+      "rows": 70,
+      "withImplementationClaim": 0,
+      "withoutImplementationClaim": 70
+    }
+  },
+  "existingImplementationClaims": {
+    "manifestPath": "data/coverage/manifests/M35-source-units.json",
+    "sourceUnits": [],
+    "coverageRows": [],
+    "relatedSourceUnits": [
+      {
+        "unitId": "M35:source-unit:00004",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyReviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00006",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyReviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:world-event-hook",
+        "acceptedByOwner": true
+      }
+    ],
+    "relatedCoverageRows": [
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:clock-advance",
+        "unitId": "M35:source-unit:00001",
+        "reviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:mission-deadline",
+        "unitId": "M35:source-unit:00002",
+        "reviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "unitId": "M35:source-unit:00005",
+        "reviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "unitId": "M35:source-unit:00008",
+        "reviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34",
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-flag-61",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:scheduled-events",
+        "unitId": "M35:source-unit:00003",
+        "reviewId": "M35:functional:scheduled-events",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "sourceLabel": "scheduled event processing hook",
+        "legacyId": "scheduled-events",
+        "requiredBehavior": "scheduled event processing hook",
+        "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "unitId": "M35:source-unit:00007",
+        "reviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "unitId": "M35:source-unit:00004",
+        "reviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-flag-61"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:world-event-hook",
+        "unitId": "M35:source-unit:00006",
+        "reviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      }
+    ],
+    "summary": {
+      "sourceUnits": 0,
+      "coverageRows": 0,
+      "relatedSourceUnits": 2,
+      "relatedCoverageRows": 8,
+      "sourceUnitsByStatus": {},
+      "coverageRowsByStatus": {}
+    }
+  },
+  "implementationWorkOrder": {
+    "recommendedWorkerInput": "Use only this packet scope to propose bounded web code/test patches. Do not expand the source scope unless main asks. Do not infer completion from packet inclusion.",
+    "requiredWorkerResultShape": {
+      "implementedEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "implementation": "changed runtime file/function",
+          "test": "test or smoke evidence to add/run, or empty if not yet testable",
+          "notes": "short reason the effect is covered"
+        }
+      ],
+      "remainingEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "reason": "why not implemented in this patch proposal"
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "requiredPatchReviewQuestions": [
+      "Which original labels/effects does the patch implement?",
+      "Which web feature/domain files are changed?",
+      "Which state/session/view effects are observable?",
+      "Which input/cancel/failure/retry paths are covered?",
+      "Which source effects remain unimplemented or require transfer/exclusion?"
+    ],
+    "highRiskRows": [
+      {
+        "riskId": "ambiguous-state-family",
+        "severity": "alias-required-before-auto-completion",
+        "count": 1,
+        "reason": "FLAG/CFLAG/GLOBAL/TFLAG-like families require semantic aliasing before implementation can be trusted.",
+        "rowRefs": [
+          {
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "kind": "FLAG",
+            "id": "FLAG"
+          }
+        ]
+      },
+      {
+        "riskId": "unclosed-source-effects",
+        "severity": "packet-review-required",
+        "count": 70,
+        "reason": "Source-effect rows are not implementation evidence, but unclassified/blocked rows identify work that cannot be silently ignored.",
+        "rowRefs": [
+          {
+            "effectId": "M35:event_nextday:00004:label:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 4,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "label"
+          },
+          {
+            "effectId": "M35:event_nextday:00007:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 7,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00008:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 8,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00009:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 9,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00011:state-write:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 11,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "state-write"
+          },
+          {
+            "effectId": "M35:event_nextday:00014:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 14,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00015:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 15,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00016:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 16,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00017:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 17,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00018:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 18,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00019:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 19,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00021:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 21,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00023:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 23,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00024:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 24,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00027:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 27,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00029:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 29,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00030:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 30,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00031:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 31,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00034:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 34,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00035:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 35,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00036:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 36,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00037:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 37,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00040:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 40,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00041:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 41,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00042:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 42,
+            "currentLabel": "EVENT_NEXTDAY",
+            "kind": "call-edge"
+          }
+        ]
+      }
+    ],
+    "workerEditableGlobs": [
+      "src/**/*.ts",
+      "tools/*smoke*.ts",
+      "tools/vite.*smoke*.config.ts",
+      "data/coverage/source-effects/classifications/*.json"
+    ],
+    "suggestedReadOnlyInputs": [
+      "data/implementation-packets/m35-event-nextday.json",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "data/coverage/source-effects/M35.effects.json"
+    ],
+    "packetBudget": {
+      "sourceEffects": 70,
+      "sourceFiles": 1,
+      "labels": 1,
+      "outgoingCalls": 19,
+      "sourceSnippetBytes": 3598
+    },
+    "packetAccountingRule": "Every sourceEffects.rows effectId must appear exactly once in implementedEffects, remainingEffects, transferredEffects, or excludedEffects in worker output."
+  },
+  "assertions": {
+    "completeness": {
+      "ok": true,
+      "missingFileSummaryRows": [],
+      "unresolvedSourcePaths": [],
+      "ambiguousSourcePaths": []
+    },
+    "analysisJoin": {
+      "sourceFileCount": 1,
+      "labelCount": 1,
+      "outgoingCallCount": 19,
+      "incomingCallCount": 1,
+      "dynamicCallCount": 0,
+      "flowActionCount": 1,
+      "stateAccessFamilyRows": 2,
+      "legacyAddressRows": 7,
+      "sourceEffectRows": 70,
+      "sourceEffectCrosswalkRows": 70,
+      "sourceEffectRowsWithoutImplementationClaim": 70,
+      "sourceUnitRows": 0,
+      "coverageRows": 0
+    }
+  }
+}

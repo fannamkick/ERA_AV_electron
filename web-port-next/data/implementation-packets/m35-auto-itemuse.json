@@ -1,0 +1,4262 @@
+{
+  "schemaVersion": "feature-implementation-packet/v1",
+  "generatedBy": "tools/build_feature_packet.mjs",
+  "generatedAt": "2026-05-08T14:33:34.735Z",
+  "packetId": "m35-auto-itemuse",
+  "milestone": "M35",
+  "purpose": "Implementation packet built from existing original-source analysis artifacts. This packet reduces repeated source reading; it is not completion evidence by itself.",
+  "trustRules": [
+    "original-game ERB/CSV files remain authoritative",
+    "packet rows must preserve sourcePath and sourceLine/label references where available",
+    "mapped/classified rows are implementation inputs, not implementation proof",
+    "workers may propose patches from packets, but main Codex must review and integrate",
+    "runtime tests/traces are still required to claim implementation parity"
+  ],
+  "scope": {
+    "inputMilestone": "M35",
+    "inputSources": [],
+    "derivedSources": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "sourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "activeSourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB"
+    ],
+    "labelFilters": [],
+    "labelRanges": [],
+    "packetRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "labelId": "M35:review:event-turnend:auto-itemuse",
+        "label": "AUTO_ITEMUSE",
+        "labelKind": "review-group",
+        "startLine": 493,
+        "endLine": 606
+      }
+    ],
+    "reviewGroupFilters": [
+      "M35:review:event-turnend:auto-itemuse"
+    ],
+    "selectedReviewGroups": [
+      {
+        "reviewGroupId": "M35:review:event-turnend:auto-itemuse",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "currentLabel": "AUTO_ITEMUSE",
+        "sourceLineStart": 493,
+        "sourceLineEnd": 606,
+        "effectCount": 81,
+        "statusCounts": {
+          "unclassified": 81
+        },
+        "kindCounts": {
+          "branch-or-loop": 69,
+          "control-transfer": 1,
+          "label": 1,
+          "primitive-effect": 1,
+          "state-write": 9
+        },
+        "stateFamilies": [
+          "BASE",
+          "CFLAG",
+          "JUEL",
+          "MONEY"
+        ],
+        "callTargets": [],
+        "riskReasons": [
+          "contains-interactive-or-control-transfer",
+          "contains-needs-review-rows",
+          "contains-primitive-effects",
+          "contains-state-writes",
+          "large-group-risk"
+        ],
+        "effectIds": [
+          "M35:event_turnend:00493:label:01",
+          "M35:event_turnend:00495:branch-or-loop:01",
+          "M35:event_turnend:00496:control-transfer:01",
+          "M35:event_turnend:00498:branch-or-loop:01",
+          "M35:event_turnend:00499:branch-or-loop:01",
+          "M35:event_turnend:00500:branch-or-loop:01",
+          "M35:event_turnend:00501:branch-or-loop:01",
+          "M35:event_turnend:00503:branch-or-loop:01",
+          "M35:event_turnend:00504:branch-or-loop:01",
+          "M35:event_turnend:00507:branch-or-loop:01",
+          "M35:event_turnend:00508:branch-or-loop:01",
+          "M35:event_turnend:00509:branch-or-loop:01",
+          "M35:event_turnend:00510:branch-or-loop:01",
+          "M35:event_turnend:00511:branch-or-loop:01",
+          "M35:event_turnend:00512:branch-or-loop:01",
+          "M35:event_turnend:00513:branch-or-loop:01",
+          "M35:event_turnend:00515:branch-or-loop:01",
+          "M35:event_turnend:00517:branch-or-loop:01",
+          "M35:event_turnend:00519:branch-or-loop:01",
+          "M35:event_turnend:00521:branch-or-loop:01",
+          "M35:event_turnend:00523:branch-or-loop:01",
+          "M35:event_turnend:00525:branch-or-loop:01",
+          "M35:event_turnend:00527:branch-or-loop:01",
+          "M35:event_turnend:00529:branch-or-loop:01",
+          "M35:event_turnend:00531:branch-or-loop:01",
+          "M35:event_turnend:00533:branch-or-loop:01",
+          "M35:event_turnend:00535:branch-or-loop:01",
+          "M35:event_turnend:00537:branch-or-loop:01",
+          "M35:event_turnend:00538:branch-or-loop:01",
+          "M35:event_turnend:00540:state-write:01",
+          "M35:event_turnend:00541:state-write:01",
+          "M35:event_turnend:00544:branch-or-loop:01",
+          "M35:event_turnend:00545:branch-or-loop:01",
+          "M35:event_turnend:00546:branch-or-loop:01",
+          "M35:event_turnend:00548:primitive-effect:01",
+          "M35:event_turnend:00549:branch-or-loop:01",
+          "M35:event_turnend:00550:branch-or-loop:01",
+          "M35:event_turnend:00551:branch-or-loop:01",
+          "M35:event_turnend:00552:branch-or-loop:01",
+          "M35:event_turnend:00553:branch-or-loop:01",
+          "M35:event_turnend:00554:branch-or-loop:01",
+          "M35:event_turnend:00555:branch-or-loop:01",
+          "M35:event_turnend:00560:branch-or-loop:01",
+          "M35:event_turnend:00561:branch-or-loop:01",
+          "M35:event_turnend:00562:branch-or-loop:01",
+          "M35:event_turnend:00563:branch-or-loop:01",
+          "M35:event_turnend:00565:state-write:01",
+          "M35:event_turnend:00566:state-write:01",
+          "M35:event_turnend:00569:branch-or-loop:01",
+          "M35:event_turnend:00570:branch-or-loop:01",
+          "M35:event_turnend:00571:branch-or-loop:01",
+          "M35:event_turnend:00574:branch-or-loop:01",
+          "M35:event_turnend:00575:branch-or-loop:01",
+          "M35:event_turnend:00576:branch-or-loop:01",
+          "M35:event_turnend:00577:branch-or-loop:01",
+          "M35:event_turnend:00578:branch-or-loop:01",
+          "M35:event_turnend:00579:branch-or-loop:01",
+          "M35:event_turnend:00580:branch-or-loop:01",
+          "M35:event_turnend:00581:branch-or-loop:01",
+          "M35:event_turnend:00582:branch-or-loop:01",
+          "M35:event_turnend:00583:state-write:01",
+          "M35:event_turnend:00584:branch-or-loop:01",
+          "M35:event_turnend:00585:state-write:01",
+          "M35:event_turnend:00586:state-write:01",
+          "M35:event_turnend:00588:branch-or-loop:01",
+          "M35:event_turnend:00589:branch-or-loop:01",
+          "M35:event_turnend:00590:branch-or-loop:01",
+          "M35:event_turnend:00592:branch-or-loop:01",
+          "M35:event_turnend:00593:branch-or-loop:01",
+          "M35:event_turnend:00594:branch-or-loop:01",
+          "M35:event_turnend:00595:branch-or-loop:01",
+          "M35:event_turnend:00596:branch-or-loop:01",
+          "M35:event_turnend:00597:branch-or-loop:01",
+          "M35:event_turnend:00598:branch-or-loop:01",
+          "M35:event_turnend:00599:branch-or-loop:01",
+          "M35:event_turnend:00600:branch-or-loop:01",
+          "M35:event_turnend:00601:state-write:01",
+          "M35:event_turnend:00602:state-write:01",
+          "M35:event_turnend:00604:branch-or-loop:01",
+          "M35:event_turnend:00605:branch-or-loop:01",
+          "M35:event_turnend:00606:branch-or-loop:01"
+        ]
+      }
+    ],
+    "effectIdFilters": [],
+    "effectIdFileFilters": [],
+    "riskFilters": [],
+    "maxEffects": 120,
+    "granularity": "effect-id-subpacket"
+  },
+  "sourceFiles": [
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "resolvedSourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "pathResolution": "exact",
+      "pathResolutionCandidates": [],
+      "sourceSha256": "bd9657d3e08c65d4bb5c7877b039104884147225f3e03dee6173081417d2b85a",
+      "encoding": "utf-8-sig",
+      "lineCount": 606,
+      "labelCount": 6,
+      "callCount": 54,
+      "inputCount": 0,
+      "stateReadCount": 429,
+      "stateWriteCount": 145,
+      "coreStateReadCount": 210,
+      "coreStateWriteCount": 83,
+      "labels": "EVENTTURNEND@6, RESTTIME@280, RESTLIFE@394, PUBLIC_HAIR@420, AUTO_BUYING@469, AUTO_ITEMUSE@493",
+      "topWrittenFamilies": "CFLAG:24, LOCAL:21, A:18, FLAG:15, COUNT:13, BASE:9, TALENT:8, MONEY:6, TIME:5, TARGET:4",
+      "topReadFamilies": "COUNT:131, LOCAL:51, CFLAG:40, TALENT:29, FLAG:25, A:22, CHARANUM:21, BASE:16, MONEY:13, NAME:11",
+      "topCoreWrittenFamilies": "CFLAG:24, FLAG:15, BASE:9, TALENT:8, MONEY:6, TIME:5, TARGET:4, ITEM:3, DAY:2, NO:1",
+      "topCoreReadFamilies": "CFLAG:40, TALENT:29, FLAG:25, CHARANUM:21, BASE:16, MONEY:13, NAME:11, TARGET:10, MAXBASE:8, MASTER:6"
+    }
+  ],
+  "sourceOutline": {
+    "labels": [
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:493:AUTO_ITEMUSE",
+        "label": "AUTO_ITEMUSE",
+        "rawLabel": "AUTO_ITEMUSE",
+        "scope": "",
+        "kind": "global",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "line": 493,
+        "incomingStaticCalls": 1,
+        "outgoingCalls": 1,
+        "entryKind": ""
+      },
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:556:AUTO_ITEMUSE$REPEAT_OKOU",
+        "label": "REPEAT_OKOU",
+        "rawLabel": "$REPEAT_OKOU",
+        "scope": "AUTO_ITEMUSE",
+        "kind": "local",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "line": 556,
+        "incomingStaticCalls": 1,
+        "outgoingCalls": 0,
+        "entryKind": "local"
+      }
+    ],
+    "outgoingCalls": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "line": 561,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:493:AUTO_ITEMUSE",
+        "sourceLabel": "AUTO_ITEMUSE",
+        "kind": "GOTO",
+        "targetRaw": "REPEAT_OKOU",
+        "targetLabel": "REPEAT_OKOU",
+        "resolution": "resolved-local",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:556:AUTO_ITEMUSE$REPEAT_OKOU"
+        ],
+        "resolvedTargets": "REPEAT_OKOU@original-game/ERB/イベント関係/EVENT_TURNEND.ERB:556",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "GOTO REPEAT_OKOU"
+      }
+    ],
+    "incomingCalls": [],
+    "dynamicCalls": [],
+    "flowActions": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "line": 496,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:493:AUTO_ITEMUSE",
+        "sourceLabel": "AUTO_ITEMUSE",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN"
+      }
+    ],
+    "stateAccesses": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "area": "イベント関係",
+        "family": "BASE",
+        "reads": 16,
+        "writes": 9
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "area": "イベント関係",
+        "family": "CFLAG",
+        "reads": 40,
+        "writes": 24
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "area": "イベント関係",
+        "family": "JUEL",
+        "reads": 3,
+        "writes": 1
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "area": "イベント関係",
+        "family": "MONEY",
+        "reads": 13,
+        "writes": 6
+      }
+    ],
+    "sourceSnippets": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "label": "AUTO_ITEMUSE",
+        "startLine": 493,
+        "endLine": 606,
+        "text": "  493: @AUTO_ITEMUSE\n  494: ;로션\n  495: SIF TALENT:MASTER:55 == 0\n  496: \tRETURN\n  497: \n  498: REPEAT CHARANUM\n  499: \tIF COUNT == 0\n  500: \t\tCONTINUE\n  501: \tELSE\n  502: \t\tLOCAL += COUNT\n  503: \tENDIF\n  504: REND\n  505: \n  506: ;영양제\n  507: IF (FLAG:76 & 1)\n  508: \tREPEAT CHARANUM\n  509: \t\tIF COUNT == 0\n  510: \t\t\tCONTINUE\n  511: \t\tELSEIF BASE:COUNT:0 == MAXBASE:COUNT:0\n  512: \t\t\tCONTINUE\n  513: \t\tELSE\n  514: \t\t\tLOCAL:1 = MAXBASE:COUNT:0 - BASE:COUNT:0\n  515: \t\t\tIF LOCAL:1 <= 499\n  516: \t\t\t\tLOCAL:1 = 500\n  517: \t\t\tELSEIF LOCAL:1 <= 1000 && LOCAL:1 >= 500\n  518: \t\t\t\tLOCAL:1 = 1000\n  519: \t\t\tELSEIF LOCAL:1 <= 1500 && LOCAL:1 >= 999\n  520: \t\t\t\tLOCAL:1 = 1500\n  521: \t\t\tELSEIF LOCAL:1 <= 2000 && LOCAL:1 >= 1499\n  522: \t\t\t\tLOCAL:1 = 2000\n  523: \t\t\tELSEIF LOCAL:1 <= 2500 && LOCAL:1 >= 1999\n  524: \t\t\t\tLOCAL:1 = 2500\n  525: \t\t\tELSEIF LOCAL:1 <= 3000 && LOCAL:1 >= 2499\n  526: \t\t\t\tLOCAL:1 = 3000\n  527: \t\t\tELSEIF LOCAL:1 <= 3500 && LOCAL:1 >= 2999\n  528: \t\t\t\tLOCAL:1 = 3500\n  529: \t\t\tELSEIF LOCAL:1 <= 4000 && LOCAL:1 >= 3499\n  530: \t\t\t\tLOCAL:1 = 4000\n  531: \t\t\tELSEIF LOCAL:1 <= 4500 && LOCAL:1 >= 3999\n  532: \t\t\t\tLOCAL:1 = 4500\n  533: \t\t\tELSEIF LOCAL:1 <= 5000 && LOCAL:1 >= 4499\n  534: \t\t\t\tLOCAL:1 = 5000\n  535: \t\t\tENDIF\n  536: \t\t\tLOCAL:2 = LOCAL:1 / 500\n  537: \t\t\tSIF MONEY < 1000 * LOCAL:2\n  538: \t\t\t\tBREAK\n  539: \t\t\tPRINTFORML 《%NAME:COUNT%에게 {LOCAL:2}번 영양제를 먹였습니다》\n  540: \t\t\tBASE:COUNT:0 = MAXBASE:COUNT:0\n  541: \t\t\tMONEY -= LOCAL:2 * 1000\n  542: \t\t\tLOCAL:1 = 0\n  543: \t\t\tLOCAL:2 = 0\n  544: \t\tENDIF\n  545: \tREND\n  546: ENDIF\n  547: \n  548: VARSET LOCAL, 0\n  549: IF (FLAG:76 & 8)\n  550: \tREPEAT CHARANUM\n  551: \t\tIF LOCAL == 0\n  552: \t\t\tCONTINUE\n  553: \t\tELSEIF JUEL:COUNT:100 <= 0\n  554: \t\t\tCONTINUE\n  555: \t\tELSE\n  556: \t\t\t$REPEAT_OKOU\n  557: \t\t\tLOCAL:1 = JUEL:COUNT:100\n  558: \t\t\tLOCAL:1 /= 2\n  559: \t\t\tLOCAL:2 += 1\n  560: \t\t\tSIF LOCAL:1 != 0\n  561: \t\t\t\tGOTO REPEAT_OKOU\n  562: \t\t\tSIF MONEY < 3000 * LOCAL:2\n  563: \t\t\t\tBREAK\n  564: \t\t\tPRINTFORML 《%NAME:COUNT%에게 {LOCAL:2}번 향을 맡게 했습니다》\n  565: \t\t\tJUEL:COUNT:100 = 0\n  566: \t\t\tMONEY -= LOCAL:2 * 3000\n  567: \t\t\tLOCAL:1 = 0\n  568: \t\t\tLOCAL:2 = 0\n  569: \t\tENDIF\n  570: \tREND\n  571: ENDIF\n  572: \t\n  573: ;배란유발제\n  574: IF (FLAG:76 & 2) && MONEY >= 2000 * LOCAL\n  575: \tREPEAT CHARANUM\n  576: \t\tIF COUNT == 0\n  577: \t\t\tCONTINUE\n  578: \t\tELSEIF TALENT:COUNT:122 == 1\n  579: \t\t\tCONTINUE\n  580: \t\tELSEIF CFLAG:COUNT:109 >= 1\n  581: \t\t\tCONTINUE\n  582: \t\tELSE\n  583: \t\t\tCFLAG:COUNT:109 = 1\n  584: \t\t\tSIF PBAND:303 == 3\n  585: \t\t\t\tCFLAG:COUNT:109 += RAND:2\n  586: \t\t\tMONEY -= 2000\n  587: \t\t\tPRINTFORML 《%NAME:COUNT%에게 배란유발제를 먹였습니다》\n  588: \t\tENDIF\n  589: \tREND\n  590: ENDIF\n  591: ;배란억제제\n  592: IF (FLAG:76 & 4) && MONEY >= 50000 * LOCAL\n  593: \tREPEAT CHARANUM\n  594: \t\tIF COUNT == 0\n  595: \t\t\tCONTINUE\n  596: \t\tELSEIF TALENT:COUNT:122 == 1\n  597: \t\t\tCONTINUE\n  598: \t\tELSEIF CFLAG:COUNT:109 == -1\n  599: \t\t\tCONTINUE\n  600: \t\tELSE\n  601: \t\t\tCFLAG:COUNT:109 = -1\n  602: \t\t\tMONEY -= 50000\n  603: \t\t\tPRINTFORML 《%NAME:COUNT%에게 배란억제제를 먹였습니다》\n  604: \t\tENDIF\n  605: \tREND\n  606: ENDIF"
+      }
+    ]
+  },
+  "legacyStateAndMapping": {
+    "rows": [
+      {
+        "address": "BASE:10",
+        "family": "BASE",
+        "index": "10",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "csvDefinition",
+          "erbUsage"
+        ],
+        "readCount": 12,
+        "writeCount": 5,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_SLAVE2.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:1",
+        "family": "CFLAG",
+        "index": "1",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "erbUsage"
+        ],
+        "readCount": 61,
+        "writeCount": 4,
+        "charaSeedCount": 2,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/SELL_CHARA.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/システム関係/LYCEE.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/訪問関係/HOUMON.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:6",
+        "family": "CFLAG",
+        "index": "6",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "charaSeed",
+          "erbUsage"
+        ],
+        "readCount": 49,
+        "writeCount": 30,
+        "charaSeedCount": 45,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_TRAIN_MESSAGE_B.ERB",
+            17
+          ],
+          [
+            "original-game/ERB/システム関係/INFO.ERB",
+            12
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/クリアボーナス関係/CLEARBONUS_BOYFRIEND.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_SLAVE2.ERB",
+            8
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:12",
+        "family": "CFLAG",
+        "index": "12",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 114,
+        "writeCount": 20,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/娼館関係/WORK_RESULT.ERB",
+            36
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_YUUKAKU.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/システム関係/LYCEE.ERB",
+            16
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            14
+          ],
+          [
+            "original-game/ERB/システム関係/LIFELIST_NEW.ERB",
+            8
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:34",
+        "family": "CFLAG",
+        "index": "34",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 2,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_ITEM.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 4
+      },
+      {
+        "address": "CFLAG:65",
+        "family": "CFLAG",
+        "index": "65",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 5,
+        "writeCount": 8,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/PLEASE.ERB",
+            6
+          ],
+          [
+            "original-game/ERB/イベント関係/ADD_ANGEL.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/SUCCUBUS_STATUS.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/システム関係/DELCHARA.erb",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:109",
+        "family": "CFLAG",
+        "index": "109",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 13,
+        "writeCount": 10,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_PREGNANCY.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/NTR関係/BOYFRIEND.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_ITEM.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:140",
+        "family": "CFLAG",
+        "index": "140",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 25,
+        "writeCount": 2,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/LYCEE.ERB",
+            13
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/システム関係/LIFELIST_NEW.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/NTR関係/BOYFRIEND.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:619",
+        "family": "CFLAG",
+        "index": "619",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 15,
+        "writeCount": 16,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/EVENT_SELL_AFTER.ERB",
+            9
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/訪問関係/SAKURA_AZITO_DETAIL.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            3
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:634",
+        "family": "CFLAG",
+        "index": "634",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 4,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/職業素質系/C_CLUB.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 5
+      },
+      {
+        "address": "CFLAG:635",
+        "family": "CFLAG",
+        "index": "635",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 2,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/職業素質系/C_CLUB_GIRLNAME.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 3
+      },
+      {
+        "address": "CFLAG:691",
+        "family": "CFLAG",
+        "index": "691",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 10,
+        "writeCount": 4,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/PLEASE.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+            3
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "CFLAG:692",
+        "family": "CFLAG",
+        "index": "692",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 2,
+        "writeCount": 4,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/イベント関係/BLACKGIRL.ERB",
+            4
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            2
+          ]
+        ],
+        "sampleCount": 6
+      },
+      {
+        "address": "CFLAG:694",
+        "family": "CFLAG",
+        "index": "694",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 5,
+        "writeCount": 1,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/訪問関係/RACHEL_LABO.ERB",
+            2
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/イベント関係/NTR関係/NTR_STAFF.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/システム関係/SHOP_MAIN.ERB",
+            1
+          ],
+          [
+            "original-game/ERB/訪問関係/RACHEL_LABO_DETAIL.ERB",
+            1
+          ]
+        ],
+        "sampleCount": 6
+      },
+      {
+        "address": "JUEL:100",
+        "family": "JUEL",
+        "index": "100",
+        "addressKind": "fixed-index",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage"
+        ],
+        "readCount": 47,
+        "writeCount": 21,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/娼館関係/WORK_RESULT.ERB",
+            14
+          ],
+          [
+            "original-game/ERB/指導関係/TRAIN_MAIN.ERB",
+            10
+          ],
+          [
+            "original-game/ERB/イベント関係/GET_SPECIALTALENT.ERB",
+            8
+          ],
+          [
+            "original-game/ERB/娼館関係/WORK_RECEPTION.ERB",
+            5
+          ],
+          [
+            "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            4
+          ]
+        ],
+        "sampleCount": 8
+      },
+      {
+        "address": "MONEY",
+        "family": "MONEY",
+        "index": "",
+        "addressKind": "family-declaration",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage",
+          "variableSize"
+        ],
+        "readCount": 188,
+        "writeCount": 164,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+            32
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            32
+          ],
+          [
+            "original-game/ERB/訪問関係/SAKURA_AZITO_DETAIL.ERB",
+            28
+          ],
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/訪問関係/ELLEN_MISSION_DETAIL.ERB",
+            21
+          ]
+        ],
+        "sampleCount": 8
+      }
+    ],
+    "summary": {
+      "rows": 16,
+      "byFamily": {
+        "BASE": 1,
+        "CFLAG": 13,
+        "JUEL": 1,
+        "MONEY": 1
+      },
+      "byMappingAction": {
+        "map-save-state": 16
+      },
+      "reads": 554,
+      "writes": 293
+    }
+  },
+  "sourceEffects": {
+    "available": true,
+    "ledgerPath": "data/coverage/source-effects/M35.effects.json",
+    "rows": [
+      {
+        "effectId": "M35:event_turnend:00493:label:01",
+        "kind": "label",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 493,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "@AUTO_ITEMUSE",
+        "label": "AUTO_ITEMUSE",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00495:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 495,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF TALENT:MASTER:55 == 0",
+        "controlKind": "SIF",
+        "condition": "TALENT:MASTER:55 == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00496:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 496,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tRETURN",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00498:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 498,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00499:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 499,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF COUNT == 0",
+        "controlKind": "IF",
+        "condition": "COUNT == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00500:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 500,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00501:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 501,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00503:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 503,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00504:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 504,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "REND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00507:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 507,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF (FLAG:76 & 1)",
+        "controlKind": "IF",
+        "condition": "(FLAG:76 & 1)",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00508:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 508,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00509:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 509,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tIF COUNT == 0",
+        "controlKind": "IF",
+        "condition": "COUNT == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00510:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 510,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00511:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 511,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF BASE:COUNT:0 == MAXBASE:COUNT:0",
+        "controlKind": "ELSEIF",
+        "condition": "BASE:COUNT:0 == MAXBASE:COUNT:0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00512:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 512,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00513:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 513,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00515:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 515,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tIF LOCAL:1 <= 499",
+        "controlKind": "IF",
+        "condition": "LOCAL:1 <= 499",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00517:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 517,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 1000 && LOCAL:1 >= 500",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 1000 && LOCAL:1 >= 500",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00519:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 519,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 1500 && LOCAL:1 >= 999",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 1500 && LOCAL:1 >= 999",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00521:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 521,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 2000 && LOCAL:1 >= 1499",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 2000 && LOCAL:1 >= 1499",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00523:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 523,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 2500 && LOCAL:1 >= 1999",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 2500 && LOCAL:1 >= 1999",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00525:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 525,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 3000 && LOCAL:1 >= 2499",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 3000 && LOCAL:1 >= 2499",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00527:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 527,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 3500 && LOCAL:1 >= 2999",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 3500 && LOCAL:1 >= 2999",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00529:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 529,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 4000 && LOCAL:1 >= 3499",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 4000 && LOCAL:1 >= 3499",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00531:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 531,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 4500 && LOCAL:1 >= 3999",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 4500 && LOCAL:1 >= 3999",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00533:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 533,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tELSEIF LOCAL:1 <= 5000 && LOCAL:1 >= 4499",
+        "controlKind": "ELSEIF",
+        "condition": "LOCAL:1 <= 5000 && LOCAL:1 >= 4499",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00535:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 535,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00537:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 537,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tSIF MONEY < 1000 * LOCAL:2",
+        "controlKind": "SIF",
+        "condition": "MONEY < 1000 * LOCAL:2",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00538:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 538,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\t\tBREAK",
+        "controlKind": "BREAK",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00540:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 540,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tBASE:COUNT:0 = MAXBASE:COUNT:0",
+        "stateFamily": "BASE",
+        "stateAddress": "BASE:COUNT:0",
+        "operator": "=",
+        "expression": "MAXBASE:COUNT:0",
+        "reads": [],
+        "writes": [
+          "BASE:COUNT:0"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00541:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 541,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tMONEY -= LOCAL:2 * 1000",
+        "stateFamily": "MONEY",
+        "stateAddress": "MONEY",
+        "operator": "-=",
+        "expression": "LOCAL:2 * 1000",
+        "reads": [],
+        "writes": [
+          "MONEY"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00544:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 544,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00545:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 545,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00546:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 546,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00548:primitive-effect:01",
+        "kind": "primitive-effect",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 548,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "VARSET LOCAL, 0",
+        "primitive": "VARSET",
+        "expression": "LOCAL, 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "primitive-side-effect"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00549:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 549,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF (FLAG:76 & 8)",
+        "controlKind": "IF",
+        "condition": "(FLAG:76 & 8)",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00550:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 550,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00551:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 551,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tIF LOCAL == 0",
+        "controlKind": "IF",
+        "condition": "LOCAL == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00552:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 552,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00553:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 553,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF JUEL:COUNT:100 <= 0",
+        "controlKind": "ELSEIF",
+        "condition": "JUEL:COUNT:100 <= 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00554:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 554,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00555:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 555,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00560:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 560,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tSIF LOCAL:1 != 0",
+        "controlKind": "SIF",
+        "condition": "LOCAL:1 != 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00561:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 561,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\t\tGOTO REPEAT_OKOU",
+        "controlKind": "GOTO",
+        "condition": "REPEAT_OKOU",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00562:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 562,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tSIF MONEY < 3000 * LOCAL:2",
+        "controlKind": "SIF",
+        "condition": "MONEY < 3000 * LOCAL:2",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00563:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 563,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\t\tBREAK",
+        "controlKind": "BREAK",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00565:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 565,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tJUEL:COUNT:100 = 0",
+        "stateFamily": "JUEL",
+        "stateAddress": "JUEL:COUNT:100",
+        "operator": "=",
+        "expression": "0",
+        "reads": [],
+        "writes": [
+          "JUEL:COUNT:100"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00566:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 566,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tMONEY -= LOCAL:2 * 3000",
+        "stateFamily": "MONEY",
+        "stateAddress": "MONEY",
+        "operator": "-=",
+        "expression": "LOCAL:2 * 3000",
+        "reads": [],
+        "writes": [
+          "MONEY"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00569:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 569,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00570:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 570,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00571:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 571,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00574:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 574,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF (FLAG:76 & 2) && MONEY >= 2000 * LOCAL",
+        "controlKind": "IF",
+        "condition": "(FLAG:76 & 2) && MONEY >= 2000 * LOCAL",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00575:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 575,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00576:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 576,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tIF COUNT == 0",
+        "controlKind": "IF",
+        "condition": "COUNT == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00577:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 577,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00578:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 578,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF TALENT:COUNT:122 == 1",
+        "controlKind": "ELSEIF",
+        "condition": "TALENT:COUNT:122 == 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00579:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 579,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00580:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 580,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF CFLAG:COUNT:109 >= 1",
+        "controlKind": "ELSEIF",
+        "condition": "CFLAG:COUNT:109 >= 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00581:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 581,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00582:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 582,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00583:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 583,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCFLAG:COUNT:109 = 1",
+        "stateFamily": "CFLAG",
+        "stateAddress": "CFLAG:COUNT:109",
+        "operator": "=",
+        "expression": "1",
+        "reads": [],
+        "writes": [
+          "CFLAG:COUNT:109"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00584:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 584,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tSIF PBAND:303 == 3",
+        "controlKind": "SIF",
+        "condition": "PBAND:303 == 3",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00585:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 585,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\t\tCFLAG:COUNT:109 += RAND:2",
+        "stateFamily": "CFLAG",
+        "stateAddress": "CFLAG:COUNT:109",
+        "operator": "+=",
+        "expression": "RAND:2",
+        "reads": [],
+        "writes": [
+          "CFLAG:COUNT:109"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00586:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 586,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tMONEY -= 2000",
+        "stateFamily": "MONEY",
+        "stateAddress": "MONEY",
+        "operator": "-=",
+        "expression": "2000",
+        "reads": [],
+        "writes": [
+          "MONEY"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00588:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 588,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00589:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 589,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00590:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 590,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00592:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 592,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF (FLAG:76 & 4) && MONEY >= 50000 * LOCAL",
+        "controlKind": "IF",
+        "condition": "(FLAG:76 & 4) && MONEY >= 50000 * LOCAL",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00593:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 593,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREPEAT CHARANUM",
+        "controlKind": "REPEAT",
+        "condition": "CHARANUM",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00594:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 594,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tIF COUNT == 0",
+        "controlKind": "IF",
+        "condition": "COUNT == 0",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00595:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 595,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00596:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 596,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF TALENT:COUNT:122 == 1",
+        "controlKind": "ELSEIF",
+        "condition": "TALENT:COUNT:122 == 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00597:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 597,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00598:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 598,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSEIF CFLAG:COUNT:109 == -1",
+        "controlKind": "ELSEIF",
+        "condition": "CFLAG:COUNT:109 == -1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00599:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 599,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCONTINUE",
+        "controlKind": "CONTINUE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00600:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 600,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00601:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 601,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tCFLAG:COUNT:109 = -1",
+        "stateFamily": "CFLAG",
+        "stateAddress": "CFLAG:COUNT:109",
+        "operator": "=",
+        "expression": "-1",
+        "reads": [],
+        "writes": [
+          "CFLAG:COUNT:109"
+        ],
+        "calls": [],
+        "needsReviewReasons": [
+          "computed-state-address"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00602:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 602,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\t\tMONEY -= 50000",
+        "stateFamily": "MONEY",
+        "stateAddress": "MONEY",
+        "operator": "-=",
+        "expression": "50000",
+        "reads": [],
+        "writes": [
+          "MONEY"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00604:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 604,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00605:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 605,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tREND",
+        "controlKind": "REND",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_turnend:00606:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 606,
+        "currentLabel": "AUTO_ITEMUSE",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      }
+    ],
+    "summary": {
+      "rows": 81,
+      "byKind": {
+        "branch-or-loop": 69,
+        "control-transfer": 1,
+        "label": 1,
+        "primitive-effect": 1,
+        "state-write": 9
+      },
+      "byStatus": {
+        "unclassified": 81
+      },
+      "bySourcePath": {
+        "original-game/ERB/イベント関係/EVENT_TURNEND.ERB": 81
+      },
+      "byCurrentLabel": {
+        "AUTO_ITEMUSE": 81
+      },
+      "sourcePathsWithoutEffects": []
+    },
+    "effectCrosswalk": [
+      {
+        "effectId": "M35:event_turnend:00493:label:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 493,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00495:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 495,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00496:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 496,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00498:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 498,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00499:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 499,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00500:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 500,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00501:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 501,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00503:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 503,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00504:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 504,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00507:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 507,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00508:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 508,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00509:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 509,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00510:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 510,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00511:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 511,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00512:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 512,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00513:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 513,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00515:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 515,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00517:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 517,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00519:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 519,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00521:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 521,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00523:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 523,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00525:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 525,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00527:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 527,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00529:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 529,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00531:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 531,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00533:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 533,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00535:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 535,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00537:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 537,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00538:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 538,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00540:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 540,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00541:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 541,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00544:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 544,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00545:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 545,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00546:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 546,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00548:primitive-effect:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 548,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00549:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 549,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00550:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 550,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00551:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 551,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00552:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 552,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00553:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 553,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00554:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 554,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00555:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 555,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00560:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 560,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00561:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 561,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00562:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 562,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00563:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 563,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00565:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 565,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00566:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 566,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00569:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 569,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00570:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 570,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00571:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 571,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00574:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 574,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00575:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 575,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00576:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 576,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00577:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 577,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00578:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 578,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00579:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 579,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00580:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 580,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00581:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 581,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00582:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 582,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00583:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 583,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00584:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 584,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00585:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 585,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00586:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 586,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00588:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 588,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00589:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 589,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00590:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 590,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00592:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 592,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00593:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 593,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00594:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 594,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00595:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 595,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00596:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 596,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00597:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 597,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00598:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 598,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00599:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 599,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00600:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 600,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00601:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 601,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00602:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 602,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00604:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 604,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00605:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 605,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_turnend:00606:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": 606,
+        "currentLabel": "AUTO_ITEMUSE",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      }
+    ],
+    "effectCrosswalkSummary": {
+      "rows": 81,
+      "withImplementationClaim": 0,
+      "withoutImplementationClaim": 81
+    }
+  },
+  "existingImplementationClaims": {
+    "manifestPath": "data/coverage/manifests/M35-source-units.json",
+    "sourceUnits": [],
+    "coverageRows": [],
+    "relatedSourceUnits": [
+      {
+        "unitId": "M35:source-unit:00002",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": "",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyReviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:mission-deadline",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00005",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": "",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyReviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00007",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLine": "",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyReviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "acceptedByOwner": true
+      }
+    ],
+    "relatedCoverageRows": [
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:clock-advance",
+        "unitId": "M35:source-unit:00001",
+        "reviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:mission-deadline",
+        "unitId": "M35:source-unit:00002",
+        "reviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "unitId": "M35:source-unit:00005",
+        "reviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "unitId": "M35:source-unit:00008",
+        "reviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34",
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-flag-61",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:scheduled-events",
+        "unitId": "M35:source-unit:00003",
+        "reviewId": "M35:functional:scheduled-events",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "sourceLabel": "scheduled event processing hook",
+        "legacyId": "scheduled-events",
+        "requiredBehavior": "scheduled event processing hook",
+        "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "unitId": "M35:source-unit:00007",
+        "reviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "unitId": "M35:source-unit:00004",
+        "reviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-flag-61"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:world-event-hook",
+        "unitId": "M35:source-unit:00006",
+        "reviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      }
+    ],
+    "summary": {
+      "sourceUnits": 0,
+      "coverageRows": 0,
+      "relatedSourceUnits": 3,
+      "relatedCoverageRows": 8,
+      "sourceUnitsByStatus": {},
+      "coverageRowsByStatus": {}
+    }
+  },
+  "implementationWorkOrder": {
+    "recommendedWorkerInput": "Use only this packet scope to propose bounded web code/test patches. Do not expand the source scope unless main asks. Do not infer completion from packet inclusion.",
+    "recipePath": "",
+    "runtimeTargetHints": {},
+    "stateAliasRecipe": [],
+    "implementationRecipe": {},
+    "requiredWorkerResultShape": {
+      "implementedEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "implementation": "changed runtime file/function",
+          "test": "test or smoke evidence to add/run, or empty if not yet testable",
+          "notes": "short reason the effect is covered"
+        }
+      ],
+      "remainingEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "reason": "why not implemented in this patch proposal"
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "requiredPatchReviewQuestions": [
+      "Which original labels/effects does the patch implement?",
+      "Which web feature/domain files are changed?",
+      "Which state/session/view effects are observable?",
+      "Which input/cancel/failure/retry paths are covered?",
+      "Which source effects remain unimplemented or require transfer/exclusion?"
+    ],
+    "highRiskRows": [
+      {
+        "riskId": "ambiguous-state-family",
+        "severity": "alias-required-before-auto-completion",
+        "count": 1,
+        "reason": "FLAG/CFLAG/GLOBAL/TFLAG-like families require semantic aliasing before implementation can be trusted.",
+        "rowRefs": [
+          {
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "kind": "CFLAG",
+            "id": "CFLAG"
+          }
+        ]
+      },
+      {
+        "riskId": "unclosed-source-effects",
+        "severity": "packet-review-required",
+        "count": 81,
+        "reason": "Source-effect rows are not implementation evidence, but unclassified/blocked rows identify work that cannot be silently ignored.",
+        "rowRefs": [
+          {
+            "effectId": "M35:event_turnend:00493:label:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 493,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "label"
+          },
+          {
+            "effectId": "M35:event_turnend:00495:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 495,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00496:control-transfer:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 496,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "control-transfer"
+          },
+          {
+            "effectId": "M35:event_turnend:00498:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 498,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00499:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 499,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00500:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 500,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00501:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 501,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00503:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 503,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00504:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 504,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00507:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 507,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00508:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 508,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00509:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 509,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00510:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 510,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00511:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 511,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00512:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 512,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00513:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 513,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00515:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 515,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00517:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 517,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00519:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 519,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00521:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 521,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00523:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 523,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00525:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 525,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00527:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 527,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00529:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 529,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_turnend:00531:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+            "sourceLine": 531,
+            "currentLabel": "AUTO_ITEMUSE",
+            "kind": "branch-or-loop"
+          }
+        ]
+      }
+    ],
+    "workerEditableGlobs": [
+      "src/**/*.ts",
+      "tools/*smoke*.ts",
+      "tools/vite.*smoke*.config.ts",
+      "data/coverage/source-effects/classifications/*.json"
+    ],
+    "suggestedReadOnlyInputs": [
+      "data/implementation-packets/m35-auto-itemuse.json",
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "data/coverage/source-effects/M35.effects.json"
+    ],
+    "allowedCommands": [],
+    "prefilledWorkerResult": {
+      "implementedEffects": [],
+      "remainingEffects": [
+        {
+          "effectId": "M35:event_turnend:00493:label:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00495:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00496:control-transfer:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00498:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00499:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00500:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00501:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00503:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00504:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00507:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00508:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00509:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00510:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00511:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00512:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00513:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00515:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00517:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00519:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00521:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00523:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00525:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00527:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00529:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00531:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00533:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00535:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00537:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00538:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00540:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00541:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00544:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00545:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00546:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00548:primitive-effect:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00549:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00550:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00551:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00552:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00553:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00554:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00555:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00560:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00561:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00562:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00563:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00565:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00566:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00569:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00570:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00571:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00574:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00575:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00576:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00577:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00578:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00579:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00580:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00581:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00582:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00583:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00584:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00585:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00586:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00588:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00589:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00590:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00592:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00593:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00594:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00595:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00596:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00597:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00598:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00599:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00600:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00601:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00602:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00604:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00605:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_turnend:00606:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "packetBudget": {
+      "sourceEffects": 81,
+      "sourceFiles": 1,
+      "labels": 2,
+      "outgoingCalls": 1,
+      "sourceSnippetBytes": 3026
+    },
+    "packetAccountingRule": "Every sourceEffects.rows effectId must appear exactly once in implementedEffects, remainingEffects, transferredEffects, or excludedEffects in worker output."
+  },
+  "assertions": {
+    "completeness": {
+      "ok": true,
+      "missingFileSummaryRows": [],
+      "unresolvedSourcePaths": [],
+      "ambiguousSourcePaths": []
+    },
+    "analysisJoin": {
+      "sourceFileCount": 1,
+      "labelCount": 2,
+      "outgoingCallCount": 1,
+      "incomingCallCount": 0,
+      "dynamicCallCount": 0,
+      "flowActionCount": 1,
+      "stateAccessFamilyRows": 4,
+      "legacyAddressRows": 16,
+      "sourceEffectRows": 81,
+      "sourceEffectCrosswalkRows": 81,
+      "sourceEffectRowsWithoutImplementationClaim": 81,
+      "sourceUnitRows": 0,
+      "coverageRows": 0
+    }
+  }
+}

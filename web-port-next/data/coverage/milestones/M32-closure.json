@@ -21,9 +21,9 @@
     "smoke": "tools/m32_character_identity_smoke.ts"
   },
   "counts": {
-    "sourceUnitTotal": 298,
-    "ownedTotal": 291,
-    "implemented": 291,
+    "sourceUnitTotal": 296,
+    "ownedTotal": 289,
+    "implemented": 289,
     "mapped": 0,
     "approvedExcludedFromM32": 7,
     "approvedExcluded": 0,
@@ -37,8 +37,8 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 291,
-    "implemented": 291,
+    "ownedTotal": 289,
+    "implemented": 289,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -50,8 +50,8 @@
     "unapprovedExcluded": 0
   },
   "sourceUnitMetrics": {
-    "sourceUnitTotal": 298,
-    "implementedVerified": 291,
+    "sourceUnitTotal": 296,
+    "implementedVerified": 289,
     "approvedExcludedFromM32": 7,
     "blocked": 0,
     "scopeRedesignRequired": 0,
@@ -65,6 +65,7 @@
     "limitationsBlockCompletion": false,
     "responsibilityItems": [
       "M32 owns character templates, identity fields, CSTR profile text slots and labels, lifecycle flags, and CSTR identity save fields.",
+      "M32 lifecycle includes SELL_CHARA CHECK_SELLASSIABLE CFLAG:1 rank, sale listing filters, and sale-success lifecycle deletion. It does not own sale price formulas, money mutation, event prose, or downstream relationship/body/social side effects.",
       "M32 does not own TALENT/body trait save semantics, Korean particle/text formatting, or event-generated name behavior; those rows are approved exclusions with receiver milestones.",
       "Mapped-consumed rows are not completion. Every source unit is represented in M32-source-units as implemented-verified or approved-excluded."
     ],
@@ -94,7 +95,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "298 M32 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "296 M32 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:character-identity",

@@ -14,7 +14,10 @@ export type GameAction =
   | { readonly type: 'main/openMission' }
   | { readonly type: 'main/openRecruit' }
   | { readonly type: 'main/openRoster' }
-  | { readonly type: 'main/openSaveLoad' }
+  | { readonly type: 'main/openAbilityRoster' }
+  | { readonly type: 'main/openActressList' }
+  | { readonly type: 'main/openSave' }
+  | { readonly type: 'main/openLoad' }
   | { readonly type: 'main/openWardrobe' }
   | { readonly type: 'main/openVisit' }
   | { readonly type: 'main/openWork' }
@@ -34,7 +37,10 @@ export type GameAction =
   | { readonly type: 'shop/confirmUseItem' }
   | { readonly type: 'shop/cancelUseItem' }
   | { readonly type: 'shop/cancel' }
-  | { readonly type: 'recruit/selectListing'; readonly listingId: CatalogId }
+  | { readonly type: 'recruit/selectListing'; readonly listingId: CatalogId; readonly interviewGender?: number }
+  | { readonly type: 'recruit/previousPage' }
+  | { readonly type: 'recruit/nextPage' }
+  | { readonly type: 'recruit/rerollInterview' }
   | { readonly type: 'recruit/confirm' }
   | { readonly type: 'recruit/cancel' }
   | { readonly type: 'visit/selectPlace'; readonly placeId: string }
@@ -65,6 +71,7 @@ export type GameAction =
   | { readonly type: 'training/cancel' }
   | { readonly type: 'roster/retireCharacter'; readonly characterId: string }
   | { readonly type: 'roster/deleteCharacter'; readonly characterId: string }
+  | { readonly type: 'roster/sellCharacter'; readonly characterId: string; readonly timeSlot?: 0 | 1 }
   | { readonly type: 'roster/setAssistantEligible'; readonly characterId: string; readonly assistantEligible: boolean }
   | { readonly type: 'wardrobe/toggleClothing'; readonly characterId: string; readonly flagId: string }
   | { readonly type: 'wardrobe/selectCostume'; readonly characterId: string; readonly costumeId: CatalogId }

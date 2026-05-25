@@ -162,9 +162,38 @@ function completionForSaveMapping(row) {
 
   return {
     completionStatus: 'implemented-cflag-equipment-save-field',
-    runtimeConsumerId: `${row.fieldPath || row.address} <- splitLegacyCharacterFlags/wardrobe route`,
+    runtimeConsumerId: runtimeConsumerForSaveMapping(row),
     verificationId: 'smoke:social-equipment-cflag',
   };
+}
+
+function flagIdFromAddress(address) {
+  const match = String(address ?? '').match(/^[A-Z]+:(\d+)$/);
+  return match?.[1] ?? '';
+}
+
+function runtimeConsumerForSaveMapping(row) {
+  const address = row?.address ?? '';
+  const flagId = flagIdFromAddress(address);
+
+  if (address.startsWith('CFLAG:') && flagId) {
+    if (row.runtimeOwner === 'body') {
+      return `body.byCharacterId.*.conditionFlags.flag_${flagId} <- splitLegacyCharacterFlags/save roundtrip`;
+    }
+
+    if (row.runtimeOwner === 'equipment') {
+      return `equipment.byCharacterId.*.availabilityFlags.flag_${flagId} <- splitLegacyCharacterFlags/wardrobe route/save roundtrip`;
+    }
+
+    if (['21', '22', '23', '24'].includes(flagId)) {
+      return `people.characters.*.flags.family.legacyRelationIndexes.${flagId} <- splitLegacyCharacterFlags/save roundtrip`;
+    }
+
+    const owner = row.runtimeOwner || 'people';
+    return `people.characters.*.flags.featureProgress.${owner}.flag_${flagId} <- splitLegacyCharacterFlags/save roundtrip`;
+  }
+
+  return `${row.fieldPath || row.address} <- M34 state store/save roundtrip`;
 }
 
 function completionForSessionMapping(row) {

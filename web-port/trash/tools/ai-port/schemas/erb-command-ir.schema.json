@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "erb-command-ir.schema.json",
+  "title": "ERB Command Strict IR",
+  "type": "object",
+  "required": ["schemaVersion", "command", "sourceFiles", "operations"],
+  "properties": {
+    "schemaVersion": { "const": "erb-command-ir/v1" },
+    "command": {
+      "type": "object",
+      "required": ["id", "originalId"],
+      "properties": {
+        "id": { "type": "string" },
+        "originalId": { "type": "number" },
+        "name": { "type": "string" },
+        "category": { "type": "string" }
+      }
+    },
+    "sourceFiles": { "type": "array" },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "evidence"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": {
+            "enum": [
+              "requirement",
+              "formulaGate",
+              "sourceSet",
+              "sourceAdd",
+              "sourceMultiply",
+              "loseBaseAdd",
+              "baseAdd",
+              "expAdd",
+              "flagSet",
+              "stainMerge",
+              "stainSetBits",
+              "stainClearBits",
+              "phaseSkip",
+              "returnSuccess",
+              "returnFailure",
+              "message",
+              "unsupported"
+            ]
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["file", "lineStart", "lineEnd", "raw"],
+            "properties": {
+              "file": { "type": "string" },
+              "lineStart": { "type": "number" },
+              "lineEnd": { "type": "number" },
+              "raw": { "type": "string" }
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": { "type": "array" }
+  },
+  "additionalProperties": false
+}

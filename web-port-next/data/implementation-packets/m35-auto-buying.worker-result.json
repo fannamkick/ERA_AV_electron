@@ -1,0 +1,102 @@
+{
+  "implementedEffects": [
+    {
+      "effectId": "M35:event_turnend:00469:label:01",
+      "implementation": "src/features/turnEnd.ts applyAutomaticBuying entrypoint",
+      "test": "tools/m35_turn_long_smoke.ts AUTO_BUYING assertions"
+    },
+    {
+      "effectId": "M35:event_turnend:00471:branch-or-loop:01",
+      "implementation": "applyAutomaticBuying checks (FLAG:34 & 1), money >= 200, and ITEM:25 == 0",
+      "test": "tools/m35_turn_long_smoke.ts flag_34=9 buys lotion"
+    },
+    {
+      "effectId": "M35:event_turnend:00472:state-write:01",
+      "implementation": "applyAutomaticBuying increments inventory.itemCounts['25']",
+      "test": "tools/m35_turn_long_smoke.ts asserts ITEM:25 == 1"
+    },
+    {
+      "effectId": "M35:event_turnend:00473:state-write:01",
+      "implementation": "applyAutomaticBuying subtracts 200 money and records lotion accounting",
+      "test": "tools/m35_turn_long_smoke.ts asserts money/accounting after first turn"
+    },
+    {
+      "effectId": "M35:event_turnend:00474:branch-or-loop:01",
+      "implementation": "lotion branch exits without repeat when conditions fail",
+      "test": "tools/m35_turn_long_smoke.ts second turn does not repurchase item 25"
+    },
+    {
+      "effectId": "M35:event_turnend:00481:branch-or-loop:01",
+      "implementation": "applyAutomaticBuying checks (FLAG:34 & 8) before condom loop",
+      "test": "tools/m35_turn_long_smoke.ts flag_34=9 triggers condom purchase"
+    },
+    {
+      "effectId": "M35:event_turnend:00482:branch-or-loop:01",
+      "implementation": "applyAutomaticBuying loops at most 10 iterations for condom purchases",
+      "test": "tools/m35_turn_long_smoke.ts starts ITEM:24 at 8 and reaches 10"
+    },
+    {
+      "effectId": "M35:event_turnend:00483:branch-or-loop:01",
+      "implementation": "condom loop requires current money >= 100 and ITEM:24 < 10",
+      "test": "tools/m35_turn_long_smoke.ts asserts ITEM:24 limit 10"
+    },
+    {
+      "effectId": "M35:event_turnend:00484:state-write:01",
+      "implementation": "applyAutomaticBuying increments inventory.itemCounts['24'] per successful loop iteration",
+      "test": "tools/m35_turn_long_smoke.ts asserts ITEM:24 == 10"
+    },
+    {
+      "effectId": "M35:event_turnend:00485:state-write:01",
+      "implementation": "applyAutomaticBuying subtracts 100 money and records accounting per condom purchase",
+      "test": "tools/m35_turn_long_smoke.ts asserts two item 24 accounting entries"
+    },
+    {
+      "effectId": "M35:event_turnend:00486:branch-or-loop:01",
+      "implementation": "condom inner branch exits when money or ITEM:24 limit condition fails",
+      "test": "tools/m35_turn_long_smoke.ts asserts ITEM:24 stops at 10"
+    },
+    {
+      "effectId": "M35:event_turnend:00487:branch-or-loop:01",
+      "implementation": "condom loop is bounded to 10 iterations",
+      "test": "tools/m35_turn_long_smoke.ts asserts finite deterministic result"
+    },
+    {
+      "effectId": "M35:event_turnend:00488:branch-or-loop:01",
+      "implementation": "condom outer branch exits after optional loop",
+      "test": "tools/m35_turn_long_smoke.ts full turn completes and saves"
+    }
+  ],
+  "remainingEffects": [],
+  "transferredEffects": [],
+  "excludedEffects": [
+    {
+      "effectId": "M35:event_turnend:00476:branch-or-loop:01",
+      "reason": "Original source line is commented out with ';IF (FLAG:34 & 2) ... ITEM:28'."
+    },
+    {
+      "effectId": "M35:event_turnend:00477:state-write:01",
+      "reason": "Original source line is commented out with ';\\tITEM:28 += 1'."
+    },
+    {
+      "effectId": "M35:event_turnend:00478:state-write:01",
+      "reason": "Original source line is commented out with ';\\tMONEY -= 500'."
+    },
+    {
+      "effectId": "M35:event_turnend:00479:branch-or-loop:01",
+      "reason": "Original source line is commented out with ';ENDIF'."
+    }
+  ],
+  "changedFiles": [
+    "src/features/turnEnd.ts",
+    "tools/m35_turn_long_smoke.ts",
+    "data/implementation-packets/m35-auto-buying.worker-result.json"
+  ],
+  "tests": [
+    "npm run typecheck",
+    "npm run smoke:turn-long",
+    "node tools/check_feature_packet_worker_result.mjs m35-auto-buying data/implementation-packets/m35-auto-buying.worker-result.json"
+  ],
+  "workerRunIds": [
+    "m35-auto-buying-turnend-only"
+  ]
+}

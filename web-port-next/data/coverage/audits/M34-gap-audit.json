@@ -25,12 +25,6 @@
       "data/coverage/item-use-coverage.json",
       "data/coverage/item-use-coverage.json",
       "data/coverage/recruit-coverage.json",
-      "data/coverage/recruit-coverage.json",
-      "data/coverage/recruit-coverage.json",
-      "data/coverage/recruit-coverage.json",
-      "data/coverage/body-stat-coverage.json",
-      "data/coverage/body-stat-coverage.json",
-      "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
       "data/coverage/body-stat-coverage.json",
@@ -110,8 +104,8 @@
     ]
   },
   "summary": {
-    "scopeRows": 2247,
-    "implemented": 2247,
+    "scopeRows": 2241,
+    "implemented": 2241,
     "mapped": 0,
     "transferredOut": 0,
     "approvedExcluded": 0,

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "source-effect-transfers/v1",
+  "rules": [
+    "A transferred source effect is valid only when the sender effect row and receiver evidence both exist.",
+    "Owner-name-only handoff is not accepted.",
+    "status must be accepted before gate:transfer-contracts can pass for a transferred effect."
+  ],
+  "transfers": []
+}

@@ -8,6 +8,7 @@ The active workflow is the split-method original-logic recheck.
 - Do not jump to M37.
 - The next concrete target is M35 through `milestones/M35_TURN_PIPELINE.ko.md`.
 - Phase 5 is now indexed by `milestones/PHASE_5_M28_M49.ko.md`; per-milestone detail lives in `milestones/Mxx_*.ko.md`.
+- Canonical feature-first porting map lives in `GAME_FEATURE_MAP.ko.md`.
 - Worker/documentation rules live in `milestones/MILESTONE_DOCUMENTATION_RULES.ko.md`.
 
 ## Read Order For Codex And Workers
@@ -15,9 +16,10 @@ The active workflow is the split-method original-logic recheck.
 1. `agent/CODEX_BOOTSTRAP.ko.md`
 2. `agent/NEXT_MILESTONE.ko.md`
 3. `SESSION_HANDOFF.ko.md`
-4. `milestones/MILESTONE_DOCUMENTATION_RULES.ko.md`
-5. Current milestone split doc, currently `milestones/M35_TURN_PIPELINE.ko.md`
-6. Machine artifacts only as needed: source-unit manifest, gap audit, closure JSON, runtime code, original ERB/CSV
+4. `GAME_FEATURE_MAP.ko.md`
+5. `milestones/MILESTONE_DOCUMENTATION_RULES.ko.md`
+6. Current milestone split doc, currently `milestones/M35_TURN_PIPELINE.ko.md`
+7. Machine artifacts only as needed: source-unit manifest, gap audit, closure JSON, runtime code, original ERB/CSV
 
 ## Authority Boundary
 
@@ -35,6 +37,8 @@ Instruction docs are navigation. Completion authority comes from:
 | Document | Role |
 |---|---|
 | `SESSION_HANDOFF.ko.md` | Minimal session handoff and current workflow. |
+| `GAME_FEATURE_MAP.ko.md` | Canonical feature map and per-feature inventory shape. |
+| `../data/coverage/game-feature-map.json` | Generated full hierarchy and entry inventory. |
 | `agent/CODEX_BOOTSTRAP.ko.md` | Startup rules and hard prohibitions. |
 | `agent/NEXT_MILESTONE.ko.md` | Immediate next task. |
 | `agent/CURRENT_STATUS.ko.md` | Compact status dashboard. |

@@ -75,6 +75,22 @@ function withMoney(context: SmokeContext, money: number): SmokeContext {
   };
 }
 
+function withRunFlags(context: SmokeContext, flags: Record<string, boolean | number | string>): SmokeContext {
+  return {
+    ...context,
+    state: {
+      ...context.state,
+      run: {
+        ...context.state.run,
+        runFlags: {
+          ...context.state.run.runFlags,
+          ...flags,
+        },
+      },
+    },
+  };
+}
+
 function withPlayerAbility(context: SmokeContext, abilityId: string, value: number): SmokeContext {
   const id = playerId(context);
   const character = context.state.people.characters[id];
@@ -144,6 +160,32 @@ function withTargetResource(context: SmokeContext, characterId: string, resource
             trainingResources: {
               ...body.trainingResources,
               [resourceId]: value,
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function withTargetTrait(context: SmokeContext, characterId: string, traitId: string, value: boolean): SmokeContext {
+  const character = context.state.people.characters[characterId];
+  return {
+    ...context,
+    state: {
+      ...context.state,
+      people: {
+        ...context.state.people,
+        characters: {
+          ...context.state.people.characters,
+          [characterId]: {
+            ...character,
+            attributes: {
+              ...character.attributes,
+              traits: {
+                ...character.attributes.traits,
+                [traitId]: value,
+              },
             },
           },
         },
@@ -222,6 +264,8 @@ function main() {
   context = step.context;
   assert(context.state.people.characters[target].attributes.baseStats.current['0'] === 600, 'item 30 should restore target stamina by 500.');
   assert(context.state.economy.account.currentMoney === moneyBeforeNutrition - 1000, 'item 30 should subtract its price.');
+  assert(context.session.shop.selectedUseItemId === '30', 'target-use item should stay selected for original continuous use loop when money remains.');
+  assert(context.session.shop.selectedUseTargetCharacterId === undefined, 'continuous use loop should clear only the previous target.');
 
   context = withTargetBase(context, target, 1000, 1000);
   step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '30' });
@@ -250,6 +294,17 @@ function main() {
   assert(context.state.body.byCharacterId[target].trainingResources['100'] === 4, 'item 31 should halve negative juel by integer division.');
   assert(context.state.run.runFlags.incenseUsesToday === 1, 'item 31 should count daily incense use.');
 
+  context = withTargetResource(context, target, '100', 0);
+  step = dispatchChecked(context, { type: 'shop/selectUseTarget', characterId: target });
+  assert(step.result.status === 'success', 'incense empty-resource target selection should succeed before confirm validation.');
+  context = step.context;
+  const beforeIncenseFailure = context.state;
+  step = dispatchChecked(context, { type: 'shop/confirmUseItem' });
+  assert(step.result.status === 'failure', 'incense item should fail when target has no negative juel.');
+  assert(step.result.failure?.code === 'item-use-condition-unmet', 'incense no-resource failure should use item-use-condition-unmet.');
+  assert(step.result.state === beforeIncenseFailure, 'incense no-resource failure should preserve save state reference.');
+  context = step.context;
+
   step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '40' });
   assert(step.result.status === 'success', 'ovulation promotion item selection should succeed.');
   context = step.context;
@@ -272,6 +327,17 @@ function main() {
   context = step.context;
   assert(context.state.body.byCharacterId[target].appearance.pubicHairGrowthBoost === true, 'item 41 should write appearance owner.');
 
+  context = withRunFlags(context, { pubicHairSystemEnabled: false });
+  step = dispatchChecked(context, { type: 'shop/selectUseTarget', characterId: target });
+  assert(step.result.status === 'success', 'hair growth target can be selected before visibility revalidation.');
+  context = step.context;
+  const beforeHairDisabledFailure = context.state;
+  step = dispatchChecked(context, { type: 'shop/confirmUseItem' });
+  assert(step.result.status === 'failure', 'hair growth item should fail when original FLAG:36 equivalent is disabled.');
+  assert(step.result.failure?.code === 'item-use-condition-unmet', 'hair growth disabled failure should use item-use-condition-unmet.');
+  assert(step.result.state === beforeHairDisabledFailure, 'hair growth disabled failure should preserve save state reference.');
+  context = withRunFlags(step.context, { pubicHairSystemEnabled: true });
+
   step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '43' });
   assert(step.result.status === 'success', 'ovulation suppression item selection should succeed.');
   context = step.context;
@@ -282,6 +348,17 @@ function main() {
   assert(step.result.status === 'success', 'ovulation suppression item use should succeed.');
   context = step.context;
   assert(context.state.body.byCharacterId[target].reproduction.ovulationControl === 'suppress', 'item 43 should write reproduction owner.');
+
+  context = withTargetTrait(context, target, '153', true);
+  step = dispatchChecked(context, { type: 'shop/selectUseTarget', characterId: target });
+  assert(step.result.status === 'success', 'pregnant target can be selected before item 43 confirm validation.');
+  context = step.context;
+  const beforeOvulationFailure = context.state;
+  step = dispatchChecked(context, { type: 'shop/confirmUseItem' });
+  assert(step.result.status === 'failure', 'item 43 should fail for pregnant target.');
+  assert(step.result.failure?.code === 'item-use-condition-unmet', 'pregnant target failure should use item-use-condition-unmet.');
+  assert(step.result.state === beforeOvulationFailure, 'pregnant target failure should preserve save state reference.');
+  context = withTargetTrait(step.context, target, '153', false);
 
   step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '38' });
   assert(step.result.status === 'success', 'love dynamics item selection should succeed.');
@@ -321,6 +398,38 @@ function main() {
   context = step.context;
   assert(context.session.shop.selectedUseItemId === undefined, 'item use cancel should clear item selection.');
   assert(context.session.shop.selectedUseTargetCharacterId === undefined, 'item use cancel should clear target selection.');
+
+  context = withRunFlags(withPlayerAbility(withMoney(context, 30000), '12', 1), { modeId: 'powerful', techniqueItemProgress: 0 });
+  step = dispatchChecked(context, { type: 'main/openItemShop' });
+  assert(step.result.status === 'success', 'powerful item shop re-entry for technique requirement should succeed.');
+  context = step.context;
+  step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '52' });
+  assert(step.result.status === 'success', 'powerful technique item selection should succeed.');
+  context = step.context;
+  step = dispatchChecked(context, { type: 'shop/confirmUseItem' });
+  assert(step.result.status === 'success', 'first powerful technique item use should succeed.');
+  context = step.context;
+  assert(context.state.people.characters[trainerId].attributes.abilities['12'] === 1, 'powerful ABL 1 should require 5 item 52 uses before level-up.');
+  assert(context.state.run.runFlags.techniqueItemProgress === 1, 'powerful item 52 should accumulate progress instead of immediate level-up at ABL 1.');
+  const powerfulFilmingCapacityAfterFirstUse = context.state.people.characters[trainerId].attributes.baseStats.maximum['60'] ?? 0;
+  assert(
+    powerfulFilmingCapacityAfterFirstUse === filmingCapacityBefore + 8,
+    'powerful item 52 should increase filming scene capacity even when it only accumulates progress.',
+  );
+  for (let index = 0; index < 4; index += 1) {
+    step = dispatchChecked(context, { type: 'shop/selectUseItem', itemId: '52' });
+    assert(step.result.status === 'success', `powerful technique item repeat selection ${index + 2} should succeed.`);
+    context = step.context;
+    step = dispatchChecked(context, { type: 'shop/confirmUseItem' });
+    assert(step.result.status === 'success', `powerful technique item repeat use ${index + 2} should succeed.`);
+    context = step.context;
+  }
+  assert(context.state.people.characters[trainerId].attributes.abilities['12'] === 2, 'fifth powerful item 52 use should raise technique from 1 to 2.');
+  assert(context.state.run.runFlags.techniqueItemProgress === 0, 'fifth powerful item 52 use should reset progress.');
+  assert(
+    context.state.people.characters[trainerId].attributes.baseStats.maximum['60'] === filmingCapacityBefore + 24,
+    'five powerful item 52 uses should increase filming scene capacity by 20 total after the earlier easy use.',
+  );
 
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));
   assertNoBoundaryErrors('M30 save payload', validateSavePayloadBoundary(savePayload));

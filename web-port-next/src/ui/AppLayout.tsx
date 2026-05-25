@@ -17,6 +17,8 @@ export function AppLayout({ runtime }: AppLayoutProps) {
   const [state, setState] = useState<GameState>(runtime.initialState);
   const [session, setSession] = useState<GameSession>(runtime.initialSession);
   const [effectLog, setEffectLog] = useState<readonly EffectLogEntry[]>([]);
+  const [showDiagnostics, setShowDiagnostics] = useState<boolean>(false);
+
   const boundaryDiagnostics = useMemo(
     () => [
       ...validateStateSessionBoundary(state, session),
@@ -46,19 +48,51 @@ export function AppLayout({ runtime }: AppLayoutProps) {
     }
   }
 
+  const isElectron = typeof window !== 'undefined' && !!(window as any).electronAPI;
+
   return (
-    <main className="app-shell">
-      <StatusRail catalog={runtime.initialCatalog} state={state} session={session} />
-      <section className="workspace">
-        <RouteScreen catalog={runtime.initialCatalog} state={state} session={session} onAction={runAction} />
-        <RuntimeDiagnosticsPanel
-          boundaryDiagnostics={boundaryDiagnostics}
-          effectLog={effectLog}
-          runtimeDiagnostics={runtime.diagnostics}
-          session={session}
-          state={state}
-        />
-      </section>
-    </main>
+    <div className="app-container">
+      {isElectron && (
+        <header className="title-bar">
+          <div className="title-bar-drag-area">
+            <span className="title-bar-logo">💋</span>
+            <span className="title-bar-title">erAV Next : 여배우 조교 시뮬레이션</span>
+          </div>
+          <div className="title-bar-controls">
+            <button className="control-btn minimize" onClick={() => (window as any).electronAPI.windowMinimize()} title="최소화" type="button">
+              ─
+            </button>
+            <button className="control-btn maximize" onClick={() => (window as any).electronAPI.windowMaximize()} title="최대화" type="button">
+              ⬜
+            </button>
+            <button className="control-btn close" onClick={() => (window as any).electronAPI.windowClose()} title="닫기" type="button">
+              ✕
+            </button>
+          </div>
+        </header>
+      )}
+      <main className={`app-shell route-${session.ui.route}`}>
+        <StatusRail catalog={runtime.initialCatalog} state={state} session={session} />
+        <section className="workspace">
+          <RouteScreen catalog={runtime.initialCatalog} state={state} session={session} onAction={runAction} />
+          {showDiagnostics && (
+            <RuntimeDiagnosticsPanel
+              boundaryDiagnostics={boundaryDiagnostics}
+              effectLog={effectLog}
+              runtimeDiagnostics={runtime.diagnostics}
+              session={session}
+              state={state}
+            />
+          )}
+          <button 
+            className={`debug-toggle-btn ${showDiagnostics ? 'active' : ''}`}
+            onClick={() => setShowDiagnostics(!showDiagnostics)}
+            type="button"
+          >
+            {showDiagnostics ? '개발자 시스템 로그 접기' : '개발자 시스템 로그'}
+          </button>
+        </section>
+      </main>
+    </div>
   );
 }

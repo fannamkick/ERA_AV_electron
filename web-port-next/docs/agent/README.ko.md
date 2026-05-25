@@ -8,6 +8,7 @@ The active workflow is M35 split-method original-logic recheck.
 
 - Do not jump to M37.
 - Do not rely on old strict closure status.
+- Use `../GAME_FEATURE_MAP.ko.md` to keep work feature-entry based instead of vague milestone-group based.
 - Use `../milestones/M35_TURN_PIPELINE.ko.md` as the current working surface.
 - Use `../milestones/MILESTONE_DOCUMENTATION_RULES.ko.md` for worker and document rules.
 
@@ -16,9 +17,10 @@ The active workflow is M35 split-method original-logic recheck.
 1. `CODEX_BOOTSTRAP.ko.md`
 2. `NEXT_MILESTONE.ko.md`
 3. `../SESSION_HANDOFF.ko.md`
-4. `../milestones/MILESTONE_DOCUMENTATION_RULES.ko.md`
-5. current milestone split doc
-6. original ERB/CSV and machine artifacts as needed
+4. `../GAME_FEATURE_MAP.ko.md`
+5. `../milestones/MILESTONE_DOCUMENTATION_RULES.ko.md`
+6. current milestone split doc
+7. original ERB/CSV and machine artifacts as needed
 
 ## Authority Boundary
 

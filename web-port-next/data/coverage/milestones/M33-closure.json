@@ -22,11 +22,11 @@
     "smoke": "tools/m33_body_stat_smoke.ts"
   },
   "counts": {
-    "sourceUnitTotal": 5378,
-    "ownedTotal": 5299,
-    "implemented": 5299,
+    "sourceUnitTotal": 5357,
+    "ownedTotal": 5281,
+    "implemented": 5281,
     "mapped": 0,
-    "approvedExcludedFromM33": 79,
+    "approvedExcludedFromM33": 76,
     "approvedExcluded": 0,
     "transferredOut": 0,
     "rawMappedRows": 0,
@@ -38,8 +38,8 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 5299,
-    "implemented": 5299,
+    "ownedTotal": 5281,
+    "implemented": 5281,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -51,9 +51,9 @@
     "unapprovedExcluded": 0
   },
   "sourceUnitMetrics": {
-    "sourceUnitTotal": 5378,
-    "implementedVerified": 5299,
-    "approvedExcludedFromM33": 79,
+    "sourceUnitTotal": 5357,
+    "implementedVerified": 5281,
+    "approvedExcludedFromM33": 76,
     "blocked": 0,
     "scopeRedesignRequired": 0,
     "completedAllowedNow": true
@@ -97,7 +97,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "5378 M33 owned row(s), 0 unresolved issue(s)"
+    "expectedGateResult": "5357 M33 owned row(s), 0 unresolved issue(s)"
   },
   "commandsRun": [
     "npm run coverage:body-stat",

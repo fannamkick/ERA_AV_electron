@@ -104,11 +104,20 @@ function completionForDefinition(row) {
   }
 
   if (row.definitionKey === 'characters') {
-    return {
+    const completion = {
       completionStatus: 'implemented-character-template-identity',
       runtimeConsumerId: 'definitions.characters -> createCharacterBundleFromSpecs -> people.characters.identity -> buildRosterView',
       verificationId: 'smoke:character-identity',
     };
+    if (row.characterId === '92') {
+      return {
+        ...completion,
+        dynamicIdentityOwnerMilestone: 'M36',
+        dynamicIdentityNote:
+          'Chara92 preserves blank NAME/CALLNAME/NICKNAME from the CSV; ADD_IKUMI_ANDROID supplies runtime identityOverrides under M36.',
+      };
+    }
+    return completion;
   }
 
   if (row.seedFamily === 'CSTR') {
@@ -140,7 +149,8 @@ function completionForTransferredRow(row) {
   if (row.rowKind === 'feature') {
     return {
       completionStatus: 'implemented-character-lifecycle-contract',
-      runtimeConsumerId: 'roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState; active checks',
+      runtimeConsumerId:
+        'CHECK_SELLASSIABLE -> computeSellAssistantEligibilityRank/refreshCharacterSaleEligibility; CHARA_SALE filters -> listSaleEligibleCharacterIds/canListCharacterForSale; roster/sellCharacter -> sellCharacterForLifecycle -> deleted/retired lifecycle state; roster/retireCharacter; roster/deleteCharacter; roster/setAssistantEligible; CharacterLifecycleState active checks',
       verificationId: 'smoke:character-identity',
     };
   }
@@ -320,9 +330,9 @@ const coverage = {
     rowCoverageRule:
       'Every M32 queue row and every inbound transfer to M32 must be accounted exactly once, then strict closure must classify it as implemented-verified or approved-excluded.',
     identityBoundary:
-      'Definitions retain Chara/CSTR source values. Save state stores per-character identity/display/profileTextSlots only after an instance is created.',
+      'Definitions retain Chara/CSTR source values, including blank Chara92 static names. Save state stores per-character identity/display/profileTextSlots only after an instance is created; M36 ADD_IKUMI_ANDROID supplies Chara92 runtime identityOverrides.',
     lifecycleBoundary:
-      'M32 owns persistent deleted/retired/assistant eligibility/recruitment status flags. Economic sale formulas and event prose are later feature owners.',
+      'M32 owns persistent deleted/retired/sale eligibility/assistant eligibility/recruitment status flags, CHECK_SELLASSIABLE lifecycle eligibility, and sale-listing lifecycle filters. Economic sale formulas, money mutation, event prose, and downstream relationship/body/social side effects are later feature owners.',
   },
   summary: {
     ownedRowRefs: expectedRefs.size,
@@ -433,6 +443,7 @@ const closure = {
     limitationsBlockCompletion: false,
     responsibilityItems: [
       'M32 owns character templates, identity fields, CSTR profile text slots and labels, lifecycle flags, and CSTR identity save fields.',
+      'M32 lifecycle includes SELL_CHARA CHECK_SELLASSIABLE CFLAG:1 rank, sale listing filters, and sale-success lifecycle deletion. It does not own sale price formulas, money mutation, event prose, or downstream relationship/body/social side effects.',
       'M32 does not own TALENT/body trait save semantics, Korean particle/text formatting, or event-generated name behavior; those rows are approved exclusions with receiver milestones.',
       'Mapped-consumed rows are not completion. Every source unit is represented in M32-source-units as implemented-verified or approved-excluded.',
     ],
@@ -570,7 +581,9 @@ const manifest = {
     ],
   },
   notes: [
-    'M32 owns 291 character template, CSTR identity text, lifecycle, and CSTR save-field source units and closes them as implemented-verified.',
+    'M32 owns character template, CSTR identity text, lifecycle, and CSTR save-field source units and closes them as implemented-verified.',
+    'Chara92 preserves blank static NAME/CALLNAME/NICKNAME; M36 ADD_IKUMI_ANDROID owns the runtime name input that fills identityOverrides.',
+    'SELL_CHARA rows close only for M32 lifecycle responsibility: CHECK_SELLASSIABLE CFLAG:1 rank, sale listing filters, and sale-success lifecycle deletion. Price formulas, money mutation, event prose, and downstream social/body effects remain receiver-owned.',
     'The remaining 7 source units stay visible as approved exclusions from M32 ownership: M33 TALENT save fields 4, M47 event generated-name files 2, M49 name/particle formatting file 1.',
     'This manifest intentionally does not treat mapped-consumed rows or aggregate source-file-review rows as M32 implementation completion.',
   ],

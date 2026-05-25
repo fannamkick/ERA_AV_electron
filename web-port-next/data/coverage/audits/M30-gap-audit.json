@@ -8,12 +8,12 @@
     "shopPurchaseCoverage": "data/coverage/shop-purchase-coverage.json"
   },
   "summary": {
-    "scopeRows": 74,
-    "implemented": 21,
-    "mapped": 16,
+    "scopeRows": 56,
+    "implemented": 12,
+    "mapped": 7,
     "transferredOut": 37,
-    "m30OwnedRows": 37,
-    "implementedVerifiedForStrictClosure": 37,
+    "m30OwnedRows": 19,
+    "implementedVerifiedForStrictClosure": 19,
     "approvedExcludedFromM30": 37,
     "approvedExcluded": 37,
     "unresolvedGaps": 0,

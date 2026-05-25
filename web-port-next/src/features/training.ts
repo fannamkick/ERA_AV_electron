@@ -41,6 +41,18 @@ export type TrainingUpdateResult =
       readonly failure: TrainingFailure;
     };
 
+const staminaBaseStatId = '0';
+const lifespanBaseStatId = '10';
+const obedienceAbilityId = '10';
+const abnormalExperienceId = '50';
+const loveTraitId = '85';
+const charismaTraitId = '93';
+const deathReviveTraitIds = ['310', '312', '313'] as const;
+const delayedReviveTraitIds = ['315', '316', '199'] as const;
+const ntrProgressFlagId = '619';
+const deathTalkTemporaryFlagId = '13';
+const globalKillCountFlag = 'flag_31';
+
 function participantDisabledReason(state: GameState, characterId: string): string | undefined {
   const character = state.people.characters[characterId];
   if (!character) {
@@ -56,6 +68,276 @@ function participantDisabledReason(state: GameState, characterId: string): strin
   }
 
   return undefined;
+}
+
+function numeric(value: unknown): number {
+  if (typeof value === 'number') return value;
+  if (value === true) return 1;
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.floor(Math.random() * maxExclusive);
+}
+
+function hasTrait(state: GameState, characterId: string, traitId: string): boolean {
+  const value = state.people.characters[characterId]?.attributes.traits[traitId];
+  return value === true || (typeof value === 'number' && value !== 0);
+}
+
+function characterBaseCurrent(state: GameState, characterId: string, baseId: string): number {
+  return state.people.characters[characterId]?.attributes.baseStats.current[baseId] ?? 0;
+}
+
+function characterAbility(state: GameState, characterId: string, abilityId: string): number {
+  return state.people.characters[characterId]?.attributes.abilities[abilityId] ?? 0;
+}
+
+function withCharacterBaseCurrent(state: GameState, characterId: string, baseId: string, value: number): GameState {
+  const character = state.people.characters[characterId];
+  const body = state.body.byCharacterId[characterId];
+  if (!character) return state;
+
+  return {
+    ...state,
+    people: {
+      ...state.people,
+      characters: {
+        ...state.people.characters,
+        [characterId]: {
+          ...character,
+          attributes: {
+            ...character.attributes,
+            baseStats: {
+              ...character.attributes.baseStats,
+              current: {
+                ...character.attributes.baseStats.current,
+                [baseId]: value,
+              },
+            },
+          },
+        },
+      },
+    },
+    body: body
+      ? {
+          ...state.body,
+          byCharacterId: {
+            ...state.body.byCharacterId,
+            [characterId]: {
+              ...body,
+              baseStats: {
+                ...body.baseStats,
+                [baseId]: value,
+              },
+            },
+          },
+        }
+      : state.body,
+  };
+}
+
+function withCharacterAbilityDelta(state: GameState, characterId: string, abilityId: string, delta: number): GameState {
+  const character = state.people.characters[characterId];
+  if (!character) return state;
+  const nextValue = (character.attributes.abilities[abilityId] ?? 0) + delta;
+
+  return {
+    ...state,
+    people: {
+      ...state.people,
+      characters: {
+        ...state.people.characters,
+        [characterId]: {
+          ...character,
+          attributes: {
+            ...character.attributes,
+            abilities: {
+              ...character.attributes.abilities,
+              [abilityId]: nextValue,
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function withCharacterExperienceDelta(state: GameState, characterId: string, experienceId: string, delta: number): GameState {
+  const character = state.people.characters[characterId];
+  if (!character) return state;
+  const nextValue = (character.attributes.experiences[experienceId] ?? 0) + delta;
+
+  return {
+    ...state,
+    people: {
+      ...state.people,
+      characters: {
+        ...state.people.characters,
+        [characterId]: {
+          ...character,
+          attributes: {
+            ...character.attributes,
+            experiences: {
+              ...character.attributes.experiences,
+              [experienceId]: nextValue,
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function withCharacterTrait(state: GameState, characterId: string, traitId: string): GameState {
+  const character = state.people.characters[characterId];
+  if (!character) return state;
+
+  return {
+    ...state,
+    people: {
+      ...state.people,
+      characters: {
+        ...state.people.characters,
+        [characterId]: {
+          ...character,
+          attributes: {
+            ...character.attributes,
+            traits: {
+              ...character.attributes.traits,
+              [traitId]: true,
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function withNtrProgressFlag(state: GameState, characterId: string, flagId: string, value: number): GameState {
+  return {
+    ...state,
+    social: {
+      ...state.social,
+      ntrProgress: {
+        ...state.social.ntrProgress,
+        [`${characterId}.flag_${flagId}`]: value,
+      },
+      partnerProgress: {
+        ...state.social.partnerProgress,
+        [`${characterId}.flag_${flagId}`]: value,
+      },
+    },
+  };
+}
+
+function ntrProgressFlag(state: GameState, characterId: string, flagId: string): number {
+  return numeric(state.social.ntrProgress[`${characterId}.flag_${flagId}`]);
+}
+
+function withRunFlag(state: GameState, flagKey: string, value: number): GameState {
+  return {
+    ...state,
+    run: {
+      ...state.run,
+      runFlags: {
+        ...state.run.runFlags,
+        [flagKey]: value,
+      },
+    },
+  };
+}
+
+function characterLegacyNo(state: GameState, characterId: string): number {
+  const templateNo = Number(state.people.characters[characterId]?.identity.templateId);
+  if (Number.isFinite(templateNo)) return templateNo;
+  const match = /(\d+)$/u.exec(characterId);
+  return match ? Number(match[1]) : 0;
+}
+
+function trainerCharacterId(state: GameState, fallbackId: string): string {
+  return Object.values(state.people.characters).find((character) => character.roles.includes('trainer'))?.id ?? fallbackId;
+}
+
+export function applyAfterTrainCharacterDeathCheck(
+  state: GameState,
+  session: GameSession,
+  targetId: string,
+  masterId: string,
+): { readonly state: GameState; readonly session: GameSession; readonly effects: readonly GameEffect[]; readonly returnValue: 0 | 1 } {
+  if (!state.people.characters[targetId]) {
+    return { state, session, effects: [], returnValue: 0 };
+  }
+
+  let nextState = state;
+  let nextSession = session;
+  const effects: GameEffect[] = [];
+
+  if (hasTrait(nextState, targetId, loveTraitId)) {
+    const nextProgress = Math.max(0, ntrProgressFlag(nextState, targetId, ntrProgressFlagId) - randomInt(5));
+    nextState = withNtrProgressFlag(nextState, targetId, ntrProgressFlagId, nextProgress);
+  }
+
+  if (characterBaseCurrent(nextState, targetId, staminaBaseStatId) > 0) {
+    return { state: nextState, session: nextSession, effects, returnValue: 0 };
+  }
+
+  const reviveRollThreshold = randomInt(7) + 3;
+  const obedience = characterAbility(nextState, targetId, obedienceAbilityId);
+  const revivesByBody =
+    deathReviveTraitIds.some((traitId) => hasTrait(nextState, targetId, traitId)) && obedience > reviveRollThreshold;
+
+  if (revivesByBody) {
+    nextState = withCharacterExperienceDelta(nextState, targetId, abnormalExperienceId, 1);
+    nextState = withCharacterAbilityDelta(nextState, targetId, obedienceAbilityId, -3);
+    nextState = withCharacterBaseCurrent(nextState, targetId, staminaBaseStatId, 100);
+    effects.push(logEffect('M35 CHARADEAD_CHECK revived the target from false death.', 'success'));
+  } else if (delayedReviveTraitIds.some((traitId) => hasTrait(nextState, targetId, traitId))) {
+    if ((hasTrait(nextState, targetId, '315') || hasTrait(nextState, targetId, '316')) && characterBaseCurrent(nextState, targetId, lifespanBaseStatId) > 0) {
+      nextState = withCharacterBaseCurrent(nextState, targetId, lifespanBaseStatId, Math.max(1, characterBaseCurrent(nextState, targetId, lifespanBaseStatId) - 14));
+    }
+    nextState = withCharacterAbilityDelta(nextState, targetId, obedienceAbilityId, -3);
+    if (characterAbility(nextState, targetId, obedienceAbilityId) < 0) {
+      const current = characterAbility(nextState, targetId, obedienceAbilityId);
+      nextState = withCharacterAbilityDelta(nextState, targetId, obedienceAbilityId, -current);
+    }
+    nextState = withCharacterBaseCurrent(nextState, targetId, staminaBaseStatId, 0);
+    effects.push(logEffect('M35 CHARADEAD_CHECK marked delayed revive death state.'));
+  } else {
+    const targetNo = characterLegacyNo(nextState, targetId);
+    const killCount = numeric(nextState.run.runFlags[globalKillCountFlag]) + 1;
+    nextSession = {
+      ...nextSession,
+      interaction: {
+        ...nextSession.interaction,
+        temporaryFlags: {
+          ...nextSession.interaction.temporaryFlags,
+          [deathTalkTemporaryFlagId]: 999,
+        },
+      },
+    };
+    nextState = withCharacterBaseCurrent(nextState, targetId, staminaBaseStatId, -1);
+    nextState = withRunFlag(nextState, `flag_${targetNo + 999}`, -2);
+    nextState = withRunFlag(nextState, globalKillCountFlag, killCount);
+    effects.push(logEffect('M35 CHARADEAD_CHECK marked target death and kill count.', 'warning'));
+  }
+
+  const trainerId = trainerCharacterId(nextState, masterId);
+  if (numeric(nextState.run.runFlags[globalKillCountFlag]) >= 3 && !hasTrait(nextState, trainerId, charismaTraitId)) {
+    nextState = withCharacterTrait(nextState, trainerId, charismaTraitId);
+    effects.push(logEffect('M35 CHARADEAD_CHECK granted trainer charisma trait 93.', 'success'));
+  }
+
+  return {
+    state: nextState,
+    session: nextSession,
+    effects,
+    returnValue: 1,
+  };
 }
 
 function trainingCommandDisabledReason(
@@ -619,11 +901,17 @@ export function executeSelectedTraining(
     session.interaction.participants.assistantId,
   );
   const stateAfterTraining = applyTrainingResult(state, calculatedResult);
+  const afterTrainDeathCheck = applyAfterTrainCharacterDeathCheck(
+    stateAfterTraining,
+    session,
+    calculatedResult.targetId,
+    calculatedResult.executorId,
+  );
   const sessionAfterTraining: GameSession = {
-    ...session,
+    ...afterTrainDeathCheck.session,
     interaction: initialInteractionSessionState,
   };
-  const turn = commandResult.definition.completesTimeBlock === true ? endTurn(stateAfterTraining, sessionAfterTraining) : undefined;
+  const turn = commandResult.definition.completesTimeBlock === true ? endTurn(afterTrainDeathCheck.state, sessionAfterTraining) : undefined;
 
   if (turn) {
     return {
@@ -633,6 +921,7 @@ export function executeSelectedTraining(
       message: `${commandResult.definition.label} training completed.`,
       effects: [
         logEffect(`${commandResult.definition.label} training result applied.`, 'success'),
+        ...afterTrainDeathCheck.effects,
         ...turn.effects,
       ],
     };
@@ -640,9 +929,10 @@ export function executeSelectedTraining(
 
   return {
     ok: true,
-    state: stateAfterTraining,
+    state: afterTrainDeathCheck.state,
     session: sessionAfterTraining,
     message: `${commandResult.definition.label} training completed.`,
+    effects: afterTrainDeathCheck.effects,
   };
 }
 

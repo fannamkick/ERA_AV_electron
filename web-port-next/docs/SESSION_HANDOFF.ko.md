@@ -21,6 +21,8 @@ The current phase is a recheck of previously strict-closed M28-M36 against origi
 
 On 2026-05-08 Phase 5 docs were split to reduce token waste and make omission checks harder to bypass.
 
+On 2026-05-08 a source-effect ledger layer was added so future rechecks start from original line/raw evidence instead of milestone prose or old gate counts. The ledger is a verifiable index only; original ERB/CSV remains authoritative.
+
 Active docs:
 
 - web-port-next/docs/milestones/PHASE_5_M28_M49.ko.md: lightweight Phase 5 index only.
@@ -49,6 +51,8 @@ Each milestone is split into transaction/capability submilestones.
 A submilestone can be treated as closed only when all of these exist:
 
 - original source inventory
+- generated source-effect ledger with source line/raw/hash identity
+- no unclassified or blocked source-effect rows
 - inventory-quality attack
 - implementation claim linked to source effects
 - executable runtime trace
@@ -73,3 +77,4 @@ Workers must not declare completion, change closure status, or make final owner 
 - Do not transfer responsibility by owner name alone.
 - Do not accept approved-excluded without receiver evidence.
 - Do not rely on the old long Phase 5 narrative as the working surface.
+- Do not treat source-effect row existence as implementation evidence.

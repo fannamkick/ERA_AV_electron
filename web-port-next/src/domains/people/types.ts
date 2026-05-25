@@ -33,6 +33,7 @@ export type CharacterFamilyState = {
 export type CharacterLifecycleState = {
   readonly sellable: boolean;
   readonly assistantEligible: boolean;
+  readonly saleEligibilityRank: 0 | 1 | 2;
   readonly retired: boolean;
   readonly deleted: boolean;
   readonly recruitmentStatus: 'notRecruitable' | 'recruitable' | 'recruited';

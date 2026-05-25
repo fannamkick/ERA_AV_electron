@@ -13,8 +13,14 @@ import {
 } from '../features/itemShop';
 import { acceptSelectedMission, cancelMission, createMissionSession, reportSelectedMission, selectMission } from '../features/mission';
 import { createNewGame } from '../features/newGame';
-import { markCharacterDeleted, markCharacterRetired, setCharacterAssistantEligible } from '../features/characterLifecycle';
-import { createRecruitSession, recruitSelectedCharacter, selectRecruitListing } from '../features/recruit';
+import {
+  markCharacterDeleted,
+  markCharacterRetired,
+  sellCharacterForLifecycle,
+  setCharacterAssistantEligible,
+} from '../features/characterLifecycle';
+import { mainMenuActionDisabledReason, markMainMenuRestBeforeTurnEnd, syncMainMenuRuntimeState } from '../features/mainMenu';
+import { changeRecruitPage, createRecruitSession, recruitSelectedCharacter, rerollRecruitInterview, selectRecruitListing } from '../features/recruit';
 import { cancelSaveLoad, createSaveSnapshot, loadSaveSnapshot, openSaveLoadSession, updateSaveLoadText } from '../features/saveLoad';
 import {
   cancelShooting,
@@ -149,10 +155,10 @@ function cancelRecruit(context: GameActionContext): GameActionResult {
   });
 }
 
-function enterSaveLoad(context: GameActionContext): GameActionResult {
+function enterSaveLoad(context: GameActionContext, mode: 'save' | 'load'): GameActionResult {
   return successResult(context, {
     route: phaseTwoRoutes.saveLoad,
-    session: openSaveLoadSession(context.session),
+    session: openSaveLoadSession(context.session, mode),
     effects: [logEffect('저장/로드 화면으로 이동합니다.')],
   });
 }
@@ -251,10 +257,26 @@ function enterTraining(context: GameActionContext): GameActionResult {
   });
 }
 
+function mainMenuGuard(context: GameActionContext, actionType: string): GameActionResult | undefined {
+  const disabledReason = mainMenuActionDisabledReason(context.state, context.catalog, actionType);
+  if (!disabledReason) return undefined;
+
+  return failureResult(context, {
+    code: 'main-menu-condition-unmet',
+    message: disabledReason,
+  });
+}
+
 export function dispatchGameAction(context: GameActionContext, action: GameAction): GameActionResult {
   switch (action.type) {
     case 'route/change':
-      return routeResult(context, action.route, `Route changed: ${action.route}`);
+      return action.route === phaseOneRoutes.mainMenu
+        ? successResult(context, {
+            state: syncMainMenuRuntimeState(context.state),
+            route: action.route,
+            effects: [logEffect(`Route changed: ${action.route}`)],
+          })
+        : routeResult(context, action.route, `Route changed: ${action.route}`);
     case 'game/new': {
       const newGame = createNewGame(context.catalog, action.input);
       if (!newGame.ok) {
@@ -262,7 +284,7 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
       }
 
       return successResult(context, {
-        state: newGame.state,
+        state: syncMainMenuRuntimeState(newGame.state),
         session: newGame.session,
         route: phaseOneRoutes.mainMenu,
         effects: [
@@ -274,27 +296,33 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
     case 'main/openItemShop':
       return enterItemShop(context);
     case 'main/openMission':
-      return enterMission(context);
+      return mainMenuGuard(context, action.type) ?? enterMission(context);
     case 'main/openRecruit':
       return enterRecruit(context);
+    case 'main/openAbilityRoster':
+      return mainMenuGuard(context, action.type) ?? routeResult(context, phaseTwoRoutes.roster, 'Moving to the roster screen.');
+    case 'main/openActressList':
+      return routeResult(context, phaseTwoRoutes.roster, 'Moving to the roster screen.');
     case 'main/openRoster':
       return routeResult(context, phaseTwoRoutes.roster, 'Moving to the roster screen.');
-    case 'main/openSaveLoad':
-      return enterSaveLoad(context);
+    case 'main/openSave':
+      return enterSaveLoad(context, 'save');
+    case 'main/openLoad':
+      return enterSaveLoad(context, 'load');
     case 'main/openWardrobe':
-      return routeResult(context, phaseTwoRoutes.wardrobe, 'Moving to the wardrobe screen.');
+      return mainMenuGuard(context, action.type) ?? routeResult(context, phaseTwoRoutes.wardrobe, 'Moving to the wardrobe screen.');
     case 'main/openVisit':
       return enterVisit(context);
     case 'main/openWork':
-      return enterWork(context);
+      return mainMenuGuard(context, action.type) ?? enterWork(context);
     case 'main/openShooting':
       return enterShooting(context);
     case 'main/openTraining':
-      return enterTraining(context);
+      return mainMenuGuard(context, action.type) ?? enterTraining(context);
     case 'turn/end': {
-      const turn = endTurn(context.state, context.session);
+      const turn = endTurn(markMainMenuRestBeforeTurnEnd(context.state), context.session);
       return successResult(context, {
-        state: turn.state,
+        state: syncMainMenuRuntimeState(turn.state),
         session: turn.session,
         route: phaseOneRoutes.mainMenu,
         effects: turn.effects,
@@ -318,7 +346,7 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
       }
 
       return successResult(context, {
-        state: load.state,
+        state: syncMainMenuRuntimeState(load.state),
         session: load.session,
         route: phaseOneRoutes.mainMenu,
         effects: load.effects,
@@ -429,7 +457,7 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
     case 'shop/cancel':
       return cancelShop(context);
     case 'recruit/selectListing': {
-      const selection = selectRecruitListing(context.catalog, context.state, context.session, action.listingId);
+      const selection = selectRecruitListing(context.catalog, context.state, context.session, action.listingId, action.interviewGender);
       if (!selection.ok) {
         return failureResult(context, selection.failure);
       }
@@ -438,6 +466,42 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
         state: selection.state,
         session: selection.session,
         effects: [logEffect(selection.message)],
+      });
+    }
+    case 'recruit/previousPage': {
+      const page = changeRecruitPage(context.catalog, context.state, context.session, 'previous');
+      if (!page.ok) {
+        return failureResult(context, page.failure);
+      }
+
+      return successResult(context, {
+        state: page.state,
+        session: page.session,
+        effects: [logEffect(page.message)],
+      });
+    }
+    case 'recruit/nextPage': {
+      const page = changeRecruitPage(context.catalog, context.state, context.session, 'next');
+      if (!page.ok) {
+        return failureResult(context, page.failure);
+      }
+
+      return successResult(context, {
+        state: page.state,
+        session: page.session,
+        effects: [logEffect(page.message)],
+      });
+    }
+    case 'recruit/rerollInterview': {
+      const reroll = rerollRecruitInterview(context.catalog, context.state, context.session);
+      if (!reroll.ok) {
+        return failureResult(context, reroll.failure);
+      }
+
+      return successResult(context, {
+        state: reroll.state,
+        session: reroll.session,
+        effects: [logEffect(reroll.message)],
       });
     }
     case 'recruit/confirm': {
@@ -449,7 +513,12 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
       return successResult(context, {
         state: recruit.state,
         session: recruit.session,
-        effects: [logEffect(recruit.message, 'success')],
+        effects: [
+          logEffect(recruit.message, 'success'),
+          ...(recruit.eventLines && recruit.eventLines.length > 0
+            ? [logEffect(recruit.eventLines.join('\n'), 'success')]
+            : []),
+        ],
       });
     }
     case 'recruit/cancel':
@@ -745,6 +814,17 @@ export function dispatchGameAction(context: GameActionContext, action: GameActio
       return successResult(context, {
         state: lifecycle.state,
         effects: [logEffect(`Deleted ${action.characterId}.`, 'success')],
+      });
+    }
+    case 'roster/sellCharacter': {
+      const lifecycle = sellCharacterForLifecycle(context.state, action.characterId, action.timeSlot ?? 0);
+      if (!lifecycle.ok) {
+        return failureResult(context, lifecycle.failure);
+      }
+
+      return successResult(context, {
+        state: lifecycle.state,
+        effects: [logEffect(`Sold ${action.characterId} through lifecycle removal.`, 'success')],
       });
     }
     case 'roster/setAssistantEligible': {

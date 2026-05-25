@@ -11,8 +11,9 @@ import type { ShopSessionState } from '../domains/shop/types';
 import type { GameSession, GameState } from '../game/state';
 import type { ItemShopView, ItemUseOptionView, ItemUseTargetView, ShopListingView } from '../game/views';
 
-export const MAX_PHASE_ONE_PURCHASE_QUANTITY = 99;
-const MAX_ITEM_SHOP_STACK_COUNT = 99;
+export const MAX_PHASE_ONE_PURCHASE_QUANTITY = 100;
+const MAX_ITEM_SHOP_STACK_COUNT = 100;
+const ITEM_SHOP_PLURAL_LISTING_HIDE_THRESHOLD = 99;
 const ITEM_USE_TARGET_STAT_ID = '0';
 const ITEM_USE_TECHNIQUE_ABILITY_ID = '12';
 const ITEM_USE_NEGATIVE_JUEL_ID = '100';
@@ -39,17 +40,25 @@ function playerCharacter(state: GameState) {
   return Object.values(state.people.characters).find((character) => character.roles.includes('trainer'));
 }
 
-function hasTrait(state: GameState, traitId: string): boolean {
-  return Object.values(state.people.characters).some((character) => character.attributes.traits[traitId] === true);
+function playerHasTrait(state: GameState, traitId: string): boolean {
+  return playerCharacter(state)?.attributes.traits[traitId] === true;
+}
+
+function characterHasAssistantExperienceTrait(state: GameState, traitId: string): boolean {
+  return Object.values(state.people.characters).some(
+    (character) =>
+      (character.roles.includes('assistant') || character.roles.includes('previousAssistant')) &&
+      character.attributes.traits[traitId] === true,
+  );
 }
 
 function isNormalOrEasyMode(state: GameState): boolean {
   const modeId = state.run.runFlags.modeId;
-  return modeId === 'normal' || modeId === 'easy' || modeId === undefined;
+  return modeId === 'normal' || modeId === 'easy' || modeId === 'extra' || modeId === undefined;
 }
 
 function hasCombinationKnowledge(state: GameState): boolean {
-  return hasTrait(state, '55');
+  return playerHasTrait(state, '55') || characterHasAssistantExperienceTrait(state, '55');
 }
 
 function playerCharacterId(state: GameState): string | undefined {
@@ -71,7 +80,14 @@ function getTechniqueClearLimit(state: GameState): number {
 }
 
 function isPubicHairSystemEnabled(state: GameState): boolean {
-  return state.run.runFlags.pubicHairSystemEnabled !== false;
+  const flagValue = state.run.runFlags.pubicHairSystemEnabled;
+  return flagValue === true || flagValue === 1;
+}
+
+function incenseUseListingLimitReached(state: GameState): boolean {
+  const modeId = state.run.runFlags.modeId;
+  const usesToday = Number(state.run.runFlags.incenseUsesToday ?? 0);
+  return (modeId === 'hard' && usesToday >= 3) || (modeId === 'powerful' && usesToday >= 1);
 }
 
 function itemUseVisibilityFailure(state: GameState, itemId: CatalogId): ShopFailure | undefined {
@@ -82,6 +98,13 @@ function itemUseVisibilityFailure(state: GameState, itemId: CatalogId): ShopFail
     };
   }
 
+  if (itemId === '31' && incenseUseListingLimitReached(state)) {
+    return {
+      code: 'item-use-condition-unmet',
+      message: 'Incense daily listing limit reached for this difficulty.',
+    };
+  }
+
   if (itemId === '41' && !isPubicHairSystemEnabled(state)) {
     return {
       code: 'item-use-condition-unmet',
@@ -89,21 +112,21 @@ function itemUseVisibilityFailure(state: GameState, itemId: CatalogId): ShopFail
     };
   }
 
-  if (itemId === '38' && (hasTrait(state, '91') || isHardLikeMode(state))) {
+  if (itemId === '38' && (playerHasTrait(state, '91') || isHardLikeMode(state))) {
     return {
       code: 'item-use-condition-unmet',
       message: 'Love dynamics is already learned or blocked by difficulty.',
     };
   }
 
-  if (itemId === '39' && hasTrait(state, '325')) {
+  if (itemId === '39' && playerHasTrait(state, '325')) {
     return {
       code: 'item-use-condition-unmet',
       message: 'Secret knowledge is already learned.',
     };
   }
 
-  if (itemId === '42' && hasTrait(state, '55')) {
+  if (itemId === '42' && playerHasTrait(state, '55')) {
     return {
       code: 'item-use-condition-unmet',
       message: 'Combination knowledge is already learned.',
@@ -133,14 +156,14 @@ function originalShopVisibilityFailure(state: GameState, itemId: CatalogId): Sho
     };
   }
 
-  if (itemShopPluralInventoryItemIdSet.has(itemId) && currentCount >= MAX_ITEM_SHOP_STACK_COUNT) {
+  if (itemShopPluralInventoryItemIdSet.has(itemId) && currentCount >= ITEM_SHOP_PLURAL_LISTING_HIDE_THRESHOLD) {
     return {
       code: 'shop-inventory-limit',
       message: 'Item stack limit reached.',
     };
   }
 
-  if ((itemId === '21' || itemId === '23') && !hasTrait(state, '93')) {
+  if ((itemId === '21' || itemId === '23') && !playerHasTrait(state, '93')) {
     return {
       code: 'shop-visibility-condition-unmet',
       message: 'Requires charisma trait.',
@@ -669,11 +692,32 @@ function withPlayerAbilityDelta(state: GameState, abilityId: CatalogId, delta: n
               ...player.attributes.abilities,
               [abilityId]: current + delta,
             },
+          },
+        },
+      },
+    },
+  };
+}
+
+function withPlayerBaseMaximumDelta(state: GameState, statId: CatalogId, delta: number): GameState {
+  const player = playerCharacter(state);
+  if (!player) return state;
+
+  return {
+    ...state,
+    people: {
+      ...state.people,
+      characters: {
+        ...state.people.characters,
+        [player.id]: {
+          ...player,
+          attributes: {
+            ...player.attributes,
             baseStats: {
               ...player.attributes.baseStats,
               maximum: {
                 ...player.attributes.baseStats.maximum,
-                '60': (player.attributes.baseStats.maximum['60'] ?? 0) + 4,
+                [statId]: (player.attributes.baseStats.maximum[statId] ?? 0) + delta,
               },
             },
           },
@@ -859,10 +903,10 @@ function applyTargetItemUse(state: GameState, itemId: CatalogId, characterId: st
 function techniqueItemUseRequirement(state: GameState): number {
   const level = getTechniqueLevel(state);
   const modeId = state.run.runFlags.modeId;
-  if (modeId === 'easy' || level < 3) return 1;
-  if (modeId === 'normal' || modeId === undefined) return Math.max(1, level - 1);
-  if (modeId === 'hard') return Math.max(1, level * 2);
-  if (modeId === 'powerful') return Math.max(1, level * 5);
+  if (modeId === 'easy') return 1;
+  if (modeId === 'normal' || modeId === 'extra' || modeId === undefined) return level >= 3 ? Math.max(1, level - 1) : 1;
+  if (modeId === 'hard') return level >= 2 ? Math.max(1, level * 2) : 1;
+  if (modeId === 'powerful') return level >= 1 ? Math.max(1, level * 5) : 1;
   return Math.max(1, level * 100);
 }
 
@@ -880,7 +924,7 @@ function applyMasterItemUse(state: GameState, itemId: CatalogId): GameState {
   if (itemId === '38') return withPlayerTrait(state, '91');
   if (itemId === '39') return withPlayerTrait(state, '325');
   if (itemId === '42') return withPlayerTrait(state, '55');
-  if (itemId === '52') return applyTechniqueItemUse(state);
+  if (itemId === '52') return withPlayerBaseMaximumDelta(applyTechniqueItemUse(state), '60', 4);
   return state;
 }
 
@@ -942,6 +986,9 @@ export function useSelectedShopItem(
   const effectState = immediateTargetUseItemIdSet.has(itemId)
     ? applyTargetItemUse(paidState, itemId, session.shop.selectedUseTargetCharacterId ?? '')
     : applyMasterItemUse(paidState, itemId);
+  const visibleUseItemIds = computeVisibleItemUseIds(definitions, effectState);
+  const shouldContinueTargetUse =
+    immediateTargetUseItemIdSet.has(itemId) && effectState.economy.account.currentMoney >= unitPrice && visibleUseItemIds.includes(itemId);
 
   return {
     ok: true,
@@ -950,9 +997,9 @@ export function useSelectedShopItem(
       ...session,
       shop: {
         ...session.shop,
-        selectedUseItemId: undefined,
+        selectedUseItemId: shouldContinueTargetUse ? itemId : undefined,
         selectedUseTargetCharacterId: undefined,
-        visibleUseItemIds: computeVisibleItemUseIds(definitions, effectState),
+        visibleUseItemIds,
       },
     },
     message: `${itemResult.definition.label}을 사용했습니다.`,

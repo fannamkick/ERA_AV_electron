@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "source-effect-scopes/v1",
+  "rules": [
+    "These scopes identify original files to inventory; they do not define closure.",
+    "Generated ledgers are source indexes only. original-game files remain authoritative.",
+    "Each milestone can be added here before recheck begins."
+  ],
+  "scopes": [
+    {
+      "milestone": "M35",
+      "title": "Turn end, time progression, and automatic hooks",
+      "sources": [
+        {
+          "sourcePath": "../original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+          "canonicalPath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB"
+        },
+        {
+          "sourcePath": "../original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+          "canonicalPath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB"
+        },
+        {
+          "sourcePath": "../original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+          "canonicalPath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB"
+        },
+        {
+          "sourcePath": "../original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+          "canonicalPath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+        }
+      ]
+    }
+  ]
+}

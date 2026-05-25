@@ -13,7 +13,6 @@
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "analyze": "python tools/analyze_erb.py",
-    "ai-port": "ts-node tools/ai-port/cli.ts",
     "verify": "node tools/verify_conversion.js",
     "convert-csv": "tsx tools/convert_csv_to_json.ts"
   },
@@ -55,7 +54,7 @@
       "dist-electron/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": "portable"
     },
     "mac": {
       "target": "dmg"

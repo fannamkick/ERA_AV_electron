@@ -45,6 +45,7 @@ export function buildSaveLoadView(state: GameState, session: GameSession): SaveL
   return {
     kind: 'saveLoad',
     route: 'saveLoad',
+    mode: session.saveLoad.mode,
     schemaVersion: state.runtime.saveVersion,
     currentMoney: state.economy.account.currentMoney,
     month: state.run.clock.month,
@@ -56,10 +57,13 @@ export function buildSaveLoadView(state: GameState, session: GameSession): SaveL
   };
 }
 
-export function openSaveLoadSession(session: GameSession): GameSession {
+export function openSaveLoadSession(session: GameSession, mode: 'save' | 'load'): GameSession {
   return {
     ...session,
-    saveLoad: initialSaveLoadSessionState,
+    saveLoad: {
+      ...initialSaveLoadSessionState,
+      mode,
+    },
     ui: {
       ...session.ui,
       route: 'saveLoad',

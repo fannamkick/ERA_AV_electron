@@ -82,7 +82,18 @@
       "Bash(git branch:*)",
       "Bash(git push:*)",
       "Bash(git mv:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(cmd /c \"taskkill /PID 33796 /F\")",
+      "Bash(cmd //c \"taskkill /PID 33796 /F\")",
+      "Bash(cmd //c \"cd /d \"\"e:\\\\ERA\\\\AV간편개조\\\\erAV_Ho_0.022\\(간편개조\\) - 복사본\\\\web-port\"\" && node -e \"\"const e = require\\(''electron''\\); console.log\\(''type:'', typeof e\\); console.log\\(''keys:'', Object.keys\\(e\\)\\)\"\"\")",
+      "Bash(cmd //c \"taskkill /PID 31272 /F\")",
+      "Bash(cmd //c \"taskkill /PID 46364 /F\")",
+      "Bash(npx electron --version)",
+      "Bash(\"e:\\\\ERA\\\\AV간편개조\\\\erAV_Ho_0.022\\(간편개조\\) - 복사본\\\\web-port\\\\node_modules\\\\electron\\\\dist\\\\electron.exe\" --version)",
+      "Bash(type \"e:\\\\ERA\\\\AV간편개조\\\\erAV_Ho_0.022\\(간편개조\\) - 복사본\\\\web-port\\\\node_modules\\\\electron\\\\path.txt\")",
+      "Bash(cmd //c \"taskkill /PID 4036 /F\")",
+      "Bash(\"e:\\\\ERA\\\\AV간편개조\\\\erAV_Ho_0.022\\(간편개조\\) - 복사본\\\\web-port\\\\node_modules\\\\electron\\\\dist\\\\electron.exe\" \"C:\\\\Users\\\\nothi\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\e--ERA-AV-----erAV-Ho-0-022------------\\\\c78815ef-e8cf-499b-a4f1-15f1f838fa70\\\\scratchpad\\\\test-electron.js\")",
+      "Bash(\"node_modules\\\\electron\\\\dist\\\\electron.exe\" .)"
     ]
   }
 }

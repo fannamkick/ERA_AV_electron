@@ -545,8 +545,6 @@ def collect_characters(
             )
             continue
 
-        if not character["displayName"]:
-            character["displayName"] = character_id
         catalog["characters"][character_id] = character
         report["collectedCharacters"] += 1
 

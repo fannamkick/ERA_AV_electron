@@ -148,8 +148,8 @@ function assertSharedBodyResultFields() {
     session: initialData.session,
   };
 
-  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
-  assert(step.result.status === 'success', 'normal new game should succeed.');
+  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'easy' } });
+  assert(step.result.status === 'success', 'easy new game should succeed.');
   context = step.context;
   const characterId = firstCharacterId(context);
 

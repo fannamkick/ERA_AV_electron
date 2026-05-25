@@ -290,7 +290,7 @@ function createMainRows() {
       playerInput: 'save/load menu',
       endRoute: 'mainMenu or loaded route',
       runtimeRoute: 'saveLoad',
-      runtimeAction: 'main/openSaveLoad; save/createSnapshot; save/loadSnapshot; save/cancel',
+      runtimeAction: 'main/openSave; main/openLoad; save/createSnapshot; save/loadSnapshot; save/cancel',
       viewBuilder: 'buildSaveLoadView',
       handlerOwner: 'src/features/saveLoad.ts',
       stateWrites: ['GameState from save payload on load'],

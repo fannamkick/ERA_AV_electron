@@ -130,7 +130,7 @@ function main() {
   const savedMoney = context.state.economy.account.currentMoney;
   const savedItemCount = context.state.inventory.itemCounts[purchasable.item.id] ?? 0;
 
-  step = dispatchChecked(context, { type: 'main/openSaveLoad' });
+  step = dispatchChecked(context, { type: 'main/openSave' });
   assert(step.result.status === 'success', 'save/load entry should succeed.');
   context = step.context;
   assert(context.session.ui.route === 'saveLoad', 'save/load entry should route to saveLoad.');

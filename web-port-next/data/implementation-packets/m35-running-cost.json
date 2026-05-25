@@ -1,0 +1,2581 @@
+{
+  "schemaVersion": "feature-implementation-packet/v1",
+  "generatedBy": "tools/build_feature_packet.mjs",
+  "generatedAt": "2026-05-08T13:55:52.693Z",
+  "packetId": "m35-running-cost",
+  "milestone": "M35",
+  "purpose": "Implementation packet built from existing original-source analysis artifacts. This packet reduces repeated source reading; it is not completion evidence by itself.",
+  "trustRules": [
+    "original-game ERB/CSV files remain authoritative",
+    "packet rows must preserve sourcePath and sourceLine/label references where available",
+    "mapped/classified rows are implementation inputs, not implementation proof",
+    "workers may propose patches from packets, but main Codex must review and integrate",
+    "runtime tests/traces are still required to claim implementation parity"
+  ],
+  "scope": {
+    "inputMilestone": "M35",
+    "inputSources": [],
+    "derivedSources": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "sourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "activeSourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB"
+    ],
+    "labelFilters": [],
+    "labelRanges": [],
+    "packetRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "labelId": "M35:review:event-nextday:running-cost",
+        "label": "RUNNING_COST",
+        "labelKind": "review-group",
+        "startLine": 162,
+        "endLine": 277
+      }
+    ],
+    "reviewGroupFilters": [
+      "M35:review:event-nextday:running-cost"
+    ],
+    "selectedReviewGroups": [
+      {
+        "reviewGroupId": "M35:review:event-nextday:running-cost",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "currentLabel": "RUNNING_COST",
+        "sourceLineStart": 162,
+        "sourceLineEnd": 277,
+        "effectCount": 52,
+        "statusCounts": {
+          "unclassified": 52
+        },
+        "kindCounts": {
+          "branch-or-loop": 50,
+          "label": 1,
+          "state-write": 1
+        },
+        "stateFamilies": [
+          "MONEY"
+        ],
+        "callTargets": [],
+        "riskReasons": [
+          "contains-state-writes"
+        ],
+        "effectIds": [
+          "M35:event_nextday:00162:label:01",
+          "M35:event_nextday:00167:branch-or-loop:01",
+          "M35:event_nextday:00170:branch-or-loop:01",
+          "M35:event_nextday:00174:branch-or-loop:01",
+          "M35:event_nextday:00177:branch-or-loop:01",
+          "M35:event_nextday:00180:branch-or-loop:01",
+          "M35:event_nextday:00183:branch-or-loop:01",
+          "M35:event_nextday:00186:branch-or-loop:01",
+          "M35:event_nextday:00189:branch-or-loop:01",
+          "M35:event_nextday:00192:branch-or-loop:01",
+          "M35:event_nextday:00196:branch-or-loop:01",
+          "M35:event_nextday:00198:branch-or-loop:01",
+          "M35:event_nextday:00200:branch-or-loop:01",
+          "M35:event_nextday:00202:branch-or-loop:01",
+          "M35:event_nextday:00205:branch-or-loop:01",
+          "M35:event_nextday:00207:branch-or-loop:01",
+          "M35:event_nextday:00209:branch-or-loop:01",
+          "M35:event_nextday:00211:branch-or-loop:01",
+          "M35:event_nextday:00213:branch-or-loop:01",
+          "M35:event_nextday:00215:branch-or-loop:01",
+          "M35:event_nextday:00217:branch-or-loop:01",
+          "M35:event_nextday:00219:branch-or-loop:01",
+          "M35:event_nextday:00223:branch-or-loop:01",
+          "M35:event_nextday:00225:branch-or-loop:01",
+          "M35:event_nextday:00227:branch-or-loop:01",
+          "M35:event_nextday:00229:branch-or-loop:01",
+          "M35:event_nextday:00231:branch-or-loop:01",
+          "M35:event_nextday:00236:branch-or-loop:01",
+          "M35:event_nextday:00238:branch-or-loop:01",
+          "M35:event_nextday:00239:branch-or-loop:01",
+          "M35:event_nextday:00241:branch-or-loop:01",
+          "M35:event_nextday:00243:branch-or-loop:01",
+          "M35:event_nextday:00245:branch-or-loop:01",
+          "M35:event_nextday:00247:branch-or-loop:01",
+          "M35:event_nextday:00248:branch-or-loop:01",
+          "M35:event_nextday:00249:branch-or-loop:01",
+          "M35:event_nextday:00251:branch-or-loop:01",
+          "M35:event_nextday:00253:branch-or-loop:01",
+          "M35:event_nextday:00255:branch-or-loop:01",
+          "M35:event_nextday:00257:branch-or-loop:01",
+          "M35:event_nextday:00258:branch-or-loop:01",
+          "M35:event_nextday:00259:branch-or-loop:01",
+          "M35:event_nextday:00261:branch-or-loop:01",
+          "M35:event_nextday:00263:branch-or-loop:01",
+          "M35:event_nextday:00265:branch-or-loop:01",
+          "M35:event_nextday:00267:branch-or-loop:01",
+          "M35:event_nextday:00268:branch-or-loop:01",
+          "M35:event_nextday:00271:branch-or-loop:01",
+          "M35:event_nextday:00272:branch-or-loop:01",
+          "M35:event_nextday:00275:state-write:01",
+          "M35:event_nextday:00276:branch-or-loop:01",
+          "M35:event_nextday:00277:branch-or-loop:01"
+        ]
+      }
+    ],
+    "effectIdFilters": [],
+    "effectIdFileFilters": [],
+    "riskFilters": [],
+    "maxEffects": 80,
+    "granularity": "effect-id-subpacket"
+  },
+  "sourceFiles": [
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "resolvedSourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "pathResolution": "exact",
+      "pathResolutionCandidates": [],
+      "sourceSha256": "041470d32f13350dcd1a4b756fac628fe1c6cdbda99844703801ba538840e029",
+      "encoding": "utf-8-sig",
+      "lineCount": 1166,
+      "labelCount": 14,
+      "callCount": 32,
+      "inputCount": 2,
+      "stateReadCount": 1190,
+      "stateWriteCount": 272,
+      "coreStateReadCount": 639,
+      "coreStateWriteCount": 164,
+      "labels": "EVENT_NEXTDAY@4, EVENT_NEWDAY@135, RUNNING_COST@162, EVENT_MORASI@282, EVENT_YOUJI@291, EVENT_HIMAN@361, EVENT_YASERU@371, EVENT_JUNIORHIGHSCHOOL@381, EVENT_HIGHSCHOOL@449, EVENT_NOROI@514, SOMETIMES_SHE_COMES_BACK@590, ONESHO@619, NIGHT_STALKING_CHECK@661, MORNING_COWGIRL@904",
+      "topWrittenFamilies": "TALENT:73, A:47, JUEL:22, S:17, CFLAG:13, F:13, EXP:11, FLAG:10, ABL:8, R:6",
+      "topReadFamilies": "COUNT:219, TALENT:179, ABL:136, L:97, A:78, S:62, CALLNAME:34, CFLAG:31, C:29, EXP:27",
+      "topCoreWrittenFamilies": "TALENT:73, JUEL:22, CFLAG:13, EXP:11, FLAG:10, ABL:8, CSTR:6, TARGET:5, BASE:5, MARK:4",
+      "topCoreReadFamilies": "TALENT:179, ABL:136, CALLNAME:34, CFLAG:31, EXP:27, MASTER:26, FLAG:25, JUEL:23, DAY:22, TALENTNAME:22"
+    }
+  ],
+  "sourceOutline": {
+    "labels": [
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:162:RUNNING_COST",
+        "label": "RUNNING_COST",
+        "rawLabel": "RUNNING_COST",
+        "scope": "",
+        "kind": "global",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 162,
+        "incomingStaticCalls": 1,
+        "outgoingCalls": 0,
+        "entryKind": ""
+      }
+    ],
+    "outgoingCalls": [],
+    "incomingCalls": [],
+    "dynamicCalls": [],
+    "flowActions": [],
+    "stateAccesses": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "area": "イベント関係",
+        "family": "MONEY",
+        "reads": 1,
+        "writes": 1
+      }
+    ],
+    "sourceSnippets": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "label": "RUNNING_COST",
+        "startLine": 162,
+        "endLine": 277,
+        "text": "  162: @RUNNING_COST\n  163: ;基礎維持運営費\n  164: A = 500\n  165: \n  166: ;日付が30日を超えると$1000追加\n  167: SIF DAY > 31\n  168: \tA += 1000\n  169: ;日付が50日を超えると$2000追加\n  170: SIF DAY > 51\n  171: \tA += 2000\n  172: \n  173: ;個室を拡張していると$500追加\n  174: SIF FLAG:48 & 1\n  175: \tA += 500\n  176: ;SMグッズを購入していると$100追加\n  177: SIF FLAG:48 & 2\n  178: \tA += 100\n  179: ;護衛を雇用していると$1000追加\n  180: SIF FLAG:48 & 4\n  181: \tA += 1000\n  182: ;浴室を拡張していると$500追加\n  183: SIF FLAG:48 & 32\n  184: \tA += 500\n  185: ;多目的ホールを建てていると$1800追加\n  186: SIF FLAG:48 & 8\n  187: \tA += 1800\n  188: ;マイクを購入していると$100追加\n  189: SIF FLAG:48 & 16\n  190: \tA += 100\n  191: ;警備員を雇用していると人数*$500追加\n  192: SIF FLAG:48 & 64\n  193: \tA += FLAG:40 * 500\n  194: \n  195: ;娼館人気が50以上で1割増, 70以上で2割増, 90以上で3割増\n  196: IF EXP:MASTER:91 >= 50\n  197: \tTIMES A , 1.10\n  198: ELSEIF EXP:MASTER:91 >= 70\n  199: \tTIMES A , 1.20\n  200: ELSEIF EXP:MASTER:91 >= 90\n  201: \tTIMES A , 1.30\n  202: ENDIF\n  203: \n  204: ;공헌도が100以上で1割減, 200以上で2割減, 400以上で3割減, 700以上で4割減……\n  205: IF EXP:MASTER:90 >= 3000\n  206: \tTIMES A , 0.10\n  207: ELSEIF EXP:MASTER:90 >= 2000\n  208: \tTIMES A , 0.30\n  209: ELSEIF EXP:MASTER:90 >= 1200\n  210: \tTIMES A , 0.50\n  211: ELSEIF EXP:MASTER:90 >= 700\n  212: \tTIMES A , 0.60\n  213: ELSEIF EXP:MASTER:90 >= 400\n  214: \tTIMES A , 0.70\n  215: ELSEIF EXP:MASTER:90 >= 200\n  216: \tTIMES A , 0.80\n  217: ELSEIF EXP:MASTER:90 >= 100\n  218: \tTIMES A , 0.90\n  219: ENDIF\n  220: \n  221: ;基礎生活費(生活費機能実装までの暫定的な処理)\n  222: ;1人あたりEASY/NORMAL/EXTRAは$100, HARDは$200, LUNATICは$300, PHANTASMは$400\n  223: IF FLAG:5 <= 2 || FLAG:5 == 9\n  224: \tA += CHARANUM*100\n  225: ELSEIF FLAG:5 == 3\n  226: \tA += CHARANUM*200\n  227: ELSEIF FLAG:5 == 4\n  228: \tA += CHARANUM*300\n  229: ELSEIF FLAG:5 == 5\n  230: \tA += CHARANUM*400\n  231: ENDIF\n  232: ;MASTERの分は無料or割引\n  233: A -= 100\n  234: \n  235: ;難易度EASYで0.8倍, HARDで1.2~2.5倍, POWERFULで1.4~5.0倍, PHANTASMで2.0~16.0倍\n  236: IF FLAG:5 == 1\n  237: \tTIMES A , 0.80\n  238: ELSEIF FLAG:5 == 3\n  239: \tIF DAY <= 20\n  240: \t\tTIMES A , 1.20\n  241: \tELSEIF DAY <= 40\n  242: \t\tTIMES A , 1.50\n  243: \tELSEIF DAY <= 60\n  244: \t\tTIMES A , 2.00\n  245: \tELSE\n  246: \t\tTIMES A , 2.50\n  247: \tENDIF\n  248: ELSEIF FLAG:5 == 4\n  249: \tIF DAY <= 20\n  250: \t\tTIMES A , 1.40\n  251: \tELSEIF DAY <= 30\n  252: \t\tTIMES A , 1.80\n  253: \tELSEIF DAY <= 40\n  254: \t\tTIMES A , 3.00\n  255: \tELSE\n  256: \t\tTIMES A , 5.00\n  257: \tENDIF\n  258: ELSEIF FLAG:5 == 5\n  259: \tIF DAY <= 15\n  260: \t\tTIMES A , 2.00\n  261: \tELSEIF DAY <= 25\n  262: \t\tTIMES A , 4.00\n  263: \tELSEIF DAY <= 35\n  264: \t\tTIMES A , 8.00\n  265: \tELSE\n  266: \t\tTIMES A , 16.00\n  267: \tENDIF\n  268: ENDIF\n  269: \n  270: ;EASYは21日目から, NORMAL以上は11日目から維持費＆生活費が発生する\n  271: IF FLAG:5 != 9\n  272: \tIF (FLAG:5 == 1 && DAY >= 20) || (FLAG:5 >= 2 && DAY >= 10)\n  273: \t\tPRINTFORML 사무소 유지비로 {A}포인트 들었다……\n  274: \t\tDRAWLINE\n  275: \t\tMONEY -= A\n  276: \tENDIF\n  277: ENDIF"
+      }
+    ]
+  },
+  "legacyStateAndMapping": {
+    "rows": [
+      {
+        "address": "MONEY",
+        "family": "MONEY",
+        "index": "",
+        "addressKind": "family-declaration",
+        "mappingAction": "map-save-state",
+        "sourceKinds": [
+          "erbUsage",
+          "variableSize"
+        ],
+        "readCount": 188,
+        "writeCount": 164,
+        "charaSeedCount": 0,
+        "topFiles": [
+          [
+            "original-game/ERB/システム関係/衣服/SHOP_TAILOR.ERB",
+            32
+          ],
+          [
+            "original-game/ERB/訪問関係/SHOP_LABO.ERB",
+            32
+          ],
+          [
+            "original-game/ERB/訪問関係/SAKURA_AZITO_DETAIL.ERB",
+            28
+          ],
+          [
+            "original-game/ERB/訪問関係/EUNICE_LABO_DETAIL.ERB",
+            24
+          ],
+          [
+            "original-game/ERB/訪問関係/ELLEN_MISSION_DETAIL.ERB",
+            21
+          ]
+        ],
+        "sampleCount": 8
+      }
+    ],
+    "summary": {
+      "rows": 1,
+      "byFamily": {
+        "MONEY": 1
+      },
+      "byMappingAction": {
+        "map-save-state": 1
+      },
+      "reads": 188,
+      "writes": 164
+    }
+  },
+  "sourceEffects": {
+    "available": true,
+    "ledgerPath": "data/coverage/source-effects/M35.effects.json",
+    "rows": [
+      {
+        "effectId": "M35:event_nextday:00162:label:01",
+        "kind": "label",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 162,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "@RUNNING_COST",
+        "label": "RUNNING_COST",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00167:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 167,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF DAY > 31",
+        "controlKind": "SIF",
+        "condition": "DAY > 31",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00170:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 170,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF DAY > 51",
+        "controlKind": "SIF",
+        "condition": "DAY > 51",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00174:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 174,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 1",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00177:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 177,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 2",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 2",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00180:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 180,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 4",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 4",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00183:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 183,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 32",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 32",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00186:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 186,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 8",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 8",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00189:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 189,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 16",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 16",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00192:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 192,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "SIF FLAG:48 & 64",
+        "controlKind": "SIF",
+        "condition": "FLAG:48 & 64",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00196:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 196,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF EXP:MASTER:91 >= 50",
+        "controlKind": "IF",
+        "condition": "EXP:MASTER:91 >= 50",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00198:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 198,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:91 >= 70",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:91 >= 70",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00200:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 200,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:91 >= 90",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:91 >= 90",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00202:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 202,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00205:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 205,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF EXP:MASTER:90 >= 3000",
+        "controlKind": "IF",
+        "condition": "EXP:MASTER:90 >= 3000",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00207:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 207,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:90 >= 2000",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:90 >= 2000",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00209:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 209,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:90 >= 1200",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:90 >= 1200",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00211:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 211,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:90 >= 700",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:90 >= 700",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00213:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 213,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:90 >= 400",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:90 >= 400",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00215:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 215,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:90 >= 200",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:90 >= 200",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00217:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 217,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF EXP:MASTER:90 >= 100",
+        "controlKind": "ELSEIF",
+        "condition": "EXP:MASTER:90 >= 100",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00219:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 219,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00223:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 223,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF FLAG:5 <= 2 || FLAG:5 == 9",
+        "controlKind": "IF",
+        "condition": "FLAG:5 <= 2 || FLAG:5 == 9",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00225:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 225,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF FLAG:5 == 3",
+        "controlKind": "ELSEIF",
+        "condition": "FLAG:5 == 3",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00227:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 227,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF FLAG:5 == 4",
+        "controlKind": "ELSEIF",
+        "condition": "FLAG:5 == 4",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00229:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 229,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF FLAG:5 == 5",
+        "controlKind": "ELSEIF",
+        "condition": "FLAG:5 == 5",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00231:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 231,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00236:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 236,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF FLAG:5 == 1",
+        "controlKind": "IF",
+        "condition": "FLAG:5 == 1",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00238:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 238,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF FLAG:5 == 3",
+        "controlKind": "ELSEIF",
+        "condition": "FLAG:5 == 3",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00239:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 239,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF DAY <= 20",
+        "controlKind": "IF",
+        "condition": "DAY <= 20",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00241:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 241,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF DAY <= 40",
+        "controlKind": "ELSEIF",
+        "condition": "DAY <= 40",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00243:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 243,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF DAY <= 60",
+        "controlKind": "ELSEIF",
+        "condition": "DAY <= 60",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00245:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 245,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00247:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 247,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00248:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 248,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF FLAG:5 == 4",
+        "controlKind": "ELSEIF",
+        "condition": "FLAG:5 == 4",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00249:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 249,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF DAY <= 20",
+        "controlKind": "IF",
+        "condition": "DAY <= 20",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00251:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 251,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF DAY <= 30",
+        "controlKind": "ELSEIF",
+        "condition": "DAY <= 30",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00253:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 253,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF DAY <= 40",
+        "controlKind": "ELSEIF",
+        "condition": "DAY <= 40",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00255:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 255,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00257:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 257,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00258:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 258,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ELSEIF FLAG:5 == 5",
+        "controlKind": "ELSEIF",
+        "condition": "FLAG:5 == 5",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00259:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 259,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF DAY <= 15",
+        "controlKind": "IF",
+        "condition": "DAY <= 15",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00261:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 261,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF DAY <= 25",
+        "controlKind": "ELSEIF",
+        "condition": "DAY <= 25",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00263:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 263,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSEIF DAY <= 35",
+        "controlKind": "ELSEIF",
+        "condition": "DAY <= 35",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00265:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 265,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tELSE",
+        "controlKind": "ELSE",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00267:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 267,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00268:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 268,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00271:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 271,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "IF FLAG:5 != 9",
+        "controlKind": "IF",
+        "condition": "FLAG:5 != 9",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00272:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 272,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tIF (FLAG:5 == 1 && DAY >= 20) || (FLAG:5 >= 2 && DAY >= 10)",
+        "controlKind": "IF",
+        "condition": "(FLAG:5 == 1 && DAY >= 20) || (FLAG:5 >= 2 && DAY >= 10)",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00275:state-write:01",
+        "kind": "state-write",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 275,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\t\tMONEY -= A",
+        "stateFamily": "MONEY",
+        "stateAddress": "MONEY",
+        "operator": "-=",
+        "expression": "A",
+        "reads": [],
+        "writes": [
+          "MONEY"
+        ],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00276:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 276,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "\tENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00277:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 277,
+        "currentLabel": "RUNNING_COST",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "ENDIF",
+        "controlKind": "ENDIF",
+        "condition": "",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      }
+    ],
+    "summary": {
+      "rows": 52,
+      "byKind": {
+        "branch-or-loop": 50,
+        "label": 1,
+        "state-write": 1
+      },
+      "byStatus": {
+        "unclassified": 52
+      },
+      "bySourcePath": {
+        "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB": 52
+      },
+      "byCurrentLabel": {
+        "RUNNING_COST": 52
+      },
+      "sourcePathsWithoutEffects": []
+    },
+    "effectCrosswalk": [
+      {
+        "effectId": "M35:event_nextday:00162:label:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 162,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00167:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 167,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00170:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 170,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00174:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 174,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00177:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 177,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00180:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 180,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00183:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 183,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00186:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 186,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00189:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 189,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00192:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 192,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00196:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 196,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00198:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 198,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00200:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 200,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00202:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 202,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00205:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 205,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00207:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 207,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00209:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 209,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00211:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 211,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00213:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 213,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00215:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 215,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00217:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 217,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00219:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 219,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00223:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 223,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00225:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 225,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00227:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 227,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00229:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 229,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00231:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 231,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00236:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 236,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00238:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 238,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00239:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 239,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00241:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 241,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00243:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 243,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00245:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 245,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00247:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 247,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00248:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 248,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00249:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 249,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00251:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 251,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00253:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 253,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00255:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 255,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00257:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 257,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00258:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 258,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00259:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 259,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00261:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 261,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00263:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 263,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00265:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 265,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00267:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 267,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00268:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 268,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00271:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 271,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00272:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 272,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00275:state-write:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 275,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00276:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 276,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00277:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 277,
+        "currentLabel": "RUNNING_COST",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      }
+    ],
+    "effectCrosswalkSummary": {
+      "rows": 52,
+      "withImplementationClaim": 0,
+      "withoutImplementationClaim": 52
+    }
+  },
+  "existingImplementationClaims": {
+    "manifestPath": "data/coverage/manifests/M35-source-units.json",
+    "sourceUnits": [],
+    "coverageRows": [],
+    "relatedSourceUnits": [
+      {
+        "unitId": "M35:source-unit:00004",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyReviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00006",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyReviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:world-event-hook",
+        "acceptedByOwner": true
+      }
+    ],
+    "relatedCoverageRows": [
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:clock-advance",
+        "unitId": "M35:source-unit:00001",
+        "reviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:mission-deadline",
+        "unitId": "M35:source-unit:00002",
+        "reviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "unitId": "M35:source-unit:00005",
+        "reviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "unitId": "M35:source-unit:00008",
+        "reviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34",
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-flag-61",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:scheduled-events",
+        "unitId": "M35:source-unit:00003",
+        "reviewId": "M35:functional:scheduled-events",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "sourceLabel": "scheduled event processing hook",
+        "legacyId": "scheduled-events",
+        "requiredBehavior": "scheduled event processing hook",
+        "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "unitId": "M35:source-unit:00007",
+        "reviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "unitId": "M35:source-unit:00004",
+        "reviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-flag-61"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:world-event-hook",
+        "unitId": "M35:source-unit:00006",
+        "reviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      }
+    ],
+    "summary": {
+      "sourceUnits": 0,
+      "coverageRows": 0,
+      "relatedSourceUnits": 2,
+      "relatedCoverageRows": 8,
+      "sourceUnitsByStatus": {},
+      "coverageRowsByStatus": {}
+    }
+  },
+  "implementationWorkOrder": {
+    "recommendedWorkerInput": "Use only this packet scope to propose bounded web code/test patches. Do not expand the source scope unless main asks. Do not infer completion from packet inclusion.",
+    "recipePath": "",
+    "runtimeTargetHints": {},
+    "stateAliasRecipe": [],
+    "implementationRecipe": {},
+    "requiredWorkerResultShape": {
+      "implementedEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "implementation": "changed runtime file/function",
+          "test": "test or smoke evidence to add/run, or empty if not yet testable",
+          "notes": "short reason the effect is covered"
+        }
+      ],
+      "remainingEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "reason": "why not implemented in this patch proposal"
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "requiredPatchReviewQuestions": [
+      "Which original labels/effects does the patch implement?",
+      "Which web feature/domain files are changed?",
+      "Which state/session/view effects are observable?",
+      "Which input/cancel/failure/retry paths are covered?",
+      "Which source effects remain unimplemented or require transfer/exclusion?"
+    ],
+    "highRiskRows": [
+      {
+        "riskId": "unclosed-source-effects",
+        "severity": "packet-review-required",
+        "count": 52,
+        "reason": "Source-effect rows are not implementation evidence, but unclassified/blocked rows identify work that cannot be silently ignored.",
+        "rowRefs": [
+          {
+            "effectId": "M35:event_nextday:00162:label:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 162,
+            "currentLabel": "RUNNING_COST",
+            "kind": "label"
+          },
+          {
+            "effectId": "M35:event_nextday:00167:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 167,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00170:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 170,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00174:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 174,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00177:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 177,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00180:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 180,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00183:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 183,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00186:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 186,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00189:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 189,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00192:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 192,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00196:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 196,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00198:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 198,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00200:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 200,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00202:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 202,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00205:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 205,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00207:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 207,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00209:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 209,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00211:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 211,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00213:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 213,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00215:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 215,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00217:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 217,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00219:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 219,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00223:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 223,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00225:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 225,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00227:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 227,
+            "currentLabel": "RUNNING_COST",
+            "kind": "branch-or-loop"
+          }
+        ]
+      }
+    ],
+    "workerEditableGlobs": [
+      "src/**/*.ts",
+      "tools/*smoke*.ts",
+      "tools/vite.*smoke*.config.ts",
+      "data/coverage/source-effects/classifications/*.json"
+    ],
+    "suggestedReadOnlyInputs": [
+      "data/implementation-packets/m35-running-cost.json",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "data/coverage/source-effects/M35.effects.json"
+    ],
+    "allowedCommands": [],
+    "prefilledWorkerResult": {
+      "implementedEffects": [],
+      "remainingEffects": [
+        {
+          "effectId": "M35:event_nextday:00162:label:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00167:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00170:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00174:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00177:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00180:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00183:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00186:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00189:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00192:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00196:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00198:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00200:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00202:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00205:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00207:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00209:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00211:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00213:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00215:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00217:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00219:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00223:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00225:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00227:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00229:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00231:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00236:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00238:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00239:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00241:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00243:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00245:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00247:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00248:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00249:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00251:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00253:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00255:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00257:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00258:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00259:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00261:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00263:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00265:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00267:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00268:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00271:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00272:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00275:state-write:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00276:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        },
+        {
+          "effectId": "M35:event_nextday:00277:branch-or-loop:01",
+          "reason": "Not pre-classified by packet recipe."
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "packetBudget": {
+      "sourceEffects": 52,
+      "sourceFiles": 1,
+      "labels": 1,
+      "outgoingCalls": 0,
+      "sourceSnippetBytes": 2837
+    },
+    "packetAccountingRule": "Every sourceEffects.rows effectId must appear exactly once in implementedEffects, remainingEffects, transferredEffects, or excludedEffects in worker output."
+  },
+  "assertions": {
+    "completeness": {
+      "ok": true,
+      "missingFileSummaryRows": [],
+      "unresolvedSourcePaths": [],
+      "ambiguousSourcePaths": []
+    },
+    "analysisJoin": {
+      "sourceFileCount": 1,
+      "labelCount": 1,
+      "outgoingCallCount": 0,
+      "incomingCallCount": 0,
+      "dynamicCallCount": 0,
+      "flowActionCount": 0,
+      "stateAccessFamilyRows": 1,
+      "legacyAddressRows": 1,
+      "sourceEffectRows": 52,
+      "sourceEffectCrosswalkRows": 52,
+      "sourceEffectRowsWithoutImplementationClaim": 52,
+      "sourceUnitRows": 0,
+      "coverageRows": 0
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "erb-command-facts.schema.json",
+  "title": "ERB Command Facts",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "command",
+    "sourceFiles",
+    "availability",
+    "sourceWrites",
+    "baseWrites",
+    "loseBaseWrites",
+    "expWrites",
+    "flagWrites",
+    "equipmentWrites",
+    "stainWrites",
+    "formulaGates",
+    "calls",
+    "earlyReturns",
+    "messages",
+    "unparsedLines"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "erb-command-facts/v1" },
+    "command": {
+      "type": "object",
+      "required": ["id", "originalId"],
+      "properties": {
+        "id": { "type": "string" },
+        "originalId": { "type": "number" },
+        "name": { "type": "string" }
+      }
+    },
+    "sourceFiles": { "type": "array" },
+    "availability": { "type": "array" },
+    "sourceWrites": { "type": "array" },
+    "baseWrites": { "type": "array" },
+    "loseBaseWrites": { "type": "array" },
+    "expWrites": { "type": "array" },
+    "flagWrites": { "type": "array" },
+    "equipmentWrites": { "type": "array" },
+    "stainWrites": { "type": "array" },
+    "formulaGates": { "type": "array" },
+    "calls": { "type": "array" },
+    "earlyReturns": { "type": "array" },
+    "messages": { "type": "array" },
+    "unparsedLines": { "type": "array" },
+    "notes": { "type": "array" }
+  },
+  "additionalProperties": true
+}

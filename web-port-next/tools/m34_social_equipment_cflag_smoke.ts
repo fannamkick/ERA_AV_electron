@@ -6,11 +6,30 @@ import { dispatchGameAction } from '../src/game/dispatch';
 import type { GameActionContext, GameActionResult } from '../src/game/results';
 import { createGameSavePayload, parseGameSavePayload, serializeGameSavePayload } from '../src/game/savePayload';
 import { createInitialGameData, type GameSession, type GameState } from '../src/game/state';
+import socialEquipmentCoverage from '../data/coverage/social-equipment-cflag-coverage.json';
 
 type SmokeContext = {
   readonly state: GameState;
   readonly session: GameSession;
 };
+
+type M34CoverageRow = {
+  readonly address?: string;
+  readonly family?: string;
+  readonly fromMilestone?: string;
+  readonly runtimeOwner?: string;
+};
+
+type M33InboundExpectation = {
+  readonly address: string;
+  readonly pathKind: 'body' | 'equipment' | 'family' | 'feature';
+  readonly key: string;
+  readonly value: number;
+};
+
+const m33InboundSaveRows = (socialEquipmentCoverage as { readonly rows: readonly M34CoverageRow[] }).rows.filter(
+  (row) => row.fromMilestone === 'M33' && typeof row.address === 'string',
+);
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -71,6 +90,125 @@ function dispatchChecked(context: SmokeContext, action: GameAction): { readonly 
   };
 }
 
+function flagIdFromAddress(address: string): string {
+  const match = address.match(/^[A-Z]+:(\d+)$/);
+  assert(match, `M34 inbound address should include a numeric id: ${address}`);
+  return match[1];
+}
+
+function expectationForInboundRow(row: M34CoverageRow, index: number): M33InboundExpectation {
+  assert(row.address, 'M34 inbound row must have an address.');
+  const flagId = flagIdFromAddress(row.address);
+  const value = 34000 + index;
+
+  if (row.family === 'PBAND' || row.runtimeOwner === 'equipment') {
+    return { address: row.address, pathKind: 'equipment', key: flagId, value };
+  }
+
+  if (row.family === 'FLAG' || row.runtimeOwner === 'body') {
+    return { address: row.address, pathKind: 'body', key: flagId, value };
+  }
+
+  if (['21', '22', '23', '24'].includes(flagId)) {
+    return { address: row.address, pathKind: 'family', key: flagId, value };
+  }
+
+  return { address: row.address, pathKind: 'feature', key: `${row.runtimeOwner || 'people'}.flag_${flagId}`, value };
+}
+
+function withM33InboundSaveFieldSentinels(
+  state: GameState,
+  characterId: string,
+): { readonly state: GameState; readonly expectations: readonly M33InboundExpectation[] } {
+  assert(m33InboundSaveRows.length === 76, `M34 should verify 76 M33 inbound save rows, got ${m33InboundSaveRows.length}.`);
+
+  const character = state.people.characters[characterId];
+  const body = state.body.byCharacterId[characterId];
+  const equipment = state.equipment.byCharacterId[characterId];
+  assert(character, `M34 inbound sentinel character missing: ${characterId}`);
+  assert(body, `M34 inbound sentinel body missing: ${characterId}`);
+  assert(equipment, `M34 inbound sentinel equipment missing: ${characterId}`);
+
+  const expectations = m33InboundSaveRows.map(expectationForInboundRow);
+  const bodyConditionFlags = { ...body.conditionFlags };
+  const equipmentAvailabilityFlags = { ...equipment.availabilityFlags };
+  const familyLegacyRelationIndexes = { ...character.flags.family.legacyRelationIndexes };
+  const featureProgress = { ...character.flags.featureProgress };
+
+  for (const expectation of expectations) {
+    if (expectation.pathKind === 'body') bodyConditionFlags[expectation.key] = expectation.value;
+    if (expectation.pathKind === 'equipment') equipmentAvailabilityFlags[expectation.key] = expectation.value;
+    if (expectation.pathKind === 'family') familyLegacyRelationIndexes[expectation.key] = expectation.value;
+    if (expectation.pathKind === 'feature') featureProgress[expectation.key] = expectation.value;
+  }
+
+  return {
+    expectations,
+    state: {
+      ...state,
+      people: {
+        characters: {
+          ...state.people.characters,
+          [characterId]: {
+            ...character,
+            flags: {
+              ...character.flags,
+              family: {
+                ...character.flags.family,
+                legacyRelationIndexes: familyLegacyRelationIndexes,
+              },
+              featureProgress,
+            },
+          },
+        },
+      },
+      body: {
+        byCharacterId: {
+          ...state.body.byCharacterId,
+          [characterId]: {
+            ...body,
+            conditionFlags: bodyConditionFlags,
+          },
+        },
+      },
+      equipment: {
+        byCharacterId: {
+          ...state.equipment.byCharacterId,
+          [characterId]: {
+            ...equipment,
+            availabilityFlags: equipmentAvailabilityFlags,
+          },
+        },
+      },
+    },
+  };
+}
+
+function assertM33InboundSaveFieldRoundtrip(
+  state: GameState,
+  characterId: string,
+  expectations: readonly M33InboundExpectation[],
+) {
+  const character = state.people.characters[characterId];
+  const body = state.body.byCharacterId[characterId];
+  const equipment = state.equipment.byCharacterId[characterId];
+  assert(character, `M34 inbound roundtrip character missing: ${characterId}`);
+  assert(body, `M34 inbound roundtrip body missing: ${characterId}`);
+  assert(equipment, `M34 inbound roundtrip equipment missing: ${characterId}`);
+
+  for (const expectation of expectations) {
+    const actual =
+      expectation.pathKind === 'body'
+        ? body.conditionFlags[expectation.key]
+        : expectation.pathKind === 'equipment'
+          ? equipment.availabilityFlags[expectation.key]
+          : expectation.pathKind === 'family'
+            ? character.flags.family.legacyRelationIndexes[expectation.key]
+            : character.flags.featureProgress[expectation.key];
+    assert(actual === expectation.value, `M34 inbound ${expectation.address} should survive save roundtrip.`);
+  }
+}
+
 function assertCflagSeedsSplit() {
   const data = createInitialGameData();
   const templateIds = Object.keys(data.definitions.characters).sort((left, right) => Number(left) - Number(right) || left.localeCompare(right));
@@ -105,6 +243,13 @@ function assertWardrobeRouteAndRoundtrip() {
   let context: SmokeContext = {
     state: {
       ...makeStateWithAllCharacters(data.save),
+      world: {
+        ...data.save.world,
+        unlocks: {
+          ...data.save.world.unlocks,
+          wardrobe: true,
+        },
+      },
       inventory: {
         ...data.save.inventory,
         itemCounts: {
@@ -147,6 +292,12 @@ function assertWardrobeRouteAndRoundtrip() {
   context = step.context;
   assert(context.state.equipment.byCharacterId[entry.characterId].clothing['42'] === 1, 'item 211 costume should apply CFLAG clothing flag 42.');
 
+  const inboundSentinels = withM33InboundSaveFieldSentinels(context.state, entry.characterId);
+  context = {
+    ...context,
+    state: inboundSentinels.state,
+  };
+
   const savePayload = createGameSavePayload(context.state, new Date('2026-05-01T00:00:00.000Z'));
   assertNoBoundaryErrors('M34 save payload', validateSavePayloadBoundary(savePayload));
   const serialized = serializeGameSavePayload(savePayload);
@@ -160,6 +311,7 @@ function assertWardrobeRouteAndRoundtrip() {
       context.state.equipment.byCharacterId[entry.characterId].clothing[flagId],
     'wardrobe clothing state should survive save roundtrip.',
   );
+  assertM33InboundSaveFieldRoundtrip(parsed.payload.state, entry.characterId, inboundSentinels.expectations);
 
   step = dispatchChecked(context, { type: 'wardrobe/cancel' });
   assert(step.result.status === 'success', 'wardrobe cancel should succeed.');

@@ -484,7 +484,41 @@ export function confirmShootingScene(
     selectedCharacterId,
     session.interaction.participants.assistantId,
   );
-  const stateAfterShooting = applyShootingResult(state, calculatedResult);
+  let stateAfterShooting = applyShootingResult(state, calculatedResult);
+
+  const currentClock = stateAfterShooting.run.clock;
+  let nextDay = currentClock.day + 7;
+  let nextWeek = currentClock.week + 1;
+  let nextMonth = currentClock.month;
+  let nextYear = currentClock.year;
+
+  if (nextWeek > 4) {
+    nextWeek = 1;
+    nextMonth += 1;
+    if (nextMonth > 12) {
+      nextMonth = 1;
+      nextYear += 1;
+    }
+  }
+
+  stateAfterShooting = {
+    ...stateAfterShooting,
+    run: {
+      ...stateAfterShooting.run,
+      clock: {
+        ...currentClock,
+        day: nextDay,
+        week: nextWeek,
+        month: nextMonth,
+        year: nextYear,
+        dayCounters: {
+          ...currentClock.dayCounters,
+          counter_0: nextDay,
+          counter_3: nextMonth,
+        },
+      },
+    },
+  };
   const sessionAfterShooting: GameSession = {
     ...session,
     shooting: initialShootingSessionState,

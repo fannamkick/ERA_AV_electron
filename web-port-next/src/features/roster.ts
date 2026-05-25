@@ -55,7 +55,9 @@ export function buildRosterView(state: GameState, definitions?: GameDefinitions)
           imprintCount: Object.keys(body?.imprints ?? {}).length,
           retired: character.flags.lifecycle.retired,
           deleted: character.flags.lifecycle.deleted,
+          sellable: character.flags.lifecycle.sellable,
           assistantEligible: character.flags.lifecycle.assistantEligible,
+          saleEligibilityRank: character.flags.lifecycle.saleEligibilityRank,
           recruitmentStatus: character.flags.lifecycle.recruitmentStatus,
         };
       })

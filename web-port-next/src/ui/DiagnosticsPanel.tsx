@@ -24,10 +24,6 @@ type RuntimeDiagnosticsPanelProps = {
   readonly effectLog: readonly EffectLogEntry[];
 };
 
-function countDefinitions(catalog: GameCatalog): number {
-  return Object.values(catalog).reduce((total, entries) => total + Object.keys(entries).length, 0);
-}
-
 function formatEffect(effect: GameEffect): string {
   if (effect.type === 'save/request') {
     return `저장 요청: ${effect.reason}`;
@@ -97,26 +93,32 @@ function countTrainingBuffers(session: GameSession): number {
   ]);
 }
 
-export function StatusRail({ catalog, state, session }: StatusRailProps) {
+export function StatusRail({ state }: StatusRailProps) {
+  const isDay = state.run.clock.currentTimeSlot === 0;
+  const itemKindCount = Object.keys(state.inventory.itemCounts).length;
+
   return (
-    <aside className="side-rail" aria-label="현재 상태">
+    <aside className="side-rail" aria-label="사무소 현황판">
       <p className="brand">erAV Next</p>
       <SummaryList
         items={[
-          { label: 'Route', value: session.ui.route },
-          { label: 'Definitions', value: countDefinitions(catalog) },
-          { label: 'Characters', value: Object.keys(state.people.characters).length },
           {
-            label: 'Clock',
-            value: `M${state.run.clock.month} W${state.run.clock.week} T${state.run.clock.turn}`,
+            label: '현재 일정',
+            value: `${state.run.clock.month}월 ${state.run.clock.week}주차 (${state.run.clock.turn}턴)`,
           },
-          { label: 'Money', value: `${state.economy.account.currentMoney.toLocaleString()} Pt` },
-          { label: 'Items', value: Object.keys(state.inventory.itemCounts).length },
+          {
+            label: '활동 시간',
+            value: <span className={`time-badge ${isDay ? 'daytime' : 'nighttime'}`}>{isDay ? '낮 (Day)' : '밤 (Night)'}</span>,
+          },
+          { label: '사무소 자금', value: `${state.economy.account.currentMoney.toLocaleString()} Pt` },
+          { label: '소속 여배우', value: `${Object.keys(state.people.characters).length}명` },
+          { label: '보유 도구류', value: `${itemKindCount}종` },
         ]}
       />
     </aside>
   );
 }
+
 
 export function RuntimeDiagnosticsPanel({
   state,

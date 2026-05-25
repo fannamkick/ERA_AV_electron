@@ -20,8 +20,8 @@
     "original-game/CSV/VariableSize.CSV"
   ],
   "summary": {
-    "totalUnits": 74,
-    "implemented-verified": 37,
+    "totalUnits": 56,
+    "implemented-verified": 19,
     "approved-excluded": 37,
     "blocked": 0,
     "scope-redesign-required": 0,
@@ -78,231 +78,6 @@
     {
       "unitId": "M30:source-unit:0002",
       "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "영양제",
-      "sourceEvidenceId": "source:definition:definition-item-30",
-      "legacyReviewId": "definition:definition:item:30",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "30",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-target-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:30",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0003",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "향",
-      "sourceEvidenceId": "source:definition:definition-item-31",
-      "legacyReviewId": "definition:definition:item:31",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "31",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-target-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:31",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0004",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "부스터메일",
-      "sourceEvidenceId": "source:definition:definition-item-38",
-      "legacyReviewId": "definition:definition:item:38",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "38",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-master-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:38",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0005",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "【비밀지식】",
-      "sourceEvidenceId": "source:definition:definition-item-39",
-      "legacyReviewId": "definition:definition:item:39",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "39",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-master-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:39",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0006",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "배란유발제",
-      "sourceEvidenceId": "source:definition:definition-item-40",
-      "legacyReviewId": "definition:definition:item:40",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "40",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-target-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:40",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0007",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "강모제",
-      "sourceEvidenceId": "source:definition:definition-item-41",
-      "legacyReviewId": "definition:definition:item:41",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "41",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-target-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:41",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0008",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "【조합지식】",
-      "sourceEvidenceId": "source:definition:definition-item-42",
-      "legacyReviewId": "definition:definition:item:42",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "42",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-master-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:42",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0009",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "배란억제제",
-      "sourceEvidenceId": "source:definition:definition-item-43",
-      "legacyReviewId": "definition:definition:item:43",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "43",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-target-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:43",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0010",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "csv-row",
-      "sourcePath": "original-game/CSV/Item.csv",
-      "sourceLine": "",
-      "sourceLabel": "【기교Lv】",
-      "sourceEvidenceId": "source:definition:definition-item-52",
-      "legacyReviewId": "definition:definition:item:52",
-      "legacyFamily": "",
-      "rowKind": "definition",
-      "legacyId": "52",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "definitions.items -> computeVisibleItemUseIds -> buildItemShopView -> useSelectedShopItem",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "implemented-master-item-use-effect",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:definition:immediate:52",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0011",
-      "milestone": "M30",
       "ownerMilestone": "M41",
       "ownerRole": "item-use-implementer",
       "sourceKind": "csv-row",
@@ -326,7 +101,7 @@
       "toMilestone": "M41"
     },
     {
-      "unitId": "M30:source-unit:0012",
+      "unitId": "M30:source-unit:0003",
       "milestone": "M30",
       "ownerMilestone": "M41",
       "ownerRole": "item-use-implementer",
@@ -351,7 +126,7 @@
       "toMilestone": "M41"
     },
     {
-      "unitId": "M30:source-unit:0013",
+      "unitId": "M30:source-unit:0004",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -376,7 +151,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0014",
+      "unitId": "M30:source-unit:0005",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -401,7 +176,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0015",
+      "unitId": "M30:source-unit:0006",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -426,7 +201,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0016",
+      "unitId": "M30:source-unit:0007",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -451,7 +226,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0017",
+      "unitId": "M30:source-unit:0008",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -476,7 +251,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0018",
+      "unitId": "M30:source-unit:0009",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -501,7 +276,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0019",
+      "unitId": "M30:source-unit:0010",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -526,7 +301,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0020",
+      "unitId": "M30:source-unit:0011",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -551,7 +326,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0021",
+      "unitId": "M30:source-unit:0012",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -576,7 +351,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0022",
+      "unitId": "M30:source-unit:0013",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -601,7 +376,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0023",
+      "unitId": "M30:source-unit:0014",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -626,7 +401,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0024",
+      "unitId": "M30:source-unit:0015",
       "milestone": "M30",
       "ownerMilestone": "M34",
       "ownerRole": "item-use-implementer",
@@ -651,7 +426,7 @@
       "toMilestone": "M34"
     },
     {
-      "unitId": "M30:source-unit:0025",
+      "unitId": "M30:source-unit:0016",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -676,7 +451,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0026",
+      "unitId": "M30:source-unit:0017",
       "milestone": "M30",
       "ownerMilestone": "M44",
       "ownerRole": "item-use-implementer",
@@ -701,7 +476,7 @@
       "toMilestone": "M44"
     },
     {
-      "unitId": "M30:source-unit:0027",
+      "unitId": "M30:source-unit:0018",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -726,7 +501,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0028",
+      "unitId": "M30:source-unit:0019",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -751,7 +526,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0029",
+      "unitId": "M30:source-unit:0020",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -776,7 +551,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0030",
+      "unitId": "M30:source-unit:0021",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -801,7 +576,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0031",
+      "unitId": "M30:source-unit:0022",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -826,7 +601,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0032",
+      "unitId": "M30:source-unit:0023",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -851,7 +626,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0033",
+      "unitId": "M30:source-unit:0024",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -876,7 +651,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0034",
+      "unitId": "M30:source-unit:0025",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -901,7 +676,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0035",
+      "unitId": "M30:source-unit:0026",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -926,7 +701,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0036",
+      "unitId": "M30:source-unit:0027",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -951,7 +726,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0037",
+      "unitId": "M30:source-unit:0028",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -976,7 +751,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0038",
+      "unitId": "M30:source-unit:0029",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1001,7 +776,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0039",
+      "unitId": "M30:source-unit:0030",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1026,7 +801,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0040",
+      "unitId": "M30:source-unit:0031",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1051,7 +826,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0041",
+      "unitId": "M30:source-unit:0032",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1076,7 +851,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0042",
+      "unitId": "M30:source-unit:0033",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1101,7 +876,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0043",
+      "unitId": "M30:source-unit:0034",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1126,7 +901,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0044",
+      "unitId": "M30:source-unit:0035",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1151,7 +926,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0045",
+      "unitId": "M30:source-unit:0036",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1176,7 +951,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0046",
+      "unitId": "M30:source-unit:0037",
       "milestone": "M30",
       "ownerMilestone": "M30",
       "ownerRole": "item-use-implementer",
@@ -1201,7 +976,7 @@
       "toMilestone": ""
     },
     {
-      "unitId": "M30:source-unit:0047",
+      "unitId": "M30:source-unit:0038",
       "milestone": "M30",
       "ownerMilestone": "M34",
       "ownerRole": "item-use-implementer",
@@ -1226,7 +1001,7 @@
       "toMilestone": "M34"
     },
     {
-      "unitId": "M30:source-unit:0048",
+      "unitId": "M30:source-unit:0039",
       "milestone": "M30",
       "ownerMilestone": "M41",
       "ownerRole": "item-use-implementer",
@@ -1251,232 +1026,7 @@
       "toMilestone": "M41"
     },
     {
-      "unitId": "M30:source-unit:0049",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-30",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-30",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "30",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:30",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0050",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-31",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-31",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "31",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:31",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0051",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-38",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-38",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "38",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:38",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0052",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-39",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-39",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "39",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:39",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0053",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-40",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-40",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "40",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:40",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0054",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-41",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-41",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "41",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:41",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0055",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-42",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-42",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "42",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:42",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0056",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-43",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-43",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "43",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:43",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0057",
-      "milestone": "M30",
-      "ownerMilestone": "M30",
-      "ownerRole": "item-use-implementer",
-      "sourceKind": "session-address",
-      "sourcePath": "original-game/ERB/システム関係/SHOP_ITEM.ERB",
-      "sourceLine": "",
-      "sourceLabel": "",
-      "sourceEvidenceId": "source:session-map:itemsales-52",
-      "legacyReviewId": "session-mapping:session-map:source:itemsales-52",
-      "legacyFamily": "",
-      "rowKind": "session-mapping",
-      "legacyId": "52",
-      "requiredBehavior": "M30 item-use flow must expose, consume, mutate, or persist this source unit through concrete runtime behavior.",
-      "runtimeConsumerId": "session.shop.visibleUseItemIds",
-      "verificationId": "smoke:item-use",
-      "previousCompletionStatus": "mapped-consumed-visible-use-item",
-      "manifestStatus": "implemented-verified",
-      "blockerReason": "",
-      "sourceCoverageRowId": "item-use:session:itemsales:52",
-      "acceptedByOwner": null,
-      "fromMilestone": "",
-      "toMilestone": ""
-    },
-    {
-      "unitId": "M30:source-unit:0058",
+      "unitId": "M30:source-unit:0040",
       "milestone": "M30",
       "ownerMilestone": "M41",
       "ownerRole": "item-use-implementer",
@@ -1501,7 +1051,7 @@
       "toMilestone": "M41"
     },
     {
-      "unitId": "M30:source-unit:0059",
+      "unitId": "M30:source-unit:0041",
       "milestone": "M30",
       "ownerMilestone": "M41",
       "ownerRole": "item-use-implementer",
@@ -1526,7 +1076,7 @@
       "toMilestone": "M41"
     },
     {
-      "unitId": "M30:source-unit:0060",
+      "unitId": "M30:source-unit:0042",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1551,7 +1101,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0061",
+      "unitId": "M30:source-unit:0043",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1576,7 +1126,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0062",
+      "unitId": "M30:source-unit:0044",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1601,7 +1151,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0063",
+      "unitId": "M30:source-unit:0045",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1626,7 +1176,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0064",
+      "unitId": "M30:source-unit:0046",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1651,7 +1201,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0065",
+      "unitId": "M30:source-unit:0047",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1676,7 +1226,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0066",
+      "unitId": "M30:source-unit:0048",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -1701,7 +1251,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0067",
+      "unitId": "M30:source-unit:0049",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -1726,7 +1276,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0068",
+      "unitId": "M30:source-unit:0050",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -1751,7 +1301,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0069",
+      "unitId": "M30:source-unit:0051",
       "milestone": "M30",
       "ownerMilestone": "M43",
       "ownerRole": "item-use-implementer",
@@ -1776,7 +1326,7 @@
       "toMilestone": "M43"
     },
     {
-      "unitId": "M30:source-unit:0070",
+      "unitId": "M30:source-unit:0052",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1801,7 +1351,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0071",
+      "unitId": "M30:source-unit:0053",
       "milestone": "M30",
       "ownerMilestone": "M34",
       "ownerRole": "item-use-implementer",
@@ -1826,7 +1376,7 @@
       "toMilestone": "M34"
     },
     {
-      "unitId": "M30:source-unit:0072",
+      "unitId": "M30:source-unit:0054",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",
@@ -1851,7 +1401,7 @@
       "toMilestone": "M42"
     },
     {
-      "unitId": "M30:source-unit:0073",
+      "unitId": "M30:source-unit:0055",
       "milestone": "M30",
       "ownerMilestone": "M44",
       "ownerRole": "item-use-implementer",
@@ -1876,7 +1426,7 @@
       "toMilestone": "M44"
     },
     {
-      "unitId": "M30:source-unit:0074",
+      "unitId": "M30:source-unit:0056",
       "milestone": "M30",
       "ownerMilestone": "M42",
       "ownerRole": "item-use-implementer",

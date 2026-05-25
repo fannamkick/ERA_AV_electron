@@ -457,8 +457,8 @@ const closure = {
   milestone: 'M30',
   title: 'Immediate item use implementation and special training item blocker',
   status,
-  blockedAt: status === 'blocked' ? '2026-05-02' : undefined,
-  completedAt: status === 'completed' ? '2026-05-02' : undefined,
+  blockedAt: status === 'blocked' ? '2026-05-07' : undefined,
+  completedAt: status === 'completed' ? '2026-05-07' : undefined,
   blockerReason:
     status === 'blocked'
       ? 'M30 still has unresolved item-use source rows.'

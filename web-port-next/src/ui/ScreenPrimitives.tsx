@@ -51,13 +51,13 @@ export function ChoiceButton({
   className,
   onClick,
 }: ChoiceButtonProps) {
-  const classNames = [className, selected ? 'selected' : undefined].filter(Boolean).join(' ');
+  const classNames = ['choice-button', className, selected ? 'selected' : undefined].filter(Boolean).join(' ');
 
   return (
-    <button className={classNames} disabled={disabled} title={title} type="button" onClick={onClick}>
-      <span>{label}</span>
-      {meta !== undefined && <strong>{meta}</strong>}
-      {detail !== undefined && <small>{detail}</small>}
+    <button aria-pressed={selected} className={classNames} disabled={disabled} title={title} type="button" onClick={onClick}>
+      <span className="choice-label">{label}</span>
+      {meta !== undefined && <strong className="choice-meta">{meta}</strong>}
+      {detail !== undefined && <small className="choice-detail">{detail}</small>}
     </button>
   );
 }

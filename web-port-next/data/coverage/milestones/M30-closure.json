@@ -3,7 +3,7 @@
   "milestone": "M30",
   "title": "Immediate item use implementation and special training item blocker",
   "status": "completed",
-  "completedAt": "2026-05-02",
+  "completedAt": "2026-05-07",
   "commitPolicy": "Commit after every milestone closure.",
   "commitHash": "recorded by the M30 git commit that includes this closure file",
   "sourceInputs": {
@@ -23,15 +23,15 @@
     "smoke": "tools/m30_item_use_smoke.ts"
   },
   "counts": {
-    "sourceUnitTotal": 74,
-    "ownedTotal": 37,
-    "implemented": 37,
+    "sourceUnitTotal": 56,
+    "ownedTotal": 19,
+    "implemented": 19,
     "mapped": 0,
     "approvedExcludedFromM30": 37,
     "approvedExcluded": 0,
     "transferredOut": 0,
-    "rawImplementedRows": 21,
-    "rawMappedRows": 16,
+    "rawImplementedRows": 12,
+    "rawMappedRows": 7,
     "rawTransferRows": 37,
     "ownedBlocker": 0,
     "missingEvidence": 0,
@@ -41,8 +41,8 @@
     "unapprovedExcluded": 0
   },
   "closureMetrics": {
-    "ownedTotal": 37,
-    "implemented": 37,
+    "ownedTotal": 19,
+    "implemented": 19,
     "mapped": 0,
     "approvedExcluded": 0,
     "transferredOut": 0,
@@ -54,8 +54,8 @@
     "unapprovedExcluded": 0
   },
   "sourceUnitMetrics": {
-    "sourceUnitTotal": 74,
-    "implementedVerified": 37,
+    "sourceUnitTotal": 56,
+    "implementedVerified": 19,
     "approvedExcludedFromM30": 37,
     "blocked": 0,
     "scopeRedesignRequired": 0,
@@ -71,7 +71,7 @@
       "npm run build",
       "npm run test --if-present"
     ],
-    "expectedGateResult": "74 source row(s), 37 M30-owned item-use row(s), 37 approved exclusions, 0 unresolved issue(s)"
+    "expectedGateResult": "56 source row(s), 19 M30-owned item-use row(s), 37 approved exclusions, 0 unresolved issue(s)"
   },
   "responsibilityIntegrity": {
     "scopeReductionProhibited": true,

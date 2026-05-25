@@ -125,6 +125,12 @@ export function createNewGame(definitions: GameDefinitions, input: NewGameInput 
           modeId: mode.id,
           weekLimit: mode.weekLimit,
           targetMoney: mode.targetMoney,
+          pubicHairSystemEnabled: true,
+          clothingSystemEnabled: true,
+          recruitRosterLimit: 10,
+          '23': 10,
+          recruitAdvertisementCount: 0,
+          '90': 0,
         },
       },
       economy: {

@@ -105,7 +105,7 @@ function visibleRecruitCandidates(context: RoundtripContext): readonly RecruitCa
 }
 
 function createRoundtripSnapshot(context: RoundtripContext): { readonly context: RoundtripContext; readonly snapshotText: string; readonly expectedState: string } {
-  let step = dispatchChecked(context, { type: 'main/openSaveLoad' });
+  let step = dispatchChecked(context, { type: 'main/openSave' });
   assert(step.result.status === 'success', 'save/load entry should succeed.');
   let next = step.context;
 

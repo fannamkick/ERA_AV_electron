@@ -1,0 +1,1121 @@
+{
+  "schemaVersion": "feature-implementation-packet/v1",
+  "generatedBy": "tools/build_feature_packet.mjs",
+  "generatedAt": "2026-05-08T12:17:27.325Z",
+  "packetId": "m35-event-newday",
+  "milestone": "M35",
+  "purpose": "Implementation packet built from existing original-source analysis artifacts. This packet reduces repeated source reading; it is not completion evidence by itself.",
+  "trustRules": [
+    "original-game ERB/CSV files remain authoritative",
+    "packet rows must preserve sourcePath and sourceLine/label references where available",
+    "mapped/classified rows are implementation inputs, not implementation proof",
+    "workers may propose patches from packets, but main Codex must review and integrate",
+    "runtime tests/traces are still required to claim implementation parity"
+  ],
+  "scope": {
+    "inputMilestone": "M35",
+    "inputSources": [],
+    "derivedSources": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "sourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+      "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB"
+    ],
+    "activeSourcePaths": [
+      "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB"
+    ],
+    "labelFilters": [],
+    "labelRanges": [],
+    "packetRanges": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "labelId": "M35:review:event-nextday:event-newday",
+        "label": "EVENT_NEWDAY",
+        "labelKind": "review-group",
+        "startLine": 135,
+        "endLine": 158
+      }
+    ],
+    "reviewGroupFilters": [
+      "M35:review:event-nextday:event-newday"
+    ],
+    "selectedReviewGroups": [
+      {
+        "reviewGroupId": "M35:review:event-nextday:event-newday",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "currentLabel": "EVENT_NEWDAY",
+        "sourceLineStart": 135,
+        "sourceLineEnd": 158,
+        "effectCount": 10,
+        "statusCounts": {
+          "unclassified": 10
+        },
+        "kindCounts": {
+          "branch-or-loop": 1,
+          "call-edge": 6,
+          "control-transfer": 2,
+          "label": 1
+        },
+        "stateFamilies": [],
+        "callTargets": [
+          "HAPPY_BIRTHDAY",
+          "MORNING_COWGIRL",
+          "ONESHO",
+          "PARTICULAR_DATE",
+          "SOMETIMES_SHE_COMES_BACK",
+          "START_COOCKING"
+        ],
+        "riskReasons": [
+          "contains-call-edges",
+          "contains-needs-review-rows"
+        ],
+        "effectIds": [
+          "M35:event_nextday:00135:label:01",
+          "M35:event_nextday:00138:call-edge:01",
+          "M35:event_nextday:00139:branch-or-loop:01",
+          "M35:event_nextday:00140:control-transfer:01",
+          "M35:event_nextday:00145:call-edge:01",
+          "M35:event_nextday:00148:call-edge:01",
+          "M35:event_nextday:00151:call-edge:01",
+          "M35:event_nextday:00154:call-edge:01",
+          "M35:event_nextday:00156:call-edge:01",
+          "M35:event_nextday:00158:control-transfer:01"
+        ]
+      }
+    ],
+    "effectIdFilters": [],
+    "effectIdFileFilters": [],
+    "riskFilters": [],
+    "maxEffects": 20,
+    "granularity": "effect-id-subpacket"
+  },
+  "sourceFiles": [
+    {
+      "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "resolvedSourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+      "pathResolution": "exact",
+      "pathResolutionCandidates": [],
+      "sourceSha256": "041470d32f13350dcd1a4b756fac628fe1c6cdbda99844703801ba538840e029",
+      "encoding": "utf-8-sig",
+      "lineCount": 1166,
+      "labelCount": 14,
+      "callCount": 32,
+      "inputCount": 2,
+      "stateReadCount": 1190,
+      "stateWriteCount": 272,
+      "coreStateReadCount": 639,
+      "coreStateWriteCount": 164,
+      "labels": "EVENT_NEXTDAY@4, EVENT_NEWDAY@135, RUNNING_COST@162, EVENT_MORASI@282, EVENT_YOUJI@291, EVENT_HIMAN@361, EVENT_YASERU@371, EVENT_JUNIORHIGHSCHOOL@381, EVENT_HIGHSCHOOL@449, EVENT_NOROI@514, SOMETIMES_SHE_COMES_BACK@590, ONESHO@619, NIGHT_STALKING_CHECK@661, MORNING_COWGIRL@904",
+      "topWrittenFamilies": "TALENT:73, A:47, JUEL:22, S:17, CFLAG:13, F:13, EXP:11, FLAG:10, ABL:8, R:6",
+      "topReadFamilies": "COUNT:219, TALENT:179, ABL:136, L:97, A:78, S:62, CALLNAME:34, CFLAG:31, C:29, EXP:27",
+      "topCoreWrittenFamilies": "TALENT:73, JUEL:22, CFLAG:13, EXP:11, FLAG:10, ABL:8, CSTR:6, TARGET:5, BASE:5, MARK:4",
+      "topCoreReadFamilies": "TALENT:179, ABL:136, CALLNAME:34, CFLAG:31, EXP:27, MASTER:26, FLAG:25, JUEL:23, DAY:22, TALENTNAME:22"
+    }
+  ],
+  "sourceOutline": {
+    "labels": [
+      {
+        "labelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "label": "EVENT_NEWDAY",
+        "rawLabel": "EVENT_NEWDAY",
+        "scope": "",
+        "kind": "global",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 135,
+        "incomingStaticCalls": 1,
+        "outgoingCalls": 5,
+        "entryKind": ""
+      }
+    ],
+    "outgoingCalls": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 145,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "sourceLabel": "EVENT_NEWDAY",
+        "kind": "CALL",
+        "targetRaw": "MORNING_COWGIRL",
+        "targetLabel": "MORNING_COWGIRL",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:904:MORNING_COWGIRL"
+        ],
+        "resolvedTargets": "MORNING_COWGIRL@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:904",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL MORNING_COWGIRL"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 148,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "sourceLabel": "EVENT_NEWDAY",
+        "kind": "CALL",
+        "targetRaw": "HAPPY_BIRTHDAY",
+        "targetLabel": "HAPPY_BIRTHDAY",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/システム関係/SYSTEM_BIRTHDAY.ERB:84:HAPPY_BIRTHDAY"
+        ],
+        "resolvedTargets": "HAPPY_BIRTHDAY@original-game/ERB/システム関係/SYSTEM_BIRTHDAY.ERB:84",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL HAPPY_BIRTHDAY"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 151,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "sourceLabel": "EVENT_NEWDAY",
+        "kind": "CALL",
+        "targetRaw": "ONESHO",
+        "targetLabel": "ONESHO",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:619:ONESHO"
+        ],
+        "resolvedTargets": "ONESHO@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:619",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL ONESHO"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 154,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "sourceLabel": "EVENT_NEWDAY",
+        "kind": "CALL",
+        "targetRaw": "PARTICULAR_DATE",
+        "targetLabel": "PARTICULAR_DATE",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB:19:PARTICULAR_DATE"
+        ],
+        "resolvedTargets": "PARTICULAR_DATE@original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB:19",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL PARTICULAR_DATE"
+      },
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 156,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "sourceLabel": "EVENT_NEWDAY",
+        "kind": "CALL",
+        "targetRaw": "START_COOCKING",
+        "targetLabel": "START_COOCKING",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/CALC_COOKING.ERB:4:START_COOCKING"
+        ],
+        "resolvedTargets": "START_COOCKING@original-game/ERB/イベント関係/CALC_COOKING.ERB:4",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL START_COOCKING"
+      }
+    ],
+    "incomingCalls": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "line": 248,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB:6:EVENTTURNEND",
+        "sourceLabel": "EVENTTURNEND",
+        "kind": "CALL",
+        "targetRaw": "EVENT_NEWDAY",
+        "targetLabel": "EVENT_NEWDAY",
+        "resolution": "resolved",
+        "resolvedTargetIds": [
+          "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY"
+        ],
+        "resolvedTargets": "EVENT_NEWDAY@original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135",
+        "dynamicPattern": "",
+        "dynamicCandidateCount": 0,
+        "text": "CALL EVENT_NEWDAY"
+      }
+    ],
+    "dynamicCalls": [],
+    "flowActions": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "line": 158,
+        "sourceLabelId": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB:135:EVENT_NEWDAY",
+        "sourceLabel": "EVENT_NEWDAY",
+        "action": "RETURN",
+        "actionKind": "exit",
+        "text": "RETURN 1"
+      }
+    ],
+    "stateAccesses": [],
+    "sourceSnippets": [
+      {
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "label": "EVENT_NEWDAY",
+        "startLine": 135,
+        "endLine": 158,
+        "text": "  135: @EVENT_NEWDAY\n  136: ;彼女はときどき帰ってくる\n  137: ;D = 0\n  138: ;CALL SOMETIMES_SHE_COMES_BACK\n  139: ;SIF D\n  140: ;\tRETURN 1\n  141: \n  142: ;起床(朝フェラ)→日付確認(誕生日)→朝食(おねしょ)の順番で処理が良いかなーと。\n  143: \n  144: ;朝フェラ\n  145: CALL MORNING_COWGIRL\n  146: \n  147: ;誕生日\n  148: CALL HAPPY_BIRTHDAY\n  149: \n  150: ;おねしょ\n  151: CALL ONESHO\n  152: \n  153: ;特定日付のイベント\n  154: CALL PARTICULAR_DATE\n  155: \n  156: CALL START_COOCKING\n  157: \n  158: RETURN 1"
+      }
+    ]
+  },
+  "legacyStateAndMapping": {
+    "rows": [],
+    "summary": {
+      "rows": 0,
+      "byFamily": {},
+      "byMappingAction": {},
+      "reads": 0,
+      "writes": 0
+    }
+  },
+  "sourceEffects": {
+    "available": true,
+    "ledgerPath": "data/coverage/source-effects/M35.effects.json",
+    "rows": [
+      {
+        "effectId": "M35:event_nextday:00135:label:01",
+        "kind": "label",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 135,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "@EVENT_NEWDAY",
+        "label": "EVENT_NEWDAY",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00138:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 138,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";CALL SOMETIMES_SHE_COMES_BACK",
+        "callKind": "CALL",
+        "callTarget": "SOMETIMES_SHE_COMES_BACK",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "SOMETIMES_SHE_COMES_BACK"
+        ],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00139:branch-or-loop:01",
+        "kind": "branch-or-loop",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 139,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";SIF D",
+        "controlKind": "SIF",
+        "condition": "D",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00140:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 140,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": ";\tRETURN 1",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [
+          "commented-source-candidate"
+        ],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00145:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 145,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL MORNING_COWGIRL",
+        "callKind": "CALL",
+        "callTarget": "MORNING_COWGIRL",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "MORNING_COWGIRL"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00148:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 148,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL HAPPY_BIRTHDAY",
+        "callKind": "CALL",
+        "callTarget": "HAPPY_BIRTHDAY",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "HAPPY_BIRTHDAY"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00151:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 151,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL ONESHO",
+        "callKind": "CALL",
+        "callTarget": "ONESHO",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "ONESHO"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00154:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 154,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL PARTICULAR_DATE",
+        "callKind": "CALL",
+        "callTarget": "PARTICULAR_DATE",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "PARTICULAR_DATE"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00156:call-edge:01",
+        "kind": "call-edge",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 156,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "CALL START_COOCKING",
+        "callKind": "CALL",
+        "callTarget": "START_COOCKING",
+        "reads": [],
+        "writes": [],
+        "calls": [
+          "START_COOCKING"
+        ],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      },
+      {
+        "effectId": "M35:event_nextday:00158:control-transfer:01",
+        "kind": "control-transfer",
+        "milestone": "M35",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 158,
+        "currentLabel": "EVENT_NEWDAY",
+        "status": "unclassified",
+        "ownerMilestone": "",
+        "transferId": "",
+        "exclusionReason": "",
+        "raw": "RETURN 1",
+        "controlKind": "RETURN",
+        "reads": [],
+        "writes": [],
+        "calls": [],
+        "needsReviewReasons": [],
+        "implementationEvidence": [],
+        "runtimeTraceEvidence": []
+      }
+    ],
+    "summary": {
+      "rows": 10,
+      "byKind": {
+        "branch-or-loop": 1,
+        "call-edge": 6,
+        "control-transfer": 2,
+        "label": 1
+      },
+      "byStatus": {
+        "unclassified": 10
+      },
+      "bySourcePath": {
+        "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB": 10
+      },
+      "byCurrentLabel": {
+        "EVENT_NEWDAY": 10
+      },
+      "sourcePathsWithoutEffects": []
+    },
+    "effectCrosswalk": [
+      {
+        "effectId": "M35:event_nextday:00135:label:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 135,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00138:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 138,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00139:branch-or-loop:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 139,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00140:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 140,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00145:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 145,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00148:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 148,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00151:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 151,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00154:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 154,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00156:call-edge:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 156,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      },
+      {
+        "effectId": "M35:event_nextday:00158:control-transfer:01",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": 158,
+        "currentLabel": "EVENT_NEWDAY",
+        "matchingSourceUnitIds": [],
+        "matchingCoverageRowIds": [],
+        "hasImplementationClaim": false,
+        "claimGranularity": "none"
+      }
+    ],
+    "effectCrosswalkSummary": {
+      "rows": 10,
+      "withImplementationClaim": 0,
+      "withoutImplementationClaim": 10
+    }
+  },
+  "existingImplementationClaims": {
+    "manifestPath": "data/coverage/manifests/M35-source-units.json",
+    "sourceUnits": [],
+    "coverageRows": [],
+    "relatedSourceUnits": [
+      {
+        "unitId": "M35:source-unit:00004",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyReviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "acceptedByOwner": true
+      },
+      {
+        "unitId": "M35:source-unit:00006",
+        "milestone": "M35",
+        "ownerMilestone": "M35",
+        "ownerRole": "turn-pipeline-owner",
+        "sourceKind": "functional-turn-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLine": "",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyReviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "manifestStatus": "implemented-verified",
+        "sourceCoverageRowId": "turn-pipeline:functional:world-event-hook",
+        "acceptedByOwner": true
+      }
+    ],
+    "relatedCoverageRows": [
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:clock-advance",
+        "unitId": "M35:source-unit:00001",
+        "reviewId": "M35:functional:clock-advance",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "legacyId": "clock-advance",
+        "requiredBehavior": "day/week/month/year/currentTimeSlot advancement and rollover",
+        "runtimeConsumerId": "advanceTurnClock -> run.clock day/week/month/year/currentTimeSlot/dayCounters/timeCounters/phase",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:mission-deadline",
+        "unitId": "M35:source-unit:00002",
+        "reviewId": "M35:functional:mission-deadline",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "mission deadline decrement/fail hook",
+        "legacyId": "mission-deadline",
+        "requiredBehavior": "mission deadline decrement/fail hook",
+        "runtimeConsumerId": "decrementMissionDeadlines -> mission.byMissionId remainingWeeks/status/missionFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:monthly-automatic-processing",
+        "unitId": "M35:source-unit:00005",
+        "reviewId": "M35:functional:monthly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "monthly automatic processing and CFLAG:34 hook",
+        "legacyId": "monthly-automatic-processing",
+        "requiredBehavior": "monthly automatic processing and CFLAG:34 hook",
+        "runtimeConsumerId": "applyMonthlyAutomaticHooks -> run.progressFlags.flag_34/world.eventFlags/economy monthly maintenance",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:save-roundtrip-boundary",
+        "unitId": "M35:source-unit:00008",
+        "reviewId": "M35:functional:save-roundtrip-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_AFTERTRAIN.ERB",
+        "sourceLabel": "turn result is persisted through save/load boundary",
+        "legacyId": "save-roundtrip-boundary",
+        "requiredBehavior": "turn result is persisted through save/load boundary",
+        "runtimeConsumerId": "createGameSavePayload/parseGameSavePayload -> run clock/progress persisted; session omitted",
+        "verificationId": "smoke:turn-long;verify:m16;test:roundtrip",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-cflag-34",
+          "turn-pipeline:save-mapping:save-map-source-day-0",
+          "turn-pipeline:save-mapping:save-map-source-day-3",
+          "turn-pipeline:save-mapping:save-map-source-day-4",
+          "turn-pipeline:save-mapping:save-map-source-flag-61",
+          "turn-pipeline:save-mapping:save-map-source-time",
+          "turn-pipeline:save-mapping:save-map-source-time-0"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:scheduled-events",
+        "unitId": "M35:source-unit:00003",
+        "reviewId": "M35:functional:scheduled-events",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_PARTICULAR_DAY.ERB",
+        "sourceLabel": "scheduled event processing hook",
+        "legacyId": "scheduled-events",
+        "requiredBehavior": "scheduled event processing hook",
+        "runtimeConsumerId": "processScheduledEvents -> run.scheduledEvents and processedEvents",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:session-cleanup-boundary",
+        "unitId": "M35:source-unit:00007",
+        "reviewId": "M35:functional:session-cleanup-boundary",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_TURNEND.ERB",
+        "sourceLabel": "transient session cleanup at turn boundary",
+        "legacyId": "session-cleanup-boundary",
+        "requiredBehavior": "transient session cleanup at turn boundary",
+        "runtimeConsumerId": "clearTurnSession -> feature/interaction/mission/recruit/saveLoad/shop/shooting/script/visit/work/ui transient session reset",
+        "verificationId": "smoke:turn-long;smoke:m8;verify:m16",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:weekly-automatic-processing",
+        "unitId": "M35:source-unit:00004",
+        "reviewId": "M35:functional:weekly-automatic-processing",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "weekly automatic processing and FLAG:61 hook",
+        "legacyId": "weekly-automatic-processing",
+        "requiredBehavior": "weekly automatic processing and FLAG:61 hook",
+        "runtimeConsumerId": "applyWeeklyAutomaticHooks -> run.progressFlags.flag_61/autoPurchaseCheckedAtTurn/autoItemUseCheckedAtTurn/world.eventFlags",
+        "verificationId": "smoke:turn-long",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": [
+          "turn-pipeline:save-mapping:save-map-source-flag-61"
+        ]
+      },
+      {
+        "artifactPath": "data/coverage/turn-pipeline-coverage.json",
+        "coverageRowId": "turn-pipeline:functional:world-event-hook",
+        "unitId": "M35:source-unit:00006",
+        "reviewId": "M35:functional:world-event-hook",
+        "rowKind": "turn-functional-unit",
+        "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+        "sourceLabel": "world event hook processing during turn end",
+        "legacyId": "world-event-hook",
+        "requiredBehavior": "world event hook processing during turn end",
+        "runtimeConsumerId": "applyProcessedEventFlags -> world.eventFlags processed:*",
+        "verificationId": "smoke:turn-long;smoke:m8",
+        "completionStatus": "implemented-verified",
+        "manifestStatus": "implemented-verified",
+        "acceptedByOwner": true,
+        "sourceCoverageRowIds": []
+      }
+    ],
+    "summary": {
+      "sourceUnits": 0,
+      "coverageRows": 0,
+      "relatedSourceUnits": 2,
+      "relatedCoverageRows": 8,
+      "sourceUnitsByStatus": {},
+      "coverageRowsByStatus": {}
+    }
+  },
+  "implementationWorkOrder": {
+    "recommendedWorkerInput": "Do not reinterpret broad M35. Implement only EVENT_NEWDAY call-order reachability in the target file and smoke test. Do not implement callee internals.",
+    "recipePath": "data/implementation-packets/recipes/m35-event-newday.recipe.json",
+    "runtimeTargetHints": {
+      "primaryFile": "src/features/turnEnd.ts",
+      "primarySymbol": "applyNewDayEventHooks",
+      "callSite": "endTurn after clock/boundary calculation and before returning effects",
+      "testFile": "tools/m35_turn_long_smoke.ts",
+      "testCommand": "npm run smoke:turn-long",
+      "similarCode": [
+        "applyWeeklyAutomaticHooks",
+        "applyMonthlyAutomaticHooks",
+        "applyProcessedEventFlags",
+        "turnEndAfterHooks"
+      ]
+    },
+    "stateAliasRecipe": [
+      {
+        "legacy": "CALL MORNING_COWGIRL",
+        "web": "record reached new-day hook id, do not implement callee body"
+      },
+      {
+        "legacy": "CALL HAPPY_BIRTHDAY",
+        "web": "record reached new-day hook id, do not implement callee body"
+      },
+      {
+        "legacy": "CALL ONESHO",
+        "web": "record reached new-day hook id, do not implement callee body"
+      },
+      {
+        "legacy": "CALL PARTICULAR_DATE",
+        "web": "record reached new-day hook id, do not implement callee body"
+      },
+      {
+        "legacy": "CALL START_COOCKING",
+        "web": "record reached new-day hook id, do not implement callee body"
+      }
+    ],
+    "implementationRecipe": {
+      "originalBehavior": [
+        "EVENT_NEWDAY is an EVENT_NEXTDAY label reached from EVENT_TURNEND.",
+        "The disabled SOMETIMES_SHE_COMES_BACK block is commented out in original source and must not be wired.",
+        "Active behavior is ordered calls: MORNING_COWGIRL, HAPPY_BIRTHDAY, ONESHO, PARTICULAR_DATE, START_COOCKING, then RETURN 1."
+      ],
+      "patchSteps": [
+        "Add a small applyNewDayEventHooks helper in src/features/turnEnd.ts.",
+        "The helper should record the ordered callee ids in persistent turn/world event state or effects, without implementing callee internals.",
+        "Call the helper from endTurn in the turn-end flow.",
+        "Add smoke assertions in tools/m35_turn_long_smoke.ts that the ordered EVENT_NEWDAY callee ids are recorded.",
+        "Create data/implementation-packets/m35-event-newday.worker-result.json using the prefilled accounting, updating implemented evidence for the actual patch."
+      ],
+      "doNotDo": [
+        "Do not implement MORNING_COWGIRL/HAPPY_BIRTHDAY/ONESHO/PARTICULAR_DATE/START_COOCKING internals.",
+        "Do not wire SOMETIMES_SHE_COMES_BACK; the source call is commented out.",
+        "Do not close M35."
+      ]
+    },
+    "requiredWorkerResultShape": {
+      "implementedEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "implementation": "changed runtime file/function",
+          "test": "test or smoke evidence to add/run, or empty if not yet testable",
+          "notes": "short reason the effect is covered"
+        }
+      ],
+      "remainingEffects": [
+        {
+          "effectId": "source effect id from this packet only",
+          "reason": "why not implemented in this patch proposal"
+        }
+      ],
+      "transferredEffects": [],
+      "excludedEffects": [],
+      "changedFiles": [],
+      "tests": []
+    },
+    "requiredPatchReviewQuestions": [
+      "Which original labels/effects does the patch implement?",
+      "Which web feature/domain files are changed?",
+      "Which state/session/view effects are observable?",
+      "Which input/cancel/failure/retry paths are covered?",
+      "Which source effects remain unimplemented or require transfer/exclusion?"
+    ],
+    "highRiskRows": [
+      {
+        "riskId": "unclosed-source-effects",
+        "severity": "packet-review-required",
+        "count": 10,
+        "reason": "Source-effect rows are not implementation evidence, but unclassified/blocked rows identify work that cannot be silently ignored.",
+        "rowRefs": [
+          {
+            "effectId": "M35:event_nextday:00135:label:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 135,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "label"
+          },
+          {
+            "effectId": "M35:event_nextday:00138:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 138,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00139:branch-or-loop:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 139,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "branch-or-loop"
+          },
+          {
+            "effectId": "M35:event_nextday:00140:control-transfer:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 140,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "control-transfer"
+          },
+          {
+            "effectId": "M35:event_nextday:00145:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 145,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00148:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 148,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00151:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 151,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00154:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 154,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00156:call-edge:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 156,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "call-edge"
+          },
+          {
+            "effectId": "M35:event_nextday:00158:control-transfer:01",
+            "sourcePath": "original-game/ERB/イベント関係/EVENT_NEXTDAY.ERB",
+            "sourceLine": 158,
+            "currentLabel": "EVENT_NEWDAY",
+            "kind": "control-transfer"
+          }
+        ]
+      }
+    ],
+    "workerEditableGlobs": [
+      "src/features/turnEnd.ts",
+      "tools/m35_turn_long_smoke.ts",
+      "data/implementation-packets/m35-event-newday.worker-result.json"
+    ],
+    "suggestedReadOnlyInputs": [
+      "data/implementation-packets/m35-event-newday.json",
+      "src/features/turnEnd.ts",
+      "tools/m35_turn_long_smoke.ts",
+      "package.json"
+    ],
+    "allowedCommands": [
+      "rg -n \"applyNewDayEventHooks|newDay|EVENT_NEWDAY|weeklyHook|monthlyHook\" src/features/turnEnd.ts tools/m35_turn_long_smoke.ts",
+      "npm run typecheck",
+      "npm run smoke:turn-long",
+      "node tools/check_feature_packet_worker_result.mjs m35-event-newday data/implementation-packets/m35-event-newday.worker-result.json"
+    ],
+    "prefilledWorkerResult": {
+      "implementedEffects": [
+        {
+          "effectId": "M35:event_nextday:00135:label:01",
+          "implementation": "src/features/turnEnd.ts applyNewDayEventHooks entrypoint",
+          "test": "tools/m35_turn_long_smoke.ts ordered new-day hook assertion"
+        },
+        {
+          "effectId": "M35:event_nextday:00158:control-transfer:01",
+          "implementation": "applyNewDayEventHooks returns after recording active callee order",
+          "test": "tools/m35_turn_long_smoke.ts ordered new-day hook assertion"
+        }
+      ],
+      "remainingEffects": [],
+      "transferredEffects": [
+        {
+          "effectId": "M35:event_nextday:00145:call-edge:01",
+          "to": "MORNING_COWGIRL packet",
+          "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+        },
+        {
+          "effectId": "M35:event_nextday:00148:call-edge:01",
+          "to": "HAPPY_BIRTHDAY packet",
+          "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+        },
+        {
+          "effectId": "M35:event_nextday:00151:call-edge:01",
+          "to": "ONESHO packet",
+          "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+        },
+        {
+          "effectId": "M35:event_nextday:00154:call-edge:01",
+          "to": "PARTICULAR_DATE packet",
+          "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+        },
+        {
+          "effectId": "M35:event_nextday:00156:call-edge:01",
+          "to": "START_COOCKING packet",
+          "reason": "This patch records EVENT_NEWDAY call-order reachability only; callee internals must be implemented in their own packet."
+        }
+      ],
+      "excludedEffects": [
+        {
+          "effectId": "M35:event_nextday:00138:call-edge:01",
+          "reason": "Original source line is commented out with ';CALL SOMETIMES_SHE_COMES_BACK'."
+        },
+        {
+          "effectId": "M35:event_nextday:00139:branch-or-loop:01",
+          "reason": "Original source block is commented out/disabled."
+        },
+        {
+          "effectId": "M35:event_nextday:00140:control-transfer:01",
+          "reason": "Original source block is commented out/disabled."
+        }
+      ],
+      "changedFiles": [
+        "src/features/turnEnd.ts",
+        "tools/m35_turn_long_smoke.ts",
+        "data/implementation-packets/m35-event-newday.worker-result.json"
+      ],
+      "tests": [
+        "npm run typecheck",
+        "npm run smoke:turn-long",
+        "node tools/check_feature_packet_worker_result.mjs m35-event-newday data/implementation-packets/m35-event-newday.worker-result.json"
+      ]
+    },
+    "packetBudget": {
+      "sourceEffects": 10,
+      "sourceFiles": 1,
+      "labels": 1,
+      "outgoingCalls": 5,
+      "sourceSnippetBytes": 432
+    },
+    "packetAccountingRule": "Every sourceEffects.rows effectId must appear exactly once in implementedEffects, remainingEffects, transferredEffects, or excludedEffects in worker output."
+  },
+  "assertions": {
+    "completeness": {
+      "ok": true,
+      "missingFileSummaryRows": [],
+      "unresolvedSourcePaths": [],
+      "ambiguousSourcePaths": []
+    },
+    "analysisJoin": {
+      "sourceFileCount": 1,
+      "labelCount": 1,
+      "outgoingCallCount": 5,
+      "incomingCallCount": 1,
+      "dynamicCallCount": 0,
+      "flowActionCount": 1,
+      "stateAccessFamilyRows": 0,
+      "legacyAddressRows": 0,
+      "sourceEffectRows": 10,
+      "sourceEffectCrosswalkRows": 10,
+      "sourceEffectRowsWithoutImplementationClaim": 10,
+      "sourceUnitRows": 0,
+      "coverageRows": 0
+    }
+  }
+}

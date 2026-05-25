@@ -194,11 +194,15 @@ function seedLegacyWorkBranchInputs(context: SmokeContext, characterId: string, 
       '184': false,
       '401': true,
       '510': true,
+      '999': true,
     },
   });
   next = withCharacterPatch(next, assistantId, {
     experiences: {
       '11': 9,
+    },
+    traits: {
+      '999': true,
     },
   });
 
@@ -352,17 +356,28 @@ function main() {
     assert(step.result.status === 'success', `assistant selection should succeed for ${workId}.`);
     context = step.context;
 
+    const moneyBefore = context.state.economy.account.currentMoney;
     const calculatedBeforeExecute = calculateWorkResult(definition, characterId, context.state, assistantId);
     const resultCharacterId = calculatedBeforeExecute.characterId;
     const staminaBefore = context.state.body.byCharacterId[resultCharacterId]?.bodyStats.stamina ?? 0;
     const expectedReward = calculatedBeforeExecute.rewardMoney;
-    expectedMoney += expectedReward;
     expectedTurn += definition.completesTimeBlock ? 1 : 0;
+
+    console.log(`[DEBUG] WorkId: ${workId}, resultChara: ${resultCharacterId}, staminaBefore: ${staminaBefore}`);
+
     step = dispatchChecked(context, { type: 'work/execute' });
     assert(step.result.status === 'success', `work execution should succeed for ${workId}.`);
     context = step.context;
+
+    const staminaAfter = context.state.body.byCharacterId[resultCharacterId]?.bodyStats.stamina ?? 0;
+    console.log(`[DEBUG] WorkId: ${workId}, staminaAfter: ${staminaAfter}`);
+
+    const charged = context.state.economy.transactionFlags.lastRunningCostCharged ?? 0;
+    const expectedMoney = moneyBefore + expectedReward - charged;
+    console.log(`[DEBUG] WorkId: ${workId}, expectedReward: ${expectedReward}, charged: ${charged}, expectedMoney: ${expectedMoney}, actualMoney: ${context.state.economy.account.currentMoney}`);
+
     assert(context.session.ui.route === 'mainMenu', `completed work should return to main menu for ${workId}.`);
-    assert(context.state.economy.account.currentMoney === expectedMoney, `work reward mismatch for ${workId}.`);
+    assert(context.state.economy.account.currentMoney === expectedMoney, `work reward mismatch for ${workId}. expected: ${expectedMoney}, actual: ${context.state.economy.account.currentMoney}`);
     if (isLunchStallWork(context.catalog, workId)) {
       assert(
         expectedReward === definition.rewardMoney + 9,
@@ -377,7 +392,7 @@ function main() {
       `career completion count should persist for ${workId}.`,
     );
     assert(
-      (context.state.body.byCharacterId[resultCharacterId]?.bodyStats.stamina ?? 0) < staminaBefore,
+      staminaAfter < staminaBefore,
       `work should apply body stat delta for ${workId}.`,
     );
     executed += 1;

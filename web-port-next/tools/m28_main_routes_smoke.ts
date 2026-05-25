@@ -58,11 +58,11 @@ const enabledRouteCases: readonly MainRouteCase[] = [
   { menuCode: '105', action: { type: 'turn/end' }, expectedRoute: 'mainMenu', mutatesSave: true },
   { menuCode: '108', action: { type: 'main/openWardrobe' }, expectedRoute: 'wardrobe', cancelAction: { type: 'wardrobe/cancel' } },
   { menuCode: '109', action: { type: 'main/openVisit' }, expectedRoute: 'visit', cancelAction: { type: 'visit/cancel' } },
-  { menuCode: '111', action: { type: 'main/openRoster' }, expectedRoute: 'roster', cancelAction: { type: 'route/change', route: 'mainMenu' } },
+  { menuCode: '111', action: { type: 'main/openAbilityRoster' }, expectedRoute: 'roster', cancelAction: { type: 'route/change', route: 'mainMenu' } },
   { menuCode: '120', action: { type: 'main/openMission' }, expectedRoute: 'mission', cancelAction: { type: 'mission/cancel' } },
-  { menuCode: '200', action: { type: 'main/openSaveLoad' }, expectedRoute: 'saveLoad', cancelAction: { type: 'save/cancel' } },
-  { menuCode: '300', action: { type: 'main/openSaveLoad' }, expectedRoute: 'saveLoad', cancelAction: { type: 'save/cancel' } },
-  { menuCode: '700', action: { type: 'main/openRoster' }, expectedRoute: 'roster', cancelAction: { type: 'route/change', route: 'mainMenu' } },
+  { menuCode: '200', action: { type: 'main/openSave' }, expectedRoute: 'saveLoad', cancelAction: { type: 'save/cancel' } },
+  { menuCode: '300', action: { type: 'main/openLoad' }, expectedRoute: 'saveLoad', cancelAction: { type: 'save/cancel' } },
+  { menuCode: '700', action: { type: 'main/openActressList' }, expectedRoute: 'roster', cancelAction: { type: 'route/change', route: 'mainMenu' } },
 ];
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -102,6 +102,20 @@ function dispatchChecked(context: SmokeContext, action: GameAction): { readonly 
   };
 }
 
+function withMainMenuUnlockFlags(state: GameState): GameState {
+  return {
+    ...state,
+    run: {
+      ...state.run,
+      progressFlags: {
+        ...state.run.progressFlags,
+        flag_37: 1,
+        flag_570: 1,
+      },
+    },
+  };
+}
+
 function main() {
   const initialData = createInitialGameData();
   let context: SmokeContext = {
@@ -117,8 +131,34 @@ function main() {
   context = step.context;
   assert(context.session.ui.route === 'mainMenu', 'new game should route to mainMenu.');
 
+  const normalMenu = buildMainMenuView(context.state, context.catalog);
+  assert(normalMenu.status.seasonIndex === 3, 'January should render winter season like SHOP_MAIN.');
+  assert(normalMenu.status.legacyDay4SeasonIndex === 3, 'main menu should expose DAY:4 season index.');
+  assert(context.state.run.progressFlags.day_4 === 3, 'main menu entry should write the DAY:4 season index equivalent.');
+  assert(normalMenu.status.dateLabel === '1 month 1 week', 'main menu should expose month/week display.');
+  assert(normalMenu.status.timeSlotLabel === 'first half', 'TIME == 0 should render first half.');
+  assert(normalMenu.status.targetMoney === 5000000, 'main menu should expose FLAG:4 target money.');
+  assert(normalMenu.status.itemSummary.includes('item:6 x1'), 'main menu should expose PRINT_ITEM inventory summary.');
+  assert(normalMenu.status.trainableCharacterCount === 0, 'normal start should have no trainable non-master character.');
+  assert(normalMenu.menuItems.find((item) => item.id === '100')?.enabled === false, 'training should be disabled when E == 0.');
+  assert(normalMenu.menuItems.find((item) => item.id === '103')?.enabled === false, 'work should be disabled when E == 0.');
+  assert(normalMenu.menuItems.find((item) => item.id === '108')?.enabled === false, 'wardrobe should require E and FLAG:37.');
+  assert(normalMenu.menuItems.find((item) => item.id === '120')?.enabled === false, 'mission should require FLAG:570.');
+
+  step = dispatchChecked(context, { type: 'main/openTraining' });
+  assert(step.result.status === 'failure', 'direct training route should fail when original E condition is not met.');
+  assert(step.result.failure?.code === 'main-menu-condition-unmet', 'training guard should use main menu condition failure.');
+
+  step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'easy' } });
+  assert(step.result.status === 'success', 'easy new game should succeed.');
+  context = {
+    ...step.context,
+    state: withMainMenuUnlockFlags(step.context.state),
+  };
+
   const menu = buildMainMenuView(context.state, context.catalog);
   assert(menu.menuItems.length === expectedMenuCodes.length, 'M28 should render every original main menu option.');
+  assert(menu.status.trainableCharacterCount >= 1, 'easy start should expose a trainable non-master character for E >= 1 routes.');
 
   const actualMenuCodes = menu.menuItems.map((item) => item.id);
   for (const code of expectedMenuCodes) {
@@ -154,11 +194,18 @@ function main() {
     assert(step.result.status === 'success', `${routeCase.action.type} should succeed.`);
     context = step.context;
     assert(context.session.ui.route === routeCase.expectedRoute, `${routeCase.action.type} should route to ${routeCase.expectedRoute}.`);
+    if (routeCase.action.type === 'main/openSave') {
+      assert(context.session.saveLoad.mode === 'save', 'menu 200 should open save mode, not generic save/load.');
+    }
+    if (routeCase.action.type === 'main/openLoad') {
+      assert(context.session.saveLoad.mode === 'load', 'menu 300 should open load mode, not generic save/load.');
+    }
 
     if (routeCase.mutatesSave) {
       assert(context.state !== beforeState, `${routeCase.action.type} should mutate save state by design.`);
       assert(context.state.run.clock.day === dayBefore + 7, 'turn/end should advance day.');
       assert(context.state.run.clock.turn === turnBefore + 1, 'turn/end should advance turn.');
+      assert(context.state.run.progressFlags.flag_0 === 1, 'turn/end from main menu should persist the original rest flag FLAG:0.');
     } else {
       assert(context.state === beforeState, `${routeCase.action.type} should not mutate save state on route entry.`);
     }
