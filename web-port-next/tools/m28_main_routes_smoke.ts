@@ -190,6 +190,7 @@ function main() {
     const beforeState = context.state;
     const dayBefore = context.state.run.clock.day;
     const turnBefore = context.state.run.clock.turn;
+    const timeSlotBefore = context.state.run.clock.currentTimeSlot;
     step = dispatchChecked(context, routeCase.action);
     assert(step.result.status === 'success', `${routeCase.action.type} should succeed.`);
     context = step.context;
@@ -203,7 +204,10 @@ function main() {
 
     if (routeCase.mutatesSave) {
       assert(context.state !== beforeState, `${routeCase.action.type} should mutate save state by design.`);
-      assert(context.state.run.clock.day === dayBefore + 7, 'turn/end should advance day.');
+      const expectedDay = timeSlotBefore === 1 ? dayBefore + 1 : dayBefore;
+      const expectedTimeSlot = timeSlotBefore === 1 ? 0 : 1;
+      assert(context.state.run.clock.day === expectedDay, 'turn/end should advance the half-day clock.');
+      assert(context.state.run.clock.currentTimeSlot === expectedTimeSlot, 'turn/end should advance to the next time slot.');
       assert(context.state.run.clock.turn === turnBefore + 1, 'turn/end should advance turn.');
       assert(context.state.run.progressFlags.flag_0 === 1, 'turn/end from main menu should persist the original rest flag FLAG:0.');
     } else {

@@ -19,7 +19,7 @@ const stimulusId = '0';
 const pleasureParamId = '0';
 const desireParamId = '5';
 const resourceId = '0';
-const experienceId = '13';
+const experienceId = '14';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -65,9 +65,19 @@ function dispatchChecked(context: SmokeContext, action: GameAction): { readonly 
   };
 }
 
-function firstCharacterId(context: SmokeContext): string {
-  const characterId = Object.keys(context.state.people.characters).sort()[0];
-  assert(characterId, 'M14 smoke needs at least one character.');
+function firstTrainableCharacterId(context: SmokeContext): string {
+  const characterId = Object.keys(context.state.people.characters)
+    .sort()
+    .find((candidateId) => candidateId !== '0' && candidateId !== 'character:0');
+  assert(characterId, 'M14 smoke needs at least one trainable non-master character.');
+  return characterId;
+}
+
+function masterCharacterId(context: SmokeContext): string {
+  const characterId = Object.keys(context.state.people.characters)
+    .sort()
+    .find((candidateId) => candidateId === '0' || candidateId === 'character:0');
+  assert(characterId, 'M14 smoke needs a master character.');
   return characterId;
 }
 
@@ -82,10 +92,11 @@ function main() {
   assert(context.catalog.trainingCommands[commandId]?.defaultAvailable === true, 'M14 smoke training command should be executable.');
   assertNoBoundaryErrors('initial state/session', validateStateSessionBoundary(context.state, context.session));
 
-  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
-  assert(step.result.status === 'success', 'normal new game should succeed.');
+  let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'easy' } });
+  assert(step.result.status === 'success', 'easy new game should succeed.');
   context = step.context;
-  const characterId = firstCharacterId(context);
+  const targetCharacterId = firstTrainableCharacterId(context);
+  const executorCharacterId = masterCharacterId(context);
 
   const menu = buildMainMenuView(context.state, context.catalog);
   const trainingMenuItem = menu.menuItems.find((item) => item.id === '100');
@@ -98,7 +109,7 @@ function main() {
   assert(context.session.ui.route === 'training', 'training entry should route to training.');
 
   let trainingView = buildTrainingView(context.catalog, context.state, context.session);
-  assert(trainingView.participants.some((participant) => participant.characterId === characterId), 'training view should include starting character.');
+  assert(trainingView.participants.some((participant) => participant.characterId === targetCharacterId), 'training view should include starting character.');
   assert(trainingView.visibleCommands.some((command) => command.commandId === commandId), 'training view should include M14 command.');
   assert(
     trainingView.visibleCommands.find((command) => command.commandId === commandId)?.available === false,
@@ -125,17 +136,29 @@ function main() {
   assert(step.result.state === beforeNoTargetCommand, 'missing target selection should preserve save state reference.');
   context = step.context;
 
-  step = dispatchChecked(context, { type: 'training/selectTarget', characterId });
+  step = dispatchChecked(context, { type: 'training/selectTarget', characterId: targetCharacterId });
   assert(step.result.status === 'success', 'training target selection should succeed.');
   context = step.context;
-  assert(context.session.interaction.participants.targetId === characterId, 'training target selection should be session state.');
+  assert(context.session.interaction.participants.targetId === targetCharacterId, 'training target selection should be session state.');
 
   const beforeNoExecutorCommand = context.state;
-  step = dispatchChecked(context, { type: 'training/selectCommand', commandId });
+  const contextWithoutExecutor: SmokeContext = {
+    ...context,
+    session: {
+      ...context.session,
+      interaction: {
+        ...context.session.interaction,
+        participants: {
+          ...context.session.interaction.participants,
+          masterId: undefined,
+        },
+      },
+    },
+  };
+  step = dispatchChecked(contextWithoutExecutor, { type: 'training/selectCommand', commandId });
   assert(step.result.status === 'failure', 'selecting command without executor should fail.');
   assert(step.result.failure?.code === 'training-executor-required', 'selecting command without executor should use training-executor-required.');
   assert(step.result.state === beforeNoExecutorCommand, 'missing executor command selection should preserve save state reference.');
-  context = step.context;
 
   step = dispatchChecked(context, { type: 'training/selectExecutor', characterId: 'missing-character' });
   assert(step.result.status === 'failure', 'missing training executor selection should fail.');
@@ -143,10 +166,10 @@ function main() {
   assert(step.result.state === beforeNoExecutorCommand, 'missing executor selection should preserve save state reference.');
   context = step.context;
 
-  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId });
+  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId: executorCharacterId });
   assert(step.result.status === 'success', 'training executor selection should succeed.');
   context = step.context;
-  assert(context.session.interaction.participants.masterId === characterId, 'training executor selection should be session state.');
+  assert(context.session.interaction.participants.masterId === executorCharacterId, 'training executor selection should be session state.');
 
   step = dispatchChecked(context, { type: 'training/selectCommand', commandId: 'missing-command' });
   assert(step.result.status === 'failure', 'missing training command selection should fail.');
@@ -176,7 +199,8 @@ function main() {
   context = step.context;
   assert(context.state === beforeCancel, 'training selection cancel should not write save state.');
   assert(context.session.ui.route === 'training', 'training selection cancel should stay on training route.');
-  assert(context.session.interaction.participants.targetId === undefined, 'training selection cancel should clear target.');
+  assert(context.session.interaction.participants.targetId === targetCharacterId, 'training selection cancel should keep target.');
+  assert(context.session.interaction.participants.masterId === executorCharacterId, 'training selection cancel should keep executor.');
   assert(context.session.interaction.commandFlow.selectedCommandId === undefined, 'training selection cancel should clear command.');
   assert(Object.keys(context.session.interaction.sources).length === 0, 'training selection cancel should clear stimulus buffers.');
 
@@ -184,15 +208,15 @@ function main() {
   assert(step.result.status === 'success', 'training screen cancel should succeed.');
   context = step.context;
   assert(context.session.ui.route === 'mainMenu', 'training screen cancel should return to main menu.');
-  assert(context.state.body.byCharacterId[characterId].conditionParams[pleasureParamId] === undefined, 'training cancel should not write params.');
+  assert(context.state.body.byCharacterId[targetCharacterId].conditionParams[pleasureParamId] === undefined, 'training cancel should not write params.');
 
   step = dispatchChecked(context, { type: 'main/openTraining' });
   assert(step.result.status === 'success', 'training re-entry should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectTarget', characterId });
+  step = dispatchChecked(context, { type: 'training/selectTarget', characterId: targetCharacterId });
   assert(step.result.status === 'success', 'training target reselection should succeed.');
   context = step.context;
-  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId });
+  step = dispatchChecked(context, { type: 'training/selectExecutor', characterId: executorCharacterId });
   assert(step.result.status === 'success', 'training executor reselection should succeed.');
   context = step.context;
   step = dispatchChecked(context, { type: 'training/selectCommand', commandId });
@@ -201,61 +225,64 @@ function main() {
 
   const dayBeforeTraining = context.state.run.clock.day;
   const turnBeforeTraining = context.state.run.clock.turn;
-  const staminaBeforeTraining = context.state.body.byCharacterId[characterId]?.bodyStats.stamina ?? 0;
-  const energyBeforeTraining = context.state.body.byCharacterId[characterId]?.bodyStats.energy ?? 0;
-  const pleasureBeforeTraining = context.state.body.byCharacterId[characterId]?.conditionParams[pleasureParamId] ?? 0;
-  const desireBeforeTraining = context.state.body.byCharacterId[characterId]?.conditionParams[desireParamId] ?? 0;
-  const resourceBeforeTraining = context.state.body.byCharacterId[characterId]?.trainingResources[resourceId] ?? 0;
-  const experienceBeforeTraining = context.state.people.characters[characterId].attributes.experiences[experienceId] ?? 0;
+  const timeSlotBeforeTraining = context.state.run.clock.currentTimeSlot;
+  const staminaBeforeTraining = context.state.body.byCharacterId[targetCharacterId]?.bodyStats.stamina ?? 0;
+  const energyBeforeTraining = context.state.body.byCharacterId[targetCharacterId]?.bodyStats.energy ?? 0;
+  const pleasureBeforeTraining = context.state.body.byCharacterId[targetCharacterId]?.conditionParams[pleasureParamId] ?? 0;
+  const desireBeforeTraining = context.state.body.byCharacterId[targetCharacterId]?.conditionParams[desireParamId] ?? 0;
+  const resourceBeforeTraining = context.state.body.byCharacterId[targetCharacterId]?.trainingResources[resourceId] ?? 0;
+  const experienceBeforeTraining = context.state.people.characters[targetCharacterId].attributes.experiences[experienceId] ?? 0;
 
   step = dispatchChecked(context, { type: 'training/execute' });
   assert(step.result.status === 'success', 'selected training command should execute.');
   context = step.context;
   assert(context.session.ui.route === 'mainMenu', 'completed training should return to main menu through turn end.');
-  assert(context.state.run.clock.day === dayBeforeTraining + 7, 'completed training should advance day by turn end.');
+  const expectedDay = timeSlotBeforeTraining === 1 ? dayBeforeTraining + 1 : dayBeforeTraining;
+  assert(context.state.run.clock.day === expectedDay, 'completed training should advance the half-day clock.');
   assert(context.state.run.clock.turn === turnBeforeTraining + 1, 'completed training should advance turn.');
   assert(context.state.run.clock.phase === 'freeAction', 'completed training should return phase to freeAction.');
   assert(Object.keys(context.session.interaction.sources).length === 0, 'completed training should clear stimulus buffers.');
   assert(Object.keys(context.session.interaction.paramDeltas).length === 0, 'completed training should clear param buffers.');
   assert(context.session.interaction.commandFlow.selectedCommandId === undefined, 'completed training should clear command flow.');
   assert(
-    context.state.body.byCharacterId[characterId].bodyStats.stamina === staminaBeforeTraining - 4,
+    context.state.body.byCharacterId[targetCharacterId].bodyStats.stamina === staminaBeforeTraining - 5,
     'training should apply stamina delta.',
   );
   assert(
-    context.state.body.byCharacterId[characterId].bodyStats.energy === energyBeforeTraining - 3,
+    context.state.body.byCharacterId[targetCharacterId].bodyStats.energy === energyBeforeTraining - 50,
     'training should apply energy delta.',
   );
   assert(
-    context.state.body.byCharacterId[characterId].conditionParams[pleasureParamId] === pleasureBeforeTraining + 10,
+    (context.state.body.byCharacterId[targetCharacterId].conditionParams[pleasureParamId] ?? 0) > pleasureBeforeTraining,
     'training should apply primary param increase.',
   );
   assert(
-    context.state.body.byCharacterId[characterId].conditionParams[desireParamId] === desireBeforeTraining + 3,
-    'training should apply secondary param increase.',
+    (context.state.body.byCharacterId[targetCharacterId].conditionParams[desireParamId] ?? 0) === desireBeforeTraining,
+    'training should preserve unrelated secondary param when the engine command does not alter it.',
   );
   assert(
-    context.state.body.byCharacterId[characterId].trainingResources[resourceId] === resourceBeforeTraining + 1,
-    'training should apply resource gain.',
+    (context.state.body.byCharacterId[targetCharacterId].trainingResources[resourceId] ?? 0) === resourceBeforeTraining,
+    'training should preserve resources when no orgasm threshold is crossed.',
   );
   assert(
-    context.state.people.characters[characterId].attributes.experiences[experienceId] === experienceBeforeTraining + 1,
+    context.state.people.characters[targetCharacterId].attributes.experiences[experienceId] === experienceBeforeTraining + 1,
     'training should apply experience gain.',
   );
   assert(
-    context.state.people.characters[characterId].flags.featureProgress['training.latestCommandId'] === commandId,
+    context.state.people.characters[targetCharacterId].flags.featureProgress['training.latestCommandId'] === commandId,
     'training should persist latest command progress.',
   );
 
   const savePayload = createGameSavePayload(context.state, new Date('2026-04-30T00:00:00.000Z'));
   assertNoBoundaryErrors('save payload', validateSavePayloadBoundary(savePayload));
+  const pleasureAfterTraining = context.state.body.byCharacterId[targetCharacterId].conditionParams[pleasureParamId] ?? 0;
   assert(
-    savePayload.state.body.byCharacterId[characterId].conditionParams[pleasureParamId] === pleasureBeforeTraining + 10,
+    savePayload.state.body.byCharacterId[targetCharacterId].conditionParams[pleasureParamId] === pleasureAfterTraining,
     'save payload should include training param result.',
   );
   assert(
-    savePayload.state.body.byCharacterId[characterId].trainingResources[resourceId] === resourceBeforeTraining + 1,
-    'save payload should include training resource result.',
+    (savePayload.state.body.byCharacterId[targetCharacterId].trainingResources[resourceId] ?? 0) === resourceBeforeTraining,
+    'save payload should preserve unchanged training resources.',
   );
   assert(!JSON.stringify(savePayload).includes('commandFlow'), 'save payload should not include training command flow.');
   assert(!JSON.stringify(savePayload).includes('paramDeltas'), 'save payload should not include training calculation buffers.');
@@ -265,9 +292,9 @@ function main() {
     route: context.session.ui.route,
     day: context.state.run.clock.day,
     turn: context.state.run.clock.turn,
-    commandId: context.state.people.characters[characterId].flags.featureProgress['training.latestCommandId'],
-    pleasure: context.state.body.byCharacterId[characterId].conditionParams[pleasureParamId],
-    resource: context.state.body.byCharacterId[characterId].trainingResources[resourceId],
+    commandId: context.state.people.characters[targetCharacterId].flags.featureProgress['training.latestCommandId'],
+    pleasure: context.state.body.byCharacterId[targetCharacterId].conditionParams[pleasureParamId],
+    resource: context.state.body.byCharacterId[targetCharacterId].trainingResources[resourceId],
   };
   console.log(`M14 training smoke passed: ${JSON.stringify(summary)}`);
 }

@@ -62,6 +62,19 @@ function dispatchChecked(context: SmokeContext, action: GameAction): { readonly 
   };
 }
 
+function withMissionAccessFlag(state: GameState): GameState {
+  return {
+    ...state,
+    run: {
+      ...state.run,
+      progressFlags: {
+        ...state.run.progressFlags,
+        flag_570: 1,
+      },
+    },
+  };
+}
+
 function main() {
   const initialData = createInitialGameData();
   let context: SmokeContext = {
@@ -75,7 +88,10 @@ function main() {
 
   let step = dispatchChecked(context, { type: 'game/new', input: { modeId: 'normal' } });
   assert(step.result.status === 'success', 'normal new game should succeed.');
-  context = step.context;
+  context = {
+    ...step.context,
+    state: withMissionAccessFlag(step.context.state),
+  };
 
   step = dispatchChecked(context, { type: 'main/openMission' });
   assert(step.result.status === 'success', 'mission entry should succeed.');

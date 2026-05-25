@@ -1199,45 +1199,46 @@ export function executeSelectedTraining(
     },
   };
 
+  if (didSpendTime) {
+    const turn = endTurn(finalState, {
+      ...sessionAfterTraining,
+      interaction: initialInteractionSessionState,
+    });
+    const exitReason = forceExit
+      ? '대상 여배우가 체력 고갈로 기절하여 조교가 강제 종료되었습니다.'
+      : '시간 소모 커맨드가 완료되어 조교를 종료합니다.';
+
+    return {
+      ok: true,
+      state: turn.state,
+      session: {
+        ...turn.session,
+        ui: { ...turn.session.ui, route: 'mainMenu' },
+      },
+      message: `${commandLabel} 완료. ${exitReason}`,
+      effects: [
+        logEffect(`${commandLabel} training completed.`, 'success'),
+        ...afterTrainDeathCheck.effects,
+        ...turn.effects,
+      ],
+    };
+  }
+
   if (forceExit) {
-    // 기절/강제퇴실 시
-    if (didSpendTime) {
-      // 시간 소모가 있었다면 턴을 종료하며 퇴실
-      const turn = endTurn(finalState, {
+    return {
+      ok: true,
+      state: finalState,
+      session: {
         ...sessionAfterTraining,
-        interaction: initialInteractionSessionState, // 퇴실 시 완전히 세션 비우기
-      });
-      return {
-        ok: true,
-        state: turn.state,
-        session: {
-          ...turn.session,
-          ui: { ...turn.session.ui, route: 'mainMenu' }
-        },
-        message: `${commandLabel} 완료. 대상 여배우가 체력 고갈로 기절하여 조교가 강제 종료되었습니다.`,
-        effects: [
-          logEffect(`${commandLabel} training completed.`, 'success'),
-          ...afterTrainDeathCheck.effects,
-          ...turn.effects,
-        ],
-      };
-    } else {
-      // 시간 소모가 없었다면 턴 종료 없이 세션만 클리어하고 퇴실
-      return {
-        ok: true,
-        state: finalState,
-        session: {
-          ...sessionAfterTraining,
-          interaction: initialInteractionSessionState,
-          ui: { ...sessionAfterTraining.ui, route: 'mainMenu' }
-        },
-        message: `${commandLabel} 완료. 대상 여배우가 체력 고갈로 기절하여 조교가 강제 종료되었습니다. (시간 소모 없음)`,
-        effects: [
-          logEffect(`${commandLabel} training completed.`, 'success'),
-          ...afterTrainDeathCheck.effects,
-        ],
-      };
-    }
+        interaction: initialInteractionSessionState,
+        ui: { ...sessionAfterTraining.ui, route: 'mainMenu' },
+      },
+      message: `${commandLabel} 완료. 대상 여배우가 체력 고갈로 기절하여 조교가 강제 종료되었습니다. (시간 소모 없음)`,
+      effects: [
+        logEffect(`${commandLabel} training completed.`, 'success'),
+        ...afterTrainDeathCheck.effects,
+      ],
+    };
   }
 
   // 강제퇴실이 아니면 조교방에 그대로 대기

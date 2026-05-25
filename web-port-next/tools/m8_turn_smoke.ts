@@ -159,10 +159,11 @@ function main() {
   assert(step.result.status === 'success', 'turn end should succeed.');
   context = step.context;
 
-  assert(context.state.run.clock.day === 7, 'first turn end should move day from 0 to 7.');
-  assert(context.state.run.clock.week === 2, 'first turn end should move week from 1 to 2.');
+  assert(context.state.run.clock.day === 0, 'first half-day turn end should keep day at 0.');
+  assert(context.state.run.clock.week === 1, 'first half-day turn end should keep week at 1.');
   assert(context.state.run.clock.month === 1, 'first turn end should keep month at 1 before rollover.');
   assert(context.state.run.clock.turn === 1, 'first turn end should increment turn to 1.');
+  assert(context.state.run.clock.currentTimeSlot === 1, 'first turn end should move from first half to second half.');
   assert(context.state.run.clock.phase === 'freeAction', 'turn end should return phase to freeAction.');
   assert(context.state.run.scheduledEvents.length === 0, 'turn end should consume M8-supported scheduled events.');
   assertTurnSessionCleared(context);
@@ -177,12 +178,12 @@ function main() {
       run: {
         ...context.state.run,
         clock: {
-          day: 21,
+          day: 27,
           month: 1,
           week: 4,
           year: 1,
           turn: 3,
-          currentTimeSlot: 0,
+          currentTimeSlot: 1,
           dayCounters: {},
           timeCounters: {},
           phase: 'endOfDay',
@@ -194,11 +195,12 @@ function main() {
   step = dispatchChecked(context, { type: 'turn/end' });
   assert(step.result.status === 'success', 'turn end rollover should succeed.');
   context = step.context;
-  assert(context.state.run.clock.day === 28, 'week rollover should advance day by 7.');
+  assert(context.state.run.clock.day === 28, 'week rollover should advance to day 28.');
   assert(context.state.run.clock.week === 1, 'week 4 should roll over to week 1.');
   assert(context.state.run.clock.month === 2, 'week 4 should advance the month.');
   assert(context.state.run.clock.year === 1, 'month 2 should keep year at 1.');
   assert(context.state.run.clock.turn === 4, 'week rollover should increment turn.');
+  assert(context.state.run.clock.currentTimeSlot === 0, 'week rollover should reset to the first half.');
   assert(context.state.run.clock.phase === 'freeAction', 'week rollover should return phase to freeAction.');
 
   const savePayload = createGameSavePayload(context.state, new Date('2026-04-30T00:00:00.000Z'));

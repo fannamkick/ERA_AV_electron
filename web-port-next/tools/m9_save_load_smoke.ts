@@ -192,7 +192,12 @@ function main() {
   step = dispatchChecked(context, { type: 'turn/end' });
   assert(step.result.status === 'success', 'turn end after snapshot should mutate state.');
   context = step.context;
-  assert(context.state.run.clock.day !== parsedSnapshot.payload.state.run.clock.day, 'post-save mutation should change clock.');
+  assert(context.state.run.clock.turn !== parsedSnapshot.payload.state.run.clock.turn, 'post-save mutation should change clock turn.');
+  assert(
+    context.state.run.clock.currentTimeSlot !== parsedSnapshot.payload.state.run.clock.currentTimeSlot ||
+      context.state.run.clock.day !== parsedSnapshot.payload.state.run.clock.day,
+    'post-save mutation should change clock slot or day.',
+  );
 
   context = {
     ...context,
